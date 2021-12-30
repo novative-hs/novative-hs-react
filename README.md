@@ -11,7 +11,7 @@ Copy package.json and package-json.lock files from template files into add Admin
 
 Then go to any Admin folder that you are going to use, let's say if we have decided to use Admin-Hooks then
 ```sh
-cd Admin-Hooks
+cd Admin-Redux
 ```
 
 Then install the dependencies:
