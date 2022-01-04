@@ -133,8 +133,7 @@ class LockScreen extends Component {
                     </Link>{" "}
                   </p>
                   <p>
-                    © 2021 Skote. Crafted with{" "}
-                    <i className="mdi mdi-heart text-danger" /> by Themesbrand
+                    © 2021 Ilaaj4u
                   </p>
                 </div>
               </Col>

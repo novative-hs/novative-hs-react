@@ -322,7 +322,7 @@ const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
-  { path: "/register", component: Register },
+  // { path: "/register", component: Register },
 
   { path: "/pages-maintenance", component: PagesMaintenance },
   { path: "/pages-comingsoon", component: PagesComingsoon },
@@ -334,8 +334,8 @@ const publicRoutes = [
   { path: "/pages-login", component: Login1 },
   { path: "/pages-login-2", component: Login2 },
 
-  { path: "/pages-register", component: Register1 },
-  { path: "/pages-register-2", component: Register2 },
+  // { path: "/register", component: Register },
+  { path: "/register", component: Register2 },
 
   { path: "/page-recoverpw", component: Recoverpw },
   { path: "/pages-recoverpw-2", component: Recoverpw2 },

@@ -7,7 +7,7 @@ export default class CarouselPage extends Component {
   render() {
     return (
       <React.Fragment>
-        <Col xl={9}>
+        <Col xl={6}>
           <div className="auth-full-bg pt-lg-5 p-4">
             <div className="w-100">
               <div className="bg-overlay"></div>

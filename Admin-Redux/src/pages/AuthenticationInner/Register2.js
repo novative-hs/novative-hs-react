@@ -18,17 +18,17 @@ export default class Register2 extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>Register 2 | Skote - React Admin & Dashboard Template</title>
+            <title>Register | Ilaaj4u</title>
           </MetaTags>
           <Container fluid className="p-0">
             <Row className="g-0">
               <CarouselPage />
 
-              <Col xl={3}>
+              <Col xl={6}>
                 <div className="auth-full-page-content p-md-5 p-4">
                   <div className="w-100">
                     <div className="d-flex flex-column h-100">
-                      <div className="mb-4 mb-md-5">
+                      {/* <div className="mb-4 mb-md-5">
                         <Link to="dashboard" className="d-block auth-logo">
                           <img
                             src={logodark}
@@ -43,12 +43,12 @@ export default class Register2 extends Component {
                             className="auth-logo-light"
                           />
                         </Link>
-                      </div>
+                      </div> */}
                       <div className="my-auto">
                         <div>
                           <h5 className="text-primary">Register account</h5>
                           <p className="text-muted">
-                            Get your free Skote account now.
+                            Get your free Ilaaj4u account now.
                           </p>
                         </div>
 
@@ -59,18 +59,27 @@ export default class Register2 extends Component {
                               email: (this.state && this.state.email) || "",
                               password:
                                 (this.state && this.state.password) || "",
+                              password2:
+                                (this.state && this.state.password2) || "",
                               username:
                                 (this.state && this.state.username) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               email: Yup.string().required(
-                                "Please Enter Your Email"
+                                "Please enter your email"
                               ),
                               password: Yup.string().required(
-                                "Please Enter Valid Password"
+                                "Please enter your password"
                               ),
+                              password2: Yup.string().when("password", {
+                                is: val => (val && val.length > 0 ? true : false),
+                                then: Yup.string().oneOf(
+                                  [Yup.ref("password")],
+                                  "Both password need to be the same"
+                                ),
+                              }),
                               username: Yup.string().required(
-                                "Please Enter Valid Username"
+                                "Please enter your username"
                               ),
                             })}
                             onSubmit={values => {
@@ -85,6 +94,7 @@ export default class Register2 extends Component {
                                   </Alert>
                                 ) : null}
 
+                                {/* Username field */}
                                 <div className="mb-3">
                                   <Label for="username" className="form-label">
                                     Username
@@ -107,6 +117,7 @@ export default class Register2 extends Component {
                                   />
                                 </div>
 
+                                {/* Email field */}
                                 <div className="mb-3">
                                   <Label for="email" className="form-label">
                                     Email
@@ -129,35 +140,67 @@ export default class Register2 extends Component {
                                   />
                                 </div>
 
+                                {/* Password field */}
                                 <div className="mb-3">
-                                  <Label for="password" className="form-label">
-                                    Password
-                                  </Label>
-                                  <Field
-                                    name="password"
-                                    placeholder="Enter Password"
-                                    type="password"
-                                    className={
-                                      "form-control" +
-                                      (errors.password && touched.password
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="password"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
+                                  <Label className="form-label">Password</Label>
+                                  <div>
+                                    <Field
+                                      name="password"
+                                      type="password"
+                                      placeholder="Enter password"
+                                      autoComplete="on"
+                                      className={
+                                        "form-control" +
+                                        (errors.password && touched.password
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="password"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                  <div className="mt-2">
+                                    <Field
+                                      name="password2"
+                                      type="password"
+                                      placeholder="Re-enter password"
+                                      autoComplete="on"
+                                      className={
+                                        "form-control" +
+                                        (errors.password2 && touched.password2
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="password2"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
                                 </div>
-                                <div>
+
+                                {/* Account type field */}
+                                <div className="mb-3">
+                                  <label className="form-label">Account Type</label>
+                                  <select className="form-select" name="account_type">
+                                      <option value="patient">Patient</option>
+                                      <option value="labowner">Lab Owner</option>
+                                      <option value="corporate">Corporate</option>
+                                    </select>
+                                </div>
+                                
+                                {/* <div>
                                   <p className="mb-0">
-                                    By registering you agree to the Skote
+                                    By registering you agree to the Ilaaj4u {" "}
                                     <Link to="#" className="text-primary">
                                       Terms of Use
                                     </Link>
                                   </p>
-                                </div>
+                                </div> */}
 
                                 <div className="mt-3 d-grid">
                                   <button
@@ -168,45 +211,12 @@ export default class Register2 extends Component {
                                     Register{" "}
                                   </button>
                                 </div>
-
-                                <div className="mt-4 text-center">
-                                  <h5 className="font-size-14 mb-3">
-                                    Sign in using
-                                  </h5>
-
-                                  <ul className="list-inline">
-                                    <li className="list-inline-item">
-                                      <Link
-                                        to="#"
-                                        className="social-list-item bg-primary text-white border-primary"
-                                      >
-                                        <i className="mdi mdi-facebook"></i>
-                                      </Link>
-                                    </li>
-                                    <li className="list-inline-item">
-                                      <Link
-                                        to="#"
-                                        className="social-list-item bg-info text-white border-info"
-                                      >
-                                        <i className="mdi mdi-twitter"></i>
-                                      </Link>
-                                    </li>
-                                    <li className="list-inline-item">
-                                      <Link
-                                        to="#"
-                                        className="social-list-item bg-danger text-white border-danger"
-                                      >
-                                        <i className="mdi mdi-google"></i>
-                                      </Link>
-                                    </li>
-                                  </ul>
-                                </div>
                               </Form>
                             )}
                           </Formik>
-                          <div className="mt-5 text-center">
+                          <div className="mt-3 text-center">
                             <p>
-                              Already have an account ?{" "}
+                              Already have an account?{" "}
                               <Link
                                 to="pages-login-2"
                                 className="fw-medium text-primary"
@@ -219,14 +229,11 @@ export default class Register2 extends Component {
                         </div>
                       </div>
 
-                      <div className="mt-4 mt-md-5 text-center">
+                      {/* <div className="mt-4 mt-md-5 text-center">
                         <p className="mb-0">
-                          © {new Date().getFullYear()}
-                          Skote. Crafted with{" "}
-                          <i className="mdi mdi-heart text-danger"></i> by
-                          Themesbrand
+                          © {new Date().getFullYear()} {" "} Ilaaj4u
                         </p>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
