@@ -1,3 +1,6 @@
+//REGISTER ORIGINAL
+// export const POST_REGISTER = "http://127.0.0.1:8000/api/account/register/"
+
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register"
 

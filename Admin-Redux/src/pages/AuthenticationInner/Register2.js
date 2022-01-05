@@ -8,11 +8,29 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 // import images
-import logodark from "../../assets/images/logo-dark.png";
-import logolight from "../../assets/images/logo-light.png";
 import CarouselPage from "./CarouselPage";
 
-export default class Register2 extends Component {
+// action
+import {
+  apiError,
+  registerUser,
+  registerUserFailed,
+} from "../../store/actions";
+
+// Redux
+import { connect } from "react-redux";
+
+class Register2 extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    this.props.apiError("");
+    this.props.registerUserFailed("");
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -28,22 +46,6 @@ export default class Register2 extends Component {
                 <div className="auth-full-page-content p-md-5 p-4">
                   <div className="w-100">
                     <div className="d-flex flex-column h-100">
-                      {/* <div className="mb-4 mb-md-5">
-                        <Link to="dashboard" className="d-block auth-logo">
-                          <img
-                            src={logodark}
-                            alt=""
-                            height="18"
-                            className="auth-logo-dark"
-                          />
-                          <img
-                            src={logolight}
-                            alt=""
-                            height="18"
-                            className="auth-logo-light"
-                          />
-                        </Link>
-                      </div> */}
                       <div className="my-auto">
                         <div>
                           <h5 className="text-primary">Register account</h5>
@@ -56,15 +58,21 @@ export default class Register2 extends Component {
                           <Formik
                             enableReinitialize={true}
                             initialValues={{
-                              email: (this.state && this.state.email) || "",
+                              username:
+                                (this.state && this.state.username) || "",
+                              email: 
+                                (this.state && this.state.email) || "",
                               password:
                                 (this.state && this.state.password) || "",
                               password2:
                                 (this.state && this.state.password2) || "",
-                              username:
-                                (this.state && this.state.username) || "",
+                              account_type:
+                                (this.state && this.state.account_type) || "patient",
                             }}
                             validationSchema={Yup.object().shape({
+                              username: Yup.string().required(
+                                "Please enter your username"
+                              ),
                               email: Yup.string().required(
                                 "Please enter your email"
                               ),
@@ -78,28 +86,22 @@ export default class Register2 extends Component {
                                   "Both password need to be the same"
                                 ),
                               }),
-                              username: Yup.string().required(
-                                "Please enter your username"
-                              ),
                             })}
                             onSubmit={values => {
-                              console.log(values,'values')
+                              console.log(values,'values');
+                              // console.log("Value is: ", this.state.account_type);
+                              this.props.registerUser(values)
                             }}
                           >
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
-                                {this.props.error && this.props.error ? (
-                                  <Alert color="danger">
-                                    {this.props.error}
-                                  </Alert>
-                                ) : null}
-
                                 {/* Username field */}
                                 <div className="mb-3">
                                   <Label for="username" className="form-label">
                                     Username
                                   </Label>
                                   <Field
+                                    id="username"
                                     name="username"
                                     placeholder="Enter username"
                                     type="text"
@@ -185,13 +187,41 @@ export default class Register2 extends Component {
 
                                 {/* Account type field */}
                                 <div className="mb-3">
-                                  <label className="form-label">Account Type</label>
-                                  <select className="form-select" name="account_type">
-                                      <option value="patient">Patient</option>
-                                      <option value="labowner">Lab Owner</option>
-                                      <option value="corporate">Corporate</option>
-                                    </select>
+                                  <Label for="account_type" className="form-label">
+                                    Username
+                                  </Label>                                
+                                  <Field name="account_type" component="select" className="form-select">
+                                    <option value="patient">Patient</option>
+                                    <option value="labowner">Lab Owner</option>
+                                    <option value="corporate">Corporate</option>
+                                  </Field>
+                                  {/* <select className="form-select" value={this.state.value} onChange={this.handleChange}>
+                                    <option value="patient">Patient</option>
+                                    <option value="labowner">Lab Owner</option>
+                                    <option value="corporate">Corporate</option>
+                                  </select> */}
                                 </div>
+                                {/* <div className="mb-3">
+                                  <Label for="account_type" className="form-label">
+                                    Username
+                                  </Label>
+                                  <Field
+                                    name="account_type"
+                                    placeholder="Enter account type"
+                                    type="text"
+                                    className={
+                                      "form-control" +
+                                      (errors.account_type && touched.account_type
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="account_type"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div> */}
                                 
                                 {/* <div>
                                   <p className="mb-0">
@@ -247,5 +277,21 @@ export default class Register2 extends Component {
 }
 
 Register2.propTypes = {
-  error: PropTypes.any,
+  apiError: PropTypes.any,
+  registerUser: PropTypes.func,
+  registerUserFailed: PropTypes.any,
+  registrationError: PropTypes.any,
+  user: PropTypes.object,
 };
+
+const mapStateToProps = state => {
+  const { user, registrationError, loading } = state.Account;
+  return { user, registrationError, loading };
+};
+
+export default connect(mapStateToProps, {
+  registerUser,
+  apiError,
+  registerUserFailed,
+})(Register2);
+
