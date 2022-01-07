@@ -15,6 +15,7 @@ import {
   apiError,
   registerUser,
   registerUserFailed,
+  registerUserSuccessful,
 } from "../../store/actions";
 
 // Redux
@@ -29,6 +30,7 @@ class Register2 extends Component {
   componentDidMount() {
     this.props.apiError("");
     this.props.registerUserFailed("");
+    this.props.registerUserSuccessful("");
   }
 
   render() {
@@ -89,8 +91,7 @@ class Register2 extends Component {
                             })}
                             onSubmit={values => {
                               console.log(values,'values');
-                              // console.log("Value is: ", this.state.account_type);
-                              this.props.registerUser(values)
+                              this.props.registerUser(values);
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -280,6 +281,7 @@ Register2.propTypes = {
   apiError: PropTypes.any,
   registerUser: PropTypes.func,
   registerUserFailed: PropTypes.any,
+  registerUserSuccessful: PropTypes.any,
   registrationError: PropTypes.any,
   user: PropTypes.object,
 };
@@ -293,5 +295,6 @@ export default connect(mapStateToProps, {
   registerUser,
   apiError,
   registerUserFailed,
+  registerUserSuccessful,
 })(Register2);
 

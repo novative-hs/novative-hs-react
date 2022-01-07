@@ -5,7 +5,9 @@ import {
 } from "./actionTypes"
 
 const initialState = {
-  registrationError: null,
+  emailError: null,
+  usernameError: null,
+  passwordError: null,
   message: null,
   loading: false,
 }
@@ -15,25 +17,34 @@ const account = (state = initialState, action) => {
     case REGISTER_USER:
       state = {
         ...state,
-        user: null,
+        userID: null,
+        userAccountType: null,
         loading: true,
-        registrationError: null,
+        emailError: null,
+        usernameError: null,
+        passwordError: null,
       }
       break
     case REGISTER_USER_SUCCESSFUL:
       state = {
         ...state,
         loading: false,
-        user: action.payload,
-        registrationError: null,
+        userID: action.payload.id,
+        userAccountType: action.payload.account_type,
+        emailError: null,
+        usernameError: null,
+        passwordError: null,
       }
       break
     case REGISTER_USER_FAILED:
       state = {
         ...state,
-        user: null,
+        userID: null,
+        userAccountType: null,
         loading: false,
-        registrationError: action.payload,
+        emailError: action.payload.email,
+        usernameError: action.payload.username,
+        passwordError: action.payload.password,
       }
       break
     default:

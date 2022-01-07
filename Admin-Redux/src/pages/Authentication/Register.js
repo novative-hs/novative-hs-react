@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Alert, Card, CardBody, Col, Container, Row, Label } from "reactstrap";
-
+import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+
+import CarouselPage from "../AuthenticationInner/CarouselPage";
 
 // action
 import {
@@ -23,176 +25,257 @@ import logoImg from "../../assets/images/logo.svg";
 class Register extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      usernameFieldError: null,
+      emailFieldError: null,
+      passwordFieldError: null,
+    };
   }
 
   componentDidMount() {
     this.props.apiError("");
     this.props.registerUserFailed("");
+  } 
+
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.usernameError != this.props.usernameError) {
+      this.setState({ usernameFieldError: this.props.usernameError })
+    }
+
+    if (prevProps.emailError != this.props.emailError) {
+      this.setState({ emailFieldError: this.props.emailError })
+    }
+
+    if (prevProps.passwordError != this.props.passwordError) {
+      this.setState({ passwordFieldError: this.props.passwordError })
+    }
   }
 
   render() {
+    
+    this.getRegistrationAPIResponse()
+
     return (
       <React.Fragment>
-        <div className="home-btn d-none d-sm-block">
-          <Link to="/" className="text-dark">
-            <i className="bx bx-home h2" />
-          </Link>
-        </div>
-        <div className="account-pages my-5 pt-sm-5">
-          <Container>
-            <Row className="justify-content-center">
-              <Col md={8} lg={6} xl={5}>
-                <Card className="overflow-hidden">
-                  <div className="bg-primary bg-soft">
-                    <Row>
-                      <Col className="col-7">
-                        <div className="text-primary p-4">
-                          <h5 className="text-primary">Free Register</h5>
-                          <p>Get your free Skote account now.</p>
-                        </div>
-                      </Col>
-                      <Col className="col-5 align-self-end">
-                        <img src={profileImg} alt="" className="img-fluid" />
-                      </Col>
-                    </Row>
-                  </div>
-                  <CardBody className="pt-0">
-                    <div>
-                      <Link to="/">
-                        <div className="avatar-md profile-user-wid mb-4">
-                          <span className="avatar-title rounded-circle bg-light">
-                            <img
-                              src={logoImg}
-                              alt=""
-                              className="rounded-circle"
-                              height="34"
-                            />
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                    <div className="p-2">
-                      <Formik
-                        enableReinitialize={true}
-                        initialValues={{
-                          email: (this.state && this.state.email) || "",
-                          password: (this.state && this.state.password) || "",
-                          username: (this.state && this.state.username) || "",
-                        }}
-                        validationSchema={Yup.object().shape({
-                          email: Yup.string().required(
-                            "Please Enter Your Email"
-                          ),
-                          password: Yup.string().required(
-                            "Please Enter Valid Password"
-                          ),
-                          username: Yup.string().required(
-                            "Please Enter Valid Username"
-                          ),
-                        })}
-                        onSubmit={values => {
-                          this.props.registerUser(values);
-                        }}
-                      >
-                        {({ errors, status, touched }) => (
-                          <Form className="form-horizontal">
-                            <div className="mb-3">
-                              <Label for="email" className="form-label">
-                                Email
-                              </Label>
-                              <Field
-                                name="email"
-                                type="email"
-                                className={
-                                  "form-control" +
-                                  (errors.email && touched.email
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="email"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </div>
-                            <div className="mb-3">
-                              <Label for="password" className="form-label">
-                                Password
-                              </Label>
-                              <Field
-                                name="password"
-                                autoComplete="true"
-                                type="password"
-                                className={
-                                  "form-control" +
-                                  (errors.password && touched.password
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </div>
-                            <div className="mb-3">
-                              <Label for="username" className="form-label">
-                                Username
-                              </Label>
-                              <Field
-                                name="username"
-                                type="text"
-                                className={
-                                  "form-control" +
-                                  (errors.username && touched.username
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="username"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </div>
+        <div>
+          <MetaTags>
+            <title>Register | Ilaaj4u</title>
+          </MetaTags>
+          <Container fluid className="p-0">
+            <Row className="g-0">
+              <CarouselPage />
 
-                            <div className="mt-4 d-grid">
-                              <button
-                                className="btn btn-primary btn-block"
-                                type="submit"
+              <Col xl={6}>
+                <div className="auth-full-page-content p-md-5 p-4">
+                  <div className="w-100">
+                    <div className="d-flex flex-column h-100">
+                      <div className="my-auto">
+                        <div>
+                          <h5 className="text-primary">Register account</h5>
+                          <p className="text-muted">
+                            Get your free Ilaaj4u account now.
+                          </p>
+                        </div>
+
+                        <div className="mt-4">
+                          {/* {this.props.registrationError && this.props.registrationError ? (
+                            <Alert color="danger" style={{ marginTop: "13px" }}>
+                              {this.props.registrationError}
+                            </Alert>
+                          ) : null} */}
+
+                          {this.props.userID && this.props.userID ? (
+                            <Alert color="success" style={{ marginTop: "13px" }}>
+                              Congratulations! You have registered successfully.
+                            </Alert>
+                          ) : null}
+
+                          <Formik
+                            enableReinitialize={true}
+                            initialValues={{
+                              username:
+                                (this.state && this.state.username) || "",
+                              email: 
+                                (this.state && this.state.email) || "",
+                              password:
+                                (this.state && this.state.password) || "",
+                              password2:
+                                (this.state && this.state.password2) || "",
+                              account_type:
+                                (this.state && this.state.account_type) || "patient",
+                            }}
+                            validationSchema={Yup.object().shape({
+                              username: Yup.string().required(
+                                "Please enter your username"
+                              ),
+                              email: Yup.string().required(
+                                "Please enter your email"
+                              ).email("Please enter valid email"),
+                              password: Yup.string().required(
+                                "Please enter your password"
+                              ),
+                              password2: Yup.string().when("password", {
+                                is: val => (val && val.length > 0 ? true : false),
+                                then: Yup.string().oneOf(
+                                  [Yup.ref("password")],
+                                  "Both password need to be the same"
+                                ),
+                              }),
+
+                            })}
+                            onSubmit={values => {
+                              this.props.registerUser(values);
+                            }}
+                          >
+                            {({ errors, status, touched }) => (
+                              <Form className="form-horizontal">
+                                {/* Username field */}
+                                <div className="mb-3">
+                                  <Label for="username" className="form-label">
+                                    Username
+                                  </Label>
+                                  <Field
+                                    id="username"
+                                    name="username"
+                                    placeholder="Enter username"
+                                    type="text"
+                                    onFocus={() => {this.setState({ usernameFieldError: null })}}
+                                    className={
+                                      "form-control" +
+                                      ((errors.username && touched.username) || this.state.usernameFieldError
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="username"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+
+                                  <div className="invalid-feedback">{this.state.usernameFieldError}</div>
+
+                                </div>
+
+                                {/* Email field */}
+                                <div className="mb-3">
+                                  <Label for="email" className="form-label">
+                                    Email
+                                  </Label>
+                                  <Field
+                                    name="email"
+                                    placeholder="Enter email"
+                                    type="text"
+                                    onFocus={() => {this.setState({ emailFieldError: null })}}
+                                    className={
+                                      "form-control" +
+                                      (errors.email && touched.email || this.state.emailFieldError
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+
+                                  <div className="invalid-feedback">{this.state.emailFieldError}</div>
+                                </div>
+
+                                {/* Password field */}
+                                <div className="mb-3">
+                                  <Label className="form-label">Password</Label>
+                                  <div>
+                                    <Field
+                                      name="password"
+                                      type="password"
+                                      placeholder="Enter password"
+                                      autoComplete="on"
+                                      onFocus={() => {this.setState({ passwordFieldError: null })}}
+                                      className={
+                                        "form-control" +
+                                        (errors.password && touched.password || this.state.passwordFieldError
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="password"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+
+                                    <div className="invalid-feedback">{this.state.passwordFieldError}</div>
+                                  </div>
+                                  <div className="mt-2">
+                                    <Field
+                                      name="password2"
+                                      type="password"
+                                      placeholder="Re-enter password"
+                                      autoComplete="on"
+                                      className={
+                                        "form-control" +
+                                        (errors.password2 && touched.password2
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="password2"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </div>
+
+                                {/* Account type field */}
+                                <div className="mb-3">
+                                  <Label for="account_type" className="form-label">
+                                    Username
+                                  </Label>                                
+                                  <Field name="account_type" component="select" className="form-select">
+                                    <option value="patient">Patient</option>
+                                    <option value="labowner">Lab Owner</option>
+                                    <option value="corporate">Corporate</option>
+                                  </Field>
+                                </div>
+
+                                <div className="mt-3 d-grid">
+                                  <button
+                                    className="btn btn-primary btn-block"
+                                    type="submit"
+                                  >
+                                    {" "}
+                                    Register{" "}
+                                  </button>
+                                </div>
+                              </Form>
+                            )}
+                          </Formik>
+                          <div className="mt-3 text-center">
+                            <p>
+                              Already have an account?{" "}
+                              <Link
+                                to="pages-login-2"
+                                className="fw-medium text-primary"
                               >
-                                Register
-                              </button>
-                            </div>
+                                {" "}
+                                Login
+                              </Link>{" "}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
 
-                            <div className="mt-4 text-center">
-                              <p className="mb-0">
-                                By registering you agree to the Skote{" "}
-                                <Link to="#" className="text-primary">
-                                  Terms of Use
-                                </Link>
-                              </p>
-                            </div>
-                          </Form>
-                        )}
-                      </Formik>
+                      {/* <div className="mt-4 mt-md-5 text-center">
+                        <p className="mb-0">
+                          © {new Date().getFullYear()} {" "} Ilaaj4u
+                        </p>
+                      </div> */}
                     </div>
-                  </CardBody>
-                </Card>
-                <div className="mt-5 text-center">
-                  <p>
-                    Already have an account ?{" "}
-                    <Link to="/login" className="fw-medium text-primary">
-                      {" "}
-                      Login
-                    </Link>{" "}
-                  </p>
-                  <p>
-                    © {new Date().getFullYear()} Ilaaj4u
-                  </p>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -201,19 +284,29 @@ class Register extends Component {
       </React.Fragment>
     );
   }
+
+  getRegistrationAPIResponse() {
+    if (this.props.userID) {
+      console.log("User ID: ", this.props.userID);
+      console.log("User Account Type: ", this.props.userAccountType);
+    }
+  }
 }
 
 Register.propTypes = {
   apiError: PropTypes.any,
   registerUser: PropTypes.func,
   registerUserFailed: PropTypes.any,
-  registrationError: PropTypes.any,
-  user: PropTypes.object,
+  usernameError: PropTypes.any,
+  emailError: PropTypes.any,
+  passwordError: PropTypes.any,
+  userID: PropTypes.any,
+  userAccountType: PropTypes.any,
 };
 
 const mapStateToProps = state => {
-  const { user, registrationError, loading } = state.Account;
-  return { user, registrationError, loading };
+  const { userID, userAccountType, emailError, usernameError, passwordError, loading } = state.Account;
+  return { userID, userAccountType, emailError, usernameError, passwordError, loading };
 };
 
 export default connect(mapStateToProps, {
