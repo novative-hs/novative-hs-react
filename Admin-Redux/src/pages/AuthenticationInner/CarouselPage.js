@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import { Carousel } from "react-responsive-carousel"
-import "react-responsive-carousel/lib/styles/carousel.min.css"
-import { Col } from "reactstrap"
+import React, { Component } from "react";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Col } from "reactstrap";
 
 export default class CarouselPage extends Component {
   render() {
@@ -12,7 +12,7 @@ export default class CarouselPage extends Component {
             <div className="w-100">
               <div className="bg-overlay"></div>
               <div className="d-flex h-100 flex-column">
-                <div className="p-4 mt-auto">
+                <div className="p-4 mt-5">
                   <div className="row justify-content-center">
                     <div className="col-lg-7">
                       <div className="text-center">
@@ -21,18 +21,19 @@ export default class CarouselPage extends Component {
                           <span className="text-primary">5k</span>+ Satisfied
                           clients
                         </h4>
-                        <div dir="ltr">
-                          <Carousel showThumbs={false} className="slider_css">
+                        <div>
+                          <Carousel showThumbs={true} className="slider_css">
                             <div>
                               <div className="item">
                                 <div className="py-3">
                                   <p className="font-size-16 mb-4">
-                                    &quot;Fantastic theme with a ton of options. If
-                                    you just want the HTML to integrate with your
-                                    project, then this is the package. You can
-                                    find the files in the &apos;dist&lsquo; folder...no need
-                                    to install git and all the other stuff the
-                                    documentation talks about. &ldquo;
+                                    &quot;Fantastic theme with a ton of options.
+                                    If you just want the HTML to integrate with
+                                    your project, then this is the package. You
+                                    can find the files in the &apos;dist&lsquo;
+                                    folder...no need to install git and all the
+                                    other stuff the documentation talks about.
+                                    &ldquo;
                                   </p>
 
                                   <div>
@@ -50,10 +51,10 @@ export default class CarouselPage extends Component {
                               <div className="item">
                                 <div className="py-3">
                                   <p className="font-size-16 mb-4">
-                                    &quot;If Every Vendor on Envato are as supportive
-                                    as Themesbrand, Development with be a nice
-                                    experience. You guys are Wonderful. Keep us
-                                    the good work. &ldquo;
+                                    &quot;If Every Vendor on Envato are as
+                                    supportive as Themesbrand, Development with
+                                    be a nice experience. You guys are
+                                    Wonderful. Keep us the good work. &ldquo;
                                   </p>
 
                                   <div>
@@ -78,6 +79,6 @@ export default class CarouselPage extends Component {
           </div>
         </Col>
       </React.Fragment>
-    )
+    );
   }
 }

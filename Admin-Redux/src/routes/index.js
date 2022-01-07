@@ -49,6 +49,9 @@ import InvoiceDetail from "../pages/Invoices/invoices-detail";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
+import PatientInformation from "../pages/Authentication/PatientInformation";
+import LabInformation from "../pages/Authentication/LabInformation";
+import CorporateInformation from "../pages/Authentication/CorporateInformation";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 
 // Inner Authentication
@@ -323,6 +326,9 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
+  { path: "/patient-information/:id", component: PatientInformation },
+  { path: "/lab-information/:id", component: LabInformation },
+  { path: "/corporate-information/:id", component: CorporateInformation },
 
   { path: "/pages-maintenance", component: PagesMaintenance },
   { path: "/pages-comingsoon", component: PagesComingsoon },

@@ -17,9 +17,9 @@ import {
 // Redux
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
 
-class Register extends Component {
+
+class LabInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,53 +32,43 @@ class Register extends Component {
   componentDidMount() {
     this.props.apiError("");
     this.props.registerUserFailed("");
-  }
+  } 
+
 
   componentDidUpdate(prevProps) {
     if (prevProps.usernameError != this.props.usernameError) {
-      this.setState({ usernameFieldError: this.props.usernameError });
+      this.setState({ usernameFieldError: this.props.usernameError })
     }
 
     if (prevProps.emailError != this.props.emailError) {
-      this.setState({ emailFieldError: this.props.emailError });
+      this.setState({ emailFieldError: this.props.emailError })
     }
 
     if (prevProps.passwordError != this.props.passwordError) {
-      this.setState({ passwordFieldError: this.props.passwordError });
+      this.setState({ passwordFieldError: this.props.passwordError })
     }
   }
 
   render() {
-    if (this.props.userID) {
-      console.log("User ID: ", this.props.userID);
-      console.log("User Account Type: ", this.props.userAccountType);
-
-      if (this.props.userAccountType == "patient") {
-        return <Redirect to={"/patient-information/" + this.props.userID} />;
-      } else if (this.props.userAccountType == "labowner") {
-        return <Redirect to={"/lab-information/" + this.props.userID} />;
-      } else if (this.props.userAccountType == "corporate") {
-        return <Redirect to={"/corporate-information/" + this.props.userID} />;
-      }
-    }
 
     return (
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>Register | Ilaaj4u</title>
+            <title>Lab Information | Ilaaj4u</title>
           </MetaTags>
           <Container fluid className="p-0">
             <Row className="g-0">
               <CarouselPage />
 
-              <Col md={6} lg={6} xl={6}>
+              <Col xl={6}>
                 <div className="auth-full-page-content p-md-5 p-4">
                   <div className="w-100">
                     <div className="d-flex flex-column h-100">
                       <div className="my-auto">
                         <div>
-                          <h5 className="text-primary">Register account</h5>
+                          <h5 className="text-primary">Lab Information account</h5>
+                          {/* <h2>{this.props.match.params.id}</h2> */}
                           <p className="text-muted">
                             Get your free Ilaaj4u account now.
                           </p>
@@ -92,10 +82,7 @@ class Register extends Component {
                           ) : null} */}
 
                           {this.props.userID && this.props.userID ? (
-                            <Alert
-                              color="success"
-                              style={{ marginTop: "13px" }}
-                            >
+                            <Alert color="success" style={{ marginTop: "13px" }}>
                               Congratulations! You have registered successfully.
                             </Alert>
                           ) : null}
@@ -105,33 +92,33 @@ class Register extends Component {
                             initialValues={{
                               username:
                                 (this.state && this.state.username) || "",
-                              email: (this.state && this.state.email) || "",
+                              email: 
+                                (this.state && this.state.email) || "",
                               password:
                                 (this.state && this.state.password) || "",
                               password2:
                                 (this.state && this.state.password2) || "",
                               account_type:
-                                (this.state && this.state.account_type) ||
-                                "patient",
+                                (this.state && this.state.account_type) || "patient",
                             }}
                             validationSchema={Yup.object().shape({
                               username: Yup.string().required(
                                 "Please enter your username"
                               ),
-                              email: Yup.string()
-                                .required("Please enter your email")
-                                .email("Please enter valid email"),
+                              email: Yup.string().required(
+                                "Please enter your email"
+                              ).email("Please enter valid email"),
                               password: Yup.string().required(
                                 "Please enter your password"
                               ),
                               password2: Yup.string().when("password", {
-                                is: val =>
-                                  val && val.length > 0 ? true : false,
+                                is: val => (val && val.length > 0 ? true : false),
                                 then: Yup.string().oneOf(
                                   [Yup.ref("password")],
                                   "Both password need to be the same"
                                 ),
                               }),
+
                             })}
                             onSubmit={values => {
                               this.props.registerUser(values);
@@ -149,15 +136,10 @@ class Register extends Component {
                                     name="username"
                                     placeholder="Enter username"
                                     type="text"
-                                    onFocus={() => {
-                                      this.setState({
-                                        usernameFieldError: null,
-                                      });
-                                    }}
+                                    onFocus={() => {this.setState({ usernameFieldError: null })}}
                                     className={
                                       "form-control" +
-                                      ((errors.username && touched.username) ||
-                                      this.state.usernameFieldError
+                                      ((errors.username && touched.username) || this.state.usernameFieldError
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -168,9 +150,8 @@ class Register extends Component {
                                     className="invalid-feedback"
                                   />
 
-                                  <div className="invalid-feedback">
-                                    {this.state.usernameFieldError}
-                                  </div>
+                                  <div className="invalid-feedback">{this.state.usernameFieldError}</div>
+
                                 </div>
 
                                 {/* Email field */}
@@ -182,13 +163,10 @@ class Register extends Component {
                                     name="email"
                                     placeholder="Enter email"
                                     type="text"
-                                    onFocus={() => {
-                                      this.setState({ emailFieldError: null });
-                                    }}
+                                    onFocus={() => {this.setState({ emailFieldError: null })}}
                                     className={
                                       "form-control" +
-                                      ((errors.email && touched.email) ||
-                                      this.state.emailFieldError
+                                      (errors.email && touched.email || this.state.emailFieldError
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -199,9 +177,7 @@ class Register extends Component {
                                     className="invalid-feedback"
                                   />
 
-                                  <div className="invalid-feedback">
-                                    {this.state.emailFieldError}
-                                  </div>
+                                  <div className="invalid-feedback">{this.state.emailFieldError}</div>
                                 </div>
 
                                 {/* Password field */}
@@ -213,16 +189,10 @@ class Register extends Component {
                                       type="password"
                                       placeholder="Enter password"
                                       autoComplete="on"
-                                      onFocus={() => {
-                                        this.setState({
-                                          passwordFieldError: null,
-                                        });
-                                      }}
+                                      onFocus={() => {this.setState({ passwordFieldError: null })}}
                                       className={
                                         "form-control" +
-                                        ((errors.password &&
-                                          touched.password) ||
-                                        this.state.passwordFieldError
+                                        (errors.password && touched.password || this.state.passwordFieldError
                                           ? " is-invalid"
                                           : "")
                                       }
@@ -233,9 +203,7 @@ class Register extends Component {
                                       className="invalid-feedback"
                                     />
 
-                                    <div className="invalid-feedback">
-                                      {this.state.passwordFieldError}
-                                    </div>
+                                    <div className="invalid-feedback">{this.state.passwordFieldError}</div>
                                   </div>
                                   <div className="mt-2">
                                     <Field
@@ -260,17 +228,10 @@ class Register extends Component {
 
                                 {/* Account type field */}
                                 <div className="mb-3">
-                                  <Label
-                                    for="account_type"
-                                    className="form-label"
-                                  >
-                                    Account type
-                                  </Label>
-                                  <Field
-                                    name="account_type"
-                                    component="select"
-                                    className="form-select"
-                                  >
+                                  <Label for="account_type" className="form-label">
+                                    Username
+                                  </Label>                                
+                                  <Field name="account_type" component="select" className="form-select">
                                     <option value="patient">Patient</option>
                                     <option value="labowner">Lab Owner</option>
                                     <option value="corporate">Corporate</option>
@@ -283,7 +244,7 @@ class Register extends Component {
                                     type="submit"
                                   >
                                     {" "}
-                                    Register{" "}
+                                    Lab Information{" "}
                                   </button>
                                 </div>
                               </Form>
@@ -319,40 +280,34 @@ class Register extends Component {
       </React.Fragment>
     );
   }
+
+  getRegistrationAPIResponse() {
+    if (this.props.userID) {
+      console.log("User ID: ", this.props.userID);
+      console.log("User Account Type: ", this.props.userAccountType);
+    }
+  }
 }
 
-Register.propTypes = {
-  apiError: PropTypes.any,
-  registerUser: PropTypes.func,
-  registerUserFailed: PropTypes.any,
-  usernameError: PropTypes.any,
-  emailError: PropTypes.any,
-  passwordError: PropTypes.any,
-  userID: PropTypes.any,
-  userAccountType: PropTypes.any,
+LabInformation.propTypes = {
+    match: PropTypes.object,
+    apiError: PropTypes.any,
+    registerUser: PropTypes.func,
+    registerUserFailed: PropTypes.any,
+    usernameError: PropTypes.any,
+    emailError: PropTypes.any,
+    passwordError: PropTypes.any,
+    userID: PropTypes.any,
+    userAccountType: PropTypes.any,
 };
 
 const mapStateToProps = state => {
-  const {
-    userID,
-    userAccountType,
-    emailError,
-    usernameError,
-    passwordError,
-    loading,
-  } = state.Account;
-  return {
-    userID,
-    userAccountType,
-    emailError,
-    usernameError,
-    passwordError,
-    loading,
-  };
+  const { userID, userAccountType, emailError, usernameError, passwordError, loading } = state.Account;
+  return { userID, userAccountType, emailError, usernameError, passwordError, loading };
 };
 
 export default connect(mapStateToProps, {
   registerUser,
   apiError,
   registerUserFailed,
-})(Register);
+})(LabInformation);
