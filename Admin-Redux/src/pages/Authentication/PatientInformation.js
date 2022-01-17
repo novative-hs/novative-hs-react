@@ -17,46 +17,26 @@ import {
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-
 class PatientInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      cnic: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
-      district: '',
-      corporate_unique_id: '',
-      usernameFieldError: null,
-      emailFieldError: null,
-      passwordFieldError: null,
+      name: "",
+      cnic: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      district: "",
+      corporate_unique_id: "",
     };
   }
 
   componentDidMount() {
     this.props.addPatientInformationFailed("");
-  } 
-
-
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.usernameError != this.props.usernameError) {
-  //     this.setState({ usernameFieldError: this.props.usernameError })
-  //   }
-
-  //   if (prevProps.emailError != this.props.emailError) {
-  //     this.setState({ emailFieldError: this.props.emailError })
-  //   }
-
-  //   if (prevProps.passwordError != this.props.passwordError) {
-  //     this.setState({ passwordFieldError: this.props.passwordError })
-  //   }
-  // }
+  }
 
   render() {
-
     return (
       <React.Fragment>
         <div>
@@ -73,23 +53,28 @@ class PatientInformation extends Component {
                     <div className="d-flex flex-column h-100">
                       <div className="my-auto">
                         <div>
-                          <h5 className="text-primary">Patient information account</h5>
+                          <h5 className="text-primary">
+                            Patient information account
+                          </h5>
                           {/* <h2>{this.props.match.params.id}</h2> */}
                           <p className="text-muted">
-                            You are one step away from your free Ilaaj4u account.
+                            You are one step away from your free Ilaaj4u
+                            account.
                           </p>
                         </div>
 
                         <div className="mt-4">
-
-                        {this.props.patient && this.props.patient ? (
-                            <Alert color="success" style={{ marginTop: "13px" }}>
+                          {this.props.patient && this.props.patient ? (
+                            <Alert
+                              color="success"
+                              style={{ marginTop: "13px" }}
+                            >
                               Congratulations! You have registered successfully.
                             </Alert>
                           ) : null}
 
-
-                          {this.props.addPatientError && this.props.addPatientError ? (
+                          {this.props.addPatientError &&
+                          this.props.addPatientError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
                               Error! {this.props.addPatientError}
                             </Alert>
@@ -98,64 +83,92 @@ class PatientInformation extends Component {
                           <Formik
                             enableReinitialize={true}
                             initialValues={{
-                              name:
-                                (this.state && this.state.name) || "",
-                              cnic:
-                                (this.state && this.state.cnic) || "",
-                              email: 
-                                (this.state && this.state.email) || "",
-                              phone: 
-                                (this.state && this.state.phone) || "",
-                              address: 
-                                (this.state && this.state.address) || "",
-                              city: 
-                                (this.state && this.state.city) || "",
-                              district: 
+                              name: (this.state && this.state.name) || "",
+                              cnic: (this.state && this.state.cnic) || "",
+                              email: (this.state && this.state.email) || "",
+                              phone: (this.state && this.state.phone) || "",
+                              address: (this.state && this.state.address) || "",
+                              city: (this.state && this.state.city) || "",
+                              district:
                                 (this.state && this.state.district) || "",
                               is_corporate_user:
-                                (this.state && this.state.is_corporate_user) || "No",
+                                (this.state && this.state.is_corporate_user) ||
+                                "No",
                               corporate_unique_id:
-                                (this.state && this.state.corporate_unique_id) || "",
+                                (this.state &&
+                                  this.state.corporate_unique_id) ||
+                                "",
                             }}
                             validationSchema={Yup.object().shape({
-                              name: Yup.string().required(
-                                "Please enter your name"
-                              ).min(3, 'Please enter at least 3 characters')
-                              .max(255, 'Please enter maximum 255 characters'),
-                              cnic: Yup.string().required(
-                                "Please enter your CNIC"
-                              ).matches(/^[0-9]{5}-[0-9]{7}-[0-9]$/, 'Please enter a valid CNIC e.g. 37106-8234782-3')
-                              .max(255, 'Please enter maximum 255 characters'),
-                              email: Yup.string().required(
-                                "Please enter your email"
-                              ).email("Please enter valid email")
-                              .max(255, 'Please enter maximum 255 characters'),
-                              phone: Yup.string().required(
-                                "Please enter your phone no."
-                              ).max(255, 'Please enter maximum 255 characters')
-                              .matches(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/, 'Please enter a valid Pakistani phone number e.g. +923123456789'),
-                              address: Yup.string().required(
-                                "Please enter your full address"
-                              ).max(255, 'Please enter maximum 255 characters'),
-                              city: Yup.string().required(
-                                "Please enter your city"
-                              ).max(255, 'Please enter maximum 255 characters'),
-                              district: Yup.string().required(
-                                "Please enter your district"
-                              ).max(255, 'Please enter maximum 255 characters'),
-                              corporate_unique_id:  Yup.string().when('is_corporate_user', {
-                                is: (val) => val == "Yes",
-                                then: Yup.string().trim().required('This field is required')
-                             }),
+                              name: Yup.string()
+                                .required("Please enter your name")
+                                .min(3, "Please enter at least 3 characters")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              cnic: Yup.string()
+                                .required("Please enter your CNIC")
+                                .matches(
+                                  /^[0-9]{5}-[0-9]{7}-[0-9]$/,
+                                  "Please enter a valid CNIC e.g. 37106-8234782-3"
+                                )
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              email: Yup.string()
+                                .required("Please enter your email")
+                                .email("Please enter valid email")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              phone: Yup.string()
+                                .required("Please enter your phone no.")
+                                .max(255, "Please enter maximum 255 characters")
+                                .matches(
+                                  /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                                  "Please enter a valid Pakistani phone number e.g. +923123456789"
+                                ),
+                              address: Yup.string()
+                                .required("Please enter your full address")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              city: Yup.string()
+                                .required("Please enter your city")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              district: Yup.string()
+                                .required("Please enter your district")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              corporate_unique_id: Yup.string().when(
+                                "is_corporate_user",
+                                {
+                                  is: val => val == "Yes",
+                                  then: Yup.string()
+                                    .trim()
+                                    .required("Please enter corporate user ID"),
+                                }
+                              ),
                             })}
                             onSubmit={values => {
                               console.log(values);
-                              this.props.addPatientInformation(values, this.props.match.params.id);
+                              this.props.addPatientInformation(
+                                values,
+                                this.props.match.params.id
+                              );
                             }}
                           >
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
-
                                 {/* <Field
                                   name="account_id"
                                   type="hidden"
@@ -172,8 +185,9 @@ class PatientInformation extends Component {
                                     name="name"
                                     placeholder="Enter name"
                                     type="text"
-                                    
-                                    onChange={(e) => this.setState({ name: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({ name: e.target.value })
+                                    }
                                     value={this.state.name}
                                     className={
                                       "form-control" +
@@ -187,9 +201,6 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
                                 </div>
 
                                 {/* CNIC field */}
@@ -202,8 +213,9 @@ class PatientInformation extends Component {
                                     name="cnic"
                                     placeholder="Enter CNIC"
                                     type="text"
-                                    
-                                    onChange={(e) => this.setState({ cnic: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({ cnic: e.target.value })
+                                    }
                                     value={this.state.cnic}
                                     className={
                                       "form-control" +
@@ -217,9 +229,6 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
                                 </div>
 
                                 {/* Email field */}
@@ -231,12 +240,13 @@ class PatientInformation extends Component {
                                     name="email"
                                     placeholder="Enter email"
                                     type="text"
-                                    onFocus={() => {this.setState({ emailFieldError: null })}}
-                                    onChange={(e) => this.setState({ email: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({ email: e.target.value })
+                                    }
                                     value={this.state.email}
                                     className={
                                       "form-control" +
-                                      (errors.email && touched.email || this.state.emailFieldError
+                                      (errors.email && touched.email
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -246,8 +256,6 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  <div className="invalid-feedback">{this.state.emailFieldError}</div>
                                 </div>
 
                                 {/* Phone field */}
@@ -260,8 +268,9 @@ class PatientInformation extends Component {
                                     name="phone"
                                     placeholder="Enter phone no"
                                     type="text"
-                                    
-                                    onChange={(e) => this.setState({ phone: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({ phone: e.target.value })
+                                    }
                                     value={this.state.phone}
                                     className={
                                       "form-control" +
@@ -275,9 +284,6 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
                                 </div>
 
                                 {/* Address field */}
@@ -290,8 +296,9 @@ class PatientInformation extends Component {
                                     name="address"
                                     placeholder="Enter complete address"
                                     type="text"
-                                    
-                                    onChange={(e) => this.setState({ address: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({ address: e.target.value })
+                                    }
                                     value={this.state.address}
                                     className={
                                       "form-control" +
@@ -305,9 +312,6 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
                                 </div>
 
                                 {/* City field */}
@@ -320,8 +324,9 @@ class PatientInformation extends Component {
                                     name="city"
                                     placeholder="Enter city"
                                     type="text"
-                                    
-                                    onChange={(e) => this.setState({ city: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({ city: e.target.value })
+                                    }
                                     value={this.state.city}
                                     className={
                                       "form-control" +
@@ -335,9 +340,6 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
                                 </div>
 
                                 {/* District field */}
@@ -350,8 +352,11 @@ class PatientInformation extends Component {
                                     name="district"
                                     placeholder="Enter district"
                                     type="text"
-                                    
-                                    onChange={(e) => this.setState({ district: e.target.value })}
+                                    onChange={e =>
+                                      this.setState({
+                                        district: e.target.value,
+                                      })
+                                    }
                                     value={this.state.district}
                                     className={
                                       "form-control" +
@@ -365,22 +370,28 @@ class PatientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
                                 </div>
 
                                 {/* Is Corporate User field */}
                                 <div className="mb-3">
-                                  <Label for="is_corporate_user" className="form-label">
+                                  <Label
+                                    for="is_corporate_user"
+                                    className="form-label"
+                                  >
                                     Are you a corporate user?
-                                  </Label>                                
-                                  <Field name="is_corporate_user" 
-                                  component="select" 
-                                  defaultValue="No"
-                                  onChange={(e) => this.setState({ is_corporate_user: e.target.value })}
-                                  value={this.state.is_corporate_user}
-                                  className="form-select">
+                                  </Label>
+                                  <Field
+                                    name="is_corporate_user"
+                                    component="select"
+                                    defaultValue="No"
+                                    onChange={e =>
+                                      this.setState({
+                                        is_corporate_user: e.target.value,
+                                      })
+                                    }
+                                    value={this.state.is_corporate_user}
+                                    className="form-select"
+                                  >
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                   </Field>
@@ -389,31 +400,31 @@ class PatientInformation extends Component {
                                 {/* Corporate Unique ID field */}
                                 {this.state.is_corporate_user === "Yes" && (
                                   <div className="mb-3">
-                                  <Label for="corporate_unique_id" className="form-label">
-                                    Corporate Unique ID
-                                  </Label>
-                                  <Field
-                                    id="corporate_unique_id"
-                                    name="corporate_unique_id"
-                                    placeholder="Enter corporate unique id"
-                                    type="text"
-                                    
-                                    className={
-                                      "form-control" +
-                                      (errors.corporate_unique_id && touched.corporate_unique_id
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="corporate_unique_id"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-
-                                  {/* <div className="invalid-feedback">{this.state.usernameFieldError}</div> */}
-
-                                </div>  
+                                    <Label
+                                      for="corporate_unique_id"
+                                      className="form-label"
+                                    >
+                                      Corporate Unique ID
+                                    </Label>
+                                    <Field
+                                      id="corporate_unique_id"
+                                      name="corporate_unique_id"
+                                      placeholder="Enter corporate unique id"
+                                      type="text"
+                                      className={
+                                        "form-control" +
+                                        (errors.corporate_unique_id &&
+                                        touched.corporate_unique_id
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="corporate_unique_id"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
                                 )}
 
                                 <div className="mt-3 d-grid">
@@ -449,11 +460,11 @@ class PatientInformation extends Component {
 }
 
 PatientInformation.propTypes = {
-    match: PropTypes.object,
-    addPatientInformation: PropTypes.func,
-    addPatientInformationFailed: PropTypes.any,
-    addPatientError: PropTypes.any,
-    patient: PropTypes.any,
+  match: PropTypes.object,
+  addPatientInformation: PropTypes.func,
+  addPatientInformationFailed: PropTypes.any,
+  addPatientError: PropTypes.any,
+  patient: PropTypes.any,
 };
 
 const mapStateToProps = state => {

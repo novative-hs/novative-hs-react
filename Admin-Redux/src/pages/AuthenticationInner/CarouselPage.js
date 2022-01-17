@@ -22,7 +22,7 @@ export default class CarouselPage extends Component {
                           clients
                         </h4>
                         <div>
-                          <Carousel showThumbs={true} className="slider_css">
+                          <Carousel showThumbs={false} className="slider_css">
                             <div>
                               <div className="item">
                                 <div className="py-3">

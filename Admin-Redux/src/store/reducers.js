@@ -1,43 +1,45 @@
-import { combineReducers } from "redux"
+import { combineReducers } from "redux";
 
 // Front
-import Layout from "./layout/reducer"
+import Layout from "./layout/reducer";
 
 // Authentication
-import Login from "./auth/login/reducer"
-import Account from "./auth/register/reducer"
-import PatientInformation from "./auth/patientinformation/reducer"
-import ForgetPassword from "./auth/forgetpwd/reducer"
-import Profile from "./auth/profile/reducer"
+import Login from "./auth/login/reducer";
+import Account from "./auth/register/reducer";
+import PatientInformation from "./auth/patientinformation/reducer";
+import LabInformation from "./auth/labinformation/reducer";
+import CorporateInformation from "./auth/corporateinformation/reducer";
+import ForgetPassword from "./auth/forgetpwd/reducer";
+import Profile from "./auth/profile/reducer";
 
 //E-commerce
-import ecommerce from "./e-commerce/reducer"
+import ecommerce from "./e-commerce/reducer";
 
 //Calendar
-import calendar from "./calendar/reducer"
+import calendar from "./calendar/reducer";
 
 //chat
-import chat from "./chat/reducer"
+import chat from "./chat/reducer";
 
 //crypto
-import crypto from "./crypto/reducer"
+import crypto from "./crypto/reducer";
 
 //invoices
-import invoices from "./invoices/reducer"
+import invoices from "./invoices/reducer";
 
 //projects
-import projects from "./projects/reducer"
+import projects from "./projects/reducer";
 
 //tasks
-import tasks from "./tasks/reducer"
+import tasks from "./tasks/reducer";
 
 //contacts
-import contacts from "./contacts/reducer"
+import contacts from "./contacts/reducer";
 
 //mails
 import mails from "./mails/reducer";
 
-//Dashboard 
+//Dashboard
 import Dashboard from "./dashboard/reducer";
 
 //Dasboard saas
@@ -49,6 +51,8 @@ const rootReducer = combineReducers({
   Login,
   Account,
   PatientInformation,
+  LabInformation,
+  CorporateInformation,
   ForgetPassword,
   Profile,
   ecommerce,
@@ -61,7 +65,7 @@ const rootReducer = combineReducers({
   tasks,
   contacts,
   Dashboard,
-  DashboardSaas
-})
+  DashboardSaas,
+});
 
-export default rootReducer
+export default rootReducer;
