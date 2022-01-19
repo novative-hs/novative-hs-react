@@ -150,7 +150,7 @@ class Register extends Component {
                                   <Field
                                     id="username"
                                     name="username"
-                                    placeholder="abcfrozen"
+                                    placeholder="Enter username"
                                     type="text"
                                     onFocus={() => {
                                       this.setState({
@@ -183,7 +183,7 @@ class Register extends Component {
                                   </Label>
                                   <Field
                                     name="email"
-                                    placeholder="abcfrozen@gmail.com"
+                                    placeholder="Enter email"
                                     type="text"
                                     onFocus={() => {
                                       this.setState({ emailFieldError: null });
@@ -296,7 +296,7 @@ class Register extends Component {
                             <p>
                               Already have an account?{" "}
                               <Link
-                                to="pages-login-2"
+                                to="login"
                                 className="fw-medium text-primary"
                               >
                                 {" "}

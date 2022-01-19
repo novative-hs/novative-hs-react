@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 // action
 import {
@@ -73,14 +73,25 @@ class PatientInformation extends Component {
                               color="success"
                               style={{ marginTop: "13px" }}
                             >
-                              Congratulations! You have registered successfully.
+                              You have registered successfully and you can now{" "}
+                              <Link>
+                                {" "}
+                                <Link
+                                  to="/login"
+                                  className="fw-medium text-primary"
+                                >
+                                  {" "}
+                                  login
+                                </Link>{" "}
+                              </Link>{" "}
+                              to your account.
                             </Alert>
                           ) : null}
 
                           {this.props.addPatientError &&
                           this.props.addPatientError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
-                              Error! {this.props.addPatientError}
+                              {this.props.addPatientError}
                             </Alert>
                           ) : null}
 

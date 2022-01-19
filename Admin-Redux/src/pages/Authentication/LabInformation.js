@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 // action
 import {
@@ -77,13 +77,24 @@ class LabInformation extends Component {
                               color="success"
                               style={{ marginTop: "13px" }}
                             >
-                              Congratulations! You have registered successfully.
+                              You have registered successfully and you can now{" "}
+                              <Link>
+                                {" "}
+                                <Link
+                                  to="/login"
+                                  className="fw-medium text-primary"
+                                >
+                                  {" "}
+                                  login
+                                </Link>{" "}
+                              </Link>{" "}
+                              to your account.
                             </Alert>
                           ) : null}
 
                           {this.props.addLabError && this.props.addLabError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
-                              Error! {this.props.addLabError}
+                              {this.props.addLabError}
                             </Alert>
                           ) : null}
 
@@ -424,7 +435,7 @@ class LabInformation extends Component {
                                 {/* Address field */}
                                 <div className="mb-3">
                                   <Label for="address" className="form-label">
-                                    Address
+                                    Complete Address
                                   </Label>
                                   <Field
                                     id="address"
