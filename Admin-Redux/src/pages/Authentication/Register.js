@@ -147,7 +147,7 @@ class Register extends Component {
                                   <Field
                                     id="username"
                                     name="username"
-                                    placeholder="Enter username"
+                                    placeholder="abcfrozen"
                                     type="text"
                                     onFocus={() => {
                                       this.setState({
@@ -180,7 +180,7 @@ class Register extends Component {
                                   </Label>
                                   <Field
                                     name="email"
-                                    placeholder="Enter email"
+                                    placeholder="abcfrozen@gmail.com"
                                     type="text"
                                     onFocus={() => {
                                       this.setState({ emailFieldError: null });

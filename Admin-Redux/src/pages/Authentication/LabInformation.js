@@ -230,7 +230,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="name"
                                     name="name"
-                                    placeholder="Enter name"
+                                    placeholder="LaboMart"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ name: e.target.value })
@@ -299,7 +299,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="owner_name"
                                     name="owner_name"
-                                    placeholder="Enter owner name"
+                                    placeholder="Aahil Malik"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -332,7 +332,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="registration_no"
                                     name="registration_no"
-                                    placeholder="Enter registration number"
+                                    placeholder="74398H3847"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -362,7 +362,7 @@ class LabInformation extends Component {
                                   </Label>
                                   <Field
                                     name="email"
-                                    placeholder="Enter email"
+                                    placeholder="labomart@xyz.com"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ email: e.target.value })
@@ -390,7 +390,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="phone"
                                     name="phone"
-                                    placeholder="Enter phone no."
+                                    placeholder="+923123456789"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ phone: e.target.value })
@@ -418,7 +418,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="landline"
                                     name="landline"
-                                    placeholder="Enter landline no."
+                                    placeholder="+925712345678"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -448,7 +448,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="address"
                                     name="address"
-                                    placeholder="Enter complete address"
+                                    placeholder="63/D, Ahmad Block, New Garden Town, Lahore"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ address: e.target.value })
@@ -476,7 +476,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="city"
                                     name="city"
-                                    placeholder="Enter city"
+                                    placeholder="Lahore"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ city: e.target.value })
@@ -504,7 +504,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="district"
                                     name="district"
-                                    placeholder="Enter district"
+                                    placeholder="Lahore"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -536,7 +536,7 @@ class LabInformation extends Component {
                                   </Label>
                                   <Field
                                     name="complaint_handling_email"
-                                    placeholder="Enter complaint handling email"
+                                    placeholder="xyz@complaint.com"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -571,7 +571,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="complaint_handling_phone"
                                     name="complaint_handling_phone"
-                                    placeholder="Enter complaint handling phone no."
+                                    placeholder="+925712345678"
                                     type="text"
                                     onChange={e =>
                                       this.setState({

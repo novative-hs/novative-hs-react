@@ -189,7 +189,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="name"
                                     name="name"
-                                    placeholder="Enter name"
+                                    placeholder="PMA Healthcare"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ name: e.target.value })
@@ -258,7 +258,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="owner_name"
                                     name="owner_name"
-                                    placeholder="Enter owner name"
+                                    placeholder="Yasir Aziz"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -287,7 +287,7 @@ class CorporateInformation extends Component {
                                   </Label>
                                   <Field
                                     name="email"
-                                    placeholder="Enter email"
+                                    placeholder="info@pmahealthcare.com"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ email: e.target.value })
@@ -315,7 +315,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="phone"
                                     name="phone"
-                                    placeholder="Enter phone no."
+                                    placeholder="+923123456789"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ phone: e.target.value })
@@ -343,7 +343,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="landline"
                                     name="landline"
-                                    placeholder="Enter landline no."
+                                    placeholder="+925712345678"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -373,7 +373,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="address"
                                     name="address"
-                                    placeholder="Enter complete address"
+                                    placeholder="339-A Main Peshawar Road, Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ address: e.target.value })
@@ -401,7 +401,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="city"
                                     name="city"
-                                    placeholder="Enter city"
+                                    placeholder="Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ city: e.target.value })
@@ -429,7 +429,7 @@ class CorporateInformation extends Component {
                                   <Field
                                     id="district"
                                     name="district"
-                                    placeholder="Enter district"
+                                    placeholder="Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({

@@ -183,7 +183,7 @@ class PatientInformation extends Component {
                                   <Field
                                     id="name"
                                     name="name"
-                                    placeholder="Enter name"
+                                    placeholder="Zernish Khan"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ name: e.target.value })
@@ -211,7 +211,7 @@ class PatientInformation extends Component {
                                   <Field
                                     id="cnic"
                                     name="cnic"
-                                    placeholder="Enter CNIC"
+                                    placeholder="12345-6789012-1"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ cnic: e.target.value })
@@ -238,7 +238,7 @@ class PatientInformation extends Component {
                                   </Label>
                                   <Field
                                     name="email"
-                                    placeholder="Enter email"
+                                    placeholder="abc@gmail.com"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ email: e.target.value })
@@ -266,7 +266,7 @@ class PatientInformation extends Component {
                                   <Field
                                     id="phone"
                                     name="phone"
-                                    placeholder="Enter phone no"
+                                    placeholder="+923123456789"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ phone: e.target.value })
@@ -289,12 +289,12 @@ class PatientInformation extends Component {
                                 {/* Address field */}
                                 <div className="mb-3">
                                   <Label for="address" className="form-label">
-                                    Address
+                                    Complete Address
                                   </Label>
                                   <Field
                                     id="address"
                                     name="address"
-                                    placeholder="Enter complete address"
+                                    placeholder="339-A Main Peshawar Road, Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ address: e.target.value })
@@ -322,7 +322,7 @@ class PatientInformation extends Component {
                                   <Field
                                     id="city"
                                     name="city"
-                                    placeholder="Enter city"
+                                    placeholder="Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ city: e.target.value })
@@ -350,7 +350,7 @@ class PatientInformation extends Component {
                                   <Field
                                     id="district"
                                     name="district"
-                                    placeholder="Enter district"
+                                    placeholder="Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -409,7 +409,7 @@ class PatientInformation extends Component {
                                     <Field
                                       id="corporate_unique_id"
                                       name="corporate_unique_id"
-                                      placeholder="Enter corporate unique id"
+                                      placeholder="2594153c-a86d-4a70-8136-ee93e01c88cc"
                                       type="text"
                                       className={
                                         "form-control" +

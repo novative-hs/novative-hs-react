@@ -36,8 +36,12 @@
 
 // authentication full page
 
-.auth-full-bg {
+.auth-bg-color {
   background-color: rgba($primary, 0.25);
+}
+
+.auth-full-bg {
+  // background-color: rgba($primary, 0.25);
   display: flex;
 
   @media (min-width: 1200px) {
