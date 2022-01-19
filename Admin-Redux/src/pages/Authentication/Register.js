@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Alert, Card, CardBody, Col, Container, Row, Label } from "reactstrap";
+import { Col, Container, Row, Label } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -50,15 +50,33 @@ class Register extends Component {
 
   render() {
     if (this.props.userID) {
-      console.log("User ID: ", this.props.userID);
-      console.log("User Account Type: ", this.props.userAccountType);
-
       if (this.props.userAccountType == "patient") {
-        return <Redirect to={"/patient-information/" + this.props.userID} />;
+        return (
+          <Redirect
+            to={{
+              pathname: "/patient-information/" + this.props.userID,
+              state: { redirectState: null }, // sending state so that patient page doesn't redirect back to register
+            }}
+          />
+        );
       } else if (this.props.userAccountType == "labowner") {
-        return <Redirect to={"/lab-information/" + this.props.userID} />;
+        return (
+          <Redirect
+            to={{
+              pathname: "/lab-information/" + this.props.userID,
+              state: { redirectState: null }, // sending state so that lab page doesn't redirect back to register
+            }}
+          />
+        );
       } else if (this.props.userAccountType == "corporate") {
-        return <Redirect to={"/corporate-information/" + this.props.userID} />;
+        return (
+          <Redirect
+            to={{
+              pathname: "/corporate-information/" + this.props.userID,
+              state: { redirectState: null }, // sending state so that corporate page doesn't redirect back to register
+            }}
+          />
+        );
       }
     }
 
@@ -85,21 +103,6 @@ class Register extends Component {
                         </div>
 
                         <div className="mt-4">
-                          {/* {this.props.registrationError && this.props.registrationError ? (
-                            <Alert color="danger" style={{ marginTop: "13px" }}>
-                              {this.props.registrationError}
-                            </Alert>
-                          ) : null} */}
-
-                          {this.props.userID && this.props.userID ? (
-                            <Alert
-                              color="success"
-                              style={{ marginTop: "13px" }}
-                            >
-                              Congratulations! You have registered successfully.
-                            </Alert>
-                          ) : null}
-
                           <Formik
                             enableReinitialize={true}
                             initialValues={{
@@ -303,12 +306,6 @@ class Register extends Component {
                           </div>
                         </div>
                       </div>
-
-                      {/* <div className="mt-4 mt-md-5 text-center">
-                        <p className="mb-0">
-                          © {new Date().getFullYear()} {" "} Ilaaj4u
-                        </p>
-                      </div> */}
                     </div>
                   </div>
                 </div>

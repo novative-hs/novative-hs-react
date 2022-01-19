@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Alert, Card, CardBody, Col, Container, Row, Label } from "reactstrap";
+import { Alert, Col, Container, Row, Label } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
+import { Redirect } from "react-router-dom";
 
 // action
 import {
@@ -15,7 +16,6 @@ import {
 
 // Redux
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 
 class PatientInformation extends Component {
   constructor(props) {
@@ -37,6 +37,11 @@ class PatientInformation extends Component {
   }
 
   render() {
+    // Redirect to register page if getting access directly from url
+    if (typeof this.props.location.state == "undefined") {
+      return <Redirect to={"/register"} />;
+    }
+
     return (
       <React.Fragment>
         <div>
@@ -54,9 +59,8 @@ class PatientInformation extends Component {
                       <div className="my-auto">
                         <div>
                           <h5 className="text-primary">
-                            Patient information account
+                            Patient account information
                           </h5>
-                          {/* <h2>{this.props.match.params.id}</h2> */}
                           <p className="text-muted">
                             You are one step away from your free Ilaaj4u
                             account.
@@ -169,12 +173,6 @@ class PatientInformation extends Component {
                           >
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
-                                {/* <Field
-                                  name="account_id"
-                                  type="hidden"
-                                  value={this.props.match.params.id}
-                                /> */}
-
                                 {/* Name field */}
                                 <div className="mb-3">
                                   <Label for="name" className="form-label">
@@ -441,12 +439,6 @@ class PatientInformation extends Component {
                           </Formik>
                         </div>
                       </div>
-
-                      {/* <div className="mt-4 mt-md-5 text-center">
-                        <p className="mb-0">
-                          © {new Date().getFullYear()} {" "} Ilaaj4u
-                        </p>
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -461,6 +453,7 @@ class PatientInformation extends Component {
 
 PatientInformation.propTypes = {
   match: PropTypes.object,
+  location: PropTypes.object,
   addPatientInformation: PropTypes.func,
   addPatientInformationFailed: PropTypes.any,
   addPatientError: PropTypes.any,

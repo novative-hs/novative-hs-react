@@ -1,20 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  Alert,
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-  Label,
-  Input,
-} from "reactstrap";
+import { Alert, Col, Container, Row, Label, Input } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
+import { Redirect } from "react-router-dom";
 
 // action
 import {
@@ -24,7 +16,6 @@ import {
 
 // Redux
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 
 class CorporateInformation extends Component {
   constructor(props) {
@@ -47,6 +38,11 @@ class CorporateInformation extends Component {
   }
 
   render() {
+    // Redirect to register page if getting access directly from url
+    if (typeof this.props.location.state == "undefined") {
+      return <Redirect to={"/register"} />;
+    }
+
     return (
       <React.Fragment>
         <div>
@@ -66,7 +62,6 @@ class CorporateInformation extends Component {
                           <h5 className="text-primary">
                             Corporate information account
                           </h5>
-                          {/* <h2>{this.props.match.params.id}</h2> */}
                           <p className="text-muted">
                             You are one step away from your free Ilaaj4u
                             account.
@@ -175,12 +170,6 @@ class CorporateInformation extends Component {
                           >
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
-                                {/* <Field
-                                  name="account_id"
-                                  type="hidden"
-                                  value={this.props.match.params.id}
-                                /> */}
-
                                 {/* Name field */}
                                 <div className="mb-3">
                                   <Label for="name" className="form-label">
@@ -231,15 +220,7 @@ class CorporateInformation extends Component {
                                         : "")
                                     }
                                   />
-                                  {/* <Input
-                                    name="logo"
-                                    className="form-control"
-                                    type="file"
-                                    id="logo"
-                                    onChange={e => {
-                                      setFieldValue(logo, e.currentTarget.logo);
-                                    }}
-                                  /> */}
+
                                   <ErrorMessage
                                     name="logo"
                                     component="div"
@@ -465,12 +446,6 @@ class CorporateInformation extends Component {
                           </Formik>
                         </div>
                       </div>
-
-                      {/* <div className="mt-4 mt-md-5 text-center">
-                        <p className="mb-0">
-                          © {new Date().getFullYear()} {" "} Ilaaj4u
-                        </p>
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -485,6 +460,7 @@ class CorporateInformation extends Component {
 
 CorporateInformation.propTypes = {
   match: PropTypes.object,
+  location: PropTypes.object,
   addCorporateInformation: PropTypes.func,
   addCorporateInformationFailed: PropTypes.any,
   addCorporateError: PropTypes.any,
