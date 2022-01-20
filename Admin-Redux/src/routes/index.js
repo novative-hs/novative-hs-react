@@ -171,6 +171,21 @@ import ContactsGrid from "../pages/Contacts/contacts-grid";
 import ContactsList from "../pages/Contacts/ContactList/contacts-list";
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile";
 
+// Offered Tests
+import OfferedTestsGrid from "../pages/OfferedTests/offered-tests-grid";
+import OfferedTestsList from "../pages/OfferedTests/OfferedTestsList/offered-tests-list";
+import OfferedTestDetail from "../pages/OfferedTests/OfferedTestDetail/offered-test-detail";
+
+// Lab Pathologists
+import LabPathologistsGrid from "../pages/LabPathologists/lab-pathologists-grid";
+import LabPathologistsList from "../pages/LabPathologists/LabPathologistsList/lab-pathologists-list";
+import LabPathologistProfile from "../pages/LabPathologists/LabPathologistProfile/lab-pathologist-profile";
+
+// Sample Collectors
+import SampleCollectorsGrid from "../pages/SampleCollectors/sample-collectors-grid";
+import SampleCollectorsList from "../pages/SampleCollectors/SampleCollectorsList/sample-collectors-list";
+import SampleCollectorProfile from "../pages/SampleCollectors/SampleCollectorProfile/sample-collector-profile";
+
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
 import BlogGrid from "../pages/Blog/BlogGrid/index";
@@ -179,10 +194,48 @@ import BlogDetails from "../pages/Blog/BlogDetails";
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
-  // My dashboards
+  // My Routes
   { path: "/dashboard-patient", component: DashboardPatient },
-  { path: "/dashboard-lab", component: DashboardLab },
   { path: "/dashboard-corporate", component: DashboardCorporate },
+
+  // ********** Lab Routes **********
+  { path: "/dashboard-lab", component: DashboardLab },
+
+  // Offered Test Routes
+  { path: "/dashboard-lab/offered-tests-grid", component: OfferedTestsGrid },
+  { path: "/dashboard-lab/offered-tests-list", component: OfferedTestsList },
+  {
+    path: "/dashboard-lab/offered-test-detail",
+    component: OfferedTestDetail,
+  },
+
+  // Lab Pathologist Routes
+  {
+    path: "/dashboard-lab/lab-pathologists-grid",
+    component: LabPathologistsGrid,
+  },
+  {
+    path: "/dashboard-lab/lab-pathologists-list",
+    component: LabPathologistsList,
+  },
+  {
+    path: "/dashboard-lab/lab-pathologist-profile",
+    component: LabPathologistProfile,
+  },
+
+  // Sample Collector Routes
+  {
+    path: "/dashboard-lab/sample-collectors-grid",
+    component: SampleCollectorsGrid,
+  },
+  {
+    path: "/dashboard-lab/sample-collectors-list",
+    component: SampleCollectorsList,
+  },
+  {
+    path: "/dashboard-lab/sample-collector-profile",
+    component: SampleCollectorProfile,
+  },
 
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },

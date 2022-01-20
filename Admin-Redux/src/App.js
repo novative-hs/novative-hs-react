@@ -1,28 +1,28 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { BrowserRouter as Router, Switch } from "react-router-dom"
-import { connect } from "react-redux"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 
 // Import Routes
-import { authProtectedRoutes, publicRoutes } from "./routes/"
-import AppRoute from "./routes/route"
+import { authProtectedRoutes, publicRoutes } from "./routes/";
+import AppRoute from "./routes/route";
 
 // layouts
-import VerticalLayout from "./components/VerticalLayout/"
-import HorizontalLayout from "./components/HorizontalLayout/"
-import NonAuthLayout from "./components/NonAuthLayout"
+import VerticalLayout from "./components/VerticalLayout/";
+import HorizontalLayout from "./components/HorizontalLayout/";
+import NonAuthLayout from "./components/NonAuthLayout";
 
 // Import scss
-import "./assets/scss/theme.scss"
+import "./assets/scss/theme.scss";
 
 // Import Firebase Configuration file
 // import { initFirebaseBackend } from "./helpers/firebase_helper"
 
 // Import fackbackend Configuration file
-import fakeBackend from "./helpers/AuthType/fakeBackend"
+// import fakeBackend from "./helpers/AuthType/fakeBackend";
 
 // Activating fake backend
-fakeBackend()
+// fakeBackend();
 
 // Activating fake firebase
 // const firebaseConfig = {
@@ -41,30 +41,30 @@ fakeBackend()
 
 class App extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
-    this.getLayout = this.getLayout.bind(this)
+    super(props);
+    this.state = {};
+    this.getLayout = this.getLayout.bind(this);
   }
 
   /**
    * Returns the layout
    */
   getLayout = () => {
-    let layoutCls = VerticalLayout
+    let layoutCls = VerticalLayout;
 
     switch (this.props.layout.layoutType) {
       case "horizontal":
-        layoutCls = HorizontalLayout
-        break
+        layoutCls = HorizontalLayout;
+        break;
       default:
-        layoutCls = VerticalLayout
-        break
+        layoutCls = VerticalLayout;
+        break;
     }
-    return layoutCls
-  }
+    return layoutCls;
+  };
 
   render() {
-    const Layout = this.getLayout()
+    const Layout = this.getLayout();
 
     return (
       <React.Fragment>
@@ -93,18 +93,18 @@ class App extends Component {
           </Switch>
         </Router>
       </React.Fragment>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     layout: state.Layout,
-  }
-}
+  };
+};
 
 App.propTypes = {
   layout: PropTypes.object,
-}
+};
 
-export default connect(mapStateToProps, null)(App)
+export default connect(mapStateToProps, null)(App);

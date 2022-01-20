@@ -241,7 +241,7 @@ class Dashboard extends Component {
           </Container>
         </div>
 
-        <Modal
+        {/* <Modal
           isOpen={this.state.subscribemodal}
           role="dialog"
           autoFocus={true}
@@ -290,7 +290,7 @@ class Dashboard extends Component {
               </div>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
 
         <Modal
           isOpen={this.state.modal}
