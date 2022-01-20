@@ -61,10 +61,9 @@ class Login extends Component {
                             enableReinitialize={true}
                             initialValues={{
                               username:
-                                (this.state && this.state.username) ||
-                                "admin@themesbrand.com",
+                                (this.state && this.state.username) || "",
                               password:
-                                (this.state && this.state.password) || "123456",
+                                (this.state && this.state.password) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               username: Yup.string().required(
