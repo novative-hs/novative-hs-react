@@ -74,6 +74,9 @@ import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-ver
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index";
+import DashboardPatient from "../pages/Dashboard-Patient/index";
+import DashboardLab from "../pages/Dashboard-Lab/index";
+import DashboardCorporate from "../pages/Dashboard-Corporate/index";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import DashboardCrypto from "../pages/Dashboard-crypto/index";
 import DashboardBlog from "../pages/Dashboard-blog/index";
@@ -175,6 +178,12 @@ import BlogDetails from "../pages/Blog/BlogDetails";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
+
+  // My dashboards
+  { path: "/dashboard-patient", component: DashboardPatient },
+  { path: "/dashboard-lab", component: DashboardLab },
+  { path: "/dashboard-corporate", component: DashboardCorporate },
+
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
   { path: "/dashboard-blog", component: DashboardBlog },

@@ -23,7 +23,15 @@ function* loginUser({ payload: { user, history } }) {
     localStorage.setItem("authUser", JSON.stringify(response));
     yield put(loginSuccess(response));
 
-    history.push("/dashboard");
+    if (response.data.account_type == "patient") {
+      history.push("/dashboard-patient");
+    } else if (response.data.account_type == "labowner") {
+      history.push("/dashboard-lab");
+    } else if (response.data.account_type == "corporate") {
+      history.push("/dashboard-corporate");
+    } else {
+      history.push("/dashboard");
+    }
   } catch (error) {
     yield put(apiError(error));
   }
