@@ -186,3 +186,6 @@ export const postCorporateInformation = (url, data) => {
       throw message;
     });
 };
+
+// Login Method
+export const postLogin = data => post(url.POST_LOGIN, data);
