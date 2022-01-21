@@ -33,11 +33,12 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getUsers,
-  addNewUser,
-  updateUser,
-  deleteUser,
-} from "store/contacts/actions";
+  getOfferedTests,
+  getOfferedTestsSuccess,
+  addNewOfferedTest,
+  updateOfferedTest,
+  deleteOfferedTest,
+} from "store/offered-tests/actions";
 
 import { isEmpty, size, map } from "lodash";
 
@@ -46,95 +47,51 @@ class OfferedTestsList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      users: [],
-      user: "",
+      offeredTests: [],
+      offeredTest: "",
       modal: false,
       deleteModal: false,
-      contactListColumns: [
+      offeredTestListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, user) => <>{user.id}</>,
+          formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
         },
         {
-          dataField: "img",
-          text: "#",
-          formatter: (cellContent, user) => (
-            <>
-              {!user.img ? (
-                <div className="avatar-xs">
-                  <span className="avatar-title rounded-circle">
-                    {user.name.charAt(0)}
-                  </span>
-                </div>
-              ) : (
-                <div>
-                  <img
-                    className="rounded-circle avatar-xs"
-                    src={images[user.img]}
-                    alt=""
-                  />
-                </div>
-              )}
-            </>
-          ),
-        },
-        {
-          text: "Name",
-          dataField: "name",
-          sort: true,
-          formatter: (cellContent, user) => (
-            <>
-              <h5 className="font-size-14 mb-1">
-                <Link to="#" className="text-dark">
-                  {user.name}
-                </Link>
-              </h5>
-              <p className="text-muted mb-0">{user.designation}</p>
-            </>
-          ),
-        },
-        {
-          dataField: "email",
-          text: "Email",
+          dataField: "test_id",
+          text: "Test",
           sort: true,
         },
         {
-          text: "Tags",
-          dataField: "tags",
+          dataField: "unit_id",
+          text: "Unit",
           sort: true,
-          formatter: (cellContent, user) => (
-            <>
-              {map(
-                user.tags,
-                (tag, index) =>
-                  index < 2 && (
-                    <Link
-                      to="#"
-                      className="badge badge-soft-primary font-size-11 m-1"
-                      key={"_skill_" + user.id + index}
-                    >
-                      {tag}
-                    </Link>
-                  )
-              )}
-              {size(user.tags) > 2 && (
-                <Link
-                  to="#"
-                  className="badge badge-soft-primary font-size-11 m-1"
-                  key={"_skill_" + user.id}
-                >
-                  {size(user.tags) - 1} + more
-                </Link>
-              )}
-            </>
-          ),
         },
         {
-          dataField: "projects",
-          text: "Projects",
+          dataField: "reporting_range",
+          text: "Reporting range",
+          sort: true,
+        },
+        {
+          dataField: "time_required_in_days",
+          text: "Time required",
+          sort: true,
+        },
+        {
+          dataField: "price",
+          text: "Price",
+          sort: true,
+        },
+        {
+          dataField: "is_eqa_participation",
+          text: "EQA participation",
+          sort: true,
+        },
+        {
+          dataField: "is_home_sampling_available",
+          text: "Home sampling",
           sort: true,
         },
         {
@@ -142,20 +99,20 @@ class OfferedTestsList extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, user) => (
+          formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() => this.handleUserClick(user)}
+                  onClick={() => this.handleOfferedTestClick(offeredTest)}
                 ></i>
               </Link>
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
-                  onClick={() => this.onClickDelete(user)}
+                  onClick={() => this.onClickDelete(offeredTest)}
                 ></i>
               </Link>
             </div>
@@ -163,18 +120,18 @@ class OfferedTestsList extends Component {
         },
       ],
     };
-    this.handleUserClick = this.handleUserClick.bind(this);
+    this.handleOfferedTestClick = this.handleOfferedTestClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleUserClicks = this.handleUserClicks.bind(this);
+    this.handleOfferedTestClicks = this.handleOfferedTestClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
-    const { users, onGetUsers } = this.props;
-    if (users && !users.length) {
-      onGetUsers();
+    const { offeredTests, onGetOfferedTests } = this.props;
+    if (offeredTests && !offeredTests.length) {
+      onGetOfferedTests();
     }
-    this.setState({ users });
+    this.setState({ offeredTests });
   }
 
   toggle() {
@@ -183,16 +140,19 @@ class OfferedTestsList extends Component {
     }));
   }
 
-  handleUserClicks = () => {
-    this.setState({ user: "", isEdit: false });
+  handleOfferedTestClicks = () => {
+    this.setState({ offeredTest: "", isEdit: false });
     this.toggle();
   };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { users } = this.props;
-    if (!isEmpty(users) && size(prevProps.users) !== size(users)) {
-      this.setState({ users: {}, isEdit: false });
+    const { offeredTests } = this.props;
+    if (
+      !isEmpty(offeredTests) &&
+      size(prevProps.offeredTests) !== size(offeredTests)
+    ) {
+      this.setState({ offeredTests: {}, isEdit: false });
     }
   }
 
@@ -216,31 +176,33 @@ class OfferedTestsList extends Component {
     }));
   };
 
-  onClickDelete = users => {
-    this.setState({ users: users });
+  onClickDelete = offeredTests => {
+    this.setState({ offeredTests: offeredTests });
     this.setState({ deleteModal: true });
   };
 
-  handleDeleteUser = () => {
-    const { onDeleteUser } = this.props;
-    const { users } = this.state;
-    if (users.id !== undefined) {
-      onDeleteUser(users);
+  handleDeleteOfferedTest = () => {
+    const { onDeleteOfferedTest } = this.props;
+    const { offeredTests } = this.state;
+    if (offeredTests.id !== undefined) {
+      onDeleteOfferedTest(offeredTests);
       this.setState({ deleteModal: false });
     }
   };
 
-  handleUserClick = arg => {
-    const user = arg;
+  handleOfferedTestClick = arg => {
+    const offeredTest = arg;
 
     this.setState({
-      user: {
-        id: user.id,
-        name: user.name,
-        designation: user.designation,
-        email: user.email,
-        tags: user.tags,
-        projects: user.projects,
+      offeredTest: {
+        id: offeredTest.id,
+        test_id: offeredTest.test_id,
+        unit_id: offeredTest.unit_id,
+        reporting_range: offeredTest.reporting_range,
+        time_required_in_days: offeredTest.time_required_in_days,
+        price: offeredTest.price,
+        is_eqa_participation: offeredTest.is_eqa_participation,
+        is_home_sampling_available: offeredTest.is_home_sampling_available,
       },
       isEdit: true,
     });
@@ -249,20 +211,19 @@ class OfferedTestsList extends Component {
   };
 
   render() {
-    // const { users } = this.state
     const { SearchBar } = Search;
 
-    const { users } = this.props;
+    const { offeredTests } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewUser, onUpdateUser } = this.props;
-    const { selectedUser } = this.state;
-    const user = this.state.user;
+    const { onAddNewOfferedTest, onUpdateOfferedTest } = this.props;
+    const { selectedOfferedTest } = this.state;
+    const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: users.length, // replace later with size(users),
+      totalSize: offeredTests.length, // replace later with size(offeredTests),
       custom: true,
     };
 
@@ -277,11 +238,13 @@ class OfferedTestsList extends Component {
       mode: "checkbox",
     };
 
+    console.log("Props: ", this.props);
+
     return (
       <React.Fragment>
         <DeleteModal
           show={deleteModal}
-          onDeleteClick={this.handleDeleteUser}
+          onDeleteClick={this.handleDeleteOfferedTest}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
         <div className="page-content">
@@ -298,14 +261,14 @@ class OfferedTestsList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.contactListColumns}
-                      data={users}
+                      columns={this.state.offeredTestListColumns}
+                      data={offeredTests}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.contactListColumns}
-                          data={users}
+                          columns={this.state.offeredTestListColumns}
+                          data={offeredTests}
                           search
                         >
                           {toolkitprops => (
@@ -326,7 +289,7 @@ class OfferedTestsList extends Component {
                                     <Button
                                       color="primary"
                                       className="font-16 btn-block btn btn-primary"
-                                      onClick={this.handleUserClicks}
+                                      onClick={this.handleOfferedTestClicks}
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
                                       Add New Test
@@ -359,19 +322,34 @@ class OfferedTestsList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                        {!!isEdit ? "Edit User" : "Add User"}
+                                        {!!isEdit
+                                          ? "Edit Offered Test"
+                                          : "Add Offered Test"}
                                       </ModalHeader>
                                       <ModalBody>
-                                        <Formik
+                                        {/* <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            name: (user && user.name) || "",
+                                            name:
+                                              (offeredTest &&
+                                                offeredTest.name) ||
+                                              "",
                                             designation:
-                                              (user && user.designation) || "",
-                                            email: (user && user.email) || "",
-                                            tags: (user && user.tags) || [],
+                                              (offeredTest &&
+                                                offeredTest.designation) ||
+                                              "",
+                                            email:
+                                              (offeredTest &&
+                                                offeredTest.email) ||
+                                              "",
+                                            tags:
+                                              (offeredTest &&
+                                                offeredTest.tags) ||
+                                              [],
                                             projects:
-                                              (user && user.projects) || "",
+                                              (offeredTest &&
+                                                offeredTest.projects) ||
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             name: Yup.string().required(
@@ -392,8 +370,8 @@ class OfferedTestsList extends Component {
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
-                                              const updateUser = {
-                                                id: user.id,
+                                              const updateOfferedTest = {
+                                                id: offeredTest.id,
                                                 name: values.name,
                                                 designation: values.designation,
                                                 tags: values.tags,
@@ -401,10 +379,12 @@ class OfferedTestsList extends Component {
                                                 projects: values.projects,
                                               };
 
-                                              // update user
-                                              onUpdateUser(updateUser);
+                                              // update OfferedTest
+                                              onUpdateOfferedTest(
+                                                updateOfferedTest
+                                              );
                                             } else {
-                                              const newUser = {
+                                              const newOfferedTest = {
                                                 id:
                                                   Math.floor(
                                                     Math.random() * (30 - 20)
@@ -416,11 +396,13 @@ class OfferedTestsList extends Component {
                                                 tags: values["tags"],
                                                 projects: values["projects"],
                                               };
-                                              // save new user
-                                              onAddNewUser(newUser);
+                                              // save new OfferedTest
+                                              onAddNewOfferedTest(
+                                                newOfferedTest
+                                              );
                                             }
                                             this.setState({
-                                              selectedUser: null,
+                                              selectedOfferedTest: null,
                                             });
                                             this.toggle();
                                           }}
@@ -560,7 +542,7 @@ class OfferedTestsList extends Component {
                                               </Row>
                                             </Form>
                                           )}
-                                        </Formik>
+                                        </Formik> */}
                                       </ModalBody>
                                     </Modal>
                                   </div>
@@ -590,23 +572,23 @@ class OfferedTestsList extends Component {
 }
 
 OfferedTestsList.propTypes = {
-  users: PropTypes.array,
+  offeredTests: PropTypes.array,
   className: PropTypes.any,
-  onGetUsers: PropTypes.func,
-  onAddNewUser: PropTypes.func,
-  onDeleteUser: PropTypes.func,
-  onUpdateUser: PropTypes.func,
+  onGetOfferedTests: PropTypes.func,
+  onAddNewOfferedTest: PropTypes.func,
+  onDeleteOfferedTest: PropTypes.func,
+  onUpdateOfferedTest: PropTypes.func,
 };
 
-const mapStateToProps = ({ contacts }) => ({
-  users: contacts.users,
+const mapStateToProps = ({ offeredTests }) => ({
+  offeredTests: offeredTests.offeredTests,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onGetUsers: () => dispatch(getUsers()),
-  onAddNewUser: user => dispatch(addNewUser(user)),
-  onUpdateUser: user => dispatch(updateUser(user)),
-  onDeleteUser: user => dispatch(deleteUser(user)),
+  onGetOfferedTests: () => dispatch(getOfferedTests()),
+  onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
+  onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
+  onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
 });
 
 export default connect(

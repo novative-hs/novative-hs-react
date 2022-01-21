@@ -13,7 +13,7 @@ import {
   Button,
   ModalHeader,
   ModalBody,
-  Label
+  Label,
 } from "reactstrap";
 import paginationFactory, {
   PaginationProvider,
@@ -210,14 +210,13 @@ class ContactsList extends Component {
 
   /* Insert,Update Delete data */
 
-
   toggleDeleteModal = () => {
     this.setState(prevState => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
 
-  onClickDelete = (users) => {
+  onClickDelete = users => {
     this.setState({ users: users });
     this.setState({ deleteModal: true });
   };
@@ -255,7 +254,7 @@ class ContactsList extends Component {
 
     const { users } = this.props;
 
-    const { isEdit,deleteModal } = this.state;
+    const { isEdit, deleteModal } = this.state;
 
     const { onAddNewUser, onUpdateUser } = this.props;
     const { selectedUser } = this.state;
@@ -280,7 +279,7 @@ class ContactsList extends Component {
 
     return (
       <React.Fragment>
-      <DeleteModal
+        <DeleteModal
           show={deleteModal}
           onDeleteClick={this.handleDeleteUser}
           onCloseClick={() => this.setState({ deleteModal: false })}
@@ -366,17 +365,13 @@ class ContactsList extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            name:
-                                              (user && user.name) || "",
+                                            name: (user && user.name) || "",
                                             designation:
-                                              (user && user.designation) ||
-                                              "",
-                                            email:
-                                              (user && user.email) || "",
+                                              (user && user.designation) || "",
+                                            email: (user && user.email) || "",
                                             tags: (user && user.tags) || [],
                                             projects:
-                                              (user && user.projects) ||
-                                              "",
+                                              (user && user.projects) || "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             name: Yup.string().required(
@@ -388,14 +383,12 @@ class ContactsList extends Component {
                                             email: Yup.string().required(
                                               "Please Enter Your Email"
                                             ),
-                                            tags:
-                                              Yup.array().required(
-                                                "Please Select Tags"
-                                              ),
-                                            projects:
-                                              Yup.string().required(
-                                                "Please Enter Your Projects"
-                                              ),
+                                            tags: Yup.array().required(
+                                              "Please Select Tags"
+                                            ),
+                                            projects: Yup.string().required(
+                                              "Please Enter Your Projects"
+                                            ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -407,14 +400,18 @@ class ContactsList extends Component {
                                                 email: values.email,
                                                 projects: values.projects,
                                               };
-                                        
+
                                               // update user
                                               onUpdateUser(updateUser);
                                             } else {
                                               const newUser = {
-                                                id: Math.floor(Math.random() * (30 - 20)) + 20,
+                                                id:
+                                                  Math.floor(
+                                                    Math.random() * (30 - 20)
+                                                  ) + 20,
                                                 name: values["name"],
-                                                designation: values["designation"],
+                                                designation:
+                                                  values["designation"],
                                                 email: values["email"],
                                                 tags: values["tags"],
                                                 projects: values["projects"],
@@ -422,9 +419,10 @@ class ContactsList extends Component {
                                               // save new user
                                               onAddNewUser(newUser);
                                             }
-                                            this.setState({ selectedUser: null });
+                                            this.setState({
+                                              selectedUser: null,
+                                            });
                                             this.toggle();
-                                            
                                           }}
                                         >
                                           {({ errors, status, touched }) => (
@@ -511,12 +509,16 @@ class ContactsList extends Component {
                                                       multiple={true}
                                                     >
                                                       <option>Photoshop</option>
-                                                      <option>illustrator</option>
+                                                      <option>
+                                                        illustrator
+                                                      </option>
                                                       <option>Html</option>
                                                       <option>Php</option>
                                                       <option>Java</option>
                                                       <option>Python</option>
-                                                      <option>UI/UX Designer</option>
+                                                      <option>
+                                                        UI/UX Designer
+                                                      </option>
                                                       <option>Ruby</option>
                                                       <option>Css</option>
                                                     </Field>
@@ -547,7 +549,6 @@ class ContactsList extends Component {
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
-
                                                     <button
                                                       type="submit"
                                                       className="btn btn-success save-user"

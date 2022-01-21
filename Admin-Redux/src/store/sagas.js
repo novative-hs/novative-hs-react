@@ -18,6 +18,7 @@ import projectsSaga from "./projects/saga";
 import tasksSaga from "./tasks/saga";
 import mailsSaga from "./mails/saga";
 import contactsSaga from "./contacts/saga";
+import offeredTestsSaga from "./offered-tests/saga";
 import dashboardSaga from "./dashboard/saga";
 import dashboardSaasSaga from "./dashboard-saas/saga";
 
@@ -41,6 +42,7 @@ export default function* rootSaga() {
     fork(projectsSaga),
     fork(tasksSaga),
     fork(contactsSaga),
+    fork(offeredTestsSaga),
     fork(dashboardSaga),
     fork(dashboardSaasSaga),
   ]);
