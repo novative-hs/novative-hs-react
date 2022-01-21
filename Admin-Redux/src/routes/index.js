@@ -195,17 +195,23 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   // My Routes
-  { path: "/dashboard-patient", component: DashboardPatient },
-  { path: "/dashboard-corporate", component: DashboardCorporate },
+  { path: "/dashboard-patient/:id", component: DashboardPatient },
+  { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 
   // ********** Lab Routes **********
-  { path: "/dashboard-lab", component: DashboardLab },
+  { path: "/dashboard-lab/:id", component: DashboardLab },
 
   // Offered Test Routes
-  { path: "/dashboard-lab/offered-tests-grid", component: OfferedTestsGrid },
-  { path: "/dashboard-lab/offered-tests-list", component: OfferedTestsList },
   {
-    path: "/dashboard-lab/offered-test-detail",
+    path: "/dashboard-lab/:id/offered-tests-grid",
+    component: OfferedTestsGrid,
+  },
+  {
+    path: "/dashboard-lab/:id/offered-tests-list",
+    component: OfferedTestsList,
+  },
+  {
+    path: "/dashboard-lab/:id/offered-test-detail",
     component: OfferedTestDetail,
   },
 

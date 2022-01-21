@@ -34,7 +34,6 @@ import DeleteModal from "components/Common/DeleteModal";
 
 import {
   getOfferedTests,
-  getOfferedTestsSuccess,
   addNewOfferedTest,
   updateOfferedTest,
   deleteOfferedTest,
@@ -237,8 +236,6 @@ class OfferedTestsList extends Component {
     const selectRow = {
       mode: "checkbox",
     };
-
-    console.log("Props: ", this.props);
 
     return (
       <React.Fragment>
@@ -572,6 +569,7 @@ class OfferedTestsList extends Component {
 }
 
 OfferedTestsList.propTypes = {
+  match: PropTypes.object,
   offeredTests: PropTypes.array,
   className: PropTypes.any,
   onGetOfferedTests: PropTypes.func,
@@ -584,8 +582,8 @@ const mapStateToProps = ({ offeredTests }) => ({
   offeredTests: offeredTests.offeredTests,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetOfferedTests: () => dispatch(getOfferedTests()),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetOfferedTests: () => dispatch(getOfferedTests(ownProps.match.params.id)),
   onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
   onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
   onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),

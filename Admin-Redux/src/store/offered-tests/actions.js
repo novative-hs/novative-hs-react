@@ -16,8 +16,9 @@ import {
   DELETE_OFFERED_TEST_FAIL,
 } from "./actionTypes";
 
-export const getOfferedTests = () => ({
+export const getOfferedTests = id => ({
   type: GET_OFFERED_TESTS,
+  payload: id,
 });
 
 export const getOfferedTestsSuccess = offeredTests => ({

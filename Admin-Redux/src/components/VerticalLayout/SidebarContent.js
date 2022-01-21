@@ -103,6 +103,7 @@ class SidebarContent extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <React.Fragment>
         {/* Sidebar for Patient */}
@@ -866,7 +867,10 @@ class SidebarContent extends Component {
             <div id="sidebar-menu">
               <ul className="metismenu list-unstyled" id="side-menu">
                 <li>
-                  <Link to="/dashboard-lab" className="">
+                  <Link
+                    to={"/dashboard-lab/" + this.props.match.params.id}
+                    className=""
+                  >
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
@@ -882,17 +886,35 @@ class SidebarContent extends Component {
                   </Link>
                   <ul className="sub-menu" aria-expanded="false">
                     <li>
-                      <Link to="/dashboard-lab/offered-tests-grid">
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/offered-tests-grid"
+                        }
+                      >
                         {this.props.t("Tests Grid")}
                       </Link>
                     </li>
                     <li>
-                      <Link to="/dashboard-lab/offered-tests-list">
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/offered-tests-list"
+                        }
+                      >
                         {this.props.t("Tests List")}
                       </Link>
                     </li>
                     <li>
-                      <Link to="/dashboard-lab/offered-test-detail">
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/offered-test-detail"
+                        }
+                      >
                         {this.props.t("Test Detail")}
                       </Link>
                     </li>
@@ -2468,6 +2490,7 @@ class SidebarContent extends Component {
 }
 
 SidebarContent.propTypes = {
+  match: PropTypes.object,
   location: PropTypes.object,
   t: PropTypes.any,
   type: PropTypes.string,

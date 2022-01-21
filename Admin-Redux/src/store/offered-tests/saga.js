@@ -31,9 +31,10 @@ import {
   deleteOfferedTest,
 } from "../../helpers/django_api_helper";
 
-function* fetchOfferedTests() {
+function* fetchOfferedTests(object) {
   try {
-    const response = yield call(getOfferedTests);
+    const response = yield call(getOfferedTests, object.payload);
+    console.log(response);
     yield put(getOfferedTestsSuccess(response));
   } catch (error) {
     yield put(getOfferedTestsFail(error));

@@ -24,11 +24,11 @@ function* loginUser({ payload: { user, history } }) {
     yield put(loginSuccess(response));
 
     if (response.data.account_type == "patient") {
-      history.push("/dashboard-patient");
+      history.push("/dashboard-patient/" + response.data.user_id);
     } else if (response.data.account_type == "labowner") {
-      history.push("/dashboard-lab");
+      history.push("/dashboard-lab/" + response.data.user_id);
     } else if (response.data.account_type == "corporate") {
-      history.push("/dashboard-corporate");
+      history.push("/dashboard-corporate/" + response.data.user_id);
     } else {
       history.push("/dashboard");
     }
