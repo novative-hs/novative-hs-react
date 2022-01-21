@@ -192,6 +192,7 @@ export const postLogin = data => post(url.POST_LOGIN, data);
 
 // Offered Test Requests
 export const getTests = () => get(url.GET_TESTS);
+export const getUnits = () => get(url.GET_UNITS);
 export const getOfferedTests = id => get(url.GET_OFFERED_TESTS + id);
 export const addNewOfferedTest = offeredTest =>
   post(url.ADD_NEW_OFFERED_TEST, offeredTest);

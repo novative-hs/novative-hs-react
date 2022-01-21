@@ -16,6 +16,7 @@ export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test/";
 
 // TEST
 export const GET_TESTS = API_URL + "/medicaltest/test-list/";
+export const GET_UNITS = API_URL + "/medicaltest/unit-list/";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

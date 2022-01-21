@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
 import {
+  GET_UNITS,
   GET_TESTS,
   GET_OFFERED_TESTS,
   GET_OFFERED_TEST_PROFILE,
@@ -11,6 +12,8 @@ import {
 } from "./actionTypes";
 
 import {
+  getUnitsSuccess,
+  getUnitsFail,
   getTestsSuccess,
   getTestsFail,
   getOfferedTestsSuccess,
@@ -27,6 +30,7 @@ import {
 
 //Include Both Helper File with needed methods
 import {
+  getUnits,
   getTests,
   getOfferedTests,
   getOfferedTestProfile,
@@ -35,15 +39,6 @@ import {
   deleteOfferedTest,
 } from "../../helpers/django_api_helper";
 
-function* fetchOfferedTests(object) {
-  try {
-    const response = yield call(getOfferedTests, object.payload);
-    yield put(getOfferedTestsSuccess(response));
-  } catch (error) {
-    yield put(getOfferedTestsFail(error));
-  }
-}
-
 function* fetchTests() {
   try {
     const response = yield call(getTests);
@@ -51,6 +46,25 @@ function* fetchTests() {
     yield put(getTestsSuccess(response));
   } catch (error) {
     yield put(getTestsFail(error));
+  }
+}
+
+function* fetchUnits() {
+  try {
+    const response = yield call(getUnits);
+    console.log("Response: ", response);
+    yield put(getUnitsSuccess(response));
+  } catch (error) {
+    yield put(getUnitsFail(error));
+  }
+}
+
+function* fetchOfferedTests(object) {
+  try {
+    const response = yield call(getOfferedTests, object.payload);
+    yield put(getOfferedTestsSuccess(response));
+  } catch (error) {
+    yield put(getOfferedTestsFail(error));
   }
 }
 
@@ -91,6 +105,7 @@ function* onDeleteOfferedTest({ payload: offeredTest }) {
 }
 
 function* offeredTestsSaga() {
+  yield takeEvery(GET_UNITS, fetchUnits);
   yield takeEvery(GET_TESTS, fetchTests);
   yield takeEvery(GET_OFFERED_TESTS, fetchOfferedTests);
   yield takeEvery(GET_OFFERED_TEST_PROFILE, fetchOfferedTestProfile);

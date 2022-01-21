@@ -2,6 +2,9 @@ import {
   GET_TESTS,
   GET_TESTS_FAIL,
   GET_TESTS_SUCCESS,
+  GET_UNITS,
+  GET_UNITS_FAIL,
+  GET_UNITS_SUCCESS,
   GET_OFFERED_TESTS,
   GET_OFFERED_TESTS_FAIL,
   GET_OFFERED_TESTS_SUCCESS,
@@ -19,6 +22,7 @@ import {
   DELETE_OFFERED_TEST_FAIL,
 } from "./actionTypes";
 
+// ----------- Test list APIs actions -----------------
 export const getTests = () => ({
   type: GET_TESTS,
 });
@@ -33,6 +37,22 @@ export const getTestsFail = error => ({
   payload: error,
 });
 
+// ----------- Unit list APIs actions -----------------
+export const getUnits = () => ({
+  type: GET_UNITS,
+});
+
+export const getUnitsSuccess = units => ({
+  type: GET_UNITS_SUCCESS,
+  payload: units,
+});
+
+export const getUnitsFail = error => ({
+  type: GET_UNITS_FAIL,
+  payload: error,
+});
+
+// ----------- Offered test list APIs actions -----------------
 export const getOfferedTests = id => ({
   type: GET_OFFERED_TESTS,
   payload: id,

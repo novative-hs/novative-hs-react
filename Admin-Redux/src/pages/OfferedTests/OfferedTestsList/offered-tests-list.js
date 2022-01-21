@@ -33,6 +33,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
+  getUnits,
   getTests,
   getOfferedTests,
   addNewOfferedTest,
@@ -49,6 +50,7 @@ class OfferedTestsList extends Component {
     this.state = {
       offeredTests: [],
       tests: [],
+      units: [],
       offeredTest: "",
       modal: false,
       deleteModal: false,
@@ -128,6 +130,12 @@ class OfferedTestsList extends Component {
   }
 
   componentDidMount() {
+    const { units, onGetUnits } = this.props;
+    if (units && !units.length) {
+      onGetUnits();
+    }
+    this.setState({ units });
+
     const { tests, onGetTests } = this.props;
     if (tests && !tests.length) {
       onGetTests();
@@ -222,6 +230,7 @@ class OfferedTestsList extends Component {
 
     const { offeredTests } = this.props;
     const { tests } = this.props;
+    const { units } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
@@ -247,12 +256,17 @@ class OfferedTestsList extends Component {
     };
 
     console.log("Test: ", tests);
+    console.log("Unit: ", units);
     console.log("Offered Test: ", offeredTests);
 
     const testList = [];
     for (let i = 0; i < tests.length; i++) testList.push(tests[i]);
 
+    const unitList = [];
+    for (let i = 0; i < units.length; i++) unitList.push(units[i]);
+
     console.log("tests: ", testList);
+    console.log("units: ", unitList);
 
     return (
       <React.Fragment>
@@ -482,21 +496,26 @@ class OfferedTestsList extends Component {
                                                       Unit name
                                                     </Label>
                                                     <Field
-                                                      name="unit_name"
-                                                      type="text"
+                                                      name="unit_id"
+                                                      as="select"
                                                       className={
                                                         "form-control" +
-                                                        (errors.unit_name &&
-                                                        touched.unit_name
+                                                        (errors.unit_id &&
+                                                        touched.unit_id
                                                           ? " is-invalid"
                                                           : "")
                                                       }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="unit_name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
+                                                      multiple={false}
+                                                    >
+                                                      {units.map(unit => (
+                                                        <option
+                                                          key={unit["id"]}
+                                                          value={unit["id"]}
+                                                        >
+                                                          {unit["name"]}
+                                                        </option>
+                                                      ))}
+                                                    </Field>
                                                   </div>
 
                                                   <div className="mb-3">
@@ -655,10 +674,12 @@ class OfferedTestsList extends Component {
 OfferedTestsList.propTypes = {
   match: PropTypes.object,
   tests: PropTypes.array,
+  units: PropTypes.array,
   offeredTests: PropTypes.array,
   className: PropTypes.any,
   onGetOfferedTests: PropTypes.func,
   onGetTests: PropTypes.func,
+  onGetUnits: PropTypes.func,
   onAddNewOfferedTest: PropTypes.func,
   onDeleteOfferedTest: PropTypes.func,
   onUpdateOfferedTest: PropTypes.func,
@@ -667,10 +688,12 @@ OfferedTestsList.propTypes = {
 const mapStateToProps = ({ offeredTests }) => ({
   offeredTests: offeredTests.offeredTests,
   tests: offeredTests.tests,
+  units: offeredTests.units,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTests: () => dispatch(getTests()),
+  onGetUnits: () => dispatch(getUnits()),
   onGetOfferedTests: () => dispatch(getOfferedTests(ownProps.match.params.id)),
   onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
   onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
