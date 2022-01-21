@@ -33,6 +33,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
+  getTests,
   getOfferedTests,
   addNewOfferedTest,
   updateOfferedTest,
@@ -47,6 +48,7 @@ class OfferedTestsList extends Component {
     this.node = React.createRef();
     this.state = {
       offeredTests: [],
+      tests: [],
       offeredTest: "",
       modal: false,
       deleteModal: false,
@@ -59,12 +61,12 @@ class OfferedTestsList extends Component {
           formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
         },
         {
-          dataField: "test_id",
+          dataField: "test_name",
           text: "Test",
           sort: true,
         },
         {
-          dataField: "unit_id",
+          dataField: "unit_name",
           text: "Unit",
           sort: true,
         },
@@ -126,6 +128,12 @@ class OfferedTestsList extends Component {
   }
 
   componentDidMount() {
+    const { tests, onGetTests } = this.props;
+    if (tests && !tests.length) {
+      onGetTests();
+    }
+    this.setState({ tests });
+
     const { offeredTests, onGetOfferedTests } = this.props;
     if (offeredTests && !offeredTests.length) {
       onGetOfferedTests();
@@ -195,8 +203,8 @@ class OfferedTestsList extends Component {
     this.setState({
       offeredTest: {
         id: offeredTest.id,
-        test_id: offeredTest.test_id,
-        unit_id: offeredTest.unit_id,
+        test_name: offeredTest.test_name,
+        unit_name: offeredTest.unit_name,
         reporting_range: offeredTest.reporting_range,
         time_required_in_days: offeredTest.time_required_in_days,
         price: offeredTest.price,
@@ -213,6 +221,7 @@ class OfferedTestsList extends Component {
     const { SearchBar } = Search;
 
     const { offeredTests } = this.props;
+    const { tests } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
@@ -236,6 +245,14 @@ class OfferedTestsList extends Component {
     const selectRow = {
       mode: "checkbox",
     };
+
+    console.log("Test: ", tests);
+    console.log("Offered Test: ", offeredTests);
+
+    const testList = [];
+    for (let i = 0; i < tests.length; i++) testList.push(tests[i]);
+
+    console.log("tests: ", testList);
 
     return (
       <React.Fragment>
@@ -324,56 +341,73 @@ class OfferedTestsList extends Component {
                                           : "Add Offered Test"}
                                       </ModalHeader>
                                       <ModalBody>
-                                        {/* <Formik
+                                        <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            name:
+                                            test_name:
                                               (offeredTest &&
-                                                offeredTest.name) ||
+                                                offeredTest.test_name) ||
                                               "",
-                                            designation:
+                                            unit_name:
                                               (offeredTest &&
-                                                offeredTest.designation) ||
+                                                offeredTest.unit_name) ||
                                               "",
-                                            email:
+                                            reporting_range:
                                               (offeredTest &&
-                                                offeredTest.email) ||
+                                                offeredTest.reporting_range) ||
                                               "",
-                                            tags:
+                                            time_required_in_days:
                                               (offeredTest &&
-                                                offeredTest.tags) ||
-                                              [],
-                                            projects:
+                                                offeredTest.time_required_in_days) ||
+                                              "",
+                                            price:
                                               (offeredTest &&
-                                                offeredTest.projects) ||
+                                                offeredTest.price) ||
+                                              "",
+                                            is_eqa_participation:
+                                              (offeredTest &&
+                                                offeredTest.price) ||
+                                              "",
+                                            is_home_sampling_available:
+                                              (offeredTest &&
+                                                offeredTest.price) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            name: Yup.string().required(
-                                              "Please Enter Your Name"
+                                            test_name: Yup.string().required(
+                                              "Please enter test name"
                                             ),
-                                            designation: Yup.string().required(
-                                              "Please Enter Your Designation"
+                                            unit_name: Yup.string().required(
+                                              "Please enter unit name"
                                             ),
-                                            email: Yup.string().required(
-                                              "Please Enter Your Email"
-                                            ),
-                                            tags: Yup.array().required(
-                                              "Please Select Tags"
-                                            ),
-                                            projects: Yup.string().required(
-                                              "Please Enter Your Projects"
-                                            ),
+                                            reporting_range:
+                                              Yup.string().required(
+                                                "Please enter reporting range"
+                                              ),
+                                            time_required_in_days:
+                                              Yup.array().required(
+                                                "Please enter time required in days"
+                                              ),
+                                            price:
+                                              Yup.string().required(
+                                                "Please enter price"
+                                              ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
-                                                name: values.name,
-                                                designation: values.designation,
-                                                tags: values.tags,
-                                                email: values.email,
-                                                projects: values.projects,
+                                                test_id: values.test_id,
+                                                unit_name: values.unit_name,
+                                                reporting_range:
+                                                  values.reporting_range,
+                                                time_required_in_days:
+                                                  values.time_required_in_days,
+                                                price: values.price,
+                                                is_eqa_participation:
+                                                  values.is_eqa_participation,
+                                                is_home_sampling_available:
+                                                  values.is_home_sampling_available,
                                               };
 
                                               // update OfferedTest
@@ -382,16 +416,24 @@ class OfferedTestsList extends Component {
                                               );
                                             } else {
                                               const newOfferedTest = {
-                                                id:
-                                                  Math.floor(
-                                                    Math.random() * (30 - 20)
-                                                  ) + 20,
-                                                name: values["name"],
-                                                designation:
-                                                  values["designation"],
-                                                email: values["email"],
-                                                tags: values["tags"],
-                                                projects: values["projects"],
+                                                test_id:
+                                                  values["testest_idt_name"],
+                                                unit_name: values["unit_name"],
+                                                reporting_range:
+                                                  values["reporting_range"],
+                                                time_required_in_days:
+                                                  values[
+                                                    "time_required_in_days"
+                                                  ],
+                                                price: values["price"],
+                                                is_eqa_participation:
+                                                  values[
+                                                    "is_eqa_participation"
+                                                  ],
+                                                is_home_sampling_available:
+                                                  values[
+                                                    "is_eqa_partiis_home_sampling_availablecipation"
+                                                  ],
                                               };
                                               // save new OfferedTest
                                               onAddNewOfferedTest(
@@ -410,118 +452,160 @@ class OfferedTestsList extends Component {
                                                 <Col className="col-12">
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Name
+                                                      Test name
                                                     </Label>
                                                     <Field
-                                                      name="name"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.name &&
-                                                        touched.name
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Designation
-                                                    </Label>
-                                                    <Field
-                                                      name="designation"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.designation &&
-                                                        touched.designation
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="designation"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Email
-                                                    </Label>
-                                                    <Field
-                                                      name="email"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.email &&
-                                                        touched.email
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="email"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Tags
-                                                    </Label>
-                                                    <Field
-                                                      name="tags"
+                                                      name="test_id"
                                                       as="select"
                                                       className={
                                                         "form-control" +
-                                                        (errors.tags &&
-                                                        touched.tags
+                                                        (errors.test_id &&
+                                                        touched.test_id
                                                           ? " is-invalid"
                                                           : "")
                                                       }
-                                                      multiple={true}
+                                                      multiple={false}
                                                     >
-                                                      <option>Photoshop</option>
-                                                      <option>
-                                                        illustrator
-                                                      </option>
-                                                      <option>Html</option>
-                                                      <option>Php</option>
-                                                      <option>Java</option>
-                                                      <option>Python</option>
-                                                      <option>
-                                                        UI/UX Designer
-                                                      </option>
-                                                      <option>Ruby</option>
-                                                      <option>Css</option>
+                                                      {tests.map(test => (
+                                                        <option
+                                                          key={test["id"]}
+                                                          value={test["id"]}
+                                                        >
+                                                          {test["name"]}
+                                                        </option>
+                                                      ))}
                                                     </Field>
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Projects
+                                                      Unit name
                                                     </Label>
                                                     <Field
-                                                      name="projects"
+                                                      name="unit_name"
                                                       type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.projects &&
-                                                        touched.projects
+                                                        (errors.unit_name &&
+                                                        touched.unit_name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
                                                     <ErrorMessage
-                                                      name="projects"
+                                                      name="unit_name"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Reporting range
+                                                    </Label>
+                                                    <Field
+                                                      name="reporting_range"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.reporting_range &&
+                                                        touched.reporting_range
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="reporting_range"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Time required in days
+                                                    </Label>
+                                                    <Field
+                                                      name="time_required_in_days"
+                                                      type="number"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.time_required_in_days &&
+                                                        touched.time_required_in_days
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="time_required_in_days"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Price
+                                                    </Label>
+                                                    <Field
+                                                      name="price"
+                                                      type="number"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.price &&
+                                                        touched.price
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="price"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is EQA participating?
+                                                    </Label>
+                                                    <Field
+                                                      name="is_eqa_participation"
+                                                      as="select"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_eqa_participation &&
+                                                        touched.is_eqa_participation
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      multiple={false}
+                                                    >
+                                                      <option>Yes</option>
+                                                      <option>No</option>
+                                                    </Field>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is home sampling
+                                                      available?
+                                                    </Label>
+                                                    <Field
+                                                      name="is_home_sampling_available"
+                                                      as="select"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_home_sampling_available &&
+                                                        touched.is_home_sampling_available
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      multiple={false}
+                                                    >
+                                                      <option>Yes</option>
+                                                      <option>No</option>
+                                                    </Field>
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -539,7 +623,7 @@ class OfferedTestsList extends Component {
                                               </Row>
                                             </Form>
                                           )}
-                                        </Formik> */}
+                                        </Formik>
                                       </ModalBody>
                                     </Modal>
                                   </div>
@@ -570,9 +654,11 @@ class OfferedTestsList extends Component {
 
 OfferedTestsList.propTypes = {
   match: PropTypes.object,
+  tests: PropTypes.array,
   offeredTests: PropTypes.array,
   className: PropTypes.any,
   onGetOfferedTests: PropTypes.func,
+  onGetTests: PropTypes.func,
   onAddNewOfferedTest: PropTypes.func,
   onDeleteOfferedTest: PropTypes.func,
   onUpdateOfferedTest: PropTypes.func,
@@ -580,9 +666,11 @@ OfferedTestsList.propTypes = {
 
 const mapStateToProps = ({ offeredTests }) => ({
   offeredTests: offeredTests.offeredTests,
+  tests: offeredTests.tests,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetTests: () => dispatch(getTests()),
   onGetOfferedTests: () => dispatch(getOfferedTests(ownProps.match.params.id)),
   onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
   onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),

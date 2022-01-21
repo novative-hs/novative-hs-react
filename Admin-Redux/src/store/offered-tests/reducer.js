@@ -1,4 +1,6 @@
 import {
+  GET_TESTS_SUCCESS,
+  GET_TESTS_FAIL,
   GET_OFFERED_TESTS_SUCCESS,
   GET_OFFERED_TESTS_FAIL,
   ADD_OFFERED_TEST_SUCCESS,
@@ -12,6 +14,7 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
+  tests: [],
   offeredTests: [],
   offeredTestProfile: {},
   error: {},
@@ -19,8 +22,19 @@ const INIT_STATE = {
 
 const tests = (state = INIT_STATE, action) => {
   switch (action.type) {
+    case GET_TESTS_SUCCESS:
+      return {
+        ...state,
+        tests: action.payload.data,
+      };
+
+    case GET_TESTS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     case GET_OFFERED_TESTS_SUCCESS:
-      console.log("Offered TESts: ", action.payload);
       return {
         ...state,
         offeredTests: action.payload.data,

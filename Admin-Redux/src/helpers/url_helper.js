@@ -7,12 +7,15 @@ const API_URL = "http://127.0.0.1:8000/api";
 export const POST_LOGIN = API_URL + "/account/login/";
 export const POST_REGISTER = API_URL + "/account/register/";
 
-//CONTACTS
+// OFFERED TEST
 export const GET_OFFERED_TESTS = API_URL + "/lab/offered-test-list/";
 export const GET_OFFERED_TEST_PROFILE = API_URL + "/lab/offered-test/";
 export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test/";
 export const UPDATE_OFFERED_TEST = API_URL + "/lab/offered-test/";
 export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test/";
+
+// TEST
+export const GET_TESTS = API_URL + "/medicaltest/test-list/";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

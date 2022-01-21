@@ -1,10 +1,13 @@
 import {
-  GET_OFFERED_TEST_PROFILE,
-  GET_OFFERED_TEST_PROFILE_FAIL,
-  GET_OFFERED_TEST_PROFILE_SUCCESS,
+  GET_TESTS,
+  GET_TESTS_FAIL,
+  GET_TESTS_SUCCESS,
   GET_OFFERED_TESTS,
   GET_OFFERED_TESTS_FAIL,
   GET_OFFERED_TESTS_SUCCESS,
+  GET_OFFERED_TEST_PROFILE,
+  GET_OFFERED_TEST_PROFILE_FAIL,
+  GET_OFFERED_TEST_PROFILE_SUCCESS,
   ADD_NEW_OFFERED_TEST,
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
@@ -15,6 +18,20 @@ import {
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
 } from "./actionTypes";
+
+export const getTests = () => ({
+  type: GET_TESTS,
+});
+
+export const getTestsSuccess = tests => ({
+  type: GET_TESTS_SUCCESS,
+  payload: tests,
+});
+
+export const getTestsFail = error => ({
+  type: GET_TESTS_FAIL,
+  payload: error,
+});
 
 export const getOfferedTests = id => ({
   type: GET_OFFERED_TESTS,

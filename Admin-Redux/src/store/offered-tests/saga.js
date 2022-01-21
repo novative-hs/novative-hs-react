@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
 import {
+  GET_TESTS,
   GET_OFFERED_TESTS,
   GET_OFFERED_TEST_PROFILE,
   ADD_NEW_OFFERED_TEST,
@@ -10,6 +11,8 @@ import {
 } from "./actionTypes";
 
 import {
+  getTestsSuccess,
+  getTestsFail,
   getOfferedTestsSuccess,
   getOfferedTestsFail,
   getOfferedTestProfileSuccess,
@@ -24,6 +27,7 @@ import {
 
 //Include Both Helper File with needed methods
 import {
+  getTests,
   getOfferedTests,
   getOfferedTestProfile,
   addNewOfferedTest,
@@ -34,10 +38,19 @@ import {
 function* fetchOfferedTests(object) {
   try {
     const response = yield call(getOfferedTests, object.payload);
-    console.log(response);
     yield put(getOfferedTestsSuccess(response));
   } catch (error) {
     yield put(getOfferedTestsFail(error));
+  }
+}
+
+function* fetchTests() {
+  try {
+    const response = yield call(getTests);
+    console.log("Response: ", response);
+    yield put(getTestsSuccess(response));
+  } catch (error) {
+    yield put(getTestsFail(error));
   }
 }
 
@@ -78,6 +91,7 @@ function* onDeleteOfferedTest({ payload: offeredTest }) {
 }
 
 function* offeredTestsSaga() {
+  yield takeEvery(GET_TESTS, fetchTests);
   yield takeEvery(GET_OFFERED_TESTS, fetchOfferedTests);
   yield takeEvery(GET_OFFERED_TEST_PROFILE, fetchOfferedTestProfile);
   yield takeEvery(ADD_NEW_OFFERED_TEST, onAddNewOfferedTest);
