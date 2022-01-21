@@ -208,11 +208,15 @@ class OfferedTestsList extends Component {
   handleOfferedTestClick = arg => {
     const offeredTest = arg;
 
+    console.log("Edit clicked: ", offeredTest);
+
     this.setState({
       offeredTest: {
         id: offeredTest.id,
         test_name: offeredTest.test_name,
         unit_name: offeredTest.unit_name,
+        test_id: offeredTest.test_id,
+        unit_id: offeredTest.unit_id,
         reporting_range: offeredTest.reporting_range,
         time_required_in_days: offeredTest.time_required_in_days,
         price: offeredTest.price,
@@ -221,6 +225,8 @@ class OfferedTestsList extends Component {
       },
       isEdit: true,
     });
+
+    console.log("Edit clicked: ", this.state.offeredTest);
 
     this.toggle();
   };
@@ -255,18 +261,11 @@ class OfferedTestsList extends Component {
       mode: "checkbox",
     };
 
-    console.log("Test: ", tests);
-    console.log("Unit: ", units);
-    console.log("Offered Test: ", offeredTests);
-
     const testList = [];
     for (let i = 0; i < tests.length; i++) testList.push(tests[i]);
 
     const unitList = [];
     for (let i = 0; i < units.length; i++) unitList.push(units[i]);
-
-    console.log("tests: ", testList);
-    console.log("units: ", unitList);
 
     return (
       <React.Fragment>
@@ -380,11 +379,11 @@ class OfferedTestsList extends Component {
                                               "",
                                             is_eqa_participation:
                                               (offeredTest &&
-                                                offeredTest.price) ||
+                                                offeredTest.is_eqa_participation) ||
                                               "",
                                             is_home_sampling_available:
                                               (offeredTest &&
-                                                offeredTest.price) ||
+                                                offeredTest.is_home_sampling_available) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -412,7 +411,7 @@ class OfferedTestsList extends Component {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
                                                 test_id: values.test_id,
-                                                unit_name: values.unit_name,
+                                                unit_id: values.unit_id,
                                                 reporting_range:
                                                   values.reporting_range,
                                                 time_required_in_days:
@@ -430,9 +429,8 @@ class OfferedTestsList extends Component {
                                               );
                                             } else {
                                               const newOfferedTest = {
-                                                test_id:
-                                                  values["testest_idt_name"],
-                                                unit_name: values["unit_name"],
+                                                test_id: values["test_id"],
+                                                unit_id: values["unit_id"],
                                                 reporting_range:
                                                   values["reporting_range"],
                                                 time_required_in_days:
@@ -446,7 +444,7 @@ class OfferedTestsList extends Component {
                                                   ],
                                                 is_home_sampling_available:
                                                   values[
-                                                    "is_eqa_partiis_home_sampling_availablecipation"
+                                                    "is_home_sampling_available"
                                                   ],
                                               };
                                               // save new OfferedTest
@@ -484,6 +482,10 @@ class OfferedTestsList extends Component {
                                                         <option
                                                           key={test["id"]}
                                                           value={test["id"]}
+                                                          selected={
+                                                            test["id"] ==
+                                                            offeredTest.test_id
+                                                          }
                                                         >
                                                           {test["name"]}
                                                         </option>
@@ -511,6 +513,10 @@ class OfferedTestsList extends Component {
                                                         <option
                                                           key={unit["id"]}
                                                           value={unit["id"]}
+                                                          selected={
+                                                            unit["id"] ==
+                                                            offeredTest.unit_id
+                                                          }
                                                         >
                                                           {unit["name"]}
                                                         </option>
@@ -600,8 +606,12 @@ class OfferedTestsList extends Component {
                                                       }
                                                       multiple={false}
                                                     >
-                                                      <option>Yes</option>
-                                                      <option>No</option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
                                                     </Field>
                                                   </div>
 
@@ -622,8 +632,12 @@ class OfferedTestsList extends Component {
                                                       }
                                                       multiple={false}
                                                     >
-                                                      <option>Yes</option>
-                                                      <option>No</option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
                                                     </Field>
                                                   </div>
                                                 </Col>
