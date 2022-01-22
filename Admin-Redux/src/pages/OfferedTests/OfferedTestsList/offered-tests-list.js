@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
+import Dropzone from "react-dropzone";
 import { withRouter, Link } from "react-router-dom";
 import {
   Card,
+  CardTitle,
   CardBody,
   Col,
   Container,
@@ -48,6 +50,7 @@ class OfferedTestsList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
+      selectedFiles: [],
       offeredTests: [],
       tests: [],
       units: [],
@@ -128,6 +131,27 @@ class OfferedTestsList extends Component {
     this.handleOfferedTestClicks = this.handleOfferedTestClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
+
+  handleAcceptedFiles = files => {
+    files.map(file =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+        formattedSize: this.formatBytes(file.size),
+      })
+    );
+
+    this.setState({ selectedFiles: files });
+  };
+
+  formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
 
   componentDidMount() {
     const { units, onGetUnits } = this.props;
@@ -240,7 +264,8 @@ class OfferedTestsList extends Component {
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewOfferedTest, onUpdateOfferedTest } = this.props;
+    const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
+      this.props;
     const { selectedOfferedTest } = this.state;
     const offeredTest = this.state.offeredTest;
 
@@ -357,13 +382,13 @@ class OfferedTestsList extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            test_name:
+                                            test_id:
                                               (offeredTest &&
-                                                offeredTest.test_name) ||
+                                                offeredTest.test_id) ||
                                               "",
-                                            unit_name:
+                                            unit_id:
                                               (offeredTest &&
-                                                offeredTest.unit_name) ||
+                                                offeredTest.unit_id) ||
                                               "",
                                             reporting_range:
                                               (offeredTest &&
@@ -387,10 +412,10 @@ class OfferedTestsList extends Component {
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            test_name: Yup.string().required(
+                                            test_id: Yup.string().required(
                                               "Please enter test name"
                                             ),
-                                            unit_name: Yup.string().required(
+                                            unit_id: Yup.string().required(
                                               "Please enter unit name"
                                             ),
                                             reporting_range:
@@ -398,7 +423,7 @@ class OfferedTestsList extends Component {
                                                 "Please enter reporting range"
                                               ),
                                             time_required_in_days:
-                                              Yup.array().required(
+                                              Yup.string().required(
                                                 "Please enter time required in days"
                                               ),
                                             price:
@@ -407,6 +432,7 @@ class OfferedTestsList extends Component {
                                               ),
                                           })}
                                           onSubmit={values => {
+                                            console.log(values);
                                             if (isEdit) {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
@@ -423,30 +449,32 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                               };
 
+                                              console.log(updateOfferedTest);
+
                                               // update OfferedTest
                                               onUpdateOfferedTest(
                                                 updateOfferedTest
                                               );
+                                              onGetOfferedTests();
                                             } else {
+                                              console.log("Inside else");
                                               const newOfferedTest = {
-                                                test_id: values["test_id"],
-                                                unit_id: values["unit_id"],
+                                                test_id: values.test_id,
+                                                unit_id: values.unit_id,
                                                 reporting_range:
-                                                  values["reporting_range"],
+                                                  values.reporting_range,
                                                 time_required_in_days:
-                                                  values[
-                                                    "time_required_in_days"
-                                                  ],
-                                                price: values["price"],
+                                                  values.time_required_in_days,
+                                                price: values.price,
                                                 is_eqa_participation:
-                                                  values[
-                                                    "is_eqa_participation"
-                                                  ],
+                                                  values.is_eqa_participation,
                                                 is_home_sampling_available:
-                                                  values[
-                                                    "is_home_sampling_available"
-                                                  ],
+                                                  values.is_home_sampling_available,
                                               };
+
+                                              console.log(values.test_id);
+                                              console.log(newOfferedTest);
+
                                               // save new OfferedTest
                                               onAddNewOfferedTest(
                                                 newOfferedTest
@@ -710,7 +738,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnits: () => dispatch(getUnits()),
   onGetOfferedTests: () => dispatch(getOfferedTests(ownProps.match.params.id)),
   onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
-  onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
+  onUpdateOfferedTest: offeredTest =>
+    dispatch(updateOfferedTest(offeredTest, ownProps.match.params.id)),
   onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
 });
 

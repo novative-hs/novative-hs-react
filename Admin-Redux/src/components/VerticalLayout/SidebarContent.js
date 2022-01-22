@@ -867,10 +867,7 @@ class SidebarContent extends Component {
             <div id="sidebar-menu">
               <ul className="metismenu list-unstyled" id="side-menu">
                 <li>
-                  <Link
-                    to={"/dashboard-lab/" + this.props.match.params.id}
-                    className=""
-                  >
+                  <Link to={"/dashboard-lab/" + this.props.match.params.id}>
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
@@ -880,6 +877,19 @@ class SidebarContent extends Component {
 
                 {/* Offered Test Links */}
                 <li>
+                  <Link
+                    to={
+                      "/dashboard-lab/" +
+                      this.props.match.params.id +
+                      "/offered-tests-list"
+                    }
+                  >
+                    <i className="fas fa-hand-holding-medical" />
+                    <span>{this.props.t("Offered Tests")}</span>
+                  </Link>
+                </li>
+
+                {/* <li>
                   <Link to="/#" className="has-arrow">
                     <i className="fas fa-hand-holding-medical" />
                     <span>{this.props.t("Offered Tests")}</span>
@@ -919,7 +929,7 @@ class SidebarContent extends Component {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
 
                 {/* Lab Pathologist Links */}
                 <li>

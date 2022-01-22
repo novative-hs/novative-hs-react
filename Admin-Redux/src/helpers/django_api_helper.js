@@ -196,8 +196,8 @@ export const getUnits = () => get(url.GET_UNITS);
 export const getOfferedTests = id => get(url.GET_OFFERED_TESTS + id);
 export const addNewOfferedTest = offeredTest =>
   post(url.ADD_NEW_OFFERED_TEST, offeredTest);
-export const updateOfferedTest = offeredTest =>
-  put(url.UPDATE_OFFERED_TEST, offeredTest);
+export const updateOfferedTest = (offeredTest, id) =>
+  put(url.UPDATE_OFFERED_TEST + id, offeredTest);
 export const deleteOfferedTest = offeredTest =>
   del(url.DELETE_OFFERED_TEST, { headers: { offeredTest } });
 export const getOfferedTestProfile = () => get(url.GET_OFFERED_TEST_PROFILE);

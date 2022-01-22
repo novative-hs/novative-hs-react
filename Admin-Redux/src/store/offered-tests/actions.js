@@ -87,9 +87,9 @@ export const addNewOfferedTest = offeredTest => ({
   payload: offeredTest,
 });
 
-export const addOfferedTestSuccess = offeredTest => ({
+export const addOfferedTestSuccess = (offeredTest, id) => ({
   type: ADD_OFFERED_TEST_SUCCESS,
-  payload: offeredTest,
+  payload: { offeredTest, id },
 });
 
 export const addOfferedTestFail = error => ({
@@ -97,9 +97,9 @@ export const addOfferedTestFail = error => ({
   payload: error,
 });
 
-export const updateOfferedTest = offeredTest => ({
+export const updateOfferedTest = (offeredTest, id) => ({
   type: UPDATE_OFFERED_TEST,
-  payload: offeredTest,
+  payload: { offeredTest, id },
 });
 
 export const updateOfferedTestSuccess = offeredTest => ({
