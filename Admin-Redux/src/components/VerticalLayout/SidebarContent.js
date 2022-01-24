@@ -889,96 +889,32 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
-                {/* <li>
-                  <Link to="/#" className="has-arrow">
-                    <i className="fas fa-hand-holding-medical" />
-                    <span>{this.props.t("Offered Tests")}</span>
-                  </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link
-                        to={
-                          "/dashboard-lab/" +
-                          this.props.match.params.id +
-                          "/offered-tests-grid"
-                        }
-                      >
-                        {this.props.t("Tests Grid")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={
-                          "/dashboard-lab/" +
-                          this.props.match.params.id +
-                          "/offered-tests-list"
-                        }
-                      >
-                        {this.props.t("Tests List")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={
-                          "/dashboard-lab/" +
-                          this.props.match.params.id +
-                          "/offered-test-detail"
-                        }
-                      >
-                        {this.props.t("Test Detail")}
-                      </Link>
-                    </li>
-                  </ul>
-                </li> */}
-
                 {/* Lab Pathologist Links */}
                 <li>
-                  <Link to="/#" className="has-arrow">
+                  <Link
+                    to={
+                      "/dashboard-lab/" +
+                      this.props.match.params.id +
+                      "/lab-pathologists-list"
+                    }
+                  >
                     <i className="fas fa-user-md" />
                     <span>{this.props.t("Lab Pathologists")}</span>
                   </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link to="/dashboard-lab/lab-pathologists-grid">
-                        {this.props.t("Pathologists Grid")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-lab/lab-pathologists-list">
-                        {this.props.t("Pathologists List")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-lab/lab-pathologist-profile">
-                        {this.props.t("Pathologist Profile")}
-                      </Link>
-                    </li>
-                  </ul>
                 </li>
 
                 {/* Sample Collector Links */}
                 <li>
-                  <Link to="/#" className="has-arrow">
+                  <Link
+                    to={
+                      "/dashboard-lab/" +
+                      this.props.match.params.id +
+                      "/sample-collectors-list"
+                    }
+                  >
                     <i className="fas fa-car-side" />
                     <span>{this.props.t("Sample Collectors")}</span>
                   </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link to="/dashboard-lab/sample-collectors-grid">
-                        {this.props.t("Collectors Grid")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-lab/sample-collectors-list">
-                        {this.props.t("Collectors List")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/dashboard-lab/sample-collector-profile">
-                        {this.props.t("Collector Profile")}
-                      </Link>
-                    </li>
-                  </ul>
                 </li>
               </ul>
             </div>

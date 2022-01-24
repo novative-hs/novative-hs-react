@@ -9,10 +9,15 @@ export const POST_REGISTER = API_URL + "/account/register/";
 
 // OFFERED TEST
 export const GET_OFFERED_TESTS = API_URL + "/lab/offered-test-list/";
-export const GET_OFFERED_TEST_PROFILE = API_URL + "/lab/offered-test/";
 export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test/";
 export const UPDATE_OFFERED_TEST = API_URL + "/lab/offered-test/";
 export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test/";
+
+// SAMPLE COLLECTOR
+export const GET_SAMPLE_COLLECTORS = API_URL + "/lab/sample-collector-list/";
+export const ADD_NEW_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector/";
+export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector/";
+export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector/";
 
 // TEST
 export const GET_TESTS = API_URL + "/medicaltest/test-list/";

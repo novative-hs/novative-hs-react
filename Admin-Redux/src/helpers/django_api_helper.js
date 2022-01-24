@@ -199,23 +199,17 @@ export const postLogin = data => post(url.POST_LOGIN, data);
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
   get(url.GET_TESTS, {
-    headers: {
-      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-    },
+    headers: authorizedHeaders,
   });
 
 export const getUnits = () =>
   get(url.GET_UNITS, {
-    headers: {
-      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-    },
+    headers: authorizedHeaders,
   });
 
 export const getOfferedTests = id =>
   get(url.GET_OFFERED_TESTS + id, {
-    headers: {
-      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-    },
+    headers: authorizedHeaders,
   });
 
 export const addNewOfferedTest = (offeredTest, id) => {
@@ -236,16 +230,62 @@ export const addNewOfferedTest = (offeredTest, id) => {
   });
 };
 
-export const updateOfferedTest = offeredTest =>
-  put(url.UPDATE_OFFERED_TEST + offeredTest.id, offeredTest, {
-    headers: {
-      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-    },
+export const updateOfferedTest = offeredTest => {
+  let formData = new FormData();
+  formData.append("id", offeredTest.id);
+  formData.append("test_id", offeredTest.test_id);
+  formData.append("unit_id", offeredTest.test_id);
+  formData.append("reporting_range", offeredTest.reporting_range);
+  formData.append("time_required_in_days", offeredTest.time_required_in_days);
+  formData.append("price", offeredTest.price);
+  formData.append("is_eqa_participation", offeredTest.is_eqa_participation);
+  formData.append(
+    "is_home_sampling_available",
+    offeredTest.is_home_sampling_available
+  );
+
+  return axios.put(url.UPDATE_OFFERED_TEST + offeredTest.id, formData, {
+    headers: authorizedHeaders,
   });
+};
 
 export const deleteOfferedTest = offeredTest =>
   del(url.DELETE_OFFERED_TEST + offeredTest.id, {
-    headers: {
-      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-    },
+    headers: authorizedHeaders,
+  });
+
+// ------------- Sample Collector Requests START -------------
+export const getSampleCollectors = id =>
+  get(url.GET_SAMPLE_COLLECTORS + id, {
+    headers: authorizedHeaders,
+  });
+
+export const addNewSampleCollector = (sampleCollector, id) => {
+  let formData = new FormData();
+  formData.append("name", sampleCollector.name);
+  formData.append("cnic", sampleCollector.cnic);
+  formData.append("phone", sampleCollector.phone);
+  formData.append("photo", sampleCollector.photo);
+
+  return axios.post(url.ADD_NEW_SAMPLE_COLLECTOR + id, formData, {
+    headers: authorizedHeaders,
+  });
+};
+
+export const updateSampleCollector = sampleCollector => {
+  let formData = new FormData();
+  formData.append("id", sampleCollector.id);
+  formData.append("name", sampleCollector.name);
+  formData.append("cnic", sampleCollector.cnic);
+  formData.append("phone", sampleCollector.phone);
+  formData.append("photo", sampleCollector.photo);
+
+  return axios.put(url.UPDATE_SAMPLE_COLLECTOR + sampleCollector.id, formData, {
+    headers: authorizedHeaders,
+  });
+};
+
+export const deleteSampleCollector = sampleCollector =>
+  del(url.DELETE_SAMPLE_COLLECTOR + sampleCollector.id, {
+    headers: authorizedHeaders,
   });

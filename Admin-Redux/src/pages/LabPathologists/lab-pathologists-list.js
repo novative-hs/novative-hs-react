@@ -42,7 +42,7 @@ import {
 
 import { isEmpty, size } from "lodash";
 
-class OfferedTestsList extends Component {
+class LabPathologistsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
@@ -287,8 +287,6 @@ class OfferedTestsList extends Component {
     const unitList = [];
     for (let i = 0; i < units.length; i++) unitList.push(units[i]);
 
-    onGetOfferedTests(); // Calling so that whenever state changes it is shown on Frontend to the user
-
     return (
       <React.Fragment>
         <DeleteModal
@@ -298,11 +296,14 @@ class OfferedTestsList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Offered Tests List | Ilaaj4u</title>
+            <title>Lab Pathologists List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Offered Tests" breadcrumbItem="Tests List" />
+            <Breadcrumbs
+              title="Lab Pathologists"
+              breadcrumbItem="Pathologists List"
+            />
             <Row>
               <Col lg="12">
                 <Card>
@@ -423,6 +424,10 @@ class OfferedTestsList extends Component {
                                               ),
                                           })}
                                           onSubmit={values => {
+                                            console.log(
+                                              "Inside onsubmit",
+                                              tests[0].name
+                                            );
                                             if (isEdit) {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
@@ -439,10 +444,13 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                               };
 
+                                              console.log(updateOfferedTest);
+
                                               // update OfferedTest
                                               onUpdateOfferedTest(
                                                 updateOfferedTest
                                               );
+                                              onGetOfferedTests();
                                             } else {
                                               const newOfferedTest = {
                                                 id:
@@ -462,10 +470,13 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                               };
 
+                                              console.log(newOfferedTest);
+
                                               // save new OfferedTest
                                               onAddNewOfferedTest(
                                                 newOfferedTest
                                               );
+                                              onGetOfferedTests();
                                             }
                                             this.setState({
                                               selectedOfferedTest: null,
@@ -698,7 +709,7 @@ class OfferedTestsList extends Component {
   }
 }
 
-OfferedTestsList.propTypes = {
+LabPathologistsList.propTypes = {
   match: PropTypes.object,
   tests: PropTypes.array,
   units: PropTypes.array,
@@ -731,4 +742,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(OfferedTestsList));
+)(withRouter(LabPathologistsList));

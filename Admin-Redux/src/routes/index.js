@@ -173,16 +173,8 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 // Offered Tests
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
-
-// Lab Pathologists
-import LabPathologistsGrid from "../pages/LabPathologists/lab-pathologists-grid";
-import LabPathologistsList from "../pages/LabPathologists/LabPathologistsList/lab-pathologists-list";
-import LabPathologistProfile from "../pages/LabPathologists/LabPathologistProfile/lab-pathologist-profile";
-
-// Sample Collectors
-import SampleCollectorsGrid from "../pages/SampleCollectors/sample-collectors-grid";
-import SampleCollectorsList from "../pages/SampleCollectors/SampleCollectorsList/sample-collectors-list";
-import SampleCollectorProfile from "../pages/SampleCollectors/SampleCollectorProfile/sample-collector-profile";
+import LabPathologistsList from "../pages/LabPathologists/lab-pathologists-list";
+import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -198,39 +190,17 @@ const authProtectedRoutes = [
 
   // ********** Lab Routes **********
   { path: "/dashboard-lab/:id", component: DashboardLab },
-
-  // Offered Test Routes
   {
     path: "/dashboard-lab/:id/offered-tests-list",
     component: OfferedTestsList,
   },
-
-  // Lab Pathologist Routes
   {
-    path: "/dashboard-lab/lab-pathologists-grid",
-    component: LabPathologistsGrid,
-  },
-  {
-    path: "/dashboard-lab/lab-pathologists-list",
+    path: "/dashboard-lab/:id/lab-pathologists-list",
     component: LabPathologistsList,
   },
   {
-    path: "/dashboard-lab/lab-pathologist-profile",
-    component: LabPathologistProfile,
-  },
-
-  // Sample Collector Routes
-  {
-    path: "/dashboard-lab/sample-collectors-grid",
-    component: SampleCollectorsGrid,
-  },
-  {
-    path: "/dashboard-lab/sample-collectors-list",
+    path: "/dashboard-lab/:id/sample-collectors-list",
     component: SampleCollectorsList,
-  },
-  {
-    path: "/dashboard-lab/sample-collector-profile",
-    component: SampleCollectorProfile,
   },
 
   { path: "/dashboard-saas", component: DashboardSaas },

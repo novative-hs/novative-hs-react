@@ -36,6 +36,9 @@ export * from "./contacts/actions";
 // offered tests
 export * from "./offered-tests/actions";
 
+// sample collectors
+export * from "./sample-collectors/actions";
+
 // contacts
 export * from "./mails/actions";
 

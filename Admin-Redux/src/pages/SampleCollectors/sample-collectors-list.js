@@ -14,7 +14,9 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  Input,
 } from "reactstrap";
+
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -23,57 +25,61 @@ import paginationFactory, {
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
-import images from "assets/images";
-
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+
+import images from "assets/images";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getUsers,
-  addNewUser,
-  updateUser,
-  deleteUser,
-} from "store/contacts/actions";
+  getSampleCollectors,
+  addNewSampleCollector,
+  updateSampleCollector,
+  deleteSampleCollector,
+} from "store/sample-collectors/actions";
 
-import { isEmpty, size, map } from "lodash";
+import { isEmpty, size } from "lodash";
 
-class LabPathologistsList extends Component {
+class SampleCollectorsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      users: [],
-      user: "",
+      selectedFiles: [],
+      sampleCollectors: [],
+      sampleCollector: "",
+      collectorImg: "",
       modal: false,
       deleteModal: false,
-      contactListColumns: [
+      sampleCollectorListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, user) => <>{user.id}</>,
+          formatter: (cellContent, sampleCollector) => (
+            <>{sampleCollector.id}</>
+          ),
         },
         {
           dataField: "img",
           text: "#",
-          formatter: (cellContent, user) => (
+          formatter: (cellContent, sampleCollector) => (
             <>
-              {!user.img ? (
+              {!sampleCollector.img ? (
                 <div className="avatar-xs">
                   <span className="avatar-title rounded-circle">
-                    {user.name.charAt(0)}
+                    {sampleCollector.name.charAt(0)}
                   </span>
                 </div>
               ) : (
                 <div>
                   <img
                     className="rounded-circle avatar-xs"
-                    src={images[user.img]}
+                    src={images[sampleCollector.img]}
                     alt=""
                   />
                 </div>
@@ -82,59 +88,18 @@ class LabPathologistsList extends Component {
           ),
         },
         {
-          text: "Name",
           dataField: "name",
-          sort: true,
-          formatter: (cellContent, user) => (
-            <>
-              <h5 className="font-size-14 mb-1">
-                <Link to="#" className="text-dark">
-                  {user.name}
-                </Link>
-              </h5>
-              <p className="text-muted mb-0">{user.designation}</p>
-            </>
-          ),
-        },
-        {
-          dataField: "email",
-          text: "Email",
+          text: "Name",
           sort: true,
         },
         {
-          text: "Tags",
-          dataField: "tags",
+          dataField: "cnic",
+          text: "CNIC",
           sort: true,
-          formatter: (cellContent, user) => (
-            <>
-              {map(
-                user.tags,
-                (tag, index) =>
-                  index < 2 && (
-                    <Link
-                      to="#"
-                      className="badge badge-soft-primary font-size-11 m-1"
-                      key={"_skill_" + user.id + index}
-                    >
-                      {tag}
-                    </Link>
-                  )
-              )}
-              {size(user.tags) > 2 && (
-                <Link
-                  to="#"
-                  className="badge badge-soft-primary font-size-11 m-1"
-                  key={"_skill_" + user.id}
-                >
-                  {size(user.tags) - 1} + more
-                </Link>
-              )}
-            </>
-          ),
         },
         {
-          dataField: "projects",
-          text: "Projects",
+          dataField: "phone",
+          text: "Phone No.",
           sort: true,
         },
         {
@@ -142,20 +107,22 @@ class LabPathologistsList extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, user) => (
+          formatter: (cellContent, sampleCollector) => (
             <div className="d-flex gap-3">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() => this.handleUserClick(user)}
+                  onClick={() =>
+                    this.handleSampleCollectorClick(sampleCollector)
+                  }
                 ></i>
               </Link>
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
-                  onClick={() => this.onClickDelete(user)}
+                  onClick={() => this.onClickDelete(sampleCollector)}
                 ></i>
               </Link>
             </div>
@@ -163,18 +130,41 @@ class LabPathologistsList extends Component {
         },
       ],
     };
-    this.handleUserClick = this.handleUserClick.bind(this);
+    this.handleSampleCollectorClick =
+      this.handleSampleCollectorClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleUserClicks = this.handleUserClicks.bind(this);
+    this.handleSampleCollectorClicks =
+      this.handleSampleCollectorClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
+  handleAcceptedFiles = files => {
+    files.map(file =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+        formattedSize: this.formatBytes(file.size),
+      })
+    );
+
+    this.setState({ selectedFiles: files });
+  };
+
+  formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
+
   componentDidMount() {
-    const { users, onGetUsers } = this.props;
-    if (users && !users.length) {
-      onGetUsers();
+    const { sampleCollectors, onGetSampleCollectors } = this.props;
+    if (sampleCollectors && !sampleCollectors.length) {
+      onGetSampleCollectors();
     }
-    this.setState({ users });
+    this.setState({ sampleCollectors });
   }
 
   toggle() {
@@ -183,16 +173,19 @@ class LabPathologistsList extends Component {
     }));
   }
 
-  handleUserClicks = () => {
-    this.setState({ user: "", isEdit: false });
+  handleSampleCollectorClicks = () => {
+    this.setState({ sampleCollector: "", isEdit: false });
     this.toggle();
   };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { users } = this.props;
-    if (!isEmpty(users) && size(prevProps.users) !== size(users)) {
-      this.setState({ users: {}, isEdit: false });
+    const { sampleCollectors } = this.props;
+    if (
+      !isEmpty(sampleCollectors) &&
+      size(prevProps.sampleCollectors) !== size(sampleCollectors)
+    ) {
+      this.setState({ sampleCollectors: {}, isEdit: false });
     }
   }
 
@@ -216,31 +209,33 @@ class LabPathologistsList extends Component {
     }));
   };
 
-  onClickDelete = users => {
-    this.setState({ users: users });
+  onClickDelete = sampleCollectors => {
+    this.setState({ sampleCollectors: sampleCollectors });
     this.setState({ deleteModal: true });
   };
 
-  handleDeleteUser = () => {
-    const { onDeleteUser } = this.props;
-    const { users } = this.state;
-    if (users.id !== undefined) {
-      onDeleteUser(users);
+  handleDeleteSampleCollector = () => {
+    const { onDeleteSampleCollector, onGetSampleCollectors } = this.props;
+    const { sampleCollectors } = this.state;
+    if (sampleCollectors.id !== undefined) {
+      onDeleteSampleCollector(sampleCollectors);
+      onGetSampleCollectors();
       this.setState({ deleteModal: false });
     }
   };
 
-  handleUserClick = arg => {
-    const user = arg;
+  handleSampleCollectorClick = arg => {
+    const sampleCollector = arg;
+
+    console.log("Edit clicked: ", sampleCollector);
 
     this.setState({
-      user: {
-        id: user.id,
-        name: user.name,
-        designation: user.designation,
-        email: user.email,
-        tags: user.tags,
-        projects: user.projects,
+      sampleCollector: {
+        id: sampleCollector.id,
+        name: sampleCollector.name,
+        cnic: sampleCollector.cnic,
+        phone: sampleCollector.phone,
+        photo: sampleCollector.photo,
       },
       isEdit: true,
     });
@@ -249,20 +244,23 @@ class LabPathologistsList extends Component {
   };
 
   render() {
-    // const { users } = this.state
     const { SearchBar } = Search;
 
-    const { users } = this.props;
+    const { sampleCollectors } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewUser, onUpdateUser } = this.props;
-    const { selectedUser } = this.state;
-    const user = this.state.user;
+    const {
+      onAddNewSampleCollector,
+      onUpdateSampleCollector,
+      onGetSampleCollectors,
+    } = this.props;
+    const { selectedSampleCollector } = this.state;
+    const sampleCollector = this.state.sampleCollector;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: users.length, // replace later with size(users),
+      totalSize: sampleCollectors.length, // replace later with size(sampleCollectors),
       custom: true,
     };
 
@@ -281,20 +279,18 @@ class LabPathologistsList extends Component {
       <React.Fragment>
         <DeleteModal
           show={deleteModal}
-          onDeleteClick={this.handleDeleteUser}
+          onDeleteClick={this.handleDeleteSampleCollector}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
         <div className="page-content">
           <MetaTags>
-            <title>
-              Lab Pathologists List | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Sample Collectors List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Lab Pathologists"
-              breadcrumbItem="Pathologists List"
+              title="Sample Collectors"
+              breadcrumbItem="Collectors List"
             />
             <Row>
               <Col lg="12">
@@ -303,14 +299,14 @@ class LabPathologistsList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.contactListColumns}
-                      data={users}
+                      columns={this.state.sampleCollectorListColumns}
+                      data={sampleCollectors}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.contactListColumns}
-                          data={users}
+                          columns={this.state.sampleCollectorListColumns}
+                          data={sampleCollectors}
                           search
                         >
                           {toolkitprops => (
@@ -331,10 +327,10 @@ class LabPathologistsList extends Component {
                                     <Button
                                       color="primary"
                                       className="font-16 btn-block btn btn-primary"
-                                      onClick={this.handleUserClicks}
+                                      onClick={this.handleSampleCollectorClicks}
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Lab Pathologist
+                                      Add New Test
                                     </Button>
                                   </div>
                                 </Col>
@@ -364,68 +360,94 @@ class LabPathologistsList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                        {!!isEdit ? "Edit User" : "Add User"}
+                                        {!!isEdit
+                                          ? "Edit Sample Collector"
+                                          : "Add Sample Collector"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            name: (user && user.name) || "",
-                                            designation:
-                                              (user && user.designation) || "",
-                                            email: (user && user.email) || "",
-                                            tags: (user && user.tags) || [],
-                                            projects:
-                                              (user && user.projects) || "",
+                                            name:
+                                              (sampleCollector &&
+                                                sampleCollector.name) ||
+                                              "",
+                                            cnic:
+                                              (sampleCollector &&
+                                                sampleCollector.cnic) ||
+                                              "",
+                                            phone:
+                                              (sampleCollector &&
+                                                sampleCollector.phone) ||
+                                              "",
+                                            photo:
+                                              (sampleCollector &&
+                                                sampleCollector.photo) ||
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             name: Yup.string().required(
-                                              "Please Enter Your Name"
+                                              "Please enter name"
                                             ),
-                                            designation: Yup.string().required(
-                                              "Please Enter Your Designation"
-                                            ),
-                                            email: Yup.string().required(
-                                              "Please Enter Your Email"
-                                            ),
-                                            tags: Yup.array().required(
-                                              "Please Select Tags"
-                                            ),
-                                            projects: Yup.string().required(
-                                              "Please Enter Your Projects"
-                                            ),
+                                            cnic: Yup.string()
+                                              .required(
+                                                "Please enter your CNIC"
+                                              )
+                                              .matches(
+                                                /^[0-9]{5}-[0-9]{7}-[0-9]$/,
+                                                "Please enter a valid CNIC e.g. 37106-8234782-3"
+                                              ),
+                                            phone: Yup.string()
+                                              .required("Please enter phone")
+                                              .matches(
+                                                /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                                                "Please enter a valid Pakistani phone number e.g. +923123456789"
+                                              ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
-                                              const updateUser = {
-                                                id: user.id,
+                                              const updateSampleCollector = {
+                                                id: sampleCollector.id,
                                                 name: values.name,
-                                                designation: values.designation,
-                                                tags: values.tags,
-                                                email: values.email,
-                                                projects: values.projects,
+                                                cnic: values.cnic,
+                                                phone: values.phone,
+                                                photo: this.state.collectorImg,
                                               };
 
-                                              // update user
-                                              onUpdateUser(updateUser);
+                                              console.log(
+                                                updateSampleCollector
+                                              );
+
+                                              // update SampleCollector
+                                              onUpdateSampleCollector(
+                                                updateSampleCollector
+                                              );
+                                              onGetSampleCollectors();
                                             } else {
-                                              const newUser = {
+                                              console.log(
+                                                this.state.collectorImg
+                                              );
+                                              const newSampleCollector = {
                                                 id:
                                                   Math.floor(
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
-                                                name: values["name"],
-                                                designation:
-                                                  values["designation"],
-                                                email: values["email"],
-                                                tags: values["tags"],
-                                                projects: values["projects"],
+                                                name: values.name,
+                                                cnic: values.cnic,
+                                                phone: values.phone,
+                                                photo: this.state.collectorImg,
                                               };
-                                              // save new user
-                                              onAddNewUser(newUser);
+
+                                              console.log(newSampleCollector);
+
+                                              // save new SampleCollector
+                                              onAddNewSampleCollector(
+                                                newSampleCollector
+                                              );
+                                              onGetSampleCollectors();
                                             }
                                             this.setState({
-                                              selectedUser: null,
+                                              selectedSampleCollector: null,
                                             });
                                             this.toggle();
                                           }}
@@ -455,96 +477,83 @@ class LabPathologistsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Designation
+                                                      CNIC
                                                     </Label>
                                                     <Field
-                                                      name="designation"
+                                                      name="cnic"
                                                       type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.designation &&
-                                                        touched.designation
+                                                        (errors.cnic &&
+                                                        touched.cnic
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
                                                     <ErrorMessage
-                                                      name="designation"
+                                                      name="cnic"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Email
+                                                      Phone
                                                     </Label>
                                                     <Field
-                                                      name="email"
+                                                      name="phone"
                                                       type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.email &&
-                                                        touched.email
+                                                        (errors.phone &&
+                                                        touched.phone
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
                                                     <ErrorMessage
-                                                      name="email"
+                                                      name="phone"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
+                                                  {/* Photo field */}
                                                   <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Tags
-                                                    </Label>
-                                                    <Field
-                                                      name="tags"
-                                                      as="select"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.tags &&
-                                                        touched.tags
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      multiple={true}
+                                                    <Label
+                                                      for="name"
+                                                      className="form-label"
                                                     >
-                                                      <option>Photoshop</option>
-                                                      <option>
-                                                        illustrator
-                                                      </option>
-                                                      <option>Html</option>
-                                                      <option>Php</option>
-                                                      <option>Java</option>
-                                                      <option>Python</option>
-                                                      <option>
-                                                        UI/UX Designer
-                                                      </option>
-                                                      <option>Ruby</option>
-                                                      <option>Css</option>
-                                                    </Field>
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Projects
+                                                      Photo
                                                     </Label>
-                                                    <Field
-                                                      name="projects"
-                                                      type="text"
+                                                    <Input
+                                                      id="formFile"
+                                                      name="photo"
+                                                      placeholder="Choose image"
+                                                      type="file"
+                                                      multiple={false}
+                                                      accept=".jpg,.jpeg,.png"
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          collectorImg:
+                                                            e.target.files[0],
+                                                        })
+                                                      }
                                                       className={
                                                         "form-control" +
-                                                        (errors.projects &&
-                                                        touched.projects
+                                                        (errors.photo &&
+                                                        touched.photo
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
+
                                                     <ErrorMessage
-                                                      name="projects"
+                                                      name="photo"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -594,27 +603,32 @@ class LabPathologistsList extends Component {
   }
 }
 
-LabPathologistsList.propTypes = {
-  users: PropTypes.array,
+SampleCollectorsList.propTypes = {
+  match: PropTypes.object,
+  sampleCollectors: PropTypes.array,
   className: PropTypes.any,
-  onGetUsers: PropTypes.func,
-  onAddNewUser: PropTypes.func,
-  onDeleteUser: PropTypes.func,
-  onUpdateUser: PropTypes.func,
+  onGetSampleCollectors: PropTypes.func,
+  onAddNewSampleCollector: PropTypes.func,
+  onDeleteSampleCollector: PropTypes.func,
+  onUpdateSampleCollector: PropTypes.func,
 };
 
-const mapStateToProps = ({ contacts }) => ({
-  users: contacts.users,
+const mapStateToProps = ({ sampleCollectors }) => ({
+  sampleCollectors: sampleCollectors.sampleCollectors,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetUsers: () => dispatch(getUsers()),
-  onAddNewUser: user => dispatch(addNewUser(user)),
-  onUpdateUser: user => dispatch(updateUser(user)),
-  onDeleteUser: user => dispatch(deleteUser(user)),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetSampleCollectors: () =>
+    dispatch(getSampleCollectors(ownProps.match.params.id)),
+  onAddNewSampleCollector: sampleCollector =>
+    dispatch(addNewSampleCollector(sampleCollector, ownProps.match.params.id)),
+  onUpdateSampleCollector: sampleCollector =>
+    dispatch(updateSampleCollector(sampleCollector)),
+  onDeleteSampleCollector: sampleCollector =>
+    dispatch(deleteSampleCollector(sampleCollector)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(LabPathologistsList));
+)(withRouter(SampleCollectorsList));
