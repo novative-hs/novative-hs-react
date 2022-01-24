@@ -740,7 +740,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
   onUpdateOfferedTest: offeredTest =>
     dispatch(updateOfferedTest(offeredTest, ownProps.match.params.id)),
-  onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
+  onDeleteOfferedTest: offeredTest =>
+    dispatch(deleteOfferedTest(offeredTest, ownProps.match.params.id)),
 });
 
 export default connect(

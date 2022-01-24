@@ -86,14 +86,9 @@ function* onAddNewOfferedTest({ payload: offeredTest }) {
   }
 }
 
-function* onUpdateOfferedTest(object) {
-  console.log("ID: ", object.payload.id);
+function* onUpdateOfferedTest({ payload: offeredTest }) {
   try {
-    const response = yield call(
-      updateOfferedTest,
-      object.payload.offeredTest,
-      object.payload.id
-    );
+    const response = yield call(updateOfferedTest, offeredTest);
     yield put(updateOfferedTestSuccess(response));
   } catch (error) {
     yield put(updateOfferedTestFail(error));

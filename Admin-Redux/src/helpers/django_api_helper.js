@@ -191,13 +191,47 @@ export const postCorporateInformation = (url, data) => {
 export const postLogin = data => post(url.POST_LOGIN, data);
 
 // Offered Test Requests
-export const getTests = () => get(url.GET_TESTS);
-export const getUnits = () => get(url.GET_UNITS);
-export const getOfferedTests = id => get(url.GET_OFFERED_TESTS + id);
+export const getTests = () =>
+  get(url.GET_TESTS, {
+    headers: {
+      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+    },
+  });
+export const getUnits = () =>
+  get(url.GET_UNITS, {
+    headers: {
+      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+    },
+  });
+export const getOfferedTests = id =>
+  get(url.GET_OFFERED_TESTS + id, {
+    headers: {
+      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+    },
+  });
 export const addNewOfferedTest = offeredTest =>
-  post(url.ADD_NEW_OFFERED_TEST, offeredTest);
-export const updateOfferedTest = (offeredTest, id) =>
-  put(url.UPDATE_OFFERED_TEST + id, offeredTest);
-export const deleteOfferedTest = offeredTest =>
-  del(url.DELETE_OFFERED_TEST, { headers: { offeredTest } });
+  post(url.ADD_NEW_OFFERED_TEST, offeredTest, {
+    headers: {
+      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+    },
+  });
+
+export const updateOfferedTest = offeredTest => {
+  console.log("Test: ", offeredTest);
+
+  put(url.UPDATE_OFFERED_TEST + offeredTest.id, offeredTest, {
+    headers: {
+      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+    },
+  });
+};
+
+export const deleteOfferedTest = offeredTest => {
+  del(url.DELETE_OFFERED_TEST + offeredTest.id, {
+    headers: {
+      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+    },
+  });
+};
+
 export const getOfferedTestProfile = () => get(url.GET_OFFERED_TEST_PROFILE);

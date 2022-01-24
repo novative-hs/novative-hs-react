@@ -99,7 +99,7 @@ export const addOfferedTestFail = error => ({
 
 export const updateOfferedTest = (offeredTest, id) => ({
   type: UPDATE_OFFERED_TEST,
-  payload: { offeredTest, id },
+  payload: offeredTest,
 });
 
 export const updateOfferedTestSuccess = offeredTest => ({
@@ -112,7 +112,7 @@ export const updateOfferedTestFail = error => ({
   payload: error,
 });
 
-export const deleteOfferedTest = offeredTest => ({
+export const deleteOfferedTest = (offeredTest, id) => ({
   type: DELETE_OFFERED_TEST,
   payload: offeredTest,
 });
