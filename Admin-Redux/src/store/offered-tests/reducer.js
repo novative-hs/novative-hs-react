@@ -11,15 +11,12 @@ import {
   UPDATE_OFFERED_TEST_FAIL,
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
-  GET_OFFERED_TEST_PROFILE_SUCCESS,
-  GET_OFFERED_TEST_PROFILE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   units: [],
   tests: [],
   offeredTests: [],
-  offeredTestProfile: {},
   error: {},
 };
 
@@ -73,12 +70,6 @@ const tests = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    case GET_OFFERED_TEST_PROFILE_SUCCESS:
-      return {
-        ...state,
-        offeredTestProfile: action.payload,
-      };
-
     case UPDATE_OFFERED_TEST_SUCCESS:
       return {
         ...state,
@@ -105,12 +96,6 @@ const tests = (state = INIT_STATE, action) => {
       };
 
     case DELETE_OFFERED_TEST_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
-    case GET_OFFERED_TEST_PROFILE_FAIL:
       return {
         ...state,
         error: action.payload,

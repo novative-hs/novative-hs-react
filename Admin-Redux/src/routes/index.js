@@ -172,9 +172,7 @@ import ContactsList from "../pages/Contacts/ContactList/contacts-list";
 import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile";
 
 // Offered Tests
-import OfferedTestsGrid from "../pages/OfferedTests/offered-tests-grid";
-import OfferedTestsList from "../pages/OfferedTests/OfferedTestsList/offered-tests-list";
-import OfferedTestDetail from "../pages/OfferedTests/OfferedTestDetail/offered-test-detail";
+import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
 
 // Lab Pathologists
 import LabPathologistsGrid from "../pages/LabPathologists/lab-pathologists-grid";
@@ -203,16 +201,8 @@ const authProtectedRoutes = [
 
   // Offered Test Routes
   {
-    path: "/dashboard-lab/:id/offered-tests-grid",
-    component: OfferedTestsGrid,
-  },
-  {
     path: "/dashboard-lab/:id/offered-tests-list",
     component: OfferedTestsList,
-  },
-  {
-    path: "/dashboard-lab/:id/offered-test-detail",
-    component: OfferedTestDetail,
   },
 
   // Lab Pathologist Routes

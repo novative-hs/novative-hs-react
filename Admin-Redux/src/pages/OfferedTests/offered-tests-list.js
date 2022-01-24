@@ -6,7 +6,6 @@ import Dropzone from "react-dropzone";
 import { withRouter, Link } from "react-router-dom";
 import {
   Card,
-  CardTitle,
   CardBody,
   Col,
   Container,
@@ -17,6 +16,7 @@ import {
   ModalBody,
   Label,
 } from "reactstrap";
+
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -24,8 +24,6 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
-
-import images from "assets/images";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -43,7 +41,7 @@ import {
   deleteOfferedTest,
 } from "store/offered-tests/actions";
 
-import { isEmpty, size, map } from "lodash";
+import { isEmpty, size } from "lodash";
 
 class OfferedTestsList extends Component {
   constructor(props) {
@@ -250,8 +248,6 @@ class OfferedTestsList extends Component {
       isEdit: true,
     });
 
-    console.log("Edit clicked: ", this.state.offeredTest);
-
     this.toggle();
   };
 
@@ -385,11 +381,11 @@ class OfferedTestsList extends Component {
                                             test_id:
                                               (offeredTest &&
                                                 offeredTest.test_id) ||
-                                              "",
+                                              "1",
                                             unit_id:
                                               (offeredTest &&
                                                 offeredTest.unit_id) ||
-                                              "",
+                                              "1",
                                             reporting_range:
                                               (offeredTest &&
                                                 offeredTest.reporting_range) ||
@@ -405,19 +401,13 @@ class OfferedTestsList extends Component {
                                             is_eqa_participation:
                                               (offeredTest &&
                                                 offeredTest.is_eqa_participation) ||
-                                              "",
+                                              "Yes",
                                             is_home_sampling_available:
                                               (offeredTest &&
                                                 offeredTest.is_home_sampling_available) ||
-                                              "",
+                                              "Yes",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            test_id: Yup.string().required(
-                                              "Please enter test name"
-                                            ),
-                                            unit_id: Yup.string().required(
-                                              "Please enter unit name"
-                                            ),
                                             reporting_range:
                                               Yup.string().required(
                                                 "Please enter reporting range"
@@ -432,7 +422,10 @@ class OfferedTestsList extends Component {
                                               ),
                                           })}
                                           onSubmit={values => {
-                                            console.log(values);
+                                            console.log(
+                                              "Inside onsubmit",
+                                              tests[0].name
+                                            );
                                             if (isEdit) {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
@@ -457,8 +450,11 @@ class OfferedTestsList extends Component {
                                               );
                                               onGetOfferedTests();
                                             } else {
-                                              console.log("Inside else");
                                               const newOfferedTest = {
+                                                id:
+                                                  Math.floor(
+                                                    Math.random() * (30 - 20)
+                                                  ) + 20,
                                                 test_id: values.test_id,
                                                 unit_id: values.unit_id,
                                                 reporting_range:
@@ -472,13 +468,13 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                               };
 
-                                              console.log(values.test_id);
                                               console.log(newOfferedTest);
 
                                               // save new OfferedTest
                                               onAddNewOfferedTest(
                                                 newOfferedTest
                                               );
+                                              onGetOfferedTests();
                                             }
                                             this.setState({
                                               selectedOfferedTest: null,
@@ -497,6 +493,9 @@ class OfferedTestsList extends Component {
                                                     <Field
                                                       name="test_id"
                                                       as="select"
+                                                      defaultValue={
+                                                        offeredTest.test_id
+                                                      }
                                                       className={
                                                         "form-control" +
                                                         (errors.test_id &&
@@ -510,10 +509,6 @@ class OfferedTestsList extends Component {
                                                         <option
                                                           key={test["id"]}
                                                           value={test["id"]}
-                                                          selected={
-                                                            test["id"] ==
-                                                            offeredTest.test_id
-                                                          }
                                                         >
                                                           {test["name"]}
                                                         </option>
@@ -528,6 +523,9 @@ class OfferedTestsList extends Component {
                                                     <Field
                                                       name="unit_id"
                                                       as="select"
+                                                      defaultValue={
+                                                        offeredTest.unit_id
+                                                      }
                                                       className={
                                                         "form-control" +
                                                         (errors.unit_id &&
@@ -541,10 +539,6 @@ class OfferedTestsList extends Component {
                                                         <option
                                                           key={unit["id"]}
                                                           value={unit["id"]}
-                                                          selected={
-                                                            unit["id"] ==
-                                                            offeredTest.unit_id
-                                                          }
                                                         >
                                                           {unit["name"]}
                                                         </option>
@@ -737,11 +731,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTests: () => dispatch(getTests()),
   onGetUnits: () => dispatch(getUnits()),
   onGetOfferedTests: () => dispatch(getOfferedTests(ownProps.match.params.id)),
-  onAddNewOfferedTest: offeredTest => dispatch(addNewOfferedTest(offeredTest)),
-  onUpdateOfferedTest: offeredTest =>
-    dispatch(updateOfferedTest(offeredTest, ownProps.match.params.id)),
-  onDeleteOfferedTest: offeredTest =>
-    dispatch(deleteOfferedTest(offeredTest, ownProps.match.params.id)),
+  onAddNewOfferedTest: offeredTest =>
+    dispatch(addNewOfferedTest(offeredTest, ownProps.match.params.id)),
+  onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
+  onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
 });
 
 export default connect(

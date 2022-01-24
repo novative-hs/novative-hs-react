@@ -7,6 +7,12 @@ const headers = {
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };
 
+const authorizedHeaders = {
+  Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+  "Content-Type":
+    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+};
+
 // Post Register Information to create account
 export const postRegister = (url, data) => {
   return axios
@@ -190,48 +196,56 @@ export const postCorporateInformation = (url, data) => {
 // Login Method
 export const postLogin = data => post(url.POST_LOGIN, data);
 
-// Offered Test Requests
+// ------------- Offered Test Requests START -------------
 export const getTests = () =>
   get(url.GET_TESTS, {
     headers: {
       Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
     },
   });
+
 export const getUnits = () =>
   get(url.GET_UNITS, {
     headers: {
       Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
     },
   });
+
 export const getOfferedTests = id =>
   get(url.GET_OFFERED_TESTS + id, {
     headers: {
       Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
     },
   });
-export const addNewOfferedTest = offeredTest =>
-  post(url.ADD_NEW_OFFERED_TEST, offeredTest, {
-    headers: {
-      Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-    },
+
+export const addNewOfferedTest = (offeredTest, id) => {
+  let formData = new FormData();
+  formData.append("test_id", offeredTest.test_id);
+  formData.append("unit_id", offeredTest.test_id);
+  formData.append("reporting_range", offeredTest.reporting_range);
+  formData.append("time_required_in_days", offeredTest.time_required_in_days);
+  formData.append("price", offeredTest.price);
+  formData.append("is_eqa_participation", offeredTest.is_eqa_participation);
+  formData.append(
+    "is_home_sampling_available",
+    offeredTest.is_home_sampling_available
+  );
+
+  return axios.post(url.ADD_NEW_OFFERED_TEST + id, formData, {
+    headers: authorizedHeaders,
   });
+};
 
-export const updateOfferedTest = offeredTest => {
-  console.log("Test: ", offeredTest);
-
+export const updateOfferedTest = offeredTest =>
   put(url.UPDATE_OFFERED_TEST + offeredTest.id, offeredTest, {
     headers: {
       Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
     },
   });
-};
 
-export const deleteOfferedTest = offeredTest => {
+export const deleteOfferedTest = offeredTest =>
   del(url.DELETE_OFFERED_TEST + offeredTest.id, {
     headers: {
       Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
     },
   });
-};
-
-export const getOfferedTestProfile = () => get(url.GET_OFFERED_TEST_PROFILE);

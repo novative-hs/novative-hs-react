@@ -8,9 +8,6 @@ import {
   GET_OFFERED_TESTS,
   GET_OFFERED_TESTS_FAIL,
   GET_OFFERED_TESTS_SUCCESS,
-  GET_OFFERED_TEST_PROFILE,
-  GET_OFFERED_TEST_PROFILE_FAIL,
-  GET_OFFERED_TEST_PROFILE_SUCCESS,
   ADD_NEW_OFFERED_TEST,
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
@@ -68,28 +65,14 @@ export const getOfferedTestsFail = error => ({
   payload: error,
 });
 
-export const getOfferedTestProfile = () => ({
-  type: GET_OFFERED_TEST_PROFILE,
-});
-
-export const getOfferedTestProfileSuccess = offeredTestProfile => ({
-  type: GET_OFFERED_TEST_PROFILE_SUCCESS,
-  payload: offeredTestProfile,
-});
-
-export const getOfferedTestProfileFail = error => ({
-  type: GET_OFFERED_TEST_PROFILE_FAIL,
-  payload: error,
-});
-
-export const addNewOfferedTest = offeredTest => ({
+export const addNewOfferedTest = (offeredTest, id) => ({
   type: ADD_NEW_OFFERED_TEST,
-  payload: offeredTest,
+  payload: { offeredTest, id },
 });
 
-export const addOfferedTestSuccess = (offeredTest, id) => ({
+export const addOfferedTestSuccess = offeredTest => ({
   type: ADD_OFFERED_TEST_SUCCESS,
-  payload: { offeredTest, id },
+  payload: offeredTest,
 });
 
 export const addOfferedTestFail = error => ({
@@ -97,7 +80,7 @@ export const addOfferedTestFail = error => ({
   payload: error,
 });
 
-export const updateOfferedTest = (offeredTest, id) => ({
+export const updateOfferedTest = offeredTest => ({
   type: UPDATE_OFFERED_TEST,
   payload: offeredTest,
 });
@@ -112,7 +95,7 @@ export const updateOfferedTestFail = error => ({
   payload: error,
 });
 
-export const deleteOfferedTest = (offeredTest, id) => ({
+export const deleteOfferedTest = offeredTest => ({
   type: DELETE_OFFERED_TEST,
   payload: offeredTest,
 });
