@@ -890,7 +890,7 @@ class SidebarContent extends Component {
                 </li>
 
                 {/* Lab Pathologist Links */}
-                <li>
+                {/* <li>
                   <Link
                     to={
                       "/dashboard-lab/" +
@@ -901,7 +901,7 @@ class SidebarContent extends Component {
                     <i className="fas fa-user-md" />
                     <span>{this.props.t("Lab Pathologists")}</span>
                   </Link>
-                </li>
+                </li> */}
 
                 {/* Sample Collector Links */}
                 <li>
