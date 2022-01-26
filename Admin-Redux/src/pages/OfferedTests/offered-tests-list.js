@@ -129,26 +129,26 @@ class OfferedTestsList extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
-  handleAcceptedFiles = files => {
-    files.map(file =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-        formattedSize: this.formatBytes(file.size),
-      })
-    );
+  // handleAcceptedFiles = files => {
+  //   files.map(file =>
+  //     Object.assign(file, {
+  //       preview: URL.createObjectURL(file),
+  //       formattedSize: this.formatBytes(file.size),
+  //     })
+  //   );
 
-    this.setState({ selectedFiles: files });
-  };
+  //   this.setState({ selectedFiles: files });
+  // };
 
-  formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  // formatBytes = (bytes, decimals = 2) => {
+  //   if (bytes === 0) return "0 Bytes";
+  //   const k = 1024;
+  //   const dm = decimals < 0 ? 0 : decimals;
+  //   const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  };
+  //   const i = Math.floor(Math.log(bytes) / Math.log(k));
+  //   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  // };
 
   componentDidMount() {
     const { units, onGetUnits } = this.props;
@@ -218,10 +218,13 @@ class OfferedTestsList extends Component {
   };
 
   handleDeleteOfferedTest = () => {
-    const { onDeleteOfferedTest } = this.props;
+    const { onDeleteOfferedTest, onGetOfferedTests } = this.props;
     const { offeredTests } = this.state;
     if (offeredTests.id !== undefined) {
       onDeleteOfferedTest(offeredTests);
+      setTimeout(() => {
+        onGetOfferedTests();
+      }, 1000);
       this.setState({ deleteModal: false });
     }
   };
@@ -282,12 +285,22 @@ class OfferedTestsList extends Component {
     };
 
     const testList = [];
-    for (let i = 0; i < tests.length; i++) testList.push(tests[i]);
+    for (let i = 0; i < tests.length; i++) {
+      let flag = 0;
 
-    const unitList = [];
-    for (let i = 0; i < units.length; i++) unitList.push(units[i]);
+      // Check if test available in our database is already being offered by lab
+      // If yes then don't push it in testList
+      for (let j = 0; j < offeredTests.length; j++) {
+        if (tests[i].id == offeredTests[j].test_id) {
+          flag = 1;
+        }
+      }
+      if (!flag) {
+        testList.push(tests[i]);
+      }
+    }
 
-    onGetOfferedTests(); // Calling so that whenever state changes it is shown on Frontend to the user
+    console.log("List: ", testList);
 
     return (
       <React.Fragment>
@@ -339,6 +352,7 @@ class OfferedTestsList extends Component {
                                       color="primary"
                                       className="font-16 btn-block btn btn-primary"
                                       onClick={this.handleOfferedTestClicks}
+                                      disabled={testList.length == 0}
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
                                       Add New Test
@@ -382,11 +396,11 @@ class OfferedTestsList extends Component {
                                             test_id:
                                               (offeredTest &&
                                                 offeredTest.test_id) ||
-                                              "1",
+                                              "",
                                             unit_id:
                                               (offeredTest &&
                                                 offeredTest.unit_id) ||
-                                              "1",
+                                              "",
                                             reporting_range:
                                               (offeredTest &&
                                                 offeredTest.reporting_range) ||
@@ -426,8 +440,12 @@ class OfferedTestsList extends Component {
                                             if (isEdit) {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
-                                                test_id: values.test_id,
-                                                unit_id: values.unit_id,
+                                                test_id: parseInt(
+                                                  values.test_id
+                                                ),
+                                                unit_id: parseInt(
+                                                  values.unit_id
+                                                ),
                                                 reporting_range:
                                                   values.reporting_range,
                                                 time_required_in_days:
@@ -443,7 +461,20 @@ class OfferedTestsList extends Component {
                                               onUpdateOfferedTest(
                                                 updateOfferedTest
                                               );
+
+                                              setTimeout(() => {
+                                                onGetOfferedTests();
+                                              }, 1000);
                                             } else {
+                                              // If there is no test id and unit id values then set first item's id as their values
+                                              if (!values.test_id) {
+                                                values.test_id = testList[0].id;
+                                              }
+
+                                              if (!values.unit_id) {
+                                                values.unit_id = units[0].id;
+                                              }
+
                                               const newOfferedTest = {
                                                 id:
                                                   Math.floor(
@@ -462,10 +493,17 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                               };
 
+                                              console.log(values.test_id);
+                                              console.log(newOfferedTest);
+
                                               // save new OfferedTest
                                               onAddNewOfferedTest(
                                                 newOfferedTest
                                               );
+
+                                              setTimeout(() => {
+                                                onGetOfferedTests();
+                                              }, 1000);
                                             }
                                             this.setState({
                                               selectedOfferedTest: null,
@@ -477,35 +515,72 @@ class OfferedTestsList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Test name
-                                                    </Label>
-                                                    <Field
-                                                      name="test_id"
-                                                      as="select"
-                                                      defaultValue={
-                                                        offeredTest.test_id
-                                                      }
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.test_id &&
-                                                        touched.test_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      multiple={false}
-                                                    >
-                                                      {tests.map(test => (
+                                                  {/* Make field readonly in case of edit form */}
+                                                  {offeredTest.test_id &&
+                                                  offeredTest.test_id ? (
+                                                    <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Test name
+                                                      </Label>
+                                                      <Field
+                                                        name="test_id"
+                                                        as="select"
+                                                        defaultValue={
+                                                          offeredTest.test_id
+                                                        }
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.test_id &&
+                                                          touched.test_id
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        readOnly={true}
+                                                        multiple={false}
+                                                      >
                                                         <option
-                                                          key={test["id"]}
-                                                          value={test["id"]}
+                                                          key={
+                                                            offeredTest.test_id
+                                                          }
+                                                          value={
+                                                            offeredTest.test_id
+                                                          }
                                                         >
-                                                          {test["name"]}
+                                                          {
+                                                            offeredTest.test_name
+                                                          }
                                                         </option>
-                                                      ))}
-                                                    </Field>
-                                                  </div>
+                                                      </Field>
+                                                    </div>
+                                                  ) : (
+                                                    <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Test name
+                                                      </Label>
+
+                                                      <Field
+                                                        name="test_id"
+                                                        as="select"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.test_id &&
+                                                          touched.test_id
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        multiple={false}
+                                                      >
+                                                        {testList.map(test => (
+                                                          <option
+                                                            key={test["id"]}
+                                                            value={test["id"]}
+                                                          >
+                                                            {test["name"]}
+                                                          </option>
+                                                        ))}
+                                                      </Field>
+                                                    </div>
+                                                  )}
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">

@@ -215,7 +215,7 @@ export const getOfferedTests = id =>
 export const addNewOfferedTest = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("test_id", offeredTest.test_id);
-  formData.append("unit_id", offeredTest.test_id);
+  formData.append("unit_id", offeredTest.unit_id);
   formData.append("reporting_range", offeredTest.reporting_range);
   formData.append("time_required_in_days", offeredTest.time_required_in_days);
   formData.append("price", offeredTest.price);
@@ -234,7 +234,7 @@ export const updateOfferedTest = offeredTest => {
   let formData = new FormData();
   formData.append("id", offeredTest.id);
   formData.append("test_id", offeredTest.test_id);
-  formData.append("unit_id", offeredTest.test_id);
+  formData.append("unit_id", offeredTest.unit_id);
   formData.append("reporting_range", offeredTest.reporting_range);
   formData.append("time_required_in_days", offeredTest.time_required_in_days);
   formData.append("price", offeredTest.price);

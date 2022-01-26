@@ -58,6 +58,7 @@ function* fetchUnits() {
 function* fetchOfferedTests(object) {
   try {
     const response = yield call(getOfferedTests, object.payload);
+    console.log("Inside offered tests");
     yield put(getOfferedTestsSuccess(response));
   } catch (error) {
     yield put(getOfferedTestsFail(error));

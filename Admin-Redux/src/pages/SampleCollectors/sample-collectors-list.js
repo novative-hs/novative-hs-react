@@ -6,6 +6,7 @@ import { withRouter, Link } from "react-router-dom";
 import {
   Card,
   CardBody,
+  CardImg,
   Col,
   Container,
   Row,
@@ -69,7 +70,7 @@ class SampleCollectorsList extends Component {
           text: "#",
           formatter: (cellContent, sampleCollector) => (
             <>
-              {!sampleCollector.img ? (
+              {!sampleCollector.photo ? (
                 <div className="avatar-xs">
                   <span className="avatar-title rounded-circle">
                     {sampleCollector.name.charAt(0)}
@@ -79,7 +80,7 @@ class SampleCollectorsList extends Component {
                 <div>
                   <img
                     className="rounded-circle avatar-xs"
-                    src={images[sampleCollector.img]}
+                    src={"http://127.0.0.1:8000" + sampleCollector.photo}
                     alt=""
                   />
                 </div>
@@ -113,8 +114,8 @@ class SampleCollectorsList extends Component {
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() =>
-                    this.handleSampleCollectorClick(sampleCollector)
+                  onClick={e =>
+                    this.handleSampleCollectorClick(e, sampleCollector)
                   }
                 ></i>
               </Link>
@@ -138,25 +139,31 @@ class SampleCollectorsList extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
-  handleAcceptedFiles = files => {
-    files.map(file =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-        formattedSize: this.formatBytes(file.size),
-      })
-    );
+  // The code for converting "image source" (url) to "Base64"
+  toDataURL = url =>
+    fetch(url)
+      .then(response => response.blob())
+      .then(
+        blob =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
 
-    this.setState({ selectedFiles: files });
-  };
-
-  formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  // The code for converting "Base64" to javascript "File Object"
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
   };
 
   componentDidMount() {
@@ -224,10 +231,8 @@ class SampleCollectorsList extends Component {
     }
   };
 
-  handleSampleCollectorClick = arg => {
+  handleSampleCollectorClick = (e, arg) => {
     const sampleCollector = arg;
-
-    console.log("Edit clicked: ", sampleCollector);
 
     this.setState({
       sampleCollector: {
@@ -235,7 +240,7 @@ class SampleCollectorsList extends Component {
         name: sampleCollector.name,
         cnic: sampleCollector.cnic,
         phone: sampleCollector.phone,
-        photo: sampleCollector.photo,
+        photo: "http://127.0.0.1:8000" + sampleCollector.photo,
       },
       isEdit: true,
     });
@@ -384,6 +389,10 @@ class SampleCollectorsList extends Component {
                                               (sampleCollector &&
                                                 sampleCollector.photo) ||
                                               "",
+                                            photo:
+                                              (this.state &&
+                                                this.state.collectorImg) ||
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             name: Yup.string().required(
@@ -406,23 +415,61 @@ class SampleCollectorsList extends Component {
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
-                                              const updateSampleCollector = {
-                                                id: sampleCollector.id,
-                                                name: values.name,
-                                                cnic: values.cnic,
-                                                phone: values.phone,
-                                                photo: this.state.collectorImg,
-                                              };
+                                              if (!this.state.collectorImg) {
+                                                this.toDataURL(
+                                                  sampleCollector.photo
+                                                ).then(dataUrl => {
+                                                  var fileData =
+                                                    this.dataURLtoFile(
+                                                      dataUrl,
+                                                      sampleCollector.photo
+                                                        .split("/")
+                                                        .at(-1)
+                                                    );
+                                                  this.setState({
+                                                    collectorImg: fileData,
+                                                  });
 
-                                              console.log(
-                                                updateSampleCollector
-                                              );
+                                                  const updateSampleCollector =
+                                                    {
+                                                      id: sampleCollector.id,
+                                                      name: values.name,
+                                                      cnic: values.cnic,
+                                                      phone: values.phone,
+                                                      photo:
+                                                        this.state.collectorImg,
+                                                    };
 
-                                              // update SampleCollector
-                                              onUpdateSampleCollector(
-                                                updateSampleCollector
-                                              );
-                                              onGetSampleCollectors();
+                                                  console.log(
+                                                    updateSampleCollector
+                                                  );
+
+                                                  // update SampleCollector
+                                                  onUpdateSampleCollector(
+                                                    updateSampleCollector
+                                                  );
+                                                  onGetSampleCollectors();
+                                                });
+                                              } else {
+                                                const updateSampleCollector = {
+                                                  id: sampleCollector.id,
+                                                  name: values.name,
+                                                  cnic: values.cnic,
+                                                  phone: values.phone,
+                                                  photo:
+                                                    this.state.collectorImg,
+                                                };
+
+                                                console.log(
+                                                  updateSampleCollector
+                                                );
+
+                                                // update SampleCollector
+                                                onUpdateSampleCollector(
+                                                  updateSampleCollector
+                                                );
+                                                onGetSampleCollectors();
+                                              }
                                             } else {
                                               console.log(
                                                 this.state.collectorImg
@@ -521,6 +568,18 @@ class SampleCollectorsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
+                                                  {/* Display current image in edit form only */}
+                                                  {sampleCollector.photo &&
+                                                  sampleCollector.photo ? (
+                                                    <CardImg
+                                                      className="img-fluid"
+                                                      src={
+                                                        sampleCollector.photo
+                                                      }
+                                                      alt="Responsive image"
+                                                    />
+                                                  ) : null}
 
                                                   {/* Photo field */}
                                                   <div className="mb-3">
