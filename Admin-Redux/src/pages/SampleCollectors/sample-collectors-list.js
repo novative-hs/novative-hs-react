@@ -226,7 +226,9 @@ class SampleCollectorsList extends Component {
     const { sampleCollectors } = this.state;
     if (sampleCollectors.id !== undefined) {
       onDeleteSampleCollector(sampleCollectors);
-      onGetSampleCollectors();
+      setTimeout(() => {
+        onGetSampleCollectors();
+      }, 1000);
       this.setState({ deleteModal: false });
     }
   };
@@ -440,15 +442,13 @@ class SampleCollectorsList extends Component {
                                                         this.state.collectorImg,
                                                     };
 
-                                                  console.log(
-                                                    updateSampleCollector
-                                                  );
-
                                                   // update SampleCollector
                                                   onUpdateSampleCollector(
                                                     updateSampleCollector
                                                   );
-                                                  onGetSampleCollectors();
+                                                  setTimeout(() => {
+                                                    onGetSampleCollectors();
+                                                  }, 1000);
                                                 });
                                               } else {
                                                 const updateSampleCollector = {
@@ -460,20 +460,15 @@ class SampleCollectorsList extends Component {
                                                     this.state.collectorImg,
                                                 };
 
-                                                console.log(
-                                                  updateSampleCollector
-                                                );
-
                                                 // update SampleCollector
                                                 onUpdateSampleCollector(
                                                   updateSampleCollector
                                                 );
-                                                onGetSampleCollectors();
+                                                setTimeout(() => {
+                                                  onGetSampleCollectors();
+                                                }, 1000);
                                               }
                                             } else {
-                                              console.log(
-                                                this.state.collectorImg
-                                              );
                                               const newSampleCollector = {
                                                 id:
                                                   Math.floor(
@@ -485,13 +480,13 @@ class SampleCollectorsList extends Component {
                                                 photo: this.state.collectorImg,
                                               };
 
-                                              console.log(newSampleCollector);
-
                                               // save new SampleCollector
                                               onAddNewSampleCollector(
                                                 newSampleCollector
                                               );
-                                              onGetSampleCollectors();
+                                              setTimeout(() => {
+                                                onGetSampleCollectors();
+                                              }, 1000);
                                             }
                                             this.setState({
                                               selectedSampleCollector: null,
