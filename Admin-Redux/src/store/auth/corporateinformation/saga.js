@@ -15,11 +15,7 @@ const API_URL = "http://127.0.0.1:8000/api";
 // Is user register successfull then direct plot user in redux.
 function* addCorporateInformation({ payload: { corporate, id } }) {
   try {
-    const response = yield call(
-      postCorporateInformation,
-      API_URL + "/corporate/corporate-information/" + id,
-      corporate
-    );
+    const response = yield call(postCorporateInformation, id, corporate);
 
     console.log("Response: ", response);
 

@@ -14,9 +14,9 @@ const authorizedHeaders = {
 };
 
 // Post Register Information to create account
-export const postRegister = (url, data) => {
+export const postRegister = user => {
   return axios
-    .post(url, data)
+    .post(url.POST_REGISTER, user)
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
@@ -49,20 +49,22 @@ export const postRegister = (url, data) => {
 };
 
 // Post Patient Information
-export const postPatientInformation = (url, data) => {
+export const postPatientInformation = (id, patient) => {
   let formData = new FormData();
-  formData.append("name", data.name);
-  formData.append("cnic", data.cnic);
-  formData.append("email", data.email);
-  formData.append("phone", data.phone);
-  formData.append("address", data.address);
-  formData.append("city", data.city);
-  formData.append("district", data.district);
-  formData.append("is_corporate_user", data.is_corporate_user);
-  formData.append("corporate_unique_id", data.corporate_unique_id);
+  formData.append("name", patient.name);
+  formData.append("cnic", patient.cnic);
+  formData.append("email", patient.email);
+  formData.append("phone", patient.phone);
+  formData.append("address", patient.address);
+  formData.append("city", patient.city);
+  formData.append("district", patient.district);
+  formData.append("is_corporate_user", patient.is_corporate_user);
+  formData.append("corporate_unique_id", patient.corporate_unique_id);
 
   return axios
-    .post(url, formData, { headers: headers })
+    .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {
+      headers: headers,
+    })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
@@ -95,27 +97,27 @@ export const postPatientInformation = (url, data) => {
 };
 
 // Post Lab Information
-export const postLabInformation = (url, data) => {
+export const postLabInformation = (id, lab) => {
   let formData = new FormData();
-  formData.append("name", data.name);
-  formData.append("logo", data.logo);
-  formData.append("owner_name", data.owner_name);
-  formData.append("registration_no", data.registration_no);
-  formData.append("email", data.email);
-  formData.append("phone", data.phone);
-  formData.append("landline", data.landline);
-  formData.append("address", data.address);
-  formData.append("city", data.city);
-  formData.append("district", data.district);
-  formData.append("complaint_handling_email", data.complaint_handling_email);
-  formData.append("complaint_handling_phone", data.complaint_handling_phone);
+  formData.append("name", lab.name);
+  formData.append("logo", lab.logo);
+  formData.append("owner_name", lab.owner_name);
+  formData.append("registration_no", lab.registration_no);
+  formData.append("email", lab.email);
+  formData.append("phone", lab.phone);
+  formData.append("landline", lab.landline);
+  formData.append("address", lab.address);
+  formData.append("city", lab.city);
+  formData.append("district", lab.district);
+  formData.append("complaint_handling_email", lab.complaint_handling_email);
+  formData.append("complaint_handling_phone", lab.complaint_handling_phone);
   formData.append(
     "accept_credit_card_for_payment",
-    data.accept_credit_card_for_payment
+    lab.accept_credit_card_for_payment
   );
 
   return axios
-    .post(url, formData, { headers: headers })
+    .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, { headers: headers })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
@@ -148,20 +150,22 @@ export const postLabInformation = (url, data) => {
 };
 
 // Post Lab Information
-export const postCorporateInformation = (url, data) => {
+export const postCorporateInformation = (id, corporate) => {
   let formData = new FormData();
-  formData.append("name", data.name);
-  formData.append("logo", data.logo);
-  formData.append("owner_name", data.owner_name);
-  formData.append("email", data.email);
-  formData.append("phone", data.phone);
-  formData.append("landline", data.landline);
-  formData.append("address", data.address);
-  formData.append("city", data.city);
-  formData.append("district", data.district);
+  formData.append("name", corporate.name);
+  formData.append("logo", corporate.logo);
+  formData.append("owner_name", corporate.owner_name);
+  formData.append("email", corporate.email);
+  formData.append("phone", corporate.phone);
+  formData.append("landline", corporate.landline);
+  formData.append("address", corporate.address);
+  formData.append("city", corporate.city);
+  formData.append("district", corporate.district);
 
   return axios
-    .post(url, formData, { headers: headers })
+    .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
+      headers: headers,
+    })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
@@ -194,7 +198,13 @@ export const postCorporateInformation = (url, data) => {
 };
 
 // Login Method
-export const postLogin = data => post(url.POST_LOGIN, data);
+export const postLogin = user => {
+  let formData = new FormData();
+  formData.append("username", user.username);
+  formData.append("password", user.password);
+
+  return axios.post(url.POST_LOGIN, formData, { headers: authorizedHeaders });
+};
 
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
@@ -208,7 +218,7 @@ export const getUnits = () =>
   });
 
 export const getOfferedTests = id =>
-  get(url.GET_OFFERED_TESTS + id, {
+  get(`${url.GET_OFFERED_TESTS}/${id}`, {
     headers: authorizedHeaders,
   });
 
@@ -225,7 +235,7 @@ export const addNewOfferedTest = (offeredTest, id) => {
     offeredTest.is_home_sampling_available
   );
 
-  return axios.post(url.ADD_NEW_OFFERED_TEST + id, formData, {
+  return axios.post(`${url.ADD_NEW_OFFERED_TEST}/${id}`, formData, {
     headers: authorizedHeaders,
   });
 };
@@ -244,19 +254,19 @@ export const updateOfferedTest = offeredTest => {
     offeredTest.is_home_sampling_available
   );
 
-  return axios.put(url.UPDATE_OFFERED_TEST + offeredTest.id, formData, {
+  return axios.put(`${url.UPDATE_OFFERED_TEST}/${offeredTest.id}`, formData, {
     headers: authorizedHeaders,
   });
 };
 
 export const deleteOfferedTest = offeredTest =>
-  del(url.DELETE_OFFERED_TEST + offeredTest.id, {
+  del(`${url.DELETE_OFFERED_TEST}/${offeredTest.id}`, {
     headers: authorizedHeaders,
   });
 
 // ------------- Sample Collector Requests START -------------
 export const getSampleCollectors = id =>
-  get(url.GET_SAMPLE_COLLECTORS + id, {
+  get(`${url.GET_SAMPLE_COLLECTORS}/${id}`, {
     headers: authorizedHeaders,
   });
 
@@ -267,7 +277,7 @@ export const addNewSampleCollector = (sampleCollector, id) => {
   formData.append("phone", sampleCollector.phone);
   formData.append("photo", sampleCollector.photo);
 
-  return axios.post(url.ADD_NEW_SAMPLE_COLLECTOR + id, formData, {
+  return axios.post(`${url.ADD_NEW_SAMPLE_COLLECTOR}/${id}`, formData, {
     headers: authorizedHeaders,
   });
 };
@@ -280,12 +290,16 @@ export const updateSampleCollector = sampleCollector => {
   formData.append("phone", sampleCollector.phone);
   formData.append("photo", sampleCollector.photo);
 
-  return axios.put(url.UPDATE_SAMPLE_COLLECTOR + sampleCollector.id, formData, {
-    headers: authorizedHeaders,
-  });
+  return axios.put(
+    `${url.UPDATE_SAMPLE_COLLECTOR}/${sampleCollector.id}`,
+    formData,
+    {
+      headers: authorizedHeaders,
+    }
+  );
 };
 
 export const deleteSampleCollector = sampleCollector =>
-  del(url.DELETE_SAMPLE_COLLECTOR + sampleCollector.id, {
+  del(`${url.DELETE_SAMPLE_COLLECTOR}/${sampleCollector.id}`, {
     headers: authorizedHeaders,
   });

@@ -1,13 +1,17 @@
 import { takeEvery, put, call, takeLatest } from "redux-saga/effects";
 
 // Login Redux States
-import { LOGIN_USER, LOGOUT_USER, SOCIAL_LOGIN } from "./actionTypes";
+import { LOGIN_USER, LOGOUT_USER } from "./actionTypes";
 import { loginSuccess, logoutUserSuccess, apiError } from "./actions";
 
 //Include Both Helper File with needed methods
 import { postLogin } from "../../../helpers/django_api_helper";
 
-const API_URL = "http://127.0.0.1:8000/api";
+const authorizedHeaders = {
+  Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+  "Content-Type":
+    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+};
 
 function* loginUser({ payload: { user, history } }) {
   console.log("User: ", user);
@@ -17,18 +21,17 @@ function* loginUser({ payload: { user, history } }) {
       password: user.password,
     });
 
-    console.log("Account type: ", response.data.account_type);
-    console.log("Token: ", response.data.token);
+    const data = response.data.data;
 
     localStorage.setItem("authUser", JSON.stringify(response));
     yield put(loginSuccess(response));
 
-    if (response.data.account_type == "patient") {
-      history.push("/dashboard-patient/" + response.data.user_id);
-    } else if (response.data.account_type == "labowner") {
-      history.push("/dashboard-lab/" + response.data.user_id);
-    } else if (response.data.account_type == "corporate") {
-      history.push("/dashboard-corporate/" + response.data.user_id);
+    if (data.account_type == "patient") {
+      history.push("/dashboard-patient/" + data.user_id);
+    } else if (data.account_type == "labowner") {
+      history.push("/dashboard-lab/" + data.user_id);
+    } else if (data.account_type == "corporate") {
+      history.push("/dashboard-corporate/" + data.user_id);
     } else {
       history.push("/dashboard");
     }

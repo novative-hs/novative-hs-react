@@ -7,21 +7,27 @@ const API_URL = "http://127.0.0.1:8000/api";
 export const POST_LOGIN = API_URL + "/account/login/";
 export const POST_REGISTER = API_URL + "/account/register/";
 
+export const POST_PATIENT_INFORMATION =
+  API_URL + "/patient/patient-information";
+export const POST_LAB_INFORMATION = API_URL + "/lab/lab-information";
+export const POST_CORPORATE_INFORMATION =
+  API_URL + "/corporate/corporate-information";
+
 // OFFERED TEST
-export const GET_OFFERED_TESTS = API_URL + "/lab/offered-test-list/";
-export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test/";
-export const UPDATE_OFFERED_TEST = API_URL + "/lab/offered-test/";
-export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test/";
+export const GET_OFFERED_TESTS = API_URL + "/lab/offered-test-list";
+export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test";
+export const UPDATE_OFFERED_TEST = API_URL + "/lab/offered-test";
+export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test";
 
 // SAMPLE COLLECTOR
-export const GET_SAMPLE_COLLECTORS = API_URL + "/lab/sample-collector-list/";
-export const ADD_NEW_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector/";
-export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector/";
-export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector/";
+export const GET_SAMPLE_COLLECTORS = API_URL + "/lab/sample-collector-list";
+export const ADD_NEW_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
+export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
+export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 
 // TEST
-export const GET_TESTS = API_URL + "/medicaltest/test-list/";
-export const GET_UNITS = API_URL + "/medicaltest/unit-list/";
+export const GET_TESTS = API_URL + "/medicaltest/test-list";
+export const GET_UNITS = API_URL + "/medicaltest/unit-list";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

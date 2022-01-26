@@ -15,11 +15,7 @@ const API_URL = "http://127.0.0.1:8000/api";
 // Is user register successfull then direct plot user in redux.
 function* addLabInformation({ payload: { lab, id } }) {
   try {
-    const response = yield call(
-      postLabInformation,
-      API_URL + "/lab/lab-information/" + id,
-      lab
-    );
+    const response = yield call(postLabInformation, id, lab);
 
     console.log("Response: ", response);
 

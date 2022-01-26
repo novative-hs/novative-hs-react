@@ -903,6 +903,20 @@ class SidebarContent extends Component {
                   </Link>
                 </li> */}
 
+                {/* Test Certificates Links */}
+                <li>
+                  <Link
+                    to={
+                      "/dashboard-lab/" +
+                      this.props.match.params.id +
+                      "/test-certificates-list"
+                    }
+                  >
+                    <i className="mdi mdi-certificate" />
+                    <span>{this.props.t("Test Certificates")}</span>
+                  </Link>
+                </li>
+
                 {/* Sample Collector Links */}
                 <li>
                   <Link
@@ -912,7 +926,7 @@ class SidebarContent extends Component {
                       "/sample-collectors-list"
                     }
                   >
-                    <i className="fas fa-car-side" />
+                    <i className="mdi mdi-bike" />
                     <span>{this.props.t("Sample Collectors")}</span>
                   </Link>
                 </li>

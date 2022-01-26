@@ -12,11 +12,7 @@ const API_URL = "http://127.0.0.1:8000/api";
 // Is user register successfull then direct plot user in redux.
 function* registerUser({ payload: { user } }) {
   try {
-    const response = yield call(
-      postRegister,
-      API_URL + "/account/register/",
-      user
-    );
+    const response = yield call(postRegister, user);
     console.log(response);
     yield put(registerUserSuccessful(response));
   } catch (error) {
