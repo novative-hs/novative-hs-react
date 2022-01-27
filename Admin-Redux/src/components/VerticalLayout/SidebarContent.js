@@ -903,17 +903,17 @@ class SidebarContent extends Component {
                   </Link>
                 </li> */}
 
-                {/* Test Certificates Links */}
+                {/* Quality Certificates Links */}
                 <li>
                   <Link
                     to={
                       "/dashboard-lab/" +
                       this.props.match.params.id +
-                      "/test-certificates-list"
+                      "/quality-certificates-list"
                     }
                   >
                     <i className="mdi mdi-certificate" />
-                    <span>{this.props.t("Test Certificates")}</span>
+                    <span>{this.props.t("Quality Certificates")}</span>
                   </Link>
                 </li>
 

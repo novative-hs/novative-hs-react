@@ -39,8 +39,8 @@ export * from "./offered-tests/actions";
 // sample collectors
 export * from "./sample-collectors/actions";
 
-// sample collectors
-export * from "./test-certificates/actions";
+// quality certificates
+export * from "./quality-certificates/actions";
 
 // contacts
 export * from "./mails/actions";

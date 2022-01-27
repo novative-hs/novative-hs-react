@@ -30,10 +30,11 @@ export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 
 // SAMPLE COLLECTOR
-export const GET_TEST_CERTIFICATES = API_URL + "/lab/test-certificate-list";
-export const ADD_NEW_TEST_CERTIFICATE = API_URL + "/lab/test-certificate";
-export const UPDATE_TEST_CERTIFICATE = API_URL + "/lab/test-certificate";
-export const DELETE_TEST_CERTIFICATE = API_URL + "/lab/test-certificate";
+export const GET_QUALITY_CERTIFICATES =
+  API_URL + "/lab/quality-certificate-list";
+export const ADD_NEW_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
+export const UPDATE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
+export const DELETE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 
 // -------------- TEMPLATES URLS --------------
 

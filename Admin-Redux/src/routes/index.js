@@ -175,7 +175,7 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
 import LabPathologistsList from "../pages/LabPathologists/lab-pathologists-list";
 import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
-import TestCertificatesList from "../pages/TestCertificates/test-certificates-list";
+import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -204,8 +204,8 @@ const authProtectedRoutes = [
     component: SampleCollectorsList,
   },
   {
-    path: "/dashboard-lab/:id/test-certificates-list",
-    component: TestCertificatesList,
+    path: "/dashboard-lab/:id/quality-certificates-list",
+    component: QualityCertificatesList,
   },
 
   { path: "/dashboard-saas", component: DashboardSaas },

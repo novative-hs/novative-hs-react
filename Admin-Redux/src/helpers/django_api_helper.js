@@ -305,29 +305,29 @@ export const deleteSampleCollector = sampleCollector =>
   });
 
 // ------------- Test Certificate Requests START -------------
-export const getTestCertificates = id =>
-  get(`${url.GET_TEST_CERTIFICATES}/${id}`, {
+export const getQualityCertificates = id =>
+  get(`${url.GET_QUALITY_CERTIFICATES}/${id}`, {
     headers: authorizedHeaders,
   });
 
-export const addNewTestCertificate = (testCertificate, id) => {
+export const addNewQualityCertificate = (qualityCertificate, id) => {
   let formData = new FormData();
-  formData.append("name", testCertificate.name);
-  formData.append("photo", testCertificate.photo);
+  formData.append("name", qualityCertificate.name);
+  formData.append("certificate", qualityCertificate.certificate);
 
-  return axios.post(`${url.ADD_NEW_TEST_CERTIFICATE}/${id}`, formData, {
+  return axios.post(`${url.ADD_NEW_QUALITY_CERTIFICATE}/${id}`, formData, {
     headers: authorizedHeaders,
   });
 };
 
-export const updateTestCertificate = testCertificate => {
+export const updateQualityCertificate = qualityCertificate => {
   let formData = new FormData();
-  formData.append("id", testCertificate.id);
-  formData.append("name", testCertificate.name);
-  formData.append("photo", testCertificate.photo);
+  formData.append("id", qualityCertificate.id);
+  formData.append("name", qualityCertificate.name);
+  formData.append("certificate", qualityCertificate.certificate);
 
   return axios.put(
-    `${url.UPDATE_TEST_CERTIFICATE}/${testCertificate.id}`,
+    `${url.UPDATE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`,
     formData,
     {
       headers: authorizedHeaders,
@@ -335,7 +335,7 @@ export const updateTestCertificate = testCertificate => {
   );
 };
 
-export const deleteTestCertificate = testCertificate =>
-  del(`${url.DELETE_TEST_CERTIFICATE}/${testCertificate.id}`, {
+export const deleteQualityCertificate = qualityCertificate =>
+  del(`${url.DELETE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`, {
     headers: authorizedHeaders,
   });

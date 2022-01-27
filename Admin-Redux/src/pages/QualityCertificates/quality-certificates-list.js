@@ -36,51 +36,53 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getSampleCollectors,
-  addNewSampleCollector,
-  updateSampleCollector,
-  deleteSampleCollector,
-} from "store/sample-collectors/actions";
+  getQualityCertificates,
+  addNewQualityCertificate,
+  updateQualityCertificate,
+  deleteQualityCertificate,
+} from "store/quality-certificates/actions";
 
 import { isEmpty, size } from "lodash";
 
-class TestCertificatesList extends Component {
+class QualityCertificatesList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
       selectedFiles: [],
-      sampleCollectors: [],
-      sampleCollector: "",
+      qualityCertificates: [],
+      qualityCertificate: "",
       collectorImg: "",
       modal: false,
       deleteModal: false,
-      sampleCollectorListColumns: [
+      qualityCertificateListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, sampleCollector) => (
-            <>{sampleCollector.id}</>
+          formatter: (cellContent, qualityCertificate) => (
+            <>{qualityCertificate.id}</>
           ),
         },
         {
           dataField: "img",
           text: "#",
-          formatter: (cellContent, sampleCollector) => (
+          formatter: (cellContent, qualityCertificate) => (
             <>
-              {!sampleCollector.photo ? (
+              {!qualityCertificate.certificate ? (
                 <div className="avatar-xs">
                   <span className="avatar-title rounded-circle">
-                    {sampleCollector.name.charAt(0)}
+                    {qualityCertificate.name.charAt(0)}
                   </span>
                 </div>
               ) : (
                 <div>
                   <img
                     className="rounded-circle avatar-xs"
-                    src={"http://127.0.0.1:8000" + sampleCollector.photo}
+                    src={
+                      "http://127.0.0.1:8000" + qualityCertificate.certificate
+                    }
                     alt=""
                   />
                 </div>
@@ -94,28 +96,18 @@ class TestCertificatesList extends Component {
           sort: true,
         },
         {
-          dataField: "cnic",
-          text: "CNIC",
-          sort: true,
-        },
-        {
-          dataField: "phone",
-          text: "Phone No.",
-          sort: true,
-        },
-        {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, sampleCollector) => (
+          formatter: (cellContent, qualityCertificate) => (
             <div className="d-flex gap-3">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
                   onClick={e =>
-                    this.handleSampleCollectorClick(e, sampleCollector)
+                    this.handleQualityCertificateClick(e, qualityCertificate)
                   }
                 ></i>
               </Link>
@@ -123,7 +115,7 @@ class TestCertificatesList extends Component {
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
-                  onClick={() => this.onClickDelete(sampleCollector)}
+                  onClick={() => this.onClickDelete(qualityCertificate)}
                 ></i>
               </Link>
             </div>
@@ -131,11 +123,11 @@ class TestCertificatesList extends Component {
         },
       ],
     };
-    this.handleSampleCollectorClick =
-      this.handleSampleCollectorClick.bind(this);
+    this.handleQualityCertificateClick =
+      this.handleQualityCertificateClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleSampleCollectorClicks =
-      this.handleSampleCollectorClicks.bind(this);
+    this.handleQualityCertificateClicks =
+      this.handleQualityCertificateClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
@@ -167,11 +159,11 @@ class TestCertificatesList extends Component {
   };
 
   componentDidMount() {
-    const { sampleCollectors, onGetSampleCollectors } = this.props;
-    if (sampleCollectors && !sampleCollectors.length) {
-      onGetSampleCollectors();
+    const { qualityCertificates, onGetQualityCertificates } = this.props;
+    if (qualityCertificates && !qualityCertificates.length) {
+      onGetQualityCertificates();
     }
-    this.setState({ sampleCollectors });
+    this.setState({ qualityCertificates });
   }
 
   toggle() {
@@ -180,19 +172,19 @@ class TestCertificatesList extends Component {
     }));
   }
 
-  handleSampleCollectorClicks = () => {
-    this.setState({ sampleCollector: "", isEdit: false });
+  handleQualityCertificateClicks = () => {
+    this.setState({ qualityCertificate: "", isEdit: false });
     this.toggle();
   };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { sampleCollectors } = this.props;
+    const { qualityCertificates } = this.props;
     if (
-      !isEmpty(sampleCollectors) &&
-      size(prevProps.sampleCollectors) !== size(sampleCollectors)
+      !isEmpty(qualityCertificates) &&
+      size(prevProps.qualityCertificates) !== size(qualityCertificates)
     ) {
-      this.setState({ sampleCollectors: {}, isEdit: false });
+      this.setState({ qualityCertificates: {}, isEdit: false });
     }
   }
 
@@ -216,33 +208,31 @@ class TestCertificatesList extends Component {
     }));
   };
 
-  onClickDelete = sampleCollectors => {
-    this.setState({ sampleCollectors: sampleCollectors });
+  onClickDelete = qualityCertificates => {
+    this.setState({ qualityCertificates: qualityCertificates });
     this.setState({ deleteModal: true });
   };
 
-  handleDeleteSampleCollector = () => {
-    const { onDeleteSampleCollector, onGetSampleCollectors } = this.props;
-    const { sampleCollectors } = this.state;
-    if (sampleCollectors.id !== undefined) {
-      onDeleteSampleCollector(sampleCollectors);
+  handleDeleteQualityCertificate = () => {
+    const { onDeleteQualityCertificate, onGetQualityCertificates } = this.props;
+    const { qualityCertificates } = this.state;
+    if (qualityCertificates.id !== undefined) {
+      onDeleteQualityCertificate(qualityCertificates);
       setTimeout(() => {
-        onGetSampleCollectors();
+        onGetQualityCertificates();
       }, 1000);
       this.setState({ deleteModal: false });
     }
   };
 
-  handleSampleCollectorClick = (e, arg) => {
-    const sampleCollector = arg;
+  handleQualityCertificateClick = (e, arg) => {
+    const qualityCertificate = arg;
 
     this.setState({
-      sampleCollector: {
-        id: sampleCollector.id,
-        name: sampleCollector.name,
-        cnic: sampleCollector.cnic,
-        phone: sampleCollector.phone,
-        photo: "http://127.0.0.1:8000" + sampleCollector.photo,
+      qualityCertificate: {
+        id: qualityCertificate.id,
+        name: qualityCertificate.name,
+        certificate: "http://127.0.0.1:8000" + qualityCertificate.certificate,
       },
       isEdit: true,
     });
@@ -253,21 +243,21 @@ class TestCertificatesList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { sampleCollectors } = this.props;
+    const { qualityCertificates } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
     const {
-      onAddNewSampleCollector,
-      onUpdateSampleCollector,
-      onGetSampleCollectors,
+      onAddNewQualityCertificate,
+      onUpdateQualityCertificate,
+      onGetQualityCertificates,
     } = this.props;
-    const { selectedSampleCollector } = this.state;
-    const sampleCollector = this.state.sampleCollector;
+    const { selectedQualityCertificate } = this.state;
+    const qualityCertificate = this.state.qualityCertificate;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: sampleCollectors.length, // replace later with size(sampleCollectors),
+      totalSize: qualityCertificates.length, // replace later with size(qualityCertificates),
       custom: true,
     };
 
@@ -282,21 +272,23 @@ class TestCertificatesList extends Component {
       mode: "checkbox",
     };
 
+    console.log("Certificates: ", qualityCertificates);
+
     return (
       <React.Fragment>
         <DeleteModal
           show={deleteModal}
-          onDeleteClick={this.handleDeleteSampleCollector}
+          onDeleteClick={this.handleDeleteQualityCertificate}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
         <div className="page-content">
           <MetaTags>
-            <title>Test Certificates List | Ilaaj4u</title>
+            <title>Quality Certificates List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Test Certificates"
+              title="Quality Certificates"
               breadcrumbItem="Certificates List"
             />
             <Row>
@@ -306,14 +298,14 @@ class TestCertificatesList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.sampleCollectorListColumns}
-                      data={sampleCollectors}
+                      columns={this.state.qualityCertificateListColumns}
+                      data={qualityCertificates}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.sampleCollectorListColumns}
-                          data={sampleCollectors}
+                          columns={this.state.qualityCertificateListColumns}
+                          data={qualityCertificates}
                           search
                         >
                           {toolkitprops => (
@@ -334,10 +326,12 @@ class TestCertificatesList extends Component {
                                     <Button
                                       color="primary"
                                       className="font-16 btn-block btn btn-primary"
-                                      onClick={this.handleSampleCollectorClicks}
+                                      onClick={
+                                        this.handleQualityCertificateClicks
+                                      }
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Test
+                                      Add New Certificate
                                     </Button>
                                   </div>
                                 </Col>
@@ -376,22 +370,14 @@ class TestCertificatesList extends Component {
                                           enableReinitialize={true}
                                           initialValues={{
                                             name:
-                                              (sampleCollector &&
-                                                sampleCollector.name) ||
+                                              (qualityCertificate &&
+                                                qualityCertificate.name) ||
                                               "",
-                                            cnic:
-                                              (sampleCollector &&
-                                                sampleCollector.cnic) ||
+                                            certificate:
+                                              (qualityCertificate &&
+                                                qualityCertificate.certificate) ||
                                               "",
-                                            phone:
-                                              (sampleCollector &&
-                                                sampleCollector.phone) ||
-                                              "",
-                                            photo:
-                                              (sampleCollector &&
-                                                sampleCollector.photo) ||
-                                              "",
-                                            photo:
+                                            certificate:
                                               (this.state &&
                                                 this.state.collectorImg) ||
                                               "",
@@ -400,31 +386,17 @@ class TestCertificatesList extends Component {
                                             name: Yup.string().required(
                                               "Please enter name"
                                             ),
-                                            cnic: Yup.string()
-                                              .required(
-                                                "Please enter your CNIC"
-                                              )
-                                              .matches(
-                                                /^[0-9]{5}-[0-9]{7}-[0-9]$/,
-                                                "Please enter a valid CNIC e.g. 37106-8234782-3"
-                                              ),
-                                            phone: Yup.string()
-                                              .required("Please enter phone")
-                                              .matches(
-                                                /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
-                                                "Please enter a valid Pakistani phone number e.g. +923123456789"
-                                              ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
                                               if (!this.state.collectorImg) {
                                                 this.toDataURL(
-                                                  sampleCollector.photo
+                                                  qualityCertificate.certificate
                                                 ).then(dataUrl => {
                                                   var fileData =
                                                     this.dataURLtoFile(
                                                       dataUrl,
-                                                      sampleCollector.photo
+                                                      qualityCertificate.certificate
                                                         .split("/")
                                                         .at(-1)
                                                     );
@@ -432,64 +404,65 @@ class TestCertificatesList extends Component {
                                                     collectorImg: fileData,
                                                   });
 
-                                                  const updateSampleCollector =
+                                                  const updateQualityCertificate =
                                                     {
-                                                      id: sampleCollector.id,
+                                                      id: qualityCertificate.id,
                                                       name: values.name,
-                                                      cnic: values.cnic,
-                                                      phone: values.phone,
-                                                      photo:
+                                                      certificate:
                                                         this.state.collectorImg,
                                                     };
 
-                                                  // update SampleCollector
-                                                  onUpdateSampleCollector(
-                                                    updateSampleCollector
+                                                  // update QualityCertificate
+                                                  onUpdateQualityCertificate(
+                                                    updateQualityCertificate
                                                   );
                                                   setTimeout(() => {
-                                                    onGetSampleCollectors();
+                                                    onGetQualityCertificates();
                                                   }, 1000);
                                                 });
                                               } else {
-                                                const updateSampleCollector = {
-                                                  id: sampleCollector.id,
-                                                  name: values.name,
-                                                  cnic: values.cnic,
-                                                  phone: values.phone,
-                                                  photo:
-                                                    this.state.collectorImg,
-                                                };
+                                                const updateQualityCertificate =
+                                                  {
+                                                    id: qualityCertificate.id,
+                                                    name: values.name,
+                                                    certificate:
+                                                      this.state.collectorImg,
+                                                  };
 
-                                                // update SampleCollector
-                                                onUpdateSampleCollector(
-                                                  updateSampleCollector
+                                                // update QualityCertificate
+                                                onUpdateQualityCertificate(
+                                                  updateQualityCertificate
                                                 );
                                                 setTimeout(() => {
-                                                  onGetSampleCollectors();
+                                                  onGetQualityCertificates();
                                                 }, 1000);
                                               }
                                             } else {
-                                              const newSampleCollector = {
+                                              const newQualityCertificate = {
                                                 id:
                                                   Math.floor(
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
                                                 name: values.name,
-                                                cnic: values.cnic,
-                                                phone: values.phone,
-                                                photo: this.state.collectorImg,
+                                                certificate:
+                                                  this.state.collectorImg,
                                               };
 
-                                              // save new SampleCollector
-                                              onAddNewSampleCollector(
-                                                newSampleCollector
+                                              console.log(
+                                                "Data: ",
+                                                newQualityCertificate
+                                              );
+
+                                              // save new QualityCertificate
+                                              onAddNewQualityCertificate(
+                                                newQualityCertificate
                                               );
                                               setTimeout(() => {
-                                                onGetSampleCollectors();
+                                                onGetQualityCertificates();
                                               }, 1000);
                                             }
                                             this.setState({
-                                              selectedSampleCollector: null,
+                                              selectedQualityCertificate: null,
                                             });
                                             this.toggle();
                                           }}
@@ -520,73 +493,29 @@ class TestCertificatesList extends Component {
                                                     />
                                                   </div>
 
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      CNIC
-                                                    </Label>
-                                                    <Field
-                                                      name="cnic"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.cnic &&
-                                                        touched.cnic
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="cnic"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Phone
-                                                    </Label>
-                                                    <Field
-                                                      name="phone"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.phone &&
-                                                        touched.phone
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="phone"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
                                                   {/* Display current image in edit form only */}
-                                                  {sampleCollector.photo &&
-                                                  sampleCollector.photo ? (
+                                                  {qualityCertificate.certificate &&
+                                                  qualityCertificate.certificate ? (
                                                     <CardImg
                                                       className="img-fluid"
                                                       src={
-                                                        sampleCollector.photo
+                                                        qualityCertificate.certificate
                                                       }
                                                       alt="Responsive image"
                                                     />
                                                   ) : null}
 
-                                                  {/* Photo field */}
+                                                  {/* Certificate field */}
                                                   <div className="mb-3">
                                                     <Label
                                                       for="name"
                                                       className="form-label"
                                                     >
-                                                      Photo
+                                                      Certificate
                                                     </Label>
                                                     <Input
                                                       id="formFile"
-                                                      name="photo"
+                                                      name="certificate"
                                                       placeholder="Choose image"
                                                       type="file"
                                                       multiple={false}
@@ -599,15 +528,15 @@ class TestCertificatesList extends Component {
                                                       }
                                                       className={
                                                         "form-control" +
-                                                        (errors.photo &&
-                                                        touched.photo
+                                                        (errors.certificate &&
+                                                        touched.certificate
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
 
                                                     <ErrorMessage
-                                                      name="photo"
+                                                      name="certificate"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -657,32 +586,34 @@ class TestCertificatesList extends Component {
   }
 }
 
-TestCertificatesList.propTypes = {
+QualityCertificatesList.propTypes = {
   match: PropTypes.object,
-  sampleCollectors: PropTypes.array,
+  qualityCertificates: PropTypes.array,
   className: PropTypes.any,
-  onGetSampleCollectors: PropTypes.func,
-  onAddNewSampleCollector: PropTypes.func,
-  onDeleteSampleCollector: PropTypes.func,
-  onUpdateSampleCollector: PropTypes.func,
+  onGetQualityCertificates: PropTypes.func,
+  onAddNewQualityCertificate: PropTypes.func,
+  onDeleteQualityCertificate: PropTypes.func,
+  onUpdateQualityCertificate: PropTypes.func,
 };
 
-const mapStateToProps = ({ sampleCollectors }) => ({
-  sampleCollectors: sampleCollectors.sampleCollectors,
+const mapStateToProps = ({ qualityCertificates }) => ({
+  qualityCertificates: qualityCertificates.qualityCertificates,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetSampleCollectors: () =>
-    dispatch(getSampleCollectors(ownProps.match.params.id)),
-  onAddNewSampleCollector: sampleCollector =>
-    dispatch(addNewSampleCollector(sampleCollector, ownProps.match.params.id)),
-  onUpdateSampleCollector: sampleCollector =>
-    dispatch(updateSampleCollector(sampleCollector)),
-  onDeleteSampleCollector: sampleCollector =>
-    dispatch(deleteSampleCollector(sampleCollector)),
+  onGetQualityCertificates: () =>
+    dispatch(getQualityCertificates(ownProps.match.params.id)),
+  onAddNewQualityCertificate: qualityCertificate =>
+    dispatch(
+      addNewQualityCertificate(qualityCertificate, ownProps.match.params.id)
+    ),
+  onUpdateQualityCertificate: qualityCertificate =>
+    dispatch(updateQualityCertificate(qualityCertificate)),
+  onDeleteQualityCertificate: qualityCertificate =>
+    dispatch(deleteQualityCertificate(qualityCertificate)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(TestCertificatesList));
+)(withRouter(QualityCertificatesList));
