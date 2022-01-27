@@ -52,7 +52,7 @@ class QualityCertificatesList extends Component {
       selectedFiles: [],
       qualityCertificates: [],
       qualityCertificate: "",
-      collectorImg: "",
+      certificateImg: "",
       modal: false,
       deleteModal: false,
       qualityCertificateListColumns: [
@@ -272,8 +272,6 @@ class QualityCertificatesList extends Component {
       mode: "checkbox",
     };
 
-    console.log("Certificates: ", qualityCertificates);
-
     return (
       <React.Fragment>
         <DeleteModal
@@ -283,12 +281,12 @@ class QualityCertificatesList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Quality Certificates List | Ilaaj4u</title>
+            <title>Test Certificates List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Quality Certificates"
+              title="Test Certificates"
               breadcrumbItem="Certificates List"
             />
             <Row>
@@ -331,7 +329,7 @@ class QualityCertificatesList extends Component {
                                       }
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Certificate
+                                      Add New Test
                                     </Button>
                                   </div>
                                 </Col>
@@ -374,12 +372,8 @@ class QualityCertificatesList extends Component {
                                                 qualityCertificate.name) ||
                                               "",
                                             certificate:
-                                              (qualityCertificate &&
-                                                qualityCertificate.certificate) ||
-                                              "",
-                                            certificate:
                                               (this.state &&
-                                                this.state.collectorImg) ||
+                                                this.state.certificateImg) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -389,7 +383,7 @@ class QualityCertificatesList extends Component {
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
-                                              if (!this.state.collectorImg) {
+                                              if (!this.state.certificateImg) {
                                                 this.toDataURL(
                                                   qualityCertificate.certificate
                                                 ).then(dataUrl => {
@@ -401,7 +395,7 @@ class QualityCertificatesList extends Component {
                                                         .at(-1)
                                                     );
                                                   this.setState({
-                                                    collectorImg: fileData,
+                                                    certificateImg: fileData,
                                                   });
 
                                                   const updateQualityCertificate =
@@ -409,7 +403,8 @@ class QualityCertificatesList extends Component {
                                                       id: qualityCertificate.id,
                                                       name: values.name,
                                                       certificate:
-                                                        this.state.collectorImg,
+                                                        this.state
+                                                          .certificateImg,
                                                     };
 
                                                   // update QualityCertificate
@@ -426,7 +421,7 @@ class QualityCertificatesList extends Component {
                                                     id: qualityCertificate.id,
                                                     name: values.name,
                                                     certificate:
-                                                      this.state.collectorImg,
+                                                      this.state.certificateImg,
                                                   };
 
                                                 // update QualityCertificate
@@ -445,13 +440,8 @@ class QualityCertificatesList extends Component {
                                                   ) + 20,
                                                 name: values.name,
                                                 certificate:
-                                                  this.state.collectorImg,
+                                                  this.state.certificateImg,
                                               };
-
-                                              console.log(
-                                                "Data: ",
-                                                newQualityCertificate
-                                              );
 
                                               // save new QualityCertificate
                                               onAddNewQualityCertificate(
@@ -505,13 +495,13 @@ class QualityCertificatesList extends Component {
                                                     />
                                                   ) : null}
 
-                                                  {/* Certificate field */}
+                                                  {/* Photo field */}
                                                   <div className="mb-3">
                                                     <Label
                                                       for="name"
                                                       className="form-label"
                                                     >
-                                                      Certificate
+                                                      Photo
                                                     </Label>
                                                     <Input
                                                       id="formFile"
@@ -522,7 +512,7 @@ class QualityCertificatesList extends Component {
                                                       accept=".jpg,.jpeg,.png"
                                                       onChange={e =>
                                                         this.setState({
-                                                          collectorImg:
+                                                          certificateImg:
                                                             e.target.files[0],
                                                         })
                                                       }
