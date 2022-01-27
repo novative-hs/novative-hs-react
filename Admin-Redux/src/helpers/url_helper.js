@@ -13,6 +13,10 @@ export const POST_LAB_INFORMATION = API_URL + "/lab/lab-information";
 export const POST_CORPORATE_INFORMATION =
   API_URL + "/corporate/corporate-information";
 
+// TEST
+export const GET_TESTS = API_URL + "/medicaltest/test-list";
+export const GET_UNITS = API_URL + "/medicaltest/unit-list";
+
 // OFFERED TEST
 export const GET_OFFERED_TESTS = API_URL + "/lab/offered-test-list";
 export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test";
@@ -25,9 +29,13 @@ export const ADD_NEW_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 
-// TEST
-export const GET_TESTS = API_URL + "/medicaltest/test-list";
-export const GET_UNITS = API_URL + "/medicaltest/unit-list";
+// SAMPLE COLLECTOR
+export const GET_TEST_CERTIFICATES = API_URL + "/lab/test-certificate-list";
+export const ADD_NEW_TEST_CERTIFICATE = API_URL + "/lab/test-certificate";
+export const UPDATE_TEST_CERTIFICATE = API_URL + "/lab/test-certificate";
+export const DELETE_TEST_CERTIFICATE = API_URL + "/lab/test-certificate";
+
+// -------------- TEMPLATES URLS --------------
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

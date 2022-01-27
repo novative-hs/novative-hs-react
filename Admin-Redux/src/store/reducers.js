@@ -42,6 +42,9 @@ import offeredTests from "./offered-tests/reducer";
 //sample collectors
 import sampleCollectors from "./sample-collectors/reducer";
 
+//test certificates
+import testCertificates from "./test-certificates/reducer";
+
 //mails
 import mails from "./mails/reducer";
 
@@ -72,6 +75,7 @@ const rootReducer = combineReducers({
   contacts,
   offeredTests,
   sampleCollectors,
+  testCertificates,
   Dashboard,
   DashboardSaas,
 });
