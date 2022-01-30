@@ -281,12 +281,12 @@ class QualityCertificatesList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Test Certificates List | Ilaaj4u</title>
+            <title>Quality Certificates List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Test Certificates"
+              title="Quality Certificates"
               breadcrumbItem="Certificates List"
             />
             <Row>
@@ -360,16 +360,21 @@ class QualityCertificatesList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Sample Collector"
-                                          : "Add Sample Collector"}
+                                          ? "Edit Quality Certificate"
+                                          : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
+                                            hiddenEditFlag: isEdit,
                                             name:
                                               (qualityCertificate &&
                                                 qualityCertificate.name) ||
+                                              "",
+                                            certificate:
+                                              (qualityCertificate &&
+                                                qualityCertificate.certificate) ||
                                               "",
                                             certificate:
                                               (this.state &&
@@ -377,8 +382,19 @@ class QualityCertificatesList extends Component {
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
+                                            hiddentEditFlag: Yup.boolean(),
                                             name: Yup.string().required(
                                               "Please enter name"
+                                            ),
+                                            certificate: Yup.string().when(
+                                              "hiddenEditFlag",
+                                              {
+                                                is: hiddenEditFlag =>
+                                                  hiddenEditFlag == false, //just an e.g. you can return a function
+                                                then: Yup.string().required(
+                                                  "Please upload certificate"
+                                                ),
+                                              }
                                             ),
                                           })}
                                           onSubmit={values => {
@@ -461,6 +477,13 @@ class QualityCertificatesList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
+                                                  <Field
+                                                    type="hidden"
+                                                    className="form-control"
+                                                    name="hiddenEditFlag"
+                                                    value={isEdit}
+                                                  />
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Name
@@ -495,13 +518,13 @@ class QualityCertificatesList extends Component {
                                                     />
                                                   ) : null}
 
-                                                  {/* Photo field */}
+                                                  {/* Certificate field */}
                                                   <div className="mb-3">
                                                     <Label
                                                       for="name"
                                                       className="form-label"
                                                     >
-                                                      Photo
+                                                      Certificate
                                                     </Label>
                                                     <Input
                                                       id="formFile"

@@ -375,6 +375,7 @@ class SampleCollectorsList extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
+                                            hiddenEditFlag: isEdit,
                                             name:
                                               (sampleCollector &&
                                                 sampleCollector.name) ||
@@ -397,6 +398,7 @@ class SampleCollectorsList extends Component {
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
+                                            hiddentEditFlag: Yup.boolean(),
                                             name: Yup.string().required(
                                               "Please enter name"
                                             ),
@@ -414,6 +416,16 @@ class SampleCollectorsList extends Component {
                                                 /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                                 "Please enter a valid Pakistani phone number e.g. +923123456789"
                                               ),
+                                            photo: Yup.string().when(
+                                              "hiddenEditFlag",
+                                              {
+                                                is: hiddenEditFlag =>
+                                                  hiddenEditFlag == false, //just an e.g. you can return a function
+                                                then: Yup.string().required(
+                                                  "Please upload photo"
+                                                ),
+                                              }
+                                            ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -498,6 +510,13 @@ class SampleCollectorsList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
+                                                  <Field
+                                                    type="hidden"
+                                                    className="form-control"
+                                                    name="hiddenEditFlag"
+                                                    value={isEdit}
+                                                  />
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Name
