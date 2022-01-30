@@ -19,6 +19,7 @@ import tasksSaga from "./tasks/saga";
 import mailsSaga from "./mails/saga";
 import contactsSaga from "./contacts/saga";
 import offeredTestsSaga from "./offered-tests/saga";
+import pathologistsSaga from "./pathologists/saga";
 import sampleCollectorsSaga from "./sample-collectors/saga";
 import qualityCertificatesSaga from "./quality-certificates/saga";
 import dashboardSaga from "./dashboard/saga";
@@ -45,6 +46,7 @@ export default function* rootSaga() {
     fork(tasksSaga),
     fork(contactsSaga),
     fork(offeredTestsSaga),
+    fork(pathologistsSaga),
     fork(sampleCollectorsSaga),
     fork(qualityCertificatesSaga),
     fork(dashboardSaga),

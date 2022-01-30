@@ -39,6 +39,9 @@ import contacts from "./contacts/reducer";
 //offered tests
 import offeredTests from "./offered-tests/reducer";
 
+//pathologists
+import pathologists from "./pathologists/reducer";
+
 //sample collectors
 import sampleCollectors from "./sample-collectors/reducer";
 
@@ -74,6 +77,7 @@ const rootReducer = combineReducers({
   tasks,
   contacts,
   offeredTests,
+  pathologists,
   sampleCollectors,
   qualityCertificates,
   Dashboard,

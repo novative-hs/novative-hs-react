@@ -337,3 +337,59 @@ export const deleteQualityCertificate = qualityCertificate =>
   del(`${url.DELETE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`, {
     headers: authorizedHeaders,
   });
+
+// ------------- Pathologists START -------------
+export const getPathologists = id =>
+  get(`${url.GET_PATHOLOGISTS}/${id}`, {
+    headers: authorizedHeaders,
+  });
+
+export const addNewPathologist = (pathologist, id) => {
+  let formData = new FormData();
+  formData.append("name", pathologist.name);
+  formData.append("email", pathologist.email);
+  formData.append("phone", pathologist.phone);
+  formData.append("landline", pathologist.landline);
+  formData.append("designation", pathologist.designation);
+  formData.append(
+    "is_available_for_consultation",
+    pathologist.is_available_for_consultation
+  );
+  formData.append(
+    "is_available_on_whatsapp",
+    pathologist.is_available_on_whatsapp
+  );
+  formData.append("is_associated_with_pap", pathologist.is_associated_with_pap);
+
+  return axios.post(`${url.ADD_NEW_PATHOLOGIST}/${id}`, formData, {
+    headers: authorizedHeaders,
+  });
+};
+
+export const updatePathologist = pathologist => {
+  let formData = new FormData();
+  formData.append("id", pathologist.id);
+  formData.append("name", pathologist.name);
+  formData.append("email", pathologist.email);
+  formData.append("phone", pathologist.phone);
+  formData.append("landline", pathologist.landline);
+  formData.append("designation", pathologist.designation);
+  formData.append(
+    "is_available_for_consultation",
+    pathologist.is_available_for_consultation
+  );
+  formData.append(
+    "is_available_on_whatsapp",
+    pathologist.is_available_on_whatsapp
+  );
+  formData.append("is_associated_with_pap", pathologist.is_associated_with_pap);
+
+  return axios.put(`${url.UPDATE_PATHOLOGIST}/${pathologist.id}`, formData, {
+    headers: authorizedHeaders,
+  });
+};
+
+export const deletePathologist = pathologist =>
+  del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
+    headers: authorizedHeaders,
+  });

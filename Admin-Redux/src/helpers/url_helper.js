@@ -23,6 +23,12 @@ export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test";
 export const UPDATE_OFFERED_TEST = API_URL + "/lab/offered-test";
 export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test";
 
+// PATHOLOGIST
+export const GET_PATHOLOGISTS = API_URL + "/lab/pathologist-list";
+export const ADD_NEW_PATHOLOGIST = API_URL + "/lab/pathologist";
+export const UPDATE_PATHOLOGIST = API_URL + "/lab/pathologist";
+export const DELETE_PATHOLOGIST = API_URL + "/lab/pathologist";
+
 // SAMPLE COLLECTOR
 export const GET_SAMPLE_COLLECTORS = API_URL + "/lab/sample-collector-list";
 export const ADD_NEW_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
