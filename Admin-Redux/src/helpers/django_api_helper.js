@@ -8,7 +8,7 @@ const headers = {
 };
 
 const authorizedHeaders = {
-  Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
+  Authorization: "Token 34ed82d754348f5477968f5405052ff9ef30764f",
   "Content-Type":
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };
@@ -226,7 +226,6 @@ export const addNewOfferedTest = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("test_id", offeredTest.test_id);
   formData.append("unit_id", offeredTest.unit_id);
-  formData.append("reporting_range", offeredTest.reporting_range);
   formData.append("time_required_in_days", offeredTest.time_required_in_days);
   formData.append("price", offeredTest.price);
   formData.append("is_eqa_participation", offeredTest.is_eqa_participation);
@@ -245,7 +244,6 @@ export const updateOfferedTest = offeredTest => {
   formData.append("id", offeredTest.id);
   formData.append("test_id", offeredTest.test_id);
   formData.append("unit_id", offeredTest.unit_id);
-  formData.append("reporting_range", offeredTest.reporting_range);
   formData.append("time_required_in_days", offeredTest.time_required_in_days);
   formData.append("price", offeredTest.price);
   formData.append("is_eqa_participation", offeredTest.is_eqa_participation);

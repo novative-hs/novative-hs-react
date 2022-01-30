@@ -73,11 +73,6 @@ class LabPathologistsList extends Component {
           sort: true,
         },
         {
-          dataField: "reporting_range",
-          text: "Reporting range",
-          sort: true,
-        },
-        {
           dataField: "time_required_in_days",
           text: "Time required",
           sort: true,
@@ -238,7 +233,6 @@ class LabPathologistsList extends Component {
         unit_name: offeredTest.unit_name,
         test_id: offeredTest.test_id,
         unit_id: offeredTest.unit_id,
-        reporting_range: offeredTest.reporting_range,
         time_required_in_days: offeredTest.time_required_in_days,
         price: offeredTest.price,
         is_eqa_participation: offeredTest.is_eqa_participation,
@@ -388,10 +382,6 @@ class LabPathologistsList extends Component {
                                               (offeredTest &&
                                                 offeredTest.unit_id) ||
                                               "1",
-                                            reporting_range:
-                                              (offeredTest &&
-                                                offeredTest.reporting_range) ||
-                                              "",
                                             time_required_in_days:
                                               (offeredTest &&
                                                 offeredTest.time_required_in_days) ||
@@ -410,10 +400,6 @@ class LabPathologistsList extends Component {
                                               "Yes",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            reporting_range:
-                                              Yup.string().required(
-                                                "Please enter reporting range"
-                                              ),
                                             time_required_in_days:
                                               Yup.string().required(
                                                 "Please enter time required in days"
@@ -433,8 +419,6 @@ class LabPathologistsList extends Component {
                                                 id: offeredTest.id,
                                                 test_id: values.test_id,
                                                 unit_id: values.unit_id,
-                                                reporting_range:
-                                                  values.reporting_range,
                                                 time_required_in_days:
                                                   values.time_required_in_days,
                                                 price: values.price,
@@ -459,8 +443,6 @@ class LabPathologistsList extends Component {
                                                   ) + 20,
                                                 test_id: values.test_id,
                                                 unit_id: values.unit_id,
-                                                reporting_range:
-                                                  values.reporting_range,
                                                 time_required_in_days:
                                                   values.time_required_in_days,
                                                 price: values.price,
@@ -546,28 +528,6 @@ class LabPathologistsList extends Component {
                                                         </option>
                                                       ))}
                                                     </Field>
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Reporting range
-                                                    </Label>
-                                                    <Field
-                                                      name="reporting_range"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.reporting_range &&
-                                                        touched.reporting_range
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="reporting_range"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
                                                   </div>
 
                                                   <div className="mb-3">
