@@ -73,8 +73,13 @@ class OfferedTestsList extends Component {
           sort: true,
         },
         {
-          dataField: "time_required_in_days",
-          text: "Time required",
+          dataField: "duration_required",
+          text: "Duration required",
+          sort: true,
+        },
+        {
+          dataField: "duration_type",
+          text: "Duration type",
           sort: true,
         },
         {
@@ -215,7 +220,8 @@ class OfferedTestsList extends Component {
         unit_name: offeredTest.unit_name,
         test_id: offeredTest.test_id,
         unit_id: offeredTest.unit_id,
-        time_required_in_days: offeredTest.time_required_in_days,
+        duration_required: offeredTest.duration_required,
+        duration_type: offeredTest.duration_type,
         price: offeredTest.price,
         is_eqa_participation: offeredTest.is_eqa_participation,
         is_home_sampling_available: offeredTest.is_home_sampling_available,
@@ -374,10 +380,14 @@ class OfferedTestsList extends Component {
                                               (offeredTest &&
                                                 offeredTest.unit_id) ||
                                               "",
-                                            time_required_in_days:
+                                            duration_required:
                                               (offeredTest &&
-                                                offeredTest.time_required_in_days) ||
+                                                offeredTest.duration_required) ||
                                               "",
+                                            duration_type:
+                                              (offeredTest &&
+                                                offeredTest.duration_type) ||
+                                              "days",
                                             price:
                                               (offeredTest &&
                                                 offeredTest.price) ||
@@ -392,7 +402,7 @@ class OfferedTestsList extends Component {
                                               "Yes",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            time_required_in_days:
+                                            duration_required:
                                               Yup.string().required(
                                                 "Please enter time required in days"
                                               ),
@@ -411,8 +421,10 @@ class OfferedTestsList extends Component {
                                                 unit_id: parseInt(
                                                   values.unit_id
                                                 ),
-                                                time_required_in_days:
-                                                  values.time_required_in_days,
+                                                duration_required:
+                                                  values.duration_required,
+                                                duration_type:
+                                                  values.duration_type,
                                                 price: values.price,
                                                 is_eqa_participation:
                                                   values.is_eqa_participation,
@@ -445,8 +457,10 @@ class OfferedTestsList extends Component {
                                                   ) + 20,
                                                 test_id: values.test_id,
                                                 unit_id: values.unit_id,
-                                                time_required_in_days:
-                                                  values.time_required_in_days,
+                                                duration_required:
+                                                  values.duration_required,
+                                                duration_type:
+                                                  values.duration_type,
                                                 price: values.price,
                                                 is_eqa_participation:
                                                   values.is_eqa_participation,
@@ -574,25 +588,53 @@ class OfferedTestsList extends Component {
                                                   </div>
 
                                                   <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Time required in days
-                                                    </Label>
-                                                    <Field
-                                                      name="time_required_in_days"
-                                                      type="number"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.time_required_in_days &&
-                                                        touched.time_required_in_days
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="time_required_in_days"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
+                                                    <Row>
+                                                      <Col lg={8}>
+                                                        <Label className="form-label">
+                                                          Duration required
+                                                        </Label>
+                                                        <Field
+                                                          name="duration_required"
+                                                          type="number"
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.duration_required &&
+                                                            touched.duration_required
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                        />
+                                                        <ErrorMessage
+                                                          name="duration_required"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </Col>
+                                                      <Col lg={4}>
+                                                        <Label className="form-label">
+                                                          Duration type
+                                                        </Label>
+                                                        <Field
+                                                          name="duration_type"
+                                                          as="select"
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.duration_type &&
+                                                            touched.duration_type
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                          multiple={false}
+                                                        >
+                                                          <option value="days">
+                                                            days
+                                                          </option>
+                                                          <option value="hours">
+                                                            hours
+                                                          </option>
+                                                        </Field>
+                                                      </Col>
+                                                    </Row>
                                                   </div>
 
                                                   <div className="mb-3">
