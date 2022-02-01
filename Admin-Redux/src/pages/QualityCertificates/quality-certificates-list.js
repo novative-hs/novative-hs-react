@@ -238,6 +238,7 @@ class QualityCertificatesList extends Component {
         name: qualityCertificate.name,
         certificate: "http://127.0.0.1:8000" + qualityCertificate.certificate,
       },
+      certificateImg: "",
       isEdit: true,
     });
 
@@ -373,12 +374,9 @@ class QualityCertificatesList extends Component {
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
                                             name:
-                                              (qualityCertificate &&
-                                                qualityCertificate.name) ||
-                                              "",
-                                            certificate:
-                                              (qualityCertificate &&
-                                                qualityCertificate.certificate) ||
+                                              (this.state.qualityCertificate &&
+                                                this.state.qualityCertificate
+                                                  .name) ||
                                               "",
                                             certificate:
                                               (this.state &&
@@ -495,6 +493,11 @@ class QualityCertificatesList extends Component {
                                                     <Field
                                                       name="name"
                                                       type="text"
+                                                      value={
+                                                        this.state
+                                                          .qualityCertificate
+                                                          .name
+                                                      }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({

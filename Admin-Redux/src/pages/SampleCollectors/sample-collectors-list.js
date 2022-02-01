@@ -244,6 +244,7 @@ class SampleCollectorsList extends Component {
         phone: sampleCollector.phone,
         photo: "http://127.0.0.1:8000" + sampleCollector.photo,
       },
+      collectorImg: "",
       isEdit: true,
     });
 
@@ -520,6 +521,10 @@ class SampleCollectorsList extends Component {
                                                     <Field
                                                       name="name"
                                                       type="text"
+                                                      value={
+                                                        this.state
+                                                          .sampleCollector.name
+                                                      }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
@@ -568,6 +573,10 @@ class SampleCollectorsList extends Component {
                                                     <Field
                                                       name="cnic"
                                                       type="text"
+                                                      value={
+                                                        this.state
+                                                          .sampleCollector.cnic
+                                                      }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
@@ -616,6 +625,10 @@ class SampleCollectorsList extends Component {
                                                     <Field
                                                       name="phone"
                                                       type="text"
+                                                      value={
+                                                        this.state
+                                                          .sampleCollector.phone
+                                                      }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
