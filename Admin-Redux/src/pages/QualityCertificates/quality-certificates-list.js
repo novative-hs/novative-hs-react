@@ -173,7 +173,11 @@ class QualityCertificatesList extends Component {
   }
 
   handleQualityCertificateClicks = () => {
-    this.setState({ qualityCertificate: "", isEdit: false });
+    this.setState({
+      qualityCertificate: "",
+      certificateImg: "",
+      isEdit: false,
+    });
     this.toggle();
   };
 
@@ -491,6 +495,28 @@ class QualityCertificatesList extends Component {
                                                     <Field
                                                       name="name"
                                                       type="text"
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            qualityCertificate:
+                                                              {
+                                                                id: qualityCertificate.id,
+                                                                name: e.target
+                                                                  .value,
+                                                                certificate:
+                                                                  qualityCertificate.certificate,
+                                                              },
+                                                          });
+                                                        } else {
+                                                          this.setState({
+                                                            qualityCertificate:
+                                                              {
+                                                                name: e.target
+                                                                  .value,
+                                                              },
+                                                          });
+                                                        }
+                                                      }}
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
