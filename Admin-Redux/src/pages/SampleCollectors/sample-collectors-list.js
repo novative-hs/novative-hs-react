@@ -181,7 +181,7 @@ class SampleCollectorsList extends Component {
   }
 
   handleSampleCollectorClicks = () => {
-    this.setState({ sampleCollector: "", isEdit: false });
+    this.setState({ sampleCollector: "", collectorImg: "", isEdit: false });
     this.toggle();
   };
 
@@ -389,10 +389,6 @@ class SampleCollectorsList extends Component {
                                                 sampleCollector.phone) ||
                                               "",
                                             photo:
-                                              (sampleCollector &&
-                                                sampleCollector.photo) ||
-                                              "",
-                                            photo:
                                               (this.state &&
                                                 this.state.collectorImg) ||
                                               "",
@@ -524,6 +520,32 @@ class SampleCollectorsList extends Component {
                                                     <Field
                                                       name="name"
                                                       type="text"
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              id: sampleCollector.id,
+                                                              name: e.target
+                                                                .value,
+                                                              cnic: sampleCollector.cnic,
+                                                              phone:
+                                                                sampleCollector.phone,
+                                                              photo:
+                                                                sampleCollector.photo,
+                                                            },
+                                                          });
+                                                        } else {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              name: e.target
+                                                                .value,
+                                                              cnic: sampleCollector.cnic,
+                                                              phone:
+                                                                sampleCollector.phone,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
@@ -546,6 +568,32 @@ class SampleCollectorsList extends Component {
                                                     <Field
                                                       name="cnic"
                                                       type="text"
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              id: sampleCollector.id,
+                                                              name: sampleCollector.name,
+                                                              cnic: e.target
+                                                                .value,
+                                                              phone:
+                                                                sampleCollector.phone,
+                                                              photo:
+                                                                sampleCollector.photo,
+                                                            },
+                                                          });
+                                                        } else {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              name: sampleCollector.name,
+                                                              cnic: e.target
+                                                                .value,
+                                                              phone:
+                                                                sampleCollector.phone,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
                                                       className={
                                                         "form-control" +
                                                         (errors.cnic &&
@@ -568,6 +616,30 @@ class SampleCollectorsList extends Component {
                                                     <Field
                                                       name="phone"
                                                       type="text"
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              id: sampleCollector.id,
+                                                              name: sampleCollector.name,
+                                                              cnic: sampleCollector.cnic,
+                                                              phone:
+                                                                e.target.value,
+                                                              photo:
+                                                                sampleCollector.photo,
+                                                            },
+                                                          });
+                                                        } else {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              name: sampleCollector.name,
+                                                              cnic: sampleCollector.cnic,
+                                                              phone:
+                                                                e.target.value,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
                                                       className={
                                                         "form-control" +
                                                         (errors.phone &&
