@@ -889,19 +889,19 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
-                {/* Lab Pathologist Links */}
-                {/* <li>
+                {/* Pathologist Links */}
+                <li>
                   <Link
                     to={
                       "/dashboard-lab/" +
                       this.props.match.params.id +
-                      "/lab-pathologists-list"
+                      "/pathologists-list"
                     }
                   >
                     <i className="fas fa-user-md" />
-                    <span>{this.props.t("Lab Pathologists")}</span>
+                    <span>{this.props.t("Pathologists")}</span>
                   </Link>
-                </li> */}
+                </li>
 
                 {/* Quality Certificates Links */}
                 <li>

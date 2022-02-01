@@ -6,6 +6,7 @@ import { withRouter, Link } from "react-router-dom";
 import {
   Card,
   CardBody,
+  CardImg,
   Col,
   Container,
   Row,
@@ -14,6 +15,7 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  Input,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -32,64 +34,70 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getUnits,
-  getTests,
-  getOfferedTests,
-  addNewOfferedTest,
-  updateOfferedTest,
-  deleteOfferedTest,
-} from "store/offered-tests/actions";
+  getPathologists,
+  addNewPathologist,
+  updatePathologist,
+  deletePathologist,
+} from "store/pathologists/actions";
 
 import { isEmpty, size } from "lodash";
 
-class LabPathologistsList extends Component {
+class PathologistsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
       selectedFiles: [],
-      offeredTests: [],
-      tests: [],
-      units: [],
-      offeredTest: "",
+      pathologists: [],
+      pathologist: "",
       modal: false,
       deleteModal: false,
-      offeredTestListColumns: [
+      pathologistListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
+          formatter: (cellContent, pathologist) => <>{pathologist.id}</>,
         },
         {
-          dataField: "test_name",
-          text: "Test",
+          dataField: "name",
+          text: "Name",
           sort: true,
         },
         {
-          dataField: "unit_name",
-          text: "Unit",
+          dataField: "email",
+          text: "Email",
           sort: true,
         },
         {
-          dataField: "time_required_in_days",
-          text: "Time required",
+          dataField: "phone",
+          text: "Phone No.",
           sort: true,
         },
         {
-          dataField: "price",
-          text: "Price",
+          dataField: "landline",
+          text: "Landline",
           sort: true,
         },
         {
-          dataField: "is_eqa_participation",
-          text: "EQA participation",
+          dataField: "designation",
+          text: "Designation",
           sort: true,
         },
         {
-          dataField: "is_home_sampling_available",
-          text: "Home sampling",
+          dataField: "is_available_for_consultation",
+          text: "Available for consultation",
+          sort: true,
+        },
+        {
+          dataField: "is_available_on_whatsapp",
+          text: "Available on WhatsApp",
+          sort: true,
+        },
+        {
+          dataField: "is_associated_with_pap",
+          text: "Associated with PAP",
           sort: true,
         },
         {
@@ -97,20 +105,20 @@ class LabPathologistsList extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, offeredTest) => (
+          formatter: (cellContent, pathologist) => (
             <div className="d-flex gap-3">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() => this.handleOfferedTestClick(offeredTest)}
+                  onClick={e => this.handlePathologistClick(e, pathologist)}
                 ></i>
               </Link>
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
-                  onClick={() => this.onClickDelete(offeredTest)}
+                  onClick={() => this.onClickDelete(pathologist)}
                 ></i>
               </Link>
             </div>
@@ -118,51 +126,18 @@ class LabPathologistsList extends Component {
         },
       ],
     };
-    this.handleOfferedTestClick = this.handleOfferedTestClick.bind(this);
+    this.handlePathologistClick = this.handlePathologistClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleOfferedTestClicks = this.handleOfferedTestClicks.bind(this);
+    this.handlePathologistClicks = this.handlePathologistClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
-  handleAcceptedFiles = files => {
-    files.map(file =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-        formattedSize: this.formatBytes(file.size),
-      })
-    );
-
-    this.setState({ selectedFiles: files });
-  };
-
-  formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  };
-
   componentDidMount() {
-    const { units, onGetUnits } = this.props;
-    if (units && !units.length) {
-      onGetUnits();
+    const { pathologists, onGetPathologists } = this.props;
+    if (pathologists && !pathologists.length) {
+      onGetPathologists();
     }
-    this.setState({ units });
-
-    const { tests, onGetTests } = this.props;
-    if (tests && !tests.length) {
-      onGetTests();
-    }
-    this.setState({ tests });
-
-    const { offeredTests, onGetOfferedTests } = this.props;
-    if (offeredTests && !offeredTests.length) {
-      onGetOfferedTests();
-    }
-    this.setState({ offeredTests });
+    this.setState({ pathologists });
   }
 
   toggle() {
@@ -171,19 +146,19 @@ class LabPathologistsList extends Component {
     }));
   }
 
-  handleOfferedTestClicks = () => {
-    this.setState({ offeredTest: "", isEdit: false });
+  handlePathologistClicks = () => {
+    this.setState({ pathologist: "", isEdit: false });
     this.toggle();
   };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { offeredTests } = this.props;
+    const { pathologists } = this.props;
     if (
-      !isEmpty(offeredTests) &&
-      size(prevProps.offeredTests) !== size(offeredTests)
+      !isEmpty(pathologists) &&
+      size(prevProps.pathologists) !== size(pathologists)
     ) {
-      this.setState({ offeredTests: {}, isEdit: false });
+      this.setState({ pathologists: {}, isEdit: false });
     }
   }
 
@@ -207,36 +182,38 @@ class LabPathologistsList extends Component {
     }));
   };
 
-  onClickDelete = offeredTests => {
-    this.setState({ offeredTests: offeredTests });
+  onClickDelete = pathologists => {
+    this.setState({ pathologists: pathologists });
     this.setState({ deleteModal: true });
   };
 
-  handleDeleteOfferedTest = () => {
-    const { onDeleteOfferedTest } = this.props;
-    const { offeredTests } = this.state;
-    if (offeredTests.id !== undefined) {
-      onDeleteOfferedTest(offeredTests);
+  handleDeletePathologist = () => {
+    const { onDeletePathologist, onGetPathologists } = this.props;
+    const { pathologists } = this.state;
+    if (pathologists.id !== undefined) {
+      onDeletePathologist(pathologists);
+      setTimeout(() => {
+        onGetPathologists();
+      }, 1000);
       this.setState({ deleteModal: false });
     }
   };
 
-  handleOfferedTestClick = arg => {
-    const offeredTest = arg;
-
-    console.log("Edit clicked: ", offeredTest);
+  handlePathologistClick = (e, arg) => {
+    const pathologist = arg;
 
     this.setState({
-      offeredTest: {
-        id: offeredTest.id,
-        test_name: offeredTest.test_name,
-        unit_name: offeredTest.unit_name,
-        test_id: offeredTest.test_id,
-        unit_id: offeredTest.unit_id,
-        time_required_in_days: offeredTest.time_required_in_days,
-        price: offeredTest.price,
-        is_eqa_participation: offeredTest.is_eqa_participation,
-        is_home_sampling_available: offeredTest.is_home_sampling_available,
+      pathologist: {
+        id: pathologist.id,
+        name: pathologist.name,
+        email: pathologist.email,
+        phone: pathologist.phone,
+        landline: pathologist.landline,
+        designation: pathologist.designation,
+        is_available_for_consultation:
+          pathologist.is_available_for_consultation,
+        is_available_on_whatsapp: pathologist.is_available_on_whatsapp,
+        is_associated_with_pap: pathologist.is_associated_with_pap,
       },
       isEdit: true,
     });
@@ -247,20 +224,17 @@ class LabPathologistsList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { offeredTests } = this.props;
-    const { tests } = this.props;
-    const { units } = this.props;
+    const { pathologists } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
+    const { onAddNewPathologist, onUpdatePathologist, onGetPathologists } =
       this.props;
-    const { selectedOfferedTest } = this.state;
-    const offeredTest = this.state.offeredTest;
+    const pathologist = this.state.pathologist;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: offeredTests.length, // replace later with size(offeredTests),
+      totalSize: pathologists.length, // replace later with size(pathologists),
       custom: true,
     };
 
@@ -275,27 +249,21 @@ class LabPathologistsList extends Component {
       mode: "checkbox",
     };
 
-    const testList = [];
-    for (let i = 0; i < tests.length; i++) testList.push(tests[i]);
-
-    const unitList = [];
-    for (let i = 0; i < units.length; i++) unitList.push(units[i]);
-
     return (
       <React.Fragment>
         <DeleteModal
           show={deleteModal}
-          onDeleteClick={this.handleDeleteOfferedTest}
+          onDeleteClick={this.handleDeletePathologist}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
         <div className="page-content">
           <MetaTags>
-            <title>Lab Pathologists List | Ilaaj4u</title>
+            <title>Pathologists List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Lab Pathologists"
+              title="Pathologists"
               breadcrumbItem="Pathologists List"
             />
             <Row>
@@ -305,14 +273,14 @@ class LabPathologistsList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.offeredTestListColumns}
-                      data={offeredTests}
+                      columns={this.state.pathologistListColumns}
+                      data={pathologists}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.offeredTestListColumns}
-                          data={offeredTests}
+                          columns={this.state.pathologistListColumns}
+                          data={pathologists}
                           search
                         >
                           {toolkitprops => (
@@ -333,7 +301,7 @@ class LabPathologistsList extends Component {
                                     <Button
                                       color="primary"
                                       className="font-16 btn-block btn btn-primary"
-                                      onClick={this.handleOfferedTestClicks}
+                                      onClick={this.handlePathologistClicks}
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
                                       Add New Test
@@ -367,101 +335,123 @@ class LabPathologistsList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Offered Test"
-                                          : "Add Offered Test"}
+                                          ? "Edit Pathologist"
+                                          : "Add Pathologist"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            test_id:
-                                              (offeredTest &&
-                                                offeredTest.test_id) ||
-                                              "1",
-                                            unit_id:
-                                              (offeredTest &&
-                                                offeredTest.unit_id) ||
-                                              "1",
-                                            time_required_in_days:
-                                              (offeredTest &&
-                                                offeredTest.time_required_in_days) ||
+                                            hiddenEditFlag: isEdit,
+                                            name:
+                                              (pathologist &&
+                                                pathologist.name) ||
                                               "",
-                                            price:
-                                              (offeredTest &&
-                                                offeredTest.price) ||
+                                            email:
+                                              (pathologist &&
+                                                pathologist.email) ||
                                               "",
-                                            is_eqa_participation:
-                                              (offeredTest &&
-                                                offeredTest.is_eqa_participation) ||
+                                            phone:
+                                              (pathologist &&
+                                                pathologist.phone) ||
+                                              "",
+                                            landline:
+                                              (pathologist &&
+                                                pathologist.landline) ||
+                                              "",
+                                            designation:
+                                              (pathologist &&
+                                                pathologist.designation) ||
+                                              "",
+                                            is_available_for_consultation:
+                                              (pathologist &&
+                                                pathologist.is_available_for_consultation) ||
                                               "Yes",
-                                            is_home_sampling_available:
-                                              (offeredTest &&
-                                                offeredTest.is_home_sampling_available) ||
+                                            is_available_on_whatsapp:
+                                              (pathologist &&
+                                                pathologist.is_available_on_whatsapp) ||
                                               "Yes",
+                                            is_associated_with_pap:
+                                              (pathologist &&
+                                                pathologist.is_associated_with_pap) ||
+                                              "No",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            time_required_in_days:
-                                              Yup.string().required(
-                                                "Please enter time required in days"
+                                            hiddentEditFlag: Yup.boolean(),
+                                            name: Yup.string().required(
+                                              "Please enter name"
+                                            ),
+                                            email: Yup.string()
+                                              .required("Please enter email")
+                                              .email(
+                                                "Please enter valid email"
                                               ),
-                                            price:
-                                              Yup.string().required(
-                                                "Please enter price"
+                                            phone: Yup.string()
+                                              .required("Please enter phone")
+                                              .matches(
+                                                /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                                                "Please enter a valid Pakistani phone number e.g. +923123456789"
+                                              ),
+                                            landline: Yup.string()
+                                              .required("Please enter phone")
+                                              .matches(
+                                                /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                                                "Please enter a valid Pakistani phone number e.g. +923123456789"
                                               ),
                                           })}
                                           onSubmit={values => {
-                                            console.log(
-                                              "Inside onsubmit",
-                                              tests[0].name
-                                            );
                                             if (isEdit) {
-                                              const updateOfferedTest = {
-                                                id: offeredTest.id,
-                                                test_id: values.test_id,
-                                                unit_id: values.unit_id,
-                                                time_required_in_days:
-                                                  values.time_required_in_days,
-                                                price: values.price,
-                                                is_eqa_participation:
-                                                  values.is_eqa_participation,
-                                                is_home_sampling_available:
-                                                  values.is_home_sampling_available,
+                                              const updatePathologist = {
+                                                id: pathologist.id,
+                                                name: values.name,
+                                                email: values.email,
+                                                phone: values.phone,
+                                                landline: values.landline,
+                                                designation: values.designation,
+                                                is_available_for_consultation:
+                                                  values.is_available_for_consultation,
+                                                is_available_on_whatsapp:
+                                                  values.is_available_on_whatsapp,
+                                                is_associated_with_pap:
+                                                  values.is_associated_with_pap,
                                               };
 
-                                              console.log(updateOfferedTest);
-
-                                              // update OfferedTest
-                                              onUpdateOfferedTest(
-                                                updateOfferedTest
+                                              // update Pathologist
+                                              onUpdatePathologist(
+                                                updatePathologist
                                               );
-                                              onGetOfferedTests();
+                                              setTimeout(() => {
+                                                onGetPathologists();
+                                              }, 1000);
                                             } else {
-                                              const newOfferedTest = {
+                                              const newPathologist = {
                                                 id:
                                                   Math.floor(
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
-                                                test_id: values.test_id,
-                                                unit_id: values.unit_id,
-                                                time_required_in_days:
-                                                  values.time_required_in_days,
-                                                price: values.price,
-                                                is_eqa_participation:
-                                                  values.is_eqa_participation,
-                                                is_home_sampling_available:
-                                                  values.is_home_sampling_available,
+                                                name: values.name,
+                                                email: values.email,
+                                                phone: values.phone,
+                                                landline: values.landline,
+                                                designation: values.designation,
+                                                is_available_for_consultation:
+                                                  values.is_available_for_consultation,
+                                                is_available_on_whatsapp:
+                                                  values.is_available_on_whatsapp,
+                                                is_associated_with_pap:
+                                                  values.is_associated_with_pap,
                                               };
 
-                                              console.log(newOfferedTest);
-
-                                              // save new OfferedTest
-                                              onAddNewOfferedTest(
-                                                newOfferedTest
+                                              // save new Pathologist
+                                              onAddNewPathologist(
+                                                newPathologist
                                               );
-                                              onGetOfferedTests();
+                                              setTimeout(() => {
+                                                onGetPathologists();
+                                              }, 1000);
                                             }
                                             this.setState({
-                                              selectedOfferedTest: null,
+                                              selectedPathologist: null,
                                             });
                                             this.toggle();
                                           }}
@@ -470,83 +460,30 @@ class LabPathologistsList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Test name
-                                                    </Label>
-                                                    <Field
-                                                      name="test_id"
-                                                      as="select"
-                                                      defaultValue={
-                                                        offeredTest.test_id
-                                                      }
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.test_id &&
-                                                        touched.test_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      multiple={false}
-                                                    >
-                                                      {tests.map(test => (
-                                                        <option
-                                                          key={test["id"]}
-                                                          value={test["id"]}
-                                                        >
-                                                          {test["name"]}
-                                                        </option>
-                                                      ))}
-                                                    </Field>
-                                                  </div>
+                                                  <Field
+                                                    type="hidden"
+                                                    className="form-control"
+                                                    name="hiddenEditFlag"
+                                                    value={isEdit}
+                                                  />
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Unit name
+                                                      Name
                                                     </Label>
                                                     <Field
-                                                      name="unit_id"
-                                                      as="select"
-                                                      defaultValue={
-                                                        offeredTest.unit_id
-                                                      }
+                                                      name="name"
+                                                      type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.unit_id &&
-                                                        touched.unit_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      multiple={false}
-                                                    >
-                                                      {units.map(unit => (
-                                                        <option
-                                                          key={unit["id"]}
-                                                          value={unit["id"]}
-                                                        >
-                                                          {unit["name"]}
-                                                        </option>
-                                                      ))}
-                                                    </Field>
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Time required in days
-                                                    </Label>
-                                                    <Field
-                                                      name="time_required_in_days"
-                                                      type="number"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.time_required_in_days &&
-                                                        touched.time_required_in_days
+                                                        (errors.name &&
+                                                        touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
                                                     <ErrorMessage
-                                                      name="time_required_in_days"
+                                                      name="name"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -554,21 +491,21 @@ class LabPathologistsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Price
+                                                      Email
                                                     </Label>
                                                     <Field
-                                                      name="price"
-                                                      type="number"
+                                                      name="email"
+                                                      type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.price &&
-                                                        touched.price
+                                                        (errors.email &&
+                                                        touched.email
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
                                                     <ErrorMessage
-                                                      name="price"
+                                                      name="email"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -576,15 +513,82 @@ class LabPathologistsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Is EQA participating?
+                                                      Phone
                                                     </Label>
                                                     <Field
-                                                      name="is_eqa_participation"
+                                                      name="phone"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.phone &&
+                                                        touched.phone
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="phone"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Landline
+                                                    </Label>
+                                                    <Field
+                                                      name="landline"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.landline &&
+                                                        touched.landline
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="landline"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Designation
+                                                    </Label>
+                                                    <Field
+                                                      name="designation"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.designation &&
+                                                        touched.designation
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="designation"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is available for
+                                                      consultation?
+                                                    </Label>
+                                                    <Field
+                                                      name="is_available_for_consultation"
                                                       as="select"
                                                       className={
                                                         "form-control" +
-                                                        (errors.is_eqa_participation &&
-                                                        touched.is_eqa_participation
+                                                        (errors.is_available_for_consultation &&
+                                                        touched.is_available_for_consultation
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -601,16 +605,40 @@ class LabPathologistsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Is home sampling
-                                                      available?
+                                                      Is available on WhatsApp?
                                                     </Label>
                                                     <Field
-                                                      name="is_home_sampling_available"
+                                                      name="is_available_on_whatsapp"
                                                       as="select"
                                                       className={
                                                         "form-control" +
-                                                        (errors.is_home_sampling_available &&
-                                                        touched.is_home_sampling_available
+                                                        (errors.is_available_on_whatsapp &&
+                                                        touched.is_available_on_whatsapp
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is associated with PAP?
+                                                    </Label>
+                                                    <Field
+                                                      name="is_associated_with_pap"
+                                                      as="select"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_associated_with_pap &&
+                                                        touched.is_associated_with_pap
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -669,37 +697,29 @@ class LabPathologistsList extends Component {
   }
 }
 
-LabPathologistsList.propTypes = {
+PathologistsList.propTypes = {
   match: PropTypes.object,
-  tests: PropTypes.array,
-  units: PropTypes.array,
-  offeredTests: PropTypes.array,
+  pathologists: PropTypes.array,
   className: PropTypes.any,
-  onGetOfferedTests: PropTypes.func,
-  onGetTests: PropTypes.func,
-  onGetUnits: PropTypes.func,
-  onAddNewOfferedTest: PropTypes.func,
-  onDeleteOfferedTest: PropTypes.func,
-  onUpdateOfferedTest: PropTypes.func,
+  onGetPathologists: PropTypes.func,
+  onAddNewPathologist: PropTypes.func,
+  onDeletePathologist: PropTypes.func,
+  onUpdatePathologist: PropTypes.func,
 };
 
-const mapStateToProps = ({ offeredTests }) => ({
-  offeredTests: offeredTests.offeredTests,
-  tests: offeredTests.tests,
-  units: offeredTests.units,
+const mapStateToProps = ({ pathologists }) => ({
+  pathologists: pathologists.pathologists,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTests: () => dispatch(getTests()),
-  onGetUnits: () => dispatch(getUnits()),
-  onGetOfferedTests: () => dispatch(getOfferedTests(ownProps.match.params.id)),
-  onAddNewOfferedTest: offeredTest =>
-    dispatch(addNewOfferedTest(offeredTest, ownProps.match.params.id)),
-  onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
-  onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
+  onGetPathologists: () => dispatch(getPathologists(ownProps.match.params.id)),
+  onAddNewPathologist: pathologist =>
+    dispatch(addNewPathologist(pathologist, ownProps.match.params.id)),
+  onUpdatePathologist: pathologist => dispatch(updatePathologist(pathologist)),
+  onDeletePathologist: pathologist => dispatch(deletePathologist(pathologist)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(LabPathologistsList));
+)(withRouter(PathologistsList));

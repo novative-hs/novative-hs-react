@@ -1,2 +1,2 @@
-const accessToken = "Token ab136c8c0bc5b5daa74de8839a6c85b4482be7353";
+const accessToken = "Token c7025729806654b10ba3c897e941417fdebd180d";
 export default accessToken;

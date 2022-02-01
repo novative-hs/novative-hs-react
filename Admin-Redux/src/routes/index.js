@@ -173,9 +173,9 @@ import ContactsProfile from "../pages/Contacts/ContactsProfile/contacts-profile"
 
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
-import LabPathologistsList from "../pages/LabPathologists/lab-pathologists-list";
 import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
+import PathologistsList from "../pages/Pathologists/pathologists-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -196,16 +196,16 @@ const authProtectedRoutes = [
     component: OfferedTestsList,
   },
   {
-    path: "/dashboard-lab/:id/lab-pathologists-list",
-    component: LabPathologistsList,
-  },
-  {
     path: "/dashboard-lab/:id/sample-collectors-list",
     component: SampleCollectorsList,
   },
   {
     path: "/dashboard-lab/:id/quality-certificates-list",
     component: QualityCertificatesList,
+  },
+  {
+    path: "/dashboard-lab/:id/pathologists-list",
+    component: PathologistsList,
   },
 
   { path: "/dashboard-saas", component: DashboardSaas },

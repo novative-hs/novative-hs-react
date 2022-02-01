@@ -8,7 +8,7 @@ const headers = {
 };
 
 const authorizedHeaders = {
-  Authorization: "Token 34ed82d754348f5477968f5405052ff9ef30764f",
+  Authorization: "Token c7025729806654b10ba3c897e941417fdebd180d",
   "Content-Type":
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };

@@ -68,8 +68,6 @@ function* onDeletePathologist({ payload: pathologist }) {
 }
 
 function* pathologistsSaga() {
-  yield takeEvery(GET_UNITS, fetchUnits);
-  yield takeEvery(GET_TESTS, fetchTests);
   yield takeEvery(GET_PATHOLOGISTS, fetchPathologists);
   yield takeEvery(ADD_NEW_PATHOLOGIST, onAddNewPathologist);
   yield takeEvery(UPDATE_PATHOLOGIST, onUpdatePathologist);
