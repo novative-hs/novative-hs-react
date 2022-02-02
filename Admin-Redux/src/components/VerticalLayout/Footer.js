@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { Row, Col } from "reactstrap"
+import React, { Component } from "react";
+import { Row, Col } from "reactstrap";
 
 class Footer extends Component {
   render() {
@@ -8,17 +8,17 @@ class Footer extends Component {
         <footer className="footer">
           <div className="container-fluid">
             <Row>
-              <Col sm={6}>{new Date().getFullYear()} © Skote.</Col>
+              <Col sm={6}>{new Date().getFullYear()} © Ilaaj4u</Col>
               <Col sm={6}>
                 <div className="text-sm-end d-none d-sm-block">
-                  Design & Develop by Themesbrand
-              </div>
+                  Welcome to Ilaaj4u Family
+                </div>
               </Col>
             </Row>
           </div>
         </footer>
       </React.Fragment>
-    )
+    );
   }
 }
 
