@@ -1,5 +1,6 @@
 import axios from "axios";
 import { del, get, post, put } from "./api_helper";
+import authHeader from "./django-token-access/auth-token-headerder";
 import * as url from "./url_helper";
 
 const headers = {
@@ -8,7 +9,7 @@ const headers = {
 };
 
 const authorizedHeaders = {
-  Authorization: "Token c7025729806654b10ba3c897e941417fdebd180d",
+  Authorization: "Token " + authHeader(),
   "Content-Type":
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };
@@ -203,7 +204,10 @@ export const postLogin = user => {
   formData.append("username", user.username);
   formData.append("password", user.password);
 
-  return axios.post(url.POST_LOGIN, formData, { headers: authorizedHeaders });
+  let userData = axios.post(url.POST_LOGIN, formData, {
+    headers: headers,
+  });
+  return userData;
 };
 
 // ------------- Offered Test Requests START -------------
