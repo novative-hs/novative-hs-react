@@ -6,7 +6,6 @@ import { loginSuccess, logoutUserSuccess, apiError } from "./actions";
 
 //Include Both Helper File with needed methods
 import { postLogin } from "../../../helpers/django_api_helper";
-import getAccessToken from "helpers/django-token-access/accessTokenken";
 
 function* loginUser({ payload: { user, history } }) {
   try {

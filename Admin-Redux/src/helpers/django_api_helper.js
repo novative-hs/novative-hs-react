@@ -1,6 +1,6 @@
 import axios from "axios";
 import { del, get, post, put } from "./api_helper";
-import authHeader from "./django-token-access/auth-token-headerder";
+import authHeader from "./django-token-access/auth-token-header";
 import * as url from "./url_helper";
 
 const headers = {
