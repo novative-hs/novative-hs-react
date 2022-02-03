@@ -930,6 +930,20 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Sample Collectors")}</span>
                   </Link>
                 </li>
+
+                {/* Test Appointment Links */}
+                <li>
+                  <Link
+                    to={
+                      "/dashboard-lab/" +
+                      this.props.match.params.id +
+                      "/test-appointments-list"
+                    }
+                  >
+                    <i className="mdi mdi-certificate" />
+                    <span>{this.props.t("Test Appointments")}</span>
+                  </Link>
+                </li>
               </ul>
             </div>
           </SimpleBar>

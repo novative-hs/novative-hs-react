@@ -8,7 +8,7 @@ const headers = {
 };
 
 const authorizedHeaders = {
-  Authorization: "Token c7025729806654b10ba3c897e941417fdebd180d",
+  Authorization: "Token 31f06ea66a893ac05b9b78d9cf96af996c47b5a8",
   "Content-Type":
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };
@@ -395,3 +395,49 @@ export const deletePathologist = pathologist =>
   del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
     headers: authorizedHeaders,
   });
+
+
+
+
+// ------------- Test Appointment Requests START -------------
+export const getTestAppointments = id =>
+  get(`${url.GET_TEST_APPOINTMENTS}/${id}`, {
+    headers: authorizedHeaders,
+  });
+
+// export const addNewTestAppointment = (testAppointment, id) => {
+//   let formData = new FormData();
+//   formData.append("patient_id", testAppointment.patient_id);
+//   formData.append("lab_id", testAppointment.lab_id);
+//   formData.append("offered_test_id", testAppointment.offered_test_id);
+//   formData.append("booking_date_time", testAppointment.booking_date_time);
+//   formData.append("requested_appointment_date_time", requested_appointment_date_time);
+//   formData.append("sample_collection_date_time", testAppointment.sample_collection_date_time);
+//   formData.append("result_upload_date_time", testAppointment.result_upload_date_time);
+//   formData.append("status", testAppointment.status);
+
+//   return axios.post(`${url.ADD_NEW_TEST_APPOINTMENT}/${id}`, formData, {
+//     headers: authorizedHeaders,
+//   });
+// };
+
+export const updateTestAppointment = testAppointment => {
+  let formData = new FormData();
+  formData.append("patient_id", testAppointment.patient_id);
+  formData.append("lab_id", testAppointment.lab_id);
+  formData.append("offered_test_id", testAppointment.offered_test_id);
+  formData.append("booking_date_time", testAppointment.booking_date_time);
+  formData.append("requested_appointment_date_time", requested_appointment_date_time);
+  formData.append("sample_collection_date_time", testAppointment.sample_collection_date_time);
+  formData.append("result_upload_date_time", testAppointment.result_upload_date_time);
+  formData.append("status", testAppointment.status);
+
+  return axios.put(
+    `${url.UPDATE_TEST_APPOINTMENT}/${testAppointment.id}`,
+    formData,
+    {
+      headers: authorizedHeaders,
+    }
+  );
+};
+
