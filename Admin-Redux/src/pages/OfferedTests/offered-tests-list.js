@@ -241,9 +241,13 @@ class OfferedTestsList extends Component {
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
-      this.props;
-    const { selectedOfferedTest } = this.state;
+    const {
+      onAddNewOfferedTest,
+      onUpdateOfferedTest,
+      onGetOfferedTests,
+      onGetTests,
+      onGetUnits,
+    } = this.props;
     const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
@@ -278,8 +282,6 @@ class OfferedTestsList extends Component {
         testList.push(tests[i]);
       }
     }
-
-    console.log("List: ", testList);
 
     return (
       <React.Fragment>

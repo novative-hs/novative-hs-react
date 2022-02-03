@@ -9,7 +9,7 @@ const headers = {
 };
 
 const authorizedHeaders = {
-  Authorization: "Token " + authHeader(),
+  Authorization: "Token c7025729806654b10ba3c897e941417fdebd180d",
   "Content-Type":
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };
@@ -204,10 +204,9 @@ export const postLogin = user => {
   formData.append("username", user.username);
   formData.append("password", user.password);
 
-  let userData = axios.post(url.POST_LOGIN, formData, {
+  return axios.post(url.POST_LOGIN, formData, {
     headers: headers,
   });
-  return userData;
 };
 
 // ------------- Offered Test Requests START -------------
