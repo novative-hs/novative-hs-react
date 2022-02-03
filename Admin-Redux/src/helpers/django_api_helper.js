@@ -10,7 +10,11 @@ const headers = {
 
 const authorizedHeaders = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   Authorization: "Token 31f06ea66a893ac05b9b78d9cf96af996c47b5a8",
+=======
+  Authorization: "Token " + authHeader(),
+>>>>>>> 733c991e49d1bc54cf027f830b6f97705e0ee724
 =======
   Authorization: "Token " + authHeader(),
 >>>>>>> 733c991e49d1bc54cf027f830b6f97705e0ee724
