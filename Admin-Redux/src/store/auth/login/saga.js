@@ -7,14 +7,7 @@ import { loginSuccess, logoutUserSuccess, apiError } from "./actions";
 //Include Both Helper File with needed methods
 import { postLogin } from "../../../helpers/django_api_helper";
 
-const authorizedHeaders = {
-  Authorization: "Token b136c8c0bc5b5daa74de8839a6c85b4482be7353",
-  "Content-Type":
-    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-};
-
 function* loginUser({ payload: { user, history } }) {
-  console.log("User: ", user);
   try {
     const response = yield call(postLogin, {
       username: user.username,
@@ -23,8 +16,8 @@ function* loginUser({ payload: { user, history } }) {
 
     const data = response.data.data;
 
-    localStorage.setItem("authUser", JSON.stringify(response));
-    yield put(loginSuccess(response));
+    localStorage.setItem("authUser", JSON.stringify(data));
+    yield put(loginSuccess(data));
 
     if (data.account_type == "patient") {
       history.push("/dashboard-patient/" + data.user_id);
