@@ -4,6 +4,6 @@ export default function authHeader() {
   if (obj && obj.token) {
     return obj.token;
   } else {
-    return {};
+    return "";
   }
 }
