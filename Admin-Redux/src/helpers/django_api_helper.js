@@ -3,17 +3,6 @@ import { del, get, post, put } from "./api_helper";
 import authHeader from "./django-token-access/auth-token-header";
 import * as url from "./url_helper";
 
-const headers = {
-  "Content-Type":
-    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-};
-
-const authorizedHeaders = {
-  Authorization: "Token c7025729806654b10ba3c897e941417fdebd180d",
-  "Content-Type":
-    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-};
-
 // Post Register Information to create account
 export const postRegister = user => {
   return axios
@@ -64,7 +53,10 @@ export const postPatientInformation = (id, patient) => {
 
   return axios
     .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {
-      headers: headers,
+      headers: {
+        "Content-Type":
+          "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+      },
     })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
@@ -118,7 +110,12 @@ export const postLabInformation = (id, lab) => {
   );
 
   return axios
-    .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, { headers: headers })
+    .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, {
+      headers: {
+        "Content-Type":
+          "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+      },
+    })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
@@ -165,7 +162,10 @@ export const postCorporateInformation = (id, corporate) => {
 
   return axios
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
-      headers: headers,
+      headers: {
+        "Content-Type":
+          "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+      },
     })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
@@ -205,24 +205,39 @@ export const postLogin = user => {
   formData.append("password", user.password);
 
   return axios.post(url.POST_LOGIN, formData, {
-    headers: headers,
+    headers: {
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
   get(url.GET_TESTS, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 export const getUnits = () =>
   get(url.GET_UNITS, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 export const getOfferedTests = id =>
   get(`${url.GET_OFFERED_TESTS}/${id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 export const addNewOfferedTest = (offeredTest, id) => {
@@ -239,7 +254,11 @@ export const addNewOfferedTest = (offeredTest, id) => {
   );
 
   return axios.post(`${url.ADD_NEW_OFFERED_TEST}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
@@ -258,19 +277,31 @@ export const updateOfferedTest = offeredTest => {
   );
 
   return axios.put(`${url.UPDATE_OFFERED_TEST}/${offeredTest.id}`, formData, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
 export const deleteOfferedTest = offeredTest =>
   del(`${url.DELETE_OFFERED_TEST}/${offeredTest.id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 // ------------- Sample Collector Requests START -------------
 export const getSampleCollectors = id =>
   get(`${url.GET_SAMPLE_COLLECTORS}/${id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 export const addNewSampleCollector = (sampleCollector, id) => {
@@ -281,7 +312,11 @@ export const addNewSampleCollector = (sampleCollector, id) => {
   formData.append("photo", sampleCollector.photo);
 
   return axios.post(`${url.ADD_NEW_SAMPLE_COLLECTOR}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
@@ -297,20 +332,32 @@ export const updateSampleCollector = sampleCollector => {
     `${url.UPDATE_SAMPLE_COLLECTOR}/${sampleCollector.id}`,
     formData,
     {
-      headers: authorizedHeaders,
+      headers: {
+        Authorization: "Token " + authHeader(),
+        "Content-Type":
+          "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+      },
     }
   );
 };
 
 export const deleteSampleCollector = sampleCollector =>
   del(`${url.DELETE_SAMPLE_COLLECTOR}/${sampleCollector.id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 // ------------- Test Certificate Requests START -------------
 export const getQualityCertificates = id =>
   get(`${url.GET_QUALITY_CERTIFICATES}/${id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 export const addNewQualityCertificate = (qualityCertificate, id) => {
@@ -319,7 +366,11 @@ export const addNewQualityCertificate = (qualityCertificate, id) => {
   formData.append("certificate", qualityCertificate.certificate);
 
   return axios.post(`${url.ADD_NEW_QUALITY_CERTIFICATE}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
@@ -333,20 +384,32 @@ export const updateQualityCertificate = qualityCertificate => {
     `${url.UPDATE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`,
     formData,
     {
-      headers: authorizedHeaders,
+      headers: {
+        Authorization: "Token " + authHeader(),
+        "Content-Type":
+          "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+      },
     }
   );
 };
 
 export const deleteQualityCertificate = qualityCertificate =>
   del(`${url.DELETE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 // ------------- Pathologists START -------------
 export const getPathologists = id =>
   get(`${url.GET_PATHOLOGISTS}/${id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 
 export const addNewPathologist = (pathologist, id) => {
@@ -367,7 +430,11 @@ export const addNewPathologist = (pathologist, id) => {
   formData.append("is_associated_with_pap", pathologist.is_associated_with_pap);
 
   return axios.post(`${url.ADD_NEW_PATHOLOGIST}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
@@ -390,11 +457,19 @@ export const updatePathologist = pathologist => {
   formData.append("is_associated_with_pap", pathologist.is_associated_with_pap);
 
   return axios.put(`${url.UPDATE_PATHOLOGIST}/${pathologist.id}`, formData, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
 };
 
 export const deletePathologist = pathologist =>
   del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
-    headers: authorizedHeaders,
+    headers: {
+      Authorization: "Token " + authHeader(),
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    },
   });
