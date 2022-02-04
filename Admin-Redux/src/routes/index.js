@@ -186,27 +186,7 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   // My Routes
-  { path: "/dashboard-patient/:id", component: DashboardPatient },
-  { path: "/dashboard-corporate/:id", component: DashboardCorporate },
-
-  // ********** Lab Routes **********
-  { path: "/dashboard-lab/:id", component: DashboardLab },
-  {
-    path: "/dashboard-lab/:id/offered-tests-list",
-    component: OfferedTestsList,
-  },
-  {
-    path: "/dashboard-lab/:id/sample-collectors-list",
-    component: SampleCollectorsList,
-  },
-  {
-    path: "/dashboard-lab/:id/quality-certificates-list",
-    component: QualityCertificatesList,
-  },
-  {
-    path: "/dashboard-lab/:id/pathologists-list",
-    component: PathologistsList,
-  },
+  // { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
@@ -392,4 +372,33 @@ const publicRoutes = [
   { path: "/auth-two-step-verification-2", component: TwostepVerification2 },
 ];
 
-export { authProtectedRoutes, publicRoutes };
+const labAuthProtectedRoutes = [
+  { path: "/dashboard-lab/:id", component: DashboardLab },
+  {
+    path: "/dashboard-lab/:id/offered-tests-list",
+    component: OfferedTestsList,
+  },
+  {
+    path: "/dashboard-lab/:id/sample-collectors-list",
+    component: SampleCollectorsList,
+  },
+  {
+    path: "/dashboard-lab/:id/quality-certificates-list",
+    component: QualityCertificatesList,
+  },
+  {
+    path: "/dashboard-lab/:id/pathologists-list",
+    component: PathologistsList,
+  },
+];
+
+const patientAuthProtectedRoutes = [
+  { path: "/dashboard-patient/:id", component: DashboardPatient },
+];
+
+export {
+  authProtectedRoutes,
+  labAuthProtectedRoutes,
+  patientAuthProtectedRoutes,
+  publicRoutes,
+};
