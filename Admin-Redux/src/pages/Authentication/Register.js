@@ -276,7 +276,7 @@ class Register extends Component {
                                   >
                                     <option value="patient">Patient</option>
                                     <option value="labowner">Lab Owner</option>
-                                    <option value="corporate">Corporate</option>
+                                    {/* <option value="corporate">Corporate</option> */}
                                   </Field>
                                 </div>
 
