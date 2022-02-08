@@ -53,6 +53,7 @@ import PatientInformation from "../pages/Authentication/PatientInformation";
 import LabInformation from "../pages/Authentication/LabInformation";
 import CorporateInformation from "../pages/Authentication/CorporateInformation";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
+import ConfirmPwd from "../pages/Authentication/ConfirmPassword";
 
 // Inner Authentication
 import Login1 from "../pages/AuthenticationInner/Login";
@@ -338,6 +339,7 @@ const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
+  { path: "/:token/confirm-password", component: ConfirmPwd },
   { path: "/register", component: Register },
   { path: "/patient-information/:id", component: PatientInformation },
   { path: "/lab-information/:id", component: LabInformation },

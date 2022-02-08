@@ -405,3 +405,23 @@ export const deletePathologist = pathologist =>
   del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
     headers: getHeader(authHeader()),
   });
+
+// ------------- Forget Password Requests START -------------
+export const postForgetPwd = data => {
+  let formData = new FormData();
+  formData.append("email", data.email);
+
+  return axios.post(url.POST_FORGET_PASSWORD, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const postConfirmPwd = (user, token) => {
+  let formData = new FormData();
+  formData.append("password", user.password);
+  formData.append("token", token);
+
+  return axios.post(url.POST_CONFIRM_PASSWORD, formData, {
+    headers: getHeader(authHeader()),
+  });
+};

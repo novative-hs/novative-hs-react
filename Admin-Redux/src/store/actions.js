@@ -7,6 +7,7 @@ export * from "./auth/labinformation/actions";
 export * from "./auth/corporateinformation/actions";
 export * from "./auth/login/actions";
 export * from "./auth/forgetpwd/actions";
+export * from "./auth/confirmpwd/actions";
 export * from "./auth/profile/actions";
 
 //Ecommerce

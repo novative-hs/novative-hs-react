@@ -7,6 +7,7 @@ import LabInformationSaga from "./auth/labinformation/saga";
 import CorporateInformationSaga from "./auth/corporateinformation/saga";
 import AuthSaga from "./auth/login/saga";
 import ForgetSaga from "./auth/forgetpwd/saga";
+import ConfirmSaga from "./auth/confirmpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
 import LayoutSaga from "./layout/saga";
 import ecommerceSaga from "./e-commerce/saga";
@@ -34,6 +35,7 @@ export default function* rootSaga() {
     fork(CorporateInformationSaga),
     fork(AuthSaga),
     fork(ForgetSaga),
+    fork(ConfirmSaga),
     fork(ProfileSaga),
     fork(LayoutSaga),
     fork(ecommerceSaga),
