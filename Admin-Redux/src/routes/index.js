@@ -185,10 +185,6 @@ import BlogDetails from "../pages/Blog/BlogDetails";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
-
-  // My Routes
-  // { path: "/dashboard-corporate/:id", component: DashboardCorporate },
-
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
   { path: "/dashboard-blog", component: DashboardBlog },
@@ -398,9 +394,14 @@ const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
 ];
 
+const corporateAuthProtectedRoutes = [
+  { path: "/dashboard-corporate/:id", component: DashboardCorporate },
+];
+
 export {
   authProtectedRoutes,
   labAuthProtectedRoutes,
   patientAuthProtectedRoutes,
+  corporateAuthProtectedRoutes,
   publicRoutes,
 };
