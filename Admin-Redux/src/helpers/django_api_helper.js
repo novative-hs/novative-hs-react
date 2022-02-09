@@ -64,8 +64,8 @@ export const postPatientInformation = (id, patient) => {
   formData.append("address", patient.address);
   formData.append("city", patient.city);
   formData.append("district", patient.district);
-  // formData.append("is_corporate_user", patient.is_corporate_user);
-  // formData.append("corporate_unique_id", patient.corporate_unique_id);
+  formData.append("is_corporate_user", patient.is_corporate_user);
+  formData.append("corporate_unique_id", patient.corporate_unique_id);
 
   return axios
     .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {

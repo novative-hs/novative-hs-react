@@ -241,13 +241,8 @@ class OfferedTestsList extends Component {
 
     const { isEdit, deleteModal } = this.state;
 
-    const {
-      onAddNewOfferedTest,
-      onUpdateOfferedTest,
-      onGetOfferedTests,
-      onGetTests,
-      onGetUnits,
-    } = this.props;
+    const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
+      this.props;
     const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
