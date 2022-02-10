@@ -13,6 +13,9 @@ import Calendar from "../pages/Calendar/index";
 // User profile
 import UserProfile from "../pages/Authentication/UserProfile";
 
+// Lab profile
+import LabProfile from "../pages/Authentication/LabProfile";
+
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
 import TasksKanban from "../pages/Tasks/tasks-kanban";
@@ -388,6 +391,7 @@ const labAuthProtectedRoutes = [
     path: "/dashboard-lab/:id/pathologists-list",
     component: PathologistsList,
   },
+  { path: "/dashboard-lab/:id/profile", component: LabProfile },
 ];
 
 const patientAuthProtectedRoutes = [

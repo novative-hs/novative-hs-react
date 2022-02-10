@@ -47,6 +47,10 @@ export const ADD_NEW_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 export const UPDATE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 export const DELETE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 
+//LAB PROFILE
+export const GET_LAB_PROIFLE = API_URL + "/lab/lab-profile";
+export const UPDATE_LAB_PROFILE = API_URL + "/lab/lab-profile";
+
 // -------------- TEMPLATES URLS --------------
 
 //REGISTER

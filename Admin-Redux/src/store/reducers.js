@@ -12,7 +12,7 @@ import CorporateInformation from "./auth/corporateinformation/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import ConfirmPassword from "./auth/confirmpwd/reducer";
 import Profile from "./auth/profile/reducer";
-
+import LabProfile from "./auth/lab-profile/reducer";
 //E-commerce
 import ecommerce from "./e-commerce/reducer";
 
@@ -69,6 +69,7 @@ const rootReducer = combineReducers({
   ForgetPassword,
   ConfirmPassword,
   Profile,
+  LabProfile,
   ecommerce,
   calendar,
   chat,
