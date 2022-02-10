@@ -86,11 +86,11 @@ class ProfileMenu extends Component {
                 <i className="bx bx-user font-size-16 align-middle ms-1" />
                 {this.props.t("Patient Profile")}
               </DropdownItem>
-            ) : null}
+            ): null }
 
             {this.props.location &&
             this.props.location.pathname.includes("dashboard-lab") ? (
-              <DropdownItem tag="a" href="/profile">
+              <DropdownItem tag="a" href={"/dashboard-lab/" + this.props.match.params.id + "/profile"}>
                 <i className="bx bx-user font-size-16 align-middle ms-1" />
                 {this.props.t("Lab Profile")}
               </DropdownItem>
