@@ -22,6 +22,9 @@ class LabInformation extends Component {
     super(props);
     this.state = {
       name: "",
+      type: "",
+      main_lab_account_id: "",
+      financial_settlement: "",
       logo: "",
       owner_name: "",
       registration_no: "",
@@ -102,6 +105,16 @@ class LabInformation extends Component {
                             enableReinitialize={true}
                             initialValues={{
                               name: (this.state && this.state.name) || "",
+                              type:
+                                (this.state && this.state.type) || "Main Lab",
+                              main_lab_account_id:
+                                (this.state &&
+                                  this.state.main_lab_account_id) ||
+                                "",
+                              financial_settlement:
+                                (this.state &&
+                                  this.state.financial_settlement) ||
+                                "Self",
                               logo: (this.state && this.state.logo) || "",
                               owner_name:
                                 (this.state && this.state.owner_name) || "",
@@ -137,6 +150,12 @@ class LabInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
+                              main_lab_account_id: Yup.string().when("type", {
+                                is: val => val != "Main Lab",
+                                then: Yup.string()
+                                  .trim()
+                                  .required("Please enter main lab name"),
+                              }),
                               logo: Yup.mixed().required(
                                 "Please upload your lab logo"
                               ),
@@ -214,10 +233,10 @@ class LabInformation extends Component {
                             onSubmit={values => {
                               console.log(values);
                               // console.log(values.logo.split("\\").slice(-1)[0]);
-                              this.props.addLabInformation(
-                                values,
-                                this.props.match.params.id
-                              );
+                              // this.props.addLabInformation(
+                              //   values,
+                              //   this.props.match.params.id
+                              // );
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -249,6 +268,84 @@ class LabInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
+
+                                {/* Type field */}
+                                <div className="mb-3">
+                                  <Label for="type" className="form-label">
+                                    What is your lab type?
+                                  </Label>
+                                  <Field
+                                    name="type"
+                                    component="select"
+                                    defaultValue="No"
+                                    onChange={e =>
+                                      this.setState({
+                                        type: e.target.value,
+                                      })
+                                    }
+                                    value={this.state.type}
+                                    className="form-select"
+                                  >
+                                    <option value="Main Lab">Main Lab</option>
+                                    <option value="Collection Point">
+                                      Collection Point
+                                    </option>
+                                  </Field>
+                                </div>
+
+                                {/* Main lab name field */}
+                                {this.state.type === "Collection Point" && (
+                                  <div className="mb-3">
+                                    <Label
+                                      for="main_lab_account_id"
+                                      className="form-label"
+                                    >
+                                      What is your main lab name?
+                                    </Label>
+                                    <input
+                                      className="form-control"
+                                      list="datalistOptions"
+                                      id="main_lab_account_id"
+                                      placeholder="Type to search..."
+                                    />
+                                    <datalist id="datalistOptions">
+                                      <option value="LaboMart" />
+                                      <option value="LaboCart" />
+                                      <option value="FriendsLab" />
+                                      <option value="CitiLab" />
+                                    </datalist>
+                                    <ErrorMessage
+                                      name="main_lab_account_id"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Financial settlement field */}
+                                {this.state.type === "Collection Point" && (
+                                  <div className="mb-3">
+                                    <Label for="type" className="form-label">
+                                      Who is responsible for financial
+                                      settlements?
+                                    </Label>
+                                    <Field
+                                      name="financial_settlement"
+                                      component="select"
+                                      defaultValue="No"
+                                      onChange={e =>
+                                        this.setState({
+                                          financial_settlement: e.target.value,
+                                        })
+                                      }
+                                      value={this.state.financial_settlement}
+                                      className="form-select"
+                                    >
+                                      <option value="Self">Self</option>
+                                      <option value="Main Lab">Main Lab</option>
+                                    </Field>
+                                  </div>
+                                )}
 
                                 {/* Logo field */}
                                 <div className="mb-3">
