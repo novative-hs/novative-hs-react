@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Select from "react-select";
 import { Alert, Col, Container, Row, Label, Input } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -10,12 +11,38 @@ import { Redirect, Link } from "react-router-dom";
 
 // action
 import {
+  getLabs,
+  getLabsSuccess,
   addLabInformation,
   addLabInformationFailed,
 } from "../../store/actions";
 
 // Redux
 import { connect } from "react-redux";
+
+let optionGroup = [
+  {
+    options: [],
+  },
+];
+
+const errorStyle = {
+  control: base => ({
+    ...base,
+    borderColor: "#f46a6a",
+  }),
+};
+
+const style = {
+  control: (base, state) => ({
+    ...base,
+    // This line disable the blue border
+    boxShadow: state.isFocused ? 0 : 1,
+    "&:hover": {
+      border: state.isFocused ? 0 : 1,
+    },
+  }),
+};
 
 class LabInformation extends Component {
   constructor(props) {
@@ -40,15 +67,34 @@ class LabInformation extends Component {
   }
 
   componentDidMount() {
+    this.props.getLabs(); // Calling to get labs list from database
     this.props.addLabInformationFailed("");
+
+    // Wait for sometime so that response is loaded from database
+    setTimeout(() => {
+      if (this.props.labs.length) {
+        const labs = this.props.labs;
+        for (let i = 0; i < labs.length; i++) {
+          optionGroup[0]["options"].push({
+            label: labs[i].name,
+            value: labs[i].account_id,
+          });
+        }
+      }
+    }, 3000);
   }
+
+  // Select
+  handleSelectGroup = selectedGroup => {
+    console.log("Type of: ", typeof selectedGroup.value);
+    this.setState({ main_lab_account_id: selectedGroup.value });
+  };
 
   render() {
     // Redirect to register page if getting access directly from url
     if (typeof this.props.location.state == "undefined") {
       return <Redirect to={"/register"} />;
     }
-
     return (
       <React.Fragment>
         <div>
@@ -151,10 +197,10 @@ class LabInformation extends Component {
                                   "Please enter maximum 255 characters"
                                 ),
                               main_lab_account_id: Yup.string().when("type", {
-                                is: val => val != "Main Lab",
-                                then: Yup.string()
-                                  .trim()
-                                  .required("Please enter main lab name"),
+                                is: val => val === "Collection Point",
+                                then: Yup.string().required(
+                                  "Please enter your main lab"
+                                ),
                               }),
                               logo: Yup.mixed().required(
                                 "Please upload your lab logo"
@@ -231,12 +277,11 @@ class LabInformation extends Component {
                                 ),
                             })}
                             onSubmit={values => {
-                              console.log(values);
-                              // console.log(values.logo.split("\\").slice(-1)[0]);
-                              // this.props.addLabInformation(
-                              //   values,
-                              //   this.props.match.params.id
-                              // );
+                              console.log("Values: ", values);
+                              this.props.addLabInformation(
+                                values,
+                                this.props.match.params.id
+                              );
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -277,7 +322,6 @@ class LabInformation extends Component {
                                   <Field
                                     name="type"
                                     component="select"
-                                    defaultValue="No"
                                     onChange={e =>
                                       this.setState({
                                         type: e.target.value,
@@ -302,23 +346,32 @@ class LabInformation extends Component {
                                     >
                                       What is your main lab name?
                                     </Label>
-                                    <input
-                                      className="form-control"
-                                      list="datalistOptions"
-                                      id="main_lab_account_id"
-                                      placeholder="Type to search..."
-                                    />
-                                    <datalist id="datalistOptions">
-                                      <option value="LaboMart" />
-                                      <option value="LaboCart" />
-                                      <option value="FriendsLab" />
-                                      <option value="CitiLab" />
-                                    </datalist>
-                                    <ErrorMessage
+                                    <Select
+                                      styles={
+                                        errors.main_lab_account_id &&
+                                        touched.main_lab_account_id
+                                          ? errorStyle
+                                          : style
+                                      }
                                       name="main_lab_account_id"
-                                      component="div"
-                                      className="invalid-feedback"
+                                      component="select"
+                                      onChange={this.handleSelectGroup}
+                                      className="defautSelectParent is-invalid"
+                                      options={optionGroup}
                                     />
+
+                                    {touched.main_lab_account_id &&
+                                      errors.main_lab_account_id && (
+                                        <div
+                                          style={{
+                                            marginTop: "0.25rem",
+                                            fontSize: "80%",
+                                            color: "#f46a6a",
+                                          }}
+                                        >
+                                          Please select your main lab
+                                        </div>
+                                      )}
                                   </div>
                                 )}
 
@@ -332,7 +385,6 @@ class LabInformation extends Component {
                                     <Field
                                       name="financial_settlement"
                                       component="select"
-                                      defaultValue="No"
                                       onChange={e =>
                                         this.setState({
                                           financial_settlement: e.target.value,
@@ -695,7 +747,6 @@ class LabInformation extends Component {
                                   <Field
                                     name="accept_credit_card_for_payment"
                                     component="select"
-                                    defaultValue="No"
                                     onChange={e =>
                                       this.setState({
                                         accept_credit_card_for_payment:
@@ -741,18 +792,25 @@ class LabInformation extends Component {
 LabInformation.propTypes = {
   match: PropTypes.object,
   location: PropTypes.object,
+  onGetLabs: PropTypes.func,
+  labs: PropTypes.array,
+  getLabs: PropTypes.func,
+  getLabsSuccess: PropTypes.func,
   addLabInformation: PropTypes.func,
   addLabInformationFailed: PropTypes.any,
   addLabError: PropTypes.any,
   lab: PropTypes.any,
 };
 
-const mapStateToProps = state => {
-  const { lab, addLabError, loading } = state.LabInformation;
-  return { lab, addLabError, loading };
-};
+const mapStateToProps = state => ({
+  addLabError: state.LabInformation.addLabError,
+  lab: state.LabInformation.lab,
+  labs: state.LabInformation.labs,
+});
 
 export default connect(mapStateToProps, {
+  getLabs,
+  getLabsSuccess,
   addLabInformation,
   addLabInformationFailed,
 })(LabInformation);

@@ -219,6 +219,12 @@ export const postLogin = user => {
   });
 };
 
+// ------------- Get Labs Request -------------
+export const getLabs = () =>
+  get(url.GET_LABS, {
+    headers: getHeader(authHeader()),
+  });
+
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
   get(url.GET_TESTS, {

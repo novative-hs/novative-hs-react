@@ -1,16 +1,29 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 
 //Account Redux states
-import { ADD_LAB_INFORMATION } from "./actionTypes";
+import { GET_LABS, ADD_LAB_INFORMATION } from "./actionTypes";
 import {
+  getLabsSuccess,
+  getLabsFail,
   addLabInformationSuccessful,
   addLabInformationFailed,
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { postLabInformation } from "../../../helpers/django_api_helper";
+import {
+  getLabs,
+  postLabInformation,
+} from "../../../helpers/django_api_helper";
 
-const API_URL = "http://127.0.0.1:8000/api";
+function* fetchLabs() {
+  try {
+    const response = yield call(getLabs);
+    console.log("Response: ", response);
+    yield put(getLabsSuccess(response));
+  } catch (error) {
+    yield put(getLabsFail(error));
+  }
+}
 
 // Is user register successfull then direct plot user in redux.
 function* addLabInformation({ payload: { lab, id } }) {
@@ -30,6 +43,7 @@ function* addLabInformation({ payload: { lab, id } }) {
 }
 
 function* LabInformationSaga() {
+  yield takeEvery(GET_LABS, fetchLabs);
   yield takeEvery(ADD_LAB_INFORMATION, addLabInformation);
 }
 
