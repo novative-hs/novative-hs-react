@@ -26,6 +26,7 @@ let optionGroup = [
   },
 ];
 
+// To give error border effect on single value select
 const errorStyle = {
   control: base => ({
     ...base,
@@ -33,6 +34,7 @@ const errorStyle = {
   }),
 };
 
+// To remove thick blue border effect
 const style = {
   control: (base, state) => ({
     ...base,
