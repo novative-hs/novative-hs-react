@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import appointmentImg from "assets/images";
+
 import {
   Card,
   CardBody,
-  CardImg,
   Col,
   Container,
   Row,
@@ -15,7 +14,6 @@ import {
   ModalHeader,
   ModalBody,
   Label,
-  Input,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -37,8 +35,7 @@ import {
   updateTestAppointment,
 } from "store/test-appointments/actions";
 
-import { isEmpty, result, size, values } from "lodash";
-import images from "assets/images";
+import { isEmpty, size } from "lodash";
 
 class TestAppointmentsPendingList extends Component {
   constructor(props) {

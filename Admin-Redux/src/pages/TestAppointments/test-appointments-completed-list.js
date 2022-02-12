@@ -21,8 +21,6 @@ import {
   updateTestAppointment,
 } from "store/test-appointments/actions";
 
-import { isEmpty, values } from "lodash";
-
 class TestAppointmentsCompletedList extends Component {
   constructor(props) {
     super(props);

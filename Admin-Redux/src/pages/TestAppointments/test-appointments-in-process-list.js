@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import appointmentImg from "assets/images";
+
 import {
   Card,
   CardBody,
-  CardImg,
   Col,
   Container,
   Row,
@@ -37,8 +36,7 @@ import {
   updateTestAppointment,
 } from "store/test-appointments/actions";
 
-import { isEmpty, result, size, values } from "lodash";
-import images from "assets/images";
+import { isEmpty, size } from "lodash";
 
 class TestAppointmentsInProcessList extends Component {
   constructor(props) {
@@ -63,27 +61,27 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "patient_name",
-          text: "patient",
-          sort: true,
-        },
-        {
-          dataField: "offered_test_name",
-          text: "offered test ",
+          text: "Patient",
           sort: true,
         },
         {
           dataField: "patient_age",
-          text: "patient age",
+          text: "Age",
           sort: true,
         },
         {
           dataField: "patient_gender",
-          text: "patient gender",
+          text: "Gender",
+          sort: true,
+        },
+        {
+          dataField: "offered_test_name",
+          text: "Offered test",
           sort: true,
         },
         {
           dataField: "booking_date_time",
-          text: "booking date time",
+          text: "Booking date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -97,7 +95,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: " requested appointment date time",
+          text: "Requested appointment date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -111,7 +109,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "sample_collection_date_time",
-          text: "sample collection date time",
+          text: "Sample collection date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -125,7 +123,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "result_upload_date_time",
-          text: "result upload date time",
+          text: "Result upload date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -139,10 +137,9 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "status",
-          text: "status",
+          text: "Status",
           sort: true,
         },
-
         {
           dataField: "menu",
           isDummyField: true,
@@ -484,7 +481,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      patient name
+                                                      Patient name
                                                     </Label>
                                                     <Field
                                                       name="patient_name"
@@ -545,71 +542,10 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      offered test name
-                                                    </Label>
-                                                    <Field
-                                                      name="offered_test_name"
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .testAppointment
-                                                          .offered_test_name
-                                                      }
-                                                      onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.offered_test_name,
-                                                              offered_test_name:
-                                                                e.target.value,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                              status:
-                                                                testAppointment.status,
-                                                              result:
-                                                                this.state
-                                                                  .appointmentImg,
-                                                            },
-                                                          });
-                                                        }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.offered_test_id &&
-                                                        touched.offered_test_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      readOnly={true}
-                                                      multiple={false}
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      patient age
+                                                      Patient age
                                                     </Label>
                                                     <Field
                                                       name="patient_age"
@@ -669,9 +605,10 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      patient gender
+                                                      Patient gender
                                                     </Label>
                                                     <Field
                                                       name="patient_gender"
@@ -731,9 +668,73 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      booking date time
+                                                      Offered test name
+                                                    </Label>
+                                                    <Field
+                                                      name="offered_test_name"
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .testAppointment
+                                                          .offered_test_name
+                                                      }
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            testAppointment: {
+                                                              id: testAppointment.id,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.offered_test_name,
+                                                              offered_test_name:
+                                                                e.target.value,
+                                                              patient_age:
+                                                                testAppointment.patient_age,
+                                                              patient_gender:
+                                                                testAppointment.patient_gender,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
+                                                              sample_collection_date_time:
+                                                                testAppointment.sample_collection_date_time,
+                                                              result_upload_date_time:
+                                                                testAppointment.result_upload_date_time,
+                                                              status:
+                                                                testAppointment.status,
+                                                              result:
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.offered_test_id &&
+                                                        touched.offered_test_id
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      readOnly={true}
+                                                      multiple={false}
+                                                    />
+                                                    <ErrorMessage
+                                                      name="name"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Booking date time
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
@@ -757,9 +758,10 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      requested appointment date
+                                                      Requested appointment date
                                                       time
                                                     </Label>
                                                     <input
@@ -784,9 +786,10 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      sample collection date
+                                                      Sample collection date
                                                       time
                                                     </Label>
                                                     <input
@@ -846,9 +849,10 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      result upload date time
+                                                      Result upload date time
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"
@@ -907,9 +911,10 @@ class TestAppointmentsInProcessList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      status
+                                                      Status
                                                     </Label>
                                                     <Field
                                                       name="status"
