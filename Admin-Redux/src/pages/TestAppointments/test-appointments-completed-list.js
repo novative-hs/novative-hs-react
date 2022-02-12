@@ -33,7 +33,7 @@ import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import {
-  getTestAppointments,
+  getTestAppointmentsCompletedList,
   updateTestAppointment,
 } from "store/test-appointments/actions";
 
@@ -169,9 +169,9 @@ class TestAppointmentsCompletedList extends Component {
   // };
   componentDidMount() {
 
-    const { testAppointments, onGetTestAppointments } = this.props;
+    const { testAppointments, onGetTestAppointmentsCompletedList } = this.props;
     if (testAppointments && !testAppointments.length) {
-      onGetTestAppointments();
+      onGetTestAppointmentsCompletedList();
     }
     this.setState({ testAppointments });
   }
@@ -245,7 +245,7 @@ class TestAppointmentsCompletedList extends Component {
   
     const { isEdit } = this.state;
 
-    const { onUpdateTestAppointment, onGetTestAppointments } =
+    const { onUpdateTestAppointment, onGetTestAppointmentsCompletedList } =
       this.props;
     const { selectedTestAppointment } = this.state;
     const testAppointment = this.state.testAppointment;
@@ -464,7 +464,7 @@ class TestAppointmentsCompletedList extends Component {
                                               );
 
                                               setTimeout(() => {
-                                                onGetTestAppointments();
+                                                onGetTestAppointmentsCompletedList();
                                               }, 1000);
                                                 });
                                               } 
@@ -503,7 +503,7 @@ class TestAppointmentsCompletedList extends Component {
                                               );
 
                                               setTimeout(() => {
-                                                onGetTestAppointments();
+                                                onGetTestAppointmentsCompletedList();
                                               }, 1000);
                                               }
 
@@ -1080,17 +1080,19 @@ TestAppointmentsCompletedList.propTypes = {
   match: PropTypes.object,
   testAppointments: PropTypes.array,
   className: PropTypes.any,
-  onGetTestAppointments: PropTypes.func,
+  onGetTestAppointmentsCompletedList: PropTypes.func,
   onUpdateTestAppointment: PropTypes.func,
 };
 
-const mapStateToProps = ({ testAppointments }) => ({
+const mapStateToProps = ({ testAppointments }) => (
+  console.log("TEst Appointments: ", testAppointments),
+  {
   testAppointments: testAppointments.testAppointments,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointments: () => 
-    dispatch(getTestAppointments(ownProps.match.params.id)),
+  onGetTestAppointmentsCompletedList: () => 
+    dispatch(getTestAppointmentsCompletedList(ownProps.match.params.id)),
   onUpdateTestAppointment: testAppointment => 
     dispatch(updateTestAppointment(testAppointment)),
 });

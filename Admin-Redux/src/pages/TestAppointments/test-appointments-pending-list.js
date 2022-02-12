@@ -33,7 +33,7 @@ import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import {
-  getTestAppointments,
+  getTestAppointmentsPendingList,
   updateTestAppointment,
 } from "store/test-appointments/actions";
 
@@ -1090,7 +1090,7 @@ const mapStateToProps = ({ testAppointments }) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTestAppointments: () => 
-    dispatch(getTestAppointments(ownProps.match.params.id)),
+    dispatch(getTestAppointmentsPendingList(ownProps.match.params.id)),
   onUpdateTestAppointment: testAppointment => 
     dispatch(updateTestAppointment(testAppointment)),
 });

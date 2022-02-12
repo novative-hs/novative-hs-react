@@ -404,11 +404,20 @@ export const deletePathologist = pathologist =>
 
 
 // ------------- Test Appointment Requests START -------------
-export const getTestAppointments = id =>
-  get(`${url.GET_TEST_APPOINTMENTS}/${id}`, {
+export const getTestAppointmentsPendingList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_PENDING_LIST}/${id}`, {
     headers: authorizedHeaders,
   });
 
+export const getTestAppointmentsInProcessList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_IN_PROCESS_LIST}/${id}`, {
+    headers: authorizedHeaders,
+  });
+
+export const getTestAppointmentsCompletedList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_COMPLETED_LIST}/${id}`, {
+    headers: authorizedHeaders,
+  });
 
 export const updateTestAppointment = testAppointment => {
   let formData = new FormData();
