@@ -107,6 +107,9 @@ export const postPatientInformation = (id, patient) => {
 export const postLabInformation = (id, lab) => {
   let formData = new FormData();
   formData.append("name", lab.name);
+  formData.append("type", lab.type);
+  formData.append("main_lab_account_id", lab.main_lab_account_id);
+  formData.append("financial_settlement", lab.financial_settlement);
   formData.append("logo", lab.logo);
   formData.append("owner_name", lab.owner_name);
   formData.append("registration_no", lab.registration_no);
@@ -216,6 +219,12 @@ export const postLogin = user => {
     headers: getHeader(authHeader()),
   });
 };
+
+// ------------- Get Labs Request -------------
+export const getLabs = () =>
+  get(url.GET_LABS, {
+    headers: getHeader(authHeader()),
+  });
 
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>

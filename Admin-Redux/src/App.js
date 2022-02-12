@@ -8,6 +8,7 @@ import {
   authProtectedRoutes,
   labAuthProtectedRoutes,
   patientAuthProtectedRoutes,
+  corporateAuthProtectedRoutes,
   publicRoutes,
 } from "./routes/";
 import AppRoute from "./routes/route";
@@ -66,6 +67,7 @@ class App extends Component {
                 isAuthProtected={false}
                 isLabAuthProtected={false}
                 isPatientAuthProtected={false}
+                isCorporateAuthProtected={false}
               />
             ))}
 
@@ -78,6 +80,7 @@ class App extends Component {
                 isAuthProtected={true}
                 isLabAuthProtected={false}
                 isPatientAuthProtected={false}
+                isCorporateAuthProtected={false}
                 exact
               />
             ))}
@@ -91,6 +94,7 @@ class App extends Component {
                 isAuthProtected={true}
                 isLabAuthProtected={true}
                 isPatientAuthProtected={false}
+                isCorporateAuthProtected={false}
                 exact
               />
             ))}
@@ -103,6 +107,21 @@ class App extends Component {
                 key={idx}
                 isAuthProtected={true}
                 isPatientAuthProtected={true}
+                isLabAuthProtected={false}
+                isCorporateAuthProtected={false}
+                exact
+              />
+            ))}
+
+            {corporateAuthProtectedRoutes.map((route, idx) => (
+              <AppRoute
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                isCorporateAuthProtected={true}
+                isPatientAuthProtected={false}
                 isLabAuthProtected={false}
                 exact
               />

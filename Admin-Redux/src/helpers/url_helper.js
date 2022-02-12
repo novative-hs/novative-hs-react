@@ -18,6 +18,9 @@ export const POST_LAB_INFORMATION = API_URL + "/lab/lab-information";
 export const POST_CORPORATE_INFORMATION =
   API_URL + "/corporate/corporate-information";
 
+// LAB LIST
+export const GET_LABS = API_URL + "/lab/lab-list";
+
 // TEST
 export const GET_TESTS = API_URL + "/medicaltest/test-list";
 export const GET_UNITS = API_URL + "/medicaltest/unit-list";

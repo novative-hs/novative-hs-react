@@ -181,56 +181,13 @@ import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointm
 import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 
-
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
 import BlogGrid from "../pages/Blog/BlogGrid/index";
 import BlogDetails from "../pages/Blog/BlogDetails";
 
-
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
-
-  // My Routes
-<<<<<<< HEAD
-  { path: "/dashboard-patient/:id", component: DashboardPatient },
-  { path: "/dashboard-corporate/:id", component: DashboardCorporate },
-
-  // ********** Lab Routes **********
-  { path: "/dashboard-lab/:id", component: DashboardLab },
-  {
-    path: "/dashboard-lab/:id/offered-tests-list",
-    component: OfferedTestsList,
-  },
-  {
-    path: "/dashboard-lab/:id/sample-collectors-list",
-    component: SampleCollectorsList,
-  },
-  {
-    path: "/dashboard-lab/:id/quality-certificates-list",
-    component: QualityCertificatesList,
-  },
-  {
-    path: "/dashboard-lab/:id/pathologists-list",
-    component: PathologistsList,
-  },
-  {
-    path: "/dashboard-lab/:id/test-appointments-pending-list",
-    component: TestAppointmentsPendingList,
-  },
-  {
-    path: "/dashboard-lab/:id/test-appointments-in-process-list",
-    component: TestAppointmentsInProcessList,
-  },
-  {
-    path: "/dashboard-lab/:id/test-appointments-completed-list",
-    component: TestAppointmentsCompletedList,
-  },
-=======
-  // { path: "/dashboard-corporate/:id", component: DashboardCorporate },
->>>>>>> fbc7974109b1ad2c064b1702f7b20ea46c977b60
-
-  
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
   { path: "/dashboard-blog", component: DashboardBlog },
@@ -434,15 +391,32 @@ const labAuthProtectedRoutes = [
     path: "/dashboard-lab/:id/pathologists-list",
     component: PathologistsList,
   },
+  {
+    path: "/dashboard-lab/:id/test-appointments-pending-list",
+    component: TestAppointmentsPendingList,
+  },
+  {
+    path: "/dashboard-lab/:id/test-appointments-in-process-list",
+    component: TestAppointmentsInProcessList,
+  },
+  {
+    path: "/dashboard-lab/:id/test-appointments-completed-list",
+    component: TestAppointmentsCompletedList,
+  },
 ];
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
 ];
 
+const corporateAuthProtectedRoutes = [
+  { path: "/dashboard-corporate/:id", component: DashboardCorporate },
+];
+
 export {
   authProtectedRoutes,
   labAuthProtectedRoutes,
   patientAuthProtectedRoutes,
+  corporateAuthProtectedRoutes,
   publicRoutes,
 };
