@@ -176,12 +176,16 @@ import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
 import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
 import PathologistsList from "../pages/Pathologists/pathologists-list";
-import TestAppointmentsList from "../pages/TestAppointments/test-appointments-list";
+import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
+import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
+import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
+
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
 import BlogGrid from "../pages/Blog/BlogGrid/index";
 import BlogDetails from "../pages/Blog/BlogDetails";
+
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -205,14 +209,23 @@ const authProtectedRoutes = [
     component: QualityCertificatesList,
   },
   {
-    path: "/dashboard-lab/:id/test-appointments-list",
-    component: TestAppointmentsList,
-  },
-  {
     path: "/dashboard-lab/:id/pathologists-list",
     component: PathologistsList,
   },
+  {
+    path: "/dashboard-lab/:id/test-appointments-pending-list",
+    component: TestAppointmentsPendingList,
+  },
+  {
+    path: "/dashboard-lab/:id/test-appointments-in-process-list",
+    component: TestAppointmentsInProcessList,
+  },
+  {
+    path: "/dashboard-lab/:id/test-appointments-completed-list",
+    component: TestAppointmentsCompletedList,
+  },
 
+  
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-crypto", component: DashboardCrypto },
   { path: "/dashboard-blog", component: DashboardBlog },

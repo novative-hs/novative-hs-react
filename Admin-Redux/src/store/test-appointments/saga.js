@@ -28,19 +28,6 @@ function* fetchTestAppointments(object) {
   }
 }
 
-// function* onAddNewTestAppointment(object) {
-//   try {
-//     const response = yield call(
-//       addNewTestAppointment,
-//       object.payload.TestAppointment,
-//       object.payload.id
-//     );
-//     yield put(addTestAppointmentSuccess(response));
-//   } catch (error) {
-//     yield put(addTestAppointmentFail(error));
-//   }
-// }
-
 function* onUpdateTestAppointment({ payload: TestAppointment }) {
   try {
     const response = yield call(updateTestAppointment, TestAppointment);
@@ -50,20 +37,9 @@ function* onUpdateTestAppointment({ payload: TestAppointment }) {
   }
 }
 
-// function* onDeleteTestAppointment({ payload: TestAppointment }) {
-//   try {
-//     const response = yield call(deleteTestAppointment, TestAppointment);
-//     yield put(deleteTestAppointmentSuccess(response));
-//   } catch (error) {
-//     yield put(deleteTestAppointmentFail(error));
-//   }
-// }
-
 function* TestAppointmentsSaga() {
   yield takeEvery(GET_TEST_APPOINTMENTS, fetchTestAppointments);
-  // yield takeEvery(ADD_NEW_TEST_APPOINTMENT, onAddNewTestAppointment);
   yield takeEvery(UPDATE_TEST_APPOINTMENT, onUpdateTestAppointment);
-  // yield takeEvery(DELETE_TEST_APPOINTMENT, onDeleteTestAppointment);
 }
 
 export default TestAppointmentsSaga;

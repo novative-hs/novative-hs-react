@@ -43,8 +43,8 @@ export const DELETE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 
 
 // TEST APPOINTMENT
-export const GET_TEST_APPOINTMENTS =API_URL + "/lab/test-appointment-list";
-export const UPDATE_TEST_APPOINTMENT = API_URL + "/lab/test-appointment-info";
+export const GET_TEST_APPOINTMENTS =API_URL + "/lab/test-appointment-completed-list";
+export const UPDATE_TEST_APPOINTMENT = API_URL + "/lab/test-appointment-update";
 
 
 // -------------- TEMPLATES URLS --------------

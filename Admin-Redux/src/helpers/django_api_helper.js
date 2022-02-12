@@ -1,6 +1,7 @@
 import axios from "axios";
 import { del, get, post, put } from "./api_helper";
-import authHeader from "./django-token-access/auth-token-header";
+
+ 
 import * as url from "./url_helper";
 
 const headers = {
@@ -9,15 +10,9 @@ const headers = {
 };
 
 const authorizedHeaders = {
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   Authorization: "Token 31f06ea66a893ac05b9b78d9cf96af996c47b5a8",
-=======
-  Authorization: "Token " + authHeader(),
->>>>>>> 733c991e49d1bc54cf027f830b6f97705e0ee724
-=======
-  Authorization: "Token " + authHeader(),
->>>>>>> 733c991e49d1bc54cf027f830b6f97705e0ee724
+
   "Content-Type":
     "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
 };
@@ -212,10 +207,7 @@ export const postLogin = user => {
   formData.append("username", user.username);
   formData.append("password", user.password);
 
-  let userData = axios.post(url.POST_LOGIN, formData, {
-    headers: headers,
-  });
-  return userData;
+  return axios.post(url.POST_LOGIN, formData, { headers: authorizedHeaders });
 };
 
 // ------------- Offered Test Requests START -------------
@@ -417,32 +409,19 @@ export const getTestAppointments = id =>
     headers: authorizedHeaders,
   });
 
-// export const addNewTestAppointment = (testAppointment, id) => {
-//   let formData = new FormData();
-//   formData.append("patient_id", testAppointment.patient_id);
-//   formData.append("lab_id", testAppointment.lab_id);
-//   formData.append("offered_test_id", testAppointment.offered_test_id);
-//   formData.append("booking_date_time", testAppointment.booking_date_time);
-//   formData.append("requested_appointment_date_time", requested_appointment_date_time);
-//   formData.append("sample_collection_date_time", testAppointment.sample_collection_date_time);
-//   formData.append("result_upload_date_time", testAppointment.result_upload_date_time);
-//   formData.append("status", testAppointment.status);
-
-//   return axios.post(`${url.ADD_NEW_TEST_APPOINTMENT}/${id}`, formData, {
-//     headers: authorizedHeaders,
-//   });
-// };
 
 export const updateTestAppointment = testAppointment => {
   let formData = new FormData();
-  formData.append("patient_id", testAppointment.patient_id);
-  formData.append("lab_id", testAppointment.lab_id);
+  formData.append("id", testAppointment.id);
+  formData.append("patient_id", testAppointment.patient_id)
   formData.append("offered_test_id", testAppointment.offered_test_id);
   formData.append("booking_date_time", testAppointment.booking_date_time);
-  formData.append("requested_appointment_date_time", requested_appointment_date_time);
+  formData.append("requested_appointment_date_time", testAppointment.requested_appointment_date_time);
   formData.append("sample_collection_date_time", testAppointment.sample_collection_date_time);
-  formData.append("result_upload_date_time", testAppointment.result_upload_date_time);
+  formData.append("result_upload_date_time", testAppointment.result_upload_date_time)
   formData.append("status", testAppointment.status);
+  formData.append("result", testAppointment.result);
+
 
   return axios.put(
     `${url.UPDATE_TEST_APPOINTMENT}/${testAppointment.id}`,
