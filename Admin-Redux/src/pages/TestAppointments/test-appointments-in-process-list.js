@@ -79,42 +79,50 @@ class TestAppointmentsInProcessList extends Component {
           text: "patient gender",
           sort: true,
         },
-        {
+         {
           dataField: "booking_date_time",
           text: "booking date time",
           sort: true,
+           formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.booking_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "requested_appointment_date_time",
           text: " requested appointment date time",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.requested_appointment_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "sample_collection_date_time",
           text: "sample collection date time",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.sample_collection_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "result_upload_date_time",
           text: "result upload date time",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.result_upload_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "status",
           text: "status",
           sort: true,
-        },
-         {
-          dataField: "http://127.0.0.1:8000" + "result",
-          text: "result",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-             <>
-                <Link to={{ pathname: "http://127.0.0.1:8000" + testAppointment.result }} target="_blank">
-                  Test Result
-                </Link>
-              </>
-          ),
         },
         
         {
@@ -140,34 +148,6 @@ class TestAppointmentsInProcessList extends Component {
     this.toggle = this.toggle.bind(this);
     this.handleTestAppointmentClicks = this.handleTestAppointmentClicks.bind(this);
   }
-  
-  // The code for converting "image source" (url) to "Base64"
-  toDataURL = url =>
-    fetch(url)
-      .then(response => response.blob())
-      .then(
-        blob =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          })
-      );
-
-  // The code for converting "Base64" to javascript "File Object"
-  dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
-
   componentDidMount() {
     const { testAppointments, onGetTestAppointmentsInProcessList } = this.props;
     if (testAppointments && !testAppointments.length) {
@@ -966,9 +946,6 @@ class TestAppointmentsInProcessList extends Component {
                                                           readOnly={false}
                                                           multiple={false}
                                                         >
-                                                          <option value="Pending">
-                                                          Pending
-                                                          </option>
                                                           <option value="Confirmed">
                                                           Confirmed
                                                           </option>
@@ -978,10 +955,7 @@ class TestAppointmentsInProcessList extends Component {
                                                           <option value="Result Uploaded">
                                                           Result Uploaded
                                                           </option>
-                                                          
-                                                        </Field> 
-                                                        
-                                                                                
+                                                        </Field>                 
                                                     <ErrorMessage
                                                       name="status"
                                                       component="div"

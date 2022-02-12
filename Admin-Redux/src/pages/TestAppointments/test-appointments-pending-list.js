@@ -79,44 +79,46 @@ class TestAppointmentsPendingList extends Component {
           text: "patient gender",
           sort: true,
         },
-        {
+         {
           dataField: "booking_date_time",
           text: "booking date time",
           sort: true,
+           formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.booking_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "requested_appointment_date_time",
           text: " requested appointment date time",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.requested_appointment_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "sample_collection_date_time",
           text: "sample collection date time",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+             <>
+                <span>{new Date(testAppointment.sample_collection_date_time).toLocaleString('en-US')}</span>
+              </>
+              ),
         },
         {
           dataField: "result_upload_date_time",
           text: "result upload date time",
           sort: true,
-        },
-        {
-          dataField: "status",
-          text: "status",
-          sort: true,
-        },
-         {
-          dataField: "http://127.0.0.1:8000" + "result",
-          text: "result",
-          sort: true,
           formatter: (cellContent, testAppointment) => (
              <>
-                <Link to={{ pathname: "http://127.0.0.1:8000" + testAppointment.result }} target="_blank">
-                  Test Result
-                </Link>
+                <span>{new Date(testAppointment.result_upload_date_time).toLocaleString('en-US')}</span>
               </>
-          ),
+              ),
         },
-        
         {
           dataField: "menu",
           isDummyField: true,
@@ -141,34 +143,7 @@ class TestAppointmentsPendingList extends Component {
     this.handleTestAppointmentClicks = this.handleTestAppointmentClicks.bind(this);
   }
   
-  // The code for converting "image source" (url) to "Base64"
-  toDataURL = url =>
-    fetch(url)
-      .then(response => response.blob())
-      .then(
-        blob =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          })
-      );
-
-  // The code for converting "Base64" to javascript "File Object"
-  dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
   componentDidMount() {
-
     const { testAppointments, onGetTestAppointmentsPendingList } = this.props;
     if (testAppointments && !testAppointments.length) {
       setTimeout(() => {
@@ -231,7 +206,7 @@ class TestAppointmentsPendingList extends Component {
         sample_collection_date_time: testAppointment.sample_collection_date_time,
         result_upload_date_time: testAppointment.result_upload_date_time,
         status: testAppointment.status,
-        result: "http://127.0.0.1:8000" + testAppointment.result,
+        result: "",
       },
       appointmentImg: "",
       isEdit: true,
@@ -386,10 +361,6 @@ class TestAppointmentsPendingList extends Component {
                                               (testAppointment &&
                                                 testAppointment.status) ||
                                                 "",
-                                              result:
-                                              (this.state &&
-                                                this.state.appointmentImg) ||
-                                                "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             booking_date_time: Yup.string().required(
@@ -403,74 +374,10 @@ class TestAppointmentsPendingList extends Component {
                                               .required("Please enter date time"),
                                             result_upload_date_time: Yup.string()
                                               .required("Please enter date time"),
-                                            result: Yup.string().when(
-                                              "hiddenEditFlag",
-                                              {
-                                                is: hiddenEditFlag =>
-                                                  hiddenEditFlag == false, //just an e.g. you can return a function
-                                                then: Yup.string().required(
-                                                  "Please upload photo"
-                                                ),
-                                              }
-                                            ),
                                           })}
                                           onSubmit={values => {
 
                                             if (isEdit) {
-                                              if (!this.state.appointmentImg) {                                        
-                                                this.toDataURL(
-                                                  testAppointment.result
-                                                ) .then(dataUrl => {
-                                                  var fileData =
-                                                    this.dataURLtoFile(
-                                                      dataUrl,
-                                                      testAppointment.result
-                                                        .split("/")
-                                                        .at(-1)
-                                                    );
-                                                  this.setState({
-                                                    appointmentImg: fileData,
-                                                  });
-
-                                                  const updateTestAppointment = {
-                                                  id: testAppointment.id,
-                                                  patient_id: parseInt(
-                                                    values.patient_id
-                                                  ),
-                                                  offered_test_id: parseInt(
-                                                    values.offered_test_id
-                                                  ),
-                                                  patient_name:
-                                                    values.patient_name,
-                                                  offered_test_name: values.offered_test_name,
-                                                  patient_age:
-                                                    values.patient_age,
-                                                  patient_gender: values.patient_gender,
-                                                  booking_date_time:
-                                                    values.booking_date_time,
-                                                  requested_appointment_date_time:
-                                                    values.requested_appointment_date_time,
-                                                  sample_collection_date_time:
-                                                    values.sample_collection_date_time,
-                                                  result_upload_date_time:
-                                                    values.result_upload_date_time,
-                                                  status:
-                                                    values.status,
-                                                  result:
-                                                    this.state.appointmentImg,
-                                              };
-                                              
-                                              // update TestAppointment
-                                              onUpdateTestAppointment(
-                                                updateTestAppointment
-                                              );
-
-                                              setTimeout(() => {
-                                                onGetTestAppointmentsPendingList();
-                                              }, 1000);
-                                                });
-                                              } 
-                                              else {
                                                 const updateTestAppointment = {
                                                 id: testAppointment.id,
                                                 patient_id: parseInt(
@@ -495,8 +402,7 @@ class TestAppointmentsPendingList extends Component {
                                                   values.result_upload_date_time,
                                                 status:
                                                   values.status,
-                                                result:
-                                                   this.state.appointmentImg,
+                                                result: "",
                                               };
                                               
                                               // update TestAppointment
@@ -507,9 +413,6 @@ class TestAppointmentsPendingList extends Component {
                                               setTimeout(() => {
                                                 onGetTestAppointmentsPendingList();
                                               }, 1000);
-                                              }
-
-                                              
                                             } 
                                             this.setState({
                                               selectedTestAppointment: null,
@@ -563,8 +466,7 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.result_upload_date_time,
                                                               status:
                                                                 testAppointment.status,
-                                                              result:
-                                                              this.state.appointmentImg,
+                                                              result: "",
                                                             },
                                                           });
                                                         } 
@@ -620,8 +522,7 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.result_upload_date_time,
                                                               status:
                                                                 testAppointment.status,
-                                                              result:
-                                                              this.state.appointmentImg,                                                            },
+                                                              result: "",                                                            },
                                                           });
                                                         } 
                                                         
@@ -676,8 +577,7 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.result_upload_date_time,
                                                               status:
                                                                 testAppointment.status,
-                                                              result:
-                                                              this.state.appointmentImg,                                                            },
+                                                              result: "",                                                            },
                                                           });
                                                         } 
                                                         
@@ -732,8 +632,7 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.result_upload_date_time,
                                                               status:
                                                                 testAppointment.status,
-                                                              result:
-                                                              this.state.appointmentImg,                                                            },
+                                                              result: "",                                                            },
                                                           });
                                                         } 
                                                         
@@ -842,8 +741,7 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.result_upload_date_time,
                                                               status:
                                                                 testAppointment.status,
-                                                              result:
-                                                              this.state.appointmentImg,                                                            },
+                                                              result: "",                                                            },
                                                           });
                                                         } 
                                                         
@@ -896,8 +794,7 @@ class TestAppointmentsPendingList extends Component {
                                                                 .value + ":00Z",
                                                               status:
                                                                 testAppointment.status,
-                                                              result:
-                                                              this.state.appointmentImg,                                                            },
+                                                              result: "",                                                            },
                                                           });
                                                         } 
                                                         
@@ -972,63 +869,11 @@ class TestAppointmentsPendingList extends Component {
                                                           <option value="Confirmed">
                                                           Confirmed
                                                           </option>
-                                                          <option value="Sample Collected">
-                                                          Sample Collected
-                                                          </option>
-                                                          <option value="Result Uploaded">
-                                                          Result Uploaded
-                                                          </option>
-                                                          
                                                         </Field> 
                                                         
                                                                                 
                                                     <ErrorMessage
                                                       name="status"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  {/* Display current image in edit form only */}
-                                                     {testAppointment.photo &&
-                                                  testAppointment.photo ? (
-                                                    <CardImg
-                                                      className="img-fluid"
-                                                      src={
-                                                        "http://127.0.0.1:8000" + testAppointment.result
-                                                      }
-                                                      alt="Responsive image"
-                                                    />
-                                                  ) : null}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                    result
-                                                    </Label>
-                                                     <Input
-                                                      id="formFile"
-                                                      name="result"
-                                                      placeholder="Choose image"
-                                                      type="file"
-                                                      multiple={false}
-                                                      accept=".jpg,.jpeg,.png"
-                                                      onChange={e =>{
-                                                        if (isEdit) {
-                                                        this.setState({
-                                                          appointmentImg:
-                                                            e.target.files[0],
-                                                        })
-                                                      }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.result &&
-                                                        touched.result
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="result"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
