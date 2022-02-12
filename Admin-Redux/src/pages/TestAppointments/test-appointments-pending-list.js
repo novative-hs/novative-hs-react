@@ -110,34 +110,6 @@ class TestAppointmentsPendingList extends Component {
           ),
         },
         {
-          dataField: "sample_collection_date_time",
-          text: "sample collection date time",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.sample_collection_date_time
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "result_upload_date_time",
-          text: "result upload date time",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.result_upload_date_time
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
           dataField: "menu",
           isDummyField: true,
           editable: false,
@@ -228,8 +200,6 @@ class TestAppointmentsPendingList extends Component {
         sample_collection_date_time:
           testAppointment.sample_collection_date_time,
         result_upload_date_time: testAppointment.result_upload_date_time,
-        status: testAppointment.status,
-        result: "",
       },
       appointmentImg: "",
       isEdit: true,
@@ -383,10 +353,6 @@ class TestAppointmentsPendingList extends Component {
                                               (testAppointment &&
                                                 testAppointment.result_upload_date_time) ||
                                               "",
-                                            status:
-                                              (testAppointment &&
-                                                testAppointment.status) ||
-                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             booking_date_time:
@@ -431,7 +397,7 @@ class TestAppointmentsPendingList extends Component {
                                                   values.sample_collection_date_time,
                                                 result_upload_date_time:
                                                   values.result_upload_date_time,
-                                                status: values.status,
+                                                status: "Confirmed",
                                                 result: "",
                                               };
 
@@ -499,9 +465,6 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
                                                                 testAppointment.result_upload_date_time,
-                                                              status:
-                                                                testAppointment.status,
-                                                              result: "",
                                                             },
                                                           });
                                                         }
@@ -559,9 +522,6 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
                                                                 testAppointment.result_upload_date_time,
-                                                              status:
-                                                                testAppointment.status,
-                                                              result: "",
                                                             },
                                                           });
                                                         }
@@ -619,9 +579,6 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
                                                                 testAppointment.result_upload_date_time,
-                                                              status:
-                                                                testAppointment.status,
-                                                              result: "",
                                                             },
                                                           });
                                                         }
@@ -679,9 +636,6 @@ class TestAppointmentsPendingList extends Component {
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
                                                                 testAppointment.result_upload_date_time,
-                                                              status:
-                                                                testAppointment.status,
-                                                              result: "",
                                                             },
                                                           });
                                                         }
@@ -763,10 +717,6 @@ class TestAppointmentsPendingList extends Component {
                                                     <input
                                                       name="sample_collection_date_time"
                                                       type="datetime-local"
-                                                      defaultValue={this.state.testAppointment.sample_collection_date_time.slice(
-                                                        0,
-                                                        -4
-                                                      )}
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
@@ -793,9 +743,6 @@ class TestAppointmentsPendingList extends Component {
                                                                 ":00Z",
                                                               result_upload_date_time:
                                                                 testAppointment.result_upload_date_time,
-                                                              status:
-                                                                testAppointment.status,
-                                                              result: "",
                                                             },
                                                           });
                                                         }
@@ -821,10 +768,6 @@ class TestAppointmentsPendingList extends Component {
                                                     <input
                                                       name="result_upload_date_time"
                                                       type="datetime-local"
-                                                      defaultValue={this.state.testAppointment.result_upload_date_time.slice(
-                                                        0,
-                                                        -4
-                                                      )}
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
@@ -851,9 +794,6 @@ class TestAppointmentsPendingList extends Component {
                                                               result_upload_date_time:
                                                                 e.target.value +
                                                                 ":00Z",
-                                                              status:
-                                                                testAppointment.status,
-                                                              result: "",
                                                             },
                                                           });
                                                         }
@@ -868,74 +808,6 @@ class TestAppointmentsPendingList extends Component {
                                                     />
                                                     <ErrorMessage
                                                       name="result_upload_date_time"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      status
-                                                    </Label>
-                                                    <Field
-                                                      name="status"
-                                                      as="select"
-                                                      value={
-                                                        testAppointment.status
-                                                      }
-                                                      onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.patient_name,
-                                                              offered_test_name:
-                                                                testAppointment.offered_test_name,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                              status:
-                                                                e.target.value,
-                                                              result:
-                                                                this.state
-                                                                  .appointmentImg,
-                                                            },
-                                                          });
-                                                        }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.status &&
-                                                        touched.status
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      readOnly={false}
-                                                      multiple={false}
-                                                    >
-                                                      <option value="Pending">
-                                                        Pending
-                                                      </option>
-                                                      <option value="Confirmed">
-                                                        Confirmed
-                                                      </option>
-                                                    </Field>
-
-                                                    <ErrorMessage
-                                                      name="status"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
