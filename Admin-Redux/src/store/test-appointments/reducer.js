@@ -10,7 +10,9 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
-  testAppointments: [],
+  testAppointmentsPendingList: [],
+  testAppointmentsInProcessList: [],
+  testAppointmentsCompletedList: [],
   error: {},
 };
 
@@ -19,7 +21,7 @@ const testAppointments = (state = INIT_STATE, action) => {
     case GET_TEST_APPOINTMENTS_PENDING_LIST_SUCCESS:
       return {
         ...state,
-        testAppointments: action.payload.data,
+        testAppointmentsPendingList: action.payload.data,
       };
 
     case GET_TEST_APPOINTMENTS_PENDING_LIST_FAIL:
@@ -30,7 +32,7 @@ const testAppointments = (state = INIT_STATE, action) => {
     case GET_TEST_APPOINTMENTS_IN_PROCESS_LIST_SUCCESS:
       return {
         ...state,
-        testAppointments: action.payload.data,
+        testAppointmentsInProcessList: action.payload.data,
       };
 
     case GET_TEST_APPOINTMENTS_IN_PROCESS_LIST_FAIL:
@@ -41,7 +43,7 @@ const testAppointments = (state = INIT_STATE, action) => {
     case GET_TEST_APPOINTMENTS_COMPLETED_LIST_SUCCESS:
       return {
         ...state,
-        testAppointments: action.payload.data,
+        testAppointmentsCompletedList: action.payload.data,
       };
 
     case GET_TEST_APPOINTMENTS_COMPLETED_LIST_FAIL:

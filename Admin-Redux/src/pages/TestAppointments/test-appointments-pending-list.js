@@ -141,37 +141,39 @@ class TestAppointmentsPendingList extends Component {
     this.handleTestAppointmentClicks = this.handleTestAppointmentClicks.bind(this);
   }
   
-  // // The code for converting "image source" (url) to "Base64"
-  // toDataURL = url =>
-  //   fetch(url)
-  //     .then(response => response.blob())
-  //     .then(
-  //       blob =>
-  //         new Promise((resolve, reject) => {
-  //           const reader = new FileReader();
-  //           reader.onloadend = () => resolve(reader.result);
-  //           reader.onerror = reject;
-  //           reader.readAsDataURL(blob);
-  //         })
-  //     );
+  // The code for converting "image source" (url) to "Base64"
+  toDataURL = url =>
+    fetch(url)
+      .then(response => response.blob())
+      .then(
+        blob =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
 
-  // // The code for converting "Base64" to javascript "File Object"
-  // dataURLtoFile = (dataurl, filename) => {
-  //   var arr = dataurl.split(","),
-  //     mime = arr[0].match(/:(.*?);/)[1],
-  //     bstr = atob(arr[1]),
-  //     n = bstr.length,
-  //     u8arr = new Uint8Array(n);
-  //   while (n--) {
-  //     u8arr[n] = bstr.charCodeAt(n);
-  //   }
-  //   return new File([u8arr], filename, { type: mime });
-  // };
+  // The code for converting "Base64" to javascript "File Object"
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
   componentDidMount() {
 
-    const { testAppointments, onGetTestAppointments } = this.props;
+    const { testAppointments, onGetTestAppointmentsPendingList } = this.props;
     if (testAppointments && !testAppointments.length) {
-      onGetTestAppointments();
+      setTimeout(() => {
+        onGetTestAppointmentsPendingList();
+       }, 1000);
     }
     this.setState({ testAppointments });
   }
@@ -245,7 +247,7 @@ class TestAppointmentsPendingList extends Component {
   
     const { isEdit } = this.state;
 
-    const { onUpdateTestAppointment, onGetTestAppointments } =
+    const { onUpdateTestAppointment, onGetTestAppointmentsPendingList } =
       this.props;
     const { selectedTestAppointment } = this.state;
     const testAppointment = this.state.testAppointment;
@@ -464,7 +466,7 @@ class TestAppointmentsPendingList extends Component {
                                               );
 
                                               setTimeout(() => {
-                                                onGetTestAppointments();
+                                                onGetTestAppointmentsPendingList();
                                               }, 1000);
                                                 });
                                               } 
@@ -503,7 +505,7 @@ class TestAppointmentsPendingList extends Component {
                                               );
 
                                               setTimeout(() => {
-                                                onGetTestAppointments();
+                                                onGetTestAppointmentsPendingList();
                                               }, 1000);
                                               }
 
@@ -921,7 +923,7 @@ class TestAppointmentsPendingList extends Component {
                                                     <Field
                                                           name="status"
                                                           as="select"
-                                                          Value={
+                                                          value={
                                                             testAppointment.status
                                                           }
                                                           onChange={e => {
@@ -1080,16 +1082,16 @@ TestAppointmentsPendingList.propTypes = {
   match: PropTypes.object,
   testAppointments: PropTypes.array,
   className: PropTypes.any,
-  onGetTestAppointments: PropTypes.func,
+  onGetTestAppointmentsPendingList: PropTypes.func,
   onUpdateTestAppointment: PropTypes.func,
 };
 
 const mapStateToProps = ({ testAppointments }) => ({
-  testAppointments: testAppointments.testAppointments,
+  testAppointments: testAppointments.testAppointmentsPendingList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointments: () => 
+  onGetTestAppointmentsPendingList: () => 
     dispatch(getTestAppointmentsPendingList(ownProps.match.params.id)),
   onUpdateTestAppointment: testAppointment => 
     dispatch(updateTestAppointment(testAppointment)),
