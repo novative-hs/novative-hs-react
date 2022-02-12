@@ -15,7 +15,7 @@ import {
   ModalHeader,
   ModalBody,
   Label,
-  Input
+  Input,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -48,7 +48,7 @@ class TestAppointmentsInProcessList extends Component {
       selectedFiles: [],
       testAppointments: [],
       patient: [],
-      appointmentImg:"",
+      appointmentImg: "",
       testAppointment: "",
       modal: false,
       testAppointmentListColumns: [
@@ -57,7 +57,9 @@ class TestAppointmentsInProcessList extends Component {
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, testAppointment) => <>{testAppointment.id}</>,
+          formatter: (cellContent, testAppointment) => (
+            <>{testAppointment.id}</>
+          ),
         },
         {
           dataField: "patient_name",
@@ -79,52 +81,67 @@ class TestAppointmentsInProcessList extends Component {
           text: "patient gender",
           sort: true,
         },
-         {
+        {
           dataField: "booking_date_time",
           text: "booking date time",
           sort: true,
-           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.booking_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+          formatter: (cellContent, testAppointment) => (
+            <>
+              <span>
+                {new Date(testAppointment.booking_date_time).toLocaleString(
+                  "en-US"
+                )}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "requested_appointment_date_time",
           text: " requested appointment date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.requested_appointment_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+            <>
+              <span>
+                {new Date(
+                  testAppointment.requested_appointment_date_time
+                ).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "sample_collection_date_time",
           text: "sample collection date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.sample_collection_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+            <>
+              <span>
+                {new Date(
+                  testAppointment.sample_collection_date_time
+                ).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "result_upload_date_time",
           text: "result upload date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.result_upload_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+            <>
+              <span>
+                {new Date(
+                  testAppointment.result_upload_date_time
+                ).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "status",
           text: "status",
           sort: true,
         },
-        
         {
           dataField: "menu",
           isDummyField: true,
@@ -136,7 +153,9 @@ class TestAppointmentsInProcessList extends Component {
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() => this.handleTestAppointmentClick( testAppointment)}
+                  onClick={() =>
+                    this.handleTestAppointmentClick(testAppointment)
+                  }
                 ></i>
               </Link>
             </div>
@@ -144,16 +163,18 @@ class TestAppointmentsInProcessList extends Component {
         },
       ],
     };
-    this.handleTestAppointmentClick = this.handleTestAppointmentClick.bind(this);
+    this.handleTestAppointmentClick =
+      this.handleTestAppointmentClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleTestAppointmentClicks = this.handleTestAppointmentClicks.bind(this);
+    this.handleTestAppointmentClicks =
+      this.handleTestAppointmentClicks.bind(this);
   }
   componentDidMount() {
     const { testAppointments, onGetTestAppointmentsInProcessList } = this.props;
     if (testAppointments && !testAppointments.length) {
       setTimeout(() => {
         onGetTestAppointmentsInProcessList();
-       }, 1000);
+      }, 1000);
     }
     this.setState({ testAppointments });
   }
@@ -191,7 +212,6 @@ class TestAppointmentsInProcessList extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  
   /* Insert,Update Delete data */
 
   handleTestAppointmentClick = arg => {
@@ -207,8 +227,10 @@ class TestAppointmentsInProcessList extends Component {
         patient_age: testAppointment.patient_age,
         patient_gender: testAppointment.patient_gender,
         booking_date_time: testAppointment.booking_date_time,
-        requested_appointment_date_time: testAppointment.requested_appointment_date_time,
-        sample_collection_date_time: testAppointment.sample_collection_date_time,
+        requested_appointment_date_time:
+          testAppointment.requested_appointment_date_time,
+        sample_collection_date_time:
+          testAppointment.sample_collection_date_time,
         result_upload_date_time: testAppointment.result_upload_date_time,
         status: testAppointment.status,
         result: "http://127.0.0.1:8000" + testAppointment.result,
@@ -224,7 +246,6 @@ class TestAppointmentsInProcessList extends Component {
     const { SearchBar } = Search;
 
     const { testAppointments } = this.props;
-  
     const { isEdit } = this.state;
 
     const { onUpdateTestAppointment, onGetTestAppointmentsInProcessList } =
@@ -257,7 +278,10 @@ class TestAppointmentsInProcessList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Test Appointments" breadcrumbItem="In Process List" />
+            <Breadcrumbs
+              title="Test Appointments"
+              breadcrumbItem="In Process List"
+            />
             <Row>
               <Col lg="12">
                 <Card>
@@ -322,67 +346,72 @@ class TestAppointmentsInProcessList extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                              patient_id:
+                                            patient_id:
                                               (testAppointment &&
                                                 testAppointment.patient_id) ||
                                               "",
-                                              offered_test_id:
+                                            offered_test_id:
                                               (testAppointment &&
                                                 testAppointment.offered_test_id) ||
                                               "",
-                                              patient_name:
+                                            patient_name:
                                               (testAppointment &&
                                                 testAppointment.patient_name) ||
                                               "",
-                                              offered_test_name:
+                                            offered_test_name:
                                               (testAppointment &&
                                                 testAppointment.offered_test_name) ||
                                               "",
-                                              patient_age:
+                                            patient_age:
                                               (testAppointment &&
                                                 testAppointment.patient_age) ||
                                               "",
-                                              patient_gender:
+                                            patient_gender:
                                               (testAppointment &&
                                                 testAppointment.patient_gender) ||
                                               "",
-                                              booking_date_time:
+                                            booking_date_time:
                                               (testAppointment &&
                                                 testAppointment.booking_date_time) ||
                                               "",
-                                              requested_appointment_date_time:
+                                            requested_appointment_date_time:
                                               (testAppointment &&
                                                 testAppointment.requested_appointment_date_time) ||
                                               "",
-                                              sample_collection_date_time:
+                                            sample_collection_date_time:
                                               (testAppointment &&
                                                 testAppointment.sample_collection_date_time) ||
-                                                "",
-                                              result_upload_date_time:
+                                              "",
+                                            result_upload_date_time:
                                               (testAppointment &&
                                                 testAppointment.result_upload_date_time) ||
-                                                "",
-                                              status:
+                                              "",
+                                            status:
                                               (testAppointment &&
                                                 testAppointment.status) ||
-                                                "",
-                                              result:
+                                              "",
+                                            result:
                                               (this.state &&
                                                 this.state.appointmentImg) ||
-                                                "",
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            booking_date_time: Yup.string().required(
-                                              "Please enter date time"
-                                            ),
-                                            requested_appointment_date_time: Yup.string()
-                                              .required(
+                                            booking_date_time:
+                                              Yup.string().required(
                                                 "Please enter date time"
                                               ),
-                                            sample_collection_date_time: Yup.string()
-                                              .required("Please enter date time"),
-                                            result_upload_date_time: Yup.string()
-                                              .required("Please enter date time"),
+                                            requested_appointment_date_time:
+                                              Yup.string().required(
+                                                "Please enter date time"
+                                              ),
+                                            sample_collection_date_time:
+                                              Yup.string().required(
+                                                "Please enter date time"
+                                              ),
+                                            result_upload_date_time:
+                                              Yup.string().required(
+                                                "Please enter date time"
+                                              ),
                                             result: Yup.string().when(
                                               "hiddenEditFlag",
                                               {
@@ -395,12 +424,11 @@ class TestAppointmentsInProcessList extends Component {
                                             ),
                                           })}
                                           onSubmit={values => {
-
                                             if (isEdit) {
-                                              if (!this.state.appointmentImg) {                                        
+                                              if (!this.state.appointmentImg) {
                                                 this.toDataURL(
                                                   testAppointment.result
-                                                ) .then(dataUrl => {
+                                                ).then(dataUrl => {
                                                   var fileData =
                                                     this.dataURLtoFile(
                                                       dataUrl,
@@ -412,7 +440,48 @@ class TestAppointmentsInProcessList extends Component {
                                                     appointmentImg: fileData,
                                                   });
 
-                                                  const updateTestAppointment = {
+                                                  const updateTestAppointment =
+                                                    {
+                                                      id: testAppointment.id,
+                                                      patient_id: parseInt(
+                                                        values.patient_id
+                                                      ),
+                                                      offered_test_id: parseInt(
+                                                        values.offered_test_id
+                                                      ),
+                                                      patient_name:
+                                                        values.patient_name,
+                                                      offered_test_name:
+                                                        values.offered_test_name,
+                                                      patient_age:
+                                                        values.patient_age,
+                                                      patient_gender:
+                                                        values.patient_gender,
+                                                      booking_date_time:
+                                                        values.booking_date_time,
+                                                      requested_appointment_date_time:
+                                                        values.requested_appointment_date_time,
+                                                      sample_collection_date_time:
+                                                        values.sample_collection_date_time,
+                                                      result_upload_date_time:
+                                                        values.result_upload_date_time,
+                                                      status: values.status,
+                                                      result:
+                                                        this.state
+                                                          .appointmentImg,
+                                                    };
+
+                                                  // update TestAppointment
+                                                  onUpdateTestAppointment(
+                                                    updateTestAppointment
+                                                  );
+
+                                                  setTimeout(() => {
+                                                    onGetTestAppointmentsInProcessList();
+                                                  }, 1000);
+                                                });
+                                              } else {
+                                                const updateTestAppointment = {
                                                   id: testAppointment.id,
                                                   patient_id: parseInt(
                                                     values.patient_id
@@ -422,10 +491,12 @@ class TestAppointmentsInProcessList extends Component {
                                                   ),
                                                   patient_name:
                                                     values.patient_name,
-                                                  offered_test_name: values.offered_test_name,
+                                                  offered_test_name:
+                                                    values.offered_test_name,
                                                   patient_age:
                                                     values.patient_age,
-                                                  patient_gender: values.patient_gender,
+                                                  patient_gender:
+                                                    values.patient_gender,
                                                   booking_date_time:
                                                     values.booking_date_time,
                                                   requested_appointment_date_time:
@@ -434,63 +505,21 @@ class TestAppointmentsInProcessList extends Component {
                                                     values.sample_collection_date_time,
                                                   result_upload_date_time:
                                                     values.result_upload_date_time,
-                                                  status:
-                                                    values.status,
+                                                  status: values.status,
                                                   result:
                                                     this.state.appointmentImg,
-                                              };
-                                              
-                                              // update TestAppointment
-                                              onUpdateTestAppointment(
-                                                updateTestAppointment
-                                              );
+                                                };
 
-                                              setTimeout(() => {
-                                                onGetTestAppointmentsInProcessList();
-                                              }, 1000);
-                                                });
-                                              } 
-                                              else {
-                                                const updateTestAppointment = {
-                                                id: testAppointment.id,
-                                                patient_id: parseInt(
-                                                  values.patient_id
-                                                ),
-                                                offered_test_id: parseInt(
-                                                  values.offered_test_id
-                                                ),
-                                                patient_name:
-                                                  values.patient_name,
-                                                offered_test_name: values.offered_test_name,
-                                                patient_age:
-                                                  values.patient_age,
-                                                patient_gender: values.patient_gender,
-                                                booking_date_time:
-                                                  values.booking_date_time,
-                                                requested_appointment_date_time:
-                                                  values.requested_appointment_date_time,
-                                                sample_collection_date_time:
-                                                  values.sample_collection_date_time,
-                                                result_upload_date_time:
-                                                  values.result_upload_date_time,
-                                                status:
-                                                  values.status,
-                                                result:
-                                                   this.state.appointmentImg,
-                                              };
-                                              
-                                              // update TestAppointment
-                                              onUpdateTestAppointment(
-                                                updateTestAppointment
-                                              );
+                                                // update TestAppointment
+                                                onUpdateTestAppointment(
+                                                  updateTestAppointment
+                                                );
 
-                                              setTimeout(() => {
-                                                onGetTestAppointmentsInProcessList();
-                                              }, 1000);
+                                                setTimeout(() => {
+                                                  onGetTestAppointmentsInProcessList();
+                                                }, 1000);
                                               }
-
-                                              
-                                            } 
+                                            }
                                             this.setState({
                                               selectedTestAppointment: null,
                                             });
@@ -498,7 +527,7 @@ class TestAppointmentsInProcessList extends Component {
                                           }}
                                         >
                                           {({ errors, status, touched }) => (
-                                              <Form>
+                                            <Form>
                                               <Row>
                                                 <Col className="col-12">
                                                   <Field
@@ -517,26 +546,31 @@ class TestAppointmentsInProcessList extends Component {
                                                       type="text"
                                                       value={
                                                         this.state
-                                                          .testAppointment.patient_name
+                                                          .testAppointment
+                                                          .patient_name
                                                       }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
                                                             testAppointment: {
                                                               id: testAppointment.id,
-                                                              patient_id: testAppointment.patient_id,
-                                                              offered_test_id: testAppointment.offered_test_id,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
 
-                                                              patient_name: e.target
-                                                                .value,
-                                                              offered_test_name: testAppointment.offered_test_name,
+                                                              patient_name:
+                                                                e.target.value,
+                                                              offered_test_name:
+                                                                testAppointment.offered_test_name,
                                                               patient_age:
                                                                 testAppointment.patient_age,
                                                               patient_gender:
                                                                 testAppointment.patient_gender,
-                                                              booking_date_time: testAppointment
-                                                                .booking_date_time,
-                                                              requested_appointment_date_time: testAppointment.requested_appointment_date_time,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
                                                               sample_collection_date_time:
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
@@ -544,11 +578,11 @@ class TestAppointmentsInProcessList extends Component {
                                                               status:
                                                                 testAppointment.status,
                                                               result:
-                                                              this.state.appointmentImg,
+                                                                this.state
+                                                                  .appointmentImg,
                                                             },
                                                           });
-                                                        } 
-                                                        
+                                                        }
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -575,25 +609,30 @@ class TestAppointmentsInProcessList extends Component {
                                                       type="text"
                                                       value={
                                                         this.state
-                                                          .testAppointment.offered_test_name
+                                                          .testAppointment
+                                                          .offered_test_name
                                                       }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
                                                             testAppointment: {
                                                               id: testAppointment.id,
-                                                              patient_id: testAppointment.patient_id,
-                                                              offered_test_id: testAppointment.offered_test_id,
-                                                              patient_name: testAppointment.offered_test_name,
-                                                              offered_test_name: e.target
-                                                                .value,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.offered_test_name,
+                                                              offered_test_name:
+                                                                e.target.value,
                                                               patient_age:
                                                                 testAppointment.patient_age,
                                                               patient_gender:
                                                                 testAppointment.patient_gender,
-                                                              booking_date_time: testAppointment
-                                                                .booking_date_time,
-                                                              requested_appointment_date_time: testAppointment.requested_appointment_date_time,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
                                                               sample_collection_date_time:
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
@@ -601,10 +640,11 @@ class TestAppointmentsInProcessList extends Component {
                                                               status:
                                                                 testAppointment.status,
                                                               result:
-                                                              this.state.appointmentImg,                                                            },
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
                                                           });
-                                                        } 
-                                                        
+                                                        }
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -631,25 +671,30 @@ class TestAppointmentsInProcessList extends Component {
                                                       type="text"
                                                       value={
                                                         this.state
-                                                          .testAppointment.patient_age
+                                                          .testAppointment
+                                                          .patient_age
                                                       }
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
                                                             testAppointment: {
                                                               id: testAppointment.id,
-                                                              patient_id: testAppointment.patient_id,
-                                                              offered_test_id: testAppointment.offered_test_id,
-                                                              patient_name: testAppointment.patient_name,
-                                                              offered_test_name: testAppointment.offered_test_name,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.patient_name,
+                                                              offered_test_name:
+                                                                testAppointment.offered_test_name,
                                                               patient_age:
-                                                                e.target
-                                                                .value,
+                                                                e.target.value,
                                                               patient_gender:
                                                                 testAppointment.patient_gender,
-                                                              booking_date_time: testAppointment
-                                                                .booking_date_time,
-                                                              requested_appointment_date_time: testAppointment.requested_appointment_date_time,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
                                                               sample_collection_date_time:
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
@@ -657,10 +702,11 @@ class TestAppointmentsInProcessList extends Component {
                                                               status:
                                                                 testAppointment.status,
                                                               result:
-                                                              this.state.appointmentImg,                                                            },
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
                                                           });
-                                                        } 
-                                                        
+                                                        }
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -683,29 +729,34 @@ class TestAppointmentsInProcessList extends Component {
                                                       patient gender
                                                     </Label>
                                                     <Field
-                                                          name="patient_gender"
-                                                          type="text"
-                                                          value={
-                                                          this.state
-                                                          .testAppointment.patient_gender
-                                                          }
-                                                          onChange={e => {
+                                                      name="patient_gender"
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .testAppointment
+                                                          .patient_gender
+                                                      }
+                                                      onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
                                                             testAppointment: {
                                                               id: testAppointment.id,
-                                                              patient_id: testAppointment.patient_id,
-                                                              offered_test_id: testAppointment.offered_test_id,
-                                                              patient_name: testAppointment.patient_name,
-                                                              offered_test_name: testAppointment.offered_test_name,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.patient_name,
+                                                              offered_test_name:
+                                                                testAppointment.offered_test_name,
                                                               patient_age:
-                                                              testAppointment.patient_age,
+                                                                testAppointment.patient_age,
                                                               patient_gender:
-                                                                e.target
-                                                                .value,
-                                                              booking_date_time: testAppointment
-                                                                .booking_date_time,
-                                                              requested_appointment_date_time: testAppointment.requested_appointment_date_time,
+                                                                e.target.value,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
                                                               sample_collection_date_time:
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
@@ -713,23 +764,22 @@ class TestAppointmentsInProcessList extends Component {
                                                               status:
                                                                 testAppointment.status,
                                                               result:
-                                                              this.state.appointmentImg,                                                            },
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
                                                           });
-                                                        } 
-                                                        
+                                                        }
                                                       }}
-                                                          className={
-                                                            "form-control" +
-                                                            (errors. patient_gender &&
-                                                            touched.patient_gender
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
-                                                          readOnly={true}
-                                                          multiple={false}
-                                                        >
-                                                        
-                                                        </Field>
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.patient_gender &&
+                                                        touched.patient_gender
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      readOnly={true}
+                                                      multiple={false}
+                                                    ></Field>
                                                     <ErrorMessage
                                                       name="patient_gender"
                                                       component="div"
@@ -738,16 +788,16 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                    booking date time
+                                                      booking date time
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
                                                       type="datetime-local"
                                                       readOnly={true}
-                                                      defaultValue={
-                                                        this.state
-                                                          .testAppointment.booking_date_time.slice(0, -4)
-                                                      }
+                                                      defaultValue={this.state.testAppointment.booking_date_time.slice(
+                                                        0,
+                                                        -4
+                                                      )}
                                                       className={
                                                         "form-control" +
                                                         (errors.booking_date_time &&
@@ -764,16 +814,17 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                    requested appointment date time
+                                                      requested appointment date
+                                                      time
                                                     </Label>
                                                     <input
                                                       name="requested_appointment_date_time"
                                                       type="datetime-local"
                                                       readOnly={true}
-                                                      defaultValue={
-                                                        this.state
-                                                          .testAppointment.requested_appointment_date_time.slice(0, -4)
-                                                      }
+                                                      defaultValue={this.state.testAppointment.requested_appointment_date_time.slice(
+                                                        0,
+                                                        -4
+                                                      )}
                                                       className={
                                                         "form-control" +
                                                         (errors.requested_appointment_date_time &&
@@ -790,43 +841,50 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                    sample collection date time
+                                                      sample collection date
+                                                      time
                                                     </Label>
                                                     <input
                                                       name="sample_collection_date_time"
-                                                     type="datetime-local"
-                                                      defaultValue={
-                                                        this.state
-                                                          .testAppointment.sample_collection_date_time.slice(0, -4)
-                                                      }
+                                                      type="datetime-local"
+                                                      defaultValue={this.state.testAppointment.sample_collection_date_time.slice(
+                                                        0,
+                                                        -4
+                                                      )}
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
                                                             testAppointment: {
                                                               id: testAppointment.id,
-                                                              patient_id: testAppointment.patient_id,
-                                                              offered_test_id: testAppointment.offered_test_id,
-                                                              patient_name: testAppointment.patient_name,
-                                                              offered_test_name: testAppointment.offered_test_name,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.patient_name,
+                                                              offered_test_name:
+                                                                testAppointment.offered_test_name,
                                                               patient_age:
                                                                 testAppointment.patient_age,
                                                               patient_gender:
                                                                 testAppointment.patient_gender,
-                                                              booking_date_time: testAppointment
-                                                                .booking_date_time,
-                                                              requested_appointment_date_time: testAppointment.requested_appointment_date_time,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
                                                               sample_collection_date_time:
-                                                                e.target
-                                                                .value  + ":00Z",
+                                                                e.target.value +
+                                                                ":00Z",
                                                               result_upload_date_time:
                                                                 testAppointment.result_upload_date_time,
                                                               status:
                                                                 testAppointment.status,
                                                               result:
-                                                              this.state.appointmentImg,                                                            },
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
                                                           });
-                                                        } 
-                                                        
+                                                        }
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -844,43 +902,49 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                    result upload date time
+                                                      result upload date time
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"
                                                       type="datetime-local"
-                                                      defaultValue={
-                                                        this.state
-                                                          .testAppointment.result_upload_date_time.slice(0, -4)
-                                                      }
+                                                      defaultValue={this.state.testAppointment.result_upload_date_time.slice(
+                                                        0,
+                                                        -4
+                                                      )}
                                                       onChange={e => {
                                                         if (isEdit) {
                                                           this.setState({
                                                             testAppointment: {
                                                               id: testAppointment.id,
-                                                              patient_id: testAppointment.patient_id,
-                                                              offered_test_id: testAppointment.offered_test_id,
-                                                              patient_name: testAppointment.patient_name,
-                                                              offered_test_name: testAppointment.offered_test_name,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.patient_name,
+                                                              offered_test_name:
+                                                                testAppointment.offered_test_name,
                                                               patient_age:
                                                                 testAppointment.patient_age,
                                                               patient_gender:
                                                                 testAppointment.patient_gender,
-                                                              booking_date_time: testAppointment
-                                                                .booking_date_time,
-                                                              requested_appointment_date_time: testAppointment.requested_appointment_date_time,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
                                                               sample_collection_date_time:
                                                                 testAppointment.sample_collection_date_time,
                                                               result_upload_date_time:
-                                                                e.target
-                                                                .value + ":00Z",
+                                                                e.target.value +
+                                                                ":00Z",
                                                               status:
                                                                 testAppointment.status,
                                                               result:
-                                                              this.state.appointmentImg,                                                            },
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
                                                           });
-                                                        } 
-                                                        
+                                                        }
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -901,61 +965,65 @@ class TestAppointmentsInProcessList extends Component {
                                                       status
                                                     </Label>
                                                     <Field
-                                                          name="status"
-                                                          as="select"
-                                                          value={
-                                                            testAppointment.status
-                                                          }
-                                                          onChange={e => {
-                                                            if (isEdit) {
-                                                              this.setState({
-                                                                testAppointment: {
-                                                                  id: testAppointment.id,
-                                                                  patient_id: testAppointment.patient_id,
-                                                                  offered_test_id: testAppointment.offered_test_id,
-                                                                  patient_name: testAppointment.patient_name,
-                                                                  offered_test_name: testAppointment.offered_test_name,
-                                                                  patient_age:
-                                                                    testAppointment.patient_age,
-                                                                  patient_gender:
-                                                                    testAppointment.patient_gender,
-                                                                  booking_date_time: testAppointment
-                                                                    .booking_date_time,
-                                                                  requested_appointment_date_time: testAppointment.requested_appointment_date_time,
-                                                                  sample_collection_date_time:
-                                                                  testAppointment.sample_collection_date_time,
-                                                                  result_upload_date_time:
-                                                                  testAppointment.result_upload_date_time,
-                                                                  status:
-                                                                    e.target
-                                                                    .value,
-                                                                  result:
-                                                                  this.state.appointmentImg,                                                            },
-                                                              });
-                                                            } 
-                                                            
-                                                          }}
-                                                          className={
-                                                            "form-control" +
-                                                            (errors. status &&
-                                                            touched.status
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
-                                                          
-                                                          readOnly={false}
-                                                          multiple={false}
-                                                        >
-                                                          <option value="Confirmed">
-                                                          Confirmed
-                                                          </option>
-                                                          <option value="Sample Collected">
-                                                          Sample Collected
-                                                          </option>
-                                                          <option value="Result Uploaded">
-                                                          Result Uploaded
-                                                          </option>
-                                                        </Field>                 
+                                                      name="status"
+                                                      as="select"
+                                                      value={
+                                                        testAppointment.status
+                                                      }
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            testAppointment: {
+                                                              id: testAppointment.id,
+                                                              patient_id:
+                                                                testAppointment.patient_id,
+                                                              offered_test_id:
+                                                                testAppointment.offered_test_id,
+                                                              patient_name:
+                                                                testAppointment.patient_name,
+                                                              offered_test_name:
+                                                                testAppointment.offered_test_name,
+                                                              patient_age:
+                                                                testAppointment.patient_age,
+                                                              patient_gender:
+                                                                testAppointment.patient_gender,
+                                                              booking_date_time:
+                                                                testAppointment.booking_date_time,
+                                                              requested_appointment_date_time:
+                                                                testAppointment.requested_appointment_date_time,
+                                                              sample_collection_date_time:
+                                                                testAppointment.sample_collection_date_time,
+                                                              result_upload_date_time:
+                                                                testAppointment.result_upload_date_time,
+                                                              status:
+                                                                e.target.value,
+                                                              result:
+                                                                this.state
+                                                                  .appointmentImg,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.status &&
+                                                        touched.status
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      readOnly={false}
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Confirmed">
+                                                        Confirmed
+                                                      </option>
+                                                      <option value="Sample Collected">
+                                                        Sample Collected
+                                                      </option>
+                                                      <option value="Result Uploaded">
+                                                        Result Uploaded
+                                                      </option>
+                                                    </Field>
                                                     <ErrorMessage
                                                       name="status"
                                                       component="div"
@@ -964,34 +1032,35 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
 
                                                   {/* Display current image in edit form only */}
-                                                     {testAppointment.photo &&
+                                                  {testAppointment.photo &&
                                                   testAppointment.photo ? (
                                                     <CardImg
                                                       className="img-fluid"
                                                       src={
-                                                        "http://127.0.0.1:8000" + testAppointment.result
+                                                        "http://127.0.0.1:8000" +
+                                                        testAppointment.result
                                                       }
                                                       alt="Responsive image"
                                                     />
                                                   ) : null}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                    result
+                                                      result
                                                     </Label>
-                                                     <Input
+                                                    <Input
                                                       id="formFile"
                                                       name="result"
                                                       placeholder="Choose image"
                                                       type="file"
                                                       multiple={false}
                                                       accept=".jpg,.jpeg,.png"
-                                                      onChange={e =>{
+                                                      onChange={e => {
                                                         if (isEdit) {
-                                                        this.setState({
-                                                          appointmentImg:
-                                                            e.target.files[0],
-                                                        })
-                                                      }
+                                                          this.setState({
+                                                            appointmentImg:
+                                                              e.target.files[0],
+                                                          });
+                                                        }
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -1065,9 +1134,9 @@ const mapStateToProps = ({ testAppointments }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointmentsInProcessList: () => 
+  onGetTestAppointmentsInProcessList: () =>
     dispatch(getTestAppointmentsInProcessList(ownProps.match.params.id)),
-  onUpdateTestAppointment: testAppointment => 
+  onUpdateTestAppointment: testAppointment =>
     dispatch(updateTestAppointment(testAppointment)),
 });
 

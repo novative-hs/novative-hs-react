@@ -204,29 +204,35 @@ class SidebarContent extends Component {
                   </Link>
                   <ul className="sub-menu" aria-expanded="false">
                     <li>
-                      <Link to={
-                      "/dashboard-lab/" +
-                      this.props.match.params.id +
-                      "/test-appointments-pending-list"
-                    }>
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/test-appointments-pending-list"
+                        }
+                      >
                         {this.props.t("Pending")}
                       </Link>
                     </li>
                     <li>
-                      <Link to={
-                      "/dashboard-lab/" +
-                      this.props.match.params.id +
-                      "/test-appointments-in-process-list"
-                    }>
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/test-appointments-in-process-list"
+                        }
+                      >
                         {this.props.t("In Process")}
                       </Link>
                     </li>
                     <li>
-                      <Link to={
-                      "/dashboard-lab/" +
-                      this.props.match.params.id +
-                      "/test-appointments-completed-list"
-                    }>
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/test-appointments-completed-list"
+                        }
+                      >
                         {this.props.t("Completed")}
                       </Link>
                     </li>

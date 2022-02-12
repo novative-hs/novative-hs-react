@@ -1,15 +1,8 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-} from "reactstrap";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 import paginationFactory, {
   PaginationProvider,
@@ -42,7 +35,9 @@ class TestAppointmentsCompletedList extends Component {
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, testAppointment) => <>{testAppointment.id}</>,
+          formatter: (cellContent, testAppointment) => (
+            <>{testAppointment.id}</>
+          ),
         },
         {
           dataField: "patient_name",
@@ -68,66 +63,86 @@ class TestAppointmentsCompletedList extends Component {
           dataField: "booking_date_time",
           text: "booking date time",
           sort: true,
-           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.booking_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+          formatter: (cellContent, testAppointment) => (
+            <>
+              <span>
+                {new Date(testAppointment.booking_date_time).toLocaleString(
+                  "en-US"
+                )}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "requested_appointment_date_time",
           text: " requested appointment date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.requested_appointment_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+            <>
+              <span>
+                {new Date(
+                  testAppointment.requested_appointment_date_time
+                ).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "sample_collection_date_time",
           text: "sample collection date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.sample_collection_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+            <>
+              <span>
+                {new Date(
+                  testAppointment.sample_collection_date_time
+                ).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "result_upload_date_time",
           text: "result upload date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <span>{new Date(testAppointment.result_upload_date_time).toLocaleString('en-US')}</span>
-              </>
-              ),
+            <>
+              <span>
+                {new Date(
+                  testAppointment.result_upload_date_time
+                ).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
         },
-         {
+        {
           dataField: "http://127.0.0.1:8000" + "result",
           text: "result",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-             <>
-                <Link to={{ pathname: "http://127.0.0.1:8000" + testAppointment.result }} target="_blank">
-                  Test Result
-                </Link>
-              </>
+            <>
+              <Link
+                to={{
+                  pathname: "http://127.0.0.1:8000" + testAppointment.result,
+                }}
+                target="_blank"
+              >
+                Test Result
+              </Link>
+            </>
           ),
         },
       ],
     };
     this.toggle = this.toggle.bind(this);
   }
-  
   componentDidMount() {
     const { testAppointments, onGetTestAppointmentsCompletedList } = this.props;
     if (testAppointments && !testAppointments.length) {
       setTimeout(() => {
         onGetTestAppointmentsCompletedList();
-       }, 1000);
-      }
+      }, 1000);
+    }
     this.setState({ testAppointments });
   }
 
@@ -179,7 +194,10 @@ class TestAppointmentsCompletedList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Test Appointments" breadcrumbItem="Completed List" />
+            <Breadcrumbs
+              title="Test Appointments"
+              breadcrumbItem="Completed List"
+            />
             <Row>
               <Col lg="12">
                 <Card>
@@ -266,9 +284,9 @@ const mapStateToProps = ({ testAppointments }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointmentsCompletedList: () => 
+  onGetTestAppointmentsCompletedList: () =>
     dispatch(getTestAppointmentsCompletedList(ownProps.match.params.id)),
-  onUpdateTestAppointment: testAppointment => 
+  onUpdateTestAppointment: testAppointment =>
     dispatch(updateTestAppointment(testAppointment)),
 });
 

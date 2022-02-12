@@ -44,18 +44,20 @@ export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
 
 // SAMPLE COLLECTOR
-export const GET_QUALITY_CERTIFICATES =API_URL + "/lab/quality-certificate-list";
+export const GET_QUALITY_CERTIFICATES =
+  API_URL + "/lab/quality-certificate-list";
 export const ADD_NEW_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 export const UPDATE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 export const DELETE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
 
-
 // TEST APPOINTMENT
-export const GET_TEST_APPOINTMENTS_PENDING_LIST =API_URL + "/lab/test-appointment-pending-list";
-export const GET_TEST_APPOINTMENTS_IN_PROCESS_LIST =API_URL + "/lab/test-appointment-in-process-list";
-export const GET_TEST_APPOINTMENTS_COMPLETED_LIST =API_URL + "/lab/test-appointment-completed-list";
+export const GET_TEST_APPOINTMENTS_PENDING_LIST =
+  API_URL + "/lab/test-appointment-pending-list";
+export const GET_TEST_APPOINTMENTS_IN_PROCESS_LIST =
+  API_URL + "/lab/test-appointment-in-process-list";
+export const GET_TEST_APPOINTMENTS_COMPLETED_LIST =
+  API_URL + "/lab/test-appointment-completed-list";
 export const UPDATE_TEST_APPOINTMENT = API_URL + "/lab/test-appointment-update";
-
 
 // -------------- TEMPLATES URLS --------------
 

@@ -49,7 +49,7 @@ import sampleCollectors from "./sample-collectors/reducer";
 //test certificates
 import qualityCertificates from "./quality-certificates/reducer";
 
-// test appointment
+//test certificates
 import testAppointments from "./test-appointments/reducer";
 
 //mails

@@ -46,7 +46,7 @@ export * from "./sample-collectors/actions";
 // quality certificates
 export * from "./quality-certificates/actions";
 
-// test appointment
+// test appointments
 export * from "./test-appointments/actions";
 
 // contacts
