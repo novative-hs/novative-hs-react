@@ -42,10 +42,7 @@ class TestAppointmentsPendingList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      selectedFiles: [],
       testAppointments: [],
-      patient: [],
-      appointmentImg: "",
       testAppointment: "",
       modal: false,
       testAppointmentListColumns: [
@@ -60,27 +57,27 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "patient_name",
-          text: "patient",
-          sort: true,
-        },
-        {
-          dataField: "offered_test_name",
-          text: "offered test ",
+          text: "Patient",
           sort: true,
         },
         {
           dataField: "patient_age",
-          text: "patient age",
+          text: "Age",
           sort: true,
         },
         {
           dataField: "patient_gender",
-          text: "patient gender",
+          text: "Gender",
+          sort: true,
+        },
+        {
+          dataField: "offered_test_name",
+          text: "Offered test ",
           sort: true,
         },
         {
           dataField: "booking_date_time",
-          text: "booking date time",
+          text: "Booking date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -94,7 +91,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: " requested appointment date time",
+          text: "Requested appointment date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -151,7 +148,7 @@ class TestAppointmentsPendingList extends Component {
   }
 
   handleTestAppointmentClicks = () => {
-    this.setState({ testAppointment: "", appointmentImg: "", isEdit: false });
+    this.setState({ testAppointment: "" });
     this.toggle();
   };
 
@@ -162,7 +159,7 @@ class TestAppointmentsPendingList extends Component {
       !isEmpty(testAppointments) &&
       size(prevProps.testAppointments) !== size(testAppointments)
     ) {
-      this.setState({ testAppointments: {}, isEdit: false });
+      this.setState({ testAppointments: {} });
     }
   }
 
@@ -198,8 +195,6 @@ class TestAppointmentsPendingList extends Component {
           testAppointment.sample_collection_date_time,
         result_upload_date_time: testAppointment.result_upload_date_time,
       },
-      appointmentImg: "",
-      isEdit: true,
     });
 
     this.toggle();
@@ -209,8 +204,6 @@ class TestAppointmentsPendingList extends Component {
     const { SearchBar } = Search;
 
     const { testAppointments } = this.props;
-
-    const { isEdit } = this.state;
 
     const { onUpdateTestAppointment, onGetTestAppointmentsPendingList } =
       this.props;
@@ -302,9 +295,7 @@ class TestAppointmentsPendingList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                        {!!isEdit
-                                          ? "Edit Test Appointment"
-                                          : "Add Test Appointment"}
+                                        Edit Test Appointment
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -352,61 +343,51 @@ class TestAppointmentsPendingList extends Component {
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            booking_date_time:
-                                              Yup.string().required(
-                                                "Please enter date time"
-                                              ),
-                                            requested_appointment_date_time:
-                                              Yup.string().required(
-                                                "Please enter date time"
-                                              ),
                                             sample_collection_date_time:
                                               Yup.string().required(
-                                                "Please enter date time"
+                                                "Please select sample collection date time"
                                               ),
                                             result_upload_date_time:
                                               Yup.string().required(
-                                                "Please enter date time"
+                                                "Please select result upload date time"
                                               ),
                                           })}
                                           onSubmit={values => {
-                                            if (isEdit) {
-                                              const updateTestAppointment = {
-                                                id: testAppointment.id,
-                                                patient_id: parseInt(
-                                                  values.patient_id
-                                                ),
-                                                offered_test_id: parseInt(
-                                                  values.offered_test_id
-                                                ),
-                                                patient_name:
-                                                  values.patient_name,
-                                                offered_test_name:
-                                                  values.offered_test_name,
-                                                patient_age: values.patient_age,
-                                                patient_gender:
-                                                  values.patient_gender,
-                                                booking_date_time:
-                                                  values.booking_date_time,
-                                                requested_appointment_date_time:
-                                                  values.requested_appointment_date_time,
-                                                sample_collection_date_time:
-                                                  values.sample_collection_date_time,
-                                                result_upload_date_time:
-                                                  values.result_upload_date_time,
-                                                status: "Confirmed",
-                                                result: "",
-                                              };
+                                            const updateTestAppointment = {
+                                              id: testAppointment.id,
+                                              patient_id: parseInt(
+                                                values.patient_id
+                                              ),
+                                              offered_test_id: parseInt(
+                                                values.offered_test_id
+                                              ),
+                                              patient_name: values.patient_name,
+                                              offered_test_name:
+                                                values.offered_test_name,
+                                              patient_age: values.patient_age,
+                                              patient_gender:
+                                                values.patient_gender,
+                                              booking_date_time:
+                                                values.booking_date_time,
+                                              requested_appointment_date_time:
+                                                values.requested_appointment_date_time,
+                                              sample_collection_date_time:
+                                                values.sample_collection_date_time,
+                                              result_upload_date_time:
+                                                values.result_upload_date_time,
+                                              status: "Confirmed",
+                                              result: "",
+                                            };
 
-                                              // update TestAppointment
-                                              onUpdateTestAppointment(
-                                                updateTestAppointment
-                                              );
+                                            // update TestAppointment
+                                            onUpdateTestAppointment(
+                                              updateTestAppointment
+                                            );
 
-                                              setTimeout(() => {
-                                                onGetTestAppointmentsPendingList();
-                                              }, 1000);
-                                            }
+                                            setTimeout(() => {
+                                              onGetTestAppointmentsPendingList();
+                                            }, 1000);
+
                                             this.setState({
                                               selectedTestAppointment: null,
                                             });
@@ -417,16 +398,9 @@ class TestAppointmentsPendingList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                  <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      patient name
+                                                      Patient name
                                                     </Label>
                                                     <Field
                                                       name="patient_name"
@@ -436,112 +410,14 @@ class TestAppointmentsPendingList extends Component {
                                                           .testAppointment
                                                           .patient_name
                                                       }
-                                                      onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
 
-                                                              patient_name:
-                                                                e.target.value,
-                                                              offered_test_name:
-                                                                testAppointment.offered_test_name,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                            },
-                                                          });
-                                                        }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.patient_id &&
-                                                        touched.patient_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      readOnly={true}
-                                                      multiple={false}
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      offered test name
-                                                    </Label>
-                                                    <Field
-                                                      name="offered_test_name"
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .testAppointment
-                                                          .offered_test_name
-                                                      }
-                                                      onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.offered_test_name,
-                                                              offered_test_name:
-                                                                e.target.value,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                            },
-                                                          });
-                                                        }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.offered_test_id &&
-                                                        touched.offered_test_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      readOnly={true}
-                                                      multiple={false}
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      patient age
+                                                      Patient age
                                                     </Label>
                                                     <Field
                                                       name="patient_age"
@@ -551,54 +427,14 @@ class TestAppointmentsPendingList extends Component {
                                                           .testAppointment
                                                           .patient_age
                                                       }
-                                                      onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.patient_name,
-                                                              offered_test_name:
-                                                                testAppointment.offered_test_name,
-                                                              patient_age:
-                                                                e.target.value,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                            },
-                                                          });
-                                                        }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.patient_age &&
-                                                        touched.patient_age
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       readOnly={true}
-                                                      multiple={false}
-                                                    />
-                                                    <ErrorMessage
-                                                      name="patient_age"
-                                                      component="div"
-                                                      className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      patient gender
+                                                      Patient gender
                                                     </Label>
                                                     <Field
                                                       name="patient_gender"
@@ -608,54 +444,31 @@ class TestAppointmentsPendingList extends Component {
                                                           .testAppointment
                                                           .patient_gender
                                                       }
-                                                      onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.patient_name,
-                                                              offered_test_name:
-                                                                testAppointment.offered_test_name,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                e.target.value,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                            },
-                                                          });
-                                                        }
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.patient_gender &&
-                                                        touched.patient_gender
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       readOnly={true}
-                                                      multiple={false}
-                                                    ></Field>
-                                                    <ErrorMessage
-                                                      name="patient_gender"
-                                                      component="div"
-                                                      className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      booking date time
+                                                      Offered test name
+                                                    </Label>
+                                                    <Field
+                                                      name="offered_test_name"
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .testAppointment
+                                                          .offered_test_name
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Booking date time
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
@@ -665,23 +478,13 @@ class TestAppointmentsPendingList extends Component {
                                                         0,
                                                         -4
                                                       )}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.booking_date_time &&
-                                                        touched.booking_date_time
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="booking_date_time"
-                                                      component="div"
-                                                      className="invalid-feedback"
+                                                      className="form-control"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      requested appointment date
+                                                      Requested appointment date
                                                       time
                                                     </Label>
                                                     <input
@@ -692,57 +495,45 @@ class TestAppointmentsPendingList extends Component {
                                                         0,
                                                         -4
                                                       )}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.requested_appointment_date_time &&
-                                                        touched.requested_appointment_date_time
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="requested_appointment_date_time"
-                                                      component="div"
-                                                      className="invalid-feedback"
+                                                      className="form-control"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      sample collection date
+                                                      Sample collection date
                                                       time
                                                     </Label>
                                                     <input
                                                       name="sample_collection_date_time"
                                                       type="datetime-local"
                                                       onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.patient_name,
-                                                              offered_test_name:
-                                                                testAppointment.offered_test_name,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                e.target.value +
-                                                                ":00Z",
-                                                              result_upload_date_time:
-                                                                testAppointment.result_upload_date_time,
-                                                            },
-                                                          });
-                                                        }
+                                                        this.setState({
+                                                          testAppointment: {
+                                                            id: testAppointment.id,
+                                                            patient_id:
+                                                              testAppointment.patient_id,
+                                                            offered_test_id:
+                                                              testAppointment.offered_test_id,
+                                                            patient_name:
+                                                              testAppointment.patient_name,
+                                                            offered_test_name:
+                                                              testAppointment.offered_test_name,
+                                                            patient_age:
+                                                              testAppointment.patient_age,
+                                                            patient_gender:
+                                                              testAppointment.patient_gender,
+                                                            booking_date_time:
+                                                              testAppointment.booking_date_time,
+                                                            requested_appointment_date_time:
+                                                              testAppointment.requested_appointment_date_time,
+                                                            sample_collection_date_time:
+                                                              e.target.value +
+                                                              ":00Z",
+                                                            result_upload_date_time:
+                                                              testAppointment.result_upload_date_time,
+                                                          },
+                                                        });
                                                       }}
                                                       className={
                                                         "form-control" +
@@ -758,42 +549,41 @@ class TestAppointmentsPendingList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      result upload date time
+                                                      Result upload date time
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"
                                                       type="datetime-local"
                                                       onChange={e => {
-                                                        if (isEdit) {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              patient_id:
-                                                                testAppointment.patient_id,
-                                                              offered_test_id:
-                                                                testAppointment.offered_test_id,
-                                                              patient_name:
-                                                                testAppointment.patient_name,
-                                                              offered_test_name:
-                                                                testAppointment.offered_test_name,
-                                                              patient_age:
-                                                                testAppointment.patient_age,
-                                                              patient_gender:
-                                                                testAppointment.patient_gender,
-                                                              booking_date_time:
-                                                                testAppointment.booking_date_time,
-                                                              requested_appointment_date_time:
-                                                                testAppointment.requested_appointment_date_time,
-                                                              sample_collection_date_time:
-                                                                testAppointment.sample_collection_date_time,
-                                                              result_upload_date_time:
-                                                                e.target.value +
-                                                                ":00Z",
-                                                            },
-                                                          });
-                                                        }
+                                                        this.setState({
+                                                          testAppointment: {
+                                                            id: testAppointment.id,
+                                                            patient_id:
+                                                              testAppointment.patient_id,
+                                                            offered_test_id:
+                                                              testAppointment.offered_test_id,
+                                                            patient_name:
+                                                              testAppointment.patient_name,
+                                                            offered_test_name:
+                                                              testAppointment.offered_test_name,
+                                                            patient_age:
+                                                              testAppointment.patient_age,
+                                                            patient_gender:
+                                                              testAppointment.patient_gender,
+                                                            booking_date_time:
+                                                              testAppointment.booking_date_time,
+                                                            requested_appointment_date_time:
+                                                              testAppointment.requested_appointment_date_time,
+                                                            sample_collection_date_time:
+                                                              testAppointment.sample_collection_date_time,
+                                                            result_upload_date_time:
+                                                              e.target.value +
+                                                              ":00Z",
+                                                          },
+                                                        });
                                                       }}
                                                       className={
                                                         "form-control" +
