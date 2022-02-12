@@ -291,7 +291,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="owner_name"
                                     name="owner_name"
-                                    placeholder="Aahil Malik"
+                                    placeholder="John Doe"
                                     type="text"
                                     onChange={e =>
                                       this.setState({
@@ -440,7 +440,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="address"
                                     name="address"
-                                    placeholder="63/D, Ahmad Block, New Garden Town, Lahore"
+                                    placeholder="339-A Main Peshawar Road, Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ address: e.target.value })
@@ -468,7 +468,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="city"
                                     name="city"
-                                    placeholder="Lahore"
+                                    placeholder="Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ city: e.target.value })
@@ -496,7 +496,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="district"
                                     name="district"
-                                    placeholder="Lahore"
+                                    placeholder="Rawalpindi"
                                     type="text"
                                     onChange={e =>
                                       this.setState({

@@ -16,6 +16,7 @@ function* loginUser({ payload: { user, history } }) {
 
     const data = response.data.data;
 
+    console.log("Data: ", data);
     localStorage.setItem("authUser", JSON.stringify(data));
     yield put(loginSuccess(data));
 

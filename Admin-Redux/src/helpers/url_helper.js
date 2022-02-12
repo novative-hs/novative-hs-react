@@ -7,6 +7,11 @@ const API_URL = "http://127.0.0.1:8000/api";
 export const POST_LOGIN = API_URL + "/account/login/";
 export const POST_REGISTER = API_URL + "/account/register/";
 
+// PASSWORD RESET
+export const POST_FORGET_PASSWORD = API_URL + "/account/password_reset/";
+export const POST_CONFIRM_PASSWORD =
+  API_URL + "/account/password_reset/confirm/";
+
 export const POST_PATIENT_INFORMATION =
   API_URL + "/patient/patient-information";
 export const POST_LAB_INFORMATION = API_URL + "/lab/lab-information";

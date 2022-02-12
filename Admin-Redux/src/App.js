@@ -4,7 +4,12 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Import Routes
-import { authProtectedRoutes, publicRoutes } from "./routes/";
+import {
+  authProtectedRoutes,
+  labAuthProtectedRoutes,
+  patientAuthProtectedRoutes,
+  publicRoutes,
+} from "./routes/";
 import AppRoute from "./routes/route";
 
 // layouts
@@ -15,29 +20,11 @@ import NonAuthLayout from "./components/NonAuthLayout";
 // Import scss
 import "./assets/scss/theme.scss";
 
-// Import Firebase Configuration file
-// import { initFirebaseBackend } from "./helpers/firebase_helper"
-
 // Import fackbackend Configuration file
 import fakeBackend from "./helpers/AuthType/fakeBackend";
 
 // Activating fake backend
 fakeBackend();
-
-// Activating fake firebase
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_APIKEY,
-//   authDomain: process.env.REACT_APP_AUTHDOMAIN,
-//   databaseURL: process.env.REACT_APP_DATABASEURL,
-//   projectId: process.env.REACT_APP_PROJECTID,
-//   storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-//   messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-//   appId: process.env.REACT_APP_APPID,
-//   measurementId: process.env.REACT_APP_MEASUREMENTID,
-// };
-
-// init firebase backend
-// initFirebaseBackend(firebaseConfig);
 
 class App extends Component {
   constructor(props) {
@@ -77,6 +64,8 @@ class App extends Component {
                 component={route.component}
                 key={idx}
                 isAuthProtected={false}
+                isLabAuthProtected={false}
+                isPatientAuthProtected={false}
               />
             ))}
 
@@ -87,6 +76,34 @@ class App extends Component {
                 component={route.component}
                 key={idx}
                 isAuthProtected={true}
+                isLabAuthProtected={false}
+                isPatientAuthProtected={false}
+                exact
+              />
+            ))}
+
+            {labAuthProtectedRoutes.map((route, idx) => (
+              <AppRoute
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                isLabAuthProtected={true}
+                isPatientAuthProtected={false}
+                exact
+              />
+            ))}
+
+            {patientAuthProtectedRoutes.map((route, idx) => (
+              <AppRoute
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                isPatientAuthProtected={true}
+                isLabAuthProtected={false}
                 exact
               />
             ))}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {
   Dropdown,
   DropdownToggle,
@@ -18,31 +18,31 @@ import { connect } from "react-redux";
 
 const getUserName = () => {
   if (localStorage.getItem("authUser")) {
-    const obj = JSON.parse(localStorage.getItem("authUser"))
+    const obj = JSON.parse(localStorage.getItem("authUser"));
     return obj;
   }
-}
+};
 
 class ProfileMenu extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       menu: false,
       name: "Admin",
-    }
-    this.toggle = this.toggle.bind(this)
+    };
+    this.toggle = this.toggle.bind(this);
   }
 
   toggle() {
     this.setState(prevState => ({
       menu: !prevState.menu,
-    }))
+    }));
   }
 
   componentDidMount() {
     const userData = getUserName();
     if (userData) {
-      this.setState({ name: userData.username })
+      this.setState({ name: userData.username });
     }
   }
 
@@ -50,7 +50,7 @@ class ProfileMenu extends Component {
     if (prevProps.success !== this.props.success) {
       const userData = getUserName();
       if (userData) {
-        this.setState({ name: userData.username })
+        this.setState({ name: userData.username });
       }
     }
   }
@@ -78,24 +78,21 @@ class ProfileMenu extends Component {
             </span>
             <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
           </DropdownToggle>
+
           <DropdownMenu className="dropdown-menu-end">
-            <DropdownItem tag="a" href="/profile">
-              <i className="bx bx-user font-size-16 align-middle ms-1" />
-              {this.props.t("Profile")}
-            </DropdownItem>
-            <DropdownItem tag="a" href="/crypto-wallet">
-              <i className="bx bx-wallet font-size-16 align-middle me-1" />
-              {this.props.t("My Wallet")}
-            </DropdownItem>
-            <DropdownItem tag="a" href="#">
-              <span className="badge bg-success float-end">11</span>
-              <i className="bx bx-wrench font-size-17 align-middle me-1" />
-              {this.props.t("Settings")}
-            </DropdownItem>
-            <DropdownItem tag="a" href="auth-lock-screen">
-              <i className="bx bx-lock-open font-size-16 align-middle me-1" />
-              {this.props.t("Lock screen")}
-            </DropdownItem>
+            {this.props.location &&
+            this.props.location.pathname.includes("dashboard-patient") ? (
+              <DropdownItem tag="a" href="/profile">
+                <i className="bx bx-user font-size-16 align-middle ms-1" />
+                {this.props.t("Patient Profile")}
+              </DropdownItem>
+            ) : (
+              <DropdownItem tag="a" href="/profile">
+                <i className="bx bx-user font-size-16 align-middle ms-1" />
+                {this.props.t("Lab Profile")}
+              </DropdownItem>
+            )}
+
             <div className="dropdown-divider" />
             <Link to="/logout" className="dropdown-item">
               <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
@@ -104,20 +101,22 @@ class ProfileMenu extends Component {
           </DropdownMenu>
         </Dropdown>
       </React.Fragment>
-    )
+    );
   }
 }
 
 ProfileMenu.propTypes = {
   t: PropTypes.any,
-  success: PropTypes.string
-}
+  match: PropTypes.object,
+  location: PropTypes.object,
+  success: PropTypes.string,
+};
 
 const mapStateToProps = state => {
-  const { success } = state.Profile
-  return { success }
-}
+  const { success } = state.Profile;
+  return { success };
+};
 
 export default withRouter(
   connect(mapStateToProps, {})(withTranslation()(ProfileMenu))
-)
+);

@@ -4,18 +4,21 @@ import { del, get, post, put } from "./api_helper";
  
 import * as url from "./url_helper";
 
-const headers = {
-  "Content-Type":
-    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-};
-
-const authorizedHeaders = {
-
-  Authorization: "Token 31f06ea66a893ac05b9b78d9cf96af996c47b5a8",
-
-  "Content-Type":
-    "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-};
+function getHeader(token) {
+  // If there is some token then return the header with token
+  if (token) {
+    return {
+      Authorization: "Token " + token,
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    };
+  } else {
+    return {
+      "Content-Type":
+        "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+    };
+  }
+}
 
 // Post Register Information to create account
 export const postRegister = user => {
@@ -67,7 +70,7 @@ export const postPatientInformation = (id, patient) => {
 
   return axios
     .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {
-      headers: headers,
+      headers: getHeader(authHeader()),
     })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
@@ -121,7 +124,9 @@ export const postLabInformation = (id, lab) => {
   );
 
   return axios
-    .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, { headers: headers })
+    .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, {
+      headers: getHeader(authHeader()),
+    })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
@@ -168,7 +173,7 @@ export const postCorporateInformation = (id, corporate) => {
 
   return axios
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
-      headers: headers,
+      headers: getHeader(authHeader()),
     })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
@@ -207,23 +212,25 @@ export const postLogin = user => {
   formData.append("username", user.username);
   formData.append("password", user.password);
 
-  return axios.post(url.POST_LOGIN, formData, { headers: authorizedHeaders });
+  return axios.post(url.POST_LOGIN, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
   get(url.GET_TESTS, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const getUnits = () =>
   get(url.GET_UNITS, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const getOfferedTests = id =>
   get(`${url.GET_OFFERED_TESTS}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const addNewOfferedTest = (offeredTest, id) => {
@@ -240,7 +247,7 @@ export const addNewOfferedTest = (offeredTest, id) => {
   );
 
   return axios.post(`${url.ADD_NEW_OFFERED_TEST}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 };
 
@@ -259,19 +266,19 @@ export const updateOfferedTest = offeredTest => {
   );
 
   return axios.put(`${url.UPDATE_OFFERED_TEST}/${offeredTest.id}`, formData, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 };
 
 export const deleteOfferedTest = offeredTest =>
   del(`${url.DELETE_OFFERED_TEST}/${offeredTest.id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 // ------------- Sample Collector Requests START -------------
 export const getSampleCollectors = id =>
   get(`${url.GET_SAMPLE_COLLECTORS}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const addNewSampleCollector = (sampleCollector, id) => {
@@ -282,7 +289,7 @@ export const addNewSampleCollector = (sampleCollector, id) => {
   formData.append("photo", sampleCollector.photo);
 
   return axios.post(`${url.ADD_NEW_SAMPLE_COLLECTOR}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 };
 
@@ -298,20 +305,20 @@ export const updateSampleCollector = sampleCollector => {
     `${url.UPDATE_SAMPLE_COLLECTOR}/${sampleCollector.id}`,
     formData,
     {
-      headers: authorizedHeaders,
+      headers: getHeader(authHeader()),
     }
   );
 };
 
 export const deleteSampleCollector = sampleCollector =>
   del(`${url.DELETE_SAMPLE_COLLECTOR}/${sampleCollector.id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 // ------------- Test Certificate Requests START -------------
 export const getQualityCertificates = id =>
   get(`${url.GET_QUALITY_CERTIFICATES}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const addNewQualityCertificate = (qualityCertificate, id) => {
@@ -320,7 +327,7 @@ export const addNewQualityCertificate = (qualityCertificate, id) => {
   formData.append("certificate", qualityCertificate.certificate);
 
   return axios.post(`${url.ADD_NEW_QUALITY_CERTIFICATE}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 };
 
@@ -334,20 +341,20 @@ export const updateQualityCertificate = qualityCertificate => {
     `${url.UPDATE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`,
     formData,
     {
-      headers: authorizedHeaders,
+      headers: getHeader(authHeader()),
     }
   );
 };
 
 export const deleteQualityCertificate = qualityCertificate =>
   del(`${url.DELETE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 // ------------- Pathologists START -------------
 export const getPathologists = id =>
   get(`${url.GET_PATHOLOGISTS}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const addNewPathologist = (pathologist, id) => {
@@ -368,7 +375,7 @@ export const addNewPathologist = (pathologist, id) => {
   formData.append("is_associated_with_pap", pathologist.is_associated_with_pap);
 
   return axios.post(`${url.ADD_NEW_PATHOLOGIST}/${id}`, formData, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 };
 
@@ -391,32 +398,29 @@ export const updatePathologist = pathologist => {
   formData.append("is_associated_with_pap", pathologist.is_associated_with_pap);
 
   return axios.put(`${url.UPDATE_PATHOLOGIST}/${pathologist.id}`, formData, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 };
 
 export const deletePathologist = pathologist =>
   del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
-
-
-
 
 // ------------- Test Appointment Requests START -------------
 export const getTestAppointmentsPendingList = id =>
   get(`${url.GET_TEST_APPOINTMENTS_PENDING_LIST}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const getTestAppointmentsInProcessList = id =>
   get(`${url.GET_TEST_APPOINTMENTS_IN_PROCESS_LIST}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const getTestAppointmentsCompletedList = id =>
   get(`${url.GET_TEST_APPOINTMENTS_COMPLETED_LIST}/${id}`, {
-    headers: authorizedHeaders,
+    headers: getHeader(authHeader()),
   });
 
 export const updateTestAppointment = testAppointment => {
@@ -431,13 +435,31 @@ export const updateTestAppointment = testAppointment => {
   formData.append("status", testAppointment.status);
   formData.append("result", testAppointment.result);
 
-
   return axios.put(
     `${url.UPDATE_TEST_APPOINTMENT}/${testAppointment.id}`,
     formData,
     {
-      headers: authorizedHeaders,
+      headers: getHeader(authHeader()),
     }
   );
 };
 
+// ------------- Forget Password Requests START -------------
+export const postForgetPwd = data => {
+  let formData = new FormData();
+  formData.append("email", data.email);
+
+  return axios.post(url.POST_FORGET_PASSWORD, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const postConfirmPwd = (user, token) => {
+  let formData = new FormData();
+  formData.append("password", user.password);
+  formData.append("token", token);
+
+  return axios.post(url.POST_CONFIRM_PASSWORD, formData, {
+    headers: getHeader(authHeader()),
+  });
+};

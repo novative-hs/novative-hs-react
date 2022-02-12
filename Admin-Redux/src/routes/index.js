@@ -53,6 +53,7 @@ import PatientInformation from "../pages/Authentication/PatientInformation";
 import LabInformation from "../pages/Authentication/LabInformation";
 import CorporateInformation from "../pages/Authentication/CorporateInformation";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
+import ConfirmPwd from "../pages/Authentication/ConfirmPassword";
 
 // Inner Authentication
 import Login1 from "../pages/AuthenticationInner/Login";
@@ -191,6 +192,7 @@ const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   // My Routes
+<<<<<<< HEAD
   { path: "/dashboard-patient/:id", component: DashboardPatient },
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 
@@ -224,6 +226,9 @@ const authProtectedRoutes = [
     path: "/dashboard-lab/:id/test-appointments-completed-list",
     component: TestAppointmentsCompletedList,
   },
+=======
+  // { path: "/dashboard-corporate/:id", component: DashboardCorporate },
+>>>>>>> fbc7974109b1ad2c064b1702f7b20ea46c977b60
 
   
   { path: "/dashboard-saas", component: DashboardSaas },
@@ -376,6 +381,7 @@ const publicRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
+  { path: "/:token/confirm-password", component: ConfirmPwd },
   { path: "/register", component: Register },
   { path: "/patient-information/:id", component: PatientInformation },
   { path: "/lab-information/:id", component: LabInformation },
@@ -410,4 +416,33 @@ const publicRoutes = [
   { path: "/auth-two-step-verification-2", component: TwostepVerification2 },
 ];
 
-export { authProtectedRoutes, publicRoutes };
+const labAuthProtectedRoutes = [
+  { path: "/dashboard-lab/:id", component: DashboardLab },
+  {
+    path: "/dashboard-lab/:id/offered-tests-list",
+    component: OfferedTestsList,
+  },
+  {
+    path: "/dashboard-lab/:id/sample-collectors-list",
+    component: SampleCollectorsList,
+  },
+  {
+    path: "/dashboard-lab/:id/quality-certificates-list",
+    component: QualityCertificatesList,
+  },
+  {
+    path: "/dashboard-lab/:id/pathologists-list",
+    component: PathologistsList,
+  },
+];
+
+const patientAuthProtectedRoutes = [
+  { path: "/dashboard-patient/:id", component: DashboardPatient },
+];
+
+export {
+  authProtectedRoutes,
+  labAuthProtectedRoutes,
+  patientAuthProtectedRoutes,
+  publicRoutes,
+};

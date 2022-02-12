@@ -243,7 +243,6 @@ class OfferedTestsList extends Component {
 
     const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
       this.props;
-    const { selectedOfferedTest } = this.state;
     const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
@@ -278,8 +277,6 @@ class OfferedTestsList extends Component {
         testList.push(tests[i]);
       }
     }
-
-    console.log("List: ", testList);
 
     return (
       <React.Fragment>

@@ -28,7 +28,7 @@ class PatientInformation extends Component {
       address: "",
       city: "",
       district: "",
-      corporate_unique_id: "",
+      // corporate_unique_id: "",
     };
   }
 
@@ -106,13 +106,13 @@ class PatientInformation extends Component {
                               city: (this.state && this.state.city) || "",
                               district:
                                 (this.state && this.state.district) || "",
-                              is_corporate_user:
-                                (this.state && this.state.is_corporate_user) ||
-                                "No",
-                              corporate_unique_id:
-                                (this.state &&
-                                  this.state.corporate_unique_id) ||
-                                "",
+                              // is_corporate_user:
+                              //   (this.state && this.state.is_corporate_user) ||
+                              //   "No",
+                              // corporate_unique_id:
+                              //   (this.state &&
+                              //     this.state.corporate_unique_id) ||
+                              //   "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -164,15 +164,15 @@ class PatientInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              corporate_unique_id: Yup.string().when(
-                                "is_corporate_user",
-                                {
-                                  is: val => val == "Yes",
-                                  then: Yup.string()
-                                    .trim()
-                                    .required("Please enter corporate user ID"),
-                                }
-                              ),
+                              // corporate_unique_id: Yup.string().when(
+                              //   "is_corporate_user",
+                              //   {
+                              //     is: val => val == "Yes",
+                              //     then: Yup.string()
+                              //       .trim()
+                              //       .required("Please enter corporate user ID"),
+                              //   }
+                              // ),
                             })}
                             onSubmit={values => {
                               console.log(values);
@@ -192,7 +192,7 @@ class PatientInformation extends Component {
                                   <Field
                                     id="name"
                                     name="name"
-                                    placeholder="Zernish Khan"
+                                    placeholder="John Doe"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ name: e.target.value })
@@ -247,7 +247,7 @@ class PatientInformation extends Component {
                                   </Label>
                                   <Field
                                     name="email"
-                                    placeholder="abc@gmail.com"
+                                    placeholder="johndoe@gmail.com"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ email: e.target.value })
@@ -382,7 +382,7 @@ class PatientInformation extends Component {
                                 </div>
 
                                 {/* Is Corporate User field */}
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                   <Label
                                     for="is_corporate_user"
                                     className="form-label"
@@ -404,10 +404,10 @@ class PatientInformation extends Component {
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                   </Field>
-                                </div>
+                                </div> */}
 
                                 {/* Corporate Unique ID field */}
-                                {this.state.is_corporate_user === "Yes" && (
+                                {/* {this.state.is_corporate_user === "Yes" && (
                                   <div className="mb-3">
                                     <Label
                                       for="corporate_unique_id"
@@ -434,7 +434,7 @@ class PatientInformation extends Component {
                                       className="invalid-feedback"
                                     />
                                   </div>
-                                )}
+                                )} */}
 
                                 <div className="mt-3 d-grid">
                                   <button
