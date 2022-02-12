@@ -195,6 +195,49 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Sample Collectors")}</span>
                   </Link>
                 </li>
+
+                {/* Test Appointment Links */}
+                <li>
+                  <Link to="/#" className="has-arrow">
+                    <i className="bx bx-store" />
+                    <span>{this.props.t("Test Appointments")}</span>
+                  </Link>
+                  <ul className="sub-menu" aria-expanded="false">
+                    <li>
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/test-appointments-pending-list"
+                        }
+                      >
+                        {this.props.t("Pending")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/test-appointments-in-process-list"
+                        }
+                      >
+                        {this.props.t("In Process")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={
+                          "/dashboard-lab/" +
+                          this.props.match.params.id +
+                          "/test-appointments-completed-list"
+                        }
+                      >
+                        {this.props.t("Completed")}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </div>
           </SimpleBar>
