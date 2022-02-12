@@ -235,7 +235,7 @@ class TestAppointmentsInProcessList extends Component {
           testAppointment.sample_collection_date_time,
         result_upload_date_time: testAppointment.result_upload_date_time,
         status: testAppointment.status,
-        result: "http://127.0.0.1:8000" + testAppointment.result,
+        result: "",
       },
       appointmentImg: "",
       isEdit: true,
@@ -428,100 +428,42 @@ class TestAppointmentsInProcessList extends Component {
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
-                                              if (!this.state.appointmentImg) {
-                                                this.toDataURL(
-                                                  testAppointment.result
-                                                ).then(dataUrl => {
-                                                  var fileData =
-                                                    this.dataURLtoFile(
-                                                      dataUrl,
-                                                      testAppointment.result
-                                                        .split("/")
-                                                        .at(-1)
-                                                    );
-                                                  this.setState({
-                                                    appointmentImg: fileData,
-                                                  });
+                                              const updateTestAppointment = {
+                                                id: testAppointment.id,
+                                                patient_id: parseInt(
+                                                  values.patient_id
+                                                ),
+                                                offered_test_id: parseInt(
+                                                  values.offered_test_id
+                                                ),
+                                                patient_name:
+                                                  values.patient_name,
+                                                offered_test_name:
+                                                  values.offered_test_name,
+                                                patient_age: values.patient_age,
+                                                patient_gender:
+                                                  values.patient_gender,
+                                                booking_date_time:
+                                                  values.booking_date_time,
+                                                requested_appointment_date_time:
+                                                  values.requested_appointment_date_time,
+                                                sample_collection_date_time:
+                                                  values.sample_collection_date_time,
+                                                result_upload_date_time:
+                                                  values.result_upload_date_time,
+                                                status: values.status,
+                                                result:
+                                                  this.state.appointmentImg,
+                                              };
 
-                                                  const updateTestAppointment =
-                                                    {
-                                                      id: testAppointment.id,
-                                                      patient_id: parseInt(
-                                                        values.patient_id
-                                                      ),
-                                                      offered_test_id: parseInt(
-                                                        values.offered_test_id
-                                                      ),
-                                                      patient_name:
-                                                        values.patient_name,
-                                                      offered_test_name:
-                                                        values.offered_test_name,
-                                                      patient_age:
-                                                        values.patient_age,
-                                                      patient_gender:
-                                                        values.patient_gender,
-                                                      booking_date_time:
-                                                        values.booking_date_time,
-                                                      requested_appointment_date_time:
-                                                        values.requested_appointment_date_time,
-                                                      sample_collection_date_time:
-                                                        values.sample_collection_date_time,
-                                                      result_upload_date_time:
-                                                        values.result_upload_date_time,
-                                                      status: values.status,
-                                                      result:
-                                                        this.state
-                                                          .appointmentImg,
-                                                    };
+                                              // update TestAppointment
+                                              onUpdateTestAppointment(
+                                                updateTestAppointment
+                                              );
 
-                                                  // update TestAppointment
-                                                  onUpdateTestAppointment(
-                                                    updateTestAppointment
-                                                  );
-
-                                                  setTimeout(() => {
-                                                    onGetTestAppointmentsInProcessList();
-                                                  }, 1000);
-                                                });
-                                              } else {
-                                                const updateTestAppointment = {
-                                                  id: testAppointment.id,
-                                                  patient_id: parseInt(
-                                                    values.patient_id
-                                                  ),
-                                                  offered_test_id: parseInt(
-                                                    values.offered_test_id
-                                                  ),
-                                                  patient_name:
-                                                    values.patient_name,
-                                                  offered_test_name:
-                                                    values.offered_test_name,
-                                                  patient_age:
-                                                    values.patient_age,
-                                                  patient_gender:
-                                                    values.patient_gender,
-                                                  booking_date_time:
-                                                    values.booking_date_time,
-                                                  requested_appointment_date_time:
-                                                    values.requested_appointment_date_time,
-                                                  sample_collection_date_time:
-                                                    values.sample_collection_date_time,
-                                                  result_upload_date_time:
-                                                    values.result_upload_date_time,
-                                                  status: values.status,
-                                                  result:
-                                                    this.state.appointmentImg,
-                                                };
-
-                                                // update TestAppointment
-                                                onUpdateTestAppointment(
-                                                  updateTestAppointment
-                                                );
-
-                                                setTimeout(() => {
-                                                  onGetTestAppointmentsInProcessList();
-                                                }, 1000);
-                                              }
+                                              setTimeout(() => {
+                                                onGetTestAppointmentsInProcessList();
+                                              }, 1000);
                                             }
                                             this.setState({
                                               selectedTestAppointment: null,
@@ -850,6 +792,7 @@ class TestAppointmentsInProcessList extends Component {
                                                     <input
                                                       name="sample_collection_date_time"
                                                       type="datetime-local"
+                                                      readOnly={true}
                                                       defaultValue={this.state.testAppointment.sample_collection_date_time.slice(
                                                         0,
                                                         -4
@@ -910,6 +853,7 @@ class TestAppointmentsInProcessList extends Component {
                                                     <input
                                                       name="result_upload_date_time"
                                                       type="datetime-local"
+                                                      readOnly={true}
                                                       defaultValue={this.state.testAppointment.result_upload_date_time.slice(
                                                         0,
                                                         -4
@@ -1035,17 +979,6 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
 
                                                   {/* Display current image in edit form only */}
-                                                  {testAppointment.photo &&
-                                                  testAppointment.photo ? (
-                                                    <CardImg
-                                                      className="img-fluid"
-                                                      src={
-                                                        "http://127.0.0.1:8000" +
-                                                        testAppointment.result
-                                                      }
-                                                      alt="Responsive image"
-                                                    />
-                                                  ) : null}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       result
