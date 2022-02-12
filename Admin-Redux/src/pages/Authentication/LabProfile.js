@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Alert, Button, Card, CardBody, Col, Container, Row, Label } from "reactstrap";
+import { Alert, Button, Card, CardBody, Col, Container, Row, Label, Input } from "reactstrap";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -14,14 +14,17 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
-import { editProfile, resetProfileFlag } from "../../store/actions";
+import { updateLabProfile, getLabProfile} from "../../store/actions";
 
 class LabProfile extends Component {
   constructor(props) {
     super(props);
-    this.state = {account_id: "",
+    this.state = {
     name: "", 
+    logo: "",
     owner_name: "" ,
+    registration_no:"",
+    email:"",
     phone: "" ,
     landline: "" ,
     address:"",
@@ -30,87 +33,23 @@ class LabProfile extends Component {
     complaint_handling_email:"",
     complaint_handling_phone:"",
     accept_credit_card_for_payment:"",
-    is_active:""};
+    is_active:"",
+    is_blocked:""};
   }
 
   componentDidMount() {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"));
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        this.setState({
-          account_id: obj.account_id,
-          name: obj.name,
-          owner_name: obj.owner_name,
-          phone: obj.phone,
-          landline:obj.landline,
-          address: obj.address,
-          city: obj.city,
-          district: obj.district,
-          complaint_handling_email: obj.complaint_handling_email,
-          complaint_handling_phone: obj.complaint_handling_phone,
-          accept_credit_card_for_payment: obj.accept_credit_card_for_payment,
-          is_active: obj.is_active,
-        });
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        this.setState({account_id: obj.account_id,
-          name: obj.name,
-          owner_name: obj.owner_name,
-          phone: obj.phone,
-          landline:obj.landline,
-          address: obj.address,
-          city:obj.city,
-          district: obj.district,
-          complaint_handling_email:obj.complaint_handling_email,
-          complaint_handling_phone:obj.complaint_handling_phone,
-          accept_credit_card_for_payment:obj.accept_credit_card_for_payment,
-          is_active: obj.is_active});
-      }
-    }
+    setTimeout(() => {
+      this.props.getLabProfile(this.props.match.params.id);
+    }, 1000);
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, ss) {
     if (this.props !== prevProps) {
-      const obj = JSON.parse(localStorage.getItem("authUser"));
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        this.setState({
-          account_id: obj.account_id,
-          name: obj.name,
-          owner_name: obj.owner_name,
-          phone: obj.phone,
-          landline:obj.landline,
-          address: obj.address,
-          city: obj.city,
-          district: obj.district,
-          complaint_handling_email: obj.complaint_handling_email,
-          complaint_handling_phone: obj.complaint_handling_phone,
-          accept_credit_card_for_payment: obj.accept_credit_card_for_payment,
-          is_active: obj.is_active,
-        });
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        this.setState({          
-          account_id: obj.account_id,
-          name: obj.name,
-          owner_name: obj.owner_name,
-          phone: obj.phone,
-          landline:obj.landline,
-          address: obj.address,
-          city:obj.city,
-          district: obj.district,
-          complaint_handling_email:obj.complaint_handling_email,
-          complaint_handling_phone:obj.complaint_handling_phone,
-          accept_credit_card_for_payment:obj.accept_credit_card_for_payment,
-          is_active: obj.is_active });
-      }
+
       setTimeout(() => {
-        this.props.resetProfileFlag();
-      }, 3000);
+        this.props.getLabProfile(this.props.match.params.id);
+      }, 1000);
     }
   }
 
@@ -144,8 +83,7 @@ class LabProfile extends Component {
                       <div className="align-self-center flex-1">
                         <div className="text-muted">
                           <h5>{this.state.name}</h5>
-                          <p className="mb-1">{this.state.email}</p>
-                          <p className="mb-0">Id no: #{this.state.idx}</p>
+                          <p className="mb-0">{this.state.email}</p>
                         </div>
                       </div>
                     </div>
@@ -154,17 +92,19 @@ class LabProfile extends Component {
               </Col>
             </Row>
 
-            <h4 className="card-title mb-4">Change User Name</h4>
+            <h4 className="card-title mb-4">Update Lab Profile</h4>
 
             <Card>
               <CardBody>
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    account_id: (this.state && this.state.account_id) || "",
                     name: (this.state && this.state.name) || "",
+                    logo: (this.state && this.state.logo) || "",
                     owner_name:
                       (this.state && this.state.owner_name) || "",
+                    registration_no:(this.state && this.state.registration_no) || "",
+                    email:(this.state && this.state.email) || "",
                     phone: (this.state && this.state.phone) || "",
                     landline:
                       (this.state && this.state.landline) || "",
@@ -197,6 +137,9 @@ class LabProfile extends Component {
                         255,
                         "Please enter maximum 255 characters"
                       ),
+                      logo: Yup.mixed().required(
+                        "Please upload your lab logo"
+                      ),
                     owner_name: Yup.string()
                       .required("Please enter lab owner name")
                       .min(3, "Please enter at least 3 characters")
@@ -204,6 +147,19 @@ class LabProfile extends Component {
                         255,
                         "Please enter maximum 255 characters"
                       ),
+                    registration_no: Yup.string()
+                      .required("Please enter lab owner name")
+                      .max(
+                        255,
+                        "Please enter maximum 255 characters"
+                      ),
+                    email: Yup.string()
+                        .required("Please enter your email")
+                        .email("Please enter valid email")
+                        .max(
+                          255,
+                          "Please enter maximum 255 characters"
+                        ),
                     phone: Yup.string()
                       .required("Please enter your phone no.")
                       .max(255, "Please enter maximum 255 characters")
@@ -256,7 +212,8 @@ class LabProfile extends Component {
                       ),
                   })}
                   onSubmit={values => {
-                    this.props.editProfile(values);
+                    console.log("inside onsubmit: ", values);
+                    this.props.updateLabProfile(values, this.props.match.params.id);
                   }}
                 >
                   {({ errors, status, touched }) => (
@@ -288,6 +245,36 @@ class LabProfile extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
+                                {/* Logo field */}
+                                <div className="mb-3">
+                                  <Label for="name" className="form-label">
+                                    Logo
+                                  </Label>
+                                  <Input
+                                    id="formFile"
+                                    name="logo"
+                                    placeholder="Choose image"
+                                    type="file"
+                                    multiple={false}
+                                    accept=".jpg,.jpeg,.png"
+                                    onChange={e =>
+                                      this.setState({ logo: e.target.files[0] })
+                                    }
+                                    className={
+                                      "form-control" +
+                                      (errors.logo && touched.logo
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+
+                                  <ErrorMessage
+                                    name="logo"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+
 
                                 {/* Owner name field */}
                                 <div className="mb-3">
@@ -317,6 +304,67 @@ class LabProfile extends Component {
                                   />
                                   <ErrorMessage
                                     name="owner_name"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+
+                                {/* Registration No field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="registration_no"
+                                    className="form-label"
+                                  >
+                                    Registration Number
+                                  </Label>
+                                  <Field
+                                    id="registration_no"
+                                    name="registration_no"
+                                    placeholder="74398H3847"
+                                    type="text"
+                                    onChange={e =>
+                                      this.setState({
+                                        registration_no: e.target.value,
+                                      })
+                                    }
+                                    value={this.state.registration_no}
+                                    className={
+                                      "form-control" +
+                                      (errors.registration_no &&
+                                      touched.registration_no
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="registration_no"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+
+                                {/* Email field */}
+                                <div className="mb-3">
+                                  <Label for="email" className="form-label">
+                                    Email
+                                  </Label>
+                                  <Field
+                                    name="email"
+                                    placeholder="labomart@xyz.com"
+                                    type="text"
+                                    onChange={e =>
+                                      this.setState({ email: e.target.value })
+                                    }
+                                    value={this.state.email}
+                                    className={
+                                      "form-control" +
+                                      (errors.email && touched.email
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -607,10 +655,12 @@ class LabProfile extends Component {
 }
 
 LabProfile.propTypes = {
-  editProfile: PropTypes.func,
+  match: PropTypes.object,
+  location: PropTypes.object,
+  updateLabProfile: PropTypes.func,
   error: PropTypes.any,
   success: PropTypes.any,
-  resetProfileFlag: PropTypes.func,
+  getLabProfile: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -619,5 +669,5 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { editProfile, resetProfileFlag })(LabProfile)
+  connect(mapStateToProps, { updateLabProfile, getLabProfile })(LabProfile)
 );

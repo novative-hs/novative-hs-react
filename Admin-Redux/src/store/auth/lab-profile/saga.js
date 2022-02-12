@@ -33,9 +33,11 @@ function* fetchLabProfile(object) {
 }
 
 
-function* onUpdateLabProfile({ payload: labProfile }) {
+function* onUpdateLabProfile({ payload: {labProfile, id} }) {
+  console.log("inside saga labprofile: ", labProfile);
+  console.log("inside saga id: ", id );
   try {
-    const response = yield call(updateLabProfile, labProfile);
+    const response = yield call(updateLabProfile, labProfile, id);
     yield put(updateLabProfileSuccess(response));
   } catch (error) {
     yield put(updateLabProfileFail(error));

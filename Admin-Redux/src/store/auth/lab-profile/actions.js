@@ -25,9 +25,9 @@ export const getLabProfileFail = error => ({
 });
 
 
-export const updateLabProfile = labProfile => ({
+export const updateLabProfile = (labProfile, id) => ({
   type: UPDATE_LAB_PROFILE,
-  payload: labProfile,
+  payload: { labProfile, id},
 });
 
 export const updateLabProfileSuccess = labProfile => ({
