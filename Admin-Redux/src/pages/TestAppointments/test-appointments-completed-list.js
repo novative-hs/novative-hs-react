@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
@@ -134,6 +135,7 @@ class TestAppointmentsCompletedList extends Component {
     };
     this.toggle = this.toggle.bind(this);
   }
+
   componentDidMount() {
     const { testAppointments, onGetTestAppointmentsCompletedList } = this.props;
     if (testAppointments && !testAppointments.length) {

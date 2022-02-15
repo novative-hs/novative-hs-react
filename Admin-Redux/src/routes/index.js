@@ -192,7 +192,7 @@ const authProtectedRoutes = [
   { path: "/dashboard-crypto", component: DashboardCrypto },
   { path: "/dashboard-blog", component: DashboardBlog },
 
- //Crypto
+  //Crypto
   { path: "/crypto-wallet", component: CryptoWallet },
   { path: "/crypto-buy-sell", component: CryptoBuySell },
   { path: "/crypto-exchange", component: CryptoExchange },
