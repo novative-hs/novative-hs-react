@@ -1,7 +1,7 @@
 //REGISTER ORIGINAL
 // export const POST_REGISTER = "http://127.0.0.1:8000/api/account/register/"
 
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
 // -------------- MY URLS --------------
 export const POST_LOGIN = API_URL + "/account/login/";
