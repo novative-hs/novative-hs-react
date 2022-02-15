@@ -1,6 +1,7 @@
 import axios from "axios";
 import { del, get, post, put } from "./api_helper";
-import authHeader from "./django-token-access/auth-token-header";
+
+ 
 import * as url from "./url_helper";
 
 function getHeader(token) {
@@ -414,6 +415,43 @@ export const deletePathologist = pathologist =>
   del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
     headers: getHeader(authHeader()),
   });
+
+// ------------- Test Appointment Requests START -------------
+export const getTestAppointmentsPendingList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_PENDING_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getTestAppointmentsInProcessList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_IN_PROCESS_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getTestAppointmentsCompletedList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_COMPLETED_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const updateTestAppointment = testAppointment => {
+  let formData = new FormData();
+  formData.append("id", testAppointment.id);
+  formData.append("patient_id", testAppointment.patient_id)
+  formData.append("offered_test_id", testAppointment.offered_test_id);
+  formData.append("booking_date_time", testAppointment.booking_date_time);
+  formData.append("requested_appointment_date_time", testAppointment.requested_appointment_date_time);
+  formData.append("sample_collection_date_time", testAppointment.sample_collection_date_time);
+  formData.append("result_upload_date_time", testAppointment.result_upload_date_time)
+  formData.append("status", testAppointment.status);
+  formData.append("result", testAppointment.result);
+
+  return axios.put(
+    `${url.UPDATE_TEST_APPOINTMENT}/${testAppointment.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
 
 // ------------- Forget Password Requests START -------------
 export const postForgetPwd = data => {

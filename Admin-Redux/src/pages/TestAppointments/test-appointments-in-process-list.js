@@ -210,7 +210,6 @@ class TestAppointmentsInProcessList extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-
   /* Insert,Update Delete data */
 
   handleTestAppointmentClick = arg => {
