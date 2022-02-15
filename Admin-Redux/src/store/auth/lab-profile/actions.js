@@ -2,7 +2,6 @@ import {
   GET_LAB_PROFILE,
   GET_LAB_PROFILE_FAIL,
   GET_LAB_PROFILE_SUCCESS,
-
   UPDATE_LAB_PROFILE,
   UPDATE_LAB_PROFILE_SUCCESS,
   UPDATE_LAB_PROFILE_FAIL,
@@ -24,10 +23,9 @@ export const getLabProfileFail = error => ({
   payload: error,
 });
 
-
 export const updateLabProfile = (labProfile, id) => ({
   type: UPDATE_LAB_PROFILE,
-  payload: { labProfile, id},
+  payload: { labProfile, id },
 });
 
 export const updateLabProfileSuccess = labProfile => ({
@@ -39,4 +37,3 @@ export const updateLabProfileFail = error => ({
   type: UPDATE_LAB_PROFILE_FAIL,
   payload: error,
 });
-

@@ -1,26 +1,19 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import {
-  GET_LAB_PROFILE,
-
-  UPDATE_LAB_PROFILE,
-} from "./actionTypes";
+import { GET_LAB_PROFILE, UPDATE_LAB_PROFILE } from "./actionTypes";
 
 import {
   getLabProfileSuccess,
   getLabProfileFail,
   updateLabProfileSuccess,
   updateLabProfileFail,
-
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import {
   getLabProfile,
-
   updateLabProfile,
-
 } from "../../../helpers/django_api_helper";
 
 function* fetchLabProfile(object) {
@@ -32,10 +25,9 @@ function* fetchLabProfile(object) {
   }
 }
 
-
-function* onUpdateLabProfile({ payload: {labProfile, id} }) {
+function* onUpdateLabProfile({ payload: { labProfile, id } }) {
   console.log("inside saga labprofile: ", labProfile);
-  console.log("inside saga id: ", id );
+  console.log("inside saga id: ", id);
   try {
     const response = yield call(updateLabProfile, labProfile, id);
     yield put(updateLabProfileSuccess(response));
@@ -43,7 +35,6 @@ function* onUpdateLabProfile({ payload: {labProfile, id} }) {
     yield put(updateLabProfileFail(error));
   }
 }
-
 
 function* labProfilesSaga() {
   yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);

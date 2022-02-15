@@ -1,15 +1,14 @@
 import {
   GET_LAB_PROFILE_SUCCESS,
   GET_LAB_PROFILE_FAIL,
-
   UPDATE_LAB_PROFILE_SUCCESS,
   UPDATE_LAB_PROFILE_FAIL,
-
 } from "./actionTypes";
 
 const INIT_STATE = {
   labProfile: [],
-  error: {},
+  error: "",
+  success: "",
 };
 
 const labProfile = (state = INIT_STATE, action) => {
@@ -17,7 +16,7 @@ const labProfile = (state = INIT_STATE, action) => {
     case GET_LAB_PROFILE_SUCCESS:
       return {
         ...state,
-        labProfile: action.payload.data,
+        success: action.payload.data,
       };
 
     case GET_LAB_PROFILE_FAIL:
@@ -41,8 +40,6 @@ const labProfile = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-
-
 
     default:
       return state;
