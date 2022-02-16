@@ -480,3 +480,39 @@ export const updateTestAppointment = testAppointment => {
     }
   );
 };
+
+// ------------- Lab Profile Requests START -------------
+export const getLabProfile = id =>
+  get(`${url.GET_LAB_PROIFLE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const updateLabProfile = (labProfile, id) => {
+  let formData = new FormData();
+  formData.append("account_id", id);
+  formData.append("name", labProfile.name);
+  formData.append("logo", labProfile.logo);
+  formData.append("owner_name", labProfile.owner_name);
+  formData.append("phone", labProfile.phone);
+  formData.append("landline", labProfile.landline);
+  formData.append("address", labProfile.address);
+  formData.append("city", labProfile.city);
+  formData.append("district", labProfile.district);
+  formData.append(
+    "complaint_handling_email",
+    labProfile.complaint_handling_email
+  );
+  formData.append(
+    "complaint_handling_phone",
+    labProfile.complaint_handling_phone
+  );
+  formData.append(
+    "accept_credit_card_for_payment",
+    labProfile.accept_credit_card_for_payment
+  );
+  formData.append("is_active", labProfile.is_active);
+
+  return axios.put(`${url.UPDATE_LAB_PROFILE}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
