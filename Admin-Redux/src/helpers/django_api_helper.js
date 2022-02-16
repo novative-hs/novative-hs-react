@@ -483,7 +483,7 @@ export const updateTestAppointment = testAppointment => {
 
 // ------------- Lab Profile Requests START -------------
 export const getLabProfile = id =>
-  get(`${url.GET_LAB_PROIFLE}/${id}`, {
+  get(`${url.GET_LAB_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
