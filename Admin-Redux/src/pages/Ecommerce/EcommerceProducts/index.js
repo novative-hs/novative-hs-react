@@ -56,6 +56,8 @@ class EcommerceProducts extends Component {
       ratingvalues: [],
       products: [],
       activeTab: "1",
+      location : "",
+      address: "",
       discountData: [],
       filters: {
         discount: [],
@@ -183,6 +185,16 @@ class EcommerceProducts extends Component {
   handlePageClick = page => {
     this.setState({ page })
   }
+
+  handleChange = (e) => {
+		var input = document.getElementById('pac-input');
+    var searchBox = new window.google.maps.places.SearchBox(input);
+    searchBox.addListener('places_changed', function() {
+      // this.setState({ address: e.target.value });
+      console.log("Address: ", e.target.value);
+      return e.target.value;
+    });
+}
 
   render() {
     const { history } = this.props
@@ -350,6 +362,9 @@ class EcommerceProducts extends Component {
                       <div className="search-box me-2">
                         <div className="position-relative">
                           <Input
+                            defaultValue={this.state.address}
+					                  onChange={this.handleChange}
+                          	id="pac-input"
                             type="text"
                             className="form-control border-0"
                             placeholder="Search..."

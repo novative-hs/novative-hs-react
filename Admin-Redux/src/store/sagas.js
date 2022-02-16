@@ -24,6 +24,7 @@ import pathologistsSaga from "./pathologists/saga";
 import sampleCollectorsSaga from "./sample-collectors/saga";
 import qualityCertificatesSaga from "./quality-certificates/saga";
 import testAppointmentsSaga from "./test-appointments/saga";
+import nearbyLabsSaga from "./nearby-labs/saga";
 import dashboardSaga from "./dashboard/saga";
 import dashboardSaasSaga from "./dashboard-saas/saga";
 
@@ -53,6 +54,7 @@ export default function* rootSaga() {
     fork(sampleCollectorsSaga),
     fork(qualityCertificatesSaga),
     fork(testAppointmentsSaga),
+    fork(nearbyLabsSaga),
     fork(dashboardSaga),
     fork(dashboardSaasSaga),
   ]);

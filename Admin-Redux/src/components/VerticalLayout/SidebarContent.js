@@ -118,7 +118,6 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
                 </li>
-
                 <li className="menu-title">{this.props.t("Patient")}</li>
               </ul>
             </div>

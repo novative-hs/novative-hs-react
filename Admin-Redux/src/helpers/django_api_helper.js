@@ -480,3 +480,10 @@ export const updateTestAppointment = testAppointment => {
     }
   );
 };
+
+// // ------------- patient Test appointments -------------
+// export const getPatientTestAppoitments = id =>
+//   get(`${url.GET_PATIENT_TEST_APPOINTMENTS}/${id}`, {
+//     headers: getHeader(authHeader()),
+//   });
+
