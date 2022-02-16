@@ -12,6 +12,7 @@ import Calendar from "../pages/Calendar/index";
 
 // User profile
 import UserProfile from "../pages/Authentication/UserProfile";
+import LabProfile from "../pages/Authentication/LabProfile";
 
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
@@ -402,6 +403,10 @@ const labAuthProtectedRoutes = [
   {
     path: "/dashboard-lab/:id/test-appointments-completed-list",
     component: TestAppointmentsCompletedList,
+  },
+  {
+    path: "/dashboard-lab/:id/profile",
+    component: LabProfile,
   },
 ];
 

@@ -1,64 +1,59 @@
 //REGISTER ORIGINAL
-// export const POST_REGISTER = "http://127.0.0.1:8000/api/account/register/"
 
-const API_URL = "http://127.0.0.1:8000/api";
+const API_ENDPOINT = process.env.REACT_APP_BACKENDURL;
 
 // -------------- MY URLS --------------
-export const POST_LOGIN = API_URL + "/account/login/";
-export const POST_REGISTER = API_URL + "/account/register/";
+export const POST_LOGIN = `${API_ENDPOINT}/api/account/login/`;
+export const POST_REGISTER = `${API_ENDPOINT}/api/account/register/`;
 
 // PASSWORD RESET
-export const POST_FORGET_PASSWORD = API_URL + "/account/password_reset/";
-export const POST_CONFIRM_PASSWORD =
-  API_URL + "/account/password_reset/confirm/";
+export const POST_FORGET_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/`;
+export const POST_CONFIRM_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/confirm/`;
 
-export const POST_PATIENT_INFORMATION =
-  API_URL + "/patient/patient-information";
-export const POST_LAB_INFORMATION = API_URL + "/lab/lab-information";
-export const POST_CORPORATE_INFORMATION =
-  API_URL + "/corporate/corporate-information";
+export const POST_PATIENT_INFORMATION = `${API_ENDPOINT}/api/patient/patient-information`;
+export const POST_LAB_INFORMATION = `${API_ENDPOINT}/api/lab/lab-information`;
+export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corporate-information`;
 
 // LAB LIST
-export const GET_LABS = API_URL + "/lab/lab-list";
+export const GET_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
 
 // TEST
-export const GET_TESTS = API_URL + "/medicaltest/test-list";
-export const GET_UNITS = API_URL + "/medicaltest/unit-list";
+export const GET_TESTS = `${API_ENDPOINT}/api/medicaltest/test-list`;
+export const GET_UNITS = `${API_ENDPOINT}/api/medicaltest/unit-list`;
 
 // OFFERED TEST
-export const GET_OFFERED_TESTS = API_URL + "/lab/offered-test-list";
-export const ADD_NEW_OFFERED_TEST = API_URL + "/lab/offered-test";
-export const UPDATE_OFFERED_TEST = API_URL + "/lab/offered-test";
-export const DELETE_OFFERED_TEST = API_URL + "/lab/offered-test";
+export const GET_OFFERED_TESTS = `${API_ENDPOINT}/api/lab/offered-test-list`;
+export const ADD_NEW_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
+export const UPDATE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
+export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 
 // PATHOLOGIST
-export const GET_PATHOLOGISTS = API_URL + "/lab/pathologist-list";
-export const ADD_NEW_PATHOLOGIST = API_URL + "/lab/pathologist";
-export const UPDATE_PATHOLOGIST = API_URL + "/lab/pathologist";
-export const DELETE_PATHOLOGIST = API_URL + "/lab/pathologist";
+export const GET_PATHOLOGISTS = `${API_ENDPOINT}/api/lab/pathologist-list`;
+export const ADD_NEW_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
+export const UPDATE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
+export const DELETE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 
 // SAMPLE COLLECTOR
-export const GET_SAMPLE_COLLECTORS = API_URL + "/lab/sample-collector-list";
-export const ADD_NEW_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
-export const UPDATE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
-export const DELETE_SAMPLE_COLLECTOR = API_URL + "/lab/sample-collector";
+export const GET_SAMPLE_COLLECTORS = `${API_ENDPOINT}/api/lab/sample-collector-list`;
+export const ADD_NEW_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
+export const UPDATE_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
+export const DELETE_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
 
 // SAMPLE COLLECTOR
-export const GET_QUALITY_CERTIFICATES =
-  API_URL + "/lab/quality-certificate-list";
-export const ADD_NEW_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
-export const UPDATE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
-export const DELETE_QUALITY_CERTIFICATE = API_URL + "/lab/quality-certificate";
+export const GET_QUALITY_CERTIFICATES = `${API_ENDPOINT}/api/lab/quality-certificate-list`;
+export const ADD_NEW_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
+export const UPDATE_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
+export const DELETE_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
 
 // TEST APPOINTMENT
-export const GET_TEST_APPOINTMENTS_PENDING_LIST =
-  API_URL + "/lab/test-appointment-pending-list";
-export const GET_TEST_APPOINTMENTS_IN_PROCESS_LIST =
-  API_URL + "/lab/test-appointment-in-process-list";
-export const GET_TEST_APPOINTMENTS_COMPLETED_LIST =
-  API_URL + "/lab/test-appointment-completed-list";
-export const UPDATE_TEST_APPOINTMENT = API_URL + "/lab/test-appointment-update";
+export const GET_TEST_APPOINTMENTS_PENDING_LIST = `${API_ENDPOINT}/api/lab/test-appointment-pending-list`;
+export const GET_TEST_APPOINTMENTS_IN_PROCESS_LIST = `${API_ENDPOINT}/api/lab/test-appointment-in-process-list`;
+export const GET_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api/lab/test-appointment-completed-list`;
+export const UPDATE_TEST_APPOINTMENT = `${API_ENDPOINT}/api/lab/test-appointment-update`;
 
+// PROFILES
+export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
+export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 // -------------- TEMPLATES URLS --------------
 
 //REGISTER

@@ -21,8 +21,6 @@ import {
   updateTestAppointment,
 } from "store/test-appointments/actions";
 
-import { isEmpty, values } from "lodash";
-
 class TestAppointmentsCompletedList extends Component {
   constructor(props) {
     super(props);
@@ -42,27 +40,27 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "patient_name",
-          text: "patient",
-          sort: true,
-        },
-        {
-          dataField: "offered_test_name",
-          text: "offered test ",
+          text: "Patient",
           sort: true,
         },
         {
           dataField: "patient_age",
-          text: "patient age",
+          text: "Age",
           sort: true,
         },
         {
           dataField: "patient_gender",
-          text: "patient gender",
+          text: "Gender",
+          sort: true,
+        },
+        {
+          dataField: "offered_test_name",
+          text: "Offered test ",
           sort: true,
         },
         {
           dataField: "booking_date_time",
-          text: "booking date time",
+          text: "Booking date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -76,7 +74,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: " requested appointment date time",
+          text: "Requested appointment date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -90,7 +88,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "sample_collection_date_time",
-          text: "sample collection date time",
+          text: "Sample collection date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -104,7 +102,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "result_upload_date_time",
-          text: "result upload date time",
+          text: "Result upload date time",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -118,7 +116,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "http://127.0.0.1:8000" + "result",
-          text: "result",
+          text: "Result",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
