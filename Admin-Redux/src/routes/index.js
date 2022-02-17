@@ -215,7 +215,7 @@ const authProtectedRoutes = [
 
   //Ecommerce
   // { path: "/ecommerce-products/:id", component: EcommerceProducts },
-  { path: "/ecommerce-products", component: EcommerceProducts },
+  // { path: "/ecommerce-products", component: EcommerceProducts },
   { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
 
   { path: "/ecommerce-orders", component: EcommerceOrders },
@@ -412,6 +412,8 @@ const labAuthProtectedRoutes = [
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
+  { path: "/dashboard-patient/:id/ecommerce-products/:lab_id", component: EcommerceProducts },
+
 ];
 
 const corporateAuthProtectedRoutes = [

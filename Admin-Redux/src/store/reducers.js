@@ -53,9 +53,6 @@ import qualityCertificates from "./quality-certificates/reducer";
 //test appointment
 import testAppointments from "./test-appointments/reducer";
 
-//near by labs
-import nearbyLabs from "./nearby-labs/reducer";
-
 //mails
 import mails from "./mails/reducer";
 
@@ -91,7 +88,6 @@ const rootReducer = combineReducers({
   sampleCollectors,
   qualityCertificates,
   testAppointments,
-  nearbyLabs,
   Dashboard,
   DashboardSaas,
 });

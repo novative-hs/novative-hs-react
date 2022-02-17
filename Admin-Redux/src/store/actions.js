@@ -50,9 +50,6 @@ export * from "./quality-certificates/actions";
 // test appointments
 export * from "./test-appointments/actions";
 
-// near by labs
-export * from "./nearby-labs/actions";
-
 // contacts
 export * from "./mails/actions";
 
