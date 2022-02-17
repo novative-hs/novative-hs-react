@@ -10,6 +10,7 @@ export * from "./auth/forgetpwd/actions";
 export * from "./auth/confirmpwd/actions";
 export * from "./auth/profile/actions";
 export * from "./auth/labprofile/actions";
+export * from "./auth/patientprofile/actions";
 
 //Ecommerce
 export * from "./e-commerce/actions";

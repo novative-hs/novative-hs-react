@@ -10,6 +10,7 @@ import ForgetSaga from "./auth/forgetpwd/saga";
 import ConfirmSaga from "./auth/confirmpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
 import LabProfileSaga from "./auth/labprofile/saga";
+import PatientProfileSaga from "./auth/patientprofile/saga";
 import LayoutSaga from "./layout/saga";
 import ecommerceSaga from "./e-commerce/saga";
 import calendarSaga from "./calendar/saga";
@@ -40,6 +41,7 @@ export default function* rootSaga() {
     fork(ConfirmSaga),
     fork(ProfileSaga),
     fork(LabProfileSaga),
+    fork(PatientProfileSaga),
     fork(LayoutSaga),
     fork(ecommerceSaga),
     fork(calendarSaga),

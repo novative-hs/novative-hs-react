@@ -13,6 +13,7 @@ import Calendar from "../pages/Calendar/index";
 // User profile
 import UserProfile from "../pages/Authentication/UserProfile";
 import LabProfile from "../pages/Authentication/LabProfile";
+import PatientProfile from "../pages/Authentication/PatientProfile";
 
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
@@ -412,8 +413,11 @@ const labAuthProtectedRoutes = [
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
+{
+  path: "/dashboard-patient/:id/profile",
+  component: PatientProfile,
+},
 ];
-
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 ];
