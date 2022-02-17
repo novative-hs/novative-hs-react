@@ -37,9 +37,9 @@ import {
   DELETE_CUSTOMER_FAIL,
 } from "./actionTypes";
 
-export const getNearbyLabs = address => ({
+export const getNearbyLabs = (address, id) => ({
   type: GET_NEARBY_LABS,
-  payload: address,
+  payload: { address, id },
 });
 
 export const getNearbyLabsSuccess = nearbyLabs => ({

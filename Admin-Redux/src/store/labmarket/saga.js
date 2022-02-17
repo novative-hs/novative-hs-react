@@ -61,8 +61,11 @@ import { getNearbyLabs } from "helpers/django_api_helper";
 
 function* fetchNearbyLabs(object) {
   try {
-    const response = yield call(getNearbyLabs, object.payload);
-    console.log("Response: ", response);
+    const response = yield call(
+      getNearbyLabs,
+      object.payload.address,
+      object.payload.id
+    );
     yield put(getNearbyLabsSuccess(response.data));
   } catch (error) {
     yield put(getNearbyLabsFail(error));

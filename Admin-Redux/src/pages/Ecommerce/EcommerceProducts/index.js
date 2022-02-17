@@ -40,7 +40,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { discountData, productsData } from "common/data";
 
 //Import actions
-import { getProducts } from "store/labmarket/actions";
+import { getProducts } from "store/e-commerce/actions";
 import { any } from "prop-types";
 
 class EcommerceProducts extends Component {

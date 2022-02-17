@@ -520,13 +520,13 @@ export const updateLabProfile = (labProfile, id) => {
 // get Nearby Labs
 // export const getNearbyLabs = () => get(url.GET_NEARBY_LABS);
 
-export const getNearbyLabs = address => {
+export const getNearbyLabs = (address, id) => {
   let formData = new FormData();
   formData.append("address", address);
 
-  console.log("Address; ", address);
+  console.log("Address: ", address);
 
-  return axios.post(url.GET_NEARBY_LABS, formData, {
+  return axios.post(`${url.GET_NEARBY_LABS}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
