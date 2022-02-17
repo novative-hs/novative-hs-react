@@ -9,7 +9,7 @@ cd ilaaj4u-reactjs
 
 Copy package.json and package-json.lock files from template files into add Admin Folders
 
-Then go to any Admin folder that you are going to use, let's say if we have decided to use Admin-Hooks then
+Then go to any Admin folder that you are going to use, let's say if we have decided to use Admin-Redux then
 ```sh
 cd Admin-Redux
 ```
