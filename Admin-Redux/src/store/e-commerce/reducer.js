@@ -15,8 +15,8 @@ import {
   GET_PRODUCTS_SUCCESS,
   GET_SHOPS_FAIL,
   GET_SHOPS_SUCCESS,
-  GET_PRODUCT_DETAIL_SUCCESS,
-  GET_PRODUCT_DETAIL_FAIL,
+  GET_LAB_DETAIL_SUCCESS,
+  GET_LAB_DETAIL_FAIL,
   ADD_CUSTOMER_SUCCESS,
   ADD_CUSTOMER_FAIL,
   UPDATE_CUSTOMER_SUCCESS,
@@ -49,13 +49,13 @@ const Ecommerce = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    case GET_PRODUCT_DETAIL_SUCCESS:
+    case GET_LAB_DETAIL_SUCCESS:
       return {
         ...state,
         product: action.payload,
       }
 
-    case GET_PRODUCT_DETAIL_FAIL:
+    case GET_LAB_DETAIL_FAIL:
       return {
         ...state,
         error: action.payload,

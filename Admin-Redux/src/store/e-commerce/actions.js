@@ -23,9 +23,9 @@ import {
   GET_SHOPS,
   GET_SHOPS_FAIL,
   GET_SHOPS_SUCCESS,
-  GET_PRODUCT_DETAIL,
-  GET_PRODUCT_DETAIL_FAIL,
-  GET_PRODUCT_DETAIL_SUCCESS,
+  GET_LAB_DETAIL,
+  GET_LAB_DETAIL_FAIL,
+  GET_LAB_DETAIL_SUCCESS,
   ADD_NEW_CUSTOMER,
   ADD_CUSTOMER_SUCCESS,
   ADD_CUSTOMER_FAIL,
@@ -51,18 +51,18 @@ export const getProductsFail = error => ({
   payload: error,
 })
 
-export const getProductDetail = productId => ({
-  type: GET_PRODUCT_DETAIL,
-  productId,
+export const getLabDetail = labId => ({
+  type: GET_LAB_DETAIL,
+  labId,
 })
 
-export const getProductDetailSuccess = products => ({
-  type: GET_PRODUCT_DETAIL_SUCCESS,
-  payload: products,
+export const getLabDetailSuccess = labId => ({
+  type: GET_LAB_DETAIL_SUCCESS,
+  payload: labId,
 })
 
-export const getProductDetailFail = error => ({
-  type: GET_PRODUCT_DETAIL_FAIL,
+export const getLabDetailFail = error => ({
+  type: GET_LAB_DETAIL_FAIL,
   payload: error,
 })
 

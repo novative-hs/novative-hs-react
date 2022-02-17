@@ -27,7 +27,7 @@ import ProjectsCreate from "../pages/Projects/projects-create";
 
 //Ecommerce Pages
 import EcommerceProducts from "../pages/Ecommerce/EcommerceProducts/index";
-import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProducts/EcommerceProductDetail";
+// import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProducts/LabDetail";
 import EcommerceOrders from "../pages/Ecommerce/EcommerceOrders/index";
 import EcommerceCustomers from "../pages/Ecommerce/EcommerceCustomers/index";
 import EcommerceCart from "../pages/Ecommerce/EcommerceCart";
@@ -181,6 +181,8 @@ import PathologistsList from "../pages/Pathologists/pathologists-list";
 import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
 import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
+import LabDetail from "../pages/Ecommerce/EcommerceProducts/Lab-Detail";
+
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -216,7 +218,7 @@ const authProtectedRoutes = [
   //Ecommerce
   // { path: "/ecommerce-products/:id", component: EcommerceProducts },
   // { path: "/ecommerce-products", component: EcommerceProducts },
-  { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
+  // { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
 
   { path: "/ecommerce-orders", component: EcommerceOrders },
   { path: "/ecommerce-customers", component: EcommerceCustomers },
@@ -408,13 +410,17 @@ const labAuthProtectedRoutes = [
     path: "/dashboard-lab/:id/profile",
     component: LabProfile,
   },
+ 
 ];
 
 const patientAuthProtectedRoutes = [
-  { path: "/dashboard-patient/:id", component: DashboardPatient },
-  { path: "/dashboard-patient/:id/ecommerce-products/:lab_id", component: EcommerceProducts },
+  { path: "/dashboard-patient/:id", component: DashboardPatient }, {
+    path: "/dashboard-patient/:id/Lab-Detail:lab_id",
+    component: LabDetail,
+  },
 
-];
+
+];            
 
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },

@@ -58,6 +58,8 @@ export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
+// LABS DETAILS
+export const GET_LAB_DETAIL = `${API_ENDPOINT}/api/lab/lab-detail`;
 
 // -------------- TEMPLATES URLS --------------
 

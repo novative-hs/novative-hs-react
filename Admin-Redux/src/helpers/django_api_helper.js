@@ -526,3 +526,9 @@ export const getNearbyLabs = address => {
     headers: getHeader(authHeader()),
   });
 };
+
+// ------------- Lab Detail -------------
+export const getLabDetail = id =>
+  get(`${url.GET_LAB_DETAIL}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
