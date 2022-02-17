@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import MetaTags from 'react-meta-tags';
-import { connect } from "react-redux"
-import { Link } from "react-router-dom"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   Container,
   Row,
@@ -16,42 +16,42 @@ import {
   TabContent,
   TabPane,
   Table,
-} from "reactstrap"
-import classnames from "classnames"
-import { isEmpty } from "lodash"
+} from "reactstrap";
+import classnames from "classnames";
+import { isEmpty } from "lodash";
 
 //Import Star Ratings
-import StarRatings from "react-star-ratings"
+import StarRatings from "react-star-ratings";
 
 //Import Product Images
-import { productImages } from "../../../assets/images/product/"
+import { productImages } from "../../../assets/images/product/";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
+import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import actions
-import { getProductDetail } from "../../../store/e-commerce/actions"
-import RecentProducts from "./RecentProducts"
-import Reviews from "./Reviews"
+import { getProductDetail } from "../../../store/labmarket/actions";
+import RecentProducts from "./RecentProducts";
+import Reviews from "./Reviews";
 
 class EcommerceProductDetail extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       activeTab: "1",
       product: {},
-    }
-    this.toggleTab = this.toggleTab.bind(this)
-    this.imageShow = this.imageShow.bind(this)
+    };
+    this.toggleTab = this.toggleTab.bind(this);
+    this.imageShow = this.imageShow.bind(this);
   }
 
   componentDidMount() {
     const {
       match: { params },
       onGetProductDetail,
-    } = this.props
+    } = this.props;
     if (params && params.id) {
-      onGetProductDetail(params.id)
+      onGetProductDetail(params.id);
     }
   }
 
@@ -59,23 +59,25 @@ class EcommerceProductDetail extends Component {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
   }
 
   imageShow(img, id) {
-    const expandImg = document.getElementById("expandedImg" + id)
-    expandImg.src = img
+    const expandImg = document.getElementById("expandedImg" + id);
+    expandImg.src = img;
   }
 
   render() {
-    const { product } = this.props
+    const { product } = this.props;
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Products Details | Skote - React Admin & Dashboard Template</title>
+            <title>
+              Products Details | Skote - React Admin & Dashboard Template
+            </title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Ecommerce" breadcrumbItem="Product Details" />
@@ -96,17 +98,17 @@ class EcommerceProductDetail extends Component {
                                         active: this.state.activeTab === "1",
                                       })}
                                       onClick={() => {
-                                        this.toggleTab("1")
+                                        this.toggleTab("1");
                                       }}
                                     >
                                       <img
-                                        src={product['subImage'][0]}
+                                        src={product["subImage"][0]}
                                         alt=""
                                         onClick={() => {
                                           this.imageShow(
-                                            product['subImage'][0],
+                                            product["subImage"][0],
                                             1
-                                          )
+                                          );
                                         }}
                                         className="img-fluid mx-auto d-block rounded"
                                       />
@@ -118,17 +120,17 @@ class EcommerceProductDetail extends Component {
                                         active: this.state.activeTab === "2",
                                       })}
                                       onClick={() => {
-                                        this.toggleTab("2")
+                                        this.toggleTab("2");
                                       }}
                                     >
                                       <img
-                                        src={product['subImage'][1]}
+                                        src={product["subImage"][1]}
                                         alt=""
                                         onClick={() => {
                                           this.imageShow(
-                                            product['subImage'][1],
+                                            product["subImage"][1],
                                             2
-                                          )
+                                          );
                                         }}
                                         className="img-fluid mx-auto d-block rounded"
                                       />
@@ -140,17 +142,17 @@ class EcommerceProductDetail extends Component {
                                         active: this.state.activeTab === "3",
                                       })}
                                       onClick={() => {
-                                        this.toggleTab("3")
+                                        this.toggleTab("3");
                                       }}
                                     >
                                       <img
-                                        src={product['subImage'][2]}
+                                        src={product["subImage"][2]}
                                         alt=""
                                         onClick={() => {
                                           this.imageShow(
-                                            product['subImage'][2],
+                                            product["subImage"][2],
                                             3
-                                          )
+                                          );
                                         }}
                                         className="img-fluid mx-auto d-block rounded"
                                       />
@@ -355,7 +357,7 @@ class EcommerceProductDetail extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -363,17 +365,17 @@ EcommerceProductDetail.propTypes = {
   product: PropTypes.object,
   match: PropTypes.object,
   onGetProductDetail: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ ecommerce }) => ({
   product: ecommerce.product,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetProductDetail: id => dispatch(getProductDetail(id)),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EcommerceProductDetail)
+)(EcommerceProductDetail);

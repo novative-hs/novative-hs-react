@@ -39,7 +39,7 @@ import {
   addNewCustomer,
   updateCustomer,
   deleteCustomer,
-} from "store/e-commerce/actions";
+} from "store/labmarket/actions";
 
 class EcommerceCustomers extends Component {
   constructor(props) {
@@ -184,7 +184,7 @@ class EcommerceCustomers extends Component {
     }));
   };
 
-  onClickDelete = (customer) => {
+  onClickDelete = customer => {
     this.setState({ customer: customer });
     this.setState({ deleteModal: true });
   };
@@ -231,7 +231,7 @@ class EcommerceCustomers extends Component {
 
     const customer = this.state.customer;
 
-    const { isEdit,deleteModal } = this.state;
+    const { isEdit, deleteModal } = this.state;
 
     const { onAddNewCustomer, onUpdateCustomer } = this.props;
 
@@ -435,7 +435,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.username &&
-                                                      touched.username
+                                                    touched.username
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -456,7 +456,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.phone &&
-                                                      touched.phone
+                                                    touched.phone
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -478,7 +478,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.email &&
-                                                      touched.email
+                                                    touched.email
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -501,7 +501,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.address &&
-                                                      touched.address
+                                                    touched.address
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -523,7 +523,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.rating &&
-                                                      touched.rating
+                                                    touched.rating
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -545,7 +545,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.walletBalance &&
-                                                      touched.walletBalance
+                                                    touched.walletBalance
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -567,7 +567,7 @@ class EcommerceCustomers extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.joiningDate &&
-                                                      touched.joiningDate
+                                                    touched.joiningDate
                                                       ? " is-invalid"
                                                       : "")
                                                   }

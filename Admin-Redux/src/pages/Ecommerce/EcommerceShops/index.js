@@ -1,31 +1,31 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import MetaTags from 'react-meta-tags';
-import { connect } from "react-redux"
-import { Link } from "react-router-dom"
-import { Container, Row, Col } from "reactstrap"
-import { map } from "lodash"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Container, Row, Col } from "reactstrap";
+import { map } from "lodash";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
+import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import Card
-import CardShop from "./CardShop"
-import { getShops } from "store/e-commerce/actions"
+import CardShop from "./CardShop";
+import { getShops } from "store/labmarket/actions";
 
 class EcommerceShops extends Component {
   componentDidMount() {
-    const { onGetShops } = this.props
-    onGetShops()
+    const { onGetShops } = this.props;
+    onGetShops();
   }
 
   render() {
-    const { shops } = this.props
+    const { shops } = this.props;
 
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
+          <MetaTags>
             <title>Shops | Skote - React Admin & Dashboard Template</title>
           </MetaTags>
           <Container fluid>
@@ -49,21 +49,21 @@ class EcommerceShops extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 EcommerceShops.propTypes = {
   shops: PropTypes.array,
   onGetShops: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ ecommerce }) => ({
   shops: ecommerce.shops,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetShops: () => dispatch(getShops()),
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(EcommerceShops)
+export default connect(mapStateToProps, mapDispatchToProps)(EcommerceShops);
