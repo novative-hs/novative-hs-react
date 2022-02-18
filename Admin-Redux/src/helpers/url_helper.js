@@ -57,6 +57,9 @@ export const GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api
 // PROFILES
 export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
+
+// NEARBY LABS
+export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 // -------------- TEMPLATES URLS --------------
 
 //REGISTER

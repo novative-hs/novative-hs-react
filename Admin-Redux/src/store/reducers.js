@@ -15,7 +15,10 @@ import Profile from "./auth/profile/reducer";
 import LabProfile from "./auth/labprofile/reducer";
 
 //E-commerce
-import ecommerce from "./e-commerce/reducer";
+import LabMarket from "./e-commerce/reducer";
+
+//LabMarket
+import ecommerce from "./labmarket/reducer";
 
 //Calendar
 import calendar from "./calendar/reducer";
@@ -77,6 +80,7 @@ const rootReducer = combineReducers({
   ConfirmPassword,
   Profile,
   LabProfile,
+  LabMarket,
   ecommerce,
   calendar,
   chat,
