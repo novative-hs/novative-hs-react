@@ -135,7 +135,7 @@ class SidebarContent extends Component {
                           "/nearby-labs"
                         }
                       >
-                        {this.props.t("Products")}
+                        {this.props.t("Nearby Labs")}
                       </Link>
                     </li>
                   </ul>

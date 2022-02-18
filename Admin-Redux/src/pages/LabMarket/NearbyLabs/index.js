@@ -30,14 +30,11 @@ import StarRatings from "react-star-ratings";
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 
-//Import Product Images
-import { productImages } from "assets/images/product";
-
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import data
-import { discountData, productsData } from "common/data";
+import { productsData } from "common/data";
 
 //Import actions
 import { getNearbyLabs } from "store/labmarket/actions";
