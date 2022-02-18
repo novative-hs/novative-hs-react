@@ -388,9 +388,7 @@ class NearbyLabs extends Component {
                       <Col xl="4" sm="6" key={"_col_" + key}>
                         <Card
                           onClick={() =>
-                            history.push(
-                              `/ecommerce-product-details/${nearbyLab.id}`
-                            )
+                            history.push(`nearby-lab-detail/${nearbyLab.id}`)
                           }
                         >
                           <CardBody>
