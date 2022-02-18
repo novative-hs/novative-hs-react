@@ -121,6 +121,7 @@ class SidebarContent extends Component {
 
                 <li className="menu-title">{this.props.t("Patient")}</li>
                 {/* Patient nearby marketplace */}
+
                 <li>
                   <Link to="/#" className="has-arrow">
                     <i className="bx bx-store" />

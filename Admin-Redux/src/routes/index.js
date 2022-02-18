@@ -418,10 +418,13 @@ const labAuthProtectedRoutes = [
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
+<<<<<<< HEAD
   {
     path: "/dashboard-patient/:id/patient-test-appointments-completed-list",
     component: PatientTestAppointmentsCompletedList,
   },
+=======
+>>>>>>> fbcb2bfcf5bac205696e04ebea6cdb922a8bf4c3
   { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
 ];
 
