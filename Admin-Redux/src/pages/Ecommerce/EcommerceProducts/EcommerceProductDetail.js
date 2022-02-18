@@ -30,7 +30,7 @@ import { productImages } from "../../../assets/images/product/";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import actions
-import { getProductDetail } from "../../../store/labmarket/actions";
+import { getProductDetail } from "../../../store/e-commerce/actions";
 import RecentProducts from "./RecentProducts";
 import Reviews from "./Reviews";
 

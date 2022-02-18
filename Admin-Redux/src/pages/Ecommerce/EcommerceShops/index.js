@@ -11,7 +11,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import Card
 import CardShop from "./CardShop";
-import { getShops } from "store/labmarket/actions";
+import { getShops } from "store/e-commerce/actions";
 
 class EcommerceShops extends Component {
   componentDidMount() {

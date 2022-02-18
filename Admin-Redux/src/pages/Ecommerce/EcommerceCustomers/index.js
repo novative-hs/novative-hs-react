@@ -39,7 +39,7 @@ import {
   addNewCustomer,
   updateCustomer,
   deleteCustomer,
-} from "store/labmarket/actions";
+} from "store/e-commerce/actions";
 
 class EcommerceCustomers extends Component {
   constructor(props) {
