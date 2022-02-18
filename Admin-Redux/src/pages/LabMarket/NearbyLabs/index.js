@@ -30,32 +30,25 @@ import StarRatings from "react-star-ratings";
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 
-//Import Product Images
-import { productImages } from "assets/images/product";
-
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import data
-import { discountData, productsData } from "common/data";
+import { productsData } from "common/data";
 
 //Import actions
-import { getProducts } from "store/e-commerce/actions";
+import { getNearbyLabs } from "store/labmarket/actions";
 import { any } from "prop-types";
 
-class EcommerceProducts extends Component {
+class NearbyLabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      FilterClothes: [
-        { id: 1, name: "T-shirts", link: "#" },
-        { id: 2, name: "Shirts", link: "#" },
-        { id: 3, name: "Jeans", link: "#" },
-        { id: 4, name: "Jackets", link: "#" },
-      ],
       ratingvalues: [],
-      products: [],
+      nearbyLabs: [],
+      apiURL: process.env.REACT_APP_BACKENDURL,
       activeTab: "1",
+      address: "",
       discountData: [],
       filters: {
         discount: [],
@@ -69,21 +62,23 @@ class EcommerceProducts extends Component {
   }
 
   componentDidMount() {
-    const { products, onGetProducts } = this.props;
-    this.setState({ products });
-    onGetProducts();
-    this.setState({ discountData });
+    const { nearbyLabs, onGetNearbyLabs } = this.props;
+    setTimeout(() => {
+      onGetNearbyLabs(this.state.address);
+    }, 1000);
+    this.setState({ nearbyLabs });
+    // this.setState({ discountData });
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { products } = this.props;
+    const { nearbyLabs } = this.props;
     if (
-      isEmpty(prevProps.products) &&
-      !isEmpty(products) &&
-      size(products) !== size(prevProps.products)
+      isEmpty(prevProps.nearbyLabs) &&
+      !isEmpty(nearbyLabs) &&
+      size(nearbyLabs) !== size(prevProps.nearbyLabs)
     ) {
-      this.setState({ products });
+      this.setState({ nearbyLabs });
     }
   }
 
@@ -122,19 +117,20 @@ class EcommerceProducts extends Component {
     } = this.state;
     let filteredProducts = productsData;
     if (!!checked && parseInt(value) === 0) {
-      filteredProducts = productsData.filter(product => product.offer < 10);
+      filteredProducts = productsData.filter(nearbyLab => nearbyLab.offer < 10);
     } else if (discount.length > 0) {
       filteredProducts = productsData.filter(
-        product => product.offer >= Math.min(...discount)
+        nearbyLab => nearbyLab.offer >= Math.min(...discount)
       );
     }
-    this.setState({ products: filteredProducts });
+    this.setState({ nearbyLabs: filteredProducts });
   };
 
   onUpdate = (render, handle, value) => {
     this.setState({
-      products: productsData.filter(
-        product => product.newPrice >= value[0] && product.newPrice <= value[1]
+      nearbyLabs: productsData.filter(
+        nearbyLab =>
+          nearbyLab.newPrice >= value[0] && nearbyLab.newPrice <= value[1]
       ),
     });
   };
@@ -144,7 +140,7 @@ class EcommerceProducts extends Component {
   */
   onChangeRating = value => {
     this.setState({
-      products: productsData.filter(product => product.rating >= value),
+      nearbyLabs: productsData.filter(nearbyLab => nearbyLab.rating >= value),
     });
 
     var modifiedRating = [...this.state.ratingvalues];
@@ -154,7 +150,7 @@ class EcommerceProducts extends Component {
 
   onSelectRating = value => {
     this.setState({
-      products: productsData.filter(product => product.rating === value),
+      nearbyLabs: productsData.filter(nearbyLab => nearbyLab.rating === value),
     });
   };
 
@@ -169,7 +165,7 @@ class EcommerceProducts extends Component {
       var minValue = Math.min(...modifiedData);
       if (minValue && minValue !== Infinity) {
         filteredProducts = productsData.filter(
-          product => product.rating >= minValue
+          nearbyLab => nearbyLab.rating >= minValue
         );
 
         this.setState({ ratingvalues: modifiedData });
@@ -177,16 +173,31 @@ class EcommerceProducts extends Component {
     } else {
       filteredProducts = productsData;
     }
-    this.setState({ products: filteredProducts });
+    this.setState({ nearbyLabs: filteredProducts });
   };
 
   handlePageClick = page => {
     this.setState({ page });
   };
 
+  handleChange = (e, labProps) => {
+    var searchBox = new window.google.maps.places.SearchBox(e.target);
+
+    searchBox.addListener("places_changed", () => {
+      setTimeout(() => {
+        const { onGetNearbyLabs } = this.props;
+        onGetNearbyLabs(e.target.value);
+        setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 3000);
+      }, 1000);
+    });
+  };
+
   render() {
     const { history } = this.props;
-    const { discountData, products, page, totalPage } = this.state;
+    const { discountData, nearbyLabs, page, totalPage } = this.state;
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -200,20 +211,6 @@ class EcommerceProducts extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="mb-4">Filter</CardTitle>
-                    <div>
-                      <h5 className="font-size-14 mb-3">Clothes</h5>
-                      {/* Render Cloth Categories */}
-                      <ul className="list-unstyled product-list">
-                        {this.state.FilterClothes.map((cloth, key) => (
-                          <li key={"_li_" + key}>
-                            <Link to={cloth.link}>
-                              <i className="mdi mdi-chevron-right me-1" />{" "}
-                              {cloth.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
                     <div className="mt-4 pt-3">
                       <h5 className="font-size-14 mb-4">Price</h5>
                       <br />
@@ -346,6 +343,9 @@ class EcommerceProducts extends Component {
                       <div className="search-box me-2">
                         <div className="position-relative">
                           <Input
+                            defaultValue={this.state.address}
+                            onChange={e => this.handleChange(e, this.props)}
+                            id="pac-input"
                             type="text"
                             className="form-control border-0"
                             placeholder="Search..."
@@ -383,29 +383,21 @@ class EcommerceProducts extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  {!isEmpty(products) &&
-                    products.map((product, key) => (
+                  {!isEmpty(nearbyLabs) &&
+                    nearbyLabs.map((nearbyLab, key) => (
                       <Col xl="4" sm="6" key={"_col_" + key}>
                         <Card
                           onClick={() =>
                             history.push(
-                              `/ecommerce-product-details/${product.id}`
+                              `/ecommerce-product-details/${nearbyLab.id}`
                             )
                           }
                         >
                           <CardBody>
                             <Link to="#">
                               <div className="product-img position-relative">
-                                {product.isOffer ? (
-                                  <div className="avatar-sm product-ribbon">
-                                    <span className="avatar-title rounded-circle  bg-primary">
-                                      {`-${product.offer}%`}
-                                    </span>
-                                  </div>
-                                ) : null}
-
                                 <img
-                                  src={productImages[product.image]}
+                                  src={this.state.apiURL + nearbyLab.logo}
                                   alt=""
                                   className="img-fluid mx-auto d-block"
                                 />
@@ -416,16 +408,44 @@ class EcommerceProducts extends Component {
                               <h5 className="mb-3 text-truncate">
                                 <Link
                                   to={
-                                    "/ecommerce-product-details/" + product.id
+                                    "/ecommerce-product-details/" + nearbyLab.id
                                   }
                                   className="text-dark"
                                 >
-                                  {product.name}{" "}
+                                  {nearbyLab.name}{" "}
                                 </Link>
                               </h5>
-                              <div className="text-muted mb-3">
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-email"></i>{" "}
+                                  {nearbyLab.email}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="bx bx-mobile"></i>{" "}
+                                  {nearbyLab.phone}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="bx bx-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>
+                              {/* <div className="text-muted mb-3">
                                 <StarRatings
-                                  rating={product.rating}
+                                  rating={nearbyLab.rating}
                                   starRatedColor="#F1B44C"
                                   starEmptyColor="#2D363F"
                                   numberOfStars={5}
@@ -433,13 +453,13 @@ class EcommerceProducts extends Component {
                                   starDimension="14px"
                                   starSpacing="3px"
                                 />
-                              </div>
-                              <h5 className="my-0">
+                              </div> */}
+                              {/* <h5 className="my-0">
                                 <span className="text-muted me-2">
-                                  <del>${product.oldPrice}</del>
+                                  <del>${nearbyLab.oldPrice}</del>
                                 </span>{" "}
-                                <b>${product.newPrice}</b>
-                              </h5>
+                                <b>${nearbyLab.newPrice}</b>
+                              </h5> */}
                             </div>
                           </CardBody>
                         </Card>
@@ -486,21 +506,23 @@ class EcommerceProducts extends Component {
   }
 }
 
-EcommerceProducts.propTypes = {
-  products: PropTypes.array,
+NearbyLabs.propTypes = {
+  match: PropTypes.object,
+  nearbyLabs: PropTypes.array,
   history: any,
-  onGetProducts: PropTypes.func,
+  onGetNearbyLabs: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
-  products: state.ecommerce.products,
+  nearbyLabs: state.ecommerce.nearbyLabs,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetProducts: () => dispatch(getProducts()),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetNearbyLabs: address =>
+    dispatch(getNearbyLabs(address, ownProps.match.params.id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(EcommerceProducts));
+)(withRouter(NearbyLabs));

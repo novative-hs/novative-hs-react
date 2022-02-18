@@ -13,6 +13,9 @@ export * from "./auth/labprofile/actions";
 export * from "./auth/patientprofile/actions";
 
 //Ecommerce
+export * from "./labmarket/actions";
+
+//LabMarket
 export * from "./e-commerce/actions";
 
 //Calendar

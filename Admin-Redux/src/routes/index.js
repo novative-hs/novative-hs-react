@@ -36,6 +36,9 @@ import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout";
 import EcommerceShops from "../pages/Ecommerce/EcommerceShops/index";
 import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
 
+//LabMarket PagesEcommerce
+import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
 import EmailRead from "../pages/Email/email-read";
@@ -215,7 +218,7 @@ const authProtectedRoutes = [
   { path: "/calendar", component: Calendar },
 
   //Ecommerce
-  // { path: "/ecommerce-products/:id", component: EcommerceProducts },
+  { path: "/ecommerce-products/:id", component: EcommerceProducts },
   { path: "/ecommerce-products", component: EcommerceProducts },
   { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
 
@@ -413,10 +416,11 @@ const labAuthProtectedRoutes = [
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
-{
-  path: "/dashboard-patient/:id/profile",
-  component: PatientProfile,
-},
+  {
+    path: "/dashboard-patient/:id/profile",
+    component: PatientProfile,
+  },
+  { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
 ];
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
