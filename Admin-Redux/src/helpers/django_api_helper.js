@@ -517,18 +517,16 @@ export const updateLabProfile = (labProfile, id) => {
   });
 };
 
+// get Nearby Labs
+// export const getNearbyLabs = () => get(url.GET_NEARBY_LABS);
 
 export const getNearbyLabs = address => {
   let formData = new FormData();
   formData.append("address", address);
 
+  console.log("Address; ", address);
+
   return axios.post(url.GET_NEARBY_LABS, formData, {
     headers: getHeader(authHeader()),
   });
 };
-
-// ------------- Lab Detail -------------
-export const getLabDetail = id =>
-  get(`${url.GET_LAB_DETAIL}/${id}`, {
-    headers: getHeader(authHeader()),
-  });

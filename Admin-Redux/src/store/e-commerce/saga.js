@@ -5,7 +5,7 @@ import {
   GET_CART_DATA,
   GET_CUSTOMERS,
   GET_ORDERS,
-  GET_LAB_DETAIL,
+  GET_PRODUCT_DETAIL,
   GET_PRODUCTS,
   GET_SHOPS,
   ADD_NEW_ORDER,
@@ -28,8 +28,8 @@ import {
   updateOrderFail,
   deleteOrderSuccess,
   deleteOrderFail,
-  getLabDetailFail,
-  getLabDetailSuccess,
+  getProductDetailFail,
+  getProductDetailSuccess,
   getProductsFail,
   getProductsSuccess,
   getShopsFail,
@@ -52,7 +52,7 @@ import {
   deleteOrder,
   getProducts,
   getShops,
-  getLabDetail,
+  getProductDetail,
   addNewCustomer,
   updateCustomer,
   deleteCustomer
@@ -67,12 +67,12 @@ function* fetchProducts() {
   }
 }
 
-function* fetchLabDetail({ productId }) {
+function* fetchProductDetail({ productId }) {
   try {
-    const response = yield call(getLabDetail, labId)
-    yield put(getLabDetailSuccess(response))
+    const response = yield call(getProductDetail, productId)
+    yield put(getProductDetailSuccess(response))
   } catch (error) {
-    yield put(getLabDetailFail(error))
+    yield put(getProductDetailFail(error))
   }
 }
 
@@ -170,7 +170,7 @@ function* onDeleteCustomer({ payload: customer }) {
 
 function* ecommerceSaga() {
   yield takeEvery(GET_PRODUCTS, fetchProducts)
-  yield takeEvery(GET_LAB_DETAIL, fetchaLabDetail)
+  yield takeEvery(GET_PRODUCT_DETAIL, fetchProductDetail)
   yield takeEvery(GET_ORDERS, fetchOrders)
   yield takeEvery(ADD_NEW_ORDER, onAddNewOrder)
   yield takeEvery(UPDATE_ORDER, onUpdateOrder)

@@ -12,6 +12,9 @@ export * from "./auth/profile/actions";
 export * from "./auth/labprofile/actions";
 
 //Ecommerce
+export * from "./labmarket/actions";
+
+//LabMarket
 export * from "./e-commerce/actions";
 
 //Calendar

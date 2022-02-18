@@ -27,13 +27,16 @@ import ProjectsCreate from "../pages/Projects/projects-create";
 
 //Ecommerce Pages
 import EcommerceProducts from "../pages/Ecommerce/EcommerceProducts/index";
-// import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProducts/LabDetail";
+import EcommerceProductDetail from "../pages/Ecommerce/EcommerceProducts/EcommerceProductDetail";
 import EcommerceOrders from "../pages/Ecommerce/EcommerceOrders/index";
 import EcommerceCustomers from "../pages/Ecommerce/EcommerceCustomers/index";
 import EcommerceCart from "../pages/Ecommerce/EcommerceCart";
 import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout";
 import EcommerceShops from "../pages/Ecommerce/EcommerceShops/index";
 import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
+
+//LabMarket PagesEcommerce
+import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
@@ -181,7 +184,6 @@ import PathologistsList from "../pages/Pathologists/pathologists-list";
 import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
 import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
-import LabDetail from "../pages/Ecommerce/EcommerceProducts/Lab-Detail";
 
 
 //Blog
@@ -216,9 +218,9 @@ const authProtectedRoutes = [
   { path: "/calendar", component: Calendar },
 
   //Ecommerce
-  // { path: "/ecommerce-products/:id", component: EcommerceProducts },
-  // { path: "/ecommerce-products", component: EcommerceProducts },
-  // { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
+  { path: "/ecommerce-products/:id", component: EcommerceProducts },
+  { path: "/ecommerce-products", component: EcommerceProducts },
+  { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
 
   { path: "/ecommerce-orders", component: EcommerceOrders },
   { path: "/ecommerce-customers", component: EcommerceCustomers },
@@ -414,13 +416,9 @@ const labAuthProtectedRoutes = [
 ];
 
 const patientAuthProtectedRoutes = [
-  { path: "/dashboard-patient/:id", component: DashboardPatient }, {
-    path: "/dashboard-patient/:id/Lab-Detail:lab_id",
-    component: LabDetail,
-  },
-
-
-];            
+  { path: "/dashboard-patient/:id", component: DashboardPatient },
+  { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
+];
 
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },

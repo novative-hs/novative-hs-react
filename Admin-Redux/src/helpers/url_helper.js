@@ -55,12 +55,8 @@ export const UPDATE_TEST_APPOINTMENT = `${API_ENDPOINT}/api/lab/test-appointment
 export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 
-
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
-// LABS DETAILS
-export const GET_LAB_DETAIL = `${API_ENDPOINT}/api/lab/lab-detail`;
-
 // -------------- TEMPLATES URLS --------------
 
 //REGISTER
@@ -76,6 +72,7 @@ export const SOCIAL_LOGIN = "/social-login";
 //PROFILE
 export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile";
 export const POST_EDIT_PROFILE = "/post-fake-profile";
+
 
 //PRODUCTS
 export const GET_PRODUCTS = "/products";

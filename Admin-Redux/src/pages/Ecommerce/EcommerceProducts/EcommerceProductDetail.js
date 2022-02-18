@@ -24,17 +24,17 @@ import { isEmpty } from "lodash"
 import StarRatings from "react-star-ratings"
 
 //Import Product Images
-import { productImages } from "../../../assets/images/product"
+import { productImages } from "../../../assets/images/product/"
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb"
 
 //Import actions
-import { getLabDetail } from "../../../store/e-commerce/actions"
+import { getProductDetail } from "../../../store/e-commerce/actions"
 import RecentProducts from "./RecentProducts"
 import Reviews from "./Reviews"
 
-class LabDetail extends Component {
+class EcommerceProductDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -359,7 +359,7 @@ class LabDetail extends Component {
   }
 }
 
-LabDetail.propTypes = {
+EcommerceProductDetail.propTypes = {
   product: PropTypes.object,
   match: PropTypes.object,
   onGetProductDetail: PropTypes.func,
@@ -370,10 +370,10 @@ const mapStateToProps = ({ ecommerce }) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onGetLabDetail: id => dispatch(getLabDetail(id)),
+  onGetProductDetail: id => dispatch(getProductDetail(id)),
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LabDetail)
+)(EcommerceProductDetail)

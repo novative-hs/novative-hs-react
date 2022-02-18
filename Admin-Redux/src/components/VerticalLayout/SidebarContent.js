@@ -118,18 +118,27 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
                 </li>
+                <li className="menu-title">{this.props.t("Patient")}</li>
+
                 <li>
+                  <Link to="/#" className="has-arrow">
+                    <i className="bx bx-store" />
+                    <span>{this.props.t("Lab Marketplace")}</span>
+                  </Link>
+                  <ul className="sub-menu" aria-expanded="false">
+                    <li>
                       <Link
                         to={
                           "/dashboard-patient/" +
                           this.props.match.params.id +
-                          "/LabDetail"
+                          "/nearby-labs"
                         }
                       >
-                        {this.props.t("Lab Detail")}
+                        {this.props.t("Products")}
                       </Link>
                     </li>
-                <li className="menu-title">{this.props.t("Patient")}</li>
+                  </ul>
+                </li>
               </ul>
             </div>
           </SimpleBar>

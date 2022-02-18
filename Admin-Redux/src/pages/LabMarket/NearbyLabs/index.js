@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import MetaTags from 'react-meta-tags';
-import { connect } from "react-redux"
-import { Link, withRouter } from "react-router-dom"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -19,33 +19,33 @@ import {
   PaginationItem,
   PaginationLink,
   Row,
-} from "reactstrap"
-import classnames from "classnames"
-import { isEmpty, map, size } from "lodash"
+} from "reactstrap";
+import classnames from "classnames";
+import { isEmpty, map, size } from "lodash";
 
 //Import Star Ratings
-import StarRatings from "react-star-ratings"
+import StarRatings from "react-star-ratings";
 
 // RangeSlider
-import Nouislider from "nouislider-react"
-import "nouislider/distribute/nouislider.css"
+import Nouislider from "nouislider-react";
+import "nouislider/distribute/nouislider.css";
 
 //Import Product Images
-import { productImages } from "assets/images/product"
+import { productImages } from "assets/images/product";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
+import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import data
-import { discountData, productsData } from "common/data"
+import { discountData, productsData } from "common/data";
 
 //Import actions
-import { getProducts } from "store/e-commerce/actions"
+import { getNearbyLabs } from "store/labmarket/actions";
 import { any } from "prop-types";
 
-class EcommerceProducts extends Component {
+class NearbyLabs extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       FilterClothes: [
         { id: 1, name: "T-shirts", link: "#" },
@@ -54,8 +54,10 @@ class EcommerceProducts extends Component {
         { id: 4, name: "Jackets", link: "#" },
       ],
       ratingvalues: [],
-      products: [],
+      nearbyLabs: [],
+      apiURL: process.env.REACT_APP_BACKENDURL,
       activeTab: "1",
+      address: "H-13, Islamabad",
       discountData: [],
       filters: {
         discount: [],
@@ -63,27 +65,30 @@ class EcommerceProducts extends Component {
       },
       page: 1,
       totalPage: 5, //replace this with total pages of data
-    }
-    this.toggleTab = this.toggleTab.bind(this)
-    this.onSelectRating = this.onSelectRating.bind(this)
+    };
+    this.toggleTab = this.toggleTab.bind(this);
+    this.onSelectRating = this.onSelectRating.bind(this);
   }
 
   componentDidMount() {
-    const { products, onGetProducts } = this.props
-    this.setState({ products })
-    onGetProducts()
-    this.setState({ discountData })
+    const { nearbyLabs, onGetNearbyLabs } = this.props;
+    setTimeout(() => {
+      onGetNearbyLabs(this.state.address);
+    }, 3000);
+    this.setState({ nearbyLabs });
+    // this.setState({ discountData });
   }
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { products } = this.props
+    const { nearbyLabs } = this.props;
+    console.log("Test: ", this.state.nearbyLabs);
     if (
-      isEmpty(prevProps.products) &&
-      !isEmpty(products) &&
-      size(products) !== size(prevProps.products)
+      isEmpty(prevProps.nearbyLabs) &&
+      !isEmpty(nearbyLabs) &&
+      size(nearbyLabs) !== size(prevProps.nearbyLabs)
     ) {
-      this.setState({ products })
+      this.setState({ nearbyLabs });
     }
   }
 
@@ -91,16 +96,16 @@ class EcommerceProducts extends Component {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
   }
 
   onSelectDiscount = e => {
-    const { value, checked } = e.target
+    const { value, checked } = e.target;
     const {
       filters,
       filters: { discount },
-    } = this.state
+    } = this.state;
     this.setState(
       {
         filters: {
@@ -111,56 +116,57 @@ class EcommerceProducts extends Component {
         },
       },
       () => {
-        this.onFilterProducts(value, checked)
+        this.onFilterProducts(value, checked);
       }
-    )
-  }
+    );
+  };
 
   onFilterProducts = (value, checked) => {
     const {
       filters: { discount },
-    } = this.state
-    let filteredProducts = productsData
+    } = this.state;
+    let filteredProducts = productsData;
     if (!!checked && parseInt(value) === 0) {
-      filteredProducts = productsData.filter(product => product.offer < 10)
+      filteredProducts = productsData.filter(nearbyLab => nearbyLab.offer < 10);
     } else if (discount.length > 0) {
       filteredProducts = productsData.filter(
-        product => product.offer >= Math.min(...discount)
-      )
+        nearbyLab => nearbyLab.offer >= Math.min(...discount)
+      );
     }
-    this.setState({ products: filteredProducts })
-  }
+    this.setState({ nearbyLabs: filteredProducts });
+  };
 
   onUpdate = (render, handle, value) => {
     this.setState({
-      products: productsData.filter(
-        product => product.newPrice >= value[0] && product.newPrice <= value[1]
+      nearbyLabs: productsData.filter(
+        nearbyLab =>
+          nearbyLab.newPrice >= value[0] && nearbyLab.newPrice <= value[1]
       ),
-    })
-  }
+    });
+  };
 
   /*
   on change rating checkbox method
   */
   onChangeRating = value => {
     this.setState({
-      products: productsData.filter(product => product.rating >= value),
-    })
+      nearbyLabs: productsData.filter(nearbyLab => nearbyLab.rating >= value),
+    });
 
     var modifiedRating = [...this.state.ratingvalues];
     modifiedRating.push(value);
     this.setState({ ratingvalues: modifiedRating });
-  }
+  };
 
   onSelectRating = value => {
     this.setState({
-      products: productsData.filter(product => product.rating === value),
-    })
-  }
+      nearbyLabs: productsData.filter(nearbyLab => nearbyLab.rating === value),
+    });
+  };
 
-  onUncheckMark = (value) => {
+  onUncheckMark = value => {
     var modifiedRating = [...this.state.ratingvalues];
-    const modifiedData = (modifiedRating || []).filter((x) => x !== value);
+    const modifiedData = (modifiedRating || []).filter(x => x !== value);
     /*
     find min values
     */
@@ -168,25 +174,36 @@ class EcommerceProducts extends Component {
     if (modifiedData && modifiedData.length && value !== 1) {
       var minValue = Math.min(...modifiedData);
       if (minValue && minValue !== Infinity) {
-
-        filteredProducts = productsData.filter(product => product.rating >= minValue);
+        filteredProducts = productsData.filter(
+          nearbyLab => nearbyLab.rating >= minValue
+        );
 
         this.setState({ ratingvalues: modifiedData });
       }
     } else {
       filteredProducts = productsData;
     }
-    this.setState({ products: filteredProducts });
-
-  }
+    this.setState({ nearbyLabs: filteredProducts });
+  };
 
   handlePageClick = page => {
-    this.setState({ page })
-  }
+    this.setState({ page });
+  };
+
+  handleChange = e => {
+    var input = document.getElementById("pac-input");
+    var searchBox = new window.google.maps.places.SearchBox(input);
+    searchBox.addListener("places_changed", function () {
+      console.log("Address: ", e.target.value);
+      return e.target.value;
+      // this.setState({ nearbyLabs });
+    });
+  };
 
   render() {
-    const { history } = this.props
-    const { discountData, products, page, totalPage } = this.state
+    const { history } = this.props;
+    const { discountData, nearbyLabs, page, totalPage } = this.state;
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -225,16 +242,12 @@ class EcommerceProducts extends Component {
                         connect
                         onSlide={this.onUpdate}
                       />
-
                     </div>
 
                     <div className="mt-4 pt-3">
                       <h5 className="font-size-14 mb-3">Discount</h5>
                       {discountData.map((discount, i) => (
-                        <div
-                          className="form-check mt-2"
-                          key={i}
-                        >
+                        <div className="form-check mt-2" key={i}>
                           <Input
                             type="checkbox"
                             value={discount.value}
@@ -259,9 +272,9 @@ class EcommerceProducts extends Component {
                             id="productratingCheck1"
                             onChange={e => {
                               if (e.target.checked) {
-                                this.onChangeRating(4)
+                                this.onChangeRating(4);
                               } else {
-                                this.onUncheckMark(4)
+                                this.onUncheckMark(4);
                               }
                             }}
                           />{" "}
@@ -279,9 +292,9 @@ class EcommerceProducts extends Component {
                             id="productratingCheck2"
                             onChange={e => {
                               if (e.target.checked) {
-                                this.onChangeRating(3)
+                                this.onChangeRating(3);
                               } else {
-                                this.onUncheckMark(3)
+                                this.onUncheckMark(3);
                               }
                             }}
                           />{" "}
@@ -299,9 +312,9 @@ class EcommerceProducts extends Component {
                             id="productratingCheck3"
                             onChange={e => {
                               if (e.target.checked) {
-                                this.onChangeRating(2)
+                                this.onChangeRating(2);
                               } else {
-                                this.onUncheckMark(2)
+                                this.onUncheckMark(2);
                               }
                             }}
                           />{" "}
@@ -319,9 +332,9 @@ class EcommerceProducts extends Component {
                             id="productratingCheck4"
                             onChange={e => {
                               if (e.target.checked) {
-                                this.onSelectRating(1)
+                                this.onSelectRating(1);
                               } else {
-                                this.onUncheckMark(1)
+                                this.onUncheckMark(1);
                               }
                             }}
                           />{" "}
@@ -350,6 +363,9 @@ class EcommerceProducts extends Component {
                       <div className="search-box me-2">
                         <div className="position-relative">
                           <Input
+                            defaultValue={this.state.address}
+                            onChange={this.handleChange}
+                            id="pac-input"
                             type="text"
                             className="form-control border-0"
                             placeholder="Search..."
@@ -364,7 +380,7 @@ class EcommerceProducts extends Component {
                               active: this.state.activeTab === "1",
                             })}
                             onClick={() => {
-                              this.toggleTab("1")
+                              this.toggleTab("1");
                             }}
                           >
                             <i className="bx bx-grid-alt" />
@@ -376,7 +392,7 @@ class EcommerceProducts extends Component {
                               active: this.state.activeTab === "2",
                             })}
                             onClick={() => {
-                              this.toggleTab("2")
+                              this.toggleTab("2");
                             }}
                           >
                             <i className="bx bx-list-ul" />
@@ -387,27 +403,21 @@ class EcommerceProducts extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  {!isEmpty(products) &&
-                    products.map((product, key) => (
+                  {!isEmpty(nearbyLabs) &&
+                    nearbyLabs.map((nearbyLab, key) => (
                       <Col xl="4" sm="6" key={"_col_" + key}>
-                        <Card onClick={() =>
-                          history.push(
-                            `/ecommerce-product-details/${product.id}`
-                          )
-                        }>
+                        <Card
+                          onClick={() =>
+                            history.push(
+                              `/ecommerce-product-details/${nearbyLab.id}`
+                            )
+                          }
+                        >
                           <CardBody>
                             <Link to="#">
                               <div className="product-img position-relative">
-                                {product.isOffer ? (
-                                  <div className="avatar-sm product-ribbon">
-                                    <span className="avatar-title rounded-circle  bg-primary">
-                                      {`-${product.offer}%`}
-                                    </span>
-                                  </div>
-                                ) : null}
-
                                 <img
-                                  src={productImages[product.image]}
+                                  src={this.state.apiURL + nearbyLab.logo}
                                   alt=""
                                   className="img-fluid mx-auto d-block"
                                 />
@@ -417,15 +427,45 @@ class EcommerceProducts extends Component {
                             <div className="mt-4 text-center">
                               <h5 className="mb-3 text-truncate">
                                 <Link
-                                  to={"/ecommerce-product-details/" + product.id}
+                                  to={
+                                    "/ecommerce-product-details/" + nearbyLab.id
+                                  }
                                   className="text-dark"
                                 >
-                                  {product.name}{" "}
+                                  {nearbyLab.name}{" "}
                                 </Link>
                               </h5>
-                              <div className="text-muted mb-3">
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-email"></i>{" "}
+                                  {nearbyLab.email}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="bx bx-mobile"></i>{" "}
+                                  {nearbyLab.phone}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="bx bx-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>
+                              {/* <div className="text-muted mb-3">
                                 <StarRatings
-                                  rating={product.rating}
+                                  rating={nearbyLab.rating}
                                   starRatedColor="#F1B44C"
                                   starEmptyColor="#2D363F"
                                   numberOfStars={5}
@@ -433,15 +473,14 @@ class EcommerceProducts extends Component {
                                   starDimension="14px"
                                   starSpacing="3px"
                                 />
-                              </div>
-                              <h5 className="my-0">
+                              </div> */}
+                              {/* <h5 className="my-0">
                                 <span className="text-muted me-2">
-                                  <del>${product.oldPrice}</del>
+                                  <del>${nearbyLab.oldPrice}</del>
                                 </span>{" "}
-                                <b>${product.newPrice}</b>
-                              </h5>
+                                <b>${nearbyLab.newPrice}</b>
+                              </h5> */}
                             </div>
-
                           </CardBody>
                         </Card>
                       </Col>
@@ -483,25 +522,25 @@ class EcommerceProducts extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-EcommerceProducts.propTypes = {
-  products: PropTypes.array,
+NearbyLabs.propTypes = {
+  nearbyLabs: PropTypes.array,
   history: any,
-  onGetProducts: PropTypes.func,
-}
+  onGetNearbyLabs: PropTypes.func,
+};
 
 const mapStateToProps = state => ({
-  products: state.ecommerce.products,
-})
+  nearbyLabs: state.ecommerce.nearbyLabs,
+});
 
 const mapDispatchToProps = dispatch => ({
-  onGetProducts: () => dispatch(getProducts()),
-})
+  onGetNearbyLabs: address => dispatch(getNearbyLabs(address)),
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(EcommerceProducts))
+)(withRouter(NearbyLabs));

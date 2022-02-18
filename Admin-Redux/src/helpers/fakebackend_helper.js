@@ -98,10 +98,8 @@ export const postSocialLogin = data => post(url.SOCIAL_LOGIN, data)
 
 // get Products
 export const getProducts = () => get(url.GET_PRODUCTS)
-
-// get Product detail
-export const getLabDetail = id =>
-  get(`${url.GET_LAB_DETAIL}/${id}`, { params: { lab_id } })
+// get Products Desail
+export const getProductDetail = () => get(url.GET_PRODUCTS_DETAIL)
 
 // get Events
 export const getEvents = () => get(url.GET_EVENTS)
