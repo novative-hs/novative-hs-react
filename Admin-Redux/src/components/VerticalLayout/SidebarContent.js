@@ -120,6 +120,26 @@ class SidebarContent extends Component {
                 </li>
 
                 <li className="menu-title">{this.props.t("Patient")}</li>
+                {/* Patient Test Appointment Links */}
+                <li>
+                  <Link to="/#" className="has-arrow">
+                    <i className="bx bx-store" />
+                    <span>{this.props.t("Test Appointments")}</span>
+                  </Link>
+                  <ul className="sub-menu" aria-expanded="false">
+                    <li>
+                      <Link
+                        to={
+                          "/dashboard-patient/" +
+                          this.props.match.params.id +
+                          "/patient-test-appointments-completed-list"
+                        }
+                      >
+                        {this.props.t("Completed Test Appointments")}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
               </ul>
             </div>
           </SimpleBar>
