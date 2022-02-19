@@ -345,6 +345,9 @@ class NearbyLabs extends Component {
                           <Input
                             defaultValue={this.state.address}
                             onChange={e => this.handleChange(e, this.props)}
+                            searchOptions={{
+                              componentRestrictions: { country: ["pk"] },
+                            }}
                             id="pac-input"
                             type="text"
                             className="form-control border-0"
