@@ -360,7 +360,7 @@ class CorporateInformation extends Component {
                                 {/* Address field */}
                                 <div className="mb-3">
                                   <Label for="address" className="form-label">
-                                    Complete Address
+                                    Complete address
                                   </Label>
                                   <Field
                                     id="address"
