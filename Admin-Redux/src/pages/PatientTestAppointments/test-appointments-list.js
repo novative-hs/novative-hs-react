@@ -41,23 +41,13 @@ class TestAppointmentsList extends Component {
           sort: true,
         },
         {
-          dataField: "patient_age",
-          text: "Age",
-          sort: true,
-        },
-        {
-          dataField: "patient_gender",
-          text: "Gender",
-          sort: true,
-        },
-        {
-          dataField: "offered_test_name",
-          text: "Offered test ",
+          dataField: "test_name",
+          text: "Test name",
           sort: true,
         },
         {
           dataField: "booking_date_time",
-          text: "Booking date time",
+          text: "Appointment booked on",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -70,22 +60,8 @@ class TestAppointmentsList extends Component {
           ),
         },
         {
-          dataField: "requested_appointment_date_time",
-          text: "Requested appointment date time",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  patientTestAppointment.requested_appointment_date_time
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
           dataField: "sample_collection_date_time",
-          text: "Sample collection date time",
+          text: "Sample collected on",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -99,7 +75,7 @@ class TestAppointmentsList extends Component {
         },
         {
           dataField: "result_upload_date_time",
-          text: "Result upload date time",
+          text: "Result uploaded on",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -112,27 +88,31 @@ class TestAppointmentsList extends Component {
           ),
         },
         {
+          dataField: "status",
+          text: "Status",
+          sort: true,
+        },
+        {
           dataField: "http://127.0.0.1:8000" + "result",
           text: "Result",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <Link
-                to={{
-                  pathname:
-                    "http://127.0.0.1:8000" + patientTestAppointment.result,
-                }}
-                target="_blank"
-              >
-                Test Result
-              </Link>
+              {patientTestAppointment.status == "Result Uploaded" ? (
+                <Link
+                  to={{
+                    pathname:
+                      "http://127.0.0.1:8000" + patientTestAppointment.result,
+                  }}
+                  target="_blank"
+                >
+                  Test Result
+                </Link>
+              ) : (
+                <span>Not uploaded</span>
+              )}
             </>
           ),
-        },
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
         },
       ],
     };
