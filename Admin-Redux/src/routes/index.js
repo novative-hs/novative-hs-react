@@ -13,6 +13,7 @@ import Calendar from "../pages/Calendar/index";
 // User profile
 import UserProfile from "../pages/Authentication/UserProfile";
 import LabProfile from "../pages/Authentication/LabProfile";
+import PatientProfile from "../pages/Authentication/PatientProfile";
 
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
@@ -37,6 +38,7 @@ import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
 
 //LabMarket PagesEcommerce
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
@@ -186,8 +188,8 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 
 //Patient Lab Components
-import PatientTestAppointmentsCompletedList from "../pages/PatientTestAppointments/patient-test-appointments-completed-list";
 import GetQualityCertificatesList from "../pages/GetQualityCertificatesList/get-quality-certificates-list";
+import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -422,12 +424,19 @@ const labAuthProtectedRoutes = [
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
   {
-    path: "/dashboard-patient/:id/patient-test-appointments-completed-list",
-    component: PatientTestAppointmentsCompletedList,
+    path: "/dashboard-patient/:id/test-appointments-list",
+    component: TestAppointmentsList,
+  },
+  {
+    path: "/dashboard-patient/:id/profile",
+    component: PatientProfile,
   },
   { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
+  {
+    path: "/dashboard-patient/:id/nearby-lab-detail/:lab_account_id",
+    component: NearbyLabDetail,
+  },
 ];
-
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 ];

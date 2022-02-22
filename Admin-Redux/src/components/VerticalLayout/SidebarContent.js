@@ -143,25 +143,17 @@ class SidebarContent extends Component {
                 </li>
                 {/* Patient Test Appointment Links */}
                 <li>
-                  <Link to="/#" className="has-arrow">
-                    <i className="bx bx-store" />
-                    <span>{this.props.t("Test Appointments")}</span>
+                  <Link
+                    to={
+                      "/dashboard-patient/" +
+                      this.props.match.params.id +
+                      "/test-appointments-list"
+                    }
+                  >
+                    <i className="bx bx-test-tube" />
+                    {this.props.t("Test Appointments")}
                   </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link
-                        to={
-                          "/dashboard-patient/" +
-                          this.props.match.params.id +
-                          "/patient-test-appointments-completed-list"
-                        }
-                      >
-                        {this.props.t("Completed Test Appointments")}
-                      </Link>
-                    </li>
-                    </ul>
-                    </li>
-               
+                </li>
               </ul>
             </div>
           </SimpleBar>
@@ -241,7 +233,7 @@ class SidebarContent extends Component {
                 {/* Test Appointment Links */}
                 <li>
                   <Link to="/#" className="has-arrow">
-                    <i className="bx bx-store" />
+                    <i className="bx bx-test-tube" />
                     <span>{this.props.t("Test Appointments")}</span>
                   </Link>
                   <ul className="sub-menu" aria-expanded="false">
