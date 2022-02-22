@@ -37,6 +37,7 @@ import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
 
 //LabMarket PagesEcommerce
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
@@ -423,6 +424,10 @@ const patientAuthProtectedRoutes = [
     component: PatientTestAppointmentsCompletedList,
   },
   { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
+  {
+    path: "/dashboard-patient/:id/nearby-lab-detail/:lab_account_id",
+    component: NearbyLabDetail,
+  },
 ];
 
 const corporateAuthProtectedRoutes = [

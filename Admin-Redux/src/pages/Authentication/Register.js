@@ -275,7 +275,7 @@ class Register extends Component {
                                     className="form-select"
                                   >
                                     <option value="patient">Patient</option>
-                                    <option value="labowner">Lab Owner</option>
+                                    <option value="labowner">Lab</option>
                                     <option value="corporate">Corporate</option>
                                   </Field>
                                 </div>
