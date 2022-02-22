@@ -139,6 +139,8 @@ class SidebarContent extends Component {
                     </li>
                   </ul>
                 </li>
+                
+                {/* Pathologist Links */}
               </ul>
             </div>
           </SimpleBar>
@@ -200,8 +202,19 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Quality Certificates")}</span>
                   </Link>
                 </li>
-
-                {/* Sample Collector Links */}
+                 <li>
+                  <Link
+                    to={
+                      "/lab-pathologist-list/" +
+                      this.props.match.params.id +
+                      "/LabPathologistList"
+                    }
+                  >
+                    <i className="mdi mdi-certificate" />
+                    <span>{this.props.t("Lab-Pathologist")}</span>
+                  </Link>
+                </li>
+                {/* Sample Collector Links
                 <li>
                   <Link
                     to={

@@ -163,3 +163,4 @@ export const GET_MONTHLY_DATA = "/monthly-data";
 export const TOP_SELLING_DATA = "/top-selling-data";
 
 export const GET_EARNING_DATA = "/earning-charts-data";
+

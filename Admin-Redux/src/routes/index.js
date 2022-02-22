@@ -181,10 +181,10 @@ import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
 import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
 import PathologistsList from "../pages/Pathologists/pathologists-list";
+import LabPathologistsList from "../pages/LabPathologistList/lab-pathologist-list";
 import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
 import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
-
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -348,7 +348,7 @@ const publicRoutes = [
   { path: "/patient-information/:id", component: PatientInformation },
   { path: "/lab-information/:id", component: LabInformation },
   { path: "/corporate-information/:id", component: CorporateInformation },
-
+  { path: "/lab-pathologist-list/:id",component: LabPathologistsList},
   { path: "/pages-maintenance", component: PagesMaintenance },
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
@@ -412,7 +412,6 @@ const labAuthProtectedRoutes = [
     path: "/dashboard-lab/:id/profile",
     component: LabProfile,
   },
- 
 ];
 
 const patientAuthProtectedRoutes = [
