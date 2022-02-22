@@ -9,9 +9,11 @@ import AuthSaga from "./auth/login/saga";
 import ForgetSaga from "./auth/forgetpwd/saga";
 import ConfirmSaga from "./auth/confirmpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
-import LabProfileSaga from "./auth/lab-profile/saga";
+import LabProfileSaga from "./auth/labprofile/saga";
+import PatientProfileSaga from "./auth/patientprofile/saga";
 import LayoutSaga from "./layout/saga";
 import ecommerceSaga from "./e-commerce/saga";
+import LabMarketSaga from "./labmarket/saga";
 import calendarSaga from "./calendar/saga";
 import chatSaga from "./chat/saga";
 import cryptoSaga from "./crypto/saga";
@@ -24,6 +26,8 @@ import offeredTestsSaga from "./offered-tests/saga";
 import pathologistsSaga from "./pathologists/saga";
 import sampleCollectorsSaga from "./sample-collectors/saga";
 import qualityCertificatesSaga from "./quality-certificates/saga";
+import testAppointmentsSaga from "./test-appointments/saga";
+import patientTestAppointmentsSaga from "./patient-test-appointments/saga";
 import dashboardSaga from "./dashboard/saga";
 import dashboardSaasSaga from "./dashboard-saas/saga";
 
@@ -39,7 +43,9 @@ export default function* rootSaga() {
     fork(ConfirmSaga),
     fork(ProfileSaga),
     fork(LabProfileSaga),
+    fork(PatientProfileSaga),
     fork(LayoutSaga),
+    fork(LabMarketSaga),
     fork(ecommerceSaga),
     fork(calendarSaga),
     fork(chatSaga),
@@ -53,6 +59,8 @@ export default function* rootSaga() {
     fork(pathologistsSaga),
     fork(sampleCollectorsSaga),
     fork(qualityCertificatesSaga),
+    fork(testAppointmentsSaga),
+    fork(patientTestAppointmentsSaga),
     fork(dashboardSaga),
     fork(dashboardSaasSaga),
   ]);

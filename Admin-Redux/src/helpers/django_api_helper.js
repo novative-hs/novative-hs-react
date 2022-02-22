@@ -106,6 +106,9 @@ export const postPatientInformation = (id, patient) => {
 export const postLabInformation = (id, lab) => {
   let formData = new FormData();
   formData.append("name", lab.name);
+  formData.append("type", lab.type);
+  formData.append("main_lab_account_id", lab.main_lab_account_id);
+  formData.append("financial_settlement", lab.financial_settlement);
   formData.append("logo", lab.logo);
   formData.append("owner_name", lab.owner_name);
   formData.append("registration_no", lab.registration_no);
@@ -215,6 +218,12 @@ export const postLogin = user => {
     headers: getHeader(authHeader()),
   });
 };
+
+// ------------- Get Labs Request -------------
+export const getLabs = () =>
+  get(url.GET_LABS, {
+    headers: getHeader(authHeader()),
+  });
 
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
@@ -426,34 +435,124 @@ export const postConfirmPwd = (user, token) => {
   });
 };
 
+// ------------- Test Appointment Requests START -------------
+export const getTestAppointmentsPendingList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_PENDING_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
-// ------------- Lab Profile Apis START -------------
+export const getTestAppointmentsInProcessList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_IN_PROCESS_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getTestAppointmentsCompletedList = id =>
+  get(`${url.GET_TEST_APPOINTMENTS_COMPLETED_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const updateTestAppointment = testAppointment => {
+  let formData = new FormData();
+  formData.append("id", testAppointment.id);
+  formData.append("patient_id", testAppointment.patient_id);
+  formData.append("offered_test_id", testAppointment.offered_test_id);
+  formData.append("booking_date_time", testAppointment.booking_date_time);
+  formData.append(
+    "requested_appointment_date_time",
+    testAppointment.requested_appointment_date_time
+  );
+  formData.append(
+    "sample_collection_date_time",
+    testAppointment.sample_collection_date_time
+  );
+  formData.append(
+    "result_upload_date_time",
+    testAppointment.result_upload_date_time
+  );
+  formData.append("status", testAppointment.status);
+  formData.append("result", testAppointment.result);
+
+  return axios.put(
+    `${url.UPDATE_TEST_APPOINTMENT}/${testAppointment.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
+
+// ------------- Lab Profile Requests START -------------
 export const getLabProfile = id =>
-  get(`${url.GET_LAB_PROIFLE}/${id}`, {
+  get(`${url.GET_LAB_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 export const updateLabProfile = (labProfile, id) => {
-    let formData = new FormData();
-    formData.append("account_id", id);
-    formData.append("name", labProfile.name);
-    formData.append("logo", labProfile.logo);
-    formData.append("owner_name", labProfile.owner_name);
-    formData.append("phone", labProfile.phone);
-    formData.append("landline", labProfile.landline);
-    formData.append("address", labProfile.address);
-    formData.append("city", labProfile.city);
-    formData.append("district", labProfile.district);
-    formData.append("complaint_handling_email", labProfile.complaint_handling_email);
-    formData.append("complaint_handling_phone", labProfile.complaint_handling_phone);
-    formData.append("accept_credit_card_for_payment", labProfile.accept_credit_card_for_payment);
-    formData.append("is_active", labProfile.is_active);
-  
-    return axios.put(
-      `${url.UPDATE_LAB_PROFILE}/${id}`,
-      formData,
-      {
-        headers: getHeader(authHeader()),
-      }
-    );
-  };
+  let formData = new FormData();
+  formData.append("account_id", id);
+  formData.append("name", labProfile.name);
+  formData.append("logo", labProfile.logo);
+  formData.append("owner_name", labProfile.owner_name);
+  formData.append("phone", labProfile.phone);
+  formData.append("landline", labProfile.landline);
+  formData.append("address", labProfile.address);
+  formData.append("city", labProfile.city);
+  formData.append("district", labProfile.district);
+  formData.append(
+    "complaint_handling_email",
+    labProfile.complaint_handling_email
+  );
+  formData.append(
+    "complaint_handling_phone",
+    labProfile.complaint_handling_phone
+  );
+  formData.append(
+    "accept_credit_card_for_payment",
+    labProfile.accept_credit_card_for_payment
+  );
+  formData.append("is_active", labProfile.is_active);
+
+  return axios.put(`${url.UPDATE_LAB_PROFILE}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+// ------------- Patient Test Appointment Requests START -------------
+export const getPatientTestAppointmentsCompletedList = id =>
+  get(`${url.GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+// ------------- Patient Profile Requests START -------------
+export const getPatientProfile = id =>
+  get(`${url.GET_PATIENT_PROFILE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const updatePatientProfile = (patientProfile, id) => {
+  let formData = new FormData();
+  formData.append("account_id", id);
+  formData.append("name", patientProfile.name);
+  formData.append("cnic", patientProfile.cnic);
+  formData.append("email", patientProfile.email);
+  formData.append("phone", patientProfile.phone);
+  formData.append("address", patientProfile.address);
+  formData.append("city", patientProfile.city);
+  formData.append("district", patientProfile.district);
+
+  return axios.put(`${url.UPDATE_PATIENT_PROFILE}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+// Get Nearby Labs
+export const getNearbyLabs = (address, id) => {
+  let formData = new FormData();
+  formData.append("address", address);
+
+  console.log("Address: ", address);
+
+  return axios.post(`${url.GET_NEARBY_LABS}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};

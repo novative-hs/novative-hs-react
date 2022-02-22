@@ -12,9 +12,14 @@ import CorporateInformation from "./auth/corporateinformation/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import ConfirmPassword from "./auth/confirmpwd/reducer";
 import Profile from "./auth/profile/reducer";
-import LabProfile from "./auth/lab-profile/reducer";
+import LabProfile from "./auth/labprofile/reducer";
+import PatientProfile from "./auth/patientprofile/reducer";
+
 //E-commerce
-import ecommerce from "./e-commerce/reducer";
+import LabMarket from "./e-commerce/reducer";
+
+//LabMarket
+import ecommerce from "./labmarket/reducer";
 
 //Calendar
 import calendar from "./calendar/reducer";
@@ -49,6 +54,12 @@ import sampleCollectors from "./sample-collectors/reducer";
 //test certificates
 import qualityCertificates from "./quality-certificates/reducer";
 
+//test appointment
+import testAppointments from "./test-appointments/reducer";
+
+// patient test appointments
+import patientTestAppointments from "./patient-test-appointments/reducer";
+
 //mails
 import mails from "./mails/reducer";
 
@@ -70,6 +81,8 @@ const rootReducer = combineReducers({
   ConfirmPassword,
   Profile,
   LabProfile,
+  PatientProfile,
+  LabMarket,
   ecommerce,
   calendar,
   chat,
@@ -83,6 +96,8 @@ const rootReducer = combineReducers({
   pathologists,
   sampleCollectors,
   qualityCertificates,
+  testAppointments,
+  patientTestAppointments,
   Dashboard,
   DashboardSaas,
 });

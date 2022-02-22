@@ -53,6 +53,7 @@ class QualityCertificatesList extends Component {
       qualityCertificates: [],
       qualityCertificate: "",
       certificateImg: "",
+      apiURL: process.env.REACT_APP_BACKENDURL,
       modal: false,
       deleteModal: false,
       qualityCertificateListColumns: [
@@ -80,9 +81,7 @@ class QualityCertificatesList extends Component {
                 <div>
                   <img
                     className="rounded-circle avatar-xs"
-                    src={
-                      "http://127.0.0.1:8000" + qualityCertificate.certificate
-                    }
+                    src={this.state.apiURL + qualityCertificate.certificate}
                     alt=""
                   />
                 </div>
@@ -236,7 +235,7 @@ class QualityCertificatesList extends Component {
       qualityCertificate: {
         id: qualityCertificate.id,
         name: qualityCertificate.name,
-        certificate: "http://127.0.0.1:8000" + qualityCertificate.certificate,
+        certificate: this.state.apiURL + qualityCertificate.certificate,
       },
       certificateImg: "",
       isEdit: true,

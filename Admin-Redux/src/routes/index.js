@@ -12,9 +12,8 @@ import Calendar from "../pages/Calendar/index";
 
 // User profile
 import UserProfile from "../pages/Authentication/UserProfile";
-
-// Lab profile
 import LabProfile from "../pages/Authentication/LabProfile";
+import PatientProfile from "../pages/Authentication/PatientProfile";
 
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
@@ -36,6 +35,10 @@ import EcommerceCart from "../pages/Ecommerce/EcommerceCart";
 import EcommerceCheckout from "../pages/Ecommerce/EcommerceCheckout";
 import EcommerceShops from "../pages/Ecommerce/EcommerceShops/index";
 import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
+
+//LabMarket PagesEcommerce
+import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
@@ -180,6 +183,12 @@ import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
 import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
 import PathologistsList from "../pages/Pathologists/pathologists-list";
+import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
+import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
+import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
+
+//Patient Lab Components
+import PatientTestAppointmentsCompletedList from "../pages/PatientTestAppointments/patient-test-appointments-completed-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -213,7 +222,7 @@ const authProtectedRoutes = [
   { path: "/calendar", component: Calendar },
 
   //Ecommerce
-  // { path: "/ecommerce-products/:id", component: EcommerceProducts },
+  { path: "/ecommerce-products/:id", component: EcommerceProducts },
   { path: "/ecommerce-products", component: EcommerceProducts },
   { path: "/ecommerce-product-details/:id", component: EcommerceProductDetail },
 
@@ -391,13 +400,40 @@ const labAuthProtectedRoutes = [
     path: "/dashboard-lab/:id/pathologists-list",
     component: PathologistsList,
   },
-  { path: "/dashboard-lab/:id/profile", component: LabProfile },
+  {
+    path: "/dashboard-lab/:id/test-appointments-pending-list",
+    component: TestAppointmentsPendingList,
+  },
+  {
+    path: "/dashboard-lab/:id/test-appointments-in-process-list",
+    component: TestAppointmentsInProcessList,
+  },
+  {
+    path: "/dashboard-lab/:id/test-appointments-completed-list",
+    component: TestAppointmentsCompletedList,
+  },
+  {
+    path: "/dashboard-lab/:id/profile",
+    component: LabProfile,
+  },
 ];
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
+  {
+    path: "/dashboard-patient/:id/test-appointments-list",
+    component: PatientTestAppointmentsCompletedList,
+  },
+  {
+    path: "/dashboard-patient/:id/profile",
+    component: PatientProfile,
+  },
+  { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
+  {
+    path: "/dashboard-patient/:id/nearby-lab-detail/:lab_account_id",
+    component: NearbyLabDetail,
+  },
 ];
-
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 ];

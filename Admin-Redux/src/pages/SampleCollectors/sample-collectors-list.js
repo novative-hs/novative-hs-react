@@ -52,6 +52,7 @@ class SampleCollectorsList extends Component {
       selectedFiles: [],
       sampleCollectors: [],
       sampleCollector: "",
+      apiURL: process.env.REACT_APP_BACKENDURL,
       collectorImg: "",
       modal: false,
       deleteModal: false,
@@ -80,7 +81,7 @@ class SampleCollectorsList extends Component {
                 <div>
                   <img
                     className="rounded-circle avatar-xs"
-                    src={"http://127.0.0.1:8000" + sampleCollector.photo}
+                    src={this.state.apiURL + sampleCollector.photo}
                     alt=""
                   />
                 </div>
@@ -242,7 +243,7 @@ class SampleCollectorsList extends Component {
         name: sampleCollector.name,
         cnic: sampleCollector.cnic,
         phone: sampleCollector.phone,
-        photo: "http://127.0.0.1:8000" + sampleCollector.photo,
+        photo: this.state.apiURL + sampleCollector.photo,
       },
       collectorImg: "",
       isEdit: true,

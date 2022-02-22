@@ -9,9 +9,13 @@ export * from "./auth/login/actions";
 export * from "./auth/forgetpwd/actions";
 export * from "./auth/confirmpwd/actions";
 export * from "./auth/profile/actions";
-export * from "./auth/lab-profile/actions";
+export * from "./auth/labprofile/actions";
+export * from "./auth/patientprofile/actions";
 
 //Ecommerce
+export * from "./labmarket/actions";
+
+//LabMarket
 export * from "./e-commerce/actions";
 
 //Calendar
@@ -46,6 +50,12 @@ export * from "./sample-collectors/actions";
 
 // quality certificates
 export * from "./quality-certificates/actions";
+
+// test appointments
+export * from "./test-appointments/actions";
+
+// Patient test appointments
+export * from "./patient-test-appointments/actions";
 
 // contacts
 export * from "./mails/actions";
