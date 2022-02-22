@@ -159,8 +159,9 @@ class SidebarContent extends Component {
                         {this.props.t("Completed Test Appointments")}
                       </Link>
                     </li>
-                  </ul>
-                  </li>
+                    </ul>
+                    </li>
+               
               </ul>
             </div>
           </SimpleBar>
@@ -333,6 +334,21 @@ class SidebarContent extends Component {
                         {this.props.t("Crypto")}
                       </Link>
                     </li>
+                    {/* Quality Certificates Links */}
+                <li>
+                  <Link
+                    to={
+                      "/get-quality-certificates-list/" +
+                      this.props.match.params.id +
+                      "/get-quality-certificates-list"
+                    }
+                  >
+                    <i className="mdi mdi-certificate" />
+                    <span>{this.props.t("Lab Quality Certificates")}</span>
+                  </Link>
+                </li>
+
+
                     <li>
                       <Link to="/dashboard-blog">{this.props.t("Blog")}</Link>
                     </li>

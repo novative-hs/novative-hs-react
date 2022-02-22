@@ -187,6 +187,7 @@ import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appoin
 
 //Patient Lab Components
 import PatientTestAppointmentsCompletedList from "../pages/PatientTestAppointments/patient-test-appointments-completed-list";
+import GetQualityCertificatesList from "../pages/GetQualityCertificatesList/get-quality-certificates-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -356,6 +357,8 @@ const publicRoutes = [
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
   { path: "/crypto-ico-landing", component: CryptoIcoLanding },
+  { path: "/get-quality-certificates-list/:id", component: GetQualityCertificatesList},
+
 
   // Authentication Inner
   { path: "/pages-login", component: Login1 },
