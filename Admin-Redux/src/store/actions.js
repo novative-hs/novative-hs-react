@@ -54,6 +54,9 @@ export * from "./quality-certificates/actions";
 // test appointments
 export * from "./test-appointments/actions";
 
+// Patient test appointments
+export * from "./patient-test-appointments/actions";
+
 // contacts
 export * from "./mails/actions";
 

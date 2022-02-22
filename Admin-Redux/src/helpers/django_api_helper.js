@@ -517,6 +517,12 @@ export const updateLabProfile = (labProfile, id) => {
   });
 };
 
+// ------------- Patient Test Appointment Requests START -------------
+export const getPatientTestAppointmentsList = id =>
+  get(`${url.GET_PATIENT_TEST_APPOINTMENTS_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 // ------------- Patient Profile Requests START -------------
 export const getPatientProfile = id =>
   get(`${url.GET_PATIENT_PROFILE}/${id}`, {
