@@ -1,36 +1,31 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import {
-  GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST,
-} from "./actionTypes";
+import { GET_PATIENT_TEST_APPOINTMENTS_LIST } from "./actionTypes";
 
 import {
-  getPatientTestAppointmentsCompletedListSuccess,
-  getPatientTestAppointmentsCompletedListFail,
+  getPatientTestAppointmentsListSuccess,
+  getPatientTestAppointmentsListFail,
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import {
-  getPatientTestAppointmentsCompletedList,
-} from "../../helpers/django_api_helper";
+import { getPatientTestAppointmentsList } from "../../helpers/django_api_helper";
 
-
-
-
-function* fetchPatientTestAppointmentsCompletedList(object) {
+function* fetchPatientTestAppointmentsList(object) {
   try {
-    const response = yield call(getPatientTestAppointmentsCompletedList, object.payload);
+    const response = yield call(getPatientTestAppointmentsList, object.payload);
     console.log("response of saga: ", response);
-    yield put(getPatientTestAppointmentsCompletedListSuccess(response));
+    yield put(getPatientTestAppointmentsListSuccess(response));
   } catch (error) {
-    yield put(getPatientTestAppointmentsCompletedListFail(error));
+    yield put(getPatientTestAppointmentsListFail(error));
   }
 }
 
-
 function* PatientTestAppointmentsSaga() {
-  yield takeEvery(GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST, fetchPatientTestAppointmentsCompletedList);
+  yield takeEvery(
+    GET_PATIENT_TEST_APPOINTMENTS_LIST,
+    fetchPatientTestAppointmentsList
+  );
 }
 
 export default PatientTestAppointmentsSaga;

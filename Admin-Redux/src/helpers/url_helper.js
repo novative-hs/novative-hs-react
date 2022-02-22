@@ -52,7 +52,7 @@ export const GET_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api/lab/tes
 export const UPDATE_TEST_APPOINTMENT = `${API_ENDPOINT}/api/lab/test-appointment-update`;
 
 // PATIENT TEST APPOINTMENT
-export const GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api/patient/test-appointment-list`;
+export const GET_PATIENT_TEST_APPOINTMENTS_LIST = `${API_ENDPOINT}/api/patient/test-appointment-list`;
 
 // PROFILES
 // LAB PROFILES

@@ -188,7 +188,7 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 
 //Patient Lab Components
-import PatientTestAppointmentsCompletedList from "../pages/PatientTestAppointments/patient-test-appointments-completed-list";
+import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -422,7 +422,7 @@ const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
   {
     path: "/dashboard-patient/:id/test-appointments-list",
-    component: PatientTestAppointmentsCompletedList,
+    component: TestAppointmentsList,
   },
   {
     path: "/dashboard-patient/:id/profile",

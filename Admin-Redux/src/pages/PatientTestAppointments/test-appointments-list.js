@@ -16,11 +16,9 @@ import BootstrapTable from "react-bootstrap-table-next";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-import {
-  getPatientTestAppointmentsCompletedList,
-} from "store/patient-test-appointments/actions";
+import { getPatientTestAppointmentsList } from "store/patient-test-appointments/actions";
 
-class PatientTestAppointmentsCompletedList extends Component {
+class TestAppointmentsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
@@ -64,9 +62,9 @@ class PatientTestAppointmentsCompletedList extends Component {
           formatter: (cellContent, patientTestAppointment) => (
             <>
               <span>
-                {new Date(patientTestAppointment.booking_date_time).toLocaleString(
-                  "en-US"
-                )}
+                {new Date(
+                  patientTestAppointment.booking_date_time
+                ).toLocaleString("en-US")}
               </span>
             </>
           ),
@@ -121,7 +119,8 @@ class PatientTestAppointmentsCompletedList extends Component {
             <>
               <Link
                 to={{
-                  pathname: "http://127.0.0.1:8000" + patientTestAppointment.result,
+                  pathname:
+                    "http://127.0.0.1:8000" + patientTestAppointment.result,
                 }}
                 target="_blank"
               >
@@ -134,17 +133,18 @@ class PatientTestAppointmentsCompletedList extends Component {
           dataField: "status",
           text: "Status",
           sort: true,
-        },        
+        },
       ],
     };
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    const { patientTestAppointments, onGetPatientTestAppointmentsCompletedList } = this.props;
+    const { patientTestAppointments, onGetPatientTestAppointmentsList } =
+      this.props;
     if (patientTestAppointments && !patientTestAppointments.length) {
       setTimeout(() => {
-        onGetPatientTestAppointmentsCompletedList();
+        onGetPatientTestAppointmentsList();
       }, 3000);
     }
     this.setState({ patientTestAppointments });
@@ -198,10 +198,7 @@ class PatientTestAppointmentsCompletedList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs
-              title="Test Appointments"
-              breadcrumbItem="Completed List"
-            />
+            <Breadcrumbs title="Test Appointments" breadcrumbItem=" List" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -275,23 +272,23 @@ class PatientTestAppointmentsCompletedList extends Component {
   }
 }
 
-PatientTestAppointmentsCompletedList.propTypes = {
+TestAppointmentsList.propTypes = {
   match: PropTypes.object,
   patientTestAppointments: PropTypes.array,
   className: PropTypes.any,
-  onGetPatientTestAppointmentsCompletedList: PropTypes.func,
+  onGetPatientTestAppointmentsList: PropTypes.func,
 };
 
 const mapStateToProps = ({ patientTestAppointments }) => ({
-  patientTestAppointments: patientTestAppointments.patientTestAppointmentsCompletedList,
+  patientTestAppointments: patientTestAppointments.patientTestAppointmentsList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetPatientTestAppointmentsCompletedList: () =>
-    dispatch(getPatientTestAppointmentsCompletedList(ownProps.match.params.id)),
+  onGetPatientTestAppointmentsList: () =>
+    dispatch(getPatientTestAppointmentsList(ownProps.match.params.id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(PatientTestAppointmentsCompletedList));
+)(withRouter(TestAppointmentsList));

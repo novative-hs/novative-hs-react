@@ -1,22 +1,21 @@
 import {
-  GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST,
-  GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST_SUCCESS,
-  GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST_FAIL,
+  GET_PATIENT_TEST_APPOINTMENTS_LIST,
+  GET_PATIENT_TEST_APPOINTMENTS_LIST_SUCCESS,
+  GET_PATIENT_TEST_APPOINTMENTS_LIST_FAIL,
 } from "./actionTypes";
 
-
-export const getPatientTestAppointmentsCompletedList = id => ({
-  type: GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST,
+export const getPatientTestAppointmentsList = id => ({
+  type: GET_PATIENT_TEST_APPOINTMENTS_LIST,
   payload: id,
 });
 
-export const getPatientTestAppointmentsCompletedListSuccess = patientTestAppointments => ({
-  type: GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST_SUCCESS,
-  payload: patientTestAppointments,
-});
+export const getPatientTestAppointmentsListSuccess =
+  patientTestAppointments => ({
+    type: GET_PATIENT_TEST_APPOINTMENTS_LIST_SUCCESS,
+    payload: patientTestAppointments,
+  });
 
-export const getPatientTestAppointmentsCompletedListFail = error => ({
-  type: GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST_FAIL,
+export const getPatientTestAppointmentsListFail = error => ({
+  type: GET_PATIENT_TEST_APPOINTMENTS_LIST_FAIL,
   payload: error,
 });
-

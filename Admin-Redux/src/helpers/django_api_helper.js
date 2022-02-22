@@ -518,8 +518,8 @@ export const updateLabProfile = (labProfile, id) => {
 };
 
 // ------------- Patient Test Appointment Requests START -------------
-export const getPatientTestAppointmentsCompletedList = id =>
-  get(`${url.GET_PATIENT_TEST_APPOINTMENTS_COMPLETED_LIST}/${id}`, {
+export const getPatientTestAppointmentsList = id =>
+  get(`${url.GET_PATIENT_TEST_APPOINTMENTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
