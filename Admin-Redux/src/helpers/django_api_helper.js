@@ -539,7 +539,7 @@ export const updatePatientProfile = (patientProfile, id) => {
   });
 };
 
-// get Nearby Labs
+// Get Nearby Labs
 export const getNearbyLabs = (address, id) => {
   let formData = new FormData();
   formData.append("address", address);

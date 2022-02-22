@@ -22,7 +22,6 @@ import { withRouter } from "react-router-dom";
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import {
   updatePatientProfile,
@@ -35,14 +34,14 @@ class PatientProfile extends Component {
     super(props);
     this.state = {
       name: "",
-      cnic:"",
+      cnic: "",
       email: "",
       phone: "",
       address: "",
       city: "",
       district: "",
-      is_corporate_user:"",
-      corporate_unique_id:"",
+      is_corporate_user: "",
+      corporate_unique_id: "",
     };
   }
 
@@ -61,8 +60,8 @@ class PatientProfile extends Component {
         address: this.props.success.address,
         city: this.props.success.city,
         district: this.props.success.district,
-        is_corporate_user:this.props.success.is_corporate_user,
-      corporate_unique_id:this.props.success.corporate_unique_id,
+        is_corporate_user: this.props.success.is_corporate_user,
+        corporate_unique_id: this.props.success.corporate_unique_id,
       });
     }, 3000);
   }
@@ -73,20 +72,13 @@ class PatientProfile extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+            <Breadcrumb title="Ilaaj4u" breadcrumbItem="Profile" />
 
             <Row>
               <Col lg="12">
                 <Card>
                   <CardBody>
                     <div className="d-flex">
-                      <div className="me-3">
-                        <img
-                          src={this.state.logo}
-                          alt=""
-                          className="avatar-md rounded-circle img-thumbnail"
-                        />
-                      </div>
                       <div className="align-self-center flex-1">
                         <div className="text-muted">
                           <h5>{this.state.name}</h5>
@@ -122,25 +114,20 @@ class PatientProfile extends Component {
                     complaint_handling_phone:
                       (this.state && this.state.complaint_handling_phone) || "",
                     is_corporate_user:
-                      (this.state &&
-                        this.state.is_corporate_user) ||
-                      "No",
+                      (this.state && this.state.is_corporate_user) || "No",
                   }}
                   validationSchema={Yup.object().shape({
                     name: Yup.string()
                       .required("Please enter your name")
                       .min(3, "Please enter at least 3 characters")
                       .max(255, "Please enter maximum 255 characters"),
-                      cnic: Yup.string()
+                    cnic: Yup.string()
                       .required("Please enter your CNIC")
                       .matches(
                         /^[0-9]{5}-[0-9]{7}-[0-9]$/,
                         "Please enter a valid CNIC e.g. 37106-8234782-3"
                       )
-                      .max(
-                        255,
-                        "Please enter maximum 255 characters"
-                      ),
+                      .max(255, "Please enter maximum 255 characters"),
                     email: Yup.string()
                       .required("Please enter your email")
                       .email("Please enter valid email")
@@ -163,10 +150,10 @@ class PatientProfile extends Component {
                       .max(255, "Please enter maximum 255 characters"),
                   })}
                   onSubmit={values => {
-                      this.props.updatePatientProfile(
-                        values,
-                        this.props.match.params.id
-                      );
+                    this.props.updatePatientProfile(
+                      values,
+                      this.props.match.params.id
+                    );
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
 
@@ -212,59 +199,55 @@ class PatientProfile extends Component {
                       </div>
                       {/* CNIC field */}
                       <div className="mb-3">
-                                  <Label for="cnic" className="form-label">
-                                    CNIC
-                                  </Label>
-                                  <Field
-                                    id="cnic"
-                                    name="cnic"
-                                    placeholder="12345-6789012-1"
-                                    type="text"
-                                    readOnly={true} 
-                                    onChange={e =>
-                                      this.setState({ cnic: e.target.value })
-                                    }
-                                    value={this.state.cnic}
-                                    className={
-                                      "form-control" +
-                                      (errors.cnic && touched.cnic
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="cnic"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                       {/* Phone field */}
-                       <div className="mb-3">
-                                  <Label for="phone" className="form-label">
-                                    Phone
-                                  </Label>
-                                  <Field
-                                    id="phone"
-                                    name="phone"
-                                    placeholder="+923123456789"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ phone: e.target.value })
-                                    }
-                                    value={this.state.phone}
-                                    className={
-                                      "form-control" +
-                                      (errors.phone && touched.phone
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="phone"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                        <Label for="cnic" className="form-label">
+                          CNIC
+                        </Label>
+                        <Field
+                          id="cnic"
+                          name="cnic"
+                          placeholder="12345-6789012-1"
+                          type="text"
+                          readOnly={true}
+                          onChange={e =>
+                            this.setState({ cnic: e.target.value })
+                          }
+                          value={this.state.cnic}
+                          className={
+                            "form-control" +
+                            (errors.cnic && touched.cnic ? " is-invalid" : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="cnic"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+                      {/* Phone field */}
+                      <div className="mb-3">
+                        <Label for="phone" className="form-label">
+                          Phone
+                        </Label>
+                        <Field
+                          id="phone"
+                          name="phone"
+                          placeholder="+923123456789"
+                          type="text"
+                          onChange={e =>
+                            this.setState({ phone: e.target.value })
+                          }
+                          value={this.state.phone}
+                          className={
+                            "form-control" +
+                            (errors.phone && touched.phone ? " is-invalid" : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="phone"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
 
                       {/* Email field */}
                       <div className="mb-3">
@@ -376,57 +359,54 @@ class PatientProfile extends Component {
                       </div>
                       {/* Is Corporate User field */}
                       <div className="mb-3">
-                                  <Label
-                                    for="is_corporate_user"
-                                    className="form-label"
-                                  >
-                                    Are you a corporate user?
-                                  </Label>
-                                  <Field
-                                    name="is_corporate_user"
-                                    component="select"
-                                    defaultValue="No"
-                                    onChange={e =>
-                                      this.setState({
-                                        is_corporate_user: e.target.value,
-                                      })
-                                    }
-                                    value={this.state.is_corporate_user}
-                                    className="form-select"
-                                  >
-                                    <option value="Yes">Yes</option>
-                                    <option value="No">No</option>
-                                  </Field>
-                                </div>
-                                {/* Corporate Unique ID field */}
-                                {this.state.is_corporate_user === "Yes" && (
-                                  <div className="mb-3">
-                                    <Label
-                                      for="corporate_unique_id"
-                                      className="form-label"
-                                    >
-                                      Corporate Unique ID
-                                    </Label>
-                                    <Field
-                                      id="corporate_unique_id"
-                                      name="corporate_unique_id"
-                                      placeholder="2594153c-a86d-4a70-8136-ee93e01c88cc"
-                                      type="text"
-                                      className={
-                                        "form-control" +
-                                        (errors.corporate_unique_id &&
-                                        touched.corporate_unique_id
-                                          ? " is-invalid"
-                                          : "")
-                                      }
-                                    />
-                                    <ErrorMessage
-                                      name="corporate_unique_id"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
-                                  </div>
-                                   )}
+                        <Label for="is_corporate_user" className="form-label">
+                          Are you a corporate user?
+                        </Label>
+                        <Field
+                          name="is_corporate_user"
+                          component="select"
+                          defaultValue="No"
+                          onChange={e =>
+                            this.setState({
+                              is_corporate_user: e.target.value,
+                            })
+                          }
+                          value={this.state.is_corporate_user}
+                          className="form-select"
+                        >
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </Field>
+                      </div>
+                      {/* Corporate Unique ID field */}
+                      {this.state.is_corporate_user === "Yes" && (
+                        <div className="mb-3">
+                          <Label
+                            for="corporate_unique_id"
+                            className="form-label"
+                          >
+                            Corporate Unique ID
+                          </Label>
+                          <Field
+                            id="corporate_unique_id"
+                            name="corporate_unique_id"
+                            placeholder="2594153c-a86d-4a70-8136-ee93e01c88cc"
+                            type="text"
+                            className={
+                              "form-control" +
+                              (errors.corporate_unique_id &&
+                              touched.corporate_unique_id
+                                ? " is-invalid"
+                                : "")
+                            }
+                          />
+                          <ErrorMessage
+                            name="corporate_unique_id"
+                            component="div"
+                            className="invalid-feedback"
+                          />
+                        </div>
+                      )}
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
                           Update Profile
