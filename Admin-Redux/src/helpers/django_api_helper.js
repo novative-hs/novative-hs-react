@@ -517,16 +517,36 @@ export const updateLabProfile = (labProfile, id) => {
   });
 };
 
-// get Nearby Labs
-// export const getNearbyLabs = () => get(url.GET_NEARBY_LABS);
+// ------------- Patient Profile Requests START -------------
+export const getPatientProfile = id =>
+  get(`${url.GET_PATIENT_PROFILE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
-export const getNearbyLabs = address => {
+export const updatePatientProfile = (patientProfile, id) => {
+  let formData = new FormData();
+  formData.append("account_id", id);
+  formData.append("name", patientProfile.name);
+  formData.append("cnic", patientProfile.cnic);
+  formData.append("email", patientProfile.email);
+  formData.append("phone", patientProfile.phone);
+  formData.append("address", patientProfile.address);
+  formData.append("city", patientProfile.city);
+  formData.append("district", patientProfile.district);
+
+  return axios.put(`${url.UPDATE_PATIENT_PROFILE}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+// Get Nearby Labs
+export const getNearbyLabs = (address, id) => {
   let formData = new FormData();
   formData.append("address", address);
 
-  console.log("Address; ", address);
+  console.log("Address: ", address);
 
-  return axios.post(url.GET_NEARBY_LABS, formData, {
+  return axios.post(`${url.GET_NEARBY_LABS}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };

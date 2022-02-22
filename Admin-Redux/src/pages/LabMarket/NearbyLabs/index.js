@@ -30,14 +30,11 @@ import StarRatings from "react-star-ratings";
 import Nouislider from "nouislider-react";
 import "nouislider/distribute/nouislider.css";
 
-//Import Product Images
-import { productImages } from "assets/images/product";
-
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import data
-import { discountData, productsData } from "common/data";
+import { productsData } from "common/data";
 
 //Import actions
 import { getNearbyLabs } from "store/labmarket/actions";
@@ -47,17 +44,11 @@ class NearbyLabs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      FilterClothes: [
-        { id: 1, name: "T-shirts", link: "#" },
-        { id: 2, name: "Shirts", link: "#" },
-        { id: 3, name: "Jeans", link: "#" },
-        { id: 4, name: "Jackets", link: "#" },
-      ],
       ratingvalues: [],
       nearbyLabs: [],
       apiURL: process.env.REACT_APP_BACKENDURL,
       activeTab: "1",
-      address: "H-13, Islamabad",
+      address: "",
       discountData: [],
       filters: {
         discount: [],
@@ -74,7 +65,7 @@ class NearbyLabs extends Component {
     const { nearbyLabs, onGetNearbyLabs } = this.props;
     setTimeout(() => {
       onGetNearbyLabs(this.state.address);
-    }, 3000);
+    }, 1000);
     this.setState({ nearbyLabs });
     // this.setState({ discountData });
   }
@@ -82,7 +73,6 @@ class NearbyLabs extends Component {
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { nearbyLabs } = this.props;
-    console.log("Test: ", this.state.nearbyLabs);
     if (
       isEmpty(prevProps.nearbyLabs) &&
       !isEmpty(nearbyLabs) &&
@@ -190,13 +180,17 @@ class NearbyLabs extends Component {
     this.setState({ page });
   };
 
-  handleChange = e => {
-    var input = document.getElementById("pac-input");
-    var searchBox = new window.google.maps.places.SearchBox(input);
-    searchBox.addListener("places_changed", function () {
-      console.log("Address: ", e.target.value);
-      return e.target.value;
-      // this.setState({ nearbyLabs });
+  handleChange = (e, labProps) => {
+    var searchBox = new window.google.maps.places.SearchBox(e.target);
+
+    searchBox.addListener("places_changed", () => {
+      setTimeout(() => {
+        const { onGetNearbyLabs } = this.props;
+        onGetNearbyLabs(e.target.value);
+        setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 3000);
+      }, 1000);
     });
   };
 
@@ -217,20 +211,6 @@ class NearbyLabs extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="mb-4">Filter</CardTitle>
-                    <div>
-                      <h5 className="font-size-14 mb-3">Clothes</h5>
-                      {/* Render Cloth Categories */}
-                      <ul className="list-unstyled product-list">
-                        {this.state.FilterClothes.map((cloth, key) => (
-                          <li key={"_li_" + key}>
-                            <Link to={cloth.link}>
-                              <i className="mdi mdi-chevron-right me-1" />{" "}
-                              {cloth.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
                     <div className="mt-4 pt-3">
                       <h5 className="font-size-14 mb-4">Price</h5>
                       <br />
@@ -364,7 +344,10 @@ class NearbyLabs extends Component {
                         <div className="position-relative">
                           <Input
                             defaultValue={this.state.address}
-                            onChange={this.handleChange}
+                            onChange={e => this.handleChange(e, this.props)}
+                            searchOptions={{
+                              componentRestrictions: { country: ["pk"] },
+                            }}
                             id="pac-input"
                             type="text"
                             className="form-control border-0"
@@ -408,9 +391,7 @@ class NearbyLabs extends Component {
                       <Col xl="4" sm="6" key={"_col_" + key}>
                         <Card
                           onClick={() =>
-                            history.push(
-                              `/ecommerce-product-details/${nearbyLab.id}`
-                            )
+                            history.push(`nearby-lab-detail/${nearbyLab.id}`)
                           }
                         >
                           <CardBody>
@@ -527,6 +508,7 @@ class NearbyLabs extends Component {
 }
 
 NearbyLabs.propTypes = {
+  match: PropTypes.object,
   nearbyLabs: PropTypes.array,
   history: any,
   onGetNearbyLabs: PropTypes.func,
@@ -536,8 +518,9 @@ const mapStateToProps = state => ({
   nearbyLabs: state.ecommerce.nearbyLabs,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetNearbyLabs: address => dispatch(getNearbyLabs(address)),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetNearbyLabs: address =>
+    dispatch(getNearbyLabs(address, ownProps.match.params.id)),
 });
 
 export default connect(

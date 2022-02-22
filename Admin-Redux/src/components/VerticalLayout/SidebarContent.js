@@ -120,7 +120,6 @@ class SidebarContent extends Component {
                 </li>
 
                 <li className="menu-title">{this.props.t("Patient")}</li>
-                {/* Patient nearby marketplace */}
 
                 <li>
                   <Link to="/#" className="has-arrow">
@@ -141,26 +140,6 @@ class SidebarContent extends Component {
                     </li>
                   </ul>
                 </li>
-                {/* Patient Test Appointment Links */}
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <i className="bx bx-store" />
-                    <span>{this.props.t("Test Appointments")}</span>
-                  </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link
-                        to={
-                          "/dashboard-patient/" +
-                          this.props.match.params.id +
-                          "/patient-test-appointments-completed-list"
-                        }
-                      >
-                        {this.props.t("Completed Test Appointments")}
-                      </Link>
-                    </li>
-                  </ul>
-                  </li>
               </ul>
             </div>
           </SimpleBar>
@@ -723,6 +702,18 @@ class SidebarContent extends Component {
                     >
                       <i className="mdi mdi-certificate" />
                       <span>{this.props.t("Lab-Pathologist")}</span>
+                    </Link>
+                    </li>
+                     <li>
+                    <Link
+                      to={
+                        "/lab-sample-collectors-list/" +
+                        this.props.match.params.id +
+                        "/LabSampleCollectorsList"
+                      }
+                    >
+                      <i className="mdi mdi-certificate" />
+                      <span>{this.props.t("SampleCollectors")}</span>
                     </Link>
                     </li>
                     <li>

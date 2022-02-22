@@ -13,6 +13,7 @@ import Calendar from "../pages/Calendar/index";
 // User profile
 import UserProfile from "../pages/Authentication/UserProfile";
 import LabProfile from "../pages/Authentication/LabProfile";
+import PatientProfile from "../pages/Authentication/PatientProfile";
 
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
@@ -37,6 +38,7 @@ import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
 
 //LabMarket PagesEcommerce
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
@@ -182,6 +184,7 @@ import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-li
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
 import PathologistsList from "../pages/Pathologists/pathologists-list";
 import LabPathologistsList from "../pages/LabPathologistList/lab-pathologist-list";
+import LabSampleCollectorsList from "../pages/LabSampleCollectors/lab-sample-collectors-list";
 import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
 import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
@@ -349,6 +352,8 @@ const publicRoutes = [
   { path: "/lab-information/:id", component: LabInformation },
   { path: "/corporate-information/:id", component: CorporateInformation },
   { path: "/lab-pathologist-list/:id",component: LabPathologistsList},
+  { path: "/lab-sample-collectors-list/:id",component: LabSampleCollectorsList},
+
   { path: "/pages-maintenance", component: PagesMaintenance },
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
@@ -416,9 +421,16 @@ const labAuthProtectedRoutes = [
 
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
+  {
+    path: "/dashboard-patient/:id/profile",
+    component: PatientProfile,
+  },
   { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
+  {
+    path: "/dashboard-patient/:id/nearby-lab-detail/:lab_account_id",
+    component: NearbyLabDetail,
+  },
 ];
-
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
 ];

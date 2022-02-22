@@ -51,9 +51,13 @@ export const GET_TEST_APPOINTMENTS_IN_PROCESS_LIST = `${API_ENDPOINT}/api/lab/te
 export const GET_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api/lab/test-appointment-completed-list`;
 export const UPDATE_TEST_APPOINTMENT = `${API_ENDPOINT}/api/lab/test-appointment-update`;
 
-// PROFILES
+// LAB PROFILES
 export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
+
+// PATIENT PROFILES
+export const GET_PATIENT_PROFILE = `${API_ENDPOINT}/api/patient/patient-profile`;
+export const UPDATE_PATIENT_PROFILE = `${API_ENDPOINT}/api/patient/patient-profile`;
 
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
