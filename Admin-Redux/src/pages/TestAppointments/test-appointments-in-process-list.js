@@ -81,7 +81,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "booking_date_time",
-          text: "Booking date time",
+          text: "Booked on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -95,7 +95,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: "Requested appointment date time",
+          text: "Requested on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -109,7 +109,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "sample_collection_date_time",
-          text: "Sample collection date time",
+          text: "Sample collected on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -123,7 +123,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "result_upload_date_time",
-          text: "Result upload date time",
+          text: "Result uploaded on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -518,7 +518,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Booking date time
+                                                      Booked on
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
@@ -568,7 +568,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Result upload date time
+                                                      Result uploaded on
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"

@@ -2,15 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { withRouter, Link } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardImg,
-  Col,
-  Container,
-  Row,
-} from "reactstrap";
+import { withRouter } from "react-router-dom";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 import paginationFactory, {
   PaginationProvider,
@@ -20,20 +13,12 @@ import paginationFactory, {
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-
-import images from "assets/images";
-
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import DeleteModal from "components/Common/DeleteModal";
 
-import {
-  getQualityCertificates,
-} from "store/quality-certificates/actions";
+import { getQualityCertificates } from "store/quality-certificates/actions";
 
-class QualityCertificatesList extends Component {
+class LabQualityCertificates extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
@@ -83,7 +68,6 @@ class QualityCertificatesList extends Component {
           text: "Name",
           sort: true,
         },
-
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -200,7 +184,6 @@ class QualityCertificatesList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
-
                                   </div>
                                 </Col>
                               </Row>
@@ -227,7 +210,7 @@ class QualityCertificatesList extends Component {
   }
 }
 
-QualityCertificatesList.propTypes = {
+LabQualityCertificates.propTypes = {
   match: PropTypes.object,
   qualityCertificates: PropTypes.array,
   className: PropTypes.any,
@@ -246,4 +229,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(QualityCertificatesList));
+)(withRouter(LabQualityCertificates));

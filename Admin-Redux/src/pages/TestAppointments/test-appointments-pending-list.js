@@ -77,7 +77,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "booking_date_time",
-          text: "Booking date time",
+          text: "Booked on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -91,7 +91,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: "Requested appointment date time",
+          text: "Requested on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -468,7 +468,7 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Booking date time
+                                                      Booked on
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
@@ -552,7 +552,7 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Result upload date time
+                                                      Result uploaded on
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"

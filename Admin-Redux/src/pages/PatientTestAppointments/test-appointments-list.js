@@ -47,7 +47,7 @@ class TestAppointmentsList extends Component {
         },
         {
           dataField: "booking_date_time",
-          text: "Appointment booked on",
+          text: "Booked on",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
