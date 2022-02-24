@@ -77,7 +77,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "booking_date_time",
-          text: "Booked on",
+          text: "Appointment booked on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -91,7 +91,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: "Requested on",
+          text: "Appointment requested on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -468,7 +468,7 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Booked on
+                                                      Appointment booked on
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
@@ -484,8 +484,7 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Requested appointment date
-                                                      time
+                                                      Appointment requested on
                                                     </Label>
                                                     <input
                                                       name="requested_appointment_date_time"
@@ -501,8 +500,8 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Sample collection date
-                                                      time
+                                                      Estimated sample
+                                                      collection
                                                     </Label>
                                                     <input
                                                       name="sample_collection_date_time"
@@ -552,7 +551,7 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Result uploaded on
+                                                      Estimated result upload
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"

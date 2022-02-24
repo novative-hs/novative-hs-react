@@ -60,7 +60,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "booking_date_time",
-          text: "Booked on",
+          text: "Appointment booked on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -74,7 +74,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: "Requested on",
+          text: "Appointment requested on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -88,7 +88,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "sample_collection_date_time",
-          text: "Sample collected on",
+          text: "Estimated sample collection",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -102,7 +102,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "result_upload_date_time",
-          text: "Result uploaded on",
+          text: "Estimated result upload",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
