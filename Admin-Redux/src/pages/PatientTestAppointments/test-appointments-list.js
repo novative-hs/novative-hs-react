@@ -65,11 +65,17 @@ class TestAppointmentsList extends Component {
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <span>
-                {new Date(
-                  patientTestAppointment.sample_collection_date_time
-                ).toLocaleString("en-US")}
-              </span>
+              {patientTestAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {patientTestAppointment.status != "Pending" ? (
+                <span>
+                  {new Date(
+                    patientTestAppointment.sample_collection_date_time
+                  ).toLocaleString("en-US")}
+                </span>
+              ) : null}
             </>
           ),
         },
@@ -79,11 +85,17 @@ class TestAppointmentsList extends Component {
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <span>
-                {new Date(
-                  patientTestAppointment.result_upload_date_time
-                ).toLocaleString("en-US")}
-              </span>
+              {patientTestAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {patientTestAppointment.status != "Pending" ? (
+                <span>
+                  {new Date(
+                    patientTestAppointment.result_upload_date_time
+                  ).toLocaleString("en-US")}
+                </span>
+              ) : null}
             </>
           ),
         },
@@ -94,35 +106,27 @@ class TestAppointmentsList extends Component {
           formatter: (cellContent, patientTestAppointment) => (
             <>
               {patientTestAppointment.status == "Pending" ? (
-                <div className="text-center">
-                  <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                    {patientTestAppointment.status}
-                  </span>
-                </div>
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                  {patientTestAppointment.status}
+                </span>
               ) : null}
 
               {patientTestAppointment.status == "Confirmed" ? (
-                <div className="text-center">
-                  <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                    {patientTestAppointment.status}
-                  </span>
-                </div>
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {patientTestAppointment.status}
+                </span>
               ) : null}
 
               {patientTestAppointment.status == "Sample Collected" ? (
-                <div className="text-center">
-                  <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning">
-                    {patientTestAppointment.status}
-                  </span>
-                </div>
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning">
+                  {patientTestAppointment.status}
+                </span>
               ) : null}
 
               {patientTestAppointment.status == "Result Uploaded" ? (
-                <div className="text-center">
-                  <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-success">
-                    {patientTestAppointment.status}
-                  </span>
-                </div>
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-success">
+                  {patientTestAppointment.status}
+                </span>
               ) : null}
             </>
           ),

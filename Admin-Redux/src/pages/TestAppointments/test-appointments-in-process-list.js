@@ -142,19 +142,15 @@ class TestAppointmentsInProcessList extends Component {
           formatter: (cellContent, patientTestAppointment) => (
             <>
               {patientTestAppointment.status == "Confirmed" ? (
-                <div className="text-center">
-                  <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                    {patientTestAppointment.status}
-                  </span>
-                </div>
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {patientTestAppointment.status}
+                </span>
               ) : null}
 
               {patientTestAppointment.status == "Sample Collected" ? (
-                <div className="text-center">
-                  <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning">
-                    {patientTestAppointment.status}
-                  </span>
-                </div>
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning">
+                  {patientTestAppointment.status}
+                </span>
               ) : null}
             </>
           ),
