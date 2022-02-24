@@ -652,7 +652,7 @@ class LabProfile extends Component {
                       </div>
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
-                          Update User Name
+                          Update Profile
                         </Button>
                       </div>
                     </Form>

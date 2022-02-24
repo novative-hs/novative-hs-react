@@ -1,6 +1,15 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Alert, Button, Card, CardBody, Col, Container, Row, Label } from "reactstrap";
+import {
+  Alert,
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Label,
+} from "reactstrap";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -147,15 +156,13 @@ class UserProfile extends Component {
                           type="hidden"
                           className={
                             "form-control" +
-                            (errors.idx && touched.idx
-                              ? " is-invalid"
-                              : "")
+                            (errors.idx && touched.idx ? " is-invalid" : "")
                           }
                         />
                       </div>
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
-                          Update User Name
+                          Update Profile
                         </Button>
                       </div>
                     </Form>
