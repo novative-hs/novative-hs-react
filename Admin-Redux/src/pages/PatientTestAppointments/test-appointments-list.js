@@ -46,6 +46,11 @@ class TestAppointmentsList extends Component {
           sort: true,
         },
         {
+          dataField: "relationsip_with_patient",
+          text: "Booked for",
+          sort: true,
+        },
+        {
           dataField: "booking_date_time",
           text: "Appointment booked on",
           sort: true,
