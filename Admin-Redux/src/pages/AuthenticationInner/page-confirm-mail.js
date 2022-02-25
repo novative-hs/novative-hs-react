@@ -1,11 +1,11 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Link } from "react-router-dom"
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Link } from "react-router-dom";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/logo-dark.png";
+import logolight from "../../assets/images/logo-light.png";
 
 export default class ConfirmMail extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class ConfirmMail extends Component {
       <React.Fragment>
         <div className="account-pages my-5 pt-sm-5">
           <MetaTags>
-            <title>Confirm Mail | Skote - React Admin & Dashboard Template</title>
+            <title>Confirm Mail | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container>
             <Row>
@@ -67,7 +67,7 @@ export default class ConfirmMail extends Component {
                 </Card>
                 <div className="mt-5 text-center">
                   <p>
-                    © {new Date().getFullYear()} Skote. Crafted with{" "}
+                    © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                     <i className="mdi mdi-heart text-danger"></i> by Themesbrand
                   </p>
                 </div>
@@ -76,6 +76,6 @@ export default class ConfirmMail extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

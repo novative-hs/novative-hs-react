@@ -1,10 +1,10 @@
-import React, { Component } from "react"
-import { Row, Col } from "reactstrap"
-import MetaTags from 'react-meta-tags';
-import { Link } from "react-router-dom"
+import React, { Component } from "react";
+import { Row, Col } from "reactstrap";
+import MetaTags from "react-meta-tags";
+import { Link } from "react-router-dom";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 export default class EmailBasicTemplte extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class EmailBasicTemplte extends Component {
         <div className="page-content">
           {/* add meta title */}
           <MetaTags>
-            <title>Basic Action | Skote - React Admin & Dashboard Template</title>
+            <title>Basic Action | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Email Template" breadcrumbItem="Basic Action" />
@@ -122,7 +122,8 @@ export default class EmailBasicTemplte extends Component {
                                     padding: "30px",
                                     borderRadius: "7px",
                                     backgroundColor: "#fff",
-                                    boxShadow: "0 0.75rem 1.5rem rgba(18,38,63,.03)"
+                                    boxShadow:
+                                      "0 0.75rem 1.5rem rgba(18,38,63,.03)",
                                   }}
                                   valign="top"
                                 >
@@ -284,7 +285,7 @@ export default class EmailBasicTemplte extends Component {
                                           }}
                                           valign="top"
                                         >
-                                          <b>Skote</b>
+                                          <b>Ilaaj4u</b>
                                           <p>Support Team</p>
                                         </td>
                                       </tr>
@@ -312,7 +313,7 @@ export default class EmailBasicTemplte extends Component {
                                           }}
                                           valign="top"
                                         >
-                                          © {new Date().getFullYear()} Skote
+                                          © {new Date().getFullYear()} Ilaaj4u
                                         </td>
                                       </tr>
                                     </tbody>
@@ -331,6 +332,6 @@ export default class EmailBasicTemplte extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

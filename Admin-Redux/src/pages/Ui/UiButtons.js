@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 
 import {
   Button,
@@ -34,7 +34,7 @@ class UiButtons extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Buttons | Skote - React Admin & Dashboard Template</title>
+            <title>Buttons | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Buttons" />
@@ -49,45 +49,15 @@ class UiButtons extends Component {
                       serving its own semantic purpose.
                     </p>
                     <div className="button-items">
-                      <Button
-                        color="primary"
-                      >
-                        Primary
-                      </Button>
-                      <Button color="secondary">
-                        Secondary
-                      </Button>
-                      <Button
-                        color="success"
-                      >
-                        Success
-                      </Button>
-                      <Button
-                        color="info"
-                      >
-                        Info
-                      </Button>
-                      <Button
-                        color="warning"
-                      >
-                        Warning
-                      </Button>
-                      <Button
-                        color="danger"
-                      >
-                        Danger
-                      </Button>
-                      <Button
-                        color="dark"
-                      >
-                        Dark
-                      </Button>
-                      <Button color="link">
-                        Link
-                      </Button>
-                      <Button color="light">
-                        Light
-                      </Button>
+                      <Button color="primary">Primary</Button>
+                      <Button color="secondary">Secondary</Button>
+                      <Button color="success">Success</Button>
+                      <Button color="info">Info</Button>
+                      <Button color="warning">Warning</Button>
+                      <Button color="danger">Danger</Button>
+                      <Button color="dark">Dark</Button>
+                      <Button color="link">Link</Button>
+                      <Button color="light">Light</Button>
                     </div>
                   </CardBody>
                 </Card>
@@ -103,46 +73,25 @@ class UiButtons extends Component {
                       button.
                     </p>
                     <div className="button-items">
-                      <Button
-                        color="primary"
-                        outline
-                      >
+                      <Button color="primary" outline>
                         Primary
                       </Button>
-                      <Button
-                        color="secondary"
-                        outline
-                      >
+                      <Button color="secondary" outline>
                         Secondary
                       </Button>
-                      <Button
-                        color="success"
-                        outline
-                      >
+                      <Button color="success" outline>
                         Success
                       </Button>
-                      <Button
-                        color="info"
-                        outline
-                      >
+                      <Button color="info" outline>
                         Info
                       </Button>
-                      <Button
-                        color="warning"
-                        outline
-                      >
+                      <Button color="warning" outline>
                         Warning
                       </Button>
-                      <Button
-                        color="danger"
-                        outline
-                      >
+                      <Button color="danger" outline>
                         Danger
                       </Button>
-                      <Button
-                        color="dark"
-                        outline
-                      >
+                      <Button color="dark" outline>
                         Dark
                       </Button>
                       <Button color="light" outline>
@@ -164,55 +113,31 @@ class UiButtons extends Component {
                       border.
                     </p>
                     <div className="button-items">
-                      <Button
-                        color="primary"
-                        className="btn-rounded"
-                      >
+                      <Button color="primary" className="btn-rounded">
                         Primary
                       </Button>
-                      <Button
-                        color="secondary"
-                        className="btn-rounded"
-                      >
+                      <Button color="secondary" className="btn-rounded">
                         Secondary
                       </Button>
-                      <Button
-                        color="success"
-                        className="btn-rounded"
-                      >
+                      <Button color="success" className="btn-rounded">
                         Success
                       </Button>
-                      <Button
-                        color="info"
-                        className="btn-rounded"
-                      >
+                      <Button color="info" className="btn-rounded">
                         Info
                       </Button>
-                      <Button
-                        color="warning"
-                        className="btn-rounded"
-                      >
+                      <Button color="warning" className="btn-rounded">
                         Warning
                       </Button>
-                      <Button
-                        color="danger"
-                        className="btn-rounded"
-                      >
+                      <Button color="danger" className="btn-rounded">
                         Danger
                       </Button>
-                      <Button
-                        color="dark"
-                        className="btn-rounded"
-                      >
+                      <Button color="dark" className="btn-rounded">
                         Dark
                       </Button>
                       <Button color="link" className="btn-rounded">
                         Link
                       </Button>
-                      <Button
-                        color="light"
-                        className="btn-rounded"
-                      >
+                      <Button color="light" className="btn-rounded">
                         Light
                       </Button>
                     </div>
@@ -226,45 +151,27 @@ class UiButtons extends Component {
                     <p className="mb-3 card-title-desc">Add icon in button.</p>
 
                     <div className="button-items mt-4">
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                      >
+                      <button type="button" className="btn btn-primary">
                         <i className="bx bx-smile font-size-16 align-middle me-2"></i>
                         Primary
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-success"
-                      >
+                      <button type="button" className="btn btn-success">
                         <i className="bx bx-check-double font-size-16 align-middle me-2"></i>
                         Success
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-warning"
-                      >
+                      <button type="button" className="btn btn-warning">
                         <i className="bx bx-error font-size-16 align-middle me-2"></i>
                         Warning
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                      >
+                      <button type="button" className="btn btn-danger">
                         <i className="bx bx-block font-size-16 align-middle me-2"></i>
                         Danger
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-dark"
-                      >
+                      <button type="button" className="btn btn-dark">
                         <i className="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
                         Loading
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-light"
-                      >
+                      <button type="button" className="btn btn-light">
                         <i className="bx bx-hourglass bx-spin font-size-16 align-middle me-2"></i>
                         Loading
                       </button>
@@ -500,28 +407,16 @@ class UiButtons extends Component {
                     </p>
 
                     <div className="button-items">
-                      <button
-                        type="button"
-                        className="btn btn-primary w-xs"
-                      >
+                      <button type="button" className="btn btn-primary w-xs">
                         Xs
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-danger w-sm"
-                      >
+                      <button type="button" className="btn btn-danger w-sm">
                         Small
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-warning w-md"
-                      >
+                      <button type="button" className="btn btn-warning w-md">
                         Medium
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-success w-lg"
-                      >
+                      <button type="button" className="btn btn-success w-lg">
                         Large
                       </button>
                     </div>
@@ -538,9 +433,7 @@ class UiButtons extends Component {
                     <p className="card-title-desc">
                       The <code className="highlighter-rouge">.btn</code>
                       classes are designed to be used with the
-                      <code className="highlighter-rouge">
-                        &lt;button&gt;
-                      </code>
+                      <code className="highlighter-rouge">&lt;button&gt;</code>
                       element. However, you can also use these classes on
                       <code className="highlighter-rouge">&lt;Link&gt;</code> or
                       <code className="highlighter-rouge">&lt;input&gt;</code>
@@ -549,11 +442,7 @@ class UiButtons extends Component {
                     </p>
 
                     <div className="button-items">
-                      <Link
-                        className="btn btn-primary"
-                        to="#"
-                        role="button"
-                      >
+                      <Link className="btn btn-primary" to="#" role="button">
                         Link
                       </Link>
                       <Button
@@ -594,9 +483,7 @@ class UiButtons extends Component {
                       to toggle a button’s
                       <code className="highlighter-rouge">active</code>
                       state. If you’re pre-toggling a button, you must manually
-                      add the <code className="highlighter-rouge">
-                        .active
-                      </code>
+                      add the <code className="highlighter-rouge">.active</code>
                       class
                       <strong>and</strong>
                       <code className="highlighter-rouge">
@@ -627,14 +514,22 @@ class UiButtons extends Component {
                   <CardBody>
                     <CardTitle>Block Buttons</CardTitle>
                     <p className="mb-3 card-title-desc">
-                      Create block level buttons—those that span the full width of
-                      a parent—by adding{" "}
+                      Create block level buttons—those that span the full width
+                      of a parent—by adding{" "}
                       <code className="highlighter-rouge">.btn-block</code>.
                     </p>
 
                     <div className="d-grid gap-2">
-                      <Button color="primary" type="button" className="btn-lg">Block level button</Button>
-                      <Button color="secondary" type="button" className="btn-sm">Block level button</Button>
+                      <Button color="primary" type="button" className="btn-lg">
+                        Block level button
+                      </Button>
+                      <Button
+                        color="secondary"
+                        type="button"
+                        className="btn-sm"
+                      >
+                        Block level button
+                      </Button>
                     </div>
                   </CardBody>
                 </Card>
@@ -662,25 +557,87 @@ class UiButtons extends Component {
                       <div>
                         <div className="d-flex flex-wrap gap-3">
                           <div className="btn-group" role="group">
-                            <input type="checkbox" className="btn-check" id="btncheck1" autoComplete="off" defaultChecked />
-                            <label className="btn btn-primary" htmlFor="btncheck1">Checkbox 1</label>
+                            <input
+                              type="checkbox"
+                              className="btn-check"
+                              id="btncheck1"
+                              autoComplete="off"
+                              defaultChecked
+                            />
+                            <label
+                              className="btn btn-primary"
+                              htmlFor="btncheck1"
+                            >
+                              Checkbox 1
+                            </label>
 
-                            <input type="checkbox" className="btn-check" id="btncheck2" autoComplete="off" />
-                            <label className="btn btn-primary" htmlFor="btncheck2">Checkbox 2</label>
+                            <input
+                              type="checkbox"
+                              className="btn-check"
+                              id="btncheck2"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-primary"
+                              htmlFor="btncheck2"
+                            >
+                              Checkbox 2
+                            </label>
 
-                            <input type="checkbox" className="btn-check" id="btncheck3" autoComplete="off" />
-                            <label className="btn btn-primary" htmlFor="btncheck3">Checkbox 3</label>
+                            <input
+                              type="checkbox"
+                              className="btn-check"
+                              id="btncheck3"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-primary"
+                              htmlFor="btncheck3"
+                            >
+                              Checkbox 3
+                            </label>
                           </div>
 
                           <div className="btn-group" role="group">
-                            <input type="checkbox" className="btn-check" id="btncheck4" autoComplete="off" defaultChecked />
-                            <label className="btn btn-outline-primary" htmlFor="btncheck4">Checkbox 4</label>
+                            <input
+                              type="checkbox"
+                              className="btn-check"
+                              id="btncheck4"
+                              autoComplete="off"
+                              defaultChecked
+                            />
+                            <label
+                              className="btn btn-outline-primary"
+                              htmlFor="btncheck4"
+                            >
+                              Checkbox 4
+                            </label>
 
-                            <input type="checkbox" className="btn-check" id="btncheck5" autoComplete="off" />
-                            <label className="btn btn-outline-primary" htmlFor="btncheck5">Checkbox 5</label>
+                            <input
+                              type="checkbox"
+                              className="btn-check"
+                              id="btncheck5"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-outline-primary"
+                              htmlFor="btncheck5"
+                            >
+                              Checkbox 5
+                            </label>
 
-                            <input type="checkbox" className="btn-check" id="btncheck6" autoComplete="off" />
-                            <label className="btn btn-outline-primary" htmlFor="btncheck6">Checkbox 6</label>
+                            <input
+                              type="checkbox"
+                              className="btn-check"
+                              id="btncheck6"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-outline-primary"
+                              htmlFor="btncheck6"
+                            >
+                              Checkbox 6
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -688,25 +645,93 @@ class UiButtons extends Component {
                       <div>
                         <div className="d-flex flex-wrap gap-3">
                           <div className="btn-group" role="group">
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" defaultChecked />
-                            <label className="btn btn-secondary" htmlFor="btnradio1">Radio 1</label>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id="btnradio1"
+                              autoComplete="off"
+                              defaultChecked
+                            />
+                            <label
+                              className="btn btn-secondary"
+                              htmlFor="btnradio1"
+                            >
+                              Radio 1
+                            </label>
 
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off" />
-                            <label className="btn btn-secondary" htmlFor="btnradio2">Radio 2</label>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id="btnradio2"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-secondary"
+                              htmlFor="btnradio2"
+                            >
+                              Radio 2
+                            </label>
 
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off" />
-                            <label className="btn btn-secondary" htmlFor="btnradio3">Radio 3</label>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id="btnradio3"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-secondary"
+                              htmlFor="btnradio3"
+                            >
+                              Radio 3
+                            </label>
                           </div>
 
                           <div className="btn-group" role="group">
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio4" autoComplete="off" defaultChecked />
-                            <label className="btn btn-outline-secondary" htmlFor="btnradio4">Radio 4</label>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id="btnradio4"
+                              autoComplete="off"
+                              defaultChecked
+                            />
+                            <label
+                              className="btn btn-outline-secondary"
+                              htmlFor="btnradio4"
+                            >
+                              Radio 4
+                            </label>
 
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio5" autoComplete="off" />
-                            <label className="btn btn-outline-secondary" htmlFor="btnradio5">Radio 5</label>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id="btnradio5"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-outline-secondary"
+                              htmlFor="btnradio5"
+                            >
+                              Radio 5
+                            </label>
 
-                            <input type="radio" className="btn-check" name="btnradio" id="btnradio6" autoComplete="off" />
-                            <label className="btn btn-outline-secondary" htmlFor="btnradio6">Radio 6</label>
+                            <input
+                              type="radio"
+                              className="btn-check"
+                              name="btnradio"
+                              id="btnradio6"
+                              autoComplete="off"
+                            />
+                            <label
+                              className="btn btn-outline-secondary"
+                              htmlFor="btnradio6"
+                            >
+                              Radio 6
+                            </label>
                           </div>
                         </div>
                       </div>
@@ -741,9 +766,18 @@ class UiButtons extends Component {
                           </div>
 
                           <div className="btn-group">
-                            <Link to="#" className="btn btn-outline-primary active">Left</Link>
-                            <Link to="#" className="btn btn-outline-primary">Middle</Link>
-                            <Link to="#" className="btn btn-outline-primary">Right</Link>
+                            <Link
+                              to="#"
+                              className="btn btn-outline-primary active"
+                            >
+                              Left
+                            </Link>
+                            <Link to="#" className="btn btn-outline-primary">
+                              Middle
+                            </Link>
+                            <Link to="#" className="btn btn-outline-primary">
+                              Right
+                            </Link>
                           </div>
                         </div>
                       </Col>
@@ -751,15 +785,36 @@ class UiButtons extends Component {
                       <Col md={6}>
                         <div className="d-flex flex-wrap gap-3 mt-4 mt-md-0">
                           <div className="btn-group">
-                            <Button color="secondary" type="button"><i className="bx bx-menu-alt-right"></i></Button>
-                            <Button color="secondary" type="button"><i className="bx bx-menu"></i></Button>
-                            <Button color="secondary" type="button"><i className="bx bx-menu-alt-left"></i></Button>
+                            <Button color="secondary" type="button">
+                              <i className="bx bx-menu-alt-right"></i>
+                            </Button>
+                            <Button color="secondary" type="button">
+                              <i className="bx bx-menu"></i>
+                            </Button>
+                            <Button color="secondary" type="button">
+                              <i className="bx bx-menu-alt-left"></i>
+                            </Button>
                           </div>
 
                           <div className="btn-group">
-                            <button type="button" className="btn btn-outline-secondary"><i className="bx bx-menu-alt-right"></i></button>
-                            <button type="button" className="btn btn-outline-secondary"><i className="bx bx-menu"></i></button>
-                            <button type="button" className="btn btn-outline-secondary"><i className="bx bx-menu-alt-left"></i></button>
+                            <button
+                              type="button"
+                              className="btn btn-outline-secondary"
+                            >
+                              <i className="bx bx-menu-alt-right"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-outline-secondary"
+                            >
+                              <i className="bx bx-menu"></i>
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-outline-secondary"
+                            >
+                              <i className="bx bx-menu-alt-left"></i>
+                            </button>
                           </div>
                         </div>
                       </Col>
@@ -772,8 +827,8 @@ class UiButtons extends Component {
                   <CardBody>
                     <CardTitle>Button toolbar</CardTitle>
                     <p className="mb-3 card-title-desc">
-                      Combine sets of button groups into button toolbars for more
-                      complex components.Use utility className as needed to
+                      Combine sets of button groups into button toolbars for
+                      more complex components.Use utility className as needed to
                       space out groups, buttons, and more.
                     </p>
                     <div className="d-flex flex-wrap gap-4">
@@ -787,16 +842,28 @@ class UiButtons extends Component {
                           role="group"
                           aria-label="First group"
                         >
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             1
                           </Button>
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             2
                           </Button>
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             3
                           </Button>
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             4
                           </Button>
                         </div>
@@ -805,13 +872,22 @@ class UiButtons extends Component {
                           role="group"
                           aria-label="Second group"
                         >
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             5
                           </Button>
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             6
                           </Button>
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             7
                           </Button>
                         </div>
@@ -820,7 +896,10 @@ class UiButtons extends Component {
                           role="group"
                           aria-label="Third group"
                         >
-                          <Button color="secondary" className="btn btn-secondary">
+                          <Button
+                            color="secondary"
+                            className="btn btn-secondary"
+                          >
                             8
                           </Button>
                         </div>
@@ -828,18 +907,58 @@ class UiButtons extends Component {
 
                       <div className="btn-toolbar">
                         <div className="btn-group me-2">
-                          <button type="button" className="btn btn-outline-secondary">1</button>
-                          <button type="button" className="btn btn-outline-secondary">2</button>
-                          <button type="button" className="btn btn-outline-secondary">3</button>
-                          <button type="button" className="btn btn-outline-secondary">4</button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            1
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            2
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            3
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            4
+                          </button>
                         </div>
                         <div className="btn-group me-2">
-                          <button type="button" className="btn btn-outline-secondary">5</button>
-                          <button type="button" className="btn btn-outline-secondary">6</button>
-                          <button type="button" className="btn btn-outline-secondary">7</button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            5
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            6
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            7
+                          </button>
                         </div>
                         <div className="btn-group">
-                          <button type="button" className="btn btn-outline-secondary">8</button>
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                          >
+                            8
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -863,15 +982,36 @@ class UiButtons extends Component {
 
                     <div className="d-flex flex-wrap gap-3">
                       <div className="btn-group btn-group-lg">
-                        <button type="button" className="btn btn-primary">Left</button>
-                        <button type="button" className="btn btn-primary">Middle</button>
-                        <button type="button" className="btn btn-primary">Right</button>
+                        <button type="button" className="btn btn-primary">
+                          Left
+                        </button>
+                        <button type="button" className="btn btn-primary">
+                          Middle
+                        </button>
+                        <button type="button" className="btn btn-primary">
+                          Right
+                        </button>
                       </div>
 
                       <div className="btn-group btn-group-lg">
-                        <button type="button" className="btn btn-outline-primary">Left</button>
-                        <button type="button" className="btn btn-outline-primary">Middle</button>
-                        <button type="button" className="btn btn-outline-primary">Right</button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                        >
+                          Left
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                        >
+                          Middle
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                        >
+                          Right
+                        </button>
                       </div>
                     </div>
 
@@ -879,33 +1019,82 @@ class UiButtons extends Component {
 
                     <div className="d-flex flex-wrap gap-3">
                       <div className="btn-group">
-                        <button type="button" className="btn btn-secondary">Left</button>
-                        <button type="button" className="btn btn-secondary">Middle</button>
-                        <button type="button" className="btn btn-secondary">Right</button>
+                        <button type="button" className="btn btn-secondary">
+                          Left
+                        </button>
+                        <button type="button" className="btn btn-secondary">
+                          Middle
+                        </button>
+                        <button type="button" className="btn btn-secondary">
+                          Right
+                        </button>
                       </div>
                       <div className="btn-group">
-                        <button type="button" className="btn btn-outline-secondary">Left</button>
-                        <button type="button" className="btn btn-outline-secondary">Middle</button>
-                        <button type="button" className="btn btn-outline-secondary">Right</button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary"
+                        >
+                          Left
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary"
+                        >
+                          Middle
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary"
+                        >
+                          Right
+                        </button>
                       </div>
                     </div>
 
                     <br />
 
                     <div className="d-flex flex-wrap gap-3">
-                      <div className="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                        <button type="button" className="btn btn-danger">Left</button>
-                        <button type="button" className="btn btn-danger">Middle</button>
-                        <button type="button" className="btn btn-danger">Right</button>
+                      <div
+                        className="btn-group btn-group-sm"
+                        role="group"
+                        aria-label="Basic example"
+                      >
+                        <button type="button" className="btn btn-danger">
+                          Left
+                        </button>
+                        <button type="button" className="btn btn-danger">
+                          Middle
+                        </button>
+                        <button type="button" className="btn btn-danger">
+                          Right
+                        </button>
                       </div>
 
-                      <div className="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                        <button type="button" className="btn btn-outline-danger">Left</button>
-                        <button type="button" className="btn btn-outline-danger">Middle</button>
-                        <button type="button" className="btn btn-outline-danger">Right</button>
+                      <div
+                        className="btn-group btn-group-sm"
+                        role="group"
+                        aria-label="Basic example"
+                      >
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger"
+                        >
+                          Left
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger"
+                        >
+                          Middle
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger"
+                        >
+                          Right
+                        </button>
                       </div>
                     </div>
-
                   </CardBody>
                 </Card>
               </Col>
@@ -964,12 +1153,46 @@ class UiButtons extends Component {
                         </Button>
                       </div>
                       <div className="btn-group-vertical">
-                        <input type="radio" className="btn-check" name="vbtn-radio" id="vbtn-radio1" autoComplete="off" defaultChecked />
-                        <label className="btn btn-outline-danger" htmlFor="vbtn-radio1">Radio 1</label>
-                        <input type="radio" className="btn-check" name="vbtn-radio" id="vbtn-radio2" autoComplete="off" />
-                        <label className="btn btn-outline-danger" htmlFor="vbtn-radio2">Radio 2</label>
-                        <input type="radio" className="btn-check" name="vbtn-radio" id="vbtn-radio3" autoComplete="off" />
-                        <label className="btn btn-outline-danger" htmlFor="vbtn-radio3">Radio 3</label>
+                        <input
+                          type="radio"
+                          className="btn-check"
+                          name="vbtn-radio"
+                          id="vbtn-radio1"
+                          autoComplete="off"
+                          defaultChecked
+                        />
+                        <label
+                          className="btn btn-outline-danger"
+                          htmlFor="vbtn-radio1"
+                        >
+                          Radio 1
+                        </label>
+                        <input
+                          type="radio"
+                          className="btn-check"
+                          name="vbtn-radio"
+                          id="vbtn-radio2"
+                          autoComplete="off"
+                        />
+                        <label
+                          className="btn btn-outline-danger"
+                          htmlFor="vbtn-radio2"
+                        >
+                          Radio 2
+                        </label>
+                        <input
+                          type="radio"
+                          className="btn-check"
+                          name="vbtn-radio"
+                          id="vbtn-radio3"
+                          autoComplete="off"
+                        />
+                        <label
+                          className="btn btn-outline-danger"
+                          htmlFor="vbtn-radio3"
+                        >
+                          Radio 3
+                        </label>
                       </div>
                     </div>
                   </CardBody>

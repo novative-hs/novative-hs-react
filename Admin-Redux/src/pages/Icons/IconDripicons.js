@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class IconDripicons extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -17,7 +17,7 @@ class IconDripicons extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Dripicons | Skote - React Admin & Dashboard Template</title>
+            <title>Dripicons | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Icons" breadcrumbItem="Dripicons" />
@@ -30,7 +30,8 @@ class IconDripicons extends Component {
                     <p className="card-title-desc mb-2">
                       Use{" "}
                       <code>
-                        &lt;i className=&quot;dripicons-alarm&ldquo;&gt;&lt;/i&gt;
+                        &lt;i
+                        className=&quot;dripicons-alarm&ldquo;&gt;&lt;/i&gt;
                       </code>
                       .
                     </p>
@@ -90,8 +91,7 @@ class IconDripicons extends Component {
                         dripicons-arrow-thin-up
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-arrow-up" />{" "}
-                        dripicons-arrow-up
+                        <i className="dripicons-arrow-up" /> dripicons-arrow-up
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className=" dripicons-article" /> dripicons-article
@@ -137,8 +137,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-bold" /> dripicons-bold
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-bookmark" />{" "}
-                        dripicons-bookmark
+                        <i className="dripicons-bookmark" /> dripicons-bookmark
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-bookmarks" />{" "}
@@ -178,8 +177,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-brush" /> dripicons-brush
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-calendar" />{" "}
-                        dripicons-calendar
+                        <i className="dripicons-calendar" /> dripicons-calendar
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-camcorder" />{" "}
@@ -244,8 +242,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-code" /> dripicons-code
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-contract" />{" "}
-                        dripicons-contract
+                        <i className="dripicons-contract" /> dripicons-contract
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-contract-2" />{" "}
@@ -291,8 +288,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-disc" /> dripicons-disc
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-document" />{" "}
-                        dripicons-document
+                        <i className="dripicons-document" /> dripicons-document
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-document-delete" />{" "}
@@ -320,8 +316,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-dots-3" /> dripicons-dots-3
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-download" />{" "}
-                        dripicons-download
+                        <i className="dripicons-download" /> dripicons-download
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-duplicate" />{" "}
@@ -337,8 +332,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-expand" /> dripicons-expand
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-expand-2" />{" "}
-                        dripicons-expand-2
+                        <i className="dripicons-expand-2" /> dripicons-expand-2
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-experiment" />{" "}
@@ -439,8 +433,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-loading" /> dripicons-loading
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-location" />{" "}
-                        dripicons-location
+                        <i className="dripicons-location" /> dripicons-location
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-lock" /> dripicons-lock
@@ -536,8 +529,7 @@ class IconDripicons extends Component {
                         dripicons-network-5
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-pamphlet" />{" "}
-                        dripicons-pamphlet
+                        <i className="dripicons-pamphlet" /> dripicons-pamphlet
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-paperclip" />{" "}
@@ -578,8 +570,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-pulse" /> dripicons-pulse
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-question" />{" "}
-                        dripicons-question
+                        <i className="dripicons-question" /> dripicons-question
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-reply" /> dripicons-reply
@@ -624,8 +615,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-store" /> dripicons-store
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-suitcase" />{" "}
-                        dripicons-suitcase
+                        <i className="dripicons-suitcase" /> dripicons-suitcase
                       </Col>
                       <Col xl="3" lg="4" sm="6">
                         <i className="dripicons-swap" /> dripicons-swap
@@ -737,8 +727,7 @@ class IconDripicons extends Component {
                         <i className="dripicons-zoom-in" /> dripicons-zoom-in
                       </Col>
                       <Col xl="3" lg="4" sm="6">
-                        <i className="dripicons-zoom-out" />{" "}
-                        dripicons-zoom-out
+                        <i className="dripicons-zoom-out" /> dripicons-zoom-out
                       </Col>
                     </Row>
                   </CardBody>
@@ -748,8 +737,8 @@ class IconDripicons extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default IconDripicons
+export default IconDripicons;

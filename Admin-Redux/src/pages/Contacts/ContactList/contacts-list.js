@@ -286,7 +286,7 @@ class ContactsList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Users List | Skote - React Admin & Dashboard Template</title>
+            <title>Users List | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

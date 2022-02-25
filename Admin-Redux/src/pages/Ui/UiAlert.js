@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 
 import {
   Alert,
@@ -27,7 +27,7 @@ class UiAlert extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Alerts | Skote - React Admin & Dashboard Template</title>
+            <title>Alerts | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Alerts" />
@@ -38,9 +38,11 @@ class UiAlert extends Component {
                   <CardBody>
                     <CardTitle className="h4">Default Alerts </CardTitle>
                     <p className="card-title-desc">
-                      Alerts are available for any length of text, as well as an optional dismiss button. For proper styling, use one
-                      of the four <strong>required</strong> contextual classes (e.g., <code>
-                        .alert-success</code>). For inline dismissal, use the alerts jQuery plugin.
+                      Alerts are available for any length of text, as well as an
+                      optional dismiss button. For proper styling, use one of
+                      the four <strong>required</strong> contextual classes
+                      (e.g., <code>.alert-success</code>). For inline dismissal,
+                      use the alerts jQuery plugin.
                     </p>
 
                     <div className="">
@@ -133,8 +135,10 @@ class UiAlert extends Component {
                   <CardBody>
                     <CardTitle className="h4">Dismissing </CardTitle>
                     <p className="card-title-desc">
-                      Add a dismiss button and the <code>.alert-dismissible</code> class, which adds extra padding
-                      to the right of the alert and positions the <code>.btn-close</code> button.
+                      Add a dismiss button and the{" "}
+                      <code>.alert-dismissible</code> class, which adds extra
+                      padding to the right of the alert and positions the{" "}
+                      <code>.btn-close</code> button.
                     </p>
 
                     <div className="">
@@ -153,7 +157,11 @@ class UiAlert extends Component {
                       <UncontrolledAlert color="warning" role="alert">
                         A simple warning alert—check it out!
                       </UncontrolledAlert>
-                      <UncontrolledAlert color="info" className="mb-0" role="alert">
+                      <UncontrolledAlert
+                        color="info"
+                        className="mb-0"
+                        role="alert"
+                      >
                         A simple info alert—check it out!
                       </UncontrolledAlert>
                     </div>
@@ -224,15 +232,25 @@ class UiAlert extends Component {
                 <Card>
                   <CardBody>
                     <h4 className="card-title">Additional content</h4>
-                    <p className="card-title-desc">Alerts can also contain additional HTML elements like headings, paragraphs and dividers.</p>
+                    <p className="card-title-desc">
+                      Alerts can also contain additional HTML elements like
+                      headings, paragraphs and dividers.
+                    </p>
 
                     <div className="">
                       <Alert className="alert-success" role="alert">
                         <h4 className="alert-heading">Well done!</h4>
-                        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so
-                          that you can see how spacing within an alert works with this kind of content.</p>
+                        <p>
+                          Aww yeah, you successfully read this important alert
+                          message. This example text is going to run a bit
+                          longer so that you can see how spacing within an alert
+                          works with this kind of content.
+                        </p>
                         <hr />
-                        <p className="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                        <p className="mb-0">
+                          Whenever you need to, be sure to use margin utilities
+                          to keep things nice and tidy.
+                        </p>
                       </Alert>
                     </div>
                   </CardBody>

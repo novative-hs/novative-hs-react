@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Container,
   Row,
@@ -18,39 +18,39 @@ import {
   Input,
   Form,
   FormGroup,
-} from "reactstrap"
-import classnames from "classnames"
-import { Link } from "react-router-dom"
+} from "reactstrap";
+import classnames from "classnames";
+import { Link } from "react-router-dom";
 
 //Dropzone
-import Dropzone from "react-dropzone"
+import Dropzone from "react-dropzone";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import images
-import verificationImg from "../../assets/images/verification-img.png"
-import { options } from "common/data/projects"
+import verificationImg from "../../assets/images/verification-img.png";
+import { options } from "common/data/projects";
 
 class CryptoWallet extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       modal: false,
       activeTab: 1,
       selectedFiles: [],
       passedSteps: [1],
-    }
-    this.togglemodal.bind(this)
-    this.toggleTab.bind(this)
-    this.handleAcceptedFiles.bind(this)
+    };
+    this.togglemodal.bind(this);
+    this.toggleTab.bind(this);
+    this.handleAcceptedFiles.bind(this);
   }
 
   togglemodal = () => {
     this.setState(prevState => ({
       modal: !prevState.modal,
-    }))
-  }
+    }));
+  };
 
   toggleTab(tab) {
     if (this.state.activeTab !== tab) {
@@ -58,8 +58,8 @@ class CryptoWallet extends Component {
         var modifiedSteps = [...this.state.passedSteps, tab];
         this.setState({
           activeTab: tab,
-          passedSteps: modifiedSteps
-        })
+          passedSteps: modifiedSteps,
+        });
       }
     }
   }
@@ -70,30 +70,30 @@ class CryptoWallet extends Component {
         preview: URL.createObjectURL(file),
         formattedSize: this.formatBytes(file.size),
       })
-    )
+    );
 
-    this.setState({ selectedFiles: files })
-  }
+    this.setState({ selectedFiles: files });
+  };
 
   /**
    * Formats the size
    */
   formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes"
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
-  }
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>KYC Application | Skote - React Admin & Dashboard Template</title>
+            <title>KYC Application | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -164,13 +164,14 @@ class CryptoWallet extends Component {
                                 <NavItem
                                   className={classnames({
                                     current: this.state.activeTab === 1,
-                                  })}>
+                                  })}
+                                >
                                   <NavLink
                                     className={classnames({
                                       active: this.state.activeTab === 1,
                                     })}
                                     onClick={() => {
-                                      this.toggleTab(1)
+                                      this.toggleTab(1);
                                     }}
                                   >
                                     <span className="number">1.</span>
@@ -180,14 +181,19 @@ class CryptoWallet extends Component {
                                 <NavItem
                                   className={classnames({
                                     current: this.state.activeTab === 2,
-                                  })}>
+                                  })}
+                                >
                                   <NavLink
-                                    disabled={!(this.state.passedSteps || []).includes(2)}
+                                    disabled={
+                                      !(this.state.passedSteps || []).includes(
+                                        2
+                                      )
+                                    }
                                     className={classnames({
                                       active: this.state.activeTab === 2,
                                     })}
                                     onClick={() => {
-                                      this.toggleTab(2)
+                                      this.toggleTab(2);
                                     }}
                                   >
                                     <span className="number">2.</span>
@@ -197,14 +203,19 @@ class CryptoWallet extends Component {
                                 <NavItem
                                   className={classnames({
                                     current: this.state.activeTab === 3,
-                                  })}>
+                                  })}
+                                >
                                   <NavLink
-                                    disabled={!(this.state.passedSteps || []).includes(3)}
+                                    disabled={
+                                      !(this.state.passedSteps || []).includes(
+                                        3
+                                      )
+                                    }
                                     className={classnames({
                                       active: this.state.activeTab === 3,
                                     })}
                                     onClick={() => {
-                                      this.toggleTab(3)
+                                      this.toggleTab(3);
                                     }}
                                   >
                                     <span className="number">3.</span>
@@ -223,7 +234,10 @@ class CryptoWallet extends Component {
                                     <Row>
                                       <Col lg="6">
                                         <FormGroup className="mb-3">
-                                          <Label htmlFor="kycfirstname-input" className="form-label">
+                                          <Label
+                                            htmlFor="kycfirstname-input"
+                                            className="form-label"
+                                          >
                                             First name
                                           </Label>
                                           <Input
@@ -236,7 +250,10 @@ class CryptoWallet extends Component {
                                       </Col>
                                       <Col lg="6">
                                         <FormGroup className="mb-3">
-                                          <Label htmlFor="kyclastname-input" className="form-label">
+                                          <Label
+                                            htmlFor="kyclastname-input"
+                                            className="form-label"
+                                          >
                                             Last name
                                           </Label>
                                           <Input
@@ -252,7 +269,10 @@ class CryptoWallet extends Component {
                                     <Row>
                                       <Col lg="6">
                                         <FormGroup className="mb-3">
-                                          <Label htmlFor="kycphoneno-input" className="form-label">
+                                          <Label
+                                            htmlFor="kycphoneno-input"
+                                            className="form-label"
+                                          >
                                             Phone
                                           </Label>
                                           <Input
@@ -265,7 +285,10 @@ class CryptoWallet extends Component {
                                       </Col>
                                       <Col lg="6">
                                         <FormGroup className="mb-3">
-                                          <Label htmlFor="kycbirthdate-input" className="form-label">
+                                          <Label
+                                            htmlFor="kycbirthdate-input"
+                                            className="form-label"
+                                          >
                                             Date of birth
                                           </Label>
                                           <Input
@@ -280,16 +303,17 @@ class CryptoWallet extends Component {
                                     <Row>
                                       <Col lg="12">
                                         <FormGroup className="mb-3">
-                                          <Label htmlFor="kycselectcity-input" className="form-label">
+                                          <Label
+                                            htmlFor="kycselectcity-input"
+                                            className="form-label"
+                                          >
                                             City
                                           </Label>
                                           <select
                                             className="form-select"
                                             id="kycselectcity-input"
                                           >
-                                            <option>
-                                              San Francisco
-                                            </option>
+                                            <option>San Francisco</option>
                                             <option>Los Angeles</option>
                                             <option>San Diego</option>
                                           </select>
@@ -359,7 +383,8 @@ class CryptoWallet extends Component {
                                               <i className="display-4 text-muted bx bxs-cloud-upload"></i>
                                             </div>
                                             <h4>
-                                              Drop files here or click to upload.
+                                              Drop files here or click to
+                                              upload.
                                             </h4>
                                           </div>
                                         </div>
@@ -402,7 +427,7 @@ class CryptoWallet extends Component {
                                               </Row>
                                             </div>
                                           </Card>
-                                        )
+                                        );
                                       })}
                                     </div>
                                   </div>
@@ -421,7 +446,7 @@ class CryptoWallet extends Component {
                                   <Link
                                     to="#"
                                     onClick={() => {
-                                      this.toggleTab(this.state.activeTab - 1)
+                                      this.toggleTab(this.state.activeTab - 1);
                                     }}
                                   >
                                     Previous
@@ -437,7 +462,7 @@ class CryptoWallet extends Component {
                                   <Link
                                     to="#"
                                     onClick={() => {
-                                      this.toggleTab(this.state.activeTab + 1)
+                                      this.toggleTab(this.state.activeTab + 1);
                                     }}
                                   >
                                     Next
@@ -456,8 +481,8 @@ class CryptoWallet extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default CryptoWallet
+export default CryptoWallet;

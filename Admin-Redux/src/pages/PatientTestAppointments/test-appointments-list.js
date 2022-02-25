@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import { Card, CardBody, Col, Container, Row, Button } from "reactstrap";
 
 import paginationFactory, {
   PaginationProvider,
@@ -46,6 +46,11 @@ class TestAppointmentsList extends Component {
           sort: true,
         },
         {
+          dataField: "relationsip_with_patient",
+          text: "Booked for",
+          sort: true,
+        },
+        {
           dataField: "booking_date_time",
           text: "Appointment booked on",
           sort: true,
@@ -61,29 +66,41 @@ class TestAppointmentsList extends Component {
         },
         {
           dataField: "sample_collection_date_time",
-          text: "Sample collected on",
+          text: "Estimated sample collection",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <span>
-                {new Date(
-                  patientTestAppointment.sample_collection_date_time
-                ).toLocaleString("en-US")}
-              </span>
+              {patientTestAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {patientTestAppointment.status != "Pending" ? (
+                <span>
+                  {new Date(
+                    patientTestAppointment.sample_collection_date_time
+                  ).toLocaleString("en-US")}
+                </span>
+              ) : null}
             </>
           ),
         },
         {
           dataField: "result_upload_date_time",
-          text: "Result uploaded on",
+          text: "Estimated result upload",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <span>
-                {new Date(
-                  patientTestAppointment.result_upload_date_time
-                ).toLocaleString("en-US")}
-              </span>
+              {patientTestAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {patientTestAppointment.status != "Pending" ? (
+                <span>
+                  {new Date(
+                    patientTestAppointment.result_upload_date_time
+                  ).toLocaleString("en-US")}
+                </span>
+              ) : null}
             </>
           ),
         },
@@ -91,6 +108,33 @@ class TestAppointmentsList extends Component {
           dataField: "status",
           text: "Status",
           sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Pending" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                  {patientTestAppointment.status}
+                </span>
+              ) : null}
+
+              {patientTestAppointment.status == "Confirmed" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {patientTestAppointment.status}
+                </span>
+              ) : null}
+
+              {patientTestAppointment.status == "Sample Collected" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning">
+                  {patientTestAppointment.status}
+                </span>
+              ) : null}
+
+              {patientTestAppointment.status == "Result Uploaded" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-success">
+                  {patientTestAppointment.status}
+                </span>
+              ) : null}
+            </>
+          ),
         },
         {
           dataField: "http://127.0.0.1:8000" + "result",

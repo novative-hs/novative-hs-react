@@ -190,6 +190,7 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 
 //Patient Lab Components
+import LabQualityCertificates from "../pages/LabQualityCertificatesList/quality-certificates-list";
 import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
 
 //Blog
@@ -362,6 +363,10 @@ const publicRoutes = [
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
   { path: "/crypto-ico-landing", component: CryptoIcoLanding },
+  {
+    path: "/lab-quality-certificates/:id",
+    component: LabQualityCertificates,
+  },
 
   // Authentication Inner
   { path: "/pages-login", component: Login1 },

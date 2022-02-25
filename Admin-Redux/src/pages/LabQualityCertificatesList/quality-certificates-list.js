@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 import paginationFactory, {
@@ -16,120 +16,57 @@ import BootstrapTable from "react-bootstrap-table-next";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-import {
-  getTestAppointmentsCompletedList,
-  updateTestAppointment,
-} from "store/test-appointments/actions";
+import { getQualityCertificates } from "store/quality-certificates/actions";
 
-class TestAppointmentsCompletedList extends Component {
+class LabQualityCertificates extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      testAppointments: [],
-      testAppointment: "",
-      testAppointmentListColumns: [
+      selectedFiles: [],
+      qualityCertificates: [],
+      qualityCertificate: "",
+      certificateImg: "",
+      apiURL: process.env.REACT_APP_BACKENDURL,
+      modal: false,
+      deleteModal: false,
+      qualityCertificateListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, testAppointment) => (
-            <>{testAppointment.id}</>
+          formatter: (cellContent, qualityCertificate) => (
+            <>{qualityCertificate.id}</>
           ),
         },
         {
-          dataField: "patient_name",
-          text: "Patient",
-          sort: true,
-        },
-        {
-          dataField: "patient_age",
-          text: "Age",
-          sort: true,
-        },
-        {
-          dataField: "patient_gender",
-          text: "Gender",
-          sort: true,
-        },
-        {
-          dataField: "offered_test_name",
-          text: "Offered test ",
-          sort: true,
-        },
-        {
-          dataField: "booking_date_time",
-          text: "Appointment booked on",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
+          dataField: "img",
+          text: "#",
+          formatter: (cellContent, qualityCertificate) => (
             <>
-              <span>
-                {new Date(testAppointment.booking_date_time).toLocaleString(
-                  "en-US"
-                )}
-              </span>
+              {!qualityCertificate.certificate ? (
+                <div className="avatar-xs">
+                  <span className="avatar-title rounded-circle">
+                    {qualityCertificate.name.charAt(0)}
+                  </span>
+                </div>
+              ) : (
+                <div>
+                  <img
+                    className="rounded-circle avatar-xs"
+                    src={this.state.apiURL + qualityCertificate.certificate}
+                    alt=""
+                  />
+                </div>
+              )}
             </>
           ),
         },
         {
-          dataField: "requested_appointment_date_time",
-          text: "Appointment requested on",
+          dataField: "name",
+          text: "Name",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.requested_appointment_date_time
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "sample_collection_date_time",
-          text: "Estimated sample collection",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.sample_collection_date_time
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "result_upload_date_time",
-          text: "Estimated result upload",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.result_upload_date_time
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "http://127.0.0.1:8000" + "result",
-          text: "Result",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <Link
-                to={{
-                  pathname: "http://127.0.0.1:8000" + testAppointment.result,
-                }}
-                target="_blank"
-              >
-                Test Result
-              </Link>
-            </>
-          ),
         },
       ],
     };
@@ -137,13 +74,13 @@ class TestAppointmentsCompletedList extends Component {
   }
 
   componentDidMount() {
-    const { testAppointments, onGetTestAppointmentsCompletedList } = this.props;
-    if (testAppointments && !testAppointments.length) {
+    const { qualityCertificates, onGetQualityCertificates } = this.props;
+    if (qualityCertificates && !qualityCertificates.length) {
       setTimeout(() => {
-        onGetTestAppointmentsCompletedList();
-      }, 1000);
+        onGetQualityCertificates();
+      }, 3000);
     }
-    this.setState({ testAppointments });
+    this.setState({ qualityCertificates });
   }
 
   toggle() {
@@ -164,14 +101,16 @@ class TestAppointmentsCompletedList extends Component {
     }
   };
 
+  /* Insert,Update Delete data */
+
   render() {
     const { SearchBar } = Search;
 
-    const { testAppointments } = this.props;
+    const { qualityCertificates } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: testAppointments.length, // replace later with size(testAppointments),
+      totalSize: qualityCertificates.length, // replace later with size(qualityCertificates),
       custom: true,
     };
 
@@ -190,13 +129,13 @@ class TestAppointmentsCompletedList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Test Appointments List | Ilaaj4u</title>
+            <title>Quality Certificates List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Test Appointments"
-              breadcrumbItem="Completed List"
+              title="Quality Certificates"
+              breadcrumbItem="Certificates List"
             />
             <Row>
               <Col lg="12">
@@ -205,14 +144,14 @@ class TestAppointmentsCompletedList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.testAppointmentListColumns}
-                      data={testAppointments}
+                      columns={this.state.qualityCertificateListColumns}
+                      data={qualityCertificates}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.testAppointmentListColumns}
-                          data={testAppointments}
+                          columns={this.state.qualityCertificateListColumns}
+                          data={qualityCertificates}
                           search
                         >
                           {toolkitprops => (
@@ -271,26 +210,23 @@ class TestAppointmentsCompletedList extends Component {
   }
 }
 
-TestAppointmentsCompletedList.propTypes = {
+LabQualityCertificates.propTypes = {
   match: PropTypes.object,
-  testAppointments: PropTypes.array,
+  qualityCertificates: PropTypes.array,
   className: PropTypes.any,
-  onGetTestAppointmentsCompletedList: PropTypes.func,
-  onUpdateTestAppointment: PropTypes.func,
+  onGetQualityCertificates: PropTypes.func,
 };
 
-const mapStateToProps = ({ testAppointments }) => ({
-  testAppointments: testAppointments.testAppointmentsCompletedList,
+const mapStateToProps = ({ qualityCertificates }) => ({
+  qualityCertificates: qualityCertificates.qualityCertificates,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointmentsCompletedList: () =>
-    dispatch(getTestAppointmentsCompletedList(ownProps.match.params.id)),
-  onUpdateTestAppointment: testAppointment =>
-    dispatch(updateTestAppointment(testAppointment)),
+  onGetQualityCertificates: () =>
+    dispatch(getQualityCertificates(ownProps.match.params.id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(TestAppointmentsCompletedList));
+)(withRouter(LabQualityCertificates));

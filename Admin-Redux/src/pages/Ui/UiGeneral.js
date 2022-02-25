@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
 import {
   Button,
@@ -13,53 +13,53 @@ import {
   PopoverHeader,
   Row,
   Tooltip,
-} from "reactstrap"
+} from "reactstrap";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiGeneral extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       // Popover
       popovertop1: false,
       popoverleft: false,
       popoverright: false,
       popoverbottom: false,
-    }
-    this.toggletop1 = this.toggletop1.bind(this)
-    this.toggleright = this.toggleright.bind(this)
-    this.toggleleft = this.toggleleft.bind(this)
-    this.togglebottom = this.togglebottom.bind(this)
-    this.toggledismiss = this.toggledismiss.bind(this)
-    this.toggledismissclose = this.toggledismissclose.bind(this)
+    };
+    this.toggletop1 = this.toggletop1.bind(this);
+    this.toggleright = this.toggleright.bind(this);
+    this.toggleleft = this.toggleleft.bind(this);
+    this.togglebottom = this.togglebottom.bind(this);
+    this.toggledismiss = this.toggledismiss.bind(this);
+    this.toggledismissclose = this.toggledismissclose.bind(this);
   }
 
   toggletop1() {
-    this.setState({ popovertop1: !this.state.popovertop1 })
+    this.setState({ popovertop1: !this.state.popovertop1 });
   }
 
   toggleleft() {
-    this.setState({ popoverleft: !this.state.popoverleft })
+    this.setState({ popoverleft: !this.state.popoverleft });
   }
 
   toggleright() {
-    this.setState({ popoverright: !this.state.popoverright })
+    this.setState({ popoverright: !this.state.popoverright });
   }
 
   togglebottom() {
-    this.setState({ popoverbottom: !this.state.popoverbottom })
+    this.setState({ popoverbottom: !this.state.popoverbottom });
   }
 
   toggledismiss() {
-    this.setState({ popoverdismiss: !this.state.popoverdismiss })
+    this.setState({ popoverdismiss: !this.state.popoverdismiss });
   }
 
   toggledismissclose() {
-    this.setState({ popoverdismiss: false })
+    this.setState({ popoverdismiss: false });
   }
 
   render() {
@@ -67,7 +67,7 @@ class UiGeneral extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>General | Skote - React Admin & Dashboard Template</title>
+            <title>General | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="General" />
@@ -114,8 +114,8 @@ class UiGeneral extends Component {
                         <div className="mt-4 mt-lg-0">
                           <CardTitle className="h4">Pill badges</CardTitle>
                           <p className="card-title-desc">
-                            Use the <code>.badge-pill</code> modifier className to
-                            make badges more rounded (with a larger{" "}
+                            Use the <code>.badge-pill</code> modifier className
+                            to make badges more rounded (with a larger{" "}
                             <code>border-radius</code>
                             and additional horizontal <code>padding</code>).
                             Useful if you miss the badges from v3.
@@ -171,17 +171,23 @@ class UiGeneral extends Component {
                       <Col xl="6">
                         <div className="mt-4">
                           <h4 className="card-title">Badges in Buttons</h4>
-                          <p className="card-title-desc">Badges can be used as part of links or buttons to provide a counter.</p>
+                          <p className="card-title-desc">
+                            Badges can be used as part of links or buttons to
+                            provide a counter.
+                          </p>
 
                           <div className="button-items">
                             <Button color="primary">
-                              Notifications <span className="badge bg-success ms-1">4</span>
+                              Notifications{" "}
+                              <span className="badge bg-success ms-1">4</span>
                             </Button>{" "}
                             <Button color="success">
-                              Messages <span className="badge bg-danger ms-1">3</span>
+                              Messages{" "}
+                              <span className="badge bg-danger ms-1">3</span>
                             </Button>{" "}
                             <Button outline color="secondary">
-                              Draft <span className="badge bg-success ms-1">2</span>
+                              Draft{" "}
+                              <span className="badge bg-success ms-1">2</span>
                             </Button>
                           </div>
                         </div>
@@ -191,34 +197,67 @@ class UiGeneral extends Component {
                           <CardTitle className="h4">
                             Badges Position Examples
                           </CardTitle>
-                          <p className="card-title-desc">Example of Badges Position</p>
+                          <p className="card-title-desc">
+                            Example of Badges Position
+                          </p>
                           <div className="d-flex flex-wrap gap-3">
-                            <Button color="primary" className="position-relative">
-                              Mails <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">+99 <span className="visually-hidden">unread messages</span></span>
+                            <Button
+                              color="primary"
+                              className="position-relative"
+                            >
+                              Mails{" "}
+                              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                +99{" "}
+                                <span className="visually-hidden">
+                                  unread messages
+                                </span>
+                              </span>
                             </Button>
 
                             <Button color="light" className="position-relative">
-                              Alerts <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1"><span className="visually-hidden">unread messages</span></span>
+                              Alerts{" "}
+                              <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1">
+                                <span className="visually-hidden">
+                                  unread messages
+                                </span>
+                              </span>
                             </Button>
 
-                            <Button color="primary" className="position-relative p-0 avatar-xs rounded">
+                            <Button
+                              color="primary"
+                              className="position-relative p-0 avatar-xs rounded"
+                            >
                               <span className="avatar-title bg-transparent">
                                 <i className="bx bxs-envelope"></i>
                               </span>
-                              <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1"><span className="visually-hidden">unread messages</span></span>
+                              <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-1">
+                                <span className="visually-hidden">
+                                  unread messages
+                                </span>
+                              </span>
                             </Button>
 
-                            <Button color="light" className="position-relative p-0 avatar-xs rounded-circle">
+                            <Button
+                              color="light"
+                              className="position-relative p-0 avatar-xs rounded-circle"
+                            >
                               <span className="avatar-title bg-transparent text-reset">
                                 <i className="bx bxs-bell"></i>
                               </span>
                             </Button>
 
-                            <Button color="light" className="position-relative p-0 avatar-xs rounded-circle">
+                            <Button
+                              color="light"
+                              className="position-relative p-0 avatar-xs rounded-circle"
+                            >
                               <span className="avatar-title bg-transparent text-reset">
                                 <i className="bx bx-menu"></i>
                               </span>
-                              <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-success p-1"><span className="visually-hidden">unread messages</span></span>
+                              <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-success p-1">
+                                <span className="visually-hidden">
+                                  unread messages
+                                </span>
+                              </span>
                             </Button>
                           </div>
                         </div>
@@ -235,7 +274,9 @@ class UiGeneral extends Component {
                   <CardBody>
                     <CardTitle className="h4">Popovers</CardTitle>
                     <p className="card-title-desc">
-                      Four options are available: top, right, bottom, and left aligned. Directions are mirrored when using Bootstrap in RTL.
+                      Four options are available: top, right, bottom, and left
+                      aligned. Directions are mirrored when using Bootstrap in
+                      RTL.
                     </p>
                     <div className="button-items">
                       <Button
@@ -397,7 +438,6 @@ class UiGeneral extends Component {
                       >
                         Hello world!
                       </Tooltip>
-
                       <button
                         type="button"
                         className="btn btn-primary"
@@ -437,7 +477,9 @@ class UiGeneral extends Component {
                     <CardTitle className="h4 mb-4">Pagination</CardTitle>
                     <Row>
                       <Col xl={6}>
-                        <CardTitle className="h5 font-size-14">Default Example</CardTitle>
+                        <CardTitle className="h5 font-size-14">
+                          Default Example
+                        </CardTitle>
                         <p className="card-title-desc">
                           Pagination links indicate a series of related content
                           exists across multiple pages.
@@ -514,7 +556,9 @@ class UiGeneral extends Component {
 
                       <Col xl={6}>
                         <div className="mt-4 mt-lg-0">
-                          <CardTitle className="h5 font-size-14">Disabled and active states</CardTitle>
+                          <CardTitle className="h5 font-size-14">
+                            Disabled and active states
+                          </CardTitle>
                           <p className="card-title-desc">
                             Pagination links are customizable for different
                             circumstances. Use <code>.disabled</code> for links
@@ -525,7 +569,11 @@ class UiGeneral extends Component {
                           <nav aria-label="...">
                             <ul className="pagination">
                               <li className="page-item disabled">
-                                <Link className="page-link" to="#" tabIndex="-1">
+                                <Link
+                                  className="page-link"
+                                  to="#"
+                                  tabIndex="-1"
+                                >
                                   Previous
                                 </Link>
                               </li>
@@ -555,7 +603,9 @@ class UiGeneral extends Component {
                           <nav aria-label="...">
                             <ul className="pagination">
                               <li className="page-item disabled">
-                                <span className="page-link"><i className="mdi mdi-chevron-left"></i></span>
+                                <span className="page-link">
+                                  <i className="mdi mdi-chevron-left"></i>
+                                </span>
                               </li>
                               <li className="page-item">
                                 <Link className="page-link" to="#">
@@ -586,7 +636,9 @@ class UiGeneral extends Component {
                     <Row>
                       <Col xl={6}>
                         <div className="mt-4">
-                          <CardTitle className="h5 font-size-14">Sizing</CardTitle>
+                          <CardTitle className="h5 font-size-14">
+                            Sizing
+                          </CardTitle>
                           <p className="card-title-desc">
                             Fancy larger or smaller pagination? Add{" "}
                             <code>.pagination-lg</code> or{" "}
@@ -596,7 +648,11 @@ class UiGeneral extends Component {
                           <nav aria-label="...">
                             <ul className="pagination pagination-lg">
                               <li className="page-item disabled">
-                                <Link className="page-link" to="#" tabIndex="-1">
+                                <Link
+                                  className="page-link"
+                                  to="#"
+                                  tabIndex="-1"
+                                >
                                   Previous
                                 </Link>
                               </li>
@@ -626,7 +682,11 @@ class UiGeneral extends Component {
                           <nav aria-label="...">
                             <ul className="pagination pagination-sm">
                               <li className="page-item disabled">
-                                <Link className="page-link" to="#" tabIndex="-1">
+                                <Link
+                                  className="page-link"
+                                  to="#"
+                                  tabIndex="-1"
+                                >
                                   Previous
                                 </Link>
                               </li>
@@ -657,7 +717,9 @@ class UiGeneral extends Component {
 
                       <Col xl={6}>
                         <div className="mt-4">
-                          <CardTitle className="h5 font-size-14">Alignment</CardTitle>
+                          <CardTitle className="h5 font-size-14">
+                            Alignment
+                          </CardTitle>
                           <p className="card-title-desc">
                             Change the alignment of pagination components with
                             flexbox utilities.
@@ -666,7 +728,11 @@ class UiGeneral extends Component {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-center">
                               <li className="page-item disabled">
-                                <Link className="page-link" to="#" tabIndex="-1">
+                                <Link
+                                  className="page-link"
+                                  to="#"
+                                  tabIndex="-1"
+                                >
                                   Previous
                                 </Link>
                               </li>
@@ -696,7 +762,11 @@ class UiGeneral extends Component {
                           <nav aria-label="Page navigation example">
                             <ul className="pagination justify-content-end">
                               <li className="page-item disabled">
-                                <Link className="page-link" to="#" tabIndex="-1">
+                                <Link
+                                  className="page-link"
+                                  to="#"
+                                  tabIndex="-1"
+                                >
                                   Previous
                                 </Link>
                               </li>
@@ -840,8 +910,8 @@ class UiGeneral extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiGeneral
+export default UiGeneral;

@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -8,35 +8,41 @@ import {
   Container,
   Row,
   Table,
-} from "reactstrap"
+} from "reactstrap";
 
-import Editable from "react-bootstrap-editable"
+import Editable from "react-bootstrap-editable";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class FormXeditable extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
-
 
   render() {
     /** Confirm button */
     const confirmElement = (
-      <button type="submit" className="btn btn-success editable-submit btn-sm me-1"><i className="mdi mdi-check"></i></button>
+      <button
+        type="submit"
+        className="btn btn-success editable-submit btn-sm me-1"
+      >
+        <i className="mdi mdi-check"></i>
+      </button>
     );
 
     /** Cancel button */
     const cancelElement = (
-      <button type="button" className="btn btn-danger editable-cancel btn-sm"><i className="mdi mdi-close"></i></button>
+      <button type="button" className="btn btn-danger editable-cancel btn-sm">
+        <i className="mdi mdi-close"></i>
+      </button>
     );
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Xeditable | Skote - React Admin & Dashboard Template</title>
+            <title>Form Xeditable | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Xeditable" />
@@ -102,7 +108,7 @@ class FormXeditable extends Component {
                                 type="textfield"
                                 validate={value => {
                                   if (!value) {
-                                    return "Required"
+                                    return "Required";
                                   }
                                 }}
                               />
@@ -194,8 +200,8 @@ class FormXeditable extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default FormXeditable
+export default FormXeditable;

@@ -175,7 +175,6 @@ class PatientInformation extends Component {
                               ),
                             })}
                             onSubmit={values => {
-                              console.log(values);
                               this.props.addPatientInformation(
                                 values,
                                 this.props.match.params.id

@@ -90,9 +90,7 @@ class FormValidations extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>
-              Form Validation | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Form Validation | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Validation" />
@@ -769,8 +767,10 @@ class FormValidations extends Component {
                         Max_Length: (this.state && this.state.Max_Length) || "",
                         Min_Value: (this.state && this.state.Min_Value) || "",
                         Max_Value: (this.state && this.state.Max_Value) || "",
-                        Range_Value: (this.state && this.state.Range_Value) || "",
-                        Regular_Exp: (this.state && this.state.Regular_Exp) || "",
+                        Range_Value:
+                          (this.state && this.state.Range_Value) || "",
+                        Regular_Exp:
+                          (this.state && this.state.Regular_Exp) || "",
                       }}
                       validationSchema={Yup.object().shape({
                         Min_Length: Yup.string()
@@ -779,18 +779,26 @@ class FormValidations extends Component {
                         Max_Length: Yup.string()
                           .max(6, "Must be exactly 6 digits")
                           .required("Max 6 chars"),
-                        Min_Value: Yup.string().required("Min Value 6").test('val', 'This value should be greater than or equal to 6', val => val >= 6),
-                        Max_Value: Yup.string().required("Max Value 6").matches(/^[0-6]+$/, "This value should be lower than or equal to 6."),
-                        Range_Value: Yup.string().required(
-                          "range between 5 to 10"
-                        ).min(5, "This value should be between 5 and 10")
-                        .max(10, "This value should be between 5 and 10"),
+                        Min_Value: Yup.string()
+                          .required("Min Value 6")
+                          .test(
+                            "val",
+                            "This value should be greater than or equal to 6",
+                            val => val >= 6
+                          ),
+                        Max_Value: Yup.string()
+                          .required("Max Value 6")
+                          .matches(
+                            /^[0-6]+$/,
+                            "This value should be lower than or equal to 6."
+                          ),
+                        Range_Value: Yup.string()
+                          .required("range between 5 to 10")
+                          .min(5, "This value should be between 5 and 10")
+                          .max(10, "This value should be between 5 and 10"),
                         Regular_Exp: Yup.string()
-                        .matches(
-                          /^[#0-9]+$/,
-                          "Only Hex Value"
-                        )
-                        .required("Only Hex Value"),
+                          .matches(/^[#0-9]+$/, "Only Hex Value")
+                          .required("Only Hex Value"),
                       })}
                       onSubmit={values => {
                         console.log(values);
@@ -799,7 +807,7 @@ class FormValidations extends Component {
                       {({ errors, status, touched }) => (
                         <Form>
                           <div className="mb-3">
-                          <Label>Min Length</Label>
+                            <Label>Min Length</Label>
                             <Field
                               name="Min_Length"
                               label="Min Length  "
@@ -819,7 +827,7 @@ class FormValidations extends Component {
                             />
                           </div>
                           <div className="mb-3">
-                          <Label>Max Length</Label>
+                            <Label>Max Length</Label>
                             <Field
                               name="Max_Length"
                               label="Max Length  "
@@ -839,7 +847,7 @@ class FormValidations extends Component {
                             />
                           </div>
                           <div className="mb-3">
-                          <Label>Min Value</Label>
+                            <Label>Min Value</Label>
                             <Field
                               name="Min_Value"
                               label="Min Value  "
@@ -859,7 +867,7 @@ class FormValidations extends Component {
                             />
                           </div>
                           <div className="mb-3">
-                          <Label>Max Value</Label>
+                            <Label>Max Value</Label>
                             <Field
                               name="Max_Value"
                               label="Max Value  "
@@ -879,7 +887,7 @@ class FormValidations extends Component {
                             />
                           </div>
                           <div className="mb-3">
-                          <Label>Range Length</Label>
+                            <Label>Range Length</Label>
                             <Field
                               name="Range_Value"
                               label="Range Length "
@@ -899,7 +907,7 @@ class FormValidations extends Component {
                             />
                           </div>
                           <div className="mb-3">
-                          <Label>Regular Exp</Label>
+                            <Label>Regular Exp</Label>
                             <Field
                               name="Regular_Exp"
                               label="Regular Exp  "

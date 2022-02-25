@@ -31,19 +31,18 @@ class UiToast extends Component {
 
   toggleToast = () => {
     this.setState(prevState => ({
-        toast: !prevState.toast,
-      }))
+      toast: !prevState.toast,
+    }));
   };
 
   render() {
-
     // {console.log(this.state.toast,'toast')}
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Toast | Skote - React Admin & Dashboard Template</title>
+            <title>Toast | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Toast" />

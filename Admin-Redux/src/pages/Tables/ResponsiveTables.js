@@ -1,16 +1,16 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
-import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from "reactstrap"
-import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table"
-import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
+import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class ResponsiveTables extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -18,7 +18,7 @@ class ResponsiveTables extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Responsive Table | Skote - React Admin & Dashboard Template</title>
+            <title>Responsive Table | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Tables" breadcrumbItem="Responsive Table" />
@@ -582,8 +582,8 @@ class ResponsiveTables extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default ResponsiveTables
+export default ResponsiveTables;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Media, Row } from "reactstrap";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 
 //Import Image
 import avatar2 from "../../assets/images/users/avatar-2.jpg";
@@ -24,7 +24,7 @@ class EmailRead extends Component {
         <div className="page-content">
           {/* add meta title */}
           <MetaTags>
-            <title>Read Email | Skote - React Admin & Dashboard Template</title>
+            <title>Read Email | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -112,10 +112,7 @@ class EmailRead extends Component {
                         </Col>
                       </Row>
 
-                      <Link
-                        to="#"
-                        className="btn btn-secondary mt-4"
-                      >
+                      <Link to="#" className="btn btn-secondary mt-4">
                         <i className="mdi mdi-reply"></i> Reply
                       </Link>
                     </CardBody>

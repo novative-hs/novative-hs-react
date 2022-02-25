@@ -88,7 +88,6 @@ class LabInformation extends Component {
 
   // Select
   handleSelectGroup = selectedGroup => {
-    console.log("Type of: ", typeof selectedGroup.value);
     this.setState({ main_lab_account_id: selectedGroup.value });
   };
 
@@ -277,7 +276,6 @@ class LabInformation extends Component {
                                 ),
                             })}
                             onSubmit={values => {
-                              console.log("Values: ", values);
                               this.props.addLabInformation(
                                 values,
                                 this.props.match.params.id

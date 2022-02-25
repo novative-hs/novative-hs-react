@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
 import {
   Container,
   Row,
@@ -7,22 +7,22 @@ import {
   CardBody,
   CardHeader,
   Button,
-} from "reactstrap"
-import { Link } from "react-router-dom"
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 //Import Countdown
-import Countdown from "react-countdown"
+import Countdown from "react-countdown";
 
 class Section extends Component {
   constructor() {
-    super()
-    this.renderer.bind(this)
+    super();
+    this.renderer.bind(this);
   }
 
   renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
-      return <span>You are good to go!</span>
+      return <span>You are good to go!</span>;
     } else {
       // Render a countdown
       return (
@@ -44,21 +44,21 @@ class Section extends Component {
             <span>Seconds</span>
           </div>
         </>
-      )
+      );
     }
-  }
+  };
 
   render() {
     return (
       <React.Fragment>
         <section className="section hero-section bg-ico-hero" id="home">
-          <div className="bg-overlay bg-primary"/>
+          <div className="bg-overlay bg-primary" />
           <Container>
             <Row className="align-items-center">
               <Col lg="5">
                 <div className="text-white-50">
                   <h1 className="text-white font-weight-semibold mb-3 hero-title">
-                    Skote - Ico Landing for a cryptocurrency business
+                    Ilaaj4u - Ico Landing for a cryptocurrency business
                   </h1>
                   <p className="font-size-14">
                     It will be as simple as occidental in fact to an English
@@ -137,8 +137,8 @@ class Section extends Component {
           </Container>
         </section>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default Section
+export default Section;

@@ -1,25 +1,25 @@
-import React, { Component } from "react"
-import { Link } from "react-router-dom"
-import MetaTags from 'react-meta-tags';
-import { Container, Row, Col } from "reactstrap"
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import MetaTags from "react-meta-tags";
+import { Container, Row, Col } from "reactstrap";
 
 //Import Countdown
-import Countdown from "react-countdown"
+import Countdown from "react-countdown";
 
 //Import Images
-import logo from "../../assets/images/logo-dark.png"
-import maintanence from "../../assets/images/coming-soon.svg"
+import logo from "../../assets/images/logo-dark.png";
+import maintanence from "../../assets/images/coming-soon.svg";
 
 class PagesComingsoon extends Component {
   constructor() {
-    super()
-    this.renderer.bind(this)
+    super();
+    this.renderer.bind(this);
   }
 
   renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a completed state
-      return <span>You are good to go!</span>
+      return <span>You are good to go!</span>;
     } else {
       // Render a countdown
       return (
@@ -37,19 +37,19 @@ class PagesComingsoon extends Component {
             {seconds} <span>Seconds</span>
           </div>
         </>
-      )
+      );
     }
-  }
+  };
 
   render() {
     return (
       <React.Fragment>
-          <MetaTags>
-            <title>Coming Soon | Skote - React Admin & Dashboard Template</title>
-          </MetaTags>
+        <MetaTags>
+          <title>Coming Soon | Ilaaj4u - Dashboard</title>
+        </MetaTags>
         <div className="home-btn d-none d-sm-block">
           <Link to="/" className="text-white">
-            <i className="fas fa-home h2"/>
+            <i className="fas fa-home h2" />
           </Link>
         </div>
 
@@ -72,7 +72,7 @@ class PagesComingsoon extends Component {
                       </div>
                     </Col>
                   </Row>
-                  <h4 className="mt-5">Let&#39;s get started with Skote</h4>
+                  <h4 className="mt-5">Let&#39;s get started with Ilaaj4u</h4>
                   <p className="text-muted">
                     It will be as simple as Occidental in fact it will be
                     Occidental.
@@ -81,7 +81,11 @@ class PagesComingsoon extends Component {
                   <Row className="justify-content-center mt-5">
                     <Col md="8">
                       <div className="counter-number">
-                        <Countdown date="2021/12/31" className="counter-number" renderer={this.renderer} />
+                        <Countdown
+                          date="2021/12/31"
+                          className="counter-number"
+                          renderer={this.renderer}
+                        />
                       </div>
                     </Col>
                   </Row>
@@ -91,8 +95,8 @@ class PagesComingsoon extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default PagesComingsoon
+export default PagesComingsoon;

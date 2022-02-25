@@ -103,7 +103,6 @@ class SidebarContent extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         {/* Sidebar for Patient */}
@@ -326,6 +325,7 @@ class SidebarContent extends Component {
                         {this.props.t("Crypto")}
                       </Link>
                     </li>
+
                     <li>
                       <Link to="/dashboard-blog">{this.props.t("Blog")}</Link>
                     </li>

@@ -1,17 +1,17 @@
-import React, { Component } from "react"
-import { Container } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Container } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class PagesStarter extends Component {
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>Starter Page | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Starter Page | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -19,8 +19,8 @@ class PagesStarter extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default PagesStarter
+export default PagesStarter;

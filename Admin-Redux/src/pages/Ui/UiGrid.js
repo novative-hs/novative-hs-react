@@ -1,30 +1,23 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "reactstrap"
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiGrid extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>Grid | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Grid | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Grid" />
@@ -116,7 +109,9 @@ class UiGrid extends Component {
                             <td>
                               <code>.col-xl-</code>
                             </td>
-                            <td><code>.col-xxl-</code></td>
+                            <td>
+                              <code>.col-xxl-</code>
+                            </td>
                           </tr>
                           <tr>
                             <th className="text-nowrap" scope="row">
@@ -160,8 +155,8 @@ class UiGrid extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiGrid
+export default UiGrid;

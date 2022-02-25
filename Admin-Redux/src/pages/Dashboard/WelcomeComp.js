@@ -1,15 +1,15 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
 
-import { Row, Col, Card, CardBody } from "reactstrap"
-import { Link } from "react-router-dom"
+import { Row, Col, Card, CardBody } from "reactstrap";
+import { Link } from "react-router-dom";
 
-import avatar1 from "../../assets/images/users/avatar-1.jpg"
-import profileImg from "../../assets/images/profile-img.png"
+import avatar1 from "../../assets/images/users/avatar-1.jpg";
+import profileImg from "../../assets/images/profile-img.png";
 
 class WelcomeComp extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -21,7 +21,7 @@ class WelcomeComp extends Component {
               <Col xs="7">
                 <div className="text-primary p-3">
                   <h5 className="text-primary">Welcome Back !</h5>
-                  <p>Skote Dashboard</p>
+                  <p>Ilaaj4u Dashboard</p>
                 </div>
               </Col>
               <Col xs="5" className="align-self-end">
@@ -56,11 +56,8 @@ class WelcomeComp extends Component {
                     </Col>
                   </Row>
                   <div className="mt-4">
-                    <Link
-                      to=""
-                      className="btn btn-primary btn-sm"
-                    >
-                      View Profile {" "}<i className="mdi mdi-arrow-right ms-1"/>
+                    <Link to="" className="btn btn-primary btn-sm">
+                      View Profile <i className="mdi mdi-arrow-right ms-1" />
                     </Link>
                   </div>
                 </div>
@@ -69,8 +66,8 @@ class WelcomeComp extends Component {
           </CardBody>
         </Card>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default WelcomeComp
+export default WelcomeComp;

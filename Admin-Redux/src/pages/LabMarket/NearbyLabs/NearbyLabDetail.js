@@ -73,9 +73,7 @@ class NearbyLabDetail extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>
-              Products Details | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Products Details | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs

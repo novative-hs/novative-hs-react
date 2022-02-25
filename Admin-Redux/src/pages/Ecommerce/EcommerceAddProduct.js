@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import { Link } from "react-router-dom"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import MetaTags from "react-meta-tags";
 import {
   Button,
   Card,
@@ -13,19 +13,19 @@ import {
   Input,
   Label,
   Row,
-} from "reactstrap"
-import Select from "react-select"
-import Dropzone from "react-dropzone"
+} from "reactstrap";
+import Select from "react-select";
+import Dropzone from "react-dropzone";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class EcommerceAddProduct extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       selectedFiles: [],
-    }
+    };
   }
 
   handleAcceptedFiles = files => {
@@ -34,20 +34,20 @@ class EcommerceAddProduct extends Component {
         preview: URL.createObjectURL(file),
         formattedSize: this.formatBytes(file.size),
       })
-    )
+    );
 
-    this.setState({ selectedFiles: files })
-  }
+    this.setState({ selectedFiles: files });
+  };
 
   formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes"
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
-  }
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
 
   render() {
     const options = [
@@ -57,12 +57,12 @@ class EcommerceAddProduct extends Component {
       { value: "NV", label: "Nevada" },
       { value: "OR", label: "Oregon" },
       { value: "WA", label: "Washington" },
-    ]
+    ];
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Add Product | Skote - React Admin & Dashboard Template</title>
+            <title>Add Product | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -73,7 +73,9 @@ class EcommerceAddProduct extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Basic Information</CardTitle>
-                    <p className="card-title-desc">Fill all information below</p>
+                    <p className="card-title-desc">
+                      Fill all information below
+                    </p>
 
                     <Form>
                       <Row>
@@ -152,18 +154,12 @@ class EcommerceAddProduct extends Component {
                         </Col>
                       </Row>
                       <div className="d-flex flex-wrap gap-2">
-                        <Button
-                          type="submit"
-                          color="primary"
-                        >
+                        <Button type="submit" color="primary">
                           Save Changes
-                      </Button>
-                        <Button
-                          type="submit"
-                          color="secondary"
-                        >
+                        </Button>
+                        <Button type="submit" color="secondary">
                           Cancel
-                      </Button>
+                        </Button>
                       </div>
                     </Form>
                   </CardBody>
@@ -230,7 +226,7 @@ class EcommerceAddProduct extends Component {
                                 </Row>
                               </div>
                             </Card>
-                          )
+                          );
                         })}
                       </div>
                     </Form>
@@ -280,18 +276,10 @@ class EcommerceAddProduct extends Component {
                           </div>
                         </Col>
                       </Row>
-
-                      <Button
-                        type="submit"
-                        color="primary"
-                        className="me-1"
-                      >
+                      <Button type="submit" color="primary" className="me-1">
                         Save Changes
                       </Button>{" "}
-                      <Button
-                        type="submit"
-                        color="secondary"
-                      >
+                      <Button type="submit" color="secondary">
                         Cancel
                       </Button>
                     </Form>
@@ -302,8 +290,8 @@ class EcommerceAddProduct extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default EcommerceAddProduct
+export default EcommerceAddProduct;

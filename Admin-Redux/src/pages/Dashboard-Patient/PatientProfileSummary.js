@@ -9,7 +9,7 @@ import { withTranslation } from "react-i18next";
 import profileImg from "../../assets/images/profile-img.png";
 
 // actions
-import { getLabProfile } from "store/auth/labprofile/actions";
+import { getPatientProfile } from "store/auth/patientprofile/actions";
 
 class LabSummary extends Component {
   constructor(props) {
@@ -18,31 +18,29 @@ class LabSummary extends Component {
       apiURL: process.env.REACT_APP_BACKENDURL,
       name: "",
       address: "",
-      logo: "",
       completedAppointments: "",
       inProcessAppointments: "",
-      monthlyRevenue: "",
-      annualRevenue: "",
-      inProcessAppointments: "",
+      monthlyCost: "",
+      annualCost: "",
     };
   }
 
   componentDidMount() {
     setTimeout(() => {
-      this.props.getLabProfile(this.props.match.params.id);
+      this.props.getPatientProfile(this.props.match.params.id);
     }, 1000);
 
     setTimeout(() => {
       this.setState({
         name: this.props.success.name,
+        email: this.props.success.email,
         address: this.props.success.address,
-        logo: this.state.apiURL + this.props.success.logo,
         completedAppointments: this.props.success.completed_appointments,
         inProcessAppointments: this.props.success.inprocess_appointments,
-        monthlyRevenue: this.props.success.monthly_revenue,
-        annualRevenue: this.props.success.annual_revenue,
+        monthlyCost: this.props.success.monthly_cost,
+        annualCost: this.props.success.annual_cost,
       });
-    }, 3000);
+    }, 2000);
   }
 
   render() {
@@ -67,12 +65,15 @@ class LabSummary extends Component {
             <CardBody className="pt-4">
               <Row>
                 <Col sm="12">
-                  <div className="pt-4">
+                  <div className="pt-1">
                     <Row>
                       <Col xs="6">
                         <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>
+                        <p className="text-muted mb-0 text-truncate">
+                          {this.state.email}
+                        </p>
                         <p className="text-muted mb-0 text-truncate">
                           {this.state.address}
                         </p>
@@ -81,7 +82,7 @@ class LabSummary extends Component {
                         <div className="mt-2">
                           <Link
                             to={
-                              "/dashboard-lab/" +
+                              "/dashboard-patient/" +
                               this.props.match.params.id +
                               "/profile"
                             }
@@ -152,18 +153,18 @@ class LabSummary extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Monthly Revenue</p>
+                      <p className="text-muted fw-medium">Monthly Cost</p>
                       <h4 className="mb-0">
                         {/* Converting number to thousands separator string for readability */}
                         $
-                        {this.state.monthlyRevenue
+                        {this.state.monthlyCost
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
-                        <i className={"bx bx-archive-in font-size-24"} />
+                        <i className={"bx bx-archive-out font-size-24"} />
                       </span>
                     </div>
                   </div>
@@ -176,18 +177,18 @@ class LabSummary extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Annual Revenue</p>
+                      <p className="text-muted fw-medium">Annual Cost</p>
                       {/* Converting number to thousands separator string for readability */}
                       <h4 className="mb-0">
                         $
-                        {this.state.annualRevenue
+                        {this.state.annualCost
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
-                        <i className={"bx bx-archive-in font-size-24"} />
+                        <i className={"bx bx-archive-out font-size-24"} />
                       </span>
                     </div>
                   </div>
@@ -207,14 +208,14 @@ LabSummary.propTypes = {
   location: PropTypes.object,
   error: PropTypes.any,
   success: PropTypes.any,
-  getLabProfile: PropTypes.func,
+  getPatientProfile: PropTypes.func,
 };
 
 const mapStateToProps = state => {
-  const { error, success } = state.LabProfile;
+  const { error, success } = state.PatientProfile;
   return { error, success };
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getLabProfile })(withTranslation()(LabSummary))
+  connect(mapStateToProps, { getPatientProfile })(withTranslation()(LabSummary))
 );

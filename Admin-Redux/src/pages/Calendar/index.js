@@ -225,11 +225,11 @@ class Calender extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Calendar | Skote - React Admin & Dashboard Template</title>
+            <title>Calendar | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Skote" breadcrumbItem="Calendar" />
+            <Breadcrumbs title="Ilaaj4u" breadcrumbItem="Calendar" />
             <Row>
               <Col className="col-12">
                 <Card>

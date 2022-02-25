@@ -1,32 +1,42 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Link } from "react-router-dom"
-import { Container, Row, Col, CardBody } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Link } from "react-router-dom";
+import { Container, Row, Col, CardBody } from "reactstrap";
 
 //Import Cards
-import CardMaintenance from "./card-maintenance"
+import CardMaintenance from "./card-maintenance";
 
 //Import Images
-import maintenance from "../../assets/images/maintenance.svg"
-import logo from "../../assets/images/logo-dark.png"
-import lightlogo from "../../assets/images/logo-light.png"
+import maintenance from "../../assets/images/maintenance.svg";
+import logo from "../../assets/images/logo-dark.png";
+import lightlogo from "../../assets/images/logo-light.png";
 
 class PagesMaintenance extends Component {
   render() {
     return (
       <React.Fragment>
         <section className="my-5 pt-sm-5">
-        <MetaTags>
-            <title>Maintenance | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Maintenance | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container>
             <Row>
               <Col xs="12" className="text-center">
                 <div className="home-wrapper">
                   <div className="mb-5">
-                  <Link to="/dashboard" className="d-block auth-logo">
-                    <img src={logo} alt="logo" height="20" className="auth-logo-dark mx-auto" />
-                    <img src={lightlogo} alt="logo" height="20" className="auth-logo-light mx-auto" />
+                    <Link to="/dashboard" className="d-block auth-logo">
+                      <img
+                        src={logo}
+                        alt="logo"
+                        height="20"
+                        className="auth-logo-dark mx-auto"
+                      />
+                      <img
+                        src={lightlogo}
+                        alt="logo"
+                        height="20"
+                        className="auth-logo-light mx-auto"
+                      />
                     </Link>
                   </div>
 
@@ -88,8 +98,8 @@ class PagesMaintenance extends Component {
           </Container>
         </section>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default PagesMaintenance
+export default PagesMaintenance;

@@ -2,9 +2,9 @@ const invoiceList = [
   {
     id: 1,
     founder: "Marion Burton",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14251",
-    company: "Skote Dashboard UI",
+    company: "Ilaaj4u Dashboard UI",
     invoicePrice: "1455",
     date: "10 Oct, 19",
     color: "primary",
@@ -18,12 +18,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Landing Template",
+          item: "Ilaaj4u - Landing Template",
           price: "$399.00",
         },
         {
@@ -41,7 +41,7 @@ const invoiceList = [
     id: 2,
     image: "avatar2",
     founder: "Francis Witte",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14252",
     company: "Brand logo design",
     invoicePrice: "1024",
@@ -56,12 +56,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Landing Template	",
+          item: "Ilaaj4u - Landing Template	",
           price: "$399.00",
         },
         {
@@ -79,7 +79,7 @@ const invoiceList = [
     id: 3,
     image: "avatar2",
     founder: "Joseph Flint",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14253",
     company: "Landing page Design",
     invoicePrice: "1189",
@@ -94,12 +94,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -117,7 +117,7 @@ const invoiceList = [
     id: 4,
     image: "avatar2",
     founder: "Larry Nielsen",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14254",
     company: "Redesign - Landing page",
     invoicePrice: "1245",
@@ -132,12 +132,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -155,7 +155,7 @@ const invoiceList = [
     id: 5,
     image: "avatar2",
     founder: "Mark Evans",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14255",
     company: "Blog Template Design",
     invoicePrice: "1024",
@@ -170,12 +170,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -192,7 +192,7 @@ const invoiceList = [
   {
     id: 6,
     founder: "Timothy Lee",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14256",
     company: "Landing page Design",
     invoicePrice: "1189",
@@ -208,12 +208,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -231,7 +231,7 @@ const invoiceList = [
     id: 7,
     image: "avatar2",
     founder: "Stanley Bland",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14257",
     company: "Landing page UI",
     invoicePrice: "1148",
@@ -246,12 +246,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -268,7 +268,7 @@ const invoiceList = [
   {
     id: 8,
     founder: "Tommy Wilson",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14258",
     company: "Redesign - Dashboard",
     invoicePrice: "1259",
@@ -284,12 +284,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -307,7 +307,7 @@ const invoiceList = [
     id: 9,
     image: "avatar2",
     founder: "Louis Brandon",
-    founderAt: "Skote",
+    founderAt: "Ilaaj4u",
     invoiceID: "14259",
     company: "Email Template UI",
     invoicePrice: "1355",
@@ -322,12 +322,12 @@ const invoiceList = [
       items: [
         {
           id: 1,
-          item: "Skote - Bootstrap 5 Admin Dashboard",
+          item: "Ilaaj4u - Bootstrap 5 Admin Dashboard",
           price: "$499.00",
         },
         {
           id: 2,
-          item: "Skote - Bootstrap 5 Landing Template",
+          item: "Ilaaj4u - Bootstrap 5 Landing Template",
           price: "$399.00",
         },
         {
@@ -341,6 +341,6 @@ const invoiceList = [
       total: "$1410.00",
     },
   },
-]
+];
 
-export { invoiceList }
+export { invoiceList };

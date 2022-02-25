@@ -202,7 +202,7 @@ class NearbyLabs extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Products | Skote - React Admin & Dashboard Template</title>
+            <title>Products | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Ecommerce" breadcrumbItem="Products" />
@@ -399,7 +399,12 @@ class NearbyLabs extends Component {
                               <div className="product-img position-relative">
                                 <img
                                   src={this.state.apiURL + nearbyLab.logo}
-                                  alt=""
+                                  alt="Lab Logo"
+                                  style={{
+                                    width: "200px",
+                                    height: "200px",
+                                    objectFit: "cover",
+                                  }}
                                   className="img-fluid mx-auto d-block"
                                 />
                               </div>

@@ -304,7 +304,7 @@ class PathologistsList extends Component {
                                       onClick={this.handlePathologistClicks}
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Test
+                                      Add New Pathologist
                                     </Button>
                                   </div>
                                 </Col>

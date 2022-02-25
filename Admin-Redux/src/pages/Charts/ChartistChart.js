@@ -1,27 +1,27 @@
-import React, { Component } from "react"
-import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 // import charts
-import BarChart from "../AllCharts/chartist/barchart"
-import StackBarChart from "../AllCharts/chartist/stackedbarchart"
-import DountChart from "../AllCharts/chartist/dountchart"
-import PieChart from "../AllCharts/chartist/piechart"
-import SmilAnimationsChart from "../AllCharts/chartist/smilanimations"
-import LineChart from "../AllCharts/chartist/linechart"
-import ChartBar from "../AllCharts/chartist/chartbar"
-import LineAreaChart from "../AllCharts/chartist/lineareachart"
+import BarChart from "../AllCharts/chartist/barchart";
+import StackBarChart from "../AllCharts/chartist/stackedbarchart";
+import DountChart from "../AllCharts/chartist/dountchart";
+import PieChart from "../AllCharts/chartist/piechart";
+import SmilAnimationsChart from "../AllCharts/chartist/smilanimations";
+import LineChart from "../AllCharts/chartist/linechart";
+import ChartBar from "../AllCharts/chartist/chartbar";
+import LineAreaChart from "../AllCharts/chartist/lineareachart";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-import "chartist/dist/scss/chartist.scss"
-import "../../assets/scss/chartist.scss"
+import "chartist/dist/scss/chartist.scss";
+import "../../assets/scss/chartist.scss";
 
 class ChartistChart extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -29,7 +29,7 @@ class ChartistChart extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Chartist Chart | Skote - React Admin & Dashboard Template</title>
+            <title>Chartist Chart | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Charts" breadcrumbItem="Chartist Chart" />
@@ -283,8 +283,8 @@ class ChartistChart extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default ChartistChart
+export default ChartistChart;
