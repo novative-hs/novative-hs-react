@@ -86,7 +86,6 @@ class LabProfile extends Component {
     }, 1000);
 
     setTimeout(() => {
-      console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
         logo: this.state.apiURL + this.props.success.logo,

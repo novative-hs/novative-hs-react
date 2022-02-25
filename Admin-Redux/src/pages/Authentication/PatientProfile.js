@@ -51,7 +51,6 @@ class PatientProfile extends Component {
     }, 1000);
 
     setTimeout(() => {
-      console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
         cnic: this.props.success.cnic,

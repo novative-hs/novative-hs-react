@@ -550,8 +550,6 @@ export const getNearbyLabs = (address, id) => {
   let formData = new FormData();
   formData.append("address", address);
 
-  console.log("Address: ", address);
-
   return axios.post(`${url.GET_NEARBY_LABS}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });

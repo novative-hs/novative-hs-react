@@ -171,8 +171,6 @@ class CorporateInformation extends Component {
                                 ),
                             })}
                             onSubmit={values => {
-                              console.log(values);
-                              // console.log(values.logo.split("\\").slice(-1)[0]);
                               this.props.addCorporateInformation(
                                 values,
                                 this.props.match.params.id

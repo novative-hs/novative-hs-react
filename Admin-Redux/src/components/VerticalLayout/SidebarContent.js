@@ -103,7 +103,6 @@ class SidebarContent extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         {/* Sidebar for Patient */}

@@ -34,7 +34,6 @@ class LabSummary extends Component {
     }, 1000);
 
     setTimeout(() => {
-      console.log("Success: ", this.props.success);
       this.setState({
         name: this.props.success.name,
         email: this.props.success.email,
