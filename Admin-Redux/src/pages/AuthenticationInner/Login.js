@@ -24,7 +24,7 @@ class Login extends Component {
     return (
       <React.Fragment>
         <MetaTags>
-          <title>Login | Skote - React Admin & Dashboard Template</title>
+          <title>Login | Ilaaj4u - Dashboard</title>
         </MetaTags>
         <div className="home-btn d-none d-sm-block">
           <Link to="/" className="text-dark">
@@ -41,7 +41,7 @@ class Login extends Component {
                       <Col className="col-7">
                         <div className="text-primary p-4">
                           <h5 className="text-primary">Welcome Back !</h5>
-                          <p>Sign in to continue to Skote.</p>
+                          <p>Sign in to continue to Ilaaj4u.</p>
                         </div>
                       </Col>
                       <Col className="col-5 align-self-end">
@@ -92,7 +92,7 @@ class Login extends Component {
                           ),
                         })}
                         onSubmit={values => {
-                          console.log(values,'values');
+                          console.log(values, "values");
                         }}
                       >
                         {({ errors, status, touched }) => (
@@ -224,9 +224,7 @@ class Login extends Component {
                       Signup now{" "}
                     </Link>{" "}
                   </p>
-                  <p>
-                    © {new Date().getFullYear()} Ilaaj4u
-                  </p>
+                  <p>© {new Date().getFullYear()} Ilaaj4u</p>
                 </div>
               </Col>
             </Row>

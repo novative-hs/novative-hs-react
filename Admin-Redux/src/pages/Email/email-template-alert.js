@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import SettingMenu from "../../Shared/SettingMenu";
 import { Row, Col } from "reactstrap";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import { Link } from "react-router-dom";
 
 //Import Breadcrumb
@@ -13,14 +13,14 @@ class EmailAlertTemplte extends Component {
     this.state = {};
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Alert Email | Skote - React Admin & Dashboard Template</title>
+            <title>Alert Email | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Email Template" breadcrumbItem="Alert Email" />
@@ -130,8 +130,8 @@ class EmailAlertTemplte extends Component {
                                   align="center"
                                   valign="top"
                                 >
-                                  Warning: You&apos;re approaching your limit. Please
-                                  upgrade.
+                                  Warning: You&apos;re approaching your limit.
+                                  Please upgrade.
                                 </td>
                               </tr>
                               <tr
@@ -316,7 +316,7 @@ class EmailAlertTemplte extends Component {
                                           }}
                                           valign="top"
                                         >
-                                          Thanks for choosing <b>Skote</b>{" "}
+                                          Thanks for choosing <b>Ilaaj4u</b>{" "}
                                           Admin.
                                         </td>
                                       </tr>
@@ -342,7 +342,7 @@ class EmailAlertTemplte extends Component {
                                           }}
                                           valign="top"
                                         >
-                                          <b>Skote</b>
+                                          <b>Ilaaj4u</b>
                                           <p>Support Team</p>
                                         </td>
                                       </tr>
@@ -370,7 +370,7 @@ class EmailAlertTemplte extends Component {
                                           }}
                                           valign="top"
                                         >
-                                          © {new Date().getFullYear()} Skote
+                                          © {new Date().getFullYear()} Ilaaj4u
                                         </td>
                                       </tr>
                                     </tbody>

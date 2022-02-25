@@ -74,7 +74,7 @@ class ProjectsList extends Component {
     }));
   };
 
-  onClickDelete = (project) => {
+  onClickDelete = project => {
     this.setState({ project: project });
     this.setState({ deleteModal: true });
   };
@@ -134,9 +134,7 @@ class ProjectsList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>
-              Projects List | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Projects List | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -376,7 +374,7 @@ class ProjectsList extends Component {
                                       className={
                                         "form-control" +
                                         (errors.description &&
-                                          touched.description
+                                        touched.description
                                           ? " is-invalid"
                                           : "")
                                       }

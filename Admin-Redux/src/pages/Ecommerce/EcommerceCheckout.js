@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Container,
   Row,
@@ -18,18 +18,18 @@ import {
   CardBody,
   CardTitle,
   CardSubtitle,
-} from "reactstrap"
-import Select from "react-select"
-import { Link } from "react-router-dom"
+} from "reactstrap";
+import Select from "react-select";
+import { Link } from "react-router-dom";
 
-import classnames from "classnames"
+import classnames from "classnames";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Images
-import img1 from "../../assets/images/product/img-1.png"
-import img7 from "../../assets/images/product/img-7.png"
+import img1 from "../../assets/images/product/img-1.png";
+import img7 from "../../assets/images/product/img-7.png";
 
 const optionGroup = [
   {
@@ -48,11 +48,11 @@ const optionGroup = [
       { label: "Toilet Paper", value: "Toilet Paper" },
     ],
   },
-]
+];
 
 class EcommerceCheckout extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       orderSummary: [
         {
@@ -72,30 +72,30 @@ class EcommerceCheckout extends Component {
       ],
       activeTab: "1",
       selectedGroup: null,
-    }
-    this.toggleTab = this.toggleTab.bind(this)
-    this.handleSelectGroup = this.handleSelectGroup.bind(this)
+    };
+    this.toggleTab = this.toggleTab.bind(this);
+    this.handleSelectGroup = this.handleSelectGroup.bind(this);
   }
 
   toggleTab(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
   }
 
   handleSelectGroup = selectedGroup => {
-    this.setState({ selectedGroup })
-  }
+    this.setState({ selectedGroup });
+  };
 
   render() {
-    const { selectedGroup } = this.state
+    const { selectedGroup } = this.state;
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Checkout | Skote - React Admin & Dashboard Template</title>
+            <title>Checkout | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -111,7 +111,7 @@ class EcommerceCheckout extends Component {
                           active: this.state.activeTab === "1",
                         })}
                         onClick={() => {
-                          this.toggleTab("1")
+                          this.toggleTab("1");
                         }}
                       >
                         <i className="bx bxs-truck d-block check-nav-icon mt-4 mb-2" />
@@ -124,7 +124,7 @@ class EcommerceCheckout extends Component {
                           active: this.state.activeTab === "2",
                         })}
                         onClick={() => {
-                          this.toggleTab("2")
+                          this.toggleTab("2");
                         }}
                       >
                         <i className="bx bx-money d-block check-nav-icon mt-4 mb-2" />
@@ -137,7 +137,7 @@ class EcommerceCheckout extends Component {
                           active: this.state.activeTab === "3",
                         })}
                         onClick={() => {
-                          this.toggleTab("3")
+                          this.toggleTab("3");
                         }}
                       >
                         <i className="bx bx-badge-check d-block check-nav-icon mt-4 mb-2" />
@@ -152,7 +152,9 @@ class EcommerceCheckout extends Component {
                       <TabContent activeTab={this.state.activeTab}>
                         <TabPane tabId="1">
                           <div>
-                            <CardTitle className="h4">Shipping information</CardTitle>
+                            <CardTitle className="h4">
+                              Shipping information
+                            </CardTitle>
                             <p className="card-title-desc">
                               Fill all information below
                             </p>
@@ -289,7 +291,9 @@ class EcommerceCheckout extends Component {
                                     <option value="CG">Congo</option>
                                     <option value="CK">Cook Islands</option>
                                     <option value="CR">Costa Rica</option>
-                                    <option value="CI">Cote d&apos;Ivoire</option>
+                                    <option value="CI">
+                                      Cote d&apos;Ivoire
+                                    </option>
                                     <option value="HR">
                                       Croatia (Hrvatska)
                                     </option>
@@ -552,7 +556,9 @@ class EcommerceCheckout extends Component {
                           aria-labelledby="v-pills-payment-tab"
                         >
                           <div>
-                            <CardTitle className="h4">Payment information</CardTitle>
+                            <CardTitle className="h4">
+                              Payment information
+                            </CardTitle>
                             <p className="card-title-desc">
                               Fill all information below
                             </p>
@@ -740,9 +746,7 @@ class EcommerceCheckout extends Component {
                                     </tr>
                                     <tr>
                                       <td colSpan="2">
-                                        <h6 className="m-0 text-end">
-                                          Total:
-                                        </h6>
+                                        <h6 className="m-0 text-end">Total:</h6>
                                       </td>
                                       <td>$ 675</td>
                                     </tr>
@@ -783,8 +787,8 @@ class EcommerceCheckout extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default EcommerceCheckout
+export default EcommerceCheckout;

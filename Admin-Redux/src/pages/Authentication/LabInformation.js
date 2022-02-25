@@ -88,7 +88,6 @@ class LabInformation extends Component {
 
   // Select
   handleSelectGroup = selectedGroup => {
-    console.log("Type of: ", typeof selectedGroup.value);
     this.setState({ main_lab_account_id: selectedGroup.value });
   };
 
@@ -214,12 +213,10 @@ class LabInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              registration_no: Yup.string()
-                                .required("Please enter lab owner name")
-                                .max(
-                                  255,
-                                  "Please enter maximum 255 characters"
-                                ),
+                              registration_no: Yup.string().max(
+                                255,
+                                "Please enter maximum 255 characters"
+                              ),
                               email: Yup.string()
                                 .required("Please enter your email")
                                 .email("Please enter valid email")
@@ -279,7 +276,6 @@ class LabInformation extends Component {
                                 ),
                             })}
                             onSubmit={values => {
-                              console.log("Values: ", values);
                               this.props.addLabInformation(
                                 values,
                                 this.props.match.params.id
@@ -470,7 +466,7 @@ class LabInformation extends Component {
                                     for="registration_no"
                                     className="form-label"
                                   >
-                                    Registration Number
+                                    Health dept registration number
                                   </Label>
                                   <Field
                                     id="registration_no"
@@ -586,7 +582,7 @@ class LabInformation extends Component {
                                 {/* Address field */}
                                 <div className="mb-3">
                                   <Label for="address" className="form-label">
-                                    Complete Address
+                                    Complete address
                                   </Label>
                                   <Field
                                     id="address"

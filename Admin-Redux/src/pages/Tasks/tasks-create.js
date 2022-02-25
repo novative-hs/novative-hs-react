@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component, Fragment } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Button,
   Card,
@@ -11,65 +11,65 @@ import {
   Input,
   Label,
   Row,
-} from "reactstrap"
+} from "reactstrap";
 
 // Import Editor
-import { Editor } from "react-draft-wysiwyg"
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 //Import Date Picker
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class TasksCreate extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       startDate: new Date(),
       endDate: new Date(),
       inputFields: [{ name: "", file: "" }],
-    }
-    this.startDateChange.bind(this)
-    this.endDateChange.bind(this)
-    this.handleAddFields.bind(this)
-    this.handleRemoveFields.bind(this)
+    };
+    this.startDateChange.bind(this);
+    this.endDateChange.bind(this);
+    this.handleAddFields.bind(this);
+    this.handleRemoveFields.bind(this);
   }
 
   startDateChange = date => {
     this.setState({
       startDate: date,
-    })
-  }
+    });
+  };
 
   endDateChange = date => {
     this.setState({
       endDate: date,
-    })
-  }
+    });
+  };
 
   // Function for Create Input Fields
   handleAddFields = () => {
-    var values = this.state.inputFields
-    values.push({ name: "", file: "" })
-    this.setState({ inputFields: values })
-  }
+    var values = this.state.inputFields;
+    values.push({ name: "", file: "" });
+    this.setState({ inputFields: values });
+  };
 
   // Function for Remove Input Fields
   handleRemoveFields = index => {
-    var values = this.state.inputFields
-    values.splice(index, 1)
-    this.setState({ inputFields: values })
-  }
+    var values = this.state.inputFields;
+    values.splice(index, 1);
+    this.setState({ inputFields: values });
+  };
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>Create Task | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Create Task | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -173,7 +173,7 @@ class TasksCreate extends Component {
                                             color="primary"
                                             className="inner"
                                             onClick={() => {
-                                              this.handleRemoveFields(key)
+                                              this.handleRemoveFields(key);
                                             }}
                                             block
                                           >
@@ -232,8 +232,8 @@ class TasksCreate extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default TasksCreate
+export default TasksCreate;

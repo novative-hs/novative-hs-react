@@ -1,32 +1,32 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Col, Container, Row } from "reactstrap"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { Link, withRouter } from "react-router-dom"
-import { map } from "lodash"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Col, Container, Row } from "reactstrap";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { map } from "lodash";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
+import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import Card invoice
-import CardInvoice from "./card-invoice"
-import { getInvoices } from "store/actions"
+import CardInvoice from "./card-invoice";
+import { getInvoices } from "store/actions";
 
 class InvoicesList extends Component {
   componentDidMount() {
-    const { onGetInvoices } = this.props
-    onGetInvoices()
+    const { onGetInvoices } = this.props;
+    onGetInvoices();
   }
 
   render() {
-    const { invoices } = this.props
+    const { invoices } = this.props;
     return (
       <React.Fragment>
         <div className="page-content">
-         {/* add meta title */}
-         <MetaTags>
-            <title>Invoice List | Skote - React Admin & Dashboard Template</title>
+          {/* add meta title */}
+          <MetaTags>
+            <title>Invoice List | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -50,24 +50,24 @@ class InvoicesList extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 InvoicesList.propTypes = {
   invoices: PropTypes.array,
   onGetInvoices: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ invoices }) => ({
   invoices: invoices.invoices,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetInvoices: () => dispatch(getInvoices()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(InvoicesList))
+)(withRouter(InvoicesList));

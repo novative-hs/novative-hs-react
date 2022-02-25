@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import PropTypes from 'prop-types'
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
 import {
   Container,
   Row,
@@ -14,38 +14,38 @@ import {
   ModalBody,
   ModalFooter,
   Table,
-  Input
-} from "reactstrap"
-import { Link } from "react-router-dom"
-import { connect } from "react-redux"
+  Input,
+} from "reactstrap";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 //import Charts
-import StackedColumnChart from "./StackedColumnChart"
+import StackedColumnChart from "./StackedColumnChart";
 
-import modalimage1 from "../../assets/images/product/img-7.png"
-import modalimage2 from "../../assets/images/product/img-4.png"
+import modalimage1 from "../../assets/images/product/img-7.png";
+import modalimage2 from "../../assets/images/product/img-4.png";
 
 //import action
-import { getChartsData } from "../../store/actions"
+import { getChartsData } from "../../store/actions";
 
 // Pages Components
-import WelcomeComp from "./WelcomeComp"
-import MonthlyEarning from "./MonthlyEarning"
-import SocialSource from "./SocialSource"
-import ActivityComp from "./ActivityComp"
-import TopCities from "./TopCities"
-import LatestTranaction from "./LatestTranaction"
+import WelcomeComp from "./WelcomeComp";
+import MonthlyEarning from "./MonthlyEarning";
+import SocialSource from "./SocialSource";
+import ActivityComp from "./ActivityComp";
+import TopCities from "./TopCities";
+import LatestTranaction from "./LatestTranaction";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //i18n
-import { withTranslation } from "react-i18next"
+import { withTranslation } from "react-i18next";
 import classNames from "classnames";
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       reports: [
         { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
@@ -68,11 +68,11 @@ class Dashboard extends Component {
       modal: false,
       subscribemodal: false,
       chartSeries: [],
-      periodType: "yearly"
-    }
+      periodType: "yearly",
+    };
 
-    this.togglemodal.bind(this)
-    this.togglesubscribemodal.bind(this)
+    this.togglemodal.bind(this);
+    this.togglesubscribemodal.bind(this);
   }
 
   componentDidMount() {
@@ -81,22 +81,21 @@ class Dashboard extends Component {
     onGetChartsData("yearly");
   }
 
-
   togglemodal = () => {
     this.setState(prevState => ({
       modal: !prevState.modal,
-    }))
-  }
+    }));
+  };
 
   togglesubscribemodal = () => {
     this.setState(prevState => ({
       subscribemodal: !prevState.subscribemodal,
-    }))
-  }
+    }));
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      this.setState({ ...this.state, chartSeries: this.props.chartsData })
+      this.setState({ ...this.state, chartSeries: this.props.chartsData });
     }
   }
 
@@ -105,7 +104,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Dashboard | Skote - React Admin & Dashboard Template</title> 
+            <title>Dashboard | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -160,12 +159,15 @@ class Dashboard extends Component {
                             <Link
                               to="#"
                               className={classNames(
-                                { "active": this.state.periodType === "weekly" },
+                                { active: this.state.periodType === "weekly" },
                                 "nav-link"
                               )}
                               onClick={() => {
-                                this.setState({ ...this.state, periodType: "weekly" });
-                                this.props.onGetChartsData("weekly")
+                                this.setState({
+                                  ...this.state,
+                                  periodType: "weekly",
+                                });
+                                this.props.onGetChartsData("weekly");
                               }}
                               id="one_month"
                             >
@@ -176,12 +178,15 @@ class Dashboard extends Component {
                             <Link
                               to="#"
                               className={classNames(
-                                { "active": this.state.periodType === "monthly" },
+                                { active: this.state.periodType === "monthly" },
                                 "nav-link"
                               )}
                               onClick={() => {
-                                this.setState({ ...this.state, periodType: "monthly" });
-                                this.props.onGetChartsData("monthly")
+                                this.setState({
+                                  ...this.state,
+                                  periodType: "monthly",
+                                });
+                                this.props.onGetChartsData("monthly");
                               }}
                               id="one_month"
                             >
@@ -192,12 +197,15 @@ class Dashboard extends Component {
                             <Link
                               to="#"
                               className={classNames(
-                                { "active": this.state.periodType === "yearly" },
+                                { active: this.state.periodType === "yearly" },
                                 "nav-link"
                               )}
                               onClick={() => {
-                                this.setState({ ...this.state, periodType: "yearly" });
-                                this.props.onGetChartsData("yearly")
+                                this.setState({
+                                  ...this.state,
+                                  periodType: "yearly",
+                                });
+                                this.props.onGetChartsData("yearly");
                               }}
                               id="one_month"
                             >
@@ -243,13 +251,16 @@ class Dashboard extends Component {
         >
           <div className="modal-content">
             <div className="modal-header border-bottom-0">
-              <button type="button" className="btn-close" onClick={() =>
-                this.setState({ subscribemodal: false })
-              } data-bs-dismiss="modal" aria-label="Close"></button>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => this.setState({ subscribemodal: false })}
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <div className="text-center mb-4">
-
                 <div className="avatar-md mx-auto mb-4">
                   <div className="avatar-title bg-light  rounded-circle text-primary h1">
                     <i className="mdi mdi-email-open"></i>
@@ -259,16 +270,21 @@ class Dashboard extends Component {
                 <div className="row justify-content-center">
                   <div className="col-xl-10">
                     <h4 className="text-primary">Subscribe !</h4>
-                    <p className="text-muted font-size-14 mb-4">Subscribe our newletter and get notification to stay update.</p>
+                    <p className="text-muted font-size-14 mb-4">
+                      Subscribe our newletter and get notification to stay
+                      update.
+                    </p>
 
-                    <div className="input-group  rounded bg-light"  >
-                      <Input type="email" className="form-control bg-transparent border-0" placeholder="Enter Email address" />
+                    <div className="input-group  rounded bg-light">
+                      <Input
+                        type="email"
+                        className="form-control bg-transparent border-0"
+                        placeholder="Enter Email address"
+                      />
                       <Button color="primary" type="button" id="button-addon2">
                         <i className="bx bxs-paper-plane"></i>
                       </Button>
-
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -372,25 +388,25 @@ class Dashboard extends Component {
           </div>
         </Modal>
       </React.Fragment>
-    )
+    );
   }
 }
 
 Dashboard.propTypes = {
   t: PropTypes.any,
   chartsData: PropTypes.any,
-  onGetChartsData: PropTypes.func
-}
+  onGetChartsData: PropTypes.func,
+};
 
 const mapStateToProps = ({ Dashboard }) => ({
   chartsData: Dashboard.chartsData,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
-  onGetChartsData: (periodType) => dispatch(getChartsData(periodType)),
-})
+  onGetChartsData: periodType => dispatch(getChartsData(periodType)),
+});
 
 export default connect(
-  mapStateToProps, mapDispatchToProps
-)(withTranslation()(Dashboard))
-
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation()(Dashboard));

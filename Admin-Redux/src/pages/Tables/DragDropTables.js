@@ -1,36 +1,35 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
-import { Row, Col, Card, CardBody, CardTitle, Table } from "reactstrap"
-import ReactDragListView from 'react-drag-listview/lib/index.js';
+import { Row, Col, Card, CardBody, CardTitle, Table } from "reactstrap";
+import ReactDragListView from "react-drag-listview/lib/index.js";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class DragDropTables extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      
       data: [
         {
           id: "1",
           firstname: "Mark",
           lastname: "Otto",
-          username: "@mdo"
+          username: "@mdo",
         },
         {
           id: "2",
           firstname: "Jacob",
           lastname: "Thornton",
-          username: "@fat"
+          username: "@fat",
         },
         {
           id: "3",
           firstname: "Larry",
           lastname: "the Bird",
-          username: "@twitter"
+          username: "@twitter",
         },
       ],
 
@@ -39,24 +38,23 @@ class DragDropTables extends Component {
           id: "1",
           firstname: "Mark",
           lastname: "Otto",
-          username: "@mdo"
+          username: "@mdo",
         },
         {
           id: "2",
           firstname: "Jacob",
           lastname: "Thornton",
-          username: "@fat"
+          username: "@fat",
         },
         {
           id: "3",
           firstname: "Larry",
           lastname: "the Bird",
-          username: "@twitter"
+          username: "@twitter",
         },
       ],
-     
-    }
-  };
+    };
+  }
   render() {
     const that = this;
     const dragProps = {
@@ -66,8 +64,8 @@ class DragDropTables extends Component {
         data.splice(toIndex, 0, item);
         that.setState({ data });
       },
-      nodeSelector: 'tr',
-      handleSelector: 'tr'
+      nodeSelector: "tr",
+      handleSelector: "tr",
     };
 
     const dragProps1 = {
@@ -77,15 +75,15 @@ class DragDropTables extends Component {
         data1.splice(toIndex1, 0, item);
         that.setState({ data1 });
       },
-      nodeSelector: 'tr',
-      handleSelector: 'tr'
+      nodeSelector: "tr",
+      handleSelector: "tr",
     };
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Drag & Drop Table | Skote - React Admin & Dashboard Template</title>
+            <title>Drag & Drop Table | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Tables" breadcrumbItem="Drag & Drop Table" />
@@ -123,7 +121,6 @@ class DragDropTables extends Component {
                               </tr>
                             ))}
                           </tbody>
-
                         </Table>
                       </ReactDragListView>
                     </div>
@@ -168,12 +165,11 @@ class DragDropTables extends Component {
                 </Card>
               </Col>
             </Row>
-
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default DragDropTables
+export default DragDropTables;

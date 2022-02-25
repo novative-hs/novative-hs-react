@@ -22,7 +22,7 @@ class Register extends Component {
     return (
       <React.Fragment>
         <MetaTags>
-          <title>Register | Skote - React Admin & Dashboard Template</title>
+          <title>Register | Ilaaj4u - Dashboard</title>
         </MetaTags>
         <div className="home-btn d-none d-sm-block">
           <Link to="/" className="text-dark">
@@ -39,7 +39,7 @@ class Register extends Component {
                       <Col className="col-7">
                         <div className="text-primary p-4">
                           <h5 className="text-primary">Free Register</h5>
-                          <p>Get your free Skote account now.</p>
+                          <p>Get your free Ilaaj4u account now.</p>
                         </div>
                       </Col>
                       <Col className="col-5 align-self-end">
@@ -82,7 +82,7 @@ class Register extends Component {
                           ),
                         })}
                         onSubmit={values => {
-                          console.log(values,'values')
+                          console.log(values, "values");
                         }}
                       >
                         {({ errors, status, touched }) => (
@@ -196,7 +196,7 @@ class Register extends Component {
 
                             <div className="mt-4 text-center">
                               <p className="mb-0">
-                                By registering you agree to the Skote{" "}
+                                By registering you agree to the Ilaaj4u{" "}
                                 <Link to="#" className="text-primary">
                                   Terms of Use
                                 </Link>
@@ -216,7 +216,7 @@ class Register extends Component {
                     </Link>
                   </p>
                   <p>
-                    © {new Date().getFullYear()} Skote. Crafted with
+                    © {new Date().getFullYear()} Ilaaj4u. Crafted with
                     <i className="mdi mdi-heart text-danger" /> by Themesbrand
                   </p>
                 </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import {
   Button,
   Card,
@@ -57,7 +57,8 @@ class UiNotifications extends Component {
     var progressBar = document.getElementById("progressBar").checked;
 
     //Duplicates
-    var preventDuplicates = document.getElementById("preventDuplicates").checked;
+    var preventDuplicates =
+      document.getElementById("preventDuplicates").checked;
 
     //Newest on Top
     var newestOnTop = document.getElementById("newestOnTop").checked;
@@ -134,7 +135,7 @@ class UiNotifications extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Notifications | Skote - React Admin & Dashboard Template</title>
+            <title>Notifications | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Notifications" />
@@ -546,7 +547,9 @@ class UiNotifications extends Component {
                         <div className="control-group">
                           <div className="controls">
                             <FormGroup className="mb-3">
-                              <Label htmlFor="showDuration">Show Duration</Label>
+                              <Label htmlFor="showDuration">
+                                Show Duration
+                              </Label>
                               <input
                                 id="showDuration"
                                 type="text"
@@ -561,7 +564,9 @@ class UiNotifications extends Component {
                               />
                             </FormGroup>
                             <FormGroup className="mb-3">
-                              <Label htmlFor="hideDuration">Hide Duration</Label>
+                              <Label htmlFor="hideDuration">
+                                Hide Duration
+                              </Label>
                               <input
                                 id="hideDuration"
                                 type="text"

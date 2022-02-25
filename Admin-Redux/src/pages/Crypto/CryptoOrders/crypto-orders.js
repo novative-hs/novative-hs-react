@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import MetaTags from 'react-meta-tags';
-import { map } from "lodash"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import { map } from "lodash";
 import {
   Button,
   Card,
@@ -16,126 +16,328 @@ import {
   Row,
   TabContent,
   TabPane,
-} from "reactstrap"
-import classnames from "classnames"
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
+} from "reactstrap";
+import classnames from "classnames";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
 
 //Date Picker
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-import "assets/scss/datatables.scss"
+import "assets/scss/datatables.scss";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
-import cryptoOrderColumn from "./cryptoOrderColumn"
-import { getCryptoOrders } from "store/crypto/actions"
+import Breadcrumbs from "components/Common/Breadcrumb";
+import cryptoOrderColumn from "./cryptoOrderColumn";
+import { getCryptoOrders } from "store/crypto/actions";
 
 class CryptoOrders extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       startDate: new Date(),
       activeTab: "1",
-    }
+    };
   }
 
   componentDidMount() {
-    const { onGetOrders } = this.props
-    onGetOrders()
+    const { onGetOrders } = this.props;
+    onGetOrders();
   }
 
   handleChange = date => {
     this.setState({
       startDate: date,
-    })
-  }
+    });
+  };
 
   toggleTab = tab => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
-  }
+  };
 
   render() {
-
-    const columns = [{
-      dataField: 'pdate',
-      text: 'Date'
-    }, {
-      dataField: 'type',
-      text: 'Type'
-    }, {
-      dataField: 'coin',
-      text: 'Coin'
-    }, {
-      dataField: 'value',
-      text: 'Value'
-    }, {
-      dataField: 'valueInUsd',
-      text: 'value in USD'
-    }, {
-      dataField: 'status',
-      text: 'Status'
-    }];
+    const columns = [
+      {
+        dataField: "pdate",
+        text: "Date",
+      },
+      {
+        dataField: "type",
+        text: "Type",
+      },
+      {
+        dataField: "coin",
+        text: "Coin",
+      },
+      {
+        dataField: "value",
+        text: "Value",
+      },
+      {
+        dataField: "valueInUsd",
+        text: "value in USD",
+      },
+      {
+        dataField: "status",
+        text: "Status",
+      },
+    ];
 
     // Table Data
     const productData = [
-      { id: 1, pdate: "03 Mar, 2020", type: "Buy", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 2, pdate: "01 Apr, 2020", type: "Sell", coin: "Bitcoin", value: "0.01224 LTC", valueInUsd: "$ 2773.01", status: "Pending" },
-      { id: 3, pdate: "03 Mar, 2020", type: "Buy", coin: "Litecoin", value: "1.00224 LTC", valueInUsd: "$ 3773.01", status: "completed" },
-      { id: 4, pdate: "13 May, 2020", type: "Buy", coin: "Litecoin", value: "2.00224 LTC", valueInUsd: "$ 4773.01", status: "completed" },
-      { id: 5, pdate: "16 Jun, 2020", type: "Sell", coin: "Bitcoin", value: "0.02224 LTC", valueInUsd: "$ 5773.01", status: "Pending" },
-      { id: 6, pdate: "03 Mar, 2020", type: "Sell", coin: "Litecoin", value: "0.10224 LTC", valueInUsd: "$ 6773.01", status: "completed" },
-      { id: 7, pdate: "23 Mar, 2020", type: "Buy", coin: "Bitcoin", value: "5.00224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 8, pdate: "13 Mar, 2020", type: "Sell", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 9, pdate: "4 Jan, 2020", type: "Buy", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 2773.01", status: "completed" },
-      { id: 10, pdate: "03 Mar, 2020", type: "Buy", coin: "Litecoin", value: "0.12224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 11, pdate: "03 Mar, 2020", type: "Sell", coin: "Bitcoin", value: "0.330224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 12, pdate: "23 Oct, 2020", type: "Buy", coin: "Litecoin", value: "0.12224 LTC", valueInUsd: "$ 1273.01", status: "completed" },
-      { id: 13, pdate: "13 Feb, 2020", type: "Sell", coin: "Litecoin", value: "0.50224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 14, pdate: "03 Mar, 2020", type: "Buy", coin: "Bitcoin", value: "0.70224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 15, pdate: "22 Mar, 2020", type: "Sell", coin: "Bitcoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 16, pdate: "03 Mar, 2020", type: "Buy", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 17, pdate: "13 Mar, 2020", type: "Sell", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 18, pdate: "4 Jan, 2020", type: "Buy", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 2773.01", status: "completed" },
-      { id: 19, pdate: "03 Mar, 2020", type: "Buy", coin: "Litecoin", value: "0.12224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 20, pdate: "03 Mar, 2020", type: "Sell", coin: "Bitcoin", value: "0.330224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 21, pdate: "23 Oct, 2020", type: "Buy", coin: "Litecoin", value: "0.12224 LTC", valueInUsd: "$ 1273.01", status: "completed" },
-      { id: 22, pdate: "13 Feb, 2020", type: "Sell", coin: "Litecoin", value: "0.50224 LTC", valueInUsd: "$ 1773.01", status: "completed" },
-      { id: 23, pdate: "03 Mar, 2020", type: "Buy", coin: "Bitcoin", value: "0.70224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 24, pdate: "22 Mar, 2020", type: "Sell", coin: "Bitcoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "Pending" },
-      { id: 25, pdate: "03 Mar, 2020", type: "Buy", coin: "Litecoin", value: "0.00224 LTC", valueInUsd: "$ 1773.01", status: "completed" }
+      {
+        id: 1,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 2,
+        pdate: "01 Apr, 2020",
+        type: "Sell",
+        coin: "Bitcoin",
+        value: "0.01224 LTC",
+        valueInUsd: "$ 2773.01",
+        status: "Pending",
+      },
+      {
+        id: 3,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "1.00224 LTC",
+        valueInUsd: "$ 3773.01",
+        status: "completed",
+      },
+      {
+        id: 4,
+        pdate: "13 May, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "2.00224 LTC",
+        valueInUsd: "$ 4773.01",
+        status: "completed",
+      },
+      {
+        id: 5,
+        pdate: "16 Jun, 2020",
+        type: "Sell",
+        coin: "Bitcoin",
+        value: "0.02224 LTC",
+        valueInUsd: "$ 5773.01",
+        status: "Pending",
+      },
+      {
+        id: 6,
+        pdate: "03 Mar, 2020",
+        type: "Sell",
+        coin: "Litecoin",
+        value: "0.10224 LTC",
+        valueInUsd: "$ 6773.01",
+        status: "completed",
+      },
+      {
+        id: 7,
+        pdate: "23 Mar, 2020",
+        type: "Buy",
+        coin: "Bitcoin",
+        value: "5.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 8,
+        pdate: "13 Mar, 2020",
+        type: "Sell",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 9,
+        pdate: "4 Jan, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 2773.01",
+        status: "completed",
+      },
+      {
+        id: 10,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.12224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 11,
+        pdate: "03 Mar, 2020",
+        type: "Sell",
+        coin: "Bitcoin",
+        value: "0.330224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 12,
+        pdate: "23 Oct, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.12224 LTC",
+        valueInUsd: "$ 1273.01",
+        status: "completed",
+      },
+      {
+        id: 13,
+        pdate: "13 Feb, 2020",
+        type: "Sell",
+        coin: "Litecoin",
+        value: "0.50224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 14,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Bitcoin",
+        value: "0.70224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 15,
+        pdate: "22 Mar, 2020",
+        type: "Sell",
+        coin: "Bitcoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 16,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 17,
+        pdate: "13 Mar, 2020",
+        type: "Sell",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 18,
+        pdate: "4 Jan, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 2773.01",
+        status: "completed",
+      },
+      {
+        id: 19,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.12224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 20,
+        pdate: "03 Mar, 2020",
+        type: "Sell",
+        coin: "Bitcoin",
+        value: "0.330224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 21,
+        pdate: "23 Oct, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.12224 LTC",
+        valueInUsd: "$ 1273.01",
+        status: "completed",
+      },
+      {
+        id: 22,
+        pdate: "13 Feb, 2020",
+        type: "Sell",
+        coin: "Litecoin",
+        value: "0.50224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
+      {
+        id: 23,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Bitcoin",
+        value: "0.70224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 24,
+        pdate: "22 Mar, 2020",
+        type: "Sell",
+        coin: "Bitcoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "Pending",
+      },
+      {
+        id: 25,
+        pdate: "03 Mar, 2020",
+        type: "Buy",
+        coin: "Litecoin",
+        value: "0.00224 LTC",
+        valueInUsd: "$ 1773.01",
+        status: "completed",
+      },
     ];
 
-
-
-    const { orders } = this.props
+    const { orders } = this.props;
     const status = {
       completed: (
         <span className="badge bg-success font-size-10">Completed</span>
       ),
-      pending: (
-        <span className="badge bg-warning font-size-10">Pending</span>
-      ),
+      pending: <span className="badge bg-warning font-size-10">Pending</span>,
       failed: <span className="badge bg-danger font-size-10">Failed</span>,
-    }
+    };
     const data = {
       columns: cryptoOrderColumn,
       rows: map(orders, order => ({ ...order, status: status[order.status] })),
-    }
+    };
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Orders | Skote - React Admin & Dashboard Template</title>
+            <title>Orders | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -154,7 +356,7 @@ class CryptoOrders extends Component {
                             active: this.state.activeTab === "1",
                           })}
                           onClick={() => {
-                            this.toggleTab("1")
+                            this.toggleTab("1");
                           }}
                         >
                           All Orders
@@ -166,7 +368,7 @@ class CryptoOrders extends Component {
                             active: this.state.activeTab === "2",
                           })}
                           onClick={() => {
-                            this.toggleTab("2")
+                            this.toggleTab("2");
                           }}
                         >
                           Processing
@@ -235,7 +437,8 @@ class CryptoOrders extends Component {
                                 <Button
                                   type="button"
                                   color="primary"
-                                  className="w-md">
+                                  className="w-md"
+                                >
                                   Add Order
                                 </Button>
                               </div>
@@ -244,13 +447,24 @@ class CryptoOrders extends Component {
                         </Form>
 
                         <div className="mt-3">
-                          <BootstrapTable responsive keyField='id' data={productData} columns={columns} pagination={paginationFactory()} />
+                          <BootstrapTable
+                            responsive
+                            keyField="id"
+                            data={productData}
+                            columns={columns}
+                            pagination={paginationFactory()}
+                          />
                         </div>
-
                       </TabPane>
                       <TabPane tabId="2" id="processing">
                         <div className="mt-3">
-                          <BootstrapTable responsive keyField='id' data={productData} columns={columns} pagination={paginationFactory()} />
+                          <BootstrapTable
+                            responsive
+                            keyField="id"
+                            data={productData}
+                            columns={columns}
+                            pagination={paginationFactory()}
+                          />
                         </div>
                       </TabPane>
                     </TabContent>
@@ -261,24 +475,24 @@ class CryptoOrders extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 CryptoOrders.propTypes = {
   orders: PropTypes.array,
   onGetOrders: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ crypto }) => ({
   orders: crypto.orders,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetOrders: () => dispatch(getCryptoOrders()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(CryptoOrders))
+)(withRouter(CryptoOrders));

@@ -26,9 +26,7 @@ class Recoverpw extends Component {
       <React.Fragment>
         <div className="account-pages my-5 pt-sm-5">
           <MetaTags>
-            <title>
-              Recover Password | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Recover Password | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container>
             <Row className="justify-content-center">
@@ -39,7 +37,7 @@ class Recoverpw extends Component {
                       <Col xs={7}>
                         <div className="text-primary p-4">
                           <h5 className="text-primary"> Reset Password</h5>
-                          <p>Re-Password with Skote.</p>
+                          <p>Re-Password with Ilaaj4u.</p>
                         </div>
                       </Col>
                       <Col xs={5} className="align-self-end">
@@ -135,7 +133,7 @@ class Recoverpw extends Component {
                     </Link>{" "}
                   </p>
                   <p>
-                    © {new Date().getFullYear()} Skote. Crafted with{" "}
+                    © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                     <i className="mdi mdi-heart text-danger"></i> by Themesbrand
                   </p>
                 </div>

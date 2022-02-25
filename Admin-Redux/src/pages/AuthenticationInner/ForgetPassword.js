@@ -20,9 +20,7 @@ class ForgetPasswordPage extends Component {
     return (
       <React.Fragment>
         <MetaTags>
-          <title>
-            Forgot Password 1 | Skote - React Admin & Dashboard Template
-          </title>
+          <title>Forgot Password 1 | Ilaaj4u - Dashboard</title>
         </MetaTags>
         <div className="home-btn d-none d-sm-block">
           <Link to="/" className="text-dark">
@@ -39,7 +37,7 @@ class ForgetPasswordPage extends Component {
                       <Col className="col-7">
                         <div className="text-primary p-4">
                           <h5 className="text-primary">Welcome Back !</h5>
-                          <p>Sign in to continue to Skote.</p>
+                          <p>Sign in to continue to Ilaaj4u.</p>
                         </div>
                       </Col>
                       <Col className="col-5 align-self-end">
@@ -125,9 +123,7 @@ class ForgetPasswordPage extends Component {
                       Login
                     </Link>{" "}
                   </p>
-                  <p>
-                    © {new Date().getFullYear()} Ilaaj4u
-                  </p>
+                  <p>© {new Date().getFullYear()} Ilaaj4u</p>
                 </div>
               </Col>
             </Row>

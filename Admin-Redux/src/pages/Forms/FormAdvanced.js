@@ -1,21 +1,33 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Button, Card, CardBody, Col, Container, Form, FormGroup, Input, InputGroup, Label, Row } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  Label,
+  Row,
+} from "reactstrap";
 
-import { SketchPicker } from "react-color"
-import ColorPicker from "@vtaits/react-color-picker"
-import "@vtaits/react-color-picker/dist/index.css"
-import "react-datepicker/dist/react-datepicker.css"
-import Switch from "react-switch"
-import Select from "react-select"
-import makeAnimated from "react-select/animated"
-import "flatpickr/dist/themes/material_blue.css"
-import Flatpickr from "react-flatpickr"
+import { SketchPicker } from "react-color";
+import ColorPicker from "@vtaits/react-color-picker";
+import "@vtaits/react-color-picker/dist/index.css";
+import "react-datepicker/dist/react-datepicker.css";
+import Switch from "react-switch";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
-import { Link } from "react-router-dom"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
+import { Link } from "react-router-dom";
 
-const animatedComponents = makeAnimated()
+const animatedComponents = makeAnimated();
 
 const optionGroup = [
   {
@@ -23,18 +35,18 @@ const optionGroup = [
     options: [
       { label: "Mustard", value: "Mustard" },
       { label: "Ketchup", value: "Ketchup" },
-      { label: "Relish", value: "Relish" }
-    ]
+      { label: "Relish", value: "Relish" },
+    ],
   },
   {
     label: "Camping",
     options: [
       { label: "Tent", value: "Tent" },
       { label: "Flashlight", value: "Flashlight" },
-      { label: "Toilet Paper", value: "Toilet Paper" }
-    ]
-  }
-]
+      { label: "Toilet Paper", value: "Toilet Paper" },
+    ],
+  },
+];
 
 const optionGroup1 = [
   {
@@ -42,18 +54,18 @@ const optionGroup1 = [
     options: [
       { label: "Mustard", value: "Mustard" },
       { label: "Ketchup", value: "Ketchup" },
-      { label: "Relish", value: "Relish" }
-    ]
+      { label: "Relish", value: "Relish" },
+    ],
   },
   {
     label: "Camping",
     options: [
       { label: "Tent", value: "Tent" },
       { label: "Flashlight", value: "Flashlight" },
-      { label: "Toilet Paper", value: "Toilet Paper" }
-    ]
-  }
-]
+      { label: "Toilet Paper", value: "Toilet Paper" },
+    ],
+  },
+];
 
 const optionGroup2 = [
   {
@@ -61,22 +73,22 @@ const optionGroup2 = [
     options: [
       { label: "Mustard", value: "Mustard" },
       { label: "Ketchup", value: "Ketchup" },
-      { label: "Relish", value: "Relish" }
-    ]
+      { label: "Relish", value: "Relish" },
+    ],
   },
   {
     label: "Camping",
     options: [
       { label: "Tent", value: "Tent" },
       { label: "Flashlight", value: "Flashlight" },
-      { label: "Toilet Paper", value: "Toilet Paper" }
-    ]
-  }
-]
+      { label: "Toilet Paper", value: "Toilet Paper" },
+    ],
+  },
+];
 
 class FormAdvanced extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       color: "red",
       colorRgb: "red",
@@ -136,69 +148,69 @@ class FormAdvanced extends Component {
       selectedMulti1: null,
       selectedMulti2: null,
       selectedMulti3: null,
-      resentValue: null
-    }
+      resentValue: null,
+    };
     //colorpicker
-    this.onDrag = this.onDrag.bind(this)
-    this.onDragRgb = this.onDragRgb.bind(this)
-    this.onDragCust = this.onDragCust.bind(this)
-    this.handleHor = this.handleHor.bind(this)
-    this.handleRGBA = this.handleRGBA.bind(this)
+    this.onDrag = this.onDrag.bind(this);
+    this.onDragRgb = this.onDragRgb.bind(this);
+    this.onDragCust = this.onDragCust.bind(this);
+    this.handleHor = this.handleHor.bind(this);
+    this.handleRGBA = this.handleRGBA.bind(this);
 
     // DatePicker
-    this.handleDefault = this.handleDefault.bind(this)
-    this.handleAutoClose = this.handleAutoClose.bind(this)
-    this.handleStart = this.handleStart.bind(this)
-    this.handleEnd = this.handleEnd.bind(this)
-    this.handleMonthChange = this.handleMonthChange.bind(this)
-    this.handleYearChange = this.handleYearChange.bind(this)
+    this.handleDefault = this.handleDefault.bind(this);
+    this.handleAutoClose = this.handleAutoClose.bind(this);
+    this.handleStart = this.handleStart.bind(this);
+    this.handleEnd = this.handleEnd.bind(this);
+    this.handleMonthChange = this.handleMonthChange.bind(this);
+    this.handleYearChange = this.handleYearChange.bind(this);
 
     // Bootsrap Maxlength
-    this.threshholdchange = this.threshholdchange.bind(this)
-    this.threshholdDefault = this.threshholdDefault.bind(this)
-    this.optionchange = this.optionchange.bind(this)
-    this.placementchange = this.placementchange.bind(this)
-    this.textareachange = this.textareachange.bind(this)
+    this.threshholdchange = this.threshholdchange.bind(this);
+    this.threshholdDefault = this.threshholdDefault.bind(this);
+    this.optionchange = this.optionchange.bind(this);
+    this.placementchange = this.placementchange.bind(this);
+    this.textareachange = this.textareachange.bind(this);
 
-    this.handleSelectGroup = this.handleSelectGroup.bind(this)
-    this.handleMulti = this.handleMulti.bind(this)
-    this.handleMulti1 = this.handleMulti1.bind(this)
-    this.handleMulti2 = this.handleMulti2.bind(this)
-    this.handleMulti3 = this.handleMulti3.bind(this)
+    this.handleSelectGroup = this.handleSelectGroup.bind(this);
+    this.handleMulti = this.handleMulti.bind(this);
+    this.handleMulti1 = this.handleMulti1.bind(this);
+    this.handleMulti2 = this.handleMulti2.bind(this);
+    this.handleMulti3 = this.handleMulti3.bind(this);
 
     //*** datepicker method */
-    this.getDateMethod = this.getDateMethod.bind(this)
-    this.getDateFormateMethod = this.getDateFormateMethod.bind(this)
-    this.getMonthMethod = this.getMonthMethod.bind(this)
-    this.getMonthShortMethod = this.getMonthShortMethod.bind(this)
-    this.getDayMethod = this.getDayMethod.bind(this)
-    this.getDayShort = this.getDayShort.bind(this)
-    this.getDayMin = this.getDayMin.bind(this)
-    this.picks = this.picks.bind(this)
-    this.resentValue = this.resentValue.bind(this)
+    this.getDateMethod = this.getDateMethod.bind(this);
+    this.getDateFormateMethod = this.getDateFormateMethod.bind(this);
+    this.getMonthMethod = this.getMonthMethod.bind(this);
+    this.getMonthShortMethod = this.getMonthShortMethod.bind(this);
+    this.getDayMethod = this.getDayMethod.bind(this);
+    this.getDayShort = this.getDayShort.bind(this);
+    this.getDayMin = this.getDayMin.bind(this);
+    this.picks = this.picks.bind(this);
+    this.resentValue = this.resentValue.bind(this);
   }
 
   //Date Picker Method
 
   //Color Picker
   onDrag(c1) {
-    this.setState({ color: c1 })
+    this.setState({ color: c1 });
   }
 
   onDragRgb(c1) {
-    this.setState({ colorRgb: c1 })
+    this.setState({ colorRgb: c1 });
   }
 
   onDragCust(c1) {
-    this.setState({ colorCust: c1 })
+    this.setState({ colorCust: c1 });
   }
 
   handleHor = color => {
-    this.setState({ colorHor: color.hex })
-  }
+    this.setState({ colorHor: color.hex });
+  };
   handleRGBA = () => {
-    this.setState({ display_RGBA: !this.state.display_RGBA })
-  }
+    this.setState({ display_RGBA: !this.state.display_RGBA });
+  };
 
   onSwatchHover_RGBA = color => {
     const format =
@@ -210,132 +222,131 @@ class FormAdvanced extends Component {
       color.rgb.b +
       "," +
       color.rgb.a +
-      ")"
-    this.setState({ colorRGBA: format })
-  }
+      ")";
+    this.setState({ colorRGBA: format });
+  };
 
   //DatePicker
   handleDefault(date) {
-    this.setState({ default_date: date })
+    this.setState({ default_date: date });
   }
 
   handleAutoClose(date) {
-    this.setState({ auto_close: date })
+    this.setState({ auto_close: date });
   }
 
   handleStart(date) {
-    this.setState({ start_date: date })
+    this.setState({ start_date: date });
   }
 
   handleEnd(date) {
-    this.setState({ end_date: date })
+    this.setState({ end_date: date });
   }
 
   handleMonthChange(date) {
-    this.setState({ monthDate: date })
+    this.setState({ monthDate: date });
   }
 
   handleYearChange(date) {
-    this.setState({ yearDate: date })
+    this.setState({ yearDate: date });
   }
 
   //Bootstrap Maxlength
   threshholdchange(event) {
-    const count = event.target.value.length
+    const count = event.target.value.length;
     if (count > 0) {
-      this.setState({ disthresh: true })
+      this.setState({ disthresh: true });
     } else {
-      this.setState({ disthresh: false })
+      this.setState({ disthresh: false });
     }
-    this.setState({ threshholdcount: event.target.value.length })
+    this.setState({ threshholdcount: event.target.value.length });
   }
 
   threshholdDefault(event) {
-    const count = event.target.value.length
+    const count = event.target.value.length;
     if (count > 0) {
-      this.setState({ disDefault: true })
+      this.setState({ disDefault: true });
     } else {
-      this.setState({ disDefault: false })
+      this.setState({ disDefault: false });
     }
-    this.setState({ threshholdDefault: event.target.value.length })
+    this.setState({ threshholdDefault: event.target.value.length });
   }
 
   optionchange(event) {
-    const count = event.target.value.length
+    const count = event.target.value.length;
     if (count > 0) {
-      this.setState({ disbadge: true })
+      this.setState({ disbadge: true });
     } else {
-      this.setState({ disbadge: false })
+      this.setState({ disbadge: false });
     }
     if (count > 24) {
-      this.setState({ advanceclass: "badgecountextra" })
+      this.setState({ advanceclass: "badgecountextra" });
     } else {
-      this.setState({ advanceclass: "badgecount" })
+      this.setState({ advanceclass: "badgecount" });
     }
-    this.setState({ optioncount: event.target.value.length })
+    this.setState({ optioncount: event.target.value.length });
   }
 
   placementchange(event) {
-    const count = event.target.value.length
+    const count = event.target.value.length;
     if (count > 0) {
-      this.setState({ placementbadge: true })
+      this.setState({ placementbadge: true });
     } else {
-      this.setState({ placementbadge: false })
+      this.setState({ placementbadge: false });
     }
-    this.setState({ placementcount: event.target.value.length })
+    this.setState({ placementcount: event.target.value.length });
   }
 
   textareachange(event) {
-    const count = event.target.value.length
+    const count = event.target.value.length;
     if (count > 0) {
-      this.setState({ textareabadge: true })
+      this.setState({ textareabadge: true });
     } else {
-      this.setState({ textareabadge: false })
+      this.setState({ textareabadge: false });
     }
-    this.setState({ textcount: event.target.value.length })
+    this.setState({ textcount: event.target.value.length });
   }
 
   //Select
   handleSelectGroup = selectedGroup => {
-    this.setState({ selectedGroup })
-  }
+    this.setState({ selectedGroup });
+  };
   handleMulti = selectedMulti => {
-    this.setState({ selectedMulti })
-  }
+    this.setState({ selectedMulti });
+  };
   handleMulti1 = selectedMulti1 => {
-    this.setState({ selectedMulti1 })
-  }
+    this.setState({ selectedMulti1 });
+  };
   handleMulti2 = selectedMulti2 => {
-    this.setState({ selectedMulti2 })
-  }
+    this.setState({ selectedMulti2 });
+  };
   handleMulti3 = selectedMulti3 => {
-    this.setState({ selectedMulti3 })
-  }
+    this.setState({ selectedMulti3 });
+  };
 
   /**get date method **/
 
   getDateMethod = () => {
-    this.setState({ dateValue: new Date() })
-  }
+    this.setState({ dateValue: new Date() });
+  };
 
   picks = () => {
-    this.setState({ pick: new Date() })
-  }
+    this.setState({ pick: new Date() });
+  };
 
   resentValue = () => {
-    this.setState({ pick: "" })
-  }
-  yearFirst = () => {
-  }
+    this.setState({ pick: "" });
+  };
+  yearFirst = () => {};
 
   getDateFormateMethod = () => {
-    var today = new Date()
-    const dd = today.getDate().toString()
-    const mm = today.getMonth() + 1
-    const yyyy = today.getFullYear()
-    const fromate_date = (today = dd + "/" + mm + "/" + yyyy)
-    this.setState({ fromate_date })
-  }
+    var today = new Date();
+    const dd = today.getDate().toString();
+    const mm = today.getMonth() + 1;
+    const yyyy = today.getFullYear();
+    const fromate_date = (today = dd + "/" + mm + "/" + yyyy);
+    this.setState({ fromate_date });
+  };
 
   getMonthMethod = () => {
     const months = [
@@ -350,12 +361,12 @@ class FormAdvanced extends Component {
       "September",
       "October",
       "November",
-      "December"
-    ]
-    const d = new Date()
-    const current_month = months[d.getMonth()]
-    this.setState({ current_month })
-  }
+      "December",
+    ];
+    const d = new Date();
+    const current_month = months[d.getMonth()];
+    this.setState({ current_month });
+  };
 
   getMonthShortMethod = () => {
     const months = [
@@ -370,12 +381,12 @@ class FormAdvanced extends Component {
       "Sep",
       "Oct",
       "Nov",
-      "Dec"
-    ]
-    const d = new Date()
-    const current_month_short = months[d.getMonth()]
-    this.setState({ current_month_short })
-  }
+      "Dec",
+    ];
+    const d = new Date();
+    const current_month_short = months[d.getMonth()];
+    this.setState({ current_month_short });
+  };
   getDayMethod = () => {
     const day = [
       "Sunday",
@@ -384,43 +395,43 @@ class FormAdvanced extends Component {
       "Wednesday",
       "Thursday",
       "Friday",
-      "Saturday"
-    ]
-    const d = new Date()
-    const current_day = day[d.getDay()]
-    this.setState({ current_day })
-  }
+      "Saturday",
+    ];
+    const d = new Date();
+    const current_day = day[d.getDay()];
+    this.setState({ current_day });
+  };
 
   getDayShort = () => {
-    const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    const d = new Date()
-    const current_day_short = day[d.getDay()]
-    this.setState({ current_day_short })
-  }
+    const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const d = new Date();
+    const current_day_short = day[d.getDay()];
+    this.setState({ current_day_short });
+  };
 
   getDayMin = () => {
-    const day = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
-    const d = new Date()
-    const current_day_min = day[d.getDay()]
-    this.setState({ current_day_min })
-  }
+    const day = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+    const d = new Date();
+    const current_day_min = day[d.getDay()];
+    this.setState({ current_day_min });
+  };
 
   render() {
-    const { selectedGroup } = this.state
-    const { selectedMulti } = this.state
-    const { selectedMulti1 } = this.state
-    const { selectedMulti2 } = this.state
-    const { selectedMulti3 } = this.state
-    const { dateValue } = this.state
+    const { selectedGroup } = this.state;
+    const { selectedMulti } = this.state;
+    const { selectedMulti1 } = this.state;
+    const { selectedMulti2 } = this.state;
+    const { selectedMulti3 } = this.state;
+    const { dateValue } = this.state;
 
     // state define for datepicker
-    const { current_month } = this.state
-    const { fromate_date } = this.state
-    const { current_month_short } = this.state
-    const { current_day } = this.state
-    const { current_day_short } = this.state
-    const { current_day_min } = this.state
-    const { pick } = this.state
+    const { current_month } = this.state;
+    const { fromate_date } = this.state;
+    const { current_month_short } = this.state;
+    const { current_day } = this.state;
+    const { current_day_short } = this.state;
+    const { current_day_min } = this.state;
+    const { pick } = this.state;
 
     const Offsymbol = () => {
       return (
@@ -432,14 +443,14 @@ class FormAdvanced extends Component {
             height: "100%",
             fontSize: 12,
             color: "#fff",
-            paddingRight: 2
+            paddingRight: 2,
           }}
         >
           {" "}
           No
         </div>
-      )
-    }
+      );
+    };
 
     const OnSymbol = props => {
       return (
@@ -451,20 +462,20 @@ class FormAdvanced extends Component {
             height: "100%",
             fontSize: 12,
             color: "#fff",
-            paddingRight: 2
+            paddingRight: 2,
           }}
         >
           {" "}
           Yes
         </div>
-      )
-    }
+      );
+    };
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Advanced | Skote - React Admin & Dashboard Template</title>
+            <title>Form Advanced | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Advanced" />
@@ -568,7 +579,7 @@ class FormAdvanced extends Component {
                           value={this.state.color}
                           onClick={() =>
                             this.setState({
-                              simple_color: !this.state.simple_color
+                              simple_color: !this.state.simple_color,
                             })
                           }
                           readOnly
@@ -618,7 +629,7 @@ class FormAdvanced extends Component {
                               className="input-group-text colorpicker-input-addon"
                               onClick={() =>
                                 this.setState({
-                                  simple_color1: !this.state.simple_color1
+                                  simple_color1: !this.state.simple_color1,
                                 })
                               }
                             >
@@ -626,7 +637,7 @@ class FormAdvanced extends Component {
                                 style={{
                                   height: "16px",
                                   width: "16px",
-                                  background: this.state.colorRgb
+                                  background: this.state.colorRgb,
                                 }}
                               />
                             </span>
@@ -648,7 +659,7 @@ class FormAdvanced extends Component {
                           type="text"
                           onClick={() =>
                             this.setState({
-                              simple_color2: !this.state.simple_color2
+                              simple_color2: !this.state.simple_color2,
                             })
                           }
                           value={this.state.colorHor}
@@ -696,7 +707,7 @@ class FormAdvanced extends Component {
                             options={{
                               enableTime: true,
                               noCalendar: true,
-                              dateFormat: "H:i"
+                              dateFormat: "H:i",
                             }}
                           />
                           <div className="input-group-append">
@@ -717,7 +728,7 @@ class FormAdvanced extends Component {
                               enableTime: true,
                               noCalendar: true,
                               dateFormat: "H:i",
-                              time_24hr: true
+                              time_24hr: true,
                             }}
                           />
                           <div className="input-group-append">
@@ -738,7 +749,7 @@ class FormAdvanced extends Component {
                             options={{
                               enableTime: true,
                               noCalendar: true,
-                              dateFormat: "H:i"
+                              dateFormat: "H:i",
                             }}
                           />
                           <div className="input-group-append">
@@ -770,7 +781,7 @@ class FormAdvanced extends Component {
                             options={{
                               altInput: true,
                               altFormat: "F j, Y",
-                              dateFormat: "Y-m-d"
+                              dateFormat: "Y-m-d",
                             }}
                           />
                         </InputGroup>
@@ -785,7 +796,7 @@ class FormAdvanced extends Component {
                             options={{
                               altInput: true,
                               altFormat: "F j, Y",
-                              dateFormat: "Y-m-d"
+                              dateFormat: "Y-m-d",
                             }}
                           />
                         </div>
@@ -799,7 +810,7 @@ class FormAdvanced extends Component {
                             placeholder="dd M,yyyy"
                             options={{
                               mode: "multiple",
-                              dateFormat: "Y-m-d"
+                              dateFormat: "Y-m-d",
                             }}
                           />
                         </div>
@@ -812,7 +823,7 @@ class FormAdvanced extends Component {
                             placeholder="dd M,yyyy"
                             options={{
                               mode: "range",
-                              dateFormat: "Y-m-d"
+                              dateFormat: "Y-m-d",
                             }}
                           />
                         </InputGroup>
@@ -826,7 +837,7 @@ class FormAdvanced extends Component {
                             inline: true,
                             altInput: true,
                             altFormat: "F j, Y",
-                            dateFormat: "Y-m-d"
+                            dateFormat: "Y-m-d",
                           }}
                         />
                       </div>
@@ -974,7 +985,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                data_attr: this.state.data_attr - 1
+                                data_attr: this.state.data_attr - 1,
                               })
                             }
                           >
@@ -993,7 +1004,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                data_attr: this.state.data_attr + 1
+                                data_attr: this.state.data_attr + 1,
                               })
                             }
                           >
@@ -1031,7 +1042,7 @@ class FormAdvanced extends Component {
                               type="button"
                               onClick={() =>
                                 this.setState({
-                                  postfix: this.state.postfix + 1
+                                  postfix: this.state.postfix + 1,
                                 })
                               }
                               color="primary"
@@ -1047,7 +1058,9 @@ class FormAdvanced extends Component {
                           <span
                             className="input-group-btn input-group-prepend"
                             onClick={() =>
-                              this.setState({ postfix1: this.state.postfix1 - 1 })
+                              this.setState({
+                                postfix1: this.state.postfix1 - 1,
+                              })
                             }
                           >
                             <Button type="button" color="primary">
@@ -1070,7 +1083,7 @@ class FormAdvanced extends Component {
                               type="button"
                               onClick={() =>
                                 this.setState({
-                                  postfix1: this.state.postfix1 + 1
+                                  postfix1: this.state.postfix1 + 1,
                                 })
                               }
                               color="primary"
@@ -1087,7 +1100,7 @@ class FormAdvanced extends Component {
                             className="input-group-btn input-group-append"
                             onClick={() =>
                               this.setState({
-                                empty_val: this.state.empty_val - 1
+                                empty_val: this.state.empty_val - 1,
                               })
                             }
                           >
@@ -1106,7 +1119,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                empty_val: this.state.empty_val + 1
+                                empty_val: this.state.empty_val + 1,
                               })
                             }
                           >
@@ -1125,7 +1138,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                not_attr: this.state.not_attr - 1
+                                not_attr: this.state.not_attr - 1,
                               })
                             }
                           >
@@ -1144,7 +1157,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                not_attr: this.state.not_attr + 1
+                                not_attr: this.state.not_attr + 1,
                               })
                             }
                           >
@@ -1164,7 +1177,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                explicit_val: this.state.explicit_val - 1
+                                explicit_val: this.state.explicit_val - 1,
                               })
                             }
                           >
@@ -1183,7 +1196,7 @@ class FormAdvanced extends Component {
                             className="input-group-append"
                             onClick={() =>
                               this.setState({
-                                explicit_val: this.state.explicit_val + 1
+                                explicit_val: this.state.explicit_val + 1,
                               })
                             }
                           >
@@ -1383,10 +1396,10 @@ class FormAdvanced extends Component {
                                 options={{
                                   altInput: true,
                                   // altFormat: "F j, Y",
-                                  dateFormat: "d-m-y"
+                                  dateFormat: "d-m-y",
                                 }}
                                 onChange={date => {
-                                  this.setState({ defaultDate: date })
+                                  this.setState({ defaultDate: date });
                                 }}
                               />
                               <div className="input-group-append">
@@ -1569,8 +1582,8 @@ class FormAdvanced extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default FormAdvanced
+export default FormAdvanced;

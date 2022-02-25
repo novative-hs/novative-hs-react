@@ -23,16 +23,13 @@ import { withRouter } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 // actions
-import {
-  updateLabProfile,
-  getLabProfile,
-  getLabProfileSuccess,
-} from "../../store/actions";
+import { updateLabProfile, getLabProfile } from "../../store/actions";
 
 class LabProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      apiURL: process.env.REACT_APP_BACKENDURL,
       name: "",
       logo: "",
       owner_name: "",
@@ -85,10 +82,9 @@ class LabProfile extends Component {
     }, 1000);
 
     setTimeout(() => {
-      console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
-        logo: "http://127.0.0.1:8000" + this.props.success.logo,
+        logo: this.state.apiURL + this.props.success.logo,
         owner_name: this.props.success.owner_name,
         registration_no: this.props.success.registration_no,
         email: this.props.success.email,
@@ -112,7 +108,7 @@ class LabProfile extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+            <Breadcrumb title="Lab" breadcrumbItem="Profile" />
 
             <Row>
               <Col lg="12">
@@ -360,7 +356,7 @@ class LabProfile extends Component {
                       {/* Registration No field */}
                       <div className="mb-3">
                         <Label for="registration_no" className="form-label">
-                          Registration Number
+                          Health dept registration number
                         </Label>
                         <Field
                           id="registration_no"
@@ -456,7 +452,7 @@ class LabProfile extends Component {
                       {/* Address field */}
                       <div className="mb-3">
                         <Label for="address" className="form-label">
-                          Complete Address
+                          Complete address
                         </Label>
                         <Field
                           id="address"
@@ -651,7 +647,7 @@ class LabProfile extends Component {
                       </div>
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
-                          Update User Name
+                          Update Profile
                         </Button>
                       </div>
                     </Form>
@@ -673,7 +669,6 @@ LabProfile.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getLabProfile: PropTypes.func,
-  getLabProfileSuccess: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -685,6 +680,5 @@ export default withRouter(
   connect(mapStateToProps, {
     updateLabProfile,
     getLabProfile,
-    getLabProfileSuccess,
   })(LabProfile)
 );

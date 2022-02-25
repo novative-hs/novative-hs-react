@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -9,18 +9,18 @@ import {
   Row,
   Label,
   Input,
-  Button
-} from "reactstrap"
+  Button,
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../../components/Common/Breadcrumb";
 
 //common
-import TextualInputs from "./TextualInputs"
+import TextualInputs from "./TextualInputs";
 
 class FormElements extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       customchk: true,
       defaultchl: true,
@@ -38,7 +38,7 @@ class FormElements extends Component {
       defaultOutlineInfo: true,
       defaultOutlineWarning: true,
       defaultOutlineDanger: true,
-    }
+    };
   }
 
   render() {
@@ -46,7 +46,7 @@ class FormElements extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Elements | Skote - React Admin & Dashboard Template</title>
+            <title>Form Elements | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Elements" />
@@ -97,13 +97,18 @@ class FormElements extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Range Inputs</CardTitle>
-                    <p className="card-title-desc">Create custom <code>&lt;input type=&quot;range&ldquo;&gt;</code>
-                      controls with <code>.form-range</code>.</p>
+                    <p className="card-title-desc">
+                      Create custom{" "}
+                      <code>&lt;input type=&quot;range&ldquo;&gt;</code>
+                      controls with <code>.form-range</code>.
+                    </p>
 
                     <Row className="mt-2">
                       <Col lg={6}>
                         <div>
-                          <label htmlFor="customRange1" className="form-label">Example range</label>
+                          <label htmlFor="customRange1" className="form-label">
+                            Example range
+                          </label>
                           <input
                             type="range"
                             className="form-range"
@@ -117,17 +122,34 @@ class FormElements extends Component {
                       <Col lg={6}>
                         <div className="mt-4">
                           <h5 className="font-size-14">Min and max</h5>
-                          <p className="card-title-desc">Range inputs have implicit values for min and
-                            max—0 and 100, respectively.</p>
-                          <input type="range" className="form-range" min="0" max="5" id="customRange2" />
+                          <p className="card-title-desc">
+                            Range inputs have implicit values for min and max—0
+                            and 100, respectively.
+                          </p>
+                          <input
+                            type="range"
+                            className="form-range"
+                            min="0"
+                            max="5"
+                            id="customRange2"
+                          />
                         </div>
                       </Col>
                       <Col lg={6}>
                         <div className="mt-4">
                           <h5 className="font-size-14">Steps</h5>
-                          <p className="card-title-desc">By default, range inputs “snap” to integer
-                            values. To change this, you can specify a <code>step</code> value.</p>
-                          <input type="range" className="form-range" min="0" max="5" id="customRange2" />
+                          <p className="card-title-desc">
+                            By default, range inputs “snap” to integer values.
+                            To change this, you can specify a <code>step</code>{" "}
+                            value.
+                          </p>
+                          <input
+                            type="range"
+                            className="form-range"
+                            min="0"
+                            max="5"
+                            id="customRange2"
+                          />
                         </div>
                       </Col>
                     </Row>
@@ -183,7 +205,8 @@ class FormElements extends Component {
                       <Col xl={3} sm={6}>
                         <div className="mt-4">
                           <h5 className="font-size-14 mb-4">
-                            <i className="mdi mdi-arrow-right text-primary me-1"></i>Form Checkboxes Right
+                            <i className="mdi mdi-arrow-right text-primary me-1"></i>
+                            Form Checkboxes Right
                           </h5>
                           <div className="form-check form-check-right mb-3">
                             <input
@@ -198,7 +221,7 @@ class FormElements extends Component {
                               onClick={() => {
                                 this.setState({
                                   customchk: !this.state.customchk,
-                                })
+                                });
                               }}
                             >
                               Form Checkbox Right
@@ -227,8 +250,8 @@ class FormElements extends Component {
                             Form Checkboxes colors
                           </h5>
                           <p className="sub-header mb-4">
-                            Add class <code>.form-check-* </code> for a
-                            color Checkboxes
+                            Add class <code>.form-check-* </code> for a color
+                            Checkboxes
                           </p>
 
                           <div>
@@ -241,7 +264,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultCheckPrimary: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -260,7 +283,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultCheckSuccess: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -279,7 +302,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultCheckInfo: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -298,7 +321,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultCheckWarning: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -317,7 +340,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultCheckDanger: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -338,8 +361,7 @@ class FormElements extends Component {
                           </h5>
                           <p className="sub-header mb-4">
                             Add class <code>form-check-outline</code> &{" "}
-                            <code>.form-check-* </code> for a color
-                            Checkboxes
+                            <code>.form-check-* </code> for a color Checkboxes
                           </p>
 
                           <div>
@@ -352,7 +374,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultOutlinePrimary: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -367,12 +389,12 @@ class FormElements extends Component {
                                 type="checkbox"
                                 className="form-check-input"
                                 id="customCheck-outlinecolor2"
-                              // checked={this.state.defaultOutlineInfo}
-                              // onChange={e => {
-                              //   this.setState({
-                              //     defaultOutlineInfo: e.target.checked,
-                              //   })
-                              // }}
+                                // checked={this.state.defaultOutlineInfo}
+                                // onChange={e => {
+                                //   this.setState({
+                                //     defaultOutlineInfo: e.target.checked,
+                                //   })
+                                // }}
                               />
                               <label
                                 className="form-check-label"
@@ -390,7 +412,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultOutlineInfo: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -409,7 +431,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultOutlineWarning: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -428,7 +450,7 @@ class FormElements extends Component {
                                 onChange={e => {
                                   this.setState({
                                     defaultOutlineDanger: e.target.checked,
-                                  })
+                                  });
                                 }}
                               />
                               <label
@@ -489,7 +511,9 @@ class FormElements extends Component {
                       </Col>
                       <Col xl={3} sm={6}>
                         <div className="mt-4">
-                          <h5 className="font-size-14 mb-4">Form Radios Right</h5>
+                          <h5 className="font-size-14 mb-4">
+                            Form Radios Right
+                          </h5>
                           <div>
                             <div className="form-check form-check-right mb-3">
                               <input
@@ -740,7 +764,7 @@ class FormElements extends Component {
                               onClick={() => {
                                 this.setState({
                                   toggleSwitch: !this.state.toggleSwitch,
-                                })
+                                });
                               }}
                             >
                               Default switch checkbox input
@@ -762,16 +786,13 @@ class FormElements extends Component {
                               onClick={() => {
                                 this.setState({
                                   toggleSwitch: !this.state.toggleSwitch,
-                                })
+                                });
                               }}
                             >
                               Checked switch checkbox input
                             </label>
                           </div>
-                          <div
-                            className="form-check form-switch"
-                            dir="ltr"
-                          >
+                          <div className="form-check form-switch" dir="ltr">
                             <input
                               type="checkbox"
                               className="form-check-input"
@@ -785,10 +806,7 @@ class FormElements extends Component {
                               Disabled switch element
                             </label>
                           </div>
-                          <div
-                            className="form-check form-switch"
-                            dir="ltr"
-                          >
+                          <div className="form-check form-switch" dir="ltr">
                             <input
                               type="checkbox"
                               className="form-check-input"
@@ -819,9 +837,9 @@ class FormElements extends Component {
                               defaultChecked
                               onClick={() => {
                                 this.setState({
-                                  toggleSwitchSize: !this.state
-                                    .toggleSwitchSize,
-                                })
+                                  toggleSwitchSize:
+                                    !this.state.toggleSwitchSize,
+                                });
                               }}
                             />
                             <label
@@ -832,9 +850,7 @@ class FormElements extends Component {
                             </label>
                           </div>
 
-                          <div
-                            className="form-check form-switch form-switch-md mb-3"
-                          >
+                          <div className="form-check form-switch form-switch-md mb-3">
                             <input
                               type="checkbox"
                               className="form-check-input"
@@ -848,9 +864,7 @@ class FormElements extends Component {
                             </label>
                           </div>
 
-                          <div
-                            className="form-check form-switch form-switch-lg mb-3"
-                          >
+                          <div className="form-check form-switch form-switch-lg mb-3">
                             <input
                               type="checkbox"
                               className="form-check-input"
@@ -858,9 +872,9 @@ class FormElements extends Component {
                               defaultChecked
                               onClick={() => {
                                 this.setState({
-                                  toggleSwitchLarge: !this.state
-                                    .toggleSwitchLarge,
-                                })
+                                  toggleSwitchLarge:
+                                    !this.state.toggleSwitchLarge,
+                                });
                               }}
                             />
                             <label
@@ -882,13 +896,21 @@ class FormElements extends Component {
                   <CardBody>
                     <CardTitle className="h4 mb-4">File browser</CardTitle>
                     <div>
-                      <h5 className="font-size-14"><i className="mdi mdi-arrow-right text-primary"></i> Default file input</h5>
+                      <h5 className="font-size-14">
+                        <i className="mdi mdi-arrow-right text-primary"></i>{" "}
+                        Default file input
+                      </h5>
                       <div className="row">
                         <div className="col-sm-6">
-
                           <div className="mt-3">
-                            <Label htmlFor="formFile" className="form-label">Default file input example</Label>
-                            <Input className="form-control" type="file" id="formFile" />
+                            <Label htmlFor="formFile" className="form-label">
+                              Default file input example
+                            </Label>
+                            <Input
+                              className="form-control"
+                              type="file"
+                              id="formFile"
+                            />
                           </div>
                         </div>
                       </div>
@@ -897,60 +919,119 @@ class FormElements extends Component {
                         <div className="col-sm-6">
                           <div className="mt-4">
                             <div>
-                              <Label htmlFor="formFileSm" className="form-label">Small file input example</Label>
-                              <Input className="form-control form-control-sm" id="formFileSm" type="file" />
+                              <Label
+                                htmlFor="formFileSm"
+                                className="form-label"
+                              >
+                                Small file input example
+                              </Label>
+                              <Input
+                                className="form-control form-control-sm"
+                                id="formFileSm"
+                                type="file"
+                              />
                             </div>
                           </div>
                         </div>
                         <div className="col-sm-6">
                           <div className="mt-4">
                             <div>
-                              <Label htmlFor="formFileLg" className="form-label">Large file input example</Label>
-                              <Input className="form-control form-control-lg" id="formFileLg" type="file" />
+                              <Label
+                                htmlFor="formFileLg"
+                                className="form-label"
+                              >
+                                Large file input example
+                              </Label>
+                              <Input
+                                className="form-control form-control-lg"
+                                id="formFileLg"
+                                type="file"
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="mt-4 pt-2">
-                      <h5 className="font-size-14 mb-0"><i className="mdi mdi-arrow-right text-primary"></i> Custom file input</h5>
+                      <h5 className="font-size-14 mb-0">
+                        <i className="mdi mdi-arrow-right text-primary"></i>{" "}
+                        Custom file input
+                      </h5>
                     </div>
 
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="mt-4">
-
                           <div>
                             <Label className="form-label">With Label</Label>
                             <div className="input-group mb-3">
-                              <Label className="input-group-text" htmlFor="inputGroupFile01">Upload</Label>
-                              <Input type="file" className="form-control" id="inputGroupFile01" />
+                              <Label
+                                className="input-group-text"
+                                htmlFor="inputGroupFile01"
+                              >
+                                Upload
+                              </Label>
+                              <Input
+                                type="file"
+                                className="form-control"
+                                id="inputGroupFile01"
+                              />
                             </div>
                             <div className="input-group">
-                              <Input type="file" className="form-control" id="inputGroupFile02" />
-                              <Label className="input-group-text" htmlFor="inputGroupFile02">Upload</Label>
+                              <Input
+                                type="file"
+                                className="form-control"
+                                id="inputGroupFile02"
+                              />
+                              <Label
+                                className="input-group-text"
+                                htmlFor="inputGroupFile02"
+                              >
+                                Upload
+                              </Label>
                             </div>
                           </div>
-
                         </div>
                       </div>
 
                       <div className="col-sm-6">
                         <div className="mt-4">
-
                           <div>
                             <Label className="form-label">With Button</Label>
                             <div className="input-group mb-3">
-                              <Button color="primary" type="button" id="inputGroupFileAddon03">Button</Button>
-                              <Input type="file" className="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03" aria-label="Upload" />
+                              <Button
+                                color="primary"
+                                type="button"
+                                id="inputGroupFileAddon03"
+                              >
+                                Button
+                              </Button>
+                              <Input
+                                type="file"
+                                className="form-control"
+                                id="inputGroupFile03"
+                                aria-describedby="inputGroupFileAddon03"
+                                aria-label="Upload"
+                              />
                             </div>
 
                             <div className="input-group">
-                              <Input type="file" className="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" />
-                              <Button color="primary" type="button" id="inputGroupFileAddon04">Button</Button>
+                              <Input
+                                type="file"
+                                className="form-control"
+                                id="inputGroupFile04"
+                                aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload"
+                              />
+                              <Button
+                                color="primary"
+                                type="button"
+                                id="inputGroupFileAddon04"
+                              >
+                                Button
+                              </Button>
                             </div>
                           </div>
-
                         </div>
                       </div>
                     </div>
@@ -961,8 +1042,8 @@ class FormElements extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default FormElements
+export default FormElements;

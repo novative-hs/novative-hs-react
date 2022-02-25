@@ -39,6 +39,7 @@ import EcommerceAddProduct from "../pages/Ecommerce/EcommerceAddProduct";
 
 //LabMarket PagesEcommerce
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 
 //Email
 import EmailInbox from "../pages/Email/email-inbox";
@@ -186,6 +187,10 @@ import PathologistsList from "../pages/Pathologists/pathologists-list";
 import TestAppointmentsPendingList from "../pages/TestAppointments/test-appointments-pending-list";
 import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appointments-in-process-list";
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
+
+//Patient Lab Components
+import LabQualityCertificates from "../pages/LabQualityCertificatesList/quality-certificates-list";
+import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
 
 //Blog
 import BlogList from "../pages/Blog/BlogList/index";
@@ -355,6 +360,10 @@ const publicRoutes = [
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
   { path: "/crypto-ico-landing", component: CryptoIcoLanding },
+  {
+    path: "/lab-quality-certificates/:id",
+    component: LabQualityCertificates,
+  },
 
   // Authentication Inner
   { path: "/pages-login", component: Login1 },
@@ -418,10 +427,18 @@ const labAuthProtectedRoutes = [
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:id", component: DashboardPatient },
   {
+    path: "/dashboard-patient/:id/test-appointments-list",
+    component: TestAppointmentsList,
+  },
+  {
     path: "/dashboard-patient/:id/profile",
     component: PatientProfile,
   },
   { path: "/dashboard-patient/:id/nearby-labs", component: NearbyLabs },
+  {
+    path: "/dashboard-patient/:id/nearby-lab-detail/:lab_account_id",
+    component: NearbyLabDetail,
+  },
 ];
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },

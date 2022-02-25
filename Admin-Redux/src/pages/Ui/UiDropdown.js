@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Button,
   ButtonDropdown,
@@ -13,15 +13,15 @@ import {
   DropdownMenu,
   DropdownToggle,
   Row,
-} from "reactstrap"
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiDropdown extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -29,7 +29,7 @@ class UiDropdown extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Dropdowns | Skote - React Admin & Dashboard Template</title>
+            <title>Dropdowns | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Dropdowns" />
@@ -38,7 +38,9 @@ class UiDropdown extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Single button dropdowns</CardTitle>
+                    <CardTitle className="h4">
+                      Single button dropdowns
+                    </CardTitle>
                     <p className="card-title-desc">
                       Any single <code className="highlighter-rouge">.btn</code>{" "}
                       can be turned into a dropdown toggle with some markup
@@ -236,8 +238,16 @@ class UiDropdown extends Component {
                             })
                           }
                         >
-                          <Button id="caret" color="primary">Primary</Button>
-                          <DropdownToggle caret color="primary" className="dropdown-toggle-split"><i className="mdi mdi-chevron-down"></i></DropdownToggle>
+                          <Button id="caret" color="primary">
+                            Primary
+                          </Button>
+                          <DropdownToggle
+                            caret
+                            color="primary"
+                            className="dropdown-toggle-split"
+                          >
+                            <i className="mdi mdi-chevron-down"></i>
+                          </DropdownToggle>
                           <DropdownMenu>
                             <DropdownItem header>Header</DropdownItem>
                             <DropdownItem disabled>Action</DropdownItem>
@@ -259,7 +269,11 @@ class UiDropdown extends Component {
                           <Button id="caret" color="secondary">
                             Secondary
                           </Button>
-                          <DropdownToggle caret color="secondary" className="dropdown-toggle-split">
+                          <DropdownToggle
+                            caret
+                            color="secondary"
+                            className="dropdown-toggle-split"
+                          >
                             <i className="mdi mdi-chevron-down"></i>
                           </DropdownToggle>
                           <DropdownMenu>
@@ -283,7 +297,11 @@ class UiDropdown extends Component {
                           <Button id="caret" color="success">
                             Success
                           </Button>
-                          <DropdownToggle caret color="success" className="dropdown-toggle-split">
+                          <DropdownToggle
+                            caret
+                            color="success"
+                            className="dropdown-toggle-split"
+                          >
                             <i className="mdi mdi-chevron-down"></i>
                           </DropdownToggle>
                           <DropdownMenu>
@@ -305,7 +323,11 @@ class UiDropdown extends Component {
                           <Button id="caret" color="info">
                             Info
                           </Button>
-                          <DropdownToggle caret color="info" className="dropdown-toggle-split">
+                          <DropdownToggle
+                            caret
+                            color="info"
+                            className="dropdown-toggle-split"
+                          >
                             <i className="mdi mdi-chevron-down"></i>
                           </DropdownToggle>
                           <DropdownMenu>
@@ -328,8 +350,12 @@ class UiDropdown extends Component {
                         >
                           <Button id="caret" color="warning">
                             Warning
-                        </Button>
-                          <DropdownToggle caret color="warning" className="dropdown-toggle-split">
+                          </Button>
+                          <DropdownToggle
+                            caret
+                            color="warning"
+                            className="dropdown-toggle-split"
+                          >
                             <i className="mdi mdi-chevron-down"></i>
                           </DropdownToggle>
                           <DropdownMenu>
@@ -352,8 +378,12 @@ class UiDropdown extends Component {
                         >
                           <Button id="caret" color="danger">
                             Danger
-                        </Button>
-                          <DropdownToggle caret color="danger" className="dropdown-toggle-split">
+                          </Button>
+                          <DropdownToggle
+                            caret
+                            color="danger"
+                            className="dropdown-toggle-split"
+                          >
                             <i className="mdi mdi-chevron-down"></i>
                           </DropdownToggle>
                           <DropdownMenu>
@@ -392,8 +422,7 @@ class UiDropdown extends Component {
                           color="primary"
                           className="btn-lg"
                         >
-                          Large button{" "}
-                          <i className="mdi mdi-chevron-down"></i>
+                          Large button <i className="mdi mdi-chevron-down"></i>
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem disabled>Action</DropdownItem>
@@ -404,7 +433,10 @@ class UiDropdown extends Component {
                       </ButtonDropdown>
                     </div>{" "}
                     <div className="btn-group me-1 mt-2">
-                      <Button color="secondary" className="btn btn-secondary btn-lg">
+                      <Button
+                        color="secondary"
+                        className="btn btn-secondary btn-lg"
+                      >
                         Large button
                       </Button>
                       <ButtonDropdown
@@ -443,7 +475,8 @@ class UiDropdown extends Component {
                           caret
                           color="info"
                           className="btn btn-info btn-sm"
-                        >Small button
+                        >
+                          Small button
                           <i className="mdi mdi-chevron-down"></i>
                         </DropdownToggle>
                         <DropdownMenu>
@@ -556,7 +589,8 @@ class UiDropdown extends Component {
                     </p>
                     <ButtonDropdown
                       isOpen={this.state.drop_align}
-                      direction="right" className="dropdown-menu-end"
+                      direction="right"
+                      className="dropdown-menu-end"
                       toggle={() =>
                         this.setState({ drop_align: !this.state.drop_align })
                       }
@@ -703,8 +737,8 @@ class UiDropdown extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiDropdown
+export default UiDropdown;

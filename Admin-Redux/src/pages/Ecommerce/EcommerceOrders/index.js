@@ -111,8 +111,8 @@ class EcommerceOrders extends Component {
                 className={
                   row.paymentMethod !== "COD"
                     ? "fab fa-cc-" +
-                    this.toLowerCase1(row.paymentMethod) +
-                    " me-1"
+                      this.toLowerCase1(row.paymentMethod) +
+                      " me-1"
                     : "fab fas fa-money-bill-alt me-1"
                 }
               />{" "}
@@ -228,7 +228,7 @@ class EcommerceOrders extends Component {
     }));
   };
 
-  onClickDelete = (order) => {
+  onClickDelete = order => {
     this.setState({ order: order });
     this.setState({ deleteModal: true });
   };
@@ -310,7 +310,7 @@ class EcommerceOrders extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Orders | Skote - React Admin & Dashboard Template</title>
+            <title>Orders | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Ecommerce" breadcrumbItem="Orders" />
@@ -392,11 +392,14 @@ class EcommerceOrders extends Component {
                                           (order && order.orderdate) || "",
                                         total: (order && order.total) || "",
                                         paymentStatus:
-                                          (order && order.paymentStatus) || "Paid",
+                                          (order && order.paymentStatus) ||
+                                          "Paid",
                                         badgeclass:
-                                          (order && order.badgeclass) || "success",
+                                          (order && order.badgeclass) ||
+                                          "success",
                                         paymentMethod:
-                                          (order && order.paymentMethod) || "Mastercard",
+                                          (order && order.paymentMethod) ||
+                                          "Mastercard",
                                       }}
                                       validationSchema={Yup.object().shape({
                                         orderId: Yup.string().required(
@@ -472,7 +475,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.orderId &&
-                                                      touched.orderId
+                                                    touched.orderId
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -493,7 +496,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.billingName &&
-                                                      touched.billingName
+                                                    touched.billingName
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -514,7 +517,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.orderdate &&
-                                                      touched.orderdate
+                                                    touched.orderdate
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -535,7 +538,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.total &&
-                                                      touched.total
+                                                    touched.total
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -556,7 +559,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.paymentStatus &&
-                                                      touched.paymentStatus
+                                                    touched.paymentStatus
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -576,7 +579,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.badgeclass &&
-                                                      touched.badgeclass
+                                                    touched.badgeclass
                                                       ? " is-invalid"
                                                       : "")
                                                   }
@@ -596,7 +599,7 @@ class EcommerceOrders extends Component {
                                                   className={
                                                     "form-control" +
                                                     (errors.paymentMethod &&
-                                                      touched.paymentMethod
+                                                    touched.paymentMethod
                                                       ? " is-invalid"
                                                       : "")
                                                   }

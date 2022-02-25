@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Container,
   Row,
@@ -13,26 +13,26 @@ import {
   NavLink,
   TabContent,
   TabPane,
-} from "reactstrap"
-import classnames from "classnames"
+} from "reactstrap";
+import classnames from "classnames";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class PagesFaqs extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       activeTab: "1",
-    }
-    this.toggleTab = this.toggleTab.bind(this)
+    };
+    this.toggleTab = this.toggleTab.bind(this);
   }
 
   toggleTab(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
   }
 
@@ -41,7 +41,7 @@ class PagesFaqs extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>FAQs | Skote - React Admin & Dashboard Template</title>
+            <title>FAQs | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -57,7 +57,7 @@ class PagesFaqs extends Component {
                           active: this.state.activeTab === "1",
                         })}
                         onClick={() => {
-                          this.toggleTab("1")
+                          this.toggleTab("1");
                         }}
                       >
                         <i className="bx bx-question-mark d-block check-nav-icon mt-4 mb-2" />
@@ -72,7 +72,7 @@ class PagesFaqs extends Component {
                           active: this.state.activeTab === "2",
                         })}
                         onClick={() => {
-                          this.toggleTab("2")
+                          this.toggleTab("2");
                         }}
                       >
                         <i className="bx bx-check-shield d-block check-nav-icon mt-4 mb-2" />
@@ -85,7 +85,7 @@ class PagesFaqs extends Component {
                           active: this.state.activeTab === "3",
                         })}
                         onClick={() => {
-                          this.toggleTab("3")
+                          this.toggleTab("3");
                         }}
                       >
                         <i className="bx bx-support d-block check-nav-icon mt-4 mb-2" />
@@ -347,8 +347,8 @@ class PagesFaqs extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default PagesFaqs
+export default PagesFaqs;

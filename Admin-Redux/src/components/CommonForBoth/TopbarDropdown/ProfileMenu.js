@@ -11,24 +11,22 @@ import { withRouter, Link } from "react-router-dom";
 //i18n
 import { withTranslation } from "react-i18next";
 
-// users
-import user1 from "../../../assets/images/users/avatar-1.jpg";
-
 import { connect } from "react-redux";
 
-const getUserName = () => {
-  if (localStorage.getItem("authUser")) {
-    const obj = JSON.parse(localStorage.getItem("authUser"));
-    return obj;
-  }
-};
+// actions
+import { getLabProfile } from "store/auth/labprofile/actions";
+
+// actions
+import { getPatientProfile } from "store/auth/patientprofile/actions";
 
 class ProfileMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      apiURL: process.env.REACT_APP_BACKENDURL,
       menu: false,
-      name: "Admin",
+      name: "",
+      logo: "",
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -40,18 +38,29 @@ class ProfileMenu extends Component {
   }
 
   componentDidMount() {
-    const userData = getUserName();
-    if (userData) {
-      this.setState({ name: userData.username });
-    }
-  }
+    if (this.props.location.pathname.includes("dashboard-lab")) {
+      setTimeout(() => {
+        this.props.getLabProfile(this.props.match.params.id);
+      }, 1000);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.success !== this.props.success) {
-      const userData = getUserName();
-      if (userData) {
-        this.setState({ name: userData.username });
-      }
+      setTimeout(() => {
+        this.setState({
+          name: this.props.success.name,
+          logo: this.state.apiURL + this.props.success.logo,
+        });
+      }, 3000);
+    }
+
+    if (this.props.location.pathname.includes("dashboard-patient")) {
+      setTimeout(() => {
+        this.props.getPatientProfile(this.props.match.params.id);
+      }, 1000);
+
+      setTimeout(() => {
+        this.setState({
+          name: this.props.success.name,
+        });
+      }, 3000);
     }
   }
 
@@ -68,12 +77,16 @@ class ProfileMenu extends Component {
             id="page-header-user-dropdown"
             tag="button"
           >
-            <img
-              className="rounded-circle header-profile-user"
-              src={user1}
-              alt="Header Avatar"
-            />{" "}
+            {this.props.location &&
+            this.props.location.pathname.includes("dashboard-lab") ? (
+              <img
+                className="rounded-circle header-profile-user"
+                src={this.state.logo}
+                alt="Logo"
+              />
+            ) : null}
             <span className="d-none d-xl-inline-block ms-1">
+              {" "}
               {this.state.name}
             </span>
             <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
@@ -82,9 +95,13 @@ class ProfileMenu extends Component {
           <DropdownMenu className="dropdown-menu-end">
             {this.props.location &&
             this.props.location.pathname.includes("dashboard-patient") ? (
-              <DropdownItem tag="a" href={
-                "/dashboard-patient/" + this.props.match.params.id + "/profile"
-              }
+              <DropdownItem
+                tag="a"
+                href={
+                  "/dashboard-patient/" +
+                  this.props.match.params.id +
+                  "/profile"
+                }
               >
                 <i className="bx bx-user font-size-16 align-middle ms-1" />
                 {this.props.t("Patient Profile")}
@@ -130,14 +147,24 @@ ProfileMenu.propTypes = {
   t: PropTypes.any,
   match: PropTypes.object,
   location: PropTypes.object,
-  success: PropTypes.string,
+  error: PropTypes.any,
+  success: PropTypes.any,
+  getLabProfile: PropTypes.func,
+  getPatientProfile: PropTypes.func,
 };
 
-const mapStateToProps = state => {
-  const { success } = state.Profile;
-  return { success };
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.location.pathname.includes("dashboard-patient")) {
+    const { error, success } = state.PatientProfile;
+    return { error, success };
+  } else if (ownProps.location.pathname.includes("dashboard-lab")) {
+    const { error, success } = state.LabProfile;
+    return { error, success };
+  }
 };
 
 export default withRouter(
-  connect(mapStateToProps, {})(withTranslation()(ProfileMenu))
+  connect(mapStateToProps, { getLabProfile, getPatientProfile })(
+    withTranslation()(ProfileMenu)
+  )
 );

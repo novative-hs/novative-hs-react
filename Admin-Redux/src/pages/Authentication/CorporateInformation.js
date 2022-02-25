@@ -171,8 +171,6 @@ class CorporateInformation extends Component {
                                 ),
                             })}
                             onSubmit={values => {
-                              console.log(values);
-                              // console.log(values.logo.split("\\").slice(-1)[0]);
                               this.props.addCorporateInformation(
                                 values,
                                 this.props.match.params.id
@@ -360,7 +358,7 @@ class CorporateInformation extends Component {
                                 {/* Address field */}
                                 <div className="mb-3">
                                   <Label for="address" className="form-label">
-                                    Complete Address
+                                    Complete address
                                   </Label>
                                   <Field
                                     id="address"

@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Container, Row, Col } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Container, Row, Col } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Pricing Cards
-import CardPricing from "./card-pricing"
+import CardPricing from "./card-pricing";
 
 class PagesPricing extends Component {
   state = {
@@ -72,13 +72,13 @@ class PagesPricing extends Component {
         ],
       },
     ],
-  }
+  };
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>Pricing | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Pricing | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -106,8 +106,8 @@ class PagesPricing extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default PagesPricing
+export default PagesPricing;

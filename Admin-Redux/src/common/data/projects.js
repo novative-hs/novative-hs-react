@@ -10,31 +10,42 @@ const projects = [
     commentsCount: 214,
     team: [
       {
-        id: 1, img: "avatar4", fullname: "Janice Cole", skills: [
+        id: 1,
+        img: "avatar4",
+        fullname: "Janice Cole",
+        skills: [
           { id: 1, name: "Frontend" },
           { id: 2, name: "UI" },
         ],
       },
       {
-        id: 2, img: "avatar5", fullname: "Steve Foster",
+        id: 2,
+        img: "avatar5",
+        fullname: "Steve Foster",
         skills: [{ id: 1, name: "UI/UX" }],
       },
       {
-        id: 3, img: "Null", name: "A", color: "success", fullname: "Aeffrey Walker",
+        id: 3,
+        img: "Null",
+        name: "A",
+        color: "success",
+        fullname: "Aeffrey Walker",
         skills: [{ id: 1, name: "Backend" }],
       },
       {
-        id: 4, img: "avatar2", fullname: "Daniel Candles",
+        id: 4,
+        img: "avatar2",
+        fullname: "Daniel Candles",
         skills: [
           { id: 1, name: "Frontend" },
           { id: 2, name: "UI" },
         ],
       },
       {
-        id: 5, img: "avatar6", fullname: "Steve Foster",
-        skills: [
-          { id: 1, name: "UI/UX" },
-        ],
+        id: 5,
+        img: "avatar6",
+        fullname: "Steve Foster",
+        skills: [{ id: 1, name: "UI/UX" }],
       },
     ],
     startDate: "08 Sept, 2019",
@@ -48,9 +59,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -101,9 +112,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -140,8 +151,14 @@ const projects = [
     dueDate: "2019-10-13",
     commentsCount: 175,
     team: [
-      { id: 1, img: "Null", name: "K", color: "info", fullname: "Kony Brafford" },
-      { id: 2, img: "avatar2", fullname: "Daniel Candles" }
+      {
+        id: 1,
+        img: "Null",
+        name: "K",
+        color: "info",
+        fullname: "Kony Brafford",
+      },
+      { id: 2, img: "avatar2", fullname: "Daniel Candles" },
     ],
     startDate: "08 Sept, 2019",
     projectDetails: {
@@ -154,9 +171,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -192,9 +209,7 @@ const projects = [
     color: "success",
     dueDate: "2019-10-14",
     commentsCount: 202,
-    team: [
-      { id: 1, img: "avatar4", fullname: "Janice Cole" },
-    ],
+    team: [{ id: 1, img: "avatar4", fullname: "Janice Cole" }],
     startDate: "08 Sept, 2019",
     projectDetails: {
       description:
@@ -206,9 +221,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -238,7 +253,7 @@ const projects = [
   {
     id: 4,
     img: "img5",
-    name: "Skote Dashboard UI",
+    name: "Ilaaj4u Dashboard UI",
     description: "Separate existence is a myth",
     status: "Completed",
     color: "success",
@@ -260,9 +275,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -313,9 +328,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -353,7 +368,13 @@ const projects = [
     commentsCount: 214,
     team: [
       { id: 1, img: "avatar5", fullname: "Steve Foster" },
-      { id: 3, img: "Null", name: "R", color: "warning", fullname: "Rony Candles" },
+      {
+        id: 3,
+        img: "Null",
+        name: "R",
+        color: "warning",
+        fullname: "Rony Candles",
+      },
     ],
   },
   {
@@ -380,9 +401,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -421,7 +442,13 @@ const projects = [
     team: [
       { id: 1, img: "avatar4", fullname: "Janice Cole" },
       { id: 2, img: "avatar5", fullname: "Steve Foster" },
-      { id: 3, img: "Null", name: "A", color: "success", fullname: "Aeffrey Walker" },
+      {
+        id: 3,
+        img: "Null",
+        name: "A",
+        color: "success",
+        fullname: "Aeffrey Walker",
+      },
       { id: 3, img: "avatar2", fullname: "Daniel Candles" },
     ],
     startDate: "08 Sept, 2019",
@@ -435,9 +462,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Skote Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Skote Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Skote Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "Ilaaj4u Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "Ilaaj4u Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "Ilaaj4u Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -464,7 +491,7 @@ const projects = [
       },
     ],
   },
-]
+];
 
 const options = {
   chart: {
@@ -511,13 +538,13 @@ const options = {
     },
   },
   colors: ["#556ee6"],
-}
+};
 
 const series = [
   {
     name: "Overview",
     data: [42, 56, 40, 64, 26, 42, 56, 35, 62],
   },
-]
+];
 
-export { projects, options, series }
+export { projects, options, series };

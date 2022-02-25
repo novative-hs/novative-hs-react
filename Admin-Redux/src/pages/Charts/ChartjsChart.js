@@ -1,29 +1,29 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 // import chartJs
-import LineChart from "../AllCharts/chartjs/linechart"
-import DountChart from "../AllCharts/chartjs/dountchart"
-import PieChart from "../AllCharts/chartjs/piechart"
-import BarChart from "../AllCharts/chartjs/barchart"
-import RadarChart from "../AllCharts/chartjs/radarchart"
-import PolarChart from "../AllCharts/chartjs/polarchart"
+import LineChart from "../AllCharts/chartjs/linechart";
+import DountChart from "../AllCharts/chartjs/dountchart";
+import PieChart from "../AllCharts/chartjs/piechart";
+import BarChart from "../AllCharts/chartjs/barchart";
+import RadarChart from "../AllCharts/chartjs/radarchart";
+import PolarChart from "../AllCharts/chartjs/polarchart";
 
 class ChartjsChart extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>Chartjs Chart | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Chartjs Chart | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Charts" breadcrumbItem="Chartjs Chart" />
@@ -211,8 +211,8 @@ class ChartjsChart extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default ChartjsChart
+export default ChartjsChart;

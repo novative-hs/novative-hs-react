@@ -1,9 +1,9 @@
-import React, { Component } from "react"
-import { Card, CardBody, CardTitle, Col, Row } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Card, CardBody, CardTitle, Col, Row } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 import {
   Sparklines,
   SparklinesBars,
@@ -11,12 +11,12 @@ import {
   SparklinesLine,
   SparklinesReferenceLine,
   SparklinesSpots,
-} from "react-sparklines"
+} from "react-sparklines";
 
 class SparklineChart extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -24,7 +24,7 @@ class SparklineChart extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Sparkline Chart | Skote - React Admin & Dashboard Template</title>
+            <title>Sparkline Chart | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             {/* Render Breadcrumb */}
@@ -122,28 +122,12 @@ class SparklineChart extends Component {
               <Col sm={4}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="mb-4">
-                      Reference Line Chart
-                    </CardTitle>
+                    <CardTitle className="mb-4">Reference Line Chart</CardTitle>
                     <Sparklines
                       height={100}
                       data={[
-                        5,
-                        10,
-                        5,
-                        20,
-                        18,
-                        17,
-                        29,
-                        10,
-                        18,
-                        15,
-                        20,
-                        18,
-                        17,
-                        29,
-                        10,
-                        18,
+                        5, 10, 5, 20, 18, 17, 29, 10, 18, 15, 20, 18, 17, 29,
+                        10, 18,
                       ]}
                     >
                       <SparklinesBars
@@ -161,34 +145,8 @@ class SparklineChart extends Component {
                     <Sparklines
                       height={80}
                       data={[
-                        4,
-                        6,
-                        7,
-                        7,
-                        4,
-                        3,
-                        2,
-                        1,
-                        4,
-                        4,
-                        5,
-                        6,
-                        3,
-                        4,
-                        5,
-                        8,
-                        7,
-                        6,
-                        9,
-                        3,
-                        2,
-                        4,
-                        1,
-                        5,
-                        6,
-                        4,
-                        3,
-                        7,
+                        4, 6, 7, 7, 4, 3, 2, 1, 4, 4, 5, 6, 3, 4, 5, 8, 7, 6, 9,
+                        3, 2, 4, 1, 5, 6, 4, 3, 7,
                       ]}
                       width={200}
                     >
@@ -227,8 +185,8 @@ class SparklineChart extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default SparklineChart
+export default SparklineChart;

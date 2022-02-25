@@ -81,7 +81,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "booking_date_time",
-          text: "Booking date time",
+          text: "Appointment booked on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -95,7 +95,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "requested_appointment_date_time",
-          text: "Requested appointment date time",
+          text: "Appointment requested on",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -109,7 +109,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "sample_collection_date_time",
-          text: "Sample collection date time",
+          text: "Estimated sample collection",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -123,7 +123,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "result_upload_date_time",
-          text: "Result upload date time",
+          text: "Estimated result upload",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -139,6 +139,21 @@ class TestAppointmentsInProcessList extends Component {
           dataField: "status",
           text: "Status",
           sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Confirmed" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {patientTestAppointment.status}
+                </span>
+              ) : null}
+
+              {patientTestAppointment.status == "Sample Collected" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning">
+                  {patientTestAppointment.status}
+                </span>
+              ) : null}
+            </>
+          ),
         },
         {
           dataField: "menu",
@@ -518,7 +533,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Booking date time
+                                                      Appointment booked on
                                                     </Label>
                                                     <input
                                                       name="booking_date_time"
@@ -534,8 +549,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Requested appointment date
-                                                      time
+                                                      Appointment requested on
                                                     </Label>
                                                     <input
                                                       name="requested_appointment_date_time"
@@ -551,8 +565,8 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Sample collection date
-                                                      time
+                                                      Estimated sample
+                                                      collection
                                                     </Label>
                                                     <input
                                                       name="sample_collection_date_time"
@@ -568,7 +582,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Result upload date time
+                                                      Estimated result upload
                                                     </Label>
                                                     <input
                                                       name="result_upload_date_time"

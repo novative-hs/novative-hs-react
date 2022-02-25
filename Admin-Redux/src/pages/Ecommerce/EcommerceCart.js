@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import MetaTags from 'react-meta-tags';
-import { map, isEmpty, size } from "lodash"
-import PropTypes from "prop-types"
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import MetaTags from "react-meta-tags";
+import { map, isEmpty, size } from "lodash";
+import PropTypes from "prop-types";
 import {
   Button,
   Card,
@@ -15,81 +15,81 @@ import {
   InputGroupText,
   Row,
   Table,
-} from "reactstrap"
-import { Link, withRouter } from "react-router-dom"
+} from "reactstrap";
+import { Link, withRouter } from "react-router-dom";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Product Images
-import images from "../../assets/images"
-import { getCartData } from "../../store/actions"
+import images from "../../assets/images";
+import { getCartData } from "../../store/actions";
 
 class EcommerceCart extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       productList: [],
-    }
+    };
   }
 
   componentDidMount() {
     const {
       cartData: { products },
       onGetCartData,
-    } = this.props
-    onGetCartData()
-    this.setState({ productList: products })
+    } = this.props;
+    onGetCartData();
+    this.setState({ productList: products });
   }
 
   componentDidUpdate(prevProps) {
     const {
       cartData: { products },
-    } = this.props
+    } = this.props;
     if (
       !isEmpty(products) &&
       size(products) !== size(prevProps.cartData.products)
     ) {
-      this.setState({ productList: products })
+      this.setState({ productList: products });
     }
   }
 
   removeCartItem = id => {
-    let productList = this.state.productList
+    let productList = this.state.productList;
     const filtered = productList.filter(function (item) {
-      return item.id !== id
-    })
+      return item.id !== id;
+    });
 
-    this.setState({ productList: filtered })
-  }
+    this.setState({ productList: filtered });
+  };
 
   countUP = (id, prev_data_attr) => {
     this.setState({
       productList: this.state.productList.map(p =>
         p.id === id ? { ...p, data_attr: prev_data_attr + 1 } : p
       ),
-    })
-  }
+    });
+  };
 
   countDown = (id, prev_data_attr) => {
     this.setState({
       productList: this.state.productList.map(p =>
         p.id === id ? { ...p, data_attr: prev_data_attr - 1 } : p
       ),
-    })
-  }
+    });
+  };
 
   render() {
     const {
       cartData: { orderSummary },
-    } = this.props
-    const { productList } = this.state
+    } = this.props;
+    const { productList } = this.state;
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Cart | Skote - React Admin & Dashboard Template</title>
+            <title>Cart | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Ecommerce" breadcrumbItem="Cart" />
@@ -122,7 +122,9 @@ class EcommerceCart extends Component {
                               <td>
                                 <h5 className="font-size-14 text-truncate">
                                   <Link
-                                    to={"/ecommerce-product-details/" + product.id}
+                                    to={
+                                      "/ecommerce-product-details/" + product.id
+                                    }
                                     className="text-dark"
                                   >
                                     {product.name}
@@ -139,34 +141,34 @@ class EcommerceCart extends Component {
                               <td>
                                 <div style={{ width: "120px" }}>
                                   <InputGroup>
-                                      <Button
-                                        color="primary"
-                                        onClick={() => {
-                                          this.countUP(
-                                            product.id,
-                                            product.data_attr
-                                          )
-                                        }}
-                                      >
-                                        +
-                                      </Button>
+                                    <Button
+                                      color="primary"
+                                      onClick={() => {
+                                        this.countUP(
+                                          product.id,
+                                          product.data_attr
+                                        );
+                                      }}
+                                    >
+                                      +
+                                    </Button>
                                     <Input
                                       type="text"
                                       value={product.data_attr}
                                       name="demo_vertical"
                                       readOnly
                                     />
-                                      <Button
-                                        color="primary"
-                                        onClick={() => {
-                                          this.countDown(
-                                            product.id,
-                                            product.data_attr
-                                          )
-                                        }}
-                                      >
-                                        -
-                                      </Button>
+                                    <Button
+                                      color="primary"
+                                      onClick={() => {
+                                        this.countDown(
+                                          product.id,
+                                          product.data_attr
+                                        );
+                                      }}
+                                    >
+                                      -
+                                    </Button>
                                   </InputGroup>
                                 </div>
                               </td>
@@ -194,7 +196,8 @@ class EcommerceCart extends Component {
                           to="/ecommerce-products"
                           className="btn btn-secondary"
                         >
-                          <i className="mdi mdi-arrow-left me-1" /> Continue Shopping{" "}
+                          <i className="mdi mdi-arrow-left me-1" /> Continue
+                          Shopping{" "}
                         </Link>
                       </Col>
                       <Col sm="6">
@@ -301,24 +304,24 @@ class EcommerceCart extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 EcommerceCart.propTypes = {
   cartData: PropTypes.any,
   onGetCartData: PropTypes.func,
-}
+};
 
 const mapStateToProps = state => ({
   cartData: state.ecommerce.cartData,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetCartData: () => dispatch(getCartData()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(EcommerceCart))
+)(withRouter(EcommerceCart));

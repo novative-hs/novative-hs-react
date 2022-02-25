@@ -54,8 +54,11 @@ import sampleCollectors from "./sample-collectors/reducer";
 //test certificates
 import qualityCertificates from "./quality-certificates/reducer";
 
-//test certificates
+//test appointment
 import testAppointments from "./test-appointments/reducer";
+
+// patient test appointments
+import patientTestAppointments from "./patient-test-appointments/reducer";
 
 //mails
 import mails from "./mails/reducer";
@@ -95,6 +98,7 @@ const rootReducer = combineReducers({
   sampleCollectors,
   qualityCertificates,
   testAppointments,
+  patientTestAppointments,
   Dashboard,
   DashboardSaas,
 });

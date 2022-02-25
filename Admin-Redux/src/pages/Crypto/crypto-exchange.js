@@ -185,7 +185,7 @@ class CryptoExchange extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Exchange | Skote - React Admin & Dashboard Template</title>
+            <title>Exchange | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}

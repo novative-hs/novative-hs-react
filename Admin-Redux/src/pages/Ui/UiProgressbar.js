@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -7,16 +7,16 @@ import {
   Col,
   Container,
   Progress,
-  Row
-} from "reactstrap"
+  Row,
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiProgressbar extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -24,7 +24,7 @@ class UiProgressbar extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Progress Bars | Skote - React Admin & Dashboard Template</title>
+            <title>Progress Bars | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Progress Bars" />
@@ -43,15 +43,12 @@ class UiProgressbar extends Component {
                       <div className="mb-4">
                         <Progress color="primary" value={25}></Progress>
                       </div>{" "}
-
                       <div className="mb-4">
                         <Progress color="primary" value={50}></Progress>
                       </div>
-
                       <div className="mb-4">
                         <Progress color="primary" value={75}></Progress>
                       </div>
-
                       <div>
                         <Progress color="primary" value={100}></Progress>
                       </div>
@@ -203,7 +200,6 @@ class UiProgressbar extends Component {
                       <div className="mb-4">
                         <Progress striped color="success" value={40}></Progress>
                       </div>
-
                     </div>
                   </CardBody>
                 </Card>
@@ -211,15 +207,16 @@ class UiProgressbar extends Component {
                   <CardBody>
                     <CardTitle className="h4">Animated stripes</CardTitle>
                     <p className="card-title-desc">
-                      The striped gradient can also be
-                      animated. Add <code>.progress-bar-animated</code> to <code>.progress-bar</code> to animate the
-                      stripes right to left via CSS3 animations.
+                      The striped gradient can also be animated. Add{" "}
+                      <code>.progress-bar-animated</code> to{" "}
+                      <code>.progress-bar</code> to animate the stripes right to
+                      left via CSS3 animations.
                     </p>
                     <div className="">
                       <Progress
                         value={75}
                         color="primary"
-                        style={{ width: '75%' }}
+                        style={{ width: "75%" }}
                         animated
                       ></Progress>
                     </div>
@@ -234,38 +231,24 @@ class UiProgressbar extends Component {
                   <CardBody>
                     <CardTitle className="h4">Animated Progress</CardTitle>
                     <p className="card-title-desc">
-                      Add <code>.animated-progess</code> class with <code>.progress-bar</code> for animated progressbar.
+                      Add <code>.animated-progess</code> class with{" "}
+                      <code>.progress-bar</code> for animated progressbar.
                     </p>
                     <div className="">
                       <div className="animated-progess mb-4">
-                        <Progress
-                          value={10}
-                          color="primary"
-                        ></Progress>
+                        <Progress value={10} color="primary"></Progress>
                       </div>
                       <div className="animated-progess mb-4">
-                        <Progress
-                          value={25}
-                          color="success"
-                        ></Progress>
+                        <Progress value={25} color="success"></Progress>
                       </div>
                       <div className="animated-progess mb-4">
-                        <Progress
-                          value={50}
-                          color="info"
-                        ></Progress>
+                        <Progress value={50} color="info"></Progress>
                       </div>
                       <div className="animated-progess mb-4">
-                        <Progress
-                          value={75}
-                          color="warning"
-                        ></Progress>
+                        <Progress value={75} color="warning"></Progress>
                       </div>
                       <div className="animated-progess">
-                        <Progress
-                          value={100}
-                          color="danger"
-                        ></Progress>
+                        <Progress value={100} color="danger"></Progress>
                       </div>
                     </div>
                   </CardBody>
@@ -330,24 +313,34 @@ class UiProgressbar extends Component {
               <Col xl="6">
                 <Card>
                   <CardBody>
-                    <CardTitle className="h5">
-                      Progress Example
-                    </CardTitle>
-                    <p className="card-title-desc">You can use these classes with existing components to create new ones.</p>
+                    <CardTitle className="h5">Progress Example</CardTitle>
+                    <p className="card-title-desc">
+                      You can use these classes with existing components to
+                      create new ones.
+                    </p>
                     <div className="mt-5">
                       <div className="position-relative m-4">
                         <Progress
                           value={50}
                           color="primary"
-                          style={{ height: '1px' }}
+                          style={{ height: "1px" }}
                         ></Progress>
-                        <button className="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style={{ width: "2rem", height: "2rem" }}>
+                        <button
+                          className="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill"
+                          style={{ width: "2rem", height: "2rem" }}
+                        >
                           1
                         </button>
-                        <button className="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style={{ width: "2rem", height: "2rem" }}>
+                        <button
+                          className="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill"
+                          style={{ width: "2rem", height: "2rem" }}
+                        >
                           2
                         </button>
-                        <button className="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style={{ width: "2rem", height: "2rem" }}>
+                        <button
+                          className="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill"
+                          style={{ width: "2rem", height: "2rem" }}
+                        >
                           3
                         </button>
                       </div>
@@ -359,8 +352,8 @@ class UiProgressbar extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiProgressbar
+export default UiProgressbar;

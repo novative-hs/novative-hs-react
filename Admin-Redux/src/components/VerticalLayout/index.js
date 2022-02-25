@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import PropTypes from 'prop-types'
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import {
   changeLayout,
   changeSidebarTheme,
@@ -10,73 +10,70 @@ import {
   toggleRightSidebar,
   changeTopbarTheme,
   changeLayoutWidth,
-} from "../../store/actions"
+} from "../../store/actions";
 
 // Layout Related Components
-import Header from "./Header"
-import Sidebar from "./Sidebar"
-import Footer from "./Footer"
-import RightSidebar from '../CommonForBoth/RightSidebar'
-
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import Footer from "./Footer";
+import RightSidebar from "../CommonForBoth/RightSidebar";
 
 class Layout extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
       width: 0,
-      height: 0
-    }
-    this.toggleMenuCallback = this.toggleMenuCallback.bind(this)
-    this.hideRightbar = this.hideRightbar.bind(this)
+      height: 0,
+    };
+    this.toggleMenuCallback = this.toggleMenuCallback.bind(this);
+    this.hideRightbar = this.hideRightbar.bind(this);
   }
 
   capitalizeFirstLetter = string => {
-    return string.charAt(1).toUpperCase() + string.slice(2)
-  }
+    return string.charAt(1).toUpperCase() + string.slice(2);
+  };
 
   componentDidMount() {
-
     document.body.addEventListener("click", this.hideRightbar, true);
 
     if (this.props.isPreloader === true) {
-      document.getElementById("preloader").style.display = "block"
-      document.getElementById("status").style.display = "block"
+      document.getElementById("preloader").style.display = "block";
+      document.getElementById("status").style.display = "block";
 
       setTimeout(function () {
-        document.getElementById("preloader").style.display = "none"
-        document.getElementById("status").style.display = "none"
-      }, 2500)
+        document.getElementById("preloader").style.display = "none";
+        document.getElementById("status").style.display = "none";
+      }, 2500);
     } else {
-      document.getElementById("preloader").style.display = "none"
-      document.getElementById("status").style.display = "none"
+      document.getElementById("preloader").style.display = "none";
+      document.getElementById("status").style.display = "none";
     }
 
     // Scroll Top to 0
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     // let currentage = this.capitalizeFirstLetter(this.props.location.pathname)
 
     // document.title =
-    //   currentage + " | Skote - React Admin & Dashboard Template"
+    //   currentage + " | Ilaaj4u - Dashboard"
     if (this.props.leftSideBarTheme) {
-      this.props.changeSidebarTheme(this.props.leftSideBarTheme)
+      this.props.changeSidebarTheme(this.props.leftSideBarTheme);
     }
 
     if (this.props.leftSideBarThemeImage) {
-      this.props.changeSidebarThemeImage(this.props.leftSideBarThemeImage)
+      this.props.changeSidebarThemeImage(this.props.leftSideBarThemeImage);
     }
 
     if (this.props.layoutWidth) {
-      this.props.changeLayoutWidth(this.props.layoutWidth)
+      this.props.changeLayoutWidth(this.props.layoutWidth);
     }
 
     if (this.props.leftSideBarType) {
-      this.props.changeSidebarType(this.props.leftSideBarType)
+      this.props.changeSidebarType(this.props.leftSideBarType);
     }
     if (this.props.topbarTheme) {
-      this.props.changeTopbarTheme(this.props.topbarTheme)
+      this.props.changeTopbarTheme(this.props.topbarTheme);
     }
-
   }
 
   toggleMenuCallback = () => {
@@ -87,23 +84,22 @@ class Layout extends Component {
       body.classList.toggle("vertical-collpsed");
       body.classList.toggle("sidebar-enable");
     }
-  }
+  };
 
-    // //hides right sidebar on body click
-    hideRightbar = (event) => {
-      var rightbar = document.getElementById("right-bar");
-      //if clicked in inside right bar, then do nothing
-      if (rightbar && rightbar.contains(event.target)) {
-        return;
-      } else {
-        if(document.body.classList.contains('right-bar-enabled')){
-          this.props.toggleRightSidebar(false)
-        }
+  // //hides right sidebar on body click
+  hideRightbar = event => {
+    var rightbar = document.getElementById("right-bar");
+    //if clicked in inside right bar, then do nothing
+    if (rightbar && rightbar.contains(event.target)) {
+      return;
+    } else {
+      if (document.body.classList.contains("right-bar-enabled")) {
+        this.props.toggleRightSidebar(false);
       }
-    };
+    }
+  };
 
   render() {
-
     return (
       <React.Fragment>
         <div id="preloader">
@@ -120,9 +116,7 @@ class Layout extends Component {
         </div>
 
         <div id="layout-wrapper">
-          <Header
-            toggleMenuCallback={this.toggleMenuCallback}
-          />
+          <Header toggleMenuCallback={this.toggleMenuCallback} />
           <Sidebar
             theme={this.props.leftSideBarTheme}
             type={this.props.leftSideBarType}
@@ -133,7 +127,7 @@ class Layout extends Component {
         </div>
         {this.props.showRightSidebar ? <RightSidebar /> : null}
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -152,14 +146,14 @@ Layout.propTypes = {
   location: PropTypes.object,
   showRightSidebar: PropTypes.any,
   toggleRightSidebar: PropTypes.any,
-  topbarTheme: PropTypes.any
-}
+  topbarTheme: PropTypes.any,
+};
 
 const mapStateToProps = state => {
   return {
     ...state.Layout,
-  }
-}
+  };
+};
 export default connect(mapStateToProps, {
   changeLayout,
   changeSidebarTheme,
@@ -168,4 +162,4 @@ export default connect(mapStateToProps, {
   toggleRightSidebar,
   changeTopbarTheme,
   changeLayoutWidth,
-})(withRouter(Layout))
+})(withRouter(Layout));
