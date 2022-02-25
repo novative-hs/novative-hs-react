@@ -23,11 +23,7 @@ import { withRouter } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 // actions
-import {
-  updateLabProfile,
-  getLabProfile,
-  getLabProfileSuccess,
-} from "../../store/actions";
+import { updateLabProfile, getLabProfile } from "../../store/actions";
 
 class LabProfile extends Component {
   constructor(props) {
@@ -673,7 +669,6 @@ LabProfile.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getLabProfile: PropTypes.func,
-  getLabProfileSuccess: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -685,6 +680,5 @@ export default withRouter(
   connect(mapStateToProps, {
     updateLabProfile,
     getLabProfile,
-    getLabProfileSuccess,
   })(LabProfile)
 );

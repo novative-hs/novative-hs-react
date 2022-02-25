@@ -9,10 +9,7 @@ import { withTranslation } from "react-i18next";
 import profileImg from "../../assets/images/profile-img.png";
 
 // actions
-import {
-  getPatientProfile,
-  getPatientProfileSuccess,
-} from "store/auth/patientprofile/actions";
+import { getPatientProfile } from "store/auth/patientprofile/actions";
 
 class LabSummary extends Component {
   constructor(props) {
@@ -212,7 +209,6 @@ LabSummary.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getPatientProfile: PropTypes.func,
-  getPatientProfileSuccess: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -221,7 +217,5 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getPatientProfile, getPatientProfileSuccess })(
-    withTranslation()(LabSummary)
-  )
+  connect(mapStateToProps, { getPatientProfile })(withTranslation()(LabSummary))
 );
