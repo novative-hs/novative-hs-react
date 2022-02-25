@@ -57,7 +57,7 @@ class CryptoWallet extends Component {
         <div className="page-content">
           .
           <MetaTags>
-            <title>Buy/Sell | Skote - React Admin & Dashboard Template</title>
+            <title>Buy/Sell | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -291,10 +291,9 @@ class CryptoWallet extends Component {
                               <Row>
                                 <Col sm="6">
                                   <InputGroup className="mb-2 currency-value">
-
-                                      <span className="input-group-text">
-                                        Bitcoin
-                                      </span>
+                                    <span className="input-group-text">
+                                      Bitcoin
+                                    </span>
 
                                     <Input
                                       type="text"
@@ -436,10 +435,9 @@ class CryptoWallet extends Component {
                               <Row>
                                 <Col sm="6">
                                   <InputGroup className="mb-2 currency-value">
-                                  
-                                      <span className="input-group-text">
-                                        Crypto value
-                                      </span>
+                                    <span className="input-group-text">
+                                      Crypto value
+                                    </span>
 
                                     <Input
                                       type="text"

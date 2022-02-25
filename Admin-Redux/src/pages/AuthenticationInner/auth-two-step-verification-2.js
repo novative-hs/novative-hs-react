@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import CarouselPage from "./CarouselPage"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import CarouselPage from "./CarouselPage";
+import MetaTags from "react-meta-tags";
 
 //Verification code package
-import AuthCode from "react-auth-code-input"
+import AuthCode from "react-auth-code-input";
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
-import { Col, Form, FormGroup, Label, Row } from "reactstrap"
-import { Link } from "react-router-dom"
+import logodark from "../../assets/images/logo-dark.png";
+import logolight from "../../assets/images/logo-light.png";
+import { Col, Form, FormGroup, Label, Row } from "reactstrap";
+import { Link } from "react-router-dom";
 
 export default class TwostepVerification2 extends Component {
   render() {
@@ -17,7 +17,10 @@ export default class TwostepVerification2 extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>Two Step Verification 2 | Skote - React Admin & Dashboard Template</title>
+            <title>
+              Two Step Verification 2 | Ilaaj4u - React Admin & Dashboard
+              Template
+            </title>
           </MetaTags>
           <div className="container-fluid p-0">
             <div className="row g-0">
@@ -84,7 +87,7 @@ export default class TwostepVerification2 extends Component {
                                         marginRight: "15px",
                                         border: "1px solid #ced4da",
                                         textTransform: "uppercase",
-                                        borderRadius: ".4rem"
+                                        borderRadius: ".4rem",
                                       }}
                                     />
                                   </FormGroup>
@@ -106,7 +109,7 @@ export default class TwostepVerification2 extends Component {
 
                       <div className="mt-4 mt-md-5 text-center">
                         <p className="mb-0">
-                          © {new Date().getFullYear()} Skote. Crafted with{" "}
+                          © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                           <i className="mdi mdi-heart text-danger"></i> by
                           Themesbrand
                         </p>
@@ -119,6 +122,6 @@ export default class TwostepVerification2 extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

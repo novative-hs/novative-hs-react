@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import {
   Button,
   Card,
@@ -48,7 +48,6 @@ class FormRepeater extends Component {
     } else if (typeof idx != "undefined") {
       document.getElementById("addr" + idx).style.display = "none";
     }
-
   };
   handleRemoveRowNested = (e, idx) => {
     document.getElementById("nested" + idx).style.display = "none";
@@ -59,7 +58,7 @@ class FormRepeater extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Repeater | Skote - React Admin & Dashboard Template</title>
+            <title>Form Repeater | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Repeater" />
@@ -121,12 +120,13 @@ class FormRepeater extends Component {
 
                                   <Col lg="2" className="mb-3">
                                     <Label htmlFor="message">Message</Label>
-                                    <Input type="textarea" id="message" placeholder="Enter Your Message" />
+                                    <Input
+                                      type="textarea"
+                                      id="message"
+                                      placeholder="Enter Your Message"
+                                    />
                                   </Col>
-                                  <Col
-                                    lg="2"
-                                    className="align-self-center"
-                                  >
+                                  <Col lg="2" className="align-self-center">
                                     <div className="d-grid">
                                       <Button
                                         onClick={e =>
@@ -170,22 +170,38 @@ class FormRepeater extends Component {
 
                                     <Col lg="2" className="mb-3">
                                       <Label htmlFor="email">Email</Label>
-                                      <Input type="email" id="email" placeholder="Enter Your Email ID" />
+                                      <Input
+                                        type="email"
+                                        id="email"
+                                        placeholder="Enter Your Email ID"
+                                      />
                                     </Col>
 
                                     <Col lg="2" className="mb-3">
                                       <Label htmlFor="subject">Subject</Label>
-                                      <Input type="text" id="subject" placeholder="Enter Your Subject" />
+                                      <Input
+                                        type="text"
+                                        id="subject"
+                                        placeholder="Enter Your Subject"
+                                      />
                                     </Col>
 
                                     <Col lg="2" className="mb-3">
                                       <Label htmlFor="resume">Resume</Label>
-                                      <Input type="file" className="form-control" id="resume" />
+                                      <Input
+                                        type="file"
+                                        className="form-control"
+                                        id="resume"
+                                      />
                                     </Col>
 
                                     <Col lg="2" className="mb-3">
                                       <Label htmlFor="message">Message</Label>
-                                      <Input type="textarea" id="message" placeholder="Enter Your Message" />
+                                      <Input
+                                        type="textarea"
+                                        id="message"
+                                        placeholder="Enter Your Message"
+                                      />
                                     </Col>
                                     <Col
                                       lg="2"
@@ -210,7 +226,11 @@ class FormRepeater extends Component {
                         ))}
                       </tbody>
                     </table>
-                    <Button onClick={this.handleAddRow} color="success" className="mt-3 mt-lg-0">
+                    <Button
+                      onClick={this.handleAddRow}
+                      color="success"
+                      className="mt-3 mt-lg-0"
+                    >
                       Add{" "}
                     </Button>{" "}
                   </CardBody>

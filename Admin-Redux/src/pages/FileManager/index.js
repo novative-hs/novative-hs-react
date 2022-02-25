@@ -1,16 +1,16 @@
-import React, { Component } from "react"
-import { Card, CardBody, Container } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Card, CardBody, Container } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 // import Component
-import FileLeftBar from "./FileLeftBar"
-import FileList from "./FileList"
-import RecentFile from "./RecentFile"
-import Storage from "./Storage"
-const series = [76]
+import FileLeftBar from "./FileLeftBar";
+import FileList from "./FileList";
+import RecentFile from "./RecentFile";
+import Storage from "./Storage";
+const series = [76];
 const options = {
   chart: {
     height: 150,
@@ -54,24 +54,24 @@ const options = {
     dashArray: 3,
   },
   labels: ["Storage"],
-}
+};
 
 export default class index extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       filemanager: {
         options: options,
         series: series,
       },
-    }
+    };
   }
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>File Manager | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>File Manager | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Apps" breadcrumbItem="File Manager" />
@@ -95,6 +95,6 @@ export default class index extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

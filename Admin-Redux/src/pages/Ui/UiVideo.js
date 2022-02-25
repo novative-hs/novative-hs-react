@@ -1,21 +1,14 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiVideo extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -23,7 +16,7 @@ class UiVideo extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Video | Skote - React Admin & Dashboard Template</title>
+            <title>Video | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Video" />
@@ -32,7 +25,9 @@ class UiVideo extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Responsive embed video 16:9</CardTitle>
+                    <CardTitle className="h4">
+                      Responsive embed video 16:9
+                    </CardTitle>
                     <p className="card-title-desc">
                       Aspect ratios can be customized with modifier classNames.
                     </p>
@@ -51,7 +46,9 @@ class UiVideo extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Responsive embed video 21:9</CardTitle>
+                    <CardTitle className="h4">
+                      Responsive embed video 21:9
+                    </CardTitle>
                     <p className="card-title-desc">
                       Aspect ratios can be customized with modifier classNames.
                     </p>
@@ -72,7 +69,9 @@ class UiVideo extends Component {
               <Col xl={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Responsive embed video 4:3</CardTitle>
+                    <CardTitle className="h4">
+                      Responsive embed video 4:3
+                    </CardTitle>
                     <p className="card-title-desc">
                       Aspect ratios can be customized with modifier classNames.
                     </p>
@@ -91,7 +90,9 @@ class UiVideo extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Responsive embed video 1:1</CardTitle>
+                    <CardTitle className="h4">
+                      Responsive embed video 1:1
+                    </CardTitle>
                     <p className="card-title-desc">
                       Aspect ratios can be customized with modifier classNames.
                     </p>
@@ -110,8 +111,8 @@ class UiVideo extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiVideo
+export default UiVideo;

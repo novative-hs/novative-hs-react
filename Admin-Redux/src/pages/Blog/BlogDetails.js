@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Link } from "react-router-dom"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -10,15 +10,15 @@ import {
   Input,
   Label,
   Row,
-  Container
-} from "reactstrap"
+  Container,
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 // import images
-import img1 from "../../assets/images/small/img-2.jpg"
-import avtar1 from "../../assets/images/users/avatar-2.jpg"
+import img1 from "../../assets/images/small/img-2.jpg";
+import avtar1 from "../../assets/images/users/avatar-2.jpg";
 
 export default class BlogDetails extends Component {
   render() {
@@ -26,7 +26,7 @@ export default class BlogDetails extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Blog Details | Skote - React Admin & Dashboard Template</title>
+            <title>Blog Details | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Blog" breadcrumbItem="Blog Details" />
@@ -45,14 +45,14 @@ export default class BlogDetails extends Component {
                                   className="badge bg-light font-size-12"
                                 >
                                   <i className="bx bx-purchase-tag-alt align-middle text-muted me-1"></i>{" "}
-                              Project
-                            </Link>
+                                  Project
+                                </Link>
                               </div>
                               <h4>Beautiful Day with Friends</h4>
                               <p className="text-muted mb-4">
-                                <i className="mdi mdi-calendar me-1"></i> 10 Apr,
-                            2020
-                          </p>
+                                <i className="mdi mdi-calendar me-1"></i> 10
+                                Apr, 2020
+                              </p>
                             </div>
 
                             <hr />
@@ -60,20 +60,26 @@ export default class BlogDetails extends Component {
                               <Row>
                                 <Col sm={4}>
                                   <div>
-                                    <p className="text-muted mb-2">Categories</p>
+                                    <p className="text-muted mb-2">
+                                      Categories
+                                    </p>
                                     <h5 className="font-size-15">Project</h5>
                                   </div>
                                 </Col>
                                 <Col sm={4}>
                                   <div className="mt-4 mt-sm-0">
                                     <p className="text-muted mb-2">Date</p>
-                                    <h5 className="font-size-15">10 Apr, 2020</h5>
+                                    <h5 className="font-size-15">
+                                      10 Apr, 2020
+                                    </h5>
                                   </div>
                                 </Col>
                                 <Col sm={4}>
                                   <div className="mt-4 mt-sm-0">
                                     <p className="text-muted mb-2">Post by</p>
-                                    <h5 className="font-size-15">Gilbert Smith</h5>
+                                    <h5 className="font-size-15">
+                                      Gilbert Smith
+                                    </h5>
                                   </div>
                                 </Col>
                               </Row>
@@ -93,24 +99,27 @@ export default class BlogDetails extends Component {
                             <div className="mt-4">
                               <div className="text-muted font-size-14">
                                 <p>
-                                  Neque porro quisquam est, qui dolorem ipsum quia
-                                  dolor sit amet, consectetur, adipisci velit, sed
-                                  quia non numquam eius modi tempora incidunt ut
-                                  labore et dolore magnam enim ad minima veniam quis
-                            </p>
+                                  Neque porro quisquam est, qui dolorem ipsum
+                                  quia dolor sit amet, consectetur, adipisci
+                                  velit, sed quia non numquam eius modi tempora
+                                  incidunt ut labore et dolore magnam enim ad
+                                  minima veniam quis
+                                </p>
 
                                 <p className="mb-4">
                                   Ut enim ad minima veniam, quis nostrum
-                                  exercitationem ullam corporis suscipit laboriosam,
-                                  nisi ut aliquid ex ea reprehenderit qui in ea
-                                  voluptate velit esse quam nihil molestiae
-                                  consequatur, vel illum qui dolorem eum fugiat quo
-                                  voluptas nulla pariatur? At vero eos et accusamus
-                                  et iusto odio dignissimos ducimus qui blanditiis
+                                  exercitationem ullam corporis suscipit
+                                  laboriosam, nisi ut aliquid ex ea
+                                  reprehenderit qui in ea voluptate velit esse
+                                  quam nihil molestiae consequatur, vel illum
+                                  qui dolorem eum fugiat quo voluptas nulla
+                                  pariatur? At vero eos et accusamus et iusto
+                                  odio dignissimos ducimus qui blanditiis
                                   praesentium voluptatum deleniti atque corrupti
                                   quos dolores et quas molestias excepturi sint
-                                  occaecati cupiditate non provident, similique sunt
-                            </p>
+                                  occaecati cupiditate non provident, similique
+                                  sunt
+                                </p>
 
                                 <blockquote className="p-4 border-light border rounded mb-4">
                                   <div className="d-flex">
@@ -120,23 +129,23 @@ export default class BlogDetails extends Component {
                                     <div>
                                       <p className="mb-0">
                                         {" "}
-                                    At vero eos et accusamus et iusto odio
-                                    dignissimos ducimus qui blanditiis
-                                    praesentium deleniti atque corrupti quos
-                                    dolores et quas molestias excepturi sint
-                                    quidem rerum facilis est
-                                  </p>
+                                        At vero eos et accusamus et iusto odio
+                                        dignissimos ducimus qui blanditiis
+                                        praesentium deleniti atque corrupti quos
+                                        dolores et quas molestias excepturi sint
+                                        quidem rerum facilis est
+                                      </p>
                                     </div>
                                   </div>
                                 </blockquote>
 
                                 <p>
                                   Itaque earum rerum hic tenetur a sapiente
-                                  delectus, ut aut reiciendis voluptatibus maiores
-                                  alias consequatur aut perferendis doloribus
-                                  asperiores repellat. Sed ut perspiciatis unde
-                                  omnis iste natus error sit
-                            </p>
+                                  delectus, ut aut reiciendis voluptatibus
+                                  maiores alias consequatur aut perferendis
+                                  doloribus asperiores repellat. Sed ut
+                                  perspiciatis unde omnis iste natus error sit
+                                </p>
 
                                 <div className="mt-4">
                                   <h5 className="mb-3">Title: </h5>
@@ -148,13 +157,13 @@ export default class BlogDetails extends Component {
                                           <ul className="ps-4">
                                             <li className="py-1">
                                               Donec sodales sagittis
-                                        </li>
+                                            </li>
                                             <li className="py-1">
                                               Sed consequat leo eget
-                                        </li>
+                                            </li>
                                             <li className="py-1">
                                               Aliquam lorem ante
-                                        </li>
+                                            </li>
                                           </ul>
                                         </div>
                                       </div>
@@ -163,10 +172,10 @@ export default class BlogDetails extends Component {
                                           <ul className="ps-4">
                                             <li className="py-1">
                                               Aenean ligula eget
-                                        </li>
+                                            </li>
                                             <li className="py-1">
                                               Cum sociis natoque
-                                        </li>
+                                            </li>
                                           </ul>
                                         </div>
                                       </div>
@@ -180,8 +189,8 @@ export default class BlogDetails extends Component {
                               <div className="mt-5">
                                 <h5 className="font-size-15">
                                   <i className="bx bx-message-dots text-muted align-middle me-1"></i>{" "}
-                              Comments :
-                            </h5>
+                                  Comments :
+                                </h5>
 
                                 <div>
                                   <div className="media py-3">
@@ -195,17 +204,19 @@ export default class BlogDetails extends Component {
                                         Delores Williams{" "}
                                         <small className="text-muted float-end">
                                           1 hr Ago
-                                    </small>
+                                        </small>
                                       </h5>
                                       <p className="text-muted">
-                                        If several languages coalesce, the grammar
-                                        of the resulting language is more simple and
-                                        regular than that of the individual
-                                  </p>
+                                        If several languages coalesce, the
+                                        grammar of the resulting language is
+                                        more simple and regular than that of the
+                                        individual
+                                      </p>
                                       <div>
                                         <Link to="#" className="text-success">
-                                          <i className="mdi mdi-reply"></i> Reply
-                                    </Link>
+                                          <i className="mdi mdi-reply"></i>{" "}
+                                          Reply
+                                        </Link>
                                       </div>
                                     </div>
                                   </div>
@@ -222,16 +233,17 @@ export default class BlogDetails extends Component {
                                         Clarence Smith{" "}
                                         <small className="text-muted float-end">
                                           2 hrs Ago
-                                    </small>
+                                        </small>
                                       </h5>
                                       <p className="text-muted">
-                                        Neque porro quisquam est, qui dolorem ipsum
-                                        quia dolor sit amet
-                                  </p>
+                                        Neque porro quisquam est, qui dolorem
+                                        ipsum quia dolor sit amet
+                                      </p>
                                       <div>
                                         <Link to="#" className="text-success">
-                                          <i className="mdi mdi-reply"></i> Reply
-                                    </Link>
+                                          <i className="mdi mdi-reply"></i>{" "}
+                                          Reply
+                                        </Link>
                                       </div>
 
                                       <div className="media pt-3">
@@ -245,18 +257,21 @@ export default class BlogDetails extends Component {
                                             Silvia Martinez{" "}
                                             <small className="text-muted float-end">
                                               2 hrs Ago
-                                        </small>
+                                            </small>
                                           </h5>
                                           <p className="text-muted">
-                                            To take a trivial example, which of us
-                                            ever undertakes laborious physical
-                                            exercise
-                                      </p>
+                                            To take a trivial example, which of
+                                            us ever undertakes laborious
+                                            physical exercise
+                                          </p>
                                           <div>
-                                            <Link to="#" className="text-success">
+                                            <Link
+                                              to="#"
+                                              className="text-success"
+                                            >
                                               <i className="mdi mdi-reply"></i>{" "}
-                                          Reply
-                                        </Link>
+                                              Reply
+                                            </Link>
                                           </div>
                                         </div>
                                       </div>
@@ -274,16 +289,17 @@ export default class BlogDetails extends Component {
                                         Keith McCoy{" "}
                                         <small className="text-muted float-end">
                                           12 Aug
-                                    </small>
+                                        </small>
                                       </h5>
                                       <p className="text-muted">
                                         Donec posuere vulputate arcu. phasellus
                                         accumsan cursus velit
-                                  </p>
+                                      </p>
                                       <div>
                                         <Link to="#" className="text-success">
-                                          <i className="mdi mdi-reply"></i> Reply
-                                    </Link>
+                                          <i className="mdi mdi-reply"></i>{" "}
+                                          Reply
+                                        </Link>
                                       </div>
                                     </div>
                                   </div>
@@ -293,15 +309,18 @@ export default class BlogDetails extends Component {
                               <div className="mt-4">
                                 <h5 className="font-size-16 mb-3">
                                   Leave a Message
-                            </h5>
+                                </h5>
 
                                 <Form>
                                   <Row>
                                     <Col md={6}>
                                       <FormGroup className="mb-3">
-                                        <Label htmlFor="commentname-input" className="form-label">
+                                        <Label
+                                          htmlFor="commentname-input"
+                                          className="form-label"
+                                        >
                                           Name
-                                    </Label>
+                                        </Label>
                                         <Input
                                           type="text"
                                           className="form-control"
@@ -312,9 +331,12 @@ export default class BlogDetails extends Component {
                                     </Col>
                                     <Col md={6}>
                                       <FormGroup className="mb-3">
-                                        <Label htmlFor="commentemail-input" className="form-label">
+                                        <Label
+                                          htmlFor="commentemail-input"
+                                          className="form-label"
+                                        >
                                           Email
-                                    </Label>
+                                        </Label>
                                         <input
                                           type="email"
                                           className="form-control"
@@ -326,9 +348,12 @@ export default class BlogDetails extends Component {
                                   </Row>
 
                                   <FormGroup className="mb-3">
-                                    <Label htmlFor="commentmessage-input" className="form-label">
+                                    <Label
+                                      htmlFor="commentmessage-input"
+                                      className="form-label"
+                                    >
                                       Message
-                                </Label>
+                                    </Label>
                                     <textarea
                                       className="form-control"
                                       id="commentmessage-input"
@@ -343,7 +368,7 @@ export default class BlogDetails extends Component {
                                       className="btn btn-success w-sm"
                                     >
                                       Submit
-                                </button>
+                                    </button>
                                   </div>
                                 </Form>
                               </div>
@@ -359,6 +384,6 @@ export default class BlogDetails extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

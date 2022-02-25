@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Container,
   Row,
@@ -12,15 +12,15 @@ import {
   CardBody,
   Media,
   Table,
-} from "reactstrap"
-import { Link } from "react-router-dom"
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class CryptoLending extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       assets: [
         {
@@ -85,14 +85,14 @@ class CryptoLending extends Component {
         },
       ],
       isMenu: false,
-    }
-    this.toggleMenu = this.toggleMenu.bind(this)
+    };
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   toggleMenu() {
     this.setState(prevState => ({
       isMenu: !prevState.isMenu,
-    }))
+    }));
   }
 
   render() {
@@ -100,7 +100,7 @@ class CryptoLending extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lending | Skote - React Admin & Dashboard Template</title>
+            <title>Lending | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -420,8 +420,8 @@ class CryptoLending extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default CryptoLending
+export default CryptoLending;

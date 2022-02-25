@@ -1,36 +1,37 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import MetaTags from 'react-meta-tags';
-import { connect } from "react-redux"
-import { Link, withRouter } from "react-router-dom"
-import { Col, Container, Row } from "reactstrap"
-import { map } from "lodash"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { Col, Container, Row } from "reactstrap";
+import { map } from "lodash";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Card
-import CardContact from "./card-contact"
+import CardContact from "./card-contact";
 
-import { getUsers } from "../../store/contacts/actions"
+import { getUsers } from "../../store/contacts/actions";
 
 class ContactsGrid extends Component {
-
   componentDidMount() {
-    const { users, onGetUsers } = this.props
-    if(users && !users.length) {
-      onGetUsers()
+    const { users, onGetUsers } = this.props;
+    if (users && !users.length) {
+      onGetUsers();
     }
   }
 
   render() {
-    const { users } = this.props
+    const { users } = this.props;
 
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>User Grid | Skote - Responsive Bootstrap 5 Admin Dashboard</title>
+          <MetaTags>
+            <title>
+              User Grid | Ilaaj4u - Responsive Bootstrap 5 Admin Dashboard
+            </title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -55,24 +56,24 @@ class ContactsGrid extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 ContactsGrid.propTypes = {
   users: PropTypes.array,
   onGetUsers: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ contacts }) => ({
   users: contacts.users,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetUsers: () => dispatch(getUsers()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ContactsGrid))
+)(withRouter(ContactsGrid));

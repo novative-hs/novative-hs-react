@@ -1,30 +1,30 @@
-import React, { Component } from "react"
-import PropTypes from 'prop-types'
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
 
-import { GoogleApiWrapper, InfoWindow, Map, Marker } from "google-maps-react"
-import { connect } from "react-redux"
-import LightData from "./LightData"
-import { Card, CardBody, CardTitle, Col, Row } from "reactstrap"
+import { GoogleApiWrapper, InfoWindow, Map, Marker } from "google-maps-react";
+import { connect } from "react-redux";
+import LightData from "./LightData";
+import { Card, CardBody, CardTitle, Col, Row } from "reactstrap";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-const LoadingContainer = () => <div>Loading...</div>
+const LoadingContainer = () => <div>Loading...</div>;
 
 class MapsGoogle extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-    }
-    this.onMarkerClick = this.onMarkerClick.bind(this)
+    };
+    this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
   onMarkerClick() {
-    alert("You clicked in this marker")
+    alert("You clicked in this marker");
   }
 
   render() {
@@ -32,7 +32,7 @@ class MapsGoogle extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Google Maps | Skote - React Admin & Dashboard Template</title>
+            <title>Google Maps | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Maps" breadcrumbItem="Google Maps" />
@@ -42,9 +42,7 @@ class MapsGoogle extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Markers</CardTitle>
-                    <p className="card-title-desc">
-                      Example of google maps.
-                    </p>
+                    <p className="card-title-desc">Example of google maps.</p>
                     <div
                       id="gmaps-markers"
                       className="gmaps"
@@ -76,9 +74,7 @@ class MapsGoogle extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Overlays</CardTitle>
-                    <p className="card-title-desc">
-                      Example of google maps.
-                    </p>
+                    <p className="card-title-desc">Example of google maps.</p>
                     <div
                       id="gmaps-overlay"
                       className="gmaps"
@@ -111,9 +107,7 @@ class MapsGoogle extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Basic</CardTitle>
-                    <p className="card-title-desc">
-                      Example of google maps.
-                    </p>
+                    <p className="card-title-desc">Example of google maps.</p>
                     <div
                       id="gmaps-markers"
                       className="gmaps"
@@ -139,9 +133,7 @@ class MapsGoogle extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Ultra Light</CardTitle>
-                    <p className="card-title-desc">
-                      Example of google maps.
-                    </p>
+                    <p className="card-title-desc">Example of google maps.</p>
                     <div
                       id="gmaps-overlay"
                       className="gmaps"
@@ -168,13 +160,13 @@ class MapsGoogle extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 MapsGoogle.propTypes = {
-  google: PropTypes.object
-}
+  google: PropTypes.object,
+};
 
 export default connect(
   null,
@@ -185,4 +177,4 @@ export default connect(
     LoadingContainer: LoadingContainer,
     v: "3",
   })(MapsGoogle)
-)
+);

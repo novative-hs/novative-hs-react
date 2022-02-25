@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import { Row, Col, Card } from "reactstrap"
+import React, { Component } from "react";
+import { Row, Col, Card } from "reactstrap";
 
 //Import Image
-import features from "../../assets/images/crypto/features-img/img-1.png"
+import features from "../../assets/images/crypto/features-img/img-1.png";
 
 class CardWelcome extends Component {
   render() {
@@ -14,19 +14,19 @@ class CardWelcome extends Component {
               <Col lg="9" sm="8">
                 <div className="p-4">
                   <h5 className="text-primary">Welcome Back !</h5>
-                  <p>Skote Crypto Dashboard</p>
+                  <p>Ilaaj4u Crypto Dashboard</p>
 
                   <div className="text-muted">
                     <p className="mb-1">
-                      <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
+                      <i className="mdi mdi-circle-medium align-middle text-primary me-1" />{" "}
                       If several languages coalesce
                     </p>
                     <p className="mb-1">
-                      <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
+                      <i className="mdi mdi-circle-medium align-middle text-primary me-1" />{" "}
                       Sed ut perspiciatis unde
                     </p>
                     <p className="mb-0">
-                      <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
+                      <i className="mdi mdi-circle-medium align-middle text-primary me-1" />{" "}
                       It would be necessary
                     </p>
                   </div>
@@ -41,8 +41,8 @@ class CardWelcome extends Component {
           </div>
         </Card>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default CardWelcome
+export default CardWelcome;

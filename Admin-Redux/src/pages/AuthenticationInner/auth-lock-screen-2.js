@@ -19,9 +19,7 @@ export default class LockScreen2 extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>
-              Lock Screen 2 | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Lock Screen 2 | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid className="p-0">
             <Row className="g-0">
@@ -140,7 +138,7 @@ export default class LockScreen2 extends Component {
 
                       <div className="mt-4 mt-md-5 text-center">
                         <p className="mb-0">
-                          © {new Date().getFullYear()} Skote. Crafted with{" "}
+                          © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                           <i className="mdi mdi-heart text-danger"></i> by
                           Themesbrand
                         </p>

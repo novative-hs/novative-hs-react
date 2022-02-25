@@ -1,23 +1,23 @@
-import React, { Component } from "react"
-import { Container, Row, Col } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Container, Row, Col } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Components
-import CardUser from "./card-user"
-import CardWelcome from "./card-welcome"
-import MiniWidget from "./mini-widget"
-import Earning from "./earning"
-import SalesAnalytics from "./sales-analytics"
-import TotalSellingProduct from "./total-selling-product"
-import Tasks from "./tasks"
-import ChatBox from "./chat-box"
+import CardUser from "./card-user";
+import CardWelcome from "./card-welcome";
+import MiniWidget from "./mini-widget";
+import Earning from "./earning";
+import SalesAnalytics from "./sales-analytics";
+import TotalSellingProduct from "./total-selling-product";
+import Tasks from "./tasks";
+import ChatBox from "./chat-box";
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       reports: [
         {
@@ -45,7 +45,7 @@ class Dashboard extends Component {
           desc: "From previous period",
         },
       ],
-    }
+    };
   }
 
   render() {
@@ -53,7 +53,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Saas Dashboard | Skote - React Admin & Dashboard Template</title>
+            <title>Saas Dashboard | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -95,8 +95,8 @@ class Dashboard extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default Dashboard
+export default Dashboard;

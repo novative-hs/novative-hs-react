@@ -88,7 +88,7 @@ class ProjectsCreate extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Create New | Skote - React Admin & Dashboard Template</title>
+            <title>Create New | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -116,8 +116,12 @@ class ProjectsCreate extends Component {
                         dueDate: Yup.string().required(
                           "Please Enter Your Due Date"
                         ),
-                        fromDate: Yup.string().required("Please Enter Your From Date"),
-                        projectbudget: Yup.string().required("Please Enter Your Budget"),
+                        fromDate: Yup.string().required(
+                          "Please Enter Your From Date"
+                        ),
+                        projectbudget: Yup.string().required(
+                          "Please Enter Your Budget"
+                        ),
                       })}
                       onSubmit={values => {
                         console.log(values, "values");
@@ -245,10 +249,10 @@ class ProjectsCreate extends Component {
                                   }
                                 />
                                 <ErrorMessage
-                                      name="projectbudget"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
+                                  name="projectbudget"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
                               </Col>
                             </Row>
                             <FormGroup className="mb-4" row>

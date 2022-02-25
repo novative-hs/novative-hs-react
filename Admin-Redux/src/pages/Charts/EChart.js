@@ -1,24 +1,24 @@
-import React, { Component } from "react"
-import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 // Charts
-import Gauge from "../AllCharts/echart/gaugechart"
-import Line from "../AllCharts/echart/linechart"
-import LineBar from "../AllCharts/echart/linebarchart"
-import Doughnut from "../AllCharts/echart/doughnutchart"
-import Pie from "../AllCharts/echart/piechart"
-import Scatter from "../AllCharts/echart/scatterchart"
-import Bubble from "../AllCharts/echart/bubblechart"
-import Candlestick from "../AllCharts/echart/candlestickchart"
+import Gauge from "../AllCharts/echart/gaugechart";
+import Line from "../AllCharts/echart/linechart";
+import LineBar from "../AllCharts/echart/linebarchart";
+import Doughnut from "../AllCharts/echart/doughnutchart";
+import Pie from "../AllCharts/echart/piechart";
+import Scatter from "../AllCharts/echart/scatterchart";
+import Bubble from "../AllCharts/echart/bubblechart";
+import Candlestick from "../AllCharts/echart/candlestickchart";
 
 class EChart extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -26,7 +26,7 @@ class EChart extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>E Chart | Skote - React Admin & Dashboard Template</title>
+            <title>E Chart | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             {/* Render Breadcrumb */}
@@ -122,8 +122,8 @@ class EChart extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default EChart
+export default EChart;

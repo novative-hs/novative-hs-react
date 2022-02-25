@@ -1,25 +1,25 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 // import apexChart
-import LineApexChart from "../AllCharts/apex/chartapex"
-import DashedLine from "../AllCharts/apex/dashedLine"
-import SplineArea from "../AllCharts/apex/SplineArea"
-import Apaexlinecolumn from "../AllCharts/apex/apaexlinecolumn"
-import ColumnWithDataLabels from "../AllCharts/apex/ColumnWithDataLabels"
-import BarChart from "../AllCharts/apex/barchart"
-import LineColumnArea from "../AllCharts/apex/LineColumnArea"
-import RadialChart from "../AllCharts/apex/RadialChart"
-import PieChart from "../AllCharts/apex/PieChart"
-import DonutChart from "../AllCharts/apex/dountchart"
+import LineApexChart from "../AllCharts/apex/chartapex";
+import DashedLine from "../AllCharts/apex/dashedLine";
+import SplineArea from "../AllCharts/apex/SplineArea";
+import Apaexlinecolumn from "../AllCharts/apex/apaexlinecolumn";
+import ColumnWithDataLabels from "../AllCharts/apex/ColumnWithDataLabels";
+import BarChart from "../AllCharts/apex/barchart";
+import LineColumnArea from "../AllCharts/apex/LineColumnArea";
+import RadialChart from "../AllCharts/apex/RadialChart";
+import PieChart from "../AllCharts/apex/PieChart";
+import DonutChart from "../AllCharts/apex/dountchart";
 
-import { Card, CardBody, CardTitle, Col, Row } from "reactstrap"
+import { Card, CardBody, CardTitle, Col, Row } from "reactstrap";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -27,7 +27,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Apex Charts | Skote - React Admin & Dashboard Template</title>
+            <title>Apex Charts | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Charts" breadcrumbItem="Apex Charts" />
@@ -137,8 +137,8 @@ class Dashboard extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default Dashboard
+export default Dashboard;

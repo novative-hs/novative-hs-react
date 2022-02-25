@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -29,7 +29,7 @@ class FormWizard extends Component {
       activeTab: 1,
       activeTabVartical: 1,
       passedSteps: [1],
-      passedStepsVertical: [1]
+      passedStepsVertical: [1],
     };
     this.toggleTab.bind(this);
     this.toggleTabVertical.bind(this);
@@ -41,7 +41,7 @@ class FormWizard extends Component {
         var modifiedSteps = [...this.state.passedSteps, tab];
         this.setState({
           activeTab: tab,
-          passedSteps: modifiedSteps
+          passedSteps: modifiedSteps,
         });
       }
     }
@@ -53,7 +53,7 @@ class FormWizard extends Component {
         var modifiedSteps = [...this.state.passedStepsVertical, tab];
         this.setState({
           activeTabVartical: tab,
-          passedStepsVertical: modifiedSteps
+          passedStepsVertical: modifiedSteps,
         });
       }
     }
@@ -64,7 +64,7 @@ class FormWizard extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Wizard | Skote - React Admin & Dashboard Template</title>
+            <title>Form Wizard | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Wizard" />
@@ -80,7 +80,8 @@ class FormWizard extends Component {
                           <NavItem
                             className={classnames({
                               current: this.state.activeTab === 1,
-                            })}>
+                            })}
+                          >
                             <NavLink
                               className={classnames({
                                 active: this.state.activeTab === 1,
@@ -89,16 +90,18 @@ class FormWizard extends Component {
                                 this.toggleTab(1);
                               }}
                             >
-                              <span className="number">1.</span>{" "}
-                              Seller Details
+                              <span className="number">1.</span> Seller Details
                             </NavLink>
                           </NavItem>
                           <NavItem
                             className={classnames({
                               current: this.state.activeTab === 2,
-                            })}>
+                            })}
+                          >
                             <NavLink
-                              disabled={!(this.state.passedSteps || []).includes(2)}
+                              disabled={
+                                !(this.state.passedSteps || []).includes(2)
+                              }
                               className={classnames({
                                 active: this.state.activeTab === 2,
                               })}
@@ -113,35 +116,45 @@ class FormWizard extends Component {
                           <NavItem
                             className={classnames({
                               current: this.state.activeTab === 3,
-                            })}>
+                            })}
+                          >
                             <NavLink
-                              disabled={!(this.state.passedSteps || []).includes(3)}
-                              className={classnames({
-                                active: this.state.activeTab === 3,
-                              }), 'done'}
+                              disabled={
+                                !(this.state.passedSteps || []).includes(3)
+                              }
+                              className={
+                                (classnames({
+                                  active: this.state.activeTab === 3,
+                                }),
+                                "done")
+                              }
                               onClick={() => {
                                 this.toggleTab(3);
                               }}
                             >
-                              <span className="number">3.</span>{" "}
-                              Bank Details
+                              <span className="number">3.</span> Bank Details
                             </NavLink>
                           </NavItem>
                           <NavItem
                             className={classnames({
                               current: this.state.activeTab === 4,
-                            })}>
+                            })}
+                          >
                             <NavLink
-                              disabled={!(this.state.passedSteps || []).includes(4)}
-                              className={classnames({
-                                active: this.state.activeTab === 4,
-                              }), 'done'}
+                              disabled={
+                                !(this.state.passedSteps || []).includes(4)
+                              }
+                              className={
+                                (classnames({
+                                  active: this.state.activeTab === 4,
+                                }),
+                                "done")
+                              }
                               onClick={() => {
                                 this.toggleTab(4);
                               }}
                             >
-                              <span className="number">4.</span>{" "}
-                              Confirm Detail
+                              <span className="number">4.</span> Confirm Detail
                             </NavLink>
                           </NavItem>
                         </ul>
@@ -463,7 +476,6 @@ class FormWizard extends Component {
                 </Card>
               </Col>
 
-
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -474,7 +486,8 @@ class FormWizard extends Component {
                           <NavItem
                             className={classnames({
                               current: this.state.activeTabVartical === 1,
-                            })}>
+                            })}
+                          >
                             <NavLink
                               className={classnames({
                                 active: this.state.activeTabVartical === 1,
@@ -483,16 +496,20 @@ class FormWizard extends Component {
                                 this.toggleTabVertical(1);
                               }}
                             >
-                              <span className="number">1.</span>{" "}
-                              Seller Details
+                              <span className="number">1.</span> Seller Details
                             </NavLink>
                           </NavItem>
                           <NavItem
                             className={classnames({
                               current: this.state.activeTabVartical === 2,
-                            })}>
+                            })}
+                          >
                             <NavLink
-                              disabled={!(this.state.passedStepsVertical || []).includes(2)}
+                              disabled={
+                                !(
+                                  this.state.passedStepsVertical || []
+                                ).includes(2)
+                              }
                               className={classnames({
                                 active: this.state.activeTabVartical === 2,
                               })}
@@ -507,35 +524,49 @@ class FormWizard extends Component {
                           <NavItem
                             className={classnames({
                               current: this.state.activeTabVartical === 3,
-                            })}>
+                            })}
+                          >
                             <NavLink
-                              disabled={!(this.state.passedStepsVertical || []).includes(3)}
-                              className={classnames({
-                                active: this.state.activeTabVartical === 3,
-                              }), 'done'}
+                              disabled={
+                                !(
+                                  this.state.passedStepsVertical || []
+                                ).includes(3)
+                              }
+                              className={
+                                (classnames({
+                                  active: this.state.activeTabVartical === 3,
+                                }),
+                                "done")
+                              }
                               onClick={() => {
                                 this.toggleTabVertical(3);
                               }}
                             >
-                              <span className="number">3.</span>{" "}
-                              Bank Details
+                              <span className="number">3.</span> Bank Details
                             </NavLink>
                           </NavItem>
                           <NavItem
                             className={classnames({
                               current: this.state.activeTabVartical === 4,
-                            })}>
+                            })}
+                          >
                             <NavLink
-                              disabled={!(this.state.passedStepsVertical || []).includes(4)}
-                              className={classnames({
-                                active: this.state.activeTabVartical === 4,
-                              }), 'done'}
+                              disabled={
+                                !(
+                                  this.state.passedStepsVertical || []
+                                ).includes(4)
+                              }
+                              className={
+                                (classnames({
+                                  active: this.state.activeTabVartical === 4,
+                                }),
+                                "done")
+                              }
                               onClick={() => {
                                 this.toggleTabVertical(4);
                               }}
                             >
-                              <span className="number">4.</span>{" "}
-                              Confirm Detail
+                              <span className="number">4.</span> Confirm Detail
                             </NavLink>
                           </NavItem>
                         </ul>
@@ -824,7 +855,9 @@ class FormWizard extends Component {
                             <Link
                               to="#"
                               onClick={() => {
-                                this.toggleTabVertical(this.state.activeTabVartical - 1);
+                                this.toggleTabVertical(
+                                  this.state.activeTabVartical - 1
+                                );
                               }}
                             >
                               Previous
@@ -840,7 +873,9 @@ class FormWizard extends Component {
                             <Link
                               to="#"
                               onClick={() => {
-                                this.toggleTabVertical(this.state.activeTabVartical + 1);
+                                this.toggleTabVertical(
+                                  this.state.activeTabVartical + 1
+                                );
                               }}
                             >
                               Next
@@ -852,7 +887,6 @@ class FormWizard extends Component {
                   </CardBody>
                 </Card>
               </Col>
-
             </Row>
           </Container>
         </div>

@@ -1,9 +1,9 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
-import { connect } from "react-redux"
-import { Link, withRouter } from "react-router-dom"
-import { map } from "lodash"
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { map } from "lodash";
 import {
   Card,
   CardBody,
@@ -12,28 +12,28 @@ import {
   Container,
   Row,
   Table,
-} from "reactstrap"
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
+import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import mini card widgets
-import MiniCards from "./mini-card"
+import MiniCards from "./mini-card";
 
 //Import Images
-import profile1 from "assets/images/profile-img.png"
+import profile1 from "assets/images/profile-img.png";
 
 // import charts
-import ApexRevenue from "../ApexRevenue"
-import { getUserProfile } from "store/actions"
-import images from "assets/images"
-import ToolkitProvider from "react-bootstrap-table2-toolkit"
-import BootstrapTable from "react-bootstrap-table-next"
-import projectColumns from "./projectColumns"
+import ApexRevenue from "../ApexRevenue";
+import { getUserProfile } from "store/actions";
+import images from "assets/images";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import BootstrapTable from "react-bootstrap-table-next";
+import projectColumns from "./projectColumns";
 
 class ContactsProfile extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       miniCards: [
         {
@@ -44,22 +44,22 @@ class ContactsProfile extends Component {
         { title: "Pending Projects", iconClass: "bx-hourglass", text: "12" },
         { title: "Total Revenue", iconClass: "bx-package", text: "$36,524" },
       ],
-    }
+    };
   }
 
   componentDidMount() {
-    const { onGetUserProfile } = this.props
-    onGetUserProfile()
+    const { onGetUserProfile } = this.props;
+    onGetUserProfile();
   }
 
   render() {
-    const { userProfile } = this.props
+    const { userProfile } = this.props;
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Profile | Skote - React Admin & Dashboard Template</title>
+            <title>Profile | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -116,10 +116,7 @@ class ContactsProfile extends Component {
                             </Col>
                           </Row>
                           <div className="mt-4">
-                            <Link
-                              to=""
-                              className="btn btn-primary btn-sm"
-                            >
+                            <Link to="" className="btn btn-primary btn-sm">
                               View Profile{" "}
                               <i className="mdi mdi-arrow-right ms-1" />
                             </Link>
@@ -132,7 +129,9 @@ class ContactsProfile extends Component {
 
                 <Card>
                   <CardBody>
-                    <CardTitle className="mb-4 h4">Personal Information</CardTitle>
+                    <CardTitle className="mb-4 h4">
+                      Personal Information
+                    </CardTitle>
 
                     <p className="text-muted mb-4">
                       {userProfile.personalDetail}
@@ -276,24 +275,24 @@ class ContactsProfile extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 ContactsProfile.propTypes = {
   userProfile: PropTypes.any,
   onGetUserProfile: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ contacts }) => ({
   userProfile: contacts.userProfile,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetUserProfile: () => dispatch(getUserProfile()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ContactsProfile))
+)(withRouter(ContactsProfile));

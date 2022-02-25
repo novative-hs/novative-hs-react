@@ -1,21 +1,14 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import {
-  Table,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  CardTitle,
-} from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Table, Row, Col, Card, CardBody, CardTitle } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class BasicTable extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -23,7 +16,7 @@ class BasicTable extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Basic Tables | Skote - React Admin & Dashboard Template</title>
+            <title>Basic Tables | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             <Breadcrumbs title="Tables" breadcrumbItem="Basic Tables" />
@@ -312,11 +305,15 @@ class BasicTable extends Component {
                   <CardBody>
                     <div className="table-responsive">
                       <h4 className="card-title">Vertical alignment</h4>
-                      <p className="card-title-desc">Table cells in <code>&lt;tbody&gt;</code> inherit their alignment from <code>&lt;table&gt;</code> and are aligned to the the top by default. Use the vertical align classes to re-align where needed.</p>
+                      <p className="card-title-desc">
+                        Table cells in <code>&lt;tbody&gt;</code> inherit their
+                        alignment from <code>&lt;table&gt;</code> and are
+                        aligned to the the top by default. Use the vertical
+                        align classes to re-align where needed.
+                      </p>
 
                       <div className="table-responsive">
                         <Table className="align-middle mb-0">
-
                           <thead>
                             <tr>
                               <th>#</th>
@@ -331,7 +328,12 @@ class BasicTable extends Component {
                               <td>Mark</td>
                               <td>Otto</td>
                               <td>
-                                <button type="button" className="btn btn-light btn-sm">View</button>
+                                <button
+                                  type="button"
+                                  className="btn btn-light btn-sm"
+                                >
+                                  View
+                                </button>
                               </td>
                             </tr>
                             <tr>
@@ -339,7 +341,12 @@ class BasicTable extends Component {
                               <td>Jacob</td>
                               <td>Thornton</td>
                               <td>
-                                <button type="button" className="btn btn-light btn-sm">View</button>
+                                <button
+                                  type="button"
+                                  className="btn btn-light btn-sm"
+                                >
+                                  View
+                                </button>
                               </td>
                             </tr>
                             <tr>
@@ -347,7 +354,12 @@ class BasicTable extends Component {
                               <td>Larry</td>
                               <td>the Bird</td>
                               <td>
-                                <button type="button" className="btn btn-light btn-sm">View</button>
+                                <button
+                                  type="button"
+                                  className="btn btn-light btn-sm"
+                                >
+                                  View
+                                </button>
                               </td>
                             </tr>
                             <tr>
@@ -355,13 +367,17 @@ class BasicTable extends Component {
                               <td>Jacob</td>
                               <td>Thornton</td>
                               <td>
-                                <button type="button" className="btn btn-light btn-sm">View</button>
+                                <button
+                                  type="button"
+                                  className="btn btn-light btn-sm"
+                                >
+                                  View
+                                </button>
                               </td>
                             </tr>
                           </tbody>
                         </Table>
                       </div>
-
                     </div>
                   </CardBody>
                 </Card>
@@ -370,7 +386,11 @@ class BasicTable extends Component {
                 <Card>
                   <CardBody>
                     <h4 className="card-title">Nesting</h4>
-                    <p className="card-title-desc"> Border styles, active styles, and table variants are not inherited by nested tables.</p>
+                    <p className="card-title-desc">
+                      {" "}
+                      Border styles, active styles, and table variants are not
+                      inherited by nested tables.
+                    </p>
 
                     <div className="table-responsive">
                       <Table className="table-striped table-bordered mb-0">
@@ -423,7 +443,6 @@ class BasicTable extends Component {
                         </tbody>
                       </Table>
                     </div>
-
                   </CardBody>
                 </Card>
               </Col>
@@ -707,8 +726,8 @@ class BasicTable extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default BasicTable
+export default BasicTable;

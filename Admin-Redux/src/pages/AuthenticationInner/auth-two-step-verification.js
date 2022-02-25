@@ -1,10 +1,10 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
 //Verification code package
-import AuthCode from "react-auth-code-input"
+import AuthCode from "react-auth-code-input";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -13,23 +13,23 @@ import {
   Form,
   FormGroup,
   Row,
-} from "reactstrap"
+} from "reactstrap";
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/logo-dark.png";
+import logolight from "../../assets/images/logo-light.png";
 
 export default class TwostepVerification extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
   render() {
     return (
       <React.Fragment>
         <div className="account-pages my-5 pt-sm-5">
           <MetaTags>
-            <title>Two Step Verification | Skote - React Admin & Dashboard Template</title>
+            <title>Two Step Verification | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container>
             <Row>
@@ -127,7 +127,7 @@ export default class TwostepVerification extends Component {
                     </Link>{" "}
                   </p>
                   <p>
-                    © {new Date().getFullYear()} Skote. Crafted with{" "}
+                    © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                     <i className="mdi mdi-heart text-danger"></i> by Themesbrand
                   </p>
                 </div>
@@ -136,6 +136,6 @@ export default class TwostepVerification extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

@@ -1,72 +1,71 @@
-import React, { Component } from "react"
-import PropTypes from 'prop-types'
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import { I18nextProvider } from "react-i18next"
-import i18n from "../../i18n"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../../i18n";
 
 import {
   changeLayout,
   changeTopbarTheme,
   toggleRightSidebar,
   changeLayoutWidth,
-} from "../../store/actions"
+} from "../../store/actions";
 
 // Other Layout related Component
 import Navbar from "./Navbar";
 import Header from "./Header";
 import Footer from "./Footer";
-import RightSidebar from '../CommonForBoth/RightSidebar';
+import RightSidebar from "../CommonForBoth/RightSidebar";
 
 class Layout extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isMenuOpened: false,
-    }
-    this.toggleRightSidebar = this.toggleRightSidebar.bind(this)
-    this.hideRightbar = this.hideRightbar.bind(this)
+    };
+    this.toggleRightSidebar = this.toggleRightSidebar.bind(this);
+    this.hideRightbar = this.hideRightbar.bind(this);
   }
 
   /**
    * Open/close right sidebar
    */
   toggleRightSidebar() {
-    this.props.toggleRightSidebar()
+    this.props.toggleRightSidebar();
   }
 
   componentDidMount() {
-
     document.body.addEventListener("click", this.hideRightbar, true);
 
     if (this.props.isPreloader === true) {
-      document.getElementById("preloader").style.display = "block"
-      document.getElementById("status").style.display = "block"
+      document.getElementById("preloader").style.display = "block";
+      document.getElementById("status").style.display = "block";
 
       setTimeout(function () {
-        document.getElementById("preloader").style.display = "none"
-        document.getElementById("status").style.display = "none"
-      }, 2500)
+        document.getElementById("preloader").style.display = "none";
+        document.getElementById("status").style.display = "none";
+      }, 2500);
     } else {
-      document.getElementById("preloader").style.display = "none"
-      document.getElementById("status").style.display = "none"
+      document.getElementById("preloader").style.display = "none";
+      document.getElementById("status").style.display = "none";
     }
 
     // Scrollto 0,0
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
 
     // const title = this.props.location.pathname
     // let currentage = title.charAt(1).toUpperCase() + title.slice(2)
 
     // document.title =
-    //   currentage + " | Skote - React Admin & Dashboard Template"
+    //   currentage + " | Ilaaj4u - Dashboard"
 
-    this.props.changeLayout("horizontal")
+    this.props.changeLayout("horizontal");
     if (this.props.topbarTheme) {
-      this.props.changeTopbarTheme(this.props.topbarTheme)
+      this.props.changeTopbarTheme(this.props.topbarTheme);
     }
     if (this.props.layoutWidth) {
-      this.props.changeLayoutWidth(this.props.layoutWidth)
+      this.props.changeLayoutWidth(this.props.layoutWidth);
     }
   }
 
@@ -74,18 +73,18 @@ class Layout extends Component {
    * Opens the menu - mobile
    */
   openMenu = e => {
-    this.setState({ isMenuOpened: !this.state.isMenuOpened })
-  }
+    this.setState({ isMenuOpened: !this.state.isMenuOpened });
+  };
 
   //hides right sidebar on body click
-  hideRightbar = (event) => {
+  hideRightbar = event => {
     var rightbar = document.getElementById("right-bar");
     //if clicked in inside right bar, then do nothing
     if (rightbar && rightbar.contains(event.target)) {
       return;
     } else {
-      if(document.body.classList.contains('right-bar-enabled')){
-        this.props.toggleRightSidebar(false)
+      if (document.body.classList.contains("right-bar-enabled")) {
+        this.props.toggleRightSidebar(false);
       }
     }
   };
@@ -120,7 +119,7 @@ class Layout extends Component {
           {this.props.showRightSidebar ? <RightSidebar /> : null}
         </I18nextProvider>
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -134,17 +133,17 @@ Layout.propTypes = {
   location: PropTypes.object,
   showRightSidebar: PropTypes.any,
   toggleRightSidebar: PropTypes.func,
-  topbarTheme: PropTypes.any
-}
+  topbarTheme: PropTypes.any,
+};
 
 const mapStateToProps = state => {
   return {
     ...state.Layout,
-  }
-}
+  };
+};
 export default connect(mapStateToProps, {
   changeTopbarTheme,
   toggleRightSidebar,
   changeLayout,
   changeLayoutWidth,
-})(withRouter(Layout))
+})(withRouter(Layout));

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import { Link, withRouter } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row, Table } from "reactstrap";
 import { isEmpty, map } from "lodash";
@@ -38,7 +38,7 @@ class InvoiceDetail extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Invoice Detail | Skote - React Admin & Dashboard Template</title>
+            <title>Invoice Detail | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -172,10 +172,7 @@ class InvoiceDetail extends Component {
                           >
                             <i className="fa fa-print" />
                           </Link>{" "}
-                          <Link
-                            to="#"
-                            className="btn btn-primary w-md"
-                          >
+                          <Link to="#" className="btn btn-primary w-md">
                             Send
                           </Link>
                         </div>

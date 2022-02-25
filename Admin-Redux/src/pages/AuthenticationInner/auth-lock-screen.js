@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import { Link } from "react-router-dom";
 
-import { Container, Row, Col, CardBody, Card, Button, Label} from "reactstrap";
+import { Container, Row, Col, CardBody, Card, Button, Label } from "reactstrap";
 
 // import images
 import profileImg from "../../assets/images/profile-img.png";
@@ -18,7 +18,7 @@ class LockScreen extends Component {
     return (
       <React.Fragment>
         <MetaTags>
-          <title>Lock Screen | Skote - React Admin & Dashboard Template</title>
+          <title>Lock Screen | Ilaaj4u - Dashboard</title>
         </MetaTags>
         <div className="home-btn d-none d-sm-block">
           <Link to="/" className="text-dark">
@@ -62,8 +62,7 @@ class LockScreen extends Component {
                       <Formik
                         enableReinitialize={true}
                         initialValues={{
-                          password:
-                                (this.state && this.state.password) || "",
+                          password: (this.state && this.state.password) || "",
                         }}
                         validationSchema={Yup.object().shape({
                           password: Yup.string().required(
@@ -132,9 +131,7 @@ class LockScreen extends Component {
                       Sign In{" "}
                     </Link>{" "}
                   </p>
-                  <p>
-                    © 2021 Ilaaj4u
-                  </p>
+                  <p>© 2021 Ilaaj4u</p>
                 </div>
               </Col>
             </Row>

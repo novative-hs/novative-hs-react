@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -8,14 +8,14 @@ import {
   Container,
   Modal,
   Row,
-} from "reactstrap"
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiModal extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       visible: false,
       modal_standard: false,
@@ -26,83 +26,83 @@ class UiModal extends Component {
       modal_center: false,
       modal_scroll: false,
       modal_backdrop: false,
-    }
-    this.tog_standard = this.tog_standard.bind(this)
-    this.tog_fullscreen = this.tog_fullscreen.bind(this)
-    this.tog_xlarge = this.tog_xlarge.bind(this)
-    this.tog_large = this.tog_large.bind(this)
-    this.tog_small = this.tog_small.bind(this)
-    this.tog_center = this.tog_center.bind(this)
-    this.tog_scroll = this.tog_scroll.bind(this)
-    this.tog_backdrop = this.tog_backdrop.bind(this)
+    };
+    this.tog_standard = this.tog_standard.bind(this);
+    this.tog_fullscreen = this.tog_fullscreen.bind(this);
+    this.tog_xlarge = this.tog_xlarge.bind(this);
+    this.tog_large = this.tog_large.bind(this);
+    this.tog_small = this.tog_small.bind(this);
+    this.tog_center = this.tog_center.bind(this);
+    this.tog_scroll = this.tog_scroll.bind(this);
+    this.tog_backdrop = this.tog_backdrop.bind(this);
   }
 
   tog_standard() {
     this.setState(prevState => ({
       modal_standard: !prevState.modal_standard,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   removeBodyCss() {
-    document.body.classList.add("no_padding")
+    document.body.classList.add("no_padding");
   }
 
   tog_fullscreen() {
     this.setState(prevState => ({
       modal_fullscreen: !prevState.modal_fullscreen,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   tog_backdrop() {
     this.setState(prevState => ({
       modal_backdrop: !prevState.modal_backdrop,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   tog_large() {
     this.setState(prevState => ({
       modal_large: !prevState.modal_large,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   tog_xlarge() {
     this.setState(prevState => ({
       modal_xlarge: !prevState.modal_xlarge,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   tog_small() {
     this.setState(prevState => ({
       modal_small: !prevState.modal_small,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   tog_center() {
     this.setState(prevState => ({
       modal_center: !prevState.modal_center,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   tog_scroll() {
     this.setState(prevState => ({
       modal_scroll: !prevState.modal_scroll,
-    }))
-    this.removeBodyCss()
+    }));
+    this.removeBodyCss();
   }
 
   show() {
-    this.setState({ visible: true })
+    this.setState({ visible: true });
   }
 
   hide() {
-    this.setState({ visible: false })
+    this.setState({ visible: false });
   }
 
   render() {
@@ -110,7 +110,7 @@ class UiModal extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Modals | Skote - React Admin & Dashboard Template</title>
+            <title>Modals | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Modals" />
@@ -142,8 +142,7 @@ class UiModal extends Component {
                               className="btn-close"
                               data-dismiss="modal"
                               aria-label="Close"
-                            >
-                            </button>
+                            ></button>
                           </div>
                           <div className="modal-body">
                             <p>One fine body&hellip;</p>
@@ -171,10 +170,11 @@ class UiModal extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">
-                      Default Modal
-                    </CardTitle>
-                    <p className="card-title-desc">Toggle a working modal demo by clicking the button below. It will slide down and fade in from the top of the page.</p>
+                    <CardTitle className="h4">Default Modal</CardTitle>
+                    <p className="card-title-desc">
+                      Toggle a working modal demo by clicking the button below.
+                      It will slide down and fade in from the top of the page.
+                    </p>
                     <div>
                       <button
                         type="button"
@@ -211,35 +211,35 @@ class UiModal extends Component {
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                         </div>
@@ -252,10 +252,7 @@ class UiModal extends Component {
                           >
                             Close
                           </button>
-                          <button
-                            type="button"
-                            className="btn btn-primary"
-                          >
+                          <button type="button" className="btn btn-primary">
                             Save changes
                           </button>
                         </div>
@@ -268,10 +265,12 @@ class UiModal extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">
-                      Fullscreen Modal
-                    </CardTitle>
-                    <p className="card-title-desc">Another override is the option to pop up a modal that covers the user viewport, available via modifier classes that are placed on a <code>.modal-dialog</code>.</p>
+                    <CardTitle className="h4">Fullscreen Modal</CardTitle>
+                    <p className="card-title-desc">
+                      Another override is the option to pop up a modal that
+                      covers the user viewport, available via modifier classes
+                      that are placed on a <code>.modal-dialog</code>.
+                    </p>
                     <div>
                       <button
                         type="button"
@@ -308,34 +307,46 @@ class UiModal extends Component {
                         </div>
                         <div className="modal-body">
                           <h5>Overflowing text to show scroll behavior</h5>
-                          <p>Cras mattis consectetur purus sit amet fermentum.
-                            Cras justo odio, dapibus ac facilisis in,
-                            egestas eget quam. Morbi leo risus, porta ac
-                            consectetur ac, vestibulum at eros.</p>
-                          <p>Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.</p>
-                          <p>Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
-                            ullamcorper nulla non metus auctor
-                            fringilla.</p>
-                          <p>Cras mattis consectetur purus sit amet fermentum.
-                            Cras justo odio, dapibus ac facilisis in,
-                            egestas eget quam. Morbi leo risus, porta ac
-                            consectetur ac, vestibulum at eros.</p>
-                          <p>Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.</p>
-                          <p>Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
-                            ullamcorper nulla non metus auctor
-                            fringilla.</p>
-                          <p>Cras mattis consectetur purus sit amet fermentum.
-                            Cras justo odio, dapibus ac facilisis in,
-                            egestas eget quam. Morbi leo risus, porta ac
-                            consectetur ac, vestibulum at eros.</p>
+                          <p>
+                            Cras mattis consectetur purus sit amet fermentum.
+                            Cras justo odio, dapibus ac facilisis in, egestas
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
+                          </p>
+                          <p>
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
+                          </p>
+                          <p>
+                            Aenean lacinia bibendum nulla sed consectetur.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
+                            ullamcorper nulla non metus auctor fringilla.
+                          </p>
+                          <p>
+                            Cras mattis consectetur purus sit amet fermentum.
+                            Cras justo odio, dapibus ac facilisis in, egestas
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
+                          </p>
+                          <p>
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
+                          </p>
+                          <p>
+                            Aenean lacinia bibendum nulla sed consectetur.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
+                            ullamcorper nulla non metus auctor fringilla.
+                          </p>
+                          <p>
+                            Cras mattis consectetur purus sit amet fermentum.
+                            Cras justo odio, dapibus ac facilisis in, egestas
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
+                          </p>
                         </div>
                         <div className="modal-footer">
                           <button
@@ -346,10 +357,7 @@ class UiModal extends Component {
                           >
                             Close
                           </button>
-                          <button
-                            type="button"
-                            className="btn btn-primary"
-                          >
+                          <button type="button" className="btn btn-primary">
                             Save changes
                           </button>
                         </div>
@@ -364,10 +372,11 @@ class UiModal extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">
-                      Optional Sizes
-                    </CardTitle>
-                    <p className="card-title-desc">Modals have three optional sizes, available via modifier classes to be placed on a <code>.modal-dialog</code>.</p>
+                    <CardTitle className="h4">Optional Sizes</CardTitle>
+                    <p className="card-title-desc">
+                      Modals have three optional sizes, available via modifier
+                      classes to be placed on a <code>.modal-dialog</code>.
+                    </p>
                     <div className="button-items">
                       <button
                         type="button"
@@ -424,18 +433,23 @@ class UiModal extends Component {
                           </button>
                         </div>
                         <div className="modal-body">
-                          <p>Cras mattis consectetur purus sit amet fermentum.
-                            Cras justo odio, dapibus ac facilisis in,
-                            egestas eget quam. Morbi leo risus, porta ac
-                            consectetur ac, vestibulum at eros.</p>
-                          <p>Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.</p>
-                          <p className="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
-                            ullamcorper nulla non metus auctor
-                            fringilla.</p>
+                          <p>
+                            Cras mattis consectetur purus sit amet fermentum.
+                            Cras justo odio, dapibus ac facilisis in, egestas
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
+                          </p>
+                          <p>
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
+                          </p>
+                          <p className="mb-0">
+                            Aenean lacinia bibendum nulla sed consectetur.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
+                            ullamcorper nulla non metus auctor fringilla.
+                          </p>
                         </div>
                       </Modal>
                       <Modal
@@ -463,18 +477,23 @@ class UiModal extends Component {
                           </button>
                         </div>
                         <div className="modal-body">
-                          <p>Cras mattis consectetur purus sit amet fermentum.
-                            Cras justo odio, dapibus ac facilisis in,
-                            egestas eget quam. Morbi leo risus, porta ac
-                            consectetur ac, vestibulum at eros.</p>
-                          <p>Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.</p>
-                          <p className="mb-0">Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
-                            ullamcorper nulla non metus auctor
-                            fringilla.</p>
+                          <p>
+                            Cras mattis consectetur purus sit amet fermentum.
+                            Cras justo odio, dapibus ac facilisis in, egestas
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
+                          </p>
+                          <p>
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
+                          </p>
+                          <p className="mb-0">
+                            Aenean lacinia bibendum nulla sed consectetur.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
+                            ullamcorper nulla non metus auctor fringilla.
+                          </p>
                         </div>
                       </Modal>
                       <Modal
@@ -505,18 +524,18 @@ class UiModal extends Component {
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p className="mb-0">
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                         </div>
@@ -529,10 +548,11 @@ class UiModal extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h5">
-                      Vertically Centered
-                    </CardTitle>
-                    <p className="card-title-desc">Add <code>.modal-dialog-centered</code> to <code>.modal-dialog</code> to vertically center the modal.</p>
+                    <CardTitle className="h5">Vertically Centered</CardTitle>
+                    <p className="card-title-desc">
+                      Add <code>.modal-dialog-centered</code> to{" "}
+                      <code>.modal-dialog</code> to vertically center the modal.
+                    </p>
                     <div>
                       <button
                         type="button"
@@ -566,18 +586,18 @@ class UiModal extends Component {
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p className="mb-0">
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                         </div>
@@ -590,10 +610,12 @@ class UiModal extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h5">
-                      Scrollable modal
-                    </CardTitle>
-                    <p className="card-title-desc">Another override is the option to pop up a modal that covers the user viewport, available via modifier classes that are placed on a <code>.modal-dialog</code>.</p>
+                    <CardTitle className="h5">Scrollable modal</CardTitle>
+                    <p className="card-title-desc">
+                      Another override is the option to pop up a modal that
+                      covers the user viewport, available via modifier classes
+                      that are placed on a <code>.modal-dialog</code>.
+                    </p>
                     <div>
                       <button
                         type="button"
@@ -609,9 +631,7 @@ class UiModal extends Component {
                         scrollable={true}
                       >
                         <div className="modal-header">
-                          <h5 className="modal-title mt-0">
-                            Scrollable modal
-                          </h5>
+                          <h5 className="modal-title mt-0">Scrollable modal</h5>
                           <button
                             type="button"
                             onClick={() =>
@@ -628,103 +648,103 @@ class UiModal extends Component {
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <p>
                             Cras mattis consectetur purus sit amet fermentum.
                             Cras justo odio, dapibus ac facilisis in, egestas
-                            eget quam. Morbi leo risus, porta ac consectetur
-                            ac, vestibulum at eros.
+                            eget quam. Morbi leo risus, porta ac consectetur ac,
+                            vestibulum at eros.
                           </p>
                           <p>
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Vivamus sagittis lacus vel
-                            augue laoreet rutrum faucibus dolor auctor.
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Vivamus sagittis lacus vel augue
+                            laoreet rutrum faucibus dolor auctor.
                           </p>
                           <p>
                             Aenean lacinia bibendum nulla sed consectetur.
-                            Praesent commodo cursus magna, vel scelerisque
-                            nisl consectetur et. Donec sed odio dui. Donec
+                            Praesent commodo cursus magna, vel scelerisque nisl
+                            consectetur et. Donec sed odio dui. Donec
                             ullamcorper nulla non metus auctor fringilla.
                           </p>
                           <div className="modal-footer">
@@ -751,9 +771,12 @@ class UiModal extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle>Static Backdrop</CardTitle>
-                    <p className="card-title-desc">When backdrop is set to static, the modal will not close when clicking outside it. Click the button below to try it.</p>
+                    <p className="card-title-desc">
+                      When backdrop is set to static, the modal will not close
+                      when clicking outside it. Click the button below to try
+                      it.
+                    </p>
                     <div>
-
                       <button
                         type="button"
                         className="btn btn-primary"
@@ -766,36 +789,53 @@ class UiModal extends Component {
                         isOpen={this.state.modal_backdrop}
                         toggle={this.tog_backdrop}
                         scrollable={true}
-                        backdrop={'static'}
+                        backdrop={"static"}
                         id="staticBackdrop"
                       >
                         <div className="modal-header">
-                          <h5 className="modal-title" id="staticBackdropLabel">Modal title</h5>
-                          <button type="button" className="btn-close" onClick={() =>
-                            this.setState({ modal_backdrop: false })
-                          } aria-label="Close"></button>
+                          <h5 className="modal-title" id="staticBackdropLabel">
+                            Modal title
+                          </h5>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            onClick={() =>
+                              this.setState({ modal_backdrop: false })
+                            }
+                            aria-label="Close"
+                          ></button>
                         </div>
                         <div className="modal-body">
-                          <p>I will not close if you click outside me. Don&apos;t even try to press escape key.</p>
+                          <p>
+                            I will not close if you click outside me. Don&apos;t
+                            even try to press escape key.
+                          </p>
                         </div>
                         <div className="modal-footer">
-                          <button type="button" className="btn btn-light" onClick={() =>
-                            this.setState({ modal_backdrop: false })
-                          }>Close</button>
-                          <button type="button" className="btn btn-primary">Understood</button>
+                          <button
+                            type="button"
+                            className="btn btn-light"
+                            onClick={() =>
+                              this.setState({ modal_backdrop: false })
+                            }
+                          >
+                            Close
+                          </button>
+                          <button type="button" className="btn btn-primary">
+                            Understood
+                          </button>
                         </div>
                       </Modal>
-                    </div>  
+                    </div>
                   </CardBody>
                 </Card>
               </Col>
             </Row>
-
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiModal
+export default UiModal;

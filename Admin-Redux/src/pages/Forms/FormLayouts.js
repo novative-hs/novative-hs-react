@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import {
   Card,
   Col,
@@ -23,7 +23,7 @@ class FormLayouts extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Layouts | Skote - React Admin & Dashboard Template</title>
+            <title>Form Layouts | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Layouts" />
@@ -35,7 +35,9 @@ class FormLayouts extends Component {
 
                     <Form>
                       <div className="mb-3">
-                        <Label htmlFor="formrow-firstname-Input">First name</Label>
+                        <Label htmlFor="formrow-firstname-Input">
+                          First name
+                        </Label>
                         <Input
                           type="text"
                           className="form-control"
@@ -58,7 +60,9 @@ class FormLayouts extends Component {
                         </Col>
                         <Col md={6}>
                           <div className="mb-3">
-                            <Label htmlFor="formrow-password-Input">Password</Label>
+                            <Label htmlFor="formrow-password-Input">
+                              Password
+                            </Label>
                             <Input
                               type="password"
                               className="form-control"
@@ -135,7 +139,9 @@ class FormLayouts extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="mb-4">Horizontal form layout</CardTitle>
+                    <CardTitle className="mb-4">
+                      Horizontal form layout
+                    </CardTitle>
 
                     <Form>
                       <div className="row mb-4">
@@ -228,18 +234,43 @@ class FormLayouts extends Component {
 
                     <Form className="row gy-2 gx-3 align-items-center">
                       <div className="col-sm-auto">
-                        <Label className="visually-hidden" htmlFor="autoSizingInput">Name</Label>
-                        <Input type="text" className="form-control" id="autoSizingInput" placeholder="Jane Doe" />
+                        <Label
+                          className="visually-hidden"
+                          htmlFor="autoSizingInput"
+                        >
+                          Name
+                        </Label>
+                        <Input
+                          type="text"
+                          className="form-control"
+                          id="autoSizingInput"
+                          placeholder="Jane Doe"
+                        />
                       </div>
                       <div className="col-sm-auto">
-                        <Label className="visually-hidden" htmlFor="autoSizingInputGroup">Username</Label>
+                        <Label
+                          className="visually-hidden"
+                          htmlFor="autoSizingInputGroup"
+                        >
+                          Username
+                        </Label>
                         <InputGroup>
                           <div className="input-group-text">@</div>
-                          <input type="text" className="form-control" id="autoSizingInputGroup" placeholder="Username" />
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="autoSizingInputGroup"
+                            placeholder="Username"
+                          />
                         </InputGroup>
                       </div>
                       <div className="col-sm-auto">
-                        <label className="visually-hidden" htmlFor="autoSizingSelect">Preference</label>
+                        <label
+                          className="visually-hidden"
+                          htmlFor="autoSizingSelect"
+                        >
+                          Preference
+                        </label>
                         <select defaultValue="0" className="form-select">
                           <option value="0">Choose...</option>
                           <option value="1">One</option>
@@ -249,14 +280,23 @@ class FormLayouts extends Component {
                       </div>
                       <div className="col-sm-auto">
                         <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="autoSizingCheck" />
-                          <label className="form-check-label" htmlFor="autoSizingCheck">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="autoSizingCheck"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="autoSizingCheck"
+                          >
                             Remember me
                           </label>
                         </div>
                       </div>
                       <div className="col-sm-auto">
-                        <button type="submit" className="btn btn-primary w-md">Submit</button>
+                        <button type="submit" className="btn btn-primary w-md">
+                          Submit
+                        </button>
                       </div>
                     </Form>
                   </CardBody>
@@ -272,15 +312,30 @@ class FormLayouts extends Component {
 
                     <Form className="row row-cols-lg-auto g-3 align-items-center">
                       <Col xs={12}>
-                        <label className="visually-hidden" htmlFor="inlineFormInputGroupUsername">Username</label>
+                        <label
+                          className="visually-hidden"
+                          htmlFor="inlineFormInputGroupUsername"
+                        >
+                          Username
+                        </label>
                         <InputGroup>
                           <div className="input-group-text">@</div>
-                          <input type="text" className="form-control" id="inlineFormInputGroupUsername" placeholder="Username" />
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="inlineFormInputGroupUsername"
+                            placeholder="Username"
+                          />
                         </InputGroup>
                       </Col>
 
                       <Col xs={12}>
-                        <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
+                        <label
+                          className="visually-hidden"
+                          htmlFor="inlineFormSelectPref"
+                        >
+                          Preference
+                        </label>
                         <select defaultValue="0" className="form-select">
                           <option value="0">Choose...</option>
                           <option value="1">One</option>
@@ -291,15 +346,24 @@ class FormLayouts extends Component {
 
                       <Col xs={12}>
                         <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="inlineFormCheck" />
-                          <label className="form-check-label" htmlFor="inlineFormCheck">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="inlineFormCheck"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="inlineFormCheck"
+                          >
                             Remember me
                           </label>
                         </div>
                       </Col>
 
                       <Col xs={12}>
-                        <button type="submit" className="btn btn-primary w-md">Submit</button>
+                        <button type="submit" className="btn btn-primary w-md">
+                          Submit
+                        </button>
                       </Col>
                     </Form>
                   </CardBody>
@@ -311,18 +375,35 @@ class FormLayouts extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h5">Floating labels</CardTitle>
-                    <p className="card-title-desc">Create beautifully simple form labels that float over your input fields.</p>
+                    <p className="card-title-desc">
+                      Create beautifully simple form labels that float over your
+                      input fields.
+                    </p>
 
                     <Form>
                       <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingnameInput" placeholder="Enter Name" defaultValue="Maria Laird" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="floatingnameInput"
+                          placeholder="Enter Name"
+                          defaultValue="Maria Laird"
+                        />
                         <label htmlFor="floatingnameInput">Name</label>
                       </div>
                       <Row>
                         <Col md={6}>
                           <div className="form-floating mb-3">
-                            <input type="email" className="form-control" id="floatingemailInput" placeholder="Enter Email address" defaultValue="name@example.com" />
-                            <label htmlFor="floatingemailInput">Email address</label>
+                            <input
+                              type="email"
+                              className="form-control"
+                              id="floatingemailInput"
+                              placeholder="Enter Email address"
+                              defaultValue="name@example.com"
+                            />
+                            <label htmlFor="floatingemailInput">
+                              Email address
+                            </label>
                           </div>
                         </Col>
                         <Col md={6}>
@@ -333,22 +414,32 @@ class FormLayouts extends Component {
                               <option value="2">Two</option>
                               <option value="3">Three</option>
                             </select>
-                            <label htmlFor="floatingSelectGrid">Works with selects</label>
+                            <label htmlFor="floatingSelectGrid">
+                              Works with selects
+                            </label>
                           </div>
                         </Col>
                       </Row>
 
                       <div className="mb-3">
-
                         <div className="form-check">
-                          <input className="form-check-input" type="checkbox" id="floatingCheck" />
-                          <label className="form-check-label" htmlFor="floatingCheck">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="floatingCheck"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="floatingCheck"
+                          >
                             Check me out
                           </label>
                         </div>
                       </div>
                       <div>
-                        <button type="submit" className="btn btn-primary w-md">Submit</button>
+                        <button type="submit" className="btn btn-primary w-md">
+                          Submit
+                        </button>
                       </div>
                     </Form>
                   </CardBody>

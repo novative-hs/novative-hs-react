@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -10,18 +10,18 @@ import {
   FormGroup,
   Label,
   Row,
-} from "reactstrap"
+} from "reactstrap";
 
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 // Form Mask
-import InputMask from "react-input-mask"
+import InputMask from "react-input-mask";
 // import MaterialInput from "@material-ui/core/Input"
 
 class FormMask extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -31,9 +31,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const ISBN2 = props => (
       <InputMask
@@ -41,9 +40,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const ISBN3 = props => (
       <InputMask
@@ -51,9 +49,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const IPV4 = props => (
       <InputMask
@@ -61,9 +58,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const IPV6 = props => (
       <InputMask
@@ -71,9 +67,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const TAX = props => (
       <InputMask
@@ -81,9 +76,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const Phone = props => (
       <InputMask
@@ -91,9 +85,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const Currency = props => (
       <InputMask
@@ -101,9 +94,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const Date1 = props => (
       <InputMask
@@ -111,9 +103,8 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     const Date2 = props => (
       <InputMask
@@ -121,15 +112,14 @@ class FormMask extends Component {
         value={props.value}
         className="form-control input-mask"
         onChange={props.onChange}
-      >
-      </InputMask>
-    )
+      ></InputMask>
+    );
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form Mask | Skote - React Admin & Dashboard Template</title>
+            <title>Form Mask | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form Mask" />
@@ -230,8 +220,8 @@ class FormMask extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default FormMask
+export default FormMask;

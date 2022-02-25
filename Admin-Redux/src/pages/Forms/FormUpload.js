@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -9,19 +9,19 @@ import {
   Container,
   Form,
   Row,
-} from "reactstrap"
-import Dropzone from "react-dropzone"
+} from "reactstrap";
+import Dropzone from "react-dropzone";
 
 // Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 class FormUpload extends Component {
   constructor(props) {
-    super(props)
-    this.handleAcceptedFiles = this.handleAcceptedFiles.bind(this)
-    this.state = { selectedFiles: [] }
+    super(props);
+    this.handleAcceptedFiles = this.handleAcceptedFiles.bind(this);
+    this.state = { selectedFiles: [] };
   }
 
   handleAcceptedFiles = files => {
@@ -30,30 +30,30 @@ class FormUpload extends Component {
         preview: URL.createObjectURL(file),
         formattedSize: this.formatBytes(file.size),
       })
-    )
+    );
 
-    this.setState({ selectedFiles: files })
-  }
+    this.setState({ selectedFiles: files });
+  };
 
   /**
    * Formats the size
    */
   formatBytes = (bytes, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes"
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
-  }
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+  };
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Form File Upload | Skote - React Admin & Dashboard Template</title>
+            <title>Form File Upload | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Forms" breadcrumbItem="Form File Upload" />
@@ -124,16 +124,13 @@ class FormUpload extends Component {
                                 </Row>
                               </div>
                             </Card>
-                          )
+                          );
                         })}
                       </div>
                     </Form>
 
                     <div className="text-center mt-4">
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                      >
+                      <button type="button" className="btn btn-primary">
                         Send Files
                       </button>
                     </div>
@@ -144,8 +141,8 @@ class FormUpload extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default FormUpload
+export default FormUpload;
