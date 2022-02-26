@@ -128,6 +128,7 @@ import DragDropTables from "../pages/Tables/DragDropTables";
 import FormElements from "../pages/Forms/FormElements/index";
 import FormLayouts from "../pages/Forms/FormLayouts";
 import FormAdvanced from "../pages/Forms/FormAdvanced";
+import fields from "../pages/Forms/fields";
 import FormEditors from "../pages/Forms/FormEditors";
 import FormValidations from "../pages/Forms/FormValidations";
 import FormMask from "../pages/Forms/FormMask";
@@ -297,6 +298,7 @@ const authProtectedRoutes = [
   { path: "/form-elements", component: FormElements },
   { path: "/form-layouts", component: FormLayouts },
   { path: "/form-advanced", component: FormAdvanced },
+  { path: "/fields", component: fields },
   { path: "/form-editors", component: FormEditors },
   { path: "/form-mask", component: FormMask },
   { path: "/form-repeater", component: FormRepeater },

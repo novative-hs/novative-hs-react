@@ -871,6 +871,11 @@ class SidebarContent extends Component {
                       </Link>
                     </li>
                     <li>
+                      <Link to="/fields">
+                        {this.props.t("Fields")}
+                      </Link>
+                    </li>
+                    <li>
                       <Link to="/form-editors">
                         {this.props.t("Form Editors")}
                       </Link>
