@@ -45,7 +45,7 @@ class CardInvoice extends Component {
                       {this.props.data.founder}
                     </h5>
                     <Link to="#" className="text-muted">
-                      @Skote
+                      @Ilaaj4u
                     </Link>
                   </div>
                 </Col>

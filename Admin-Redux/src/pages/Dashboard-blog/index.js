@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Container, Row } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Container, Row } from "reactstrap";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
-import CardUser from "./CardUser"
-import Posts from "./Posts"
-import Settings from "./Settings"
-import Comments from "./Comments"
-import TapVisitors from "./TopVisitors"
-import Activity from "./Activity"
-import PopularPost from "./PopularPost"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
+import CardUser from "./CardUser";
+import Posts from "./Posts";
+import Settings from "./Settings";
+import Comments from "./Comments";
+import TapVisitors from "./TopVisitors";
+import Activity from "./Activity";
+import PopularPost from "./PopularPost";
 
 const series = [
   {
@@ -20,7 +20,7 @@ const series = [
     name: "Previous",
     data: [30, 11, 22, 18, 32, 23, 58, 45, 30, 36, 15, 34],
   },
-]
+];
 
 const options = {
   chart: {
@@ -78,24 +78,24 @@ const options = {
     position: "top",
     horizontalAlign: "right",
   },
-}
+};
 
 export default class index extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       cardreport: {
         options: options,
         series: series,
       },
-    }
+    };
   }
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Blog Dashboard | Skote - React Admin & Dashboard Template</title>
+            <title>Blog Dashboard | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -117,6 +117,6 @@ export default class index extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

@@ -9,10 +9,7 @@ import { withTranslation } from "react-i18next";
 import profileImg from "../../assets/images/profile-img.png";
 
 // actions
-import {
-  getLabProfile,
-  getLabProfileSuccess,
-} from "store/auth/labprofile/actions";
+import { getLabProfile } from "store/auth/labprofile/actions";
 
 class LabSummary extends Component {
   constructor(props) {
@@ -36,7 +33,6 @@ class LabSummary extends Component {
     }, 1000);
 
     setTimeout(() => {
-      console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
         address: this.props.success.address,
@@ -121,7 +117,7 @@ class LabSummary extends Component {
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
-                        <i className={"bx bx-copy-alt font-size-24"} />
+                        <i className={"bx bx-list-check font-size-24"} />
                       </span>
                     </div>
                   </div>
@@ -212,7 +208,6 @@ LabSummary.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getLabProfile: PropTypes.func,
-  getLabProfileSuccess: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -221,7 +216,5 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getLabProfile, getLabProfileSuccess })(
-    withTranslation()(LabSummary)
-  )
+  connect(mapStateToProps, { getLabProfile })(withTranslation()(LabSummary))
 );

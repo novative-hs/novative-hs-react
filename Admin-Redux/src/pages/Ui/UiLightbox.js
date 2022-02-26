@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import {
   Button,
   Card,
@@ -75,7 +75,7 @@ class UiLightbox extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lightbox | Skote - React Admin & Dashboard Template</title>
+            <title>Lightbox | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Lightbox" />
@@ -128,7 +128,9 @@ class UiLightbox extends Component {
                 mainSrc={imageZoom[photoIndex]}
                 nextSrc={imageZoom[(photoIndex + 1) % imageZoom.length]}
                 prevSrc={
-                  imageZoom[(photoIndex + imageZoom.length - 1) % imageZoom.length]
+                  imageZoom[
+                    (photoIndex + imageZoom.length - 1) % imageZoom.length
+                  ]
                 }
                 onCloseRequest={() => this.setState({ isGalleryZoom: false })}
                 onMovePrevRequest={() =>
@@ -162,7 +164,7 @@ class UiLightbox extends Component {
                           <img
                             onClick={() => this.setState({ isFits: true })}
                             className="img-fluid"
-                            alt="Skote"
+                            alt="Ilaaj4u"
                             src={img2}
                             width="145"
                           />
@@ -301,7 +303,9 @@ class UiLightbox extends Component {
               <Col lg={6}>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Popup with video or map</CardTitle>
+                    <CardTitle className="h4">
+                      Popup with video or map
+                    </CardTitle>
                     <p className="card-title-desc">
                       In this example lazy-loading of images is enabled for the
                       next image based on move direction.{" "}
@@ -374,7 +378,9 @@ class UiLightbox extends Component {
                           <Row>
                             <Col lg={4}>
                               <div className="mb-3">
-                                <label htmlFor="name" className="form-label">Name</label>
+                                <label htmlFor="name" className="form-label">
+                                  Name
+                                </label>
                                 <input
                                   type="text"
                                   className="form-control"
@@ -385,7 +391,9 @@ class UiLightbox extends Component {
                             </Col>
                             <Col lg={4}>
                               <div className="mb-3">
-                                <label htmlFor="email" className="form-label">Email</label>
+                                <label htmlFor="email" className="form-label">
+                                  Email
+                                </label>
                                 <input
                                   type="email"
                                   className="form-control"
@@ -396,7 +404,12 @@ class UiLightbox extends Component {
                             </Col>
                             <Col lg={4}>
                               <div className="mb-3">
-                                <label htmlFor="password" className="form-label">Password</label>
+                                <label
+                                  htmlFor="password"
+                                  className="form-label"
+                                >
+                                  Password
+                                </label>
                                 <input
                                   type="password"
                                   className="form-control"
@@ -409,7 +422,9 @@ class UiLightbox extends Component {
                           <Row>
                             <Col lg={12}>
                               <div className="mb-3">
-                                <label htmlFor="subject" className="form-label">Subject</label>
+                                <label htmlFor="subject" className="form-label">
+                                  Subject
+                                </label>
                                 <textarea
                                   className="form-control"
                                   id="subject"

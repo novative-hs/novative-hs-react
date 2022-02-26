@@ -16,7 +16,7 @@ class UiPlaceholders extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Alerts | Skote - React Admin & Dashboard Template</title>
+            <title>Alerts | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Row>

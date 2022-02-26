@@ -1,25 +1,35 @@
-import React, { Component } from "react"
-import { Card, CardBody, Col, Input, Label, Nav, NavItem, NavLink, Table } from "reactstrap"
-import { Link } from "react-router-dom"
-import classnames from "classnames"
+import React, { Component } from "react";
+import {
+  Card,
+  CardBody,
+  Col,
+  Input,
+  Label,
+  Nav,
+  NavItem,
+  NavLink,
+  Table,
+} from "reactstrap";
+import { Link } from "react-router-dom";
+import classnames from "classnames";
 
 //Simple bar
-import SimpleBar from "simplebar-react"
+import SimpleBar from "simplebar-react";
 
 class TotalSellingProduct extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      activeTab: "1"
-    }
-    this.toggleTab = this.toggleTab.bind(this)
+      activeTab: "1",
+    };
+    this.toggleTab = this.toggleTab.bind(this);
   }
 
   toggleTab(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
-      })
+        activeTab: tab,
+      });
     }
   }
 
@@ -35,10 +45,10 @@ class TotalSellingProduct extends Component {
                 <NavItem>
                   <NavLink
                     className={classnames({
-                      active: this.state.activeTab === "1"
+                      active: this.state.activeTab === "1",
                     })}
                     onClick={() => {
-                      this.toggleTab("1")
+                      this.toggleTab("1");
                     }}
                   >
                     In Process
@@ -47,10 +57,10 @@ class TotalSellingProduct extends Component {
                 <NavItem>
                   <NavLink
                     className={classnames({
-                      active: this.state.activeTab === "2"
+                      active: this.state.activeTab === "2",
                     })}
                     onClick={() => {
-                      this.toggleTab("2")
+                      this.toggleTab("2");
                     }}
                   >
                     Upcoming
@@ -80,8 +90,8 @@ class TotalSellingProduct extends Component {
                           <td>
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
-                                Skote Saas Dashboard
-                            </Link>
+                                Ilaaj4u Saas Dashboard
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">Assigned to Mark</p>
                           </td>
@@ -121,11 +131,11 @@ class TotalSellingProduct extends Component {
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
                                 New Landing UI
-                            </Link>
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">
                               Assigned to Team A
-                          </p>
+                            </p>
                           </td>
                           <td>
                             <div>
@@ -163,7 +173,7 @@ class TotalSellingProduct extends Component {
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
                                 Brand logo design
-                            </Link>
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">Assigned to Janis</p>
                           </td>
@@ -203,11 +213,11 @@ class TotalSellingProduct extends Component {
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
                                 Blog Template UI
-                            </Link>
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">
                               Assigned to Dianna
-                          </p>
+                            </p>
                           </td>
                           <td>
                             <div>
@@ -245,11 +255,11 @@ class TotalSellingProduct extends Component {
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
                                 Multipurpose Landing
-                            </Link>
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">
                               Assigned to Team B
-                          </p>
+                            </p>
                           </td>
                           <td>
                             <div>
@@ -286,7 +296,7 @@ class TotalSellingProduct extends Component {
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
                                 Redesign - Landing page
-                            </Link>
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">Assigned to Jerry</p>
                           </td>
@@ -324,8 +334,8 @@ class TotalSellingProduct extends Component {
                           <td>
                             <h5 className="text-truncate font-size-14 mb-1">
                               <Link to="#" className="text-dark">
-                                Skote Crypto Dashboard
-                            </Link>
+                                Ilaaj4u Crypto Dashboard
+                              </Link>
                             </h5>
                             <p className="text-muted mb-0">Assigned to Eric</p>
                           </td>
@@ -355,10 +365,7 @@ class TotalSellingProduct extends Component {
 
             <div className="card-footer bg-transparent border-top">
               <div className="text-center">
-                <Link
-                  to="#"
-                  className="btn btn-primary"
-                >
+                <Link to="#" className="btn btn-primary">
                   {" "}
                   Add new Task
                 </Link>
@@ -367,8 +374,8 @@ class TotalSellingProduct extends Component {
           </Card>
         </Col>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default TotalSellingProduct
+export default TotalSellingProduct;

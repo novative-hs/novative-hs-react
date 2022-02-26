@@ -5,7 +5,7 @@ const tasks = [
     tasks: [
       {
         id: 11,
-        description: "Create a Skote Dashboard UI",
+        description: "Create a Ilaaj4u Dashboard UI",
         members: [
           {
             username: "",
@@ -40,7 +40,7 @@ const tasks = [
       },
       {
         id: 13,
-        description: "Create a Skote Logo",
+        description: "Create a Ilaaj4u Logo",
         members: [
           {
             username: "Fransis",
@@ -193,7 +193,7 @@ const tasks = [
       },
     ],
   },
-]
+];
 
 const series = [
   {
@@ -206,7 +206,7 @@ const series = [
     type: "line",
     data: [23, 11, 34, 27, 17, 22, 62, 32, 44, 22, 39],
   },
-]
+];
 
 const options = {
   chart: { height: 280, type: "line", stacked: !1, toolbar: { show: !1 } },
@@ -238,13 +238,13 @@ const options = {
   ],
   markers: { size: 0 },
   yaxis: { min: 0 },
-}
+};
 
 const statusClasses = {
   waiting: "badge-soft-secondary",
   approved: "badge-soft-primary",
   complete: "badge-soft-success",
   pending: "badge-soft-warning",
-}
+};
 
-export { tasks, series, options, statusClasses }
+export { tasks, series, options, statusClasses };

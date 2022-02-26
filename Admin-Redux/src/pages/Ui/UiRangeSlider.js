@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -46,7 +46,7 @@ class UiRangeSlider extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Range Slider | Skote - React Admin & Dashboard Template</title>
+            <title>Range Slider | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Range Slider" />
@@ -56,7 +56,10 @@ class UiRangeSlider extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">React Rangeslider</CardTitle>
-                    <p className="card-title-desc">Cool, comfortable, responsive and easily customizable range slider</p>
+                    <p className="card-title-desc">
+                      Cool, comfortable, responsive and easily customizable
+                      range slider
+                    </p>
                     <Row>
                       <Col md={6}>
                         <div className="p-3">

@@ -1,12 +1,12 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import { Row, Col, Card, CardBody, CardTitle } from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Row, Col, Card, CardBody, CardTitle } from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Vertical list
-import LiVerticalTimeline from "./li-vertical-timeline"
+import LiVerticalTimeline from "./li-vertical-timeline";
 
 class PagesTimeline extends Component {
   state = {
@@ -21,15 +21,13 @@ class PagesTimeline extends Component {
         id: 2,
         date: "06 October",
         title: "Second event",
-        desc:
-          "To an English person, it will seem like simplified English existence.",
+        desc: "To an English person, it will seem like simplified English existence.",
       },
       {
         id: 3,
         date: "25 October",
         title: "Third event",
-        desc:
-          "For science, music, sport, etc, Europe uses the same vocabulary.",
+        desc: "For science, music, sport, etc, Europe uses the same vocabulary.",
       },
       {
         id: 4,
@@ -47,8 +45,7 @@ class PagesTimeline extends Component {
         id: 6,
         date: "21 December",
         title: "Sixth event",
-        desc:
-          "To an English person, it will seem like simplified English existence.",
+        desc: "To an English person, it will seem like simplified English existence.",
       },
     ],
     statuses: [
@@ -94,14 +91,14 @@ class PagesTimeline extends Component {
 
     step1: true,
     step2: false,
-  }
+  };
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Timeline | Skote - React Admin & Dashboard Template</title>
+            <title>Timeline | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <div className="container-fluid">
             {/* Render Breadcrumbs */}
@@ -191,7 +188,6 @@ class PagesTimeline extends Component {
                                 </div>
                               </div>
                             </div>
-
                           </>
                         ) : null}
 
@@ -277,7 +273,7 @@ class PagesTimeline extends Component {
                           <button
                             type="button"
                             onClick={() => {
-                              this.setState({ step1: true, step2: false })
+                              this.setState({ step1: true, step2: false });
                             }}
                             className="border-0"
                             disabled={this.state.step1}
@@ -287,7 +283,7 @@ class PagesTimeline extends Component {
                           <button
                             type="button"
                             onClick={() => {
-                              this.setState({ step1: false, step2: true })
+                              this.setState({ step1: false, step2: true });
                             }}
                             className="border-0"
                             disabled={this.state.step2}
@@ -325,8 +321,8 @@ class PagesTimeline extends Component {
           </div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default PagesTimeline
+export default PagesTimeline;

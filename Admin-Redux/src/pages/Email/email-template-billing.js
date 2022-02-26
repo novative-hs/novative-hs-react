@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -11,14 +11,14 @@ class EmailTemplateBilling extends Component {
     this.state = {};
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Billing Email | Skote - React Admin & Dashboard Template</title>
+            <title>Billing Email | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs
@@ -590,7 +590,7 @@ class EmailTemplateBilling extends Component {
                                           align="center"
                                           valign="top"
                                         >
-                                          Skote Inc. 2896 Howell Rd,
+                                          Ilaaj4u Inc. 2896 Howell Rd,
                                           Russellville, AR, 72823
                                         </td>
                                       </tr>
@@ -618,7 +618,7 @@ class EmailTemplateBilling extends Component {
                                           }}
                                           valign="top"
                                         >
-                                          © {new Date().getFullYear()} Skote
+                                          © {new Date().getFullYear()} Ilaaj4u
                                         </td>
                                       </tr>
                                     </tbody>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 // import images
 import img2 from "../../assets/images/small/img-2.jpg";
 import img3 from "../../assets/images/small/img-3.jpg";
@@ -34,7 +34,7 @@ class UiImages extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Images | Skote - React Admin & Dashboard Template</title>
+            <title>Images | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Images" />
@@ -52,7 +52,7 @@ class UiImages extends Component {
                       <Col md={6}>
                         <img
                           className="rounded me-2"
-                          alt="Skote"
+                          alt="Ilaaj4u"
                           width="200"
                           src={img4}
                         />
@@ -61,7 +61,7 @@ class UiImages extends Component {
                         <div className="mt-4 mt-md-0">
                           <img
                             className="rounded-circle avatar-xl"
-                            alt="Skote"
+                            alt="Ilaaj4u"
                             src={avatar4}
                           />
                         </div>
@@ -81,7 +81,7 @@ class UiImages extends Component {
                       <Col md={6}>
                         <img
                           className="img-thumbnail"
-                          alt="Skote"
+                          alt="Ilaaj4u"
                           width="200"
                           src={img3}
                         />
@@ -90,7 +90,7 @@ class UiImages extends Component {
                         <div className="mt-4 mt-md-0">
                           <img
                             className="img-thumbnail rounded-circle avatar-xl"
-                            alt="Skote"
+                            alt="Ilaaj4u"
                             src={avatar3}
                           />
                         </div>
@@ -116,7 +116,11 @@ class UiImages extends Component {
                       element.
                     </p>
                     <div className="">
-                      <CardImg className="img-fluid" src={img2} alt="Responsive image" />
+                      <CardImg
+                        className="img-fluid"
+                        src={img2}
+                        alt="Responsive image"
+                      />
                     </div>
                   </CardBody>
                 </Card>
@@ -134,7 +138,7 @@ class UiImages extends Component {
                           <Col lg={4}>
                             <CardImg
                               src={avatar3}
-                              alt="SkoteSkote"
+                              alt="Ilaaj4uIlaaj4u"
                               className="rounded avatar-sm"
                             />
                             <CardText className="mt-2 mb-lg-0">
@@ -144,7 +148,7 @@ class UiImages extends Component {
                           <Col lg={4}>
                             <CardImg
                               src={avatar4}
-                              alt="Skote"
+                              alt="Ilaaj4u"
                               className="rounded avatar-md"
                             />
                             <CardText className="mt-2  mb-lg-0">
@@ -154,7 +158,7 @@ class UiImages extends Component {
                           <Col lg={4}>
                             <CardImg
                               src={avatar5}
-                              alt="Skote"
+                              alt="Ilaaj4u"
                               className="rounded avatar-lg"
                             />
                             <CardText className="mt-2 mb-lg-0">
@@ -168,7 +172,7 @@ class UiImages extends Component {
                           <Col lg={4}>
                             <CardImg
                               src={avatar3}
-                              alt="Skote"
+                              alt="Ilaaj4u"
                               className="rounded-circle avatar-sm"
                             />
                             <CardText className="mt-2 mb-lg-0">
@@ -188,7 +192,7 @@ class UiImages extends Component {
                           <Col lg={4}>
                             <CardImg
                               src={avatar5}
-                              alt="Skote"
+                              alt="Ilaaj4u"
                               className="rounded-circle avatar-lg"
                             />
                             <CardText className="mt-2 mb-lg-0">
@@ -207,38 +211,68 @@ class UiImages extends Component {
                 <Card>
                   <CardBody>
                     <h4 className="card-title">Media Object</h4>
-                    <p className="card-title-desc">The images or other media can be
-                      aligned top, middle, or bottom. The default is top aligned.
+                    <p className="card-title-desc">
+                      The images or other media can be aligned top, middle, or
+                      bottom. The default is top aligned.
                     </p>
-
 
                     <div className="d-flex">
                       <div className="flex-shrink-0 me-3">
-                        <img className="rounded avatar-sm" src={avatar3} alt="Generic placeholder image" />
+                        <img
+                          className="rounded avatar-sm"
+                          src={avatar3}
+                          alt="Generic placeholder image"
+                        />
                       </div>
                       <div className="flex-grow-1">
                         <h5>Top-aligned media</h5>
-                        <p className="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+                        <p className="mb-0">
+                          Cras sit amet nibh libero, in gravida nulla. Nulla vel
+                          metus scelerisque ante sollicitudin. Cras purus odio,
+                          vestibulum in vulputate at, tempus viverra turpis.
+                          Fusce condimentum nunc ac nisi vulputate fringilla.
+                          Donec lacinia congue felis in faucibus.
+                        </p>
                       </div>
                     </div>
                     <hr />
                     <div className="d-flex align-items-center">
                       <div className="flex-shrink-0 me-3">
-                        <img className="rounded avatar-sm" src={avatar5} alt="Generic placeholder image" />
+                        <img
+                          className="rounded avatar-sm"
+                          src={avatar5}
+                          alt="Generic placeholder image"
+                        />
                       </div>
                       <div className="flex-grow-1">
                         <h5>Center-aligned media</h5>
-                        <p className="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+                        <p className="mb-0">
+                          Cras sit amet nibh libero, in gravida nulla. Nulla vel
+                          metus scelerisque ante sollicitudin. Cras purus odio,
+                          vestibulum in vulputate at, tempus viverra turpis.
+                          Fusce condimentum nunc ac nisi vulputate fringilla.
+                          Donec lacinia congue felis in faucibus.
+                        </p>
                       </div>
                     </div>
                     <hr />
                     <div className="d-flex align-items-end">
                       <div className="flex-shrink-0 me-3">
-                        <img className="rounded avatar-sm" src={avatar1} alt="Generic placeholder image" />
+                        <img
+                          className="rounded avatar-sm"
+                          src={avatar1}
+                          alt="Generic placeholder image"
+                        />
                       </div>
                       <div className="flex-grow-1">
                         <h5>Bottom-aligned media</h5>
-                        <p className="mb-0">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
+                        <p className="mb-0">
+                          Cras sit amet nibh libero, in gravida nulla. Nulla vel
+                          metus scelerisque ante sollicitudin. Cras purus odio,
+                          vestibulum in vulputate at, tempus viverra turpis.
+                          Fusce condimentum nunc ac nisi vulputate fringilla.
+                          Donec lacinia congue felis in faucibus.
+                        </p>
                       </div>
                     </div>
                   </CardBody>

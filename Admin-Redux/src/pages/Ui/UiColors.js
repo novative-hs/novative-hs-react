@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MetaTags from 'react-meta-tags';
+import MetaTags from "react-meta-tags";
 
 import { Col, Container, Row, Card, CardBody } from "reactstrap";
 //Import Breadcrumb
@@ -16,7 +16,7 @@ class UiColors extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Colors | Skote - React Admin & Dashboard Template</title>
+            <title>Colors | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Colors" />
@@ -155,7 +155,6 @@ class UiColors extends Component {
                 <Card>
                   <CardBody className="text-center">
                     <div className="rounded overflow-hidden">
-
                       <div className="bg-primary opacity-75 p-4">
                         <h5 className="my-2 text-white">opacity-75</h5>
                       </div>

@@ -1,61 +1,61 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import MetaTags from 'react-meta-tags';
-import { connect } from "react-redux"
-import { isEmpty } from "lodash"
-import { Container, Row, Col, Card, CardBody } from "reactstrap"
-import { withRouter } from "react-router-dom"
-import "assets/scss/datatables.scss"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import { connect } from "react-redux";
+import { isEmpty } from "lodash";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import { withRouter } from "react-router-dom";
+import "assets/scss/datatables.scss";
 
 //Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb"
-import { getWallet } from "store/actions"
-import WalletActivities from "./walletActivities"
-import WalletStats from "./walletStats"
-import WalletOverView from "./walletOverView"
+import Breadcrumbs from "components/Common/Breadcrumb";
+import { getWallet } from "store/actions";
+import WalletActivities from "./walletActivities";
+import WalletStats from "./walletStats";
+import WalletOverView from "./walletOverView";
 
 class CryptoWallet extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       isMenu: false,
       activeTab: "1",
-    }
-    this.toggleTab = this.toggleTab.bind(this)
-    this.toggleMenu = this.toggleMenu.bind(this)
+    };
+    this.toggleTab = this.toggleTab.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   componentDidMount() {
-    const { onGetWallet } = this.props
-    onGetWallet()
+    const { onGetWallet } = this.props;
+    onGetWallet();
   }
 
   toggleTab(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
   }
 
   toggleMenu() {
     this.setState(prevState => ({
       isMenu: !prevState.isMenu,
-    }))
+    }));
   }
 
   render() {
     const {
       wallet,
       wallet: { walletHistory },
-    } = this.props
-    const { activeTab, isMenu } = this.state
+    } = this.props;
+    const { activeTab, isMenu } = this.state;
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Wallet | Skote - React Admin & Dashboard Template</title>
+            <title>Wallet | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
@@ -151,24 +151,24 @@ class CryptoWallet extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 CryptoWallet.propTypes = {
   wallet: PropTypes.any,
   onGetWallet: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ crypto }) => ({
   wallet: crypto.wallet,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetWallet: () => dispatch(getWallet()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(CryptoWallet))
+)(withRouter(CryptoWallet));

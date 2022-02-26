@@ -1,17 +1,17 @@
-import React, { Component } from "react"
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
 //Import maps
-import SimpleMap from "./LeafletMap/SimpleMap"
-import MapWithPopup from "./LeafletMap/MapWithPopup"
-import MapVectorLayers from "./LeafletMap/MapVectorLayers"
-import MapMarkerCustomIcons from "./LeafletMap/MapMarkerCustomIcons"
-import LayerGroup from "./LeafletMap/LayerGroup"
-import MapLayerControl from "./LeafletMap/MapLayerControl"
+import SimpleMap from "./LeafletMap/SimpleMap";
+import MapWithPopup from "./LeafletMap/MapWithPopup";
+import MapVectorLayers from "./LeafletMap/MapVectorLayers";
+import MapMarkerCustomIcons from "./LeafletMap/MapMarkerCustomIcons";
+import LayerGroup from "./LeafletMap/LayerGroup";
+import MapLayerControl from "./LeafletMap/MapLayerControl";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class MapsLeaflet extends Component {
   render() {
@@ -19,7 +19,7 @@ class MapsLeaflet extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Leaflet Maps | Skote - React Admin & Dashboard Template</title>
+            <title>Leaflet Maps | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Maps" breadcrumbItem="Leaflet Maps" />
@@ -106,8 +106,8 @@ class MapsLeaflet extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default MapsLeaflet
+export default MapsLeaflet;

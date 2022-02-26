@@ -1,28 +1,21 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "reactstrap"
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 
 // Carousel
-import Slide from "./CarouselTypes/slide"
-import Slidewithcontrol from "./CarouselTypes/slidewithcontrol"
-import Slidewithindicator from "./CarouselTypes/slidewithindicator"
-import Slidewithcaption from "./CarouselTypes/slidewithcaption"
-import Slidewithfade from "./CarouselTypes/slidewithfade"
+import Slide from "./CarouselTypes/slide";
+import Slidewithcontrol from "./CarouselTypes/slidewithcontrol";
+import Slidewithindicator from "./CarouselTypes/slidewithindicator";
+import Slidewithcaption from "./CarouselTypes/slidewithcaption";
+import Slidewithfade from "./CarouselTypes/slidewithfade";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiCarousel extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -30,7 +23,7 @@ class UiCarousel extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Carousel | Skote - React Admin & Dashboard Template</title>
+            <title>Carousel | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Carousel" />
@@ -106,8 +99,8 @@ class UiCarousel extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiCarousel
+export default UiCarousel;

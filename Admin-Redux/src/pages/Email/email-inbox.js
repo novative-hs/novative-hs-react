@@ -1,9 +1,17 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { Link, withRouter } from "react-router-dom"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
 import {
-  Button, Card, Col, Container, Input, Label, Row, TabContent, TabPane,
+  Button,
+  Card,
+  Col,
+  Container,
+  Input,
+  Label,
+  Row,
+  TabContent,
+  TabPane,
   Nav,
   Media,
   Modal,
@@ -11,12 +19,12 @@ import {
   ModalFooter,
   ModalHeader,
   NavItem,
-  NavLink
-} from "reactstrap"
-import MetaTags from 'react-meta-tags';
-import classnames from "classnames"
+  NavLink,
+} from "reactstrap";
+import MetaTags from "react-meta-tags";
+import classnames from "classnames";
 
-import { map } from "lodash"
+import { map } from "lodash";
 
 import {
   getInboxMails,
@@ -25,27 +33,27 @@ import {
   getDraftMails,
   getSentMails,
   getTrashMails,
-} from "store/mails/actions"
+} from "store/mails/actions";
 
 // Import Editor
-import { Editor } from "react-draft-wysiwyg"
+import { Editor } from "react-draft-wysiwyg";
 
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 //Import Email Topbar
-import EmailToolbar from "./email-toolbar"
+import EmailToolbar from "./email-toolbar";
 
 //Import images
-import avatar2 from "../../assets/images/users/avatar-2.jpg"
-import avatar3 from "../../assets/images/users/avatar-3.jpg"
-import avatar4 from "../../assets/images/users/avatar-4.jpg"
-import avatar6 from "../../assets/images/users/avatar-6.jpg"
+import avatar2 from "../../assets/images/users/avatar-2.jpg";
+import avatar3 from "../../assets/images/users/avatar-3.jpg";
+import avatar4 from "../../assets/images/users/avatar-4.jpg";
+import avatar6 from "../../assets/images/users/avatar-6.jpg";
 
 class EmailInbox extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       modal: false,
       activeTab: "1",
@@ -56,58 +64,71 @@ class EmailInbox extends Component {
       draftmails: [],
       sentmails: [],
       trashmails: [],
-    }
-    this.togglemodal.bind(this)
-    this.toggleTab = this.toggleTab.bind(this)
+    };
+    this.togglemodal.bind(this);
+    this.toggleTab = this.toggleTab.bind(this);
   }
 
   componentDidMount() {
-    const { inboxmails, onGetInboxMails,
-      starredmails, onGetStarredMails,
-      importantmails, onGetImportantMails,
-      draftmails, onGetDraftMails,
-      sentmails, onGetSentMails,
-      trashmails, onGetTrashMails } = this.props;
+    const {
+      inboxmails,
+      onGetInboxMails,
+      starredmails,
+      onGetStarredMails,
+      importantmails,
+      onGetImportantMails,
+      draftmails,
+      onGetDraftMails,
+      sentmails,
+      onGetSentMails,
+      trashmails,
+      onGetTrashMails,
+    } = this.props;
 
-    onGetInboxMails()
-    onGetStarredMails()
+    onGetInboxMails();
+    onGetStarredMails();
     onGetImportantMails(),
       onGetDraftMails(),
       onGetSentMails(),
       onGetTrashMails(),
-
-      this.setState({ inboxmails })
-    this.setState({ starredmails })
-    this.setState({ importantmails })
-    this.setState({ draftmails })
-    this.setState({ sentmails })
-    this.setState({ trashmails })
+      this.setState({ inboxmails });
+    this.setState({ starredmails });
+    this.setState({ importantmails });
+    this.setState({ draftmails });
+    this.setState({ sentmails });
+    this.setState({ trashmails });
   }
 
   toggleTab(tab) {
-
     if (this.props.activeTab !== tab) {
       this.setState({
         activeTab: tab,
-      })
+      });
     }
   }
 
   togglemodal = () => {
     this.setState(prevState => ({
       modal: !prevState.modal,
-    }))
-  }
+    }));
+  };
 
   render() {
-    const { inboxmails, starredmails, importantmails, draftmails, sentmails, trashmails } = this.props;
+    const {
+      inboxmails,
+      starredmails,
+      importantmails,
+      draftmails,
+      sentmails,
+      trashmails,
+    } = this.props;
 
     return (
       <React.Fragment>
         <div className="page-content">
           {/* add meta title */}
           <MetaTags>
-            <title>Inbox | Skote - React Admin & Dashboard Template</title>
+            <title>Inbox | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -126,14 +147,19 @@ class EmailInbox extends Component {
                     Compose
                   </Button>
                   <div className="mail-list mt-4">
-                    <Nav tabs className="nav-tabs-custom" vertical role="tablist">
+                    <Nav
+                      tabs
+                      className="nav-tabs-custom"
+                      vertical
+                      role="tablist"
+                    >
                       <NavItem>
                         <NavLink
                           className={classnames({
                             active: this.state.activeTab === "1",
                           })}
                           onClick={() => {
-                            this.toggleTab("1")
+                            this.toggleTab("1");
                           }}
                         >
                           <i className="mdi mdi-email-outline me-2"></i> Inbox{" "}
@@ -147,7 +173,7 @@ class EmailInbox extends Component {
                             active: this.state.activeTab === "2",
                           })}
                           onClick={() => {
-                            this.toggleTab("2")
+                            this.toggleTab("2");
                           }}
                         >
                           <i className="mdi mdi-star-outline me-2"></i>Starred
@@ -160,10 +186,11 @@ class EmailInbox extends Component {
                             active: this.state.activeTab === "3",
                           })}
                           onClick={() => {
-                            this.toggleTab("3")
+                            this.toggleTab("3");
                           }}
                         >
-                          <i className="mdi mdi-diamond-stone me-2"></i>Important
+                          <i className="mdi mdi-diamond-stone me-2"></i>
+                          Important
                         </NavLink>
                       </NavItem>
 
@@ -173,7 +200,7 @@ class EmailInbox extends Component {
                             active: this.state.activeTab === "4",
                           })}
                           onClick={() => {
-                            this.toggleTab("4")
+                            this.toggleTab("4");
                           }}
                         >
                           <i className="mdi mdi-file-outline me-2"></i>Draft
@@ -186,10 +213,11 @@ class EmailInbox extends Component {
                             active: this.state.activeTab === "5",
                           })}
                           onClick={() => {
-                            this.toggleTab("5")
+                            this.toggleTab("5");
                           }}
                         >
-                          <i className="mdi mdi-email-check-outline me-2"></i>Sent Mail
+                          <i className="mdi mdi-email-check-outline me-2"></i>
+                          Sent Mail
                         </NavLink>
                       </NavItem>
 
@@ -199,15 +227,14 @@ class EmailInbox extends Component {
                             active: this.state.activeTab === "6",
                           })}
                           onClick={() => {
-                            this.toggleTab("6")
+                            this.toggleTab("6");
                           }}
                         >
-                          <i className="mdi mdi-trash-can-outline me-2"></i>Trash
+                          <i className="mdi mdi-trash-can-outline me-2"></i>
+                          Trash
                         </NavLink>
                       </NavItem>
-
                     </Nav>
-
                   </div>
 
                   <h6 className="mt-4">Labels</h6>
@@ -302,7 +329,9 @@ class EmailInbox extends Component {
                   toggle={this.togglemodal}
                 >
                   <div className="modal-content">
-                    <ModalHeader toggle={this.togglemodal}>New Message</ModalHeader>
+                    <ModalHeader toggle={this.togglemodal}>
+                      New Message
+                    </ModalHeader>
                     <ModalBody>
                       <form>
                         <div className="mb-3">
@@ -345,17 +374,21 @@ class EmailInbox extends Component {
                   <Card>
                     {/* Render Email Top Tool Bar */}
                     <EmailToolbar />
-                    <TabContent
-                      activeTab={this.state.activeTab}
-                    >
+                    <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="1">
                         <ul className="message-list">
                           {map(inboxmails, (inbox, key) => (
-                            <li key={key} className={inbox.read ? "" : "unread"}>
+                            <li
+                              key={key}
+                              className={inbox.read ? "" : "unread"}
+                            >
                               <div className="col-mail col-mail-1">
                                 <div className="checkbox-wrapper-mail">
                                   <Input type="checkbox" id={inbox.id} />
-                                  <Label htmlFor={inbox.id} className="toggle" />
+                                  <Label
+                                    htmlFor={inbox.id}
+                                    className="toggle"
+                                  />
                                 </div>
                                 <Link to="#" className="title">
                                   {inbox.name}
@@ -363,8 +396,11 @@ class EmailInbox extends Component {
                                 <span className="star-toggle far fa-star" />
                               </div>
                               <div className="col-mail col-mail-2">
-
-                                <div dangerouslySetInnerHTML={{ __html: inbox.description }}></div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: inbox.description,
+                                  }}
+                                ></div>
                                 <div className="date">{inbox.date}</div>
                               </div>
                             </li>
@@ -374,11 +410,20 @@ class EmailInbox extends Component {
                       <TabPane tabId="2">
                         <ul className="message-list">
                           {map(starredmails, (starred, key) => (
-                            <li key={"starred-" + key} className={starred.read ? "" : "unread"}>
+                            <li
+                              key={"starred-" + key}
+                              className={starred.read ? "" : "unread"}
+                            >
                               <div className="col-mail col-mail-1">
                                 <div className="checkbox-wrapper-mail">
-                                  <Input type="checkbox" id={starred.id + 'starred'} />
-                                  <Label htmlFor={starred.id + 'starred'} className="toggle" />
+                                  <Input
+                                    type="checkbox"
+                                    id={starred.id + "starred"}
+                                  />
+                                  <Label
+                                    htmlFor={starred.id + "starred"}
+                                    className="toggle"
+                                  />
                                 </div>
                                 <Link to="#" className="title">
                                   {starred.name}
@@ -386,8 +431,11 @@ class EmailInbox extends Component {
                                 <span className="star-toggle fas fa-star" />
                               </div>
                               <div className="col-mail col-mail-2">
-
-                                <div dangerouslySetInnerHTML={{ __html: starred.description }}></div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: starred.description,
+                                  }}
+                                ></div>
                                 <div className="date">{starred.date}</div>
                               </div>
                             </li>
@@ -397,11 +445,20 @@ class EmailInbox extends Component {
                       <TabPane tabId="3">
                         <ul className="message-list">
                           {map(importantmails, (important, key) => (
-                            <li key={"important-" + key} className={important.read ? "" : "unread"}>
+                            <li
+                              key={"important-" + key}
+                              className={important.read ? "" : "unread"}
+                            >
                               <div className="col-mail col-mail-1">
                                 <div className="checkbox-wrapper-mail">
-                                  <Input type="checkbox" id={important.id + 'important'} />
-                                  <Label htmlFor={important.id + 'important'} className="toggle" />
+                                  <Input
+                                    type="checkbox"
+                                    id={important.id + "important"}
+                                  />
+                                  <Label
+                                    htmlFor={important.id + "important"}
+                                    className="toggle"
+                                  />
                                 </div>
                                 <Link to="#" className="title">
                                   {important.name}
@@ -409,8 +466,11 @@ class EmailInbox extends Component {
                                 <span className="star-toggle far fa-star" />
                               </div>
                               <div className="col-mail col-mail-2">
-
-                                <div dangerouslySetInnerHTML={{ __html: important.description }}></div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: important.description,
+                                  }}
+                                ></div>
                                 <div className="date">{important.date}</div>
                               </div>
                             </li>
@@ -420,11 +480,20 @@ class EmailInbox extends Component {
                       <TabPane tabId="4">
                         <ul className="message-list">
                           {map(draftmails, (draft, key) => (
-                            <li key={"draft-" + key} className={draft.read ? "" : "unread"}>
+                            <li
+                              key={"draft-" + key}
+                              className={draft.read ? "" : "unread"}
+                            >
                               <div className="col-mail col-mail-1">
                                 <div className="checkbox-wrapper-mail">
-                                  <Input type="checkbox" id={draft.id + 'draft'} />
-                                  <Label htmlFor={draft.id + 'draft'} className="toggle" />
+                                  <Input
+                                    type="checkbox"
+                                    id={draft.id + "draft"}
+                                  />
+                                  <Label
+                                    htmlFor={draft.id + "draft"}
+                                    className="toggle"
+                                  />
                                 </div>
                                 <Link to="#" className="title">
                                   {draft.name}
@@ -432,8 +501,11 @@ class EmailInbox extends Component {
                                 <span className="star-toggle far fa-star" />
                               </div>
                               <div className="col-mail col-mail-2">
-
-                                <div dangerouslySetInnerHTML={{ __html: draft.description }}></div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: draft.description,
+                                  }}
+                                ></div>
                                 <div className="date">{draft.date}</div>
                               </div>
                             </li>
@@ -443,11 +515,20 @@ class EmailInbox extends Component {
                       <TabPane tabId="5">
                         <ul className="message-list">
                           {map(sentmails, (sent, key) => (
-                            <li key={"sent-" + key} className={sent.read ? "" : "unread"}>
+                            <li
+                              key={"sent-" + key}
+                              className={sent.read ? "" : "unread"}
+                            >
                               <div className="col-mail col-mail-1">
                                 <div className="checkbox-wrapper-mail">
-                                  <Input type="checkbox" id={sent.id + 'sent'} />
-                                  <Label htmlFor={sent.id + 'sent'} className="toggle" />
+                                  <Input
+                                    type="checkbox"
+                                    id={sent.id + "sent"}
+                                  />
+                                  <Label
+                                    htmlFor={sent.id + "sent"}
+                                    className="toggle"
+                                  />
                                 </div>
                                 <Link to="#" className="title">
                                   {sent.name}
@@ -455,8 +536,11 @@ class EmailInbox extends Component {
                                 <span className="star-toggle far fa-star" />
                               </div>
                               <div className="col-mail col-mail-2">
-
-                                <div dangerouslySetInnerHTML={{ __html: sent.description }}></div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: sent.description,
+                                  }}
+                                ></div>
                                 <div className="date">{sent.date}</div>
                               </div>
                             </li>
@@ -466,11 +550,20 @@ class EmailInbox extends Component {
                       <TabPane tabId="6">
                         <ul className="message-list">
                           {map(trashmails, (trash, key) => (
-                            <li key={"trash-" + key} className={trash.read ? "" : "unread"}>
+                            <li
+                              key={"trash-" + key}
+                              className={trash.read ? "" : "unread"}
+                            >
                               <div className="col-mail col-mail-1">
                                 <div className="checkbox-wrapper-mail">
-                                  <Input type="checkbox" id={trash.id + 'trash'} />
-                                  <Label htmlFor={trash.id + 'trash'} className="toggle" />
+                                  <Input
+                                    type="checkbox"
+                                    id={trash.id + "trash"}
+                                  />
+                                  <Label
+                                    htmlFor={trash.id + "trash"}
+                                    className="toggle"
+                                  />
                                 </div>
                                 <Link to="#" className="title">
                                   {trash.name}
@@ -478,8 +571,11 @@ class EmailInbox extends Component {
                                 <span className="star-toggle far fa-star" />
                               </div>
                               <div className="col-mail col-mail-2">
-
-                                <div dangerouslySetInnerHTML={{ __html: trash.description }}></div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: trash.description,
+                                  }}
+                                ></div>
                                 <div className="date">{trash.date}</div>
                               </div>
                             </li>
@@ -492,18 +588,10 @@ class EmailInbox extends Component {
                     <Col xs="7">Showing 1 - 20 of 1,524</Col>
                     <Col xs="5">
                       <div className="btn-group float-end">
-                        <Button
-                          type="button"
-                          color="success"
-                          size="sm"
-                        >
+                        <Button type="button" color="success" size="sm">
                           <i className="fa fa-chevron-left" />
                         </Button>
-                        <Button
-                          type="button"
-                          color="success"
-                          size="sm"
-                        >
+                        <Button type="button" color="success" size="sm">
                           <i className="fa fa-chevron-right" />
                         </Button>
                       </div>
@@ -515,7 +603,7 @@ class EmailInbox extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
@@ -539,7 +627,7 @@ EmailInbox.propTypes = {
   onGetImportantMails: PropTypes.func,
   importantmails: PropTypes.array,
   onGetImportantMails: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ mails }) => ({
   inboxmails: mails.inboxmails,
@@ -548,7 +636,7 @@ const mapStateToProps = ({ mails }) => ({
   trashmails: mails.trashmails,
   draftmails: mails.draftmails,
   sentmails: mails.sentmails,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetInboxMails: () => dispatch(getInboxMails()),
@@ -557,9 +645,9 @@ const mapDispatchToProps = dispatch => ({
   onGetDraftMails: () => dispatch(getDraftMails()),
   onGetSentMails: () => dispatch(getSentMails()),
   onGetTrashMails: () => dispatch(getTrashMails()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(EmailInbox))
+)(withRouter(EmailInbox));

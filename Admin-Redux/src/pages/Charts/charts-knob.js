@@ -1,15 +1,15 @@
-import React, { Component } from "react"
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import MetaTags from "react-meta-tags";
 
-import Knob from "../AllCharts/knob/knob"
+import Knob from "../AllCharts/knob/knob";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class ChartsKnob extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       value: 35,
       value_cur: 29,
@@ -19,25 +19,25 @@ class ChartsKnob extends Component {
       angleArc: 29,
       ang_offset_arc: 75,
       readonly: 80,
-    }
+    };
   }
 
   handleChange = newValue => {
-    this.setState({ value: newValue })
-  }
+    this.setState({ value: newValue });
+  };
   handleChangecursor = newValue => {
-    this.setState({ value_cur: newValue })
-  }
+    this.setState({ value_cur: newValue });
+  };
   handleChangeprev = newValue => {
-    this.setState({ value_prev: newValue })
-  }
+    this.setState({ value_prev: newValue });
+  };
 
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
-            <title>Knob Chart | Skote - React Admin & Dashboard Template</title>
+          <MetaTags>
+            <title>Knob Chart | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Charts" breadcrumbItem="Knob Chart" />
@@ -63,7 +63,7 @@ class ChartsKnob extends Component {
                             width={150}
                             fgColor="#7a6fbe"
                             displayCustom={() => {
-                              return false
+                              return false;
                             }}
                             onChange={this.handleChange}
                           />
@@ -79,7 +79,7 @@ class ChartsKnob extends Component {
                             fgColor="#4ac18e"
                             cursor={true}
                             displayCustom={() => {
-                              return false
+                              return false;
                             }}
                             onChange={this.handleChangecursor}
                           />
@@ -112,7 +112,7 @@ class ChartsKnob extends Component {
                             height={200}
                             width={150}
                             onChange={e => {
-                              this.setState({ angle: e })
+                              this.setState({ angle: e });
                             }}
                           />
                         </div>
@@ -130,7 +130,7 @@ class ChartsKnob extends Component {
                             height={200}
                             width={150}
                             onChange={e => {
-                              this.setState({ steps: e })
+                              this.setState({ steps: e });
                             }}
                           />
                         </div>
@@ -149,7 +149,7 @@ class ChartsKnob extends Component {
                             height={200}
                             width={150}
                             onChange={e => {
-                              this.setState({ angleArc: e })
+                              this.setState({ angleArc: e });
                             }}
                           />
                         </div>
@@ -187,7 +187,7 @@ class ChartsKnob extends Component {
                             height={200}
                             width={150}
                             onChange={e => {
-                              this.setState({ ang_offset_arc: e })
+                              this.setState({ ang_offset_arc: e });
                             }}
                           />
                         </div>
@@ -200,8 +200,8 @@ class ChartsKnob extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default ChartsKnob
+export default ChartsKnob;

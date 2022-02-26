@@ -1,32 +1,25 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "reactstrap"
-import Vector from "./Vectormap"
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
+import Vector from "./Vectormap";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class MapsVector extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-    }
-    this.onMarkerClick = this.onMarkerClick.bind(this)
+    };
+    this.onMarkerClick = this.onMarkerClick.bind(this);
   }
 
   onMarkerClick() {
-    alert("You clicked in this marker")
+    alert("You clicked in this marker");
   }
 
   render() {
@@ -34,7 +27,7 @@ class MapsVector extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Vector Maps | Skote - React Admin & Dashboard Template</title>
+            <title>Vector Maps | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Maps" breadcrumbItem="Vector Maps" />
@@ -44,9 +37,7 @@ class MapsVector extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">World Map</CardTitle>
-                    <p className="card-title-desc">
-                      Example of vector map.
-                    </p>
+                    <p className="card-title-desc">Example of vector map.</p>
 
                     <div id="world-map-markers" className="vector-map-height">
                       <Vector
@@ -62,9 +53,7 @@ class MapsVector extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">USA Map</CardTitle>
-                    <p className="card-title-desc">
-                      Example of vector map.
-                    </p>
+                    <p className="card-title-desc">Example of vector map.</p>
 
                     <div id="usa" className="vector-map-height">
                       <Vector
@@ -83,9 +72,7 @@ class MapsVector extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Canada Map</CardTitle>
-                    <p className="card-title-desc">
-                      Example of vector map.
-                    </p>
+                    <p className="card-title-desc">Example of vector map.</p>
 
                     <div id="uk" className="vector-map-height">
                       <Vector
@@ -102,9 +89,7 @@ class MapsVector extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Asia Vector Map</CardTitle>
-                    <p className="card-title-desc">
-                      Example of vector map.
-                    </p>
+                    <p className="card-title-desc">Example of vector map.</p>
 
                     <div id="chicago" className="vector-map-height">
                       <Vector
@@ -120,8 +105,8 @@ class MapsVector extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default MapsVector
+export default MapsVector;

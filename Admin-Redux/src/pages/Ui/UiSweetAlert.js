@@ -1,17 +1,17 @@
-import React, { Component } from "react"
-import { Button, Card, CardBody, Col, Container, Row } from "reactstrap"
-import MetaTags from 'react-meta-tags';
-import logolight from "../../assets/images/logo-light.png"
+import React, { Component } from "react";
+import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
+import MetaTags from "react-meta-tags";
+import logolight from "../../assets/images/logo-light.png";
 
 //SweetAlert
-import SweetAlert from "react-bootstrap-sweetalert"
+import SweetAlert from "react-bootstrap-sweetalert";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiSweetAlert extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       basic: false,
       with_title: false,
@@ -42,23 +42,23 @@ class UiSweetAlert extends Component {
       timeralert: null,
       sweet_timer: false,
       custom_div1: false,
-    }
-    this.handleStep1Change = this.handleStep1Change.bind(this)
-    this.handleStep2Change = this.handleStep2Change.bind(this)
-    this.handleStep3Change = this.handleStep3Change.bind(this)
+    };
+    this.handleStep1Change = this.handleStep1Change.bind(this);
+    this.handleStep2Change = this.handleStep2Change.bind(this);
+    this.handleStep3Change = this.handleStep3Change.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleStep1Change(e) {
-    this.setState({ step1_txt: e.target.value })
+    this.setState({ step1_txt: e.target.value });
   }
 
   handleStep2Change(e) {
-    this.setState({ step2_txt: e.target.value })
+    this.setState({ step2_txt: e.target.value });
   }
 
   handleStep3Change(e) {
-    this.setState({ step3_txt: e.target.value })
+    this.setState({ step3_txt: e.target.value });
   }
   handleChange(e) {
     this.setState({ emailtxt: e.target.value });
@@ -77,18 +77,18 @@ class UiSweetAlert extends Component {
         {" "}
         <span>Timer Will Expire after 3 Seconds.</span>
       </SweetAlert>
-    )
-    this.setState({ timeralert: getTimer() })
+    );
+    this.setState({ timeralert: getTimer() });
     setTimeout(
       function () {
-        this.setState({ timeralert: null })
+        this.setState({ timeralert: null });
       }.bind(this),
       1000
-    )
+    );
   }
 
   hideTimeAlert() {
-    this.setState({ timeralert: null })
+    this.setState({ timeralert: null });
   }
 
   render() {
@@ -96,7 +96,7 @@ class UiSweetAlert extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>SweetAlert | Skote - React Admin & Dashboard Template</title>
+            <title>SweetAlert | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="SweetAlert" />
@@ -558,8 +558,8 @@ class UiSweetAlert extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiSweetAlert
+export default UiSweetAlert;

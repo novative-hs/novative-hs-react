@@ -181,11 +181,11 @@ class Chat extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Chat | Skote - React Admin & Dashboard Template</title>
+            <title>Chat | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Skote" breadcrumbItem="Chat" />
+            <Breadcrumbs title="Ilaaj4u" breadcrumbItem="Chat" />
 
             <Row>
               <Col lg="12">
@@ -298,7 +298,10 @@ class Chat extends Component {
                           <TabPane tabId="1">
                             <div>
                               <h5 className="font-size-14 mb-3">Recent</h5>
-                              <ul className="list-unstyled chat-list" id="recent-list">
+                              <ul
+                                className="list-unstyled chat-list"
+                                id="recent-list"
+                              >
                                 <PerfectScrollbar style={{ height: "410px" }}>
                                   {chats.map(chat => (
                                     <li
@@ -328,8 +331,8 @@ class Chat extends Component {
                                                   ? "mdi mdi-circle text-success font-size-10"
                                                   : chat.status ===
                                                     "intermediate"
-                                                    ? "mdi mdi-circle text-warning font-size-10"
-                                                    : "mdi mdi-circle font-size-10"
+                                                  ? "mdi mdi-circle text-warning font-size-10"
+                                                  : "mdi mdi-circle font-size-10"
                                               }
                                             />
                                           </div>
@@ -466,8 +469,8 @@ class Chat extends Component {
                                     ? "mdi mdi-circle text-success align-middle me-1"
                                     : this.state.Chat_Box_User_Status ===
                                       "intermediate"
-                                      ? "mdi mdi-circle text-warning align-middle me-1"
-                                      : "mdi mdi-circle align-middle me-1"
+                                    ? "mdi mdi-circle text-warning align-middle me-1"
+                                    : "mdi mdi-circle align-middle me-1"
                                 }
                               />
                               {this.state.Chat_Box_User_Status}

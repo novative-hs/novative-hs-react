@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import MetaTags from 'react-meta-tags';
+import React, { Component } from "react";
+import MetaTags from "react-meta-tags";
 import {
   Card,
   CardBody,
@@ -8,15 +8,15 @@ import {
   Container,
   Media,
   Row,
-} from "reactstrap"
+} from "reactstrap";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 class UiTypography extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
@@ -24,7 +24,7 @@ class UiTypography extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Typography | Skote - React Admin & Dashboard Template</title>
+            <title>Typography | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="UI Elements" breadcrumbItem="Typography" />
@@ -39,7 +39,9 @@ class UiTypography extends Component {
                       </div>
                       <div className="flex-grow-1 align-self-center">
                         <p className="text-muted mb-2">Font Family</p>
-                        <h5 className="mb-0">&quot;Poppins&ldquo;, sans-serif</h5>
+                        <h5 className="mb-0">
+                          &quot;Poppins&ldquo;, sans-serif
+                        </h5>
                       </div>
                     </div>
                   </CardBody>
@@ -48,11 +50,8 @@ class UiTypography extends Component {
                   <CardBody>
                     <CardTitle className="h4">Headings</CardTitle>
                     <p className="card-title-desc">
-                      All HTML headings,{" "}
-                      <code>&lt;h1&gt;</code>{" "}
-                      through{" "}
-                      <code>&lt;h6&gt;</code>, are
-                      available.
+                      All HTML headings, <code>&lt;h1&gt;</code> through{" "}
+                      <code>&lt;h6&gt;</code>, are available.
                     </p>
 
                     <h1 className="mb-3">
@@ -106,7 +105,9 @@ class UiTypography extends Component {
                       <Col sm="6">
                         <Media className="align-items-center">
                           <div className="me-4">
-                            <h1 className="font-weight-semibold display-4 mb-0">Aa</h1>
+                            <h1 className="font-weight-semibold display-4 mb-0">
+                              Aa
+                            </h1>
                           </div>
                           <Media body>
                             <p className="text-muted mb-2">Font Weight</p>
@@ -122,7 +123,10 @@ class UiTypography extends Component {
                 <Card>
                   <CardBody>
                     <CardTitle className="h4">Display headings</CardTitle>
-                    <p className="card-title-desc">Traditional heading elements are designed to work best in the meat of your page content. </p>
+                    <p className="card-title-desc">
+                      Traditional heading elements are designed to work best in
+                      the meat of your page content.{" "}
+                    </p>
 
                     <h1 className="display-1">Display 1</h1>
                     <h1 className="display-2">Display 2</h1>
@@ -130,7 +134,6 @@ class UiTypography extends Component {
                     <h1 className="display-4">Display 4</h1>
                     <h1 className="display-5">Display 5</h1>
                     <h1 className="display-6 mb-0">Display 6</h1>
-
                   </CardBody>
                 </Card>
               </Col>
@@ -217,13 +220,18 @@ class UiTypography extends Component {
                 </Card>
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">
-                      Inline List
-                    </CardTitle>
-                    <p className="card-title-desc">Remove a list’s bullets and apply some
-                      light <code className="highlighter-rouge">margin</code> with a combination
-                      of two classes, <code className="highlighter-rouge">.list-inline</code> and
-                      <code className="highlighter-rouge">.list-inline-item</code>.</p>
+                    <CardTitle className="h4">Inline List</CardTitle>
+                    <p className="card-title-desc">
+                      Remove a list’s bullets and apply some light{" "}
+                      <code className="highlighter-rouge">margin</code> with a
+                      combination of two classes,{" "}
+                      <code className="highlighter-rouge">.list-inline</code>{" "}
+                      and
+                      <code className="highlighter-rouge">
+                        .list-inline-item
+                      </code>
+                      .
+                    </p>
 
                     <ul className="list-inline mb-0">
                       <li className="list-inline-item">Lorem ipsum</li>
@@ -254,8 +262,8 @@ class UiTypography extends Component {
                         <div>
                           <blockquote className="blockquote font-size-16 mb-0">
                             <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                              Integer posuere erat a ante.
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Integer posuere erat a ante.
                             </p>
                             <footer className="blockquote-footer">
                               Someone famous in{" "}
@@ -267,8 +275,8 @@ class UiTypography extends Component {
                       <Col xs="6">
                         <blockquote className="blockquote  blockquote-reverse font-size-16 mb-0">
                           <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Integer posuere erat a ante.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Integer posuere erat a ante.
                           </p>
                           <footer className="blockquote-footer">
                             Someone famous in{" "}
@@ -285,7 +293,9 @@ class UiTypography extends Component {
               <Col className="col-12">
                 <Card>
                   <CardBody>
-                    <CardTitle className="h4">Description list alignment</CardTitle>
+                    <CardTitle className="h4">
+                      Description list alignment
+                    </CardTitle>
                     <p className="card-title-desc">
                       Align terms and descriptions horizontally by using our
                       grid system’s predefined classNamees (or semantic mixins).
@@ -341,8 +351,8 @@ class UiTypography extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default UiTypography
+export default UiTypography;

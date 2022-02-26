@@ -18,9 +18,7 @@ class ForgetPwd2 extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>
-              Forgot Password 2 | Skote - React Admin & Dashboard Template
-            </title>
+            <title>Forgot Password 2 | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid className="p-0">
             <Row className="g-0">
@@ -50,7 +48,9 @@ class ForgetPwd2 extends Component {
                       <div className="my-auto">
                         <div>
                           <h5 className="text-primary">Reset Password</h5>
-                          <p className="text-muted">Re-Password with Skote.</p>
+                          <p className="text-muted">
+                            Re-Password with Ilaaj4u.
+                          </p>
                         </div>
 
                         <div className="mt-4">
@@ -136,7 +136,7 @@ class ForgetPwd2 extends Component {
 
                       <div className="mt-4 mt-md-5 text-center">
                         <p className="mb-0">
-                          © {new Date().getFullYear()} Skote. Crafted with{" "}
+                          © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                           <i className="mdi mdi-heart text-danger"></i> by
                           Themesbrand
                         </p>

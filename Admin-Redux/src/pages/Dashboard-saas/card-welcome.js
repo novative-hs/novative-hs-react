@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import { Row, Col, Card } from "reactstrap"
+import React, { Component } from "react";
+import { Row, Col, Card } from "reactstrap";
 
 //Import Images
-import profileImg from "../../assets/images/profile-img.png"
+import profileImg from "../../assets/images/profile-img.png";
 
 class CardWelcome extends Component {
   render() {
@@ -15,7 +15,7 @@ class CardWelcome extends Component {
                 <Col xs="7">
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
-                    <p>Skote Saas Dashboard</p>
+                    <p>Ilaaj4u Saas Dashboard</p>
 
                     <ul className="ps-3 mb-0">
                       <li className="py-1">7 + Layouts</li>
@@ -31,8 +31,8 @@ class CardWelcome extends Component {
           </Card>
         </Col>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default CardWelcome
+export default CardWelcome;

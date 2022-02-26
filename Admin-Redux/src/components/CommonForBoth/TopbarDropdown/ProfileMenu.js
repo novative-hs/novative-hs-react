@@ -14,10 +14,10 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 // actions
-import {
-  getLabProfile,
-  getLabProfileSuccess,
-} from "store/auth/labprofile/actions";
+import { getLabProfile } from "store/auth/labprofile/actions";
+
+// actions
+import { getPatientProfile } from "store/auth/patientprofile/actions";
 
 class ProfileMenu extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class ProfileMenu extends Component {
     this.state = {
       apiURL: process.env.REACT_APP_BACKENDURL,
       menu: false,
-      name: "Admin",
+      name: "",
       logo: "",
     };
     this.toggle = this.toggle.bind(this);
@@ -44,23 +44,25 @@ class ProfileMenu extends Component {
       }, 1000);
 
       setTimeout(() => {
-        console.log("Successss: ", this.props.success);
         this.setState({
           name: this.props.success.name,
           logo: this.state.apiURL + this.props.success.logo,
         });
       }, 3000);
     }
-  }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.success !== this.props.success) {
-  //     const userData = getUserName();
-  //     if (userData) {
-  //       this.setState({ name: userData.username });
-  //     }
-  //   }
-  // }
+    if (this.props.location.pathname.includes("dashboard-patient")) {
+      setTimeout(() => {
+        this.props.getPatientProfile(this.props.match.params.id);
+      }, 1000);
+
+      setTimeout(() => {
+        this.setState({
+          name: this.props.success.name,
+        });
+      }, 3000);
+    }
+  }
 
   render() {
     return (
@@ -93,9 +95,13 @@ class ProfileMenu extends Component {
           <DropdownMenu className="dropdown-menu-end">
             {this.props.location &&
             this.props.location.pathname.includes("dashboard-patient") ? (
-              <DropdownItem tag="a" href={
-                "/dashboard-patient/" + this.props.match.params.id + "/profile"
-              }
+              <DropdownItem
+                tag="a"
+                href={
+                  "/dashboard-patient/" +
+                  this.props.match.params.id +
+                  "/profile"
+                }
               >
                 <i className="bx bx-user font-size-16 align-middle ms-1" />
                 {this.props.t("Patient Profile")}
@@ -142,16 +148,21 @@ ProfileMenu.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getLabProfile: PropTypes.func,
-  getLabProfileSuccess: PropTypes.func,
+  getPatientProfile: PropTypes.func,
 };
 
-const mapStateToProps = state => {
-  const { error, success } = state.LabProfile;
-  return { error, success };
+const mapStateToProps = (state, ownProps) => {
+  if (ownProps.location.pathname.includes("dashboard-patient")) {
+    const { error, success } = state.PatientProfile;
+    return { error, success };
+  } else if (ownProps.location.pathname.includes("dashboard-lab")) {
+    const { error, success } = state.LabProfile;
+    return { error, success };
+  }
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getLabProfile, getLabProfileSuccess })(
+  connect(mapStateToProps, { getLabProfile, getPatientProfile })(
     withTranslation()(ProfileMenu)
   )
 );

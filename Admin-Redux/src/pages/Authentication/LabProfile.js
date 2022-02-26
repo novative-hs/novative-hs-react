@@ -23,11 +23,7 @@ import { withRouter } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 // actions
-import {
-  updateLabProfile,
-  getLabProfile,
-  getLabProfileSuccess,
-} from "../../store/actions";
+import { updateLabProfile, getLabProfile } from "../../store/actions";
 
 class LabProfile extends Component {
   constructor(props) {
@@ -86,7 +82,6 @@ class LabProfile extends Component {
     }, 1000);
 
     setTimeout(() => {
-      console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
         logo: this.state.apiURL + this.props.success.logo,
@@ -113,7 +108,7 @@ class LabProfile extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+            <Breadcrumb title="Lab" breadcrumbItem="Profile" />
 
             <Row>
               <Col lg="12">
@@ -652,7 +647,7 @@ class LabProfile extends Component {
                       </div>
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
-                          Update User Name
+                          Update Profile
                         </Button>
                       </div>
                     </Form>
@@ -674,7 +669,6 @@ LabProfile.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getLabProfile: PropTypes.func,
-  getLabProfileSuccess: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -686,6 +680,5 @@ export default withRouter(
   connect(mapStateToProps, {
     updateLabProfile,
     getLabProfile,
-    getLabProfileSuccess,
   })(LabProfile)
 );

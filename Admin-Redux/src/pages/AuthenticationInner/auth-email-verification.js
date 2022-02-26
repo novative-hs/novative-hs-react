@@ -1,11 +1,11 @@
-import React, { Component } from "react"
-import { Link } from "react-router-dom"
-import MetaTags from 'react-meta-tags';
-import { Card, CardBody, Col, Container, Row } from "reactstrap"
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import MetaTags from "react-meta-tags";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 // import images
-import logodark from "../../assets/images/logo-dark.png"
-import logolight from "../../assets/images/logo-light.png"
+import logodark from "../../assets/images/logo-dark.png";
+import logolight from "../../assets/images/logo-light.png";
 
 export default class EmailVerification extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class EmailVerification extends Component {
       <React.Fragment>
         <div className="account-pages my-5 pt-sm-5">
           <MetaTags>
-            <title>Email Verification | Skote - React Admin & Dashboard Template</title>
+            <title>Email Verification | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container>
             <Row>
@@ -58,10 +58,7 @@ export default class EmailVerification extends Component {
                             , Please check it
                           </p>
                           <div className="mt-4">
-                            <a
-                              href="/"
-                              className="btn btn-success w-md"
-                            >
+                            <a href="/" className="btn btn-success w-md">
                               Verify email
                             </a>
                           </div>
@@ -79,7 +76,7 @@ export default class EmailVerification extends Component {
                     </a>{" "}
                   </p>
                   <p>
-                    © {new Date().getFullYear()} Skote. Crafted with{" "}
+                    © {new Date().getFullYear()} Ilaaj4u. Crafted with{" "}
                     <i className="mdi mdi-heart text-danger"></i> by Themesbrand
                   </p>
                 </div>
@@ -88,6 +85,6 @@ export default class EmailVerification extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }

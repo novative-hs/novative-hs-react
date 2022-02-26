@@ -1,39 +1,39 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import MetaTags from 'react-meta-tags';
-import { isEmpty, map, size } from "lodash"
-import { Link, withRouter } from "react-router-dom"
-import classNames from "classnames"
-import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import MetaTags from "react-meta-tags";
+import { isEmpty, map, size } from "lodash";
+import { Link, withRouter } from "react-router-dom";
+import classNames from "classnames";
+import { Card, CardBody, CardTitle, Col, Container, Row } from "reactstrap";
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-import ReactApexChart from "react-apexcharts"
+import ReactApexChart from "react-apexcharts";
 
 //Import Images
-import images from "../../assets/images"
+import images from "../../assets/images";
 
-import { getTasks } from "../../store/tasks/actions"
-import { options, series, statusClasses } from "common/data/tasks"
+import { getTasks } from "../../store/tasks/actions";
+import { options, series, statusClasses } from "common/data/tasks";
 
 class TasksList extends Component {
-  state = {}
+  state = {};
 
   componentDidMount() {
-    const { onGetTasks } = this.props
-    onGetTasks()
+    const { onGetTasks } = this.props;
+    onGetTasks();
   }
 
   render() {
-    const { tasks } = this.props
-    const recentTasks = tasks.find(task => task.title === "Recent Tasks")
+    const { tasks } = this.props;
+    const recentTasks = tasks.find(task => task.title === "Recent Tasks");
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Task List | Skote - React Admin & Dashboard Template</title>
+            <title>Task List | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Tasks" breadcrumbItem="Task List" />
@@ -75,11 +75,13 @@ class TasksList extends Component {
                                       item.members,
                                       (member, index) =>
                                         index < 2 && (
-                                          <div className="avatar-group-item" key={index}>
+                                          <div
+                                            className="avatar-group-item"
+                                            key={index}
+                                          >
                                             <Link
                                               to="#"
                                               className="d-inline-block"
-
                                             >
                                               {member.userImg ? (
                                                 <img
@@ -100,10 +102,7 @@ class TasksList extends Component {
                                     )}
                                     {size(item.members) > 2 && (
                                       <div className="avatar-group-item">
-                                        <Link
-                                          to="#"
-                                          className="d-inline-block"
-                                        >
+                                        <Link to="#" className="d-inline-block">
                                           <div className="avatar-xs">
                                             <span className="avatar-title rounded-circle bg-success text-white font-size-16">
                                               {size(item.members) - 2} +
@@ -127,7 +126,6 @@ class TasksList extends Component {
                                   </div>
                                 </td>
                               </tr>
-
                             ))}
                           </tbody>
                         </table>
@@ -175,7 +173,10 @@ class TasksList extends Component {
                                       item.members,
                                       (member, index) =>
                                         index < 2 && (
-                                          <div className="avatar-group-item" key={'member-' + index}>
+                                          <div
+                                            className="avatar-group-item"
+                                            key={"member-" + index}
+                                          >
                                             <Link
                                               to="#"
                                               className="d-inline-block"
@@ -199,10 +200,7 @@ class TasksList extends Component {
                                     )}
                                     {size(item.members) > 2 && (
                                       <div className="avatar-group-item">
-                                        <Link
-                                          to="#"
-                                          className="d-inline-block"
-                                        >
+                                        <Link to="#" className="d-inline-block">
                                           <div className="avatar-xs">
                                             <span className="avatar-title rounded-circle bg-info text-white font-size-16">
                                               {size(item.members) - 2} +
@@ -226,24 +224,24 @@ class TasksList extends Component {
           </Container>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 TasksList.propTypes = {
   tasks: PropTypes.array,
   onGetTasks: PropTypes.func,
-}
+};
 
 const mapStateToProps = ({ tasks }) => ({
   tasks: tasks.tasks,
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   onGetTasks: () => dispatch(getTasks()),
-})
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(TasksList))
+)(withRouter(TasksList));
