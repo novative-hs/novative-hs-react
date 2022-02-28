@@ -180,8 +180,18 @@ class NearbyLabs extends Component {
     this.setState({ page });
   };
 
-  handleChange = (e, labProps) => {
-    var searchBox = new window.google.maps.places.SearchBox(e.target);
+  handleChange = e => {
+    var cityBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(33.684422, 73.047882)
+    );
+
+    const options = {
+      bounds: cityBounds,
+      types: ["establishment"],
+      componentRestrictions: { country: "pk" },
+    };
+
+    var searchBox = new window.google.maps.places.SearchBox(e.target, options);
 
     searchBox.addListener("places_changed", () => {
       setTimeout(() => {
@@ -333,57 +343,18 @@ class NearbyLabs extends Component {
 
               <Col lg="9">
                 <Row className="mb-3">
-                  <Col xl="4" sm="6">
-                    <div className="mt-2">
-                      <h5>Clothes</h5>
+                  <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
+                    <div className="position-relative">
+                      <Input
+                        defaultValue={this.state.address}
+                        onChange={e => this.handleChange(e)}
+                        id="pac-input"
+                        type="text"
+                        className="form-control"
+                        placeholder="Search Location..."
+                      />
                     </div>
-                  </Col>
-                  <Col lg="8" sm="6">
-                    <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
-                      <div className="search-box me-2">
-                        <div className="position-relative">
-                          <Input
-                            defaultValue={this.state.address}
-                            onChange={e => this.handleChange(e, this.props)}
-                            searchOptions={{
-                              componentRestrictions: { country: ["pk"] },
-                            }}
-                            id="pac-input"
-                            type="text"
-                            className="form-control border-0"
-                            placeholder="Search..."
-                          />
-                          <i className="bx bx-search-alt search-icon" />
-                        </div>
-                      </div>
-                      <Nav className="product-view-nav" pills>
-                        <NavItem>
-                          <NavLink
-                            className={classnames({
-                              active: this.state.activeTab === "1",
-                            })}
-                            onClick={() => {
-                              this.toggleTab("1");
-                            }}
-                          >
-                            <i className="bx bx-grid-alt" />
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            className={classnames({
-                              active: this.state.activeTab === "2",
-                            })}
-                            onClick={() => {
-                              this.toggleTab("2");
-                            }}
-                          >
-                            <i className="bx bx-list-ul" />
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                    </Form>
-                  </Col>
+                  </Form>
                 </Row>
                 <Row>
                   {!isEmpty(nearbyLabs) &&
