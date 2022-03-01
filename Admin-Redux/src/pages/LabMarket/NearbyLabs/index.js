@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Select from "react-select";
+import { Formik, Field, Form } from "formik";
+import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
@@ -9,7 +12,6 @@ import {
   CardTitle,
   Col,
   Container,
-  Form,
   Input,
   Label,
   Nav,
@@ -40,6 +42,149 @@ import { productsData } from "common/data";
 import { getNearbyLabs } from "store/labmarket/actions";
 import { any } from "prop-types";
 
+let optionGroup = [
+  {
+    options: [
+      { label: "Ahmadpur East", value: "Ahmadpur East" },
+      { label: "Ahmed Nager Chatha", value: "Ahmed Nager Chatha" },
+      { label: "Ali Khan Abad", value: "Ali Khan Abad" },
+      { label: "Alipur", value: "Alipur" },
+      { label: "Arifwala", value: "Arifwala" },
+      { label: "Attock", value: "Attock" },
+      { label: "Bhera", value: "Bhera" },
+      { label: "Bhalwal", value: "Bhalwal" },
+      { label: "Bahawalnagar", value: "Bahawalnagar" },
+      { label: "Bahawalpur", value: "Bahawalpur" },
+      { label: "Bhakkar", value: "Bhakkar" },
+      { label: "Burewala", value: "Burewala" },
+      { label: "Chenab Nagar", value: "Chenab Nagar" },
+      { label: "Chillianwala", value: "Chillianwala" },
+      { label: "Choa Saidanshah", value: "Choa Saidanshah" },
+      { label: "Chakwal", value: "Chakwal" },
+      { label: "Chichawatni", value: "Chichawatni" },
+      { label: "Chiniot", value: "Chiniot" },
+      { label: "Chishtian", value: "Chishtian" },
+      { label: "Chunian", value: "Chunian" },
+      { label: "Dajkot", value: "Dajkot" },
+      { label: "Daska", value: "Daska" },
+      { label: "Darya Khan", value: "Darya Khan" },
+      { label: "Dera Ghazi Khan", value: "Dera Ghazi Khan" },
+      { label: "Dhaular", value: "Dhaular" },
+      { label: "Dina", value: "Dina" },
+      { label: "Dinga", value: "Dinga" },
+      { label: "Dhudial Chakwal", value: "Dhudial Chakwal" },
+      { label: "Dipalpur", value: "Dipalpur" },
+      { label: "Faisalabad", value: "Faisalabad" },
+      { label: "Fateh Jang", value: "Fateh Jang" },
+      { label: "Ghakhar Mandi", value: "Ghakhar Mandi" },
+      { label: "Gojra", value: "Gojra" },
+      { label: "Gujranwala", value: "Gujranwala" },
+      { label: "Gujrat", value: "Gujrat" },
+      { label: "Gujar Khan", value: "Gujar Khan" },
+      { label: "Harappa", value: "Harappa" },
+      { label: "Hafizabad", value: "Hafizabad" },
+      { label: "Haroonabad", value: "Haroonabad" },
+      { label: "Hasilpur", value: "Hasilpur" },
+      { label: "Haveli Lakha", value: "Haveli Lakha" },
+      { label: "Jampur", value: "Jampur" },
+      { label: "Jaranwala", value: "Jaranwala" },
+      { label: "Jhang", value: "Jhang" },
+      { label: "Jhelum", value: "Jhelum" },
+      { label: "Kallar Syedan", value: "Kallar Syedan" },
+      { label: "Kalabagh", value: "Kalabagh" },
+      { label: "Karor Lal Esan", value: "Karor Lal Esan" },
+      { label: "Kasur", value: "Kasur" },
+      { label: "Kamalia", value: "Kamalia" },
+      { label: "Kāmoke", value: "Kāmoke" },
+      { label: "Khanewal", value: "Khanewal" },
+      { label: "Khanpur", value: "Khanpur" },
+      { label: "Khanqah Sharif", value: "Khanqah Sharif" },
+      { label: "Kharian", value: "Kharian" },
+      { label: "Khushab", value: "Khushab" },
+      { label: "Kot Adu", value: "Kot Adu" },
+      { label: "Jauharabad", value: "Jauharabad" },
+      { label: "Lahore", value: "Lahore" },
+      { label: "Islamabad", value: "Islamabad" },
+      { label: "Lalamusa", value: "Lalamusa" },
+      { label: "Layyah", value: "Layyah" },
+      { label: "Lawa Chakwal", value: "Lawa Chakwal" },
+      { label: "Liaquat Pur", value: "Liaquat Pur" },
+      { label: "Lodhran", value: "Lodhran" },
+      { label: "Malakwal", value: "Malakwal" },
+      { label: "Mamoori", value: "Mamoori" },
+      { label: "Mailsi", value: "Mailsi" },
+      { label: "Mandi Bahauddin", value: "Mandi Bahauddin" },
+      { label: "Mian Channu", value: "Mian Channu" },
+      { label: "Mianwali", value: "Mianwali" },
+      { label: "Miani", value: "Miani" },
+      { label: "Multan", value: "Multan" },
+      { label: "Murree", value: "Murree" },
+      { label: "Muridke", value: "Muridke" },
+      { label: "Mianwali Bangla", value: "Mianwali Bangla" },
+      { label: "Muzaffargarh", value: "Muzaffargarh" },
+      { label: "Narowal", value: "Narowal" },
+      { label: "Nankana Sahib", value: "Nankana Sahib" },
+      { label: "Okara", value: "Okara" },
+      { label: "Renala Khurd", value: "Renala Khurd" },
+      { label: "Pakpattan", value: "Pakpattan" },
+      { label: "Pattoki", value: "Pattoki" },
+      { label: "Pindi Bhattian", value: "Pindi Bhattian" },
+      { label: "Pind Dadan Khan", value: "Pind Dadan Khan" },
+      { label: "Pir Mahal", value: "Pir Mahal" },
+      { label: "Qaimpur", value: "Qaimpur" },
+      { label: "Qila Didar Singh", value: "Qila Didar Singh" },
+      { label: "Raiwind", value: "Raiwind" },
+      { label: "Rajanpur", value: "Rajanpur" },
+      { label: "Rahim Yar Khan", value: "Rahim Yar Khan" },
+      { label: "Rawalpindi", value: "Rawalpindi" },
+      { label: "Sadiqabad", value: "Sadiqabad" },
+      { label: "Sagri", value: "Sagri" },
+      { label: "Sahiwal", value: "Sahiwal" },
+      { label: "Sambrial", value: "Sambrial" },
+      { label: "Samundri", value: "Samundri" },
+      { label: "Sangla Hill", value: "Sangla Hill" },
+      { label: "Sarai Alamgir", value: "Sarai Alamgir" },
+      { label: "Sargodha", value: "Sargodha" },
+      { label: "Shakargarh", value: "Shakargarh" },
+      { label: "Sheikhupura", value: "Sheikhupura" },
+      { label: "Shujaabad", value: "Shujaabad" },
+      { label: "Sialkot", value: "Sialkot" },
+      { label: "Sohawa", value: "Sohawa" },
+      { label: "Soianwala", value: "Soianwala" },
+      { label: "Siranwali", value: "Siranwali" },
+      { label: "Tandlianwala", value: "Tandlianwala" },
+      { label: "Talagang", value: "Talagang" },
+      { label: "Taxila", value: "Taxila" },
+      { label: "Toba Tek Singh", value: "Toba Tek Singh" },
+      { label: "Vehari", value: "Vehari" },
+      { label: "Wah Cantonment", value: "Wah Cantonment" },
+      { label: "Wazirabad", value: "Wazirabad" },
+      { label: "Yazman", value: "Yazman" },
+      { label: "Zafarwal", value: "Zafarwal" },
+    ],
+  },
+];
+
+// To remove thick blue border effect
+const style = {
+  control: (base, state) => ({
+    ...base,
+    // This line disable the blue border
+    boxShadow: state.isFocused ? 0 : 1,
+    "&:hover": {
+      border: state.isFocused ? 0 : 1,
+    },
+  }),
+};
+
+// To give error border effect on single value select
+const errorStyle = {
+  control: base => ({
+    ...base,
+    borderColor: "#f46a6a",
+  }),
+};
+
 class NearbyLabs extends Component {
   constructor(props) {
     super(props);
@@ -49,6 +194,10 @@ class NearbyLabs extends Component {
       apiURL: process.env.REACT_APP_BACKENDURL,
       activeTab: "1",
       address: "",
+      type: "",
+      city: "",
+      location: "",
+      cityError: "",
       discountData: [],
       filters: {
         discount: [],
@@ -204,6 +353,17 @@ class NearbyLabs extends Component {
     });
   };
 
+  handleCityError = () => {
+    if (!this.state.city) {
+      this.setState({ cityError: "Please select city" });
+    }
+  };
+
+  handleSelectGroup = selectedGroup => {
+    this.setState({ city: selectedGroup.value });
+    this.setState({ cityError: "" });
+  };
+
   render() {
     const { history } = this.props;
     const { discountData, nearbyLabs, page, totalPage } = this.state;
@@ -343,7 +503,107 @@ class NearbyLabs extends Component {
 
               <Col lg="9">
                 <Row className="mb-3">
-                  <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
+                  <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                      type: (this.state && this.state.type) || "",
+                      city: (this.state && this.state.city) || "",
+                      location: (this.state && this.state.location) || "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      city: Yup.string().when("type", {
+                        is: val => val === "Custom Address",
+                        then: Yup.string().required("Please enter your City"),
+                      }),
+                      location: Yup.string().when("type", {
+                        is: val => val === "Custom Address",
+                        then: Yup.string().required(
+                          "Please enter your Location"
+                        ),
+                      }),
+                    })}
+                  >
+                    {({ errors, status, touched }) => (
+                      <Form className="form-horizontal">
+                        {/* Type field */}
+                        <Row>
+                          <Col lg="3">
+                            <div className="mb-3">
+                              <Field
+                                name="type"
+                                component="select"
+                                onChange={e =>
+                                  this.setState({
+                                    type: e.target.value,
+                                  })
+                                }
+                                value={this.state.type}
+                                className="form-select"
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="Registered Address">
+                                  Registered Address
+                                </option>
+                                <option value="Custom Address">
+                                  Custom Address
+                                </option>
+                              </Field>
+                            </div>
+                          </Col>
+
+                          {/* Custom Address field */}
+                          <Col lg="3">
+                            {this.state.type === "Custom Address" && (
+                              <div className="mb-3">
+                                <Select
+                                  styles={
+                                    this.state.cityError ? errorStyle : style
+                                  }
+                                  name="city "
+                                  component="Select"
+                                  onChange={this.handleSelectGroup}
+                                  className="defautSelectParent is-invalid"
+                                  options={optionGroup}
+                                  placeholder="Select City..."
+                                />
+                                {this.state.cityError && (
+                                  <div
+                                    style={{
+                                      marginTop: "0.25rem",
+                                      fontSize: "80%",
+                                      color: "#f46a6a",
+                                    }}
+                                  >
+                                    {this.state.cityError}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </Col>
+
+                          {/* Custom Address field */}
+                          <Col lg="3">
+                            {this.state.type === "Custom Address" && (
+                              <div className="mb-3">
+                                <Input
+                                  defaultValue={this.state.address}
+                                  onChange={e => this.handleChange(e)}
+                                  onFocus={this.handleCityError}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Search Location..."
+                                />
+                              </div>
+                            )}
+                          </Col>
+                        </Row>
+                      </Form>
+                    )}
+                  </Formik>
+                  {/* <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
                     <div className="position-relative">
                       <Input
                         defaultValue={this.state.address}
@@ -354,7 +614,7 @@ class NearbyLabs extends Component {
                         placeholder="Search Location..."
                       />
                     </div>
-                  </Form>
+                  </Form> */}
                 </Row>
                 <Row>
                   {!isEmpty(nearbyLabs) &&
