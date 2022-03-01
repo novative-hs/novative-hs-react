@@ -372,10 +372,10 @@ class NearbyLabs extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Products | Ilaaj4u - Dashboard</title>
+            <title>Nearby Labs | Ilaaj4u - Dashboard</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Ecommerce" breadcrumbItem="Products" />
+            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Nearby Labs" />
             <Row>
               <Col lg="3">
                 <Card>
@@ -603,18 +603,6 @@ class NearbyLabs extends Component {
                       </Form>
                     )}
                   </Formik>
-                  {/* <Form className="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
-                    <div className="position-relative">
-                      <Input
-                        defaultValue={this.state.address}
-                        onChange={e => this.handleChange(e)}
-                        id="pac-input"
-                        type="text"
-                        className="form-control"
-                        placeholder="Search Location..."
-                      />
-                    </div>
-                  </Form> */}
                 </Row>
                 <Row>
                   {!isEmpty(nearbyLabs) &&
@@ -680,23 +668,6 @@ class NearbyLabs extends Component {
                                   {nearbyLab.landline}
                                 </span>
                               </div>
-                              {/* <div className="text-muted mb-3">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div> */}
-                              {/* <h5 className="my-0">
-                                <span className="text-muted me-2">
-                                  <del>${nearbyLab.oldPrice}</del>
-                                </span>{" "}
-                                <b>${nearbyLab.newPrice}</b>
-                              </h5> */}
                             </div>
                           </CardBody>
                         </Card>
