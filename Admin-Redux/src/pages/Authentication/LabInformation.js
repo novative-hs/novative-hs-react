@@ -57,6 +57,7 @@ class LabInformation extends Component {
       logo: "",
       owner_name: "",
       registration_no: "",
+      national_taxation_no: "",
       email: "",
       phone: "",
       landline: "",
@@ -127,18 +128,10 @@ class LabInformation extends Component {
                               color="success"
                               style={{ marginTop: "13px" }}
                             >
-                              You have registered successfully and you can now{" "}
-                              <Link>
-                                {" "}
-                                <Link
-                                  to="/login"
-                                  className="fw-medium text-primary"
-                                >
-                                  {" "}
-                                  login
-                                </Link>{" "}
-                              </Link>{" "}
-                              to your account.
+                              You have registered successfully and your account
+                              is pending for approval, which will be done by our
+                              staff after inspection of your lab. Thank you for
+                              your interest.
                             </Alert>
                           ) : null}
 
@@ -167,6 +160,10 @@ class LabInformation extends Component {
                                 (this.state && this.state.owner_name) || "",
                               registration_no:
                                 (this.state && this.state.registration_no) ||
+                                "",
+                              national_taxation_no:
+                                (this.state &&
+                                  this.state.national_taxation_no) ||
                                 "",
                               email: (this.state && this.state.email) || "",
                               phone: (this.state && this.state.phone) || "",
@@ -217,6 +214,12 @@ class LabInformation extends Component {
                                 255,
                                 "Please enter maximum 255 characters"
                               ),
+                              national_taxation_no: Yup.string()
+                                .required("Please enter NTN # of your lab")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
                               email: Yup.string()
                                 .required("Please enter your email")
                                 .email("Please enter valid email")
@@ -292,7 +295,7 @@ class LabInformation extends Component {
                                   <Field
                                     id="name"
                                     name="name"
-                                    placeholder="LaboMart"
+                                    placeholder="Labo Mart"
                                     type="text"
                                     onChange={e =>
                                       this.setState({ name: e.target.value })
@@ -460,13 +463,13 @@ class LabInformation extends Component {
                                   />
                                 </div>
 
-                                {/* Registration No field */}
+                                {/* Health Dept Registration No. field */}
                                 <div className="mb-3">
                                   <Label
                                     for="registration_no"
                                     className="form-label"
                                   >
-                                    Health dept registration number
+                                    Health dept registration number (optional)
                                   </Label>
                                   <Field
                                     id="registration_no"
@@ -489,6 +492,40 @@ class LabInformation extends Component {
                                   />
                                   <ErrorMessage
                                     name="registration_no"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+
+                                {/* National Taxation No field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="national_taxation_no"
+                                    className="form-label"
+                                  >
+                                    Lab NTN #
+                                  </Label>
+                                  <Field
+                                    id="national_taxation_no"
+                                    name="national_taxation_no"
+                                    placeholder="74398H3847"
+                                    type="text"
+                                    onChange={e =>
+                                      this.setState({
+                                        national_taxation_no: e.target.value,
+                                      })
+                                    }
+                                    value={this.state.national_taxation_no}
+                                    className={
+                                      "form-control" +
+                                      (errors.national_taxation_no &&
+                                      touched.national_taxation_no
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="national_taxation_no"
                                     component="div"
                                     className="invalid-feedback"
                                   />

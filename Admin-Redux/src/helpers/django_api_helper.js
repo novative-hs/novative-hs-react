@@ -112,6 +112,7 @@ export const postLabInformation = (id, lab) => {
   formData.append("logo", lab.logo);
   formData.append("owner_name", lab.owner_name);
   formData.append("registration_no", lab.registration_no);
+  formData.append("national_taxation_no", lab.national_taxation_no);
   formData.append("email", lab.email);
   formData.append("phone", lab.phone);
   formData.append("landline", lab.landline);
@@ -488,11 +489,15 @@ export const getLabProfile = id =>
   });
 
 export const updateLabProfile = (labProfile, id) => {
+  console.log(labProfile.registration_no);
+  console.log(labProfile.email);
   let formData = new FormData();
   formData.append("account_id", id);
   formData.append("name", labProfile.name);
   formData.append("logo", labProfile.logo);
   formData.append("owner_name", labProfile.owner_name);
+  formData.append("registration_no", labProfile.registration_no);
+  formData.append("email", labProfile.email);
   formData.append("phone", labProfile.phone);
   formData.append("landline", labProfile.landline);
   formData.append("address", labProfile.address);
