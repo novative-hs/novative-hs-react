@@ -627,7 +627,7 @@ class LabProfile extends Component {
                       {/* Is Active */}
                       <div className="mb-3">
                         <Label for="is_active" className="form-label">
-                          Are You Active?
+                          Are you active for providing services?
                         </Label>
                         <Field
                           name="is_active"
