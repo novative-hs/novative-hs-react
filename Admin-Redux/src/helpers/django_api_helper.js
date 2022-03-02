@@ -112,6 +112,7 @@ export const postLabInformation = (id, lab) => {
   formData.append("logo", lab.logo);
   formData.append("owner_name", lab.owner_name);
   formData.append("registration_no", lab.registration_no);
+  formData.append("national_taxation_no", lab.national_taxation_no);
   formData.append("email", lab.email);
   formData.append("phone", lab.phone);
   formData.append("landline", lab.landline);
@@ -283,7 +284,7 @@ export const deleteOfferedTest = offeredTest =>
     headers: getHeader(authHeader()),
   });
 
-// ------------- Sample Collector Requests START -------------
+// ------------- Home Sample Collector Requests START -------------
 export const getSampleCollectors = id =>
   get(`${url.GET_SAMPLE_COLLECTORS}/${id}`, {
     headers: getHeader(authHeader()),
@@ -292,6 +293,7 @@ export const getSampleCollectors = id =>
 export const addNewSampleCollector = (sampleCollector, id) => {
   let formData = new FormData();
   formData.append("name", sampleCollector.name);
+  formData.append("gender", sampleCollector.gender);
   formData.append("cnic", sampleCollector.cnic);
   formData.append("phone", sampleCollector.phone);
   formData.append("photo", sampleCollector.photo);
@@ -305,6 +307,7 @@ export const updateSampleCollector = sampleCollector => {
   let formData = new FormData();
   formData.append("id", sampleCollector.id);
   formData.append("name", sampleCollector.name);
+  formData.append("gender", sampleCollector.gender);
   formData.append("cnic", sampleCollector.cnic);
   formData.append("phone", sampleCollector.phone);
   formData.append("photo", sampleCollector.photo);
@@ -332,6 +335,7 @@ export const getQualityCertificates = id =>
 export const addNewQualityCertificate = (qualityCertificate, id) => {
   let formData = new FormData();
   formData.append("name", qualityCertificate.name);
+  formData.append("type", qualityCertificate.type);
   formData.append("certificate", qualityCertificate.certificate);
 
   return axios.post(`${url.ADD_NEW_QUALITY_CERTIFICATE}/${id}`, formData, {
@@ -343,6 +347,7 @@ export const updateQualityCertificate = qualityCertificate => {
   let formData = new FormData();
   formData.append("id", qualityCertificate.id);
   formData.append("name", qualityCertificate.name);
+  formData.append("type", qualityCertificate.type);
   formData.append("certificate", qualityCertificate.certificate);
 
   return axios.put(
@@ -488,11 +493,15 @@ export const getLabProfile = id =>
   });
 
 export const updateLabProfile = (labProfile, id) => {
+  console.log(labProfile.registration_no);
+  console.log(labProfile.email);
   let formData = new FormData();
   formData.append("account_id", id);
   formData.append("name", labProfile.name);
   formData.append("logo", labProfile.logo);
   formData.append("owner_name", labProfile.owner_name);
+  formData.append("registration_no", labProfile.registration_no);
+  formData.append("email", labProfile.email);
   formData.append("phone", labProfile.phone);
   formData.append("landline", labProfile.landline);
   formData.append("address", labProfile.address);

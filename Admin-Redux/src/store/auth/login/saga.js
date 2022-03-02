@@ -9,28 +9,35 @@ import { postLogin } from "../../../helpers/django_api_helper";
 
 function* loginUser({ payload: { user, history } }) {
   try {
+    console.log("Inside try");
     const response = yield call(postLogin, {
       username: user.username,
       password: user.password,
     });
 
-    const data = response.data.data;
+    // If there is data in response then execute this block
+    // Otherwise there must be some error so execute else block
+    if (response.data.data) {
+      const data = response.data.data;
 
-    console.log("Data: ", data);
-    localStorage.setItem("authUser", JSON.stringify(data));
-    yield put(loginSuccess(data));
+      localStorage.setItem("authUser", JSON.stringify(data));
+      yield put(loginSuccess(data));
 
-    if (data.account_type == "patient") {
-      history.push("/dashboard-patient/" + data.user_id);
-    } else if (data.account_type == "labowner") {
-      history.push("/dashboard-lab/" + data.user_id);
-    } else if (data.account_type == "corporate") {
-      history.push("/dashboard-corporate/" + data.user_id);
+      if (data.account_type == "patient") {
+        history.push("/dashboard-patient/" + data.user_id);
+      } else if (data.account_type == "labowner") {
+        history.push("/dashboard-lab/" + data.user_id);
+      } else if (data.account_type == "corporate") {
+        history.push("/dashboard-corporate/" + data.user_id);
+      } else {
+        history.push("/dashboard");
+      }
     } else {
-      history.push("/dashboard");
+      const message = response.data.message;
+      yield put(apiError(message));
     }
   } catch (error) {
-    yield put(apiError(error));
+    yield put(apiError("Sorry! You have provided invalid credentials."));
   }
 }
 

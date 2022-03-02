@@ -215,7 +215,7 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
-                {/* Sample Collector Links */}
+                {/* Home Sample Collector Links */}
                 <li>
                   <Link
                     to={
@@ -225,7 +225,7 @@ class SidebarContent extends Component {
                     }
                   >
                     <i className="mdi mdi-bike" />
-                    <span>{this.props.t("Sample Collectors")}</span>
+                    <span>{this.props.t("Home Sample Collectors")}</span>
                   </Link>
                 </li>
 

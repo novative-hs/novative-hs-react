@@ -4,12 +4,12 @@ import {
   LOGOUT_USER,
   LOGOUT_USER_SUCCESS,
   API_ERROR,
-} from "./actionTypes"
+} from "./actionTypes";
 
 const initialState = {
   error: "",
   loading: false,
-}
+};
 
 const login = (state = initialState, action) => {
   switch (action.type) {
@@ -17,28 +17,29 @@ const login = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
-      }
-      break
+      };
+      break;
     case LOGIN_SUCCESS:
       state = {
         ...state,
         loading: false,
-      }
-      break
+      };
+      break;
     case LOGOUT_USER:
-      state = { ...state }
-      break
+      state = { ...state };
+      break;
     case LOGOUT_USER_SUCCESS:
-      state = { ...state }
-      break
+      state = { ...state };
+      break;
     case API_ERROR:
-      state = { ...state, error: action.payload, loading: false }
-      break
+      console.log("Inside reducer: ", action.payload);
+      state = { ...state, error: action.payload, loading: false };
+      break;
     default:
-      state = { ...state }
-      break
+      state = { ...state };
+      break;
   }
-  return state
-}
+  return state;
+};
 
-export default login
+export default login;

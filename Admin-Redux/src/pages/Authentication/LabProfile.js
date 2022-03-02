@@ -34,6 +34,7 @@ class LabProfile extends Component {
       logo: "",
       owner_name: "",
       registration_no: "",
+      national_taxation_no: "",
       email: "",
       phone: "",
       landline: "",
@@ -87,6 +88,7 @@ class LabProfile extends Component {
         logo: this.state.apiURL + this.props.success.logo,
         owner_name: this.props.success.owner_name,
         registration_no: this.props.success.registration_no,
+        national_taxation_no: this.props.success.national_taxation_no,
         email: this.props.success.email,
         phone: this.props.success.phone,
         landline: this.props.success.landline,
@@ -150,6 +152,8 @@ class LabProfile extends Component {
                     owner_name: (this.state && this.state.owner_name) || "",
                     registration_no:
                       (this.state && this.state.registration_no) || "",
+                    national_taxation_no:
+                      (this.state && this.state.national_taxation_no) || "",
                     email: (this.state && this.state.email) || "",
                     phone: (this.state && this.state.phone) || "",
                     landline: (this.state && this.state.landline) || "",
@@ -175,9 +179,6 @@ class LabProfile extends Component {
                     owner_name: Yup.string()
                       .required("Please enter lab owner name")
                       .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters"),
-                    registration_no: Yup.string()
-                      .required("Please enter lab owner name")
                       .max(255, "Please enter maximum 255 characters"),
                     email: Yup.string()
                       .required("Please enter your email")
@@ -278,7 +279,7 @@ class LabProfile extends Component {
                         <Field
                           id="name"
                           name="name"
-                          placeholder="LaboMart"
+                          placeholder="Labo Mart"
                           type="text"
                           onChange={e =>
                             this.setState({ name: e.target.value })
@@ -298,7 +299,7 @@ class LabProfile extends Component {
                       {/* Logo field */}
                       <div className="mb-3">
                         <Label for="name" className="form-label">
-                          Logo
+                          Logo (Choose file only if you want to change logo)
                         </Label>
                         <Input
                           id="formFile"
@@ -353,15 +354,45 @@ class LabProfile extends Component {
                         />
                       </div>
 
-                      {/* Registration No field */}
+                      {/* Health department registration no field */}
                       <div className="mb-3">
                         <Label for="registration_no" className="form-label">
-                          Health dept registration number
+                          Health department registration number
                         </Label>
                         <Field
-                          id="registration_no"
                           name="registration_no"
-                          placeholder="74398H3847"
+                          placeholder="7746343784"
+                          type="text"
+                          onChange={e =>
+                            this.setState({ registration_no: e.target.value })
+                          }
+                          value={this.state.registration_no}
+                          className={
+                            "form-control" +
+                            (errors.registration_no && touched.registration_no
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="registration_no"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+
+                      {/* National Taxation No field */}
+                      <div className="mb-3">
+                        <Label
+                          for="national_taxation_no"
+                          className="form-label"
+                        >
+                          Lab NTN #
+                        </Label>
+                        <Field
+                          id="national_taxation_no"
+                          name="national_taxation_no"
+                          placeholder="3-3473947"
                           type="text"
                           readOnly={true}
                           className="form-control"
@@ -627,7 +658,7 @@ class LabProfile extends Component {
                       {/* Is Active */}
                       <div className="mb-3">
                         <Label for="is_active" className="form-label">
-                          Are You Active?
+                          Are you active for providing services?
                         </Label>
                         <Field
                           name="is_active"

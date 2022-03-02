@@ -91,7 +91,12 @@ class QualityCertificatesList extends Component {
         },
         {
           dataField: "name",
-          text: "Name",
+          text: "Title",
+          sort: true,
+        },
+        {
+          dataField: "type",
+          text: "Type",
           sort: true,
         },
         {
@@ -235,6 +240,7 @@ class QualityCertificatesList extends Component {
       qualityCertificate: {
         id: qualityCertificate.id,
         name: qualityCertificate.name,
+        type: qualityCertificate.type,
         certificate: this.state.apiURL + qualityCertificate.certificate,
       },
       certificateImg: "",
@@ -377,6 +383,11 @@ class QualityCertificatesList extends Component {
                                                 this.state.qualityCertificate
                                                   .name) ||
                                               "",
+                                            type:
+                                              (this.state.qualityCertificate &&
+                                                this.state.qualityCertificate
+                                                  .type) ||
+                                              "Lab",
                                             certificate:
                                               (this.state &&
                                                 this.state.certificateImg) ||
@@ -399,6 +410,7 @@ class QualityCertificatesList extends Component {
                                             ),
                                           })}
                                           onSubmit={values => {
+                                            console.log("Values:");
                                             if (isEdit) {
                                               if (!this.state.certificateImg) {
                                                 this.toDataURL(
@@ -419,6 +431,7 @@ class QualityCertificatesList extends Component {
                                                     {
                                                       id: qualityCertificate.id,
                                                       name: values.name,
+                                                      type: values.type,
                                                       certificate:
                                                         this.state
                                                           .certificateImg,
@@ -437,6 +450,7 @@ class QualityCertificatesList extends Component {
                                                   {
                                                     id: qualityCertificate.id,
                                                     name: values.name,
+                                                    type: values.type,
                                                     certificate:
                                                       this.state.certificateImg,
                                                   };
@@ -456,6 +470,7 @@ class QualityCertificatesList extends Component {
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
                                                 name: values.name,
+                                                type: values.type,
                                                 certificate:
                                                   this.state.certificateImg,
                                               };
@@ -487,7 +502,7 @@ class QualityCertificatesList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Name
+                                                      Certificate title
                                                     </Label>
                                                     <Field
                                                       name="name"
@@ -505,6 +520,7 @@ class QualityCertificatesList extends Component {
                                                                 id: qualityCertificate.id,
                                                                 name: e.target
                                                                   .value,
+                                                                type: qualityCertificate.type,
                                                                 certificate:
                                                                   qualityCertificate.certificate,
                                                               },
@@ -515,6 +531,7 @@ class QualityCertificatesList extends Component {
                                                               {
                                                                 name: e.target
                                                                   .value,
+                                                                type: qualityCertificate.type,
                                                               },
                                                           });
                                                         }
@@ -534,6 +551,50 @@ class QualityCertificatesList extends Component {
                                                     />
                                                   </div>
 
+                                                  {/* Type field */}
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Certificate is for
+                                                    </Label>
+                                                    <Field
+                                                      name="type"
+                                                      as="select"
+                                                      className="form-control"
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            qualityCertificate:
+                                                              {
+                                                                id: qualityCertificate.id,
+                                                                name: qualityCertificate.name,
+                                                                type: e.target
+                                                                  .value,
+                                                                certificate:
+                                                                  qualityCertificate.certificate,
+                                                              },
+                                                          });
+                                                        } else {
+                                                          this.setState({
+                                                            qualityCertificate:
+                                                              {
+                                                                name: qualityCertificate.name,
+                                                                type: e.target
+                                                                  .value,
+                                                              },
+                                                          });
+                                                        }
+                                                      }}
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Lab">
+                                                        Lab
+                                                      </option>
+                                                      <option value="Test">
+                                                        Test
+                                                      </option>
+                                                    </Field>
+                                                  </div>
+
                                                   {/* Display current image in edit form only */}
                                                   {qualityCertificate.certificate &&
                                                   qualityCertificate.certificate ? (
@@ -549,7 +610,7 @@ class QualityCertificatesList extends Component {
                                                   {/* Certificate field */}
                                                   <div className="mb-3">
                                                     <Label
-                                                      for="name"
+                                                      for="certificate"
                                                       className="form-label"
                                                     >
                                                       Certificate
