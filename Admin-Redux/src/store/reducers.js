@@ -48,7 +48,7 @@ import offeredTests from "./offered-tests/reducer";
 //pathologists
 import pathologists from "./pathologists/reducer";
 
-//sample collectors
+//home sample collectors
 import sampleCollectors from "./sample-collectors/reducer";
 
 //test certificates

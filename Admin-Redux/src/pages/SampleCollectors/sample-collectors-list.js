@@ -29,8 +29,6 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import images from "assets/images";
-
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
@@ -91,7 +89,12 @@ class SampleCollectorsList extends Component {
         },
         {
           dataField: "name",
-          text: "Name",
+          text: "Title",
+          sort: true,
+        },
+        {
+          dataField: "gender",
+          text: "Gender",
           sort: true,
         },
         {
@@ -101,7 +104,7 @@ class SampleCollectorsList extends Component {
         },
         {
           dataField: "phone",
-          text: "Phone No.",
+          text: "Mobile No.",
           sort: true,
         },
         {
@@ -241,6 +244,7 @@ class SampleCollectorsList extends Component {
       sampleCollector: {
         id: sampleCollector.id,
         name: sampleCollector.name,
+        gender: sampleCollector.gender,
         cnic: sampleCollector.cnic,
         phone: sampleCollector.phone,
         photo: this.state.apiURL + sampleCollector.photo,
@@ -293,12 +297,12 @@ class SampleCollectorsList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Sample Collectors List | Ilaaj4u</title>
+            <title>Home Sample Collectors List | Ilaaj4u</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Sample Collectors"
+              title="Home Sample Collectors"
               breadcrumbItem="Collectors List"
             />
             <Row>
@@ -370,8 +374,8 @@ class SampleCollectorsList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Sample Collector"
-                                          : "Add Sample Collector"}
+                                          ? "Edit Home Sample Collector"
+                                          : "Add Home Sample Collector"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -382,6 +386,10 @@ class SampleCollectorsList extends Component {
                                               (sampleCollector &&
                                                 sampleCollector.name) ||
                                               "",
+                                            gender:
+                                              (sampleCollector &&
+                                                sampleCollector.gender) ||
+                                              "Male",
                                             cnic:
                                               (sampleCollector &&
                                                 sampleCollector.cnic) ||
@@ -446,6 +454,7 @@ class SampleCollectorsList extends Component {
                                                     {
                                                       id: sampleCollector.id,
                                                       name: values.name,
+                                                      gender: values.gender,
                                                       cnic: values.cnic,
                                                       phone: values.phone,
                                                       photo:
@@ -464,6 +473,7 @@ class SampleCollectorsList extends Component {
                                                 const updateSampleCollector = {
                                                   id: sampleCollector.id,
                                                   name: values.name,
+                                                  gender: values.gender,
                                                   cnic: values.cnic,
                                                   phone: values.phone,
                                                   photo:
@@ -485,6 +495,7 @@ class SampleCollectorsList extends Component {
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
                                                 name: values.name,
+                                                gender: values.gender,
                                                 cnic: values.cnic,
                                                 phone: values.phone,
                                                 photo: this.state.collectorImg,
@@ -517,7 +528,7 @@ class SampleCollectorsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Name
+                                                      Title
                                                     </Label>
                                                     <Field
                                                       name="name"
@@ -533,6 +544,8 @@ class SampleCollectorsList extends Component {
                                                               id: sampleCollector.id,
                                                               name: e.target
                                                                 .value,
+                                                              gender:
+                                                                sampleCollector.gender,
                                                               cnic: sampleCollector.cnic,
                                                               phone:
                                                                 sampleCollector.phone,
@@ -545,6 +558,8 @@ class SampleCollectorsList extends Component {
                                                             sampleCollector: {
                                                               name: e.target
                                                                 .value,
+                                                              gender:
+                                                                sampleCollector.gender,
                                                               cnic: sampleCollector.cnic,
                                                               phone:
                                                                 sampleCollector.phone,
@@ -569,6 +584,53 @@ class SampleCollectorsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
+                                                      Gender
+                                                    </Label>
+                                                    <Field
+                                                      name="gender"
+                                                      as="select"
+                                                      className="form-control"
+                                                      onChange={e => {
+                                                        if (isEdit) {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              id: sampleCollector.id,
+                                                              name: sampleCollector.name,
+                                                              gender:
+                                                                e.target.value,
+                                                              cnic: sampleCollector.cnic,
+                                                              phone:
+                                                                sampleCollector.phone,
+                                                              photo:
+                                                                sampleCollector.photo,
+                                                            },
+                                                          });
+                                                        } else {
+                                                          this.setState({
+                                                            sampleCollector: {
+                                                              name: sampleCollector.name,
+                                                              gender:
+                                                                e.target.value,
+                                                              cnic: sampleCollector.cnic,
+                                                              phone:
+                                                                sampleCollector.phone,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Male">
+                                                        Male
+                                                      </option>
+                                                      <option value="Female">
+                                                        Female
+                                                      </option>
+                                                    </Field>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
                                                       CNIC
                                                     </Label>
                                                     <Field
@@ -584,6 +646,8 @@ class SampleCollectorsList extends Component {
                                                             sampleCollector: {
                                                               id: sampleCollector.id,
                                                               name: sampleCollector.name,
+                                                              gender:
+                                                                sampleCollector.gender,
                                                               cnic: e.target
                                                                 .value,
                                                               phone:
@@ -596,6 +660,8 @@ class SampleCollectorsList extends Component {
                                                           this.setState({
                                                             sampleCollector: {
                                                               name: sampleCollector.name,
+                                                              gender:
+                                                                sampleCollector.gender,
                                                               cnic: e.target
                                                                 .value,
                                                               phone:
@@ -621,7 +687,7 @@ class SampleCollectorsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Phone
+                                                      Mobile No
                                                     </Label>
                                                     <Field
                                                       name="phone"
@@ -636,6 +702,8 @@ class SampleCollectorsList extends Component {
                                                             sampleCollector: {
                                                               id: sampleCollector.id,
                                                               name: sampleCollector.name,
+                                                              gender:
+                                                                sampleCollector.gender,
                                                               cnic: sampleCollector.cnic,
                                                               phone:
                                                                 e.target.value,
@@ -647,6 +715,8 @@ class SampleCollectorsList extends Component {
                                                           this.setState({
                                                             sampleCollector: {
                                                               name: sampleCollector.name,
+                                                              gender:
+                                                                sampleCollector.gender,
                                                               cnic: sampleCollector.cnic,
                                                               phone:
                                                                 e.target.value,

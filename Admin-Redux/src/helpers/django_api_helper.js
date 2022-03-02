@@ -284,7 +284,7 @@ export const deleteOfferedTest = offeredTest =>
     headers: getHeader(authHeader()),
   });
 
-// ------------- Sample Collector Requests START -------------
+// ------------- Home Sample Collector Requests START -------------
 export const getSampleCollectors = id =>
   get(`${url.GET_SAMPLE_COLLECTORS}/${id}`, {
     headers: getHeader(authHeader()),
@@ -293,6 +293,7 @@ export const getSampleCollectors = id =>
 export const addNewSampleCollector = (sampleCollector, id) => {
   let formData = new FormData();
   formData.append("name", sampleCollector.name);
+  formData.append("gender", sampleCollector.gender);
   formData.append("cnic", sampleCollector.cnic);
   formData.append("phone", sampleCollector.phone);
   formData.append("photo", sampleCollector.photo);
@@ -306,6 +307,7 @@ export const updateSampleCollector = sampleCollector => {
   let formData = new FormData();
   formData.append("id", sampleCollector.id);
   formData.append("name", sampleCollector.name);
+  formData.append("gender", sampleCollector.gender);
   formData.append("cnic", sampleCollector.cnic);
   formData.append("phone", sampleCollector.phone);
   formData.append("photo", sampleCollector.photo);

@@ -45,7 +45,7 @@ export * from "./offered-tests/actions";
 // pathologists
 export * from "./pathologists/actions";
 
-// sample collectors
+// home sample collectors
 export * from "./sample-collectors/actions";
 
 // quality certificates

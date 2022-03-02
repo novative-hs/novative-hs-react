@@ -585,13 +585,7 @@ class PathologistsList extends Component {
                                                     <Field
                                                       name="is_available_for_consultation"
                                                       as="select"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_available_for_consultation &&
-                                                        touched.is_available_for_consultation
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       multiple={false}
                                                     >
                                                       <option value="Yes">
