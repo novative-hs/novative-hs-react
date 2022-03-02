@@ -28,6 +28,8 @@ class Login extends Component {
   }
 
   render() {
+    console.log("Error: ", this.props.error);
+
     return (
       <React.Fragment>
         <div>
@@ -52,9 +54,7 @@ class Login extends Component {
 
                         <div className="mt-4">
                           {this.props.error && this.props.error ? (
-                            <Alert color="danger">
-                              Sorry! You have provided invalid credentials.
-                            </Alert>
+                            <Alert color="danger">{this.props.error}</Alert>
                           ) : null}
 
                           <Formik

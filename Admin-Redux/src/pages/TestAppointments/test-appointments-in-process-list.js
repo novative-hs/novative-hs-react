@@ -638,13 +638,7 @@ class TestAppointmentsInProcessList extends Component {
                                                           },
                                                         });
                                                       }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.status &&
-                                                        touched.status
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       readOnly={false}
                                                       multiple={false}
                                                     >
