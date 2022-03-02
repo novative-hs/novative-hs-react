@@ -89,7 +89,7 @@ class SampleCollectorsList extends Component {
         },
         {
           dataField: "name",
-          text: "Title",
+          text: "Name",
           sort: true,
         },
         {
@@ -528,7 +528,7 @@ class SampleCollectorsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Title
+                                                      Name
                                                     </Label>
                                                     <Field
                                                       name="name"

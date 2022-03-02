@@ -335,6 +335,7 @@ export const getQualityCertificates = id =>
 export const addNewQualityCertificate = (qualityCertificate, id) => {
   let formData = new FormData();
   formData.append("name", qualityCertificate.name);
+  formData.append("type", qualityCertificate.type);
   formData.append("certificate", qualityCertificate.certificate);
 
   return axios.post(`${url.ADD_NEW_QUALITY_CERTIFICATE}/${id}`, formData, {
@@ -346,6 +347,7 @@ export const updateQualityCertificate = qualityCertificate => {
   let formData = new FormData();
   formData.append("id", qualityCertificate.id);
   formData.append("name", qualityCertificate.name);
+  formData.append("type", qualityCertificate.type);
   formData.append("certificate", qualityCertificate.certificate);
 
   return axios.put(
