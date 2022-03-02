@@ -500,13 +500,7 @@ class OfferedTestsList extends Component {
                                                         defaultValue={
                                                           offeredTest.test_id
                                                         }
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.test_id &&
-                                                          touched.test_id
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
+                                                        className="form-control"
                                                         readOnly={true}
                                                         multiple={false}
                                                       >
@@ -533,13 +527,7 @@ class OfferedTestsList extends Component {
                                                       <Field
                                                         name="test_id"
                                                         as="select"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.test_id &&
-                                                          touched.test_id
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
+                                                        className="form-control"
                                                         multiple={false}
                                                       >
                                                         {testList.map(test => (
@@ -564,13 +552,7 @@ class OfferedTestsList extends Component {
                                                       defaultValue={
                                                         offeredTest.unit_id
                                                       }
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.unit_id &&
-                                                        touched.unit_id
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       multiple={false}
                                                     >
                                                       {units.map(unit => (
@@ -614,13 +596,7 @@ class OfferedTestsList extends Component {
                                                         <Field
                                                           name="duration_type"
                                                           as="select"
-                                                          className={
-                                                            "form-control" +
-                                                            (errors.duration_type &&
-                                                            touched.duration_type
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
+                                                          className="form-control"
                                                           multiple={false}
                                                         >
                                                           <option value="days">
@@ -663,13 +639,7 @@ class OfferedTestsList extends Component {
                                                     <Field
                                                       name="is_eqa_participation"
                                                       as="select"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_eqa_participation &&
-                                                        touched.is_eqa_participation
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       multiple={false}
                                                     >
                                                       <option value="Yes">
@@ -689,13 +659,7 @@ class OfferedTestsList extends Component {
                                                     <Field
                                                       name="is_home_sampling_available"
                                                       as="select"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_home_sampling_available &&
-                                                        touched.is_home_sampling_available
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       multiple={false}
                                                     >
                                                       <option value="Yes">

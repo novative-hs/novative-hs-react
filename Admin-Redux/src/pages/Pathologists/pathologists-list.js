@@ -604,13 +604,7 @@ class PathologistsList extends Component {
                                                     <Field
                                                       name="is_available_on_whatsapp"
                                                       as="select"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_available_on_whatsapp &&
-                                                        touched.is_available_on_whatsapp
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       multiple={false}
                                                     >
                                                       <option value="Yes">
@@ -629,13 +623,7 @@ class PathologistsList extends Component {
                                                     <Field
                                                       name="is_associated_with_pap"
                                                       as="select"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_associated_with_pap &&
-                                                        touched.is_associated_with_pap
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className="form-control"
                                                       multiple={false}
                                                     >
                                                       <option value="Yes">
