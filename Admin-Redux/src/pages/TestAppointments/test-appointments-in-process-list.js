@@ -541,7 +541,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                       defaultValue={this.state.testAppointment.booking_date_time.slice(
                                                         0,
-                                                        -4
+                                                        -9
                                                       )}
                                                       className="form-control"
                                                     />
@@ -557,7 +557,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                       defaultValue={this.state.testAppointment.requested_appointment_date_time.slice(
                                                         0,
-                                                        -4
+                                                        -9
                                                       )}
                                                       className="form-control"
                                                     />
@@ -574,7 +574,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                       defaultValue={this.state.testAppointment.sample_collection_date_time.slice(
                                                         0,
-                                                        -4
+                                                        -9
                                                       )}
                                                       className="form-control"
                                                     />
@@ -590,7 +590,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                       defaultValue={this.state.testAppointment.result_upload_date_time.slice(
                                                         0,
-                                                        -4
+                                                        -9
                                                       )}
                                                       className="form-control"
                                                     />
