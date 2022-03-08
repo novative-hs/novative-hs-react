@@ -58,6 +58,9 @@ class LabInformation extends Component {
       owner_name: "",
       registration_no: "",
       national_taxation_no: "",
+      is_iso_certified: "No",
+      iso_certificate: "",
+      lab_experience: "",
       email: "",
       phone: "",
       landline: "",
@@ -66,6 +69,7 @@ class LabInformation extends Component {
       district: "",
       complaint_handling_email: "",
       complaint_handling_phone: "",
+      registered_by: "Lab",
     };
   }
 
@@ -165,6 +169,12 @@ class LabInformation extends Component {
                                 (this.state &&
                                   this.state.national_taxation_no) ||
                                 "",
+                              is_iso_certified:
+                                (this.state &&
+                                  this.state.is_iso_certified) ||
+                                "No",
+                              iso_certificate: (this.state && this.state.iso_certificate) || "",
+                              lab_experience: (this.state && this.state.lab_experience) || "",
                               email: (this.state && this.state.email) || "",
                               phone: (this.state && this.state.phone) || "",
                               landline:
@@ -181,10 +191,14 @@ class LabInformation extends Component {
                                 (this.state &&
                                   this.state.complaint_handling_phone) ||
                                 "",
-                              accept_credit_card_for_payment:
+                              is_digital_payment_accepted:
                                 (this.state &&
-                                  this.state.accept_credit_card_for_payment) ||
+                                  this.state.is_digital_payment_accepted) ||
                                 "No",
+                              registered_by:
+                                (this.state &&
+                                  this.state.registered_by) ||
+                                "Lab",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -220,6 +234,16 @@ class LabInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
+                              // iso_certificate: Yup.string().when(
+                              //   "is_iso_certified",
+                              //   {
+                              //     is: val => val == "Yes",
+                              //     then: Yup.mixed()
+                              //       .required("Please upload your lab iso certificate"),
+                              //   }
+                              // ),
+                              lab_experience: Yup.string()
+                                .required("Please enter your lab experience"),
                               email: Yup.string()
                                 .required("Please enter your email")
                                 .email("Please enter valid email")
@@ -531,6 +555,93 @@ class LabInformation extends Component {
                                   />
                                 </div>
 
+                                {/* Is ISO 15189 certified field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="is_iso_certified"
+                                    className="form-label"
+                                  >
+                                    Are you certified from ISO 15189?
+                                  </Label>
+                                  <Field
+                                    name="is_iso_certified"
+                                    component="select"
+                                    onChange={e =>
+                                      this.setState({
+                                        is_iso_certified:
+                                          e.target.value,
+                                      })
+                                    }
+                                    value={
+                                      this.state.is_iso_certified
+                                    }
+                                    className="form-select"
+                                  >
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                  </Field>
+                                </div>
+
+                                {/* ISO certificate field */}
+                                {this.state.is_iso_certified === "Yes" && (
+                                <div className="mb-3">
+                                  <Label for="name" className="form-label">
+                                    ISO 15189 Certificate
+                                  </Label>
+                                  <Input
+                                    id="formFile"
+                                    name="iso_certificate"
+                                    placeholder="Choose image"
+                                    type="file"
+                                    multiple={false}
+                                    accept=".jpg,.jpeg,.png"
+                                    onChange={e =>
+                                      this.setState({ iso_certificate: e.target.files[0] })
+                                    }
+                                    className={
+                                      "form-control" +
+                                      (errors.iso_certificate && touched.iso_certificate
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+
+                                  <ErrorMessage
+                                    name="iso_certificate"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                                )}
+
+                                {/* Lab experience field */}
+                                <div className="mb-3">
+                                  <Label for="lab_experience" className="form-label">
+                                    Lab Experience (Years)
+                                  </Label>
+                                  <Field
+                                    id="lab_experience"
+                                    name="lab_experience"
+                                    placeholder="3"
+                                    type="number"
+                                    onChange={e =>
+                                      this.setState({ lab_experience: e.target.value })
+                                    }
+                                    value={this.state.lab_experience}
+                                    className={
+                                      "form-control" +
+                                      (errors.lab_experience && touched.lab_experience
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="lab_experience"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+
                                 {/* Email field */}
                                 <div className="mb-3">
                                   <Label for="email" className="form-label">
@@ -771,30 +882,57 @@ class LabInformation extends Component {
                                   />
                                 </div>
 
-                                {/* Accept Credit Card for Payment field */}
+                                {/* Accept Digital Payments field */}
                                 <div className="mb-3">
                                   <Label
-                                    for="accept_credit_card_for_payment"
+                                    for="is_digital_payment_accepted"
                                     className="form-label"
                                   >
-                                    Do you accept credit card for payment?
+                                    Do you accept digital payments?
                                   </Label>
                                   <Field
-                                    name="accept_credit_card_for_payment"
+                                    name="is_digital_payment_accepted"
                                     component="select"
                                     onChange={e =>
                                       this.setState({
-                                        accept_credit_card_for_payment:
+                                        is_digital_payment_accepted:
                                           e.target.value,
                                       })
                                     }
                                     value={
-                                      this.state.accept_credit_card_for_payment
+                                      this.state.is_digital_payment_accepted
                                     }
                                     className="form-select"
                                   >
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
+                                  </Field>
+                                </div>
+
+                                {/* Registered by field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="registered_by"
+                                    className="form-label"
+                                  >
+                                    Who is registering lab?
+                                  </Label>
+                                  <Field
+                                    name="registered_by"
+                                    component="select"
+                                    onChange={e =>
+                                      this.setState({
+                                        registered_by:
+                                          e.target.value,
+                                      })
+                                    }
+                                    defaultValue={
+                                      this.state.registered_by
+                                    }
+                                    className="form-select"
+                                  >
+                                    <option value="Lab">Lab</option>
+                                    <option value="Marketer">Marketer</option>
                                   </Field>
                                 </div>
 

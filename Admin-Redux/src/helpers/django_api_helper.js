@@ -113,6 +113,9 @@ export const postLabInformation = (id, lab) => {
   formData.append("owner_name", lab.owner_name);
   formData.append("registration_no", lab.registration_no);
   formData.append("national_taxation_no", lab.national_taxation_no);
+  formData.append("is_iso_certified", lab.is_iso_certified);
+  formData.append("iso_certificate", lab.iso_certificate);
+  formData.append("lab_experience", lab.lab_experience);
   formData.append("email", lab.email);
   formData.append("phone", lab.phone);
   formData.append("landline", lab.landline);
@@ -122,9 +125,11 @@ export const postLabInformation = (id, lab) => {
   formData.append("complaint_handling_email", lab.complaint_handling_email);
   formData.append("complaint_handling_phone", lab.complaint_handling_phone);
   formData.append(
-    "accept_credit_card_for_payment",
-    lab.accept_credit_card_for_payment
+    "is_digital_payment_accepted",
+    lab.is_digital_payment_accepted
   );
+  formData.append("registered_by", lab.registered_by);
+
 
   return axios
     .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, {
@@ -142,15 +147,9 @@ export const postLabInformation = (id, lab) => {
           case 400:
             message = err.response.data;
             break;
-          case 404:
-            message = "Sorry! the page you are looking for could not be found";
-            break;
           case 500:
             message =
               "Sorry! something went wrong, please contact our support team";
-            break;
-          case 401:
-            message = "Invalid credentials";
             break;
           default:
             message = err[1];
@@ -516,8 +515,8 @@ export const updateLabProfile = (labProfile, id) => {
     labProfile.complaint_handling_phone
   );
   formData.append(
-    "accept_credit_card_for_payment",
-    labProfile.accept_credit_card_for_payment
+    "is_digital_payment_accepted",
+    labProfile.is_digital_payment_accepted
   );
   formData.append("is_active", labProfile.is_active);
 
