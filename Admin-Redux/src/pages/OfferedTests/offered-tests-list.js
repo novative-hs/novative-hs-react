@@ -400,13 +400,19 @@ class OfferedTestsList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             duration_required:
-                                              Yup.string().required(
-                                                "Please enter time required in days"
-                                              ),
+                                              Yup.number("Please enter number only")
+                                              .required("Please enter duration required for test result preparation")
+                                              .positive()
+                                              .integer()
+                                              .min(0, "Please enter a number greater than or equal to 0")
+                                              .max(100, "Please enter a number less than or equal to 150"),
                                             price:
-                                              Yup.string().required(
-                                                "Please enter price"
-                                              ),
+                                              Yup.number("Please enter number only")
+                                              .required("Please enter your price")
+                                              .positive()
+                                              .integer()
+                                              .min(0, "Please enter a number greater than or equal to 0")
+                                              .max(50000, "Please enter a number less than or equal to 50000"),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {

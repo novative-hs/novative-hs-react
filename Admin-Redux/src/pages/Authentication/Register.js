@@ -118,8 +118,11 @@ class Register extends Component {
                                 "patient",
                             }}
                             validationSchema={Yup.object().shape({
-                              username: Yup.string().required(
+                              username: Yup.string().trim().required(
                                 "Please enter your username"
+                              ).matches(
+                                /^\S*$/,
+                                "Whitespaces are not allowed"
                               ),
                               email: Yup.string()
                                 .required("Please enter your email")
