@@ -43,7 +43,7 @@ class LabProfile extends Component {
       district: "",
       complaint_handling_email: "",
       complaint_handling_phone: "",
-      accept_credit_card_for_payment: "",
+      is_digital_payment_accepted: "",
       is_active: "",
       is_blocked: "",
       isProfileUpdated: false,
@@ -97,8 +97,8 @@ class LabProfile extends Component {
         district: this.props.success.district,
         complaint_handling_email: this.props.success.complaint_handling_email,
         complaint_handling_phone: this.props.success.complaint_handling_phone,
-        accept_credit_card_for_payment:
-          this.props.success.accept_credit_card_for_payment,
+        is_digital_payment_accepted:
+          this.props.success.is_digital_payment_accepted,
         is_active: this.props.success.is_active,
       });
     }, 3000);
@@ -164,9 +164,9 @@ class LabProfile extends Component {
                       (this.state && this.state.complaint_handling_email) || "",
                     complaint_handling_phone:
                       (this.state && this.state.complaint_handling_phone) || "",
-                    accept_credit_card_for_payment:
+                    is_digital_payment_accepted:
                       (this.state &&
-                        this.state.accept_credit_card_for_payment) ||
+                        this.state.is_digital_payment_accepted) ||
                       "No",
                     is_active: (this.state && this.state.is_active) || "Yes",
                   }}
@@ -634,21 +634,21 @@ class LabProfile extends Component {
                       {/* Accept Credit Card for Payment field */}
                       <div className="mb-3">
                         <Label
-                          for="accept_credit_card_for_payment"
+                          for="is_digital_payment_accepted"
                           className="form-label"
                         >
                           Do you accept credit card for payment?
                         </Label>
                         <Field
-                          name="accept_credit_card_for_payment"
+                          name="is_digital_payment_accepted"
                           component="select"
                           defaultValue="No"
                           onChange={e =>
                             this.setState({
-                              accept_credit_card_for_payment: e.target.value,
+                              is_digital_payment_accepted: e.target.value,
                             })
                           }
-                          value={this.state.accept_credit_card_for_payment}
+                          value={this.state.is_digital_payment_accepted}
                           className="form-select"
                         >
                           <option value="Yes">Yes</option>
