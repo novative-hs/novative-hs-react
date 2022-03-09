@@ -70,6 +70,12 @@ class LabInformation extends Component {
       complaint_handling_email: "",
       complaint_handling_phone: "",
       registered_by: "Lab",
+      is_registering_for_first_time: "No",
+      marketer_name: "",
+      marketer_cnic: "",
+      marketer_email: "",
+      marketer_phone: "",
+      marketer_city: "",
     };
   }
 
@@ -199,6 +205,15 @@ class LabInformation extends Component {
                                 (this.state &&
                                   this.state.registered_by) ||
                                 "Lab",
+                              is_registering_for_first_time:
+                                (this.state &&
+                                  this.state.is_registering_for_first_time) ||
+                                "No",
+                              marketer_name: (this.state && this.state.marketer_name) || "",
+                              marketer_cnic: (this.state && this.state.marketer_cnic) || "",
+                              marketer_email: (this.state && this.state.marketer_email) || "",
+                              marketer_phone: (this.state && this.state.marketer_phone) || "",
+                              marketer_city: (this.state && this.state.marketer_city) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -301,6 +316,67 @@ class LabInformation extends Component {
                                   /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                   "Please enter a valid Pakistani phone number e.g. +923123456789"
                                 ),
+                              marketer_name: Yup.string().when(
+                                "is_registering_for_first_time",
+                                {
+                                  is: val => val == "Yes",
+                                  then: Yup.string()
+                                  .required("Please enter marketer name")
+                                  .min(3, "Please enter at least 3 characters")
+                                  .max(
+                                    255,
+                                    "Please enter maximum 255 characters"
+                                  ),
+                                }
+                              ),
+                              marketer_cnic: Yup.string().when(
+                                "is_registering_for_first_time",
+                                {
+                                  is: val => val == "Yes",
+                                  then: Yup.string()
+                                  .required("Please enter marketer CNIC")
+                                  .matches(
+                                    /^[0-9]{5}-[0-9]{7}-[0-9]$/,
+                                    "Please enter a valid CNIC e.g. 37106-8234782-3"
+                                  )
+                                  .max(
+                                    255,
+                                    "Please enter maximum 255 characters"
+                                  ),
+                                }
+                              ),
+                              marketer_email: Yup.string()
+                                .required("Please enter marketer email")
+                                .email("Please enter valid email")
+                                .max(
+                                  255,
+                                  "Please enter maximum 255 characters"
+                                ),
+                              marketer_phone: Yup.string().when(
+                                "is_registering_for_first_time",
+                                {
+                                  is: val => val == "Yes",
+                                  then: Yup.string()
+                                  .required("Please enter marketer phone no.")
+                                  .max(255, "Please enter maximum 255 characters")
+                                  .matches(
+                                    /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                                    "Please enter a valid Pakistani phone number e.g. +923123456789"
+                                  ),
+                                }
+                              ),
+                              marketer_city: Yup.string().when(
+                                "is_registering_for_first_time",
+                                {
+                                  is: val => val == "Yes",
+                                  then: Yup.string()
+                                  .required("Please enter marketer city")
+                                  .max(
+                                    255,
+                                    "Please enter maximum 255 characters"
+                                  ),
+                                }
+                              ),
                             })}
                             onSubmit={values => {
                               this.props.addLabInformation(
@@ -935,6 +1011,184 @@ class LabInformation extends Component {
                                     <option value="Marketer">Marketer</option>
                                   </Field>
                                 </div>
+
+                                
+
+                                {/* Marketer's fields */}
+                                {this.state.registered_by === "Marketer" && (
+                                  <div>
+                                    {/* Is Registering First Time field */}
+                                    <div className="mb-3">
+                                      <Label
+                                        for="is_registering_for_first_time"
+                                        className="form-label"
+                                      >
+                                        Are you registering lab for the first time?
+                                      </Label>
+                                      <Field
+                                        name="is_registering_for_first_time"
+                                        component="select"
+                                        onChange={e =>
+                                          this.setState({
+                                            is_registering_for_first_time:
+                                              e.target.value,
+                                          })
+                                        }
+                                        value={
+                                          this.state.is_registering_for_first_time
+                                        }
+                                        className="form-select"
+                                      >
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                      </Field>
+                                    </div>
+                                
+                                    {/* Marketer Email field */}
+                                    <div className="mb-3">
+                                      <Label for="marketer_email" className="form-label">
+                                        Marketer email
+                                      </Label>
+                                      <Field
+                                        name="marketer_email"
+                                        placeholder="johndoe@gmail.com"
+                                        type="text"
+                                        onChange={e =>
+                                          this.setState({ marketer_email: e.target.value })
+                                        }
+                                        value={this.state.marketer_email}
+                                        className={
+                                          "form-control" +
+                                          (errors.marketer_email && touched.marketer_email
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="marketer_email"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+
+                                    {this.state.is_registering_for_first_time === "Yes" && (
+                                    <div>
+                                      {/* Marketer Name field */}
+                                      <div className="mb-3">
+                                      <Label for="marketer_name" className="form-label">
+                                        Marketer name
+                                      </Label>
+                                      <Field
+                                        id="marketer_name"
+                                        name="marketer_name"
+                                        placeholder="John Doe"
+                                        type="text"
+                                        onChange={e =>
+                                          this.setState({ marketer_name: e.target.value })
+                                        }
+                                        value={this.state.marketer_name}
+                                        className={
+                                          "form-control" +
+                                          (errors.marketer_name && touched.marketer_name
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="marketer_name"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+
+                                    {/* Marketer CNIC field */}
+                                    <div className="mb-3">
+                                      <Label for="marketer_cnic" className="form-label">
+                                        Marketer CNIC
+                                      </Label>
+                                      <Field
+                                        id="marketer_cnic"
+                                        name="marketer_cnic"
+                                        placeholder="12345-6789012-1"
+                                        type="text"
+                                        onChange={e =>
+                                          this.setState({ marketer_cnic: e.target.value })
+                                        }
+                                        value={this.state.marketer_cnic}
+                                        className={
+                                          "form-control" +
+                                          (errors.marketer_cnic && touched.marketer_cnic
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="marketer_cnic"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+
+                                    {/* Marketer Phone field */}
+                                    <div className="mb-3">
+                                      <Label for="marketer_phone" className="form-label">
+                                        Marketer phone
+                                      </Label>
+                                      <Field
+                                        id="marketer_phone"
+                                        name="marketer_phone"
+                                        placeholder="+923123456789"
+                                        type="text"
+                                        onChange={e =>
+                                          this.setState({ marketer_phone: e.target.value })
+                                        }
+                                        value={this.state.marketer_phone}
+                                        className={
+                                          "form-control" +
+                                          (errors.marketer_phone && touched.marketer_phone
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="marketer_phone"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+
+                                    {/* Marketer City field */}
+                                    <div className="mb-3">
+                                      <Label for="marketer_city" className="form-label">
+                                        Marketer City
+                                      </Label>
+                                      <Field
+                                        id="marketer_city"
+                                        name="marketer_city"
+                                        placeholder="Rawalpindi"
+                                        type="text"
+                                        onChange={e =>
+                                          this.setState({ marketer_city: e.target.value })
+                                        }
+                                        value={this.state.marketer_city}
+                                        className={
+                                          "form-control" +
+                                          (errors.marketer_city && touched.marketer_city
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="marketer_city"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+                                    </div>
+                                    )}
+                                  </div>
+                                )}
+                                
 
                                 <div className="mt-3 d-grid">
                                   <button

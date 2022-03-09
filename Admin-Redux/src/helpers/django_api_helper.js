@@ -128,8 +128,13 @@ export const postLabInformation = (id, lab) => {
     "is_digital_payment_accepted",
     lab.is_digital_payment_accepted
   );
+  formData.append("is_registering_for_first_time", lab.is_registering_for_first_time);
   formData.append("registered_by", lab.registered_by);
-
+  formData.append("marketer_name", lab.marketer_name);
+  formData.append("marketer_cnic", lab.marketer_cnic);
+  formData.append("marketer_email", lab.marketer_email);
+  formData.append("marketer_phone", lab.marketer_phone);
+  formData.append("marketer_city", lab.marketer_city);
 
   return axios
     .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, {
