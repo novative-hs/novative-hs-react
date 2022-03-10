@@ -60,6 +60,7 @@ class LabInformation extends Component {
       national_taxation_no: "",
       is_iso_certified: "No",
       iso_certificate: "",
+      iso_certificate_error: "",
       lab_experience: "",
       email: "",
       phone: "",
@@ -76,7 +77,6 @@ class LabInformation extends Component {
       marketer_email: "",
       marketer_phone: "",
       marketer_city: "",
-      iso_certificate_error: "",
     };
   }
 
@@ -122,8 +122,6 @@ class LabInformation extends Component {
     this.setState({ iso_certificate: e.target.files[0] });
     this.setState({ iso_certificate_error: "" });
   };
-
-
 
   render() {
     // Redirect to register page if getting access directly from url

@@ -505,6 +505,7 @@ export const updateLabProfile = (labProfile, id) => {
   formData.append("logo", labProfile.logo);
   formData.append("owner_name", labProfile.owner_name);
   formData.append("registration_no", labProfile.registration_no);
+  formData.append("lab_experience", labProfile.lab_experience);
   formData.append("email", labProfile.email);
   formData.append("phone", labProfile.phone);
   formData.append("landline", labProfile.landline);
