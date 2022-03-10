@@ -15,8 +15,6 @@ function* loginUser({ payload: { user, history } }) {
       password: user.password,
     });
 
-    console.log(response.data.status);
-
     // If there is data in response then execute this block
     // Otherwise there must be some error so execute else block
     if (response.data.data) {
