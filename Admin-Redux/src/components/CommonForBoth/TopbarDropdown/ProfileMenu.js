@@ -38,30 +38,30 @@ class ProfileMenu extends Component {
   }
 
   componentDidMount() {
-    if (this.props.location.pathname.includes("dashboard-lab")) {
-      setTimeout(() => {
-        this.props.getLabProfile(this.props.match.params.id);
-      }, 1000);
+    // if (this.props.location.pathname.includes("dashboard-lab")) {
+    //   setTimeout(() => {
+    //     this.props.getLabProfile(this.props.match.params.id);
+    //   }, 1000);
 
-      setTimeout(() => {
-        this.setState({
-          name: this.props.success.name,
-          logo: this.state.apiURL + this.props.success.logo,
-        });
-      }, 3000);
-    }
+    //   setTimeout(() => {
+    //     this.setState({
+    //       name: this.props.success.name,
+    //       logo: this.state.apiURL + this.props.success.logo,
+    //     });
+    //   }, 3000);
+    // }
 
-    if (this.props.location.pathname.includes("dashboard-patient")) {
-      setTimeout(() => {
-        this.props.getPatientProfile(this.props.match.params.id);
-      }, 1000);
+    // if (this.props.location.pathname.includes("dashboard-patient")) {
+    //   setTimeout(() => {
+    //     this.props.getPatientProfile(this.props.match.params.id);
+    //   }, 1000);
 
-      setTimeout(() => {
-        this.setState({
-          name: this.props.success.name,
-        });
-      }, 3000);
-    }
+    //   setTimeout(() => {
+    //     this.setState({
+    //       name: this.props.success.name,
+    //     });
+    //   }, 3000);
+    // }
   }
 
   render() {
@@ -77,7 +77,7 @@ class ProfileMenu extends Component {
             id="page-header-user-dropdown"
             tag="button"
           >
-            {this.props.location &&
+            {/* {this.props.location &&
             this.props.location.pathname.includes("dashboard-lab") ? (
               <img
                 className="rounded-circle header-profile-user"
@@ -88,7 +88,7 @@ class ProfileMenu extends Component {
             <span className="d-none d-xl-inline-block ms-1">
               {" "}
               {this.state.name}
-            </span>
+            </span> */}
             <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
           </DropdownToggle>
 

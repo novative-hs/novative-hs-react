@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
 
-import { Alert, Card, CardBody, Col, Container, Row, Label } from "reactstrap";
+import { Alert, Col, Container, Row, Label } from "reactstrap";
 
 // Redux
 import { connect } from "react-redux";
@@ -28,8 +28,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log("Error: ", this.props.error);
-
     return (
       <React.Fragment>
         <div>
