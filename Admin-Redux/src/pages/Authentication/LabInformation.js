@@ -76,6 +76,7 @@ class LabInformation extends Component {
       marketer_email: "",
       marketer_phone: "",
       marketer_city: "",
+      iso_certificate_error: "",
     };
   }
 
@@ -101,6 +102,28 @@ class LabInformation extends Component {
   handleSelectGroup = selectedGroup => {
     this.setState({ main_lab_account_id: selectedGroup.value });
   };
+
+  handleISOCertifiedChange = e => {
+    this.setState({ is_iso_certified: e.target.value });
+
+    if (e.target.value  === "Yes") {
+      if (!this.state.iso_certificate) {
+        this.setState({ iso_certificate_error: "Please upload your ISO 15189 certificate" });
+      } else {
+        this.setState({ iso_certificate_error: "" });
+      }
+    } else {
+      this.setState({ iso_certificate: "" });
+      this.setState({ iso_certificate_error: "" });
+    }
+  };
+
+  handleISOCertificateChange = e => {;
+    this.setState({ iso_certificate: e.target.files[0] });
+    this.setState({ iso_certificate_error: "" });
+  };
+
+
 
   render() {
     // Redirect to register page if getting access directly from url
@@ -216,12 +239,16 @@ class LabInformation extends Component {
                               marketer_city: (this.state && this.state.marketer_city) || "",
                             }}
                             validationSchema={Yup.object().shape({
-                              name: Yup.string()
+                              name: Yup.string().trim()
                                 .required("Please enter your name")
                                 .min(3, "Please enter at least 3 characters")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                )
+                                .matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
                               main_lab_account_id: Yup.string().when("type", {
                                 is: val => val === "Collection Point",
@@ -232,33 +259,33 @@ class LabInformation extends Component {
                               logo: Yup.mixed().required(
                                 "Please upload your lab logo"
                               ),
-                              owner_name: Yup.string()
+                              owner_name: Yup.string().trim()
                                 .required("Please enter lab owner name")
                                 .min(3, "Please enter at least 3 characters")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                )
+                                .matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
-                              registration_no: Yup.string().max(
+                              registration_no: Yup.string().trim().max(
                                 255,
                                 "Please enter maximum 255 characters"
                               ),
-                              national_taxation_no: Yup.string()
+                              national_taxation_no: Yup.string().trim()
                                 .required("Please enter NTN # of your lab")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              // iso_certificate: Yup.string().when(
-                              //   "is_iso_certified",
-                              //   {
-                              //     is: val => val == "Yes",
-                              //     then: Yup.mixed()
-                              //       .required("Please upload your lab iso certificate"),
-                              //   }
-                              // ),
-                              lab_experience: Yup.string()
-                                .required("Please enter your lab experience"),
+                              lab_experience: Yup.number("Please enter number only")
+                                .required("Please enter your lab experience")
+                                .positive()
+                                .integer()
+                                .min(0, "Please enter a number greater than or equal to 0")
+                                .max(150, "Please enter a number less than or equal to 150"),
                               email: Yup.string()
                                 .required("Please enter your email")
                                 .email("Please enter valid email")
@@ -280,23 +307,29 @@ class LabInformation extends Component {
                                   /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                   "Please enter a valid Pakistani landline number"
                                 ),
-                              address: Yup.string()
+                              address: Yup.string().trim()
                                 .required("Please enter your full address")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              city: Yup.string()
+                              city: Yup.string().trim()
                                 .required("Please enter your city")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                ).matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
-                              district: Yup.string()
+                              district: Yup.string().trim()
                                 .required("Please enter your district")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                ).matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
                               complaint_handling_email: Yup.string()
                                 .required(
@@ -320,12 +353,15 @@ class LabInformation extends Component {
                                 "is_registering_for_first_time",
                                 {
                                   is: val => val == "Yes",
-                                  then: Yup.string()
+                                  then: Yup.string().trim()
                                   .required("Please enter marketer name")
                                   .min(3, "Please enter at least 3 characters")
                                   .max(
                                     255,
                                     "Please enter maximum 255 characters"
+                                  ).matches(
+                                    /^[a-zA-Z][a-zA-Z ]+$/,
+                                    "Please enter only alphabets and spaces"
                                   ),
                                 }
                               ),
@@ -344,14 +380,21 @@ class LabInformation extends Component {
                                     "Please enter maximum 255 characters"
                                   ),
                                 }
+                              ), 
+
+                              marketer_email: Yup.string().when(
+                                "registered_by",
+                                {
+                                  is: val => val == "Marketer",
+                                  then: Yup.string()
+                                  .required("Please enter marketer email")
+                                  .email("Please enter valid email")
+                                  .max(
+                                    255,
+                                    "Please enter maximum 255 characters"
+                                  ),
+                                }
                               ),
-                              marketer_email: Yup.string()
-                                .required("Please enter marketer email")
-                                .email("Please enter valid email")
-                                .max(
-                                  255,
-                                  "Please enter maximum 255 characters"
-                                ),
                               marketer_phone: Yup.string().when(
                                 "is_registering_for_first_time",
                                 {
@@ -369,20 +412,33 @@ class LabInformation extends Component {
                                 "is_registering_for_first_time",
                                 {
                                   is: val => val == "Yes",
-                                  then: Yup.string()
+                                  then: Yup.string().trim()
                                   .required("Please enter marketer city")
                                   .max(
                                     255,
                                     "Please enter maximum 255 characters"
+                                  ).matches(
+                                    /^[a-zA-Z][a-zA-Z ]+$/,
+                                    "Please enter only alphabets and spaces"
                                   ),
                                 }
                               ),
                             })}
                             onSubmit={values => {
-                              this.props.addLabInformation(
-                                values,
-                                this.props.match.params.id
-                              );
+                              if (values.is_iso_certified === "Yes") {
+                                console.log("Inside if.....");
+                                if (values.iso_certificate) {
+                                  this.props.addLabInformation(
+                                    values,
+                                    this.props.match.params.id
+                                  );
+                                }
+                              } else {
+                                  this.props.addLabInformation(
+                                    values,
+                                    this.props.match.params.id
+                                  );
+                                }
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -642,12 +698,7 @@ class LabInformation extends Component {
                                   <Field
                                     name="is_iso_certified"
                                     component="select"
-                                    onChange={e =>
-                                      this.setState({
-                                        is_iso_certified:
-                                          e.target.value,
-                                      })
-                                    }
+                                    onChange={this.handleISOCertifiedChange}
                                     value={
                                       this.state.is_iso_certified
                                     }
@@ -670,23 +721,19 @@ class LabInformation extends Component {
                                     placeholder="Choose image"
                                     type="file"
                                     multiple={false}
+                                    onChange={this.handleISOCertificateChange}
                                     accept=".jpg,.jpeg,.png"
-                                    onChange={e =>
-                                      this.setState({ iso_certificate: e.target.files[0] })
-                                    }
                                     className={
                                       "form-control" +
-                                      (errors.iso_certificate && touched.iso_certificate
+                                      (this.state.iso_certificate_error
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
 
-                                  <ErrorMessage
-                                    name="iso_certificate"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
+                                  <div className="invalid-feedback">
+                                    {this.state.iso_certificate_error}
+                                  </div>
                                 </div>
                                 )}
 
@@ -1013,7 +1060,6 @@ class LabInformation extends Component {
                                 </div>
 
                                 
-
                                 {/* Marketer's fields */}
                                 {this.state.registered_by === "Marketer" && (
                                   <div>
