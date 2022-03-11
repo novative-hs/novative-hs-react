@@ -405,7 +405,10 @@ class SampleCollectorsList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            name: Yup.string().required(
+                                            name: Yup.string().trim().matches(
+                                              /^[a-zA-Z][a-zA-Z ]+$/,
+                                              "Please enter only alphabets and spaces"
+                                            ).required(
                                               "Please enter name"
                                             ),
                                             cnic: Yup.string()
