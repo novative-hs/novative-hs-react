@@ -33,6 +33,7 @@ class CorporateProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      apiURL: process.env.REACT_APP_BACKENDURL,
       name: "",
       logo: "",
       owner_name: "",
@@ -82,7 +83,7 @@ class CorporateProfile extends Component {
       console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
-        logo: "http://127.0.0.1:8000" + this.props.success.logo,
+        logo: this.state.apiURL +this.props.success.logo,
         owner_name: this.props.success.owner_name,
         email: this.props.success.email,
         phone: this.props.success.phone,
@@ -239,7 +240,7 @@ class CorporateProfile extends Component {
                     // To display updated logo
                     setTimeout(() => {
                       this.setState({
-                        logo: "http://127.0.0.1:8000" + this.props.success.logo,
+                        logo: this.state.apiURL + this.props.success.logo,
                       });
                     }, 2000);
 
