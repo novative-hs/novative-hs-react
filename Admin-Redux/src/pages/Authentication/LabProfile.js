@@ -267,7 +267,7 @@ class LabProfile extends Component {
                     // To display updated logo
                     setTimeout(() => {
                       this.setState({
-                        logo: "http://127.0.0.1:8000" + this.props.success.logo,
+                        logo: this.state.apiURL + this.props.success.logo,
                       });
                     }, 2000);
 

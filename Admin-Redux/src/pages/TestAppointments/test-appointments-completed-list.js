@@ -115,14 +115,14 @@ class TestAppointmentsCompletedList extends Component {
           ),
         },
         {
-          dataField: "http://127.0.0.1:8000" + "result",
+          dataField: this.state.apiURL + "result",
           text: "Result",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
               <Link
                 to={{
-                  pathname: "http://127.0.0.1:8000" + testAppointment.result,
+                  pathname: this.state.apiURL + testAppointment.result,
                 }}
                 target="_blank"
               >
