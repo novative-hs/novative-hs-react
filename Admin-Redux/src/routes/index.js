@@ -14,6 +14,7 @@ import Calendar from "../pages/Calendar/index";
 import UserProfile from "../pages/Authentication/UserProfile";
 import LabProfile from "../pages/Authentication/LabProfile";
 import PatientProfile from "../pages/Authentication/PatientProfile";
+import CorporateProfile from "../pages/Authentication/CorporateProfile";
 
 //Tasks
 import TasksList from "../pages/Tasks/tasks-list";
@@ -441,6 +442,10 @@ const patientAuthProtectedRoutes = [
 ];
 const corporateAuthProtectedRoutes = [
   { path: "/dashboard-corporate/:id", component: DashboardCorporate },
+  {
+    path: "/dashboard-corporate/:id/profile",
+    component: CorporateProfile,
+  },
 ];
 
 export {

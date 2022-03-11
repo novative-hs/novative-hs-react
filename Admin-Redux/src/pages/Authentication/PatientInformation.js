@@ -115,12 +115,15 @@ class PatientInformation extends Component {
                                 "",
                             }}
                             validationSchema={Yup.object().shape({
-                              name: Yup.string()
+                              name: Yup.string().trim()
                                 .required("Please enter your name")
                                 .min(3, "Please enter at least 3 characters")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                ).matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
                               cnic: Yup.string()
                                 .required("Please enter your CNIC")
@@ -146,23 +149,29 @@ class PatientInformation extends Component {
                                   /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                   "Please enter a valid Pakistani phone number e.g. +923123456789"
                                 ),
-                              address: Yup.string()
+                              address: Yup.string().trim()
                                 .required("Please enter your full address")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              city: Yup.string()
+                              city: Yup.string().trim()
                                 .required("Please enter your city")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                ).matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
-                              district: Yup.string()
+                              district: Yup.string().trim()
                                 .required("Please enter your district")
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
+                                ).matches(
+                                  /^[a-zA-Z][a-zA-Z ]+$/,
+                                  "Please enter only alphabets and spaces"
                                 ),
                               corporate_unique_id: Yup.string().when(
                                 "is_corporate_user",

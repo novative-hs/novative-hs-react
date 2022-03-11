@@ -568,3 +568,27 @@ export const getNearbyLabs = (address, id) => {
     headers: getHeader(authHeader()),
   });
 };
+
+// ------------- Corporate Profile Requests START -------------
+export const getCorporateProfile = id =>
+  get(`${url.GET_CORPORATE_PROFILE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const updateCorporateProfile = (corporateProfile, id) => {
+  let formData = new FormData();
+  formData.append("account_id", id);
+  formData.append("unique_id", uid);
+  formData.append("name", corporateProfile.name);
+  formData.append("logo", corporateProfile.logo);
+  formData.append("owner_name", corporateProfile.owner_name);
+  formData.append("email", corporateProfile.email);
+  formData.append("phone", corporateProfile.phone);
+  formData.append("landline", corporateProfile.landline);
+  formData.append("address", corporateProfile.address);
+  formData.append("city", corporateProfile.city);
+  formData.append("district", corporateProfile.district);
+  return axios.put(`${url.UPDATE_CORPORATE_PROFILE}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};

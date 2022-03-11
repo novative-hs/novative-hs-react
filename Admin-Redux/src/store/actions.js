@@ -11,7 +11,7 @@ export * from "./auth/confirmpwd/actions";
 export * from "./auth/profile/actions";
 export * from "./auth/labprofile/actions";
 export * from "./auth/patientprofile/actions";
-
+export * from "./auth/corporateprofile/actions";
 //Ecommerce
 export * from "./labmarket/actions";
 

@@ -14,7 +14,7 @@ import ConfirmPassword from "./auth/confirmpwd/reducer";
 import Profile from "./auth/profile/reducer";
 import LabProfile from "./auth/labprofile/reducer";
 import PatientProfile from "./auth/patientprofile/reducer";
-
+import CorporateProfile from "./auth/corporateprofile/reducer";
 //E-commerce
 import LabMarket from "./e-commerce/reducer";
 
@@ -82,6 +82,7 @@ const rootReducer = combineReducers({
   Profile,
   LabProfile,
   PatientProfile,
+  CorporateProfile,
   LabMarket,
   ecommerce,
   calendar,
