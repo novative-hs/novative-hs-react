@@ -151,15 +151,23 @@ class CorporateProfile extends Component {
                       (this.state && this.state.district) || "",
                   }}
                   validationSchema={Yup.object().shape({
-                    name: Yup.string()
+                    name: Yup.string().trim()
                       .required("Please enter your name")
                       .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters"),
+                      .max(255, "Please enter maximum 255 characters")
+                      .matches(
+                        /^[a-zA-Z][a-zA-Z ]+$/,
+                        "Please enter only alphabets and spaces"
+                      ),
                     logo: Yup.mixed().required("Please upload your lab logo"),
-                    owner_name: Yup.string()
+                    owner_name: Yup.string().trim()
                       .required("Please enter lab owner name")
                       .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters"),
+                      .max(255, "Please enter maximum 255 characters")
+                      .matches(
+                        /^[a-zA-Z][a-zA-Z ]+$/,
+                        "Please enter only alphabets and spaces"
+                      ),
                     email: Yup.string()
                       .required("Please enter your email")
                       .email("Please enter valid email")
@@ -178,15 +186,22 @@ class CorporateProfile extends Component {
                         /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                         "Please enter a valid Pakistani landline number"
                       ),
-                    address: Yup.string()
+                    address: Yup.string().trim()
                       .required("Please enter your full address")
                       .max(255, "Please enter maximum 255 characters"),
-                    city: Yup.string()
+                    city: Yup.string().trim()
                       .required("Please enter your city")
-                      .max(255, "Please enter maximum 255 characters"),
-                    district: Yup.string()
+                      .max(255, "Please enter maximum 255 characters").matches(
+                        /^[a-zA-Z][a-zA-Z ]+$/,
+                        "Please enter only alphabets and spaces"
+                      ),
+                    district: Yup.string().trim()
                       .required("Please enter your district")
-                      .max(255, "Please enter maximum 255 characters"),
+                      .max(255, "Please enter maximum 255 characters")
+                      .matches(
+                        /^[a-zA-Z][a-zA-Z ]+$/,
+                        "Please enter only alphabets and spaces"
+                      ),
                   })}
                   onSubmit={values => {
                     // if no file was selected for logo then get current image from url and convert to file
