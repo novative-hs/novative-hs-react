@@ -23,6 +23,7 @@ class TestAppointmentsList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
+      apiURL: process.env.REACT_APP_BACKENDURL,
       patientTestAppointments: [],
       patientTestAppointment: "",
       patientTestAppointmentListColumns: [
@@ -137,7 +138,7 @@ class TestAppointmentsList extends Component {
           ),
         },
         {
-          dataField: "http://127.0.0.1:8000" + "result",
+          dataField: this.state.apiURL + "result",
           text: "Result",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
@@ -146,7 +147,7 @@ class TestAppointmentsList extends Component {
                 <Link
                   to={{
                     pathname:
-                      "http://127.0.0.1:8000" + patientTestAppointment.result,
+                      this.state.apiURL + patientTestAppointment.result,
                   }}
                   target="_blank"
                 >
