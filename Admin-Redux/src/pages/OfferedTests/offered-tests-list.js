@@ -411,7 +411,6 @@ class OfferedTestsList extends Component {
                                               .required("Please enter your price")
                                               .positive()
                                               .integer()
-                                              .trim()
                                               .min(0, "Please enter a number greater than or equal to 0")
                                               .max(50000, "Please enter a number less than or equal to 50000"),
                                           })}
