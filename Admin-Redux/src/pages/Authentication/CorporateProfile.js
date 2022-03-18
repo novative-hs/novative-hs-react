@@ -23,40 +23,74 @@ import { withRouter } from "react-router-dom";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 // actions
-import { updatePatientProfile, getPatientProfile } from "../../store/actions";
+import {
+  updateCorporateProfile,
+  getCorporateProfile,
+  getCorporateProfileSuccess,
+} from "../../store/actions";
 
-class PatientProfile extends Component {
+class CorporateProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      apiURL: process.env.REACT_APP_BACKENDURL,
       name: "",
-      cnic: "",
+      logo: "",
+      owner_name: "",
       email: "",
       phone: "",
+      landline: "",
       address: "",
       city: "",
       district: "",
-      is_corporate_user: "",
-      corporate_unique_id: "",
+      isProfileUpdated: false,
     };
   }
 
+  // The code for converting "image source" (url) to "Base64"
+  toDataURL = url =>
+    fetch(url)
+      .then(response => response.blob())
+      .then(
+        blob =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
+
+  // The code for converting "Base64" to javascript "File Object"
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   componentDidMount() {
     setTimeout(() => {
-      this.props.getPatientProfile(this.props.match.params.id);
+      this.props.getCorporateProfile(this.props.match.params.id);
     }, 1000);
 
     setTimeout(() => {
+      console.log("Successss: ", this.props.success);
       this.setState({
         name: this.props.success.name,
-        cnic: this.props.success.cnic,
+        logo: this.state.apiURL +this.props.success.logo,
+        owner_name: this.props.success.owner_name,
         email: this.props.success.email,
         phone: this.props.success.phone,
+        landline: this.props.success.landline,
         address: this.props.success.address,
         city: this.props.success.city,
         district: this.props.success.district,
-        is_corporate_user: this.props.success.is_corporate_user,
-        corporate_unique_id: this.props.success.corporate_unique_id,
       });
     }, 3000);
   }
@@ -67,13 +101,20 @@ class PatientProfile extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Ilaaj4u" breadcrumbItem="Profile" />
+            <Breadcrumb title="Skote" breadcrumbItem="Profile" />
 
             <Row>
               <Col lg="12">
                 <Card>
                   <CardBody>
                     <div className="d-flex">
+                      <div className="me-3">
+                        <img
+                          src={this.state.logo}
+                          alt=""
+                          className="avatar-md rounded-circle img-thumbnail"
+                        />
+                      </div>
                       <div className="align-self-center flex-1">
                         <div className="text-muted">
                           <h5>{this.state.name}</h5>
@@ -90,7 +131,7 @@ class PatientProfile extends Component {
               <Alert color="success">Your profile is updated.</Alert>
             ) : null}
 
-            <h4 className="card-title mb-4">Update Profile</h4>
+            <h4 className="card-title mb-4">Update Corporate Profile</h4>
 
             <Card>
               <CardBody>
@@ -98,34 +139,36 @@ class PatientProfile extends Component {
                   enableReinitialize={true}
                   initialValues={{
                     name: (this.state && this.state.name) || "",
-                    cnic: (this.state && this.state.cnic) || "",
+                    logo: (this.state && this.state.logo) || "",
+                    owner_name:
+                      (this.state && this.state.owner_name) || "",
                     email: (this.state && this.state.email) || "",
                     phone: (this.state && this.state.phone) || "",
+                    landline:
+                      (this.state && this.state.landline) || "",
                     address: (this.state && this.state.address) || "",
                     city: (this.state && this.state.city) || "",
-                    district: (this.state && this.state.district) || "",
-                    complaint_handling_email:
-                      (this.state && this.state.complaint_handling_email) || "",
-                    complaint_handling_phone:
-                      (this.state && this.state.complaint_handling_phone) || "",
-                    is_corporate_user:
-                      (this.state && this.state.is_corporate_user) || "No",
+                    district:
+                      (this.state && this.state.district) || "",
                   }}
                   validationSchema={Yup.object().shape({
                     name: Yup.string().trim()
                       .required("Please enter your name")
                       .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters").matches(
+                      .max(255, "Please enter maximum 255 characters")
+                      .matches(
                         /^[a-zA-Z][a-zA-Z ]+$/,
                         "Please enter only alphabets and spaces"
                       ),
-                    cnic: Yup.string()
-                      .required("Please enter your CNIC")
+                    logo: Yup.mixed().required("Please upload your lab logo"),
+                    owner_name: Yup.string().trim()
+                      .required("Please enter lab owner name")
+                      .min(3, "Please enter at least 3 characters")
+                      .max(255, "Please enter maximum 255 characters")
                       .matches(
-                        /^[0-9]{5}-[0-9]{7}-[0-9]$/,
-                        "Please enter a valid CNIC e.g. 37106-8234782-3"
-                      )
-                      .max(255, "Please enter maximum 255 characters"),
+                        /^[a-zA-Z][a-zA-Z ]+$/,
+                        "Please enter only alphabets and spaces"
+                      ),
                     email: Yup.string()
                       .required("Please enter your email")
                       .email("Please enter valid email")
@@ -136,6 +179,13 @@ class PatientProfile extends Component {
                       .matches(
                         /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                         "Please enter a valid Pakistani phone number e.g. +923123456789"
+                      ),
+                    landline: Yup.string()
+                      .required("Please enter your landline no.")
+                      .max(255, "Please enter maximum 255 characters")
+                      .matches(
+                        /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                        "Please enter a valid Pakistani landline number"
                       ),
                     address: Yup.string().trim()
                       .required("Please enter your full address")
@@ -148,23 +198,51 @@ class PatientProfile extends Component {
                       ),
                     district: Yup.string().trim()
                       .required("Please enter your district")
-                      .max(255, "Please enter maximum 255 characters").matches(
+                      .max(255, "Please enter maximum 255 characters")
+                      .matches(
                         /^[a-zA-Z][a-zA-Z ]+$/,
                         "Please enter only alphabets and spaces"
                       ),
                   })}
                   onSubmit={values => {
-                    this.props.updatePatientProfile(
-                      values,
-                      this.props.match.params.id
-                    );
+                    // if no file was selected for logo then get current image from url and convert to file
+                    if (typeof values.logo == "string") {
+                      this.toDataURL(values.logo).then(dataUrl => {
+                        var fileData = this.dataURLtoFile(
+                          dataUrl,
+                          values.logo.split("/").at(-1)
+                        );
+                        values.logo = fileData;
+
+                        this.props.updateCorporateProfile(
+                          values,
+                          this.props.match.params.id
+                        );
+                      });
+                    }
+
+                    // Otherwise just call update method
+                    else {
+                      this.props.updateCorporateProfile(
+                        values,
+                        this.props.match.params.id
+                      );
+                    }
+
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
 
                     // To get updated profile again
                     setTimeout(() => {
-                      this.props.getPatientProfile(this.props.match.params.id);
+                      this.props.getCorporateProfile(this.props.match.params.id);
                     }, 1000);
+
+                    // To display updated logo
+                    setTimeout(() => {
+                      this.setState({
+                        logo: this.state.apiURL + this.props.success.logo,
+                      });
+                    }, 2000);
 
                     // To make success message disappear after sometime
                     setTimeout(() => {
@@ -201,32 +279,89 @@ class PatientProfile extends Component {
                           className="invalid-feedback"
                         />
                       </div>
-                      {/* CNIC field */}
+                      {/* Logo field */}
                       <div className="mb-3">
-                        <Label for="cnic" className="form-label">
-                          CNIC
+                        <Label for="name" className="form-label">
+                          Logo
                         </Label>
-                        <Field
-                          id="cnic"
-                          name="cnic"
-                          placeholder="12345-6789012-1"
-                          type="text"
-                          readOnly={true}
+                        <Input
+                          id="formFile"
+                          name="logo"
+                          placeholder="Choose image"
+                          type="file"
+                          multiple={false}
+                          accept=".jpg,.jpeg,.png"
                           onChange={e =>
-                            this.setState({ cnic: e.target.value })
+                            this.setState({ logo: e.target.files[0] })
                           }
-                          value={this.state.cnic}
                           className={
                             "form-control" +
-                            (errors.cnic && touched.cnic ? " is-invalid" : "")
+                            (errors.logo && touched.logo ? " is-invalid" : "")
                           }
                         />
+
                         <ErrorMessage
-                          name="cnic"
+                          name="logo"
                           component="div"
                           className="invalid-feedback"
                         />
                       </div>
+
+                      {/* Owner name field */}
+                      <div className="mb-3">
+                        <Label for="owner_name" className="form-label">
+                          Owner name
+                        </Label>
+                        <Field
+                          id="owner_name"
+                          name="owner_name"
+                          placeholder="John Doe"
+                          type="text"
+                          onChange={e =>
+                            this.setState({
+                              owner_name: e.target.value,
+                            })
+                          }
+                          value={this.state.owner_name}
+                          className={
+                            "form-control" +
+                            (errors.owner_name && touched.owner_name
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="owner_name"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+
+                      {/* Email field */}
+                      <div className="mb-3">
+                        <Label for="email" className="form-label">
+                          Email
+                        </Label>
+                        <Field
+                          name="email"
+                          placeholder="labomart@xyz.com"
+                          type="text"
+                          onChange={e =>
+                            this.setState({ email: e.target.value })
+                          }
+                          value={this.state.email}
+                          className={
+                            "form-control" +
+                            (errors.email && touched.email ? " is-invalid" : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+
                       {/* Phone field */}
                       <div className="mb-3">
                         <Label for="phone" className="form-label">
@@ -253,26 +388,31 @@ class PatientProfile extends Component {
                         />
                       </div>
 
-                      {/* Email field */}
+                      {/* Landline field */}
                       <div className="mb-3">
-                        <Label for="email" className="form-label">
-                          Email
+                        <Label for="landline" className="form-label">
+                          Landline
                         </Label>
                         <Field
-                          name="email"
-                          placeholder="labomart@xyz.com"
+                          id="landline"
+                          name="landline"
+                          placeholder="+925712345678"
                           type="text"
                           onChange={e =>
-                            this.setState({ email: e.target.value })
+                            this.setState({
+                              landline: e.target.value,
+                            })
                           }
-                          value={this.state.email}
+                          value={this.state.landline}
                           className={
                             "form-control" +
-                            (errors.email && touched.email ? " is-invalid" : "")
+                            (errors.landline && touched.landline
+                              ? " is-invalid"
+                              : "")
                           }
                         />
                         <ErrorMessage
-                          name="email"
+                          name="landline"
                           component="div"
                           className="invalid-feedback"
                         />
@@ -361,56 +501,6 @@ class PatientProfile extends Component {
                           className="invalid-feedback"
                         />
                       </div>
-                      {/* Is Corporate User field */}
-                      <div className="mb-3">
-                        <Label for="is_corporate_user" className="form-label">
-                          Are you a corporate user?
-                        </Label>
-                        <Field
-                          name="is_corporate_user"
-                          component="select"
-                          defaultValue="No"
-                          onChange={e =>
-                            this.setState({
-                              is_corporate_user: e.target.value,
-                            })
-                          }
-                          value={this.state.is_corporate_user}
-                          className="form-select"
-                        >
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                        </Field>
-                      </div>
-                      {/* Corporate Unique ID field */}
-                      {this.state.is_corporate_user === "Yes" && (
-                        <div className="mb-3">
-                          <Label
-                            for="corporate_unique_id"
-                            className="form-label"
-                          >
-                            Corporate Unique ID
-                          </Label>
-                          <Field
-                            id="corporate_unique_id"
-                            name="corporate_unique_id"
-                            placeholder="2594153c-a86d-4a70-8136-ee93e01c88cc"
-                            type="text"
-                            className={
-                              "form-control" +
-                              (errors.corporate_unique_id &&
-                              touched.corporate_unique_id
-                                ? " is-invalid"
-                                : "")
-                            }
-                          />
-                          <ErrorMessage
-                            name="corporate_unique_id"
-                            component="div"
-                            className="invalid-feedback"
-                          />
-                        </div>
-                      )}
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
                           Update Profile
@@ -428,23 +518,25 @@ class PatientProfile extends Component {
   }
 }
 
-PatientProfile.propTypes = {
+CorporateProfile.propTypes = {
   match: PropTypes.object,
   location: PropTypes.object,
-  updatePatientProfile: PropTypes.func,
+  updateCorporateProfile: PropTypes.func,
   error: PropTypes.any,
   success: PropTypes.any,
-  getPatientProfile: PropTypes.func,
+  getCorporateProfile: PropTypes.func,
+  getCorporateProfileSuccess: PropTypes.func,
 };
 
 const mapStateToProps = state => {
-  const { error, success } = state.PatientProfile;
+  const { error, success } = state.CorporateProfile;
   return { error, success };
 };
 
 export default withRouter(
   connect(mapStateToProps, {
-    updatePatientProfile,
-    getPatientProfile,
-  })(PatientProfile)
+    updateCorporateProfile,
+    getCorporateProfile,
+    getCorporateProfileSuccess,
+  })(CorporateProfile)
 );

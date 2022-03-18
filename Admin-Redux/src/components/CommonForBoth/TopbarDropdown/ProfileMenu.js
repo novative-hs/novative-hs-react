@@ -123,7 +123,9 @@ class ProfileMenu extends Component {
 
             {this.props.location &&
             this.props.location.pathname.includes("dashboard-corporate") ? (
-              <DropdownItem tag="a" href="/profile">
+              <DropdownItem tag="a" href={
+                "/dashboard-corporate/" + this.props.match.params.id + "/profile"
+              }>
                 <i className="bx bx-user font-size-16 align-middle ms-1" />
                 {this.props.t("Corporate Profile")}
               </DropdownItem>

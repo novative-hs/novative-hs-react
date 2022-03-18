@@ -11,7 +11,7 @@ import profileImg from "../../assets/images/profile-img.png";
 // actions
 import { getPatientProfile } from "store/auth/patientprofile/actions";
 
-class LabSummary extends Component {
+class PatientProfileSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -202,7 +202,7 @@ class LabSummary extends Component {
   }
 }
 
-LabSummary.propTypes = {
+PatientProfileSummary.propTypes = {
   t: PropTypes.any,
   match: PropTypes.object,
   location: PropTypes.object,
@@ -217,5 +217,5 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getPatientProfile })(withTranslation()(LabSummary))
+  connect(mapStateToProps, { getPatientProfile })(withTranslation()(PatientProfileSummary))
 );
