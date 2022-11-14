@@ -3,8 +3,8 @@
 The first thing to do is to clone the repository:
 
 ```sh
-git clone https://github.com/labhazir/ilaaj4u-reactjs-aws.git
-cd ilaaj4u-reactjs-aws
+git clone https://github.com/labhazir/ilaaj4u-reactjs-local.git
+cd ilaaj4u-reactjs-local
 ```
 
 Copy package.json and package-json.lock files from template files and add into the folder
@@ -18,4 +18,4 @@ Once `npm` has finished downloading the dependencies:
 ```sh
 npm start
 ```
-And navigate to `https://labhazir.com/`
+And navigate to `http://localhost:3000/`
