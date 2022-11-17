@@ -232,7 +232,7 @@ class B2bProfile extends Component {
                       <div>
                         <input
                           value={
-                            "https://labhazir.com/nearby-labs/" +
+                            "http://localhost:3000/nearby-labs/" +
                             this.props.success.uuid
                           }
                           className="form-control"
@@ -244,7 +244,7 @@ class B2bProfile extends Component {
                           className="btn btn-secondary"
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              "https://labhazir.com/nearby-labs/" +
+                              "http://localhost:3000/nearby-labs/" +
                                 this.props.success.uuid
                             );
                             this.setState({ btnText: "Copied" });

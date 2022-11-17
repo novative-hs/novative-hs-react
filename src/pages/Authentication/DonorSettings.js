@@ -27,7 +27,7 @@ import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 // actions
-import { updateDonorSettings, getDonorSettings, getTerritoriesList, } from "../../store/actions";
+import { updateDonorSettings, getDonorSettings } from "../../store/actions";
 
 
 let mainLabOptionGroup = [
@@ -54,7 +54,7 @@ class LabSettings extends Component {
   }
 
   componentDidMount() {
-    this.props.getTerritoriesList();
+    // this.props.getTerritoriesList();
     setTimeout(() => {
       this.props.getDonorSettings(this.state.user_id);
     }, 1000);
@@ -368,7 +368,7 @@ LabSettings.propTypes = {
   success: PropTypes.any,
   getDonorSettings: PropTypes.func,
   territoriesList: PropTypes.array,
-  getTerritoriesList:PropTypes.func,
+  // getTerritoriesList:PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -380,7 +380,7 @@ const mapStateToProps = state => {
 
 export default withRouter(
   connect(mapStateToProps, {
-    getTerritoriesList,
+    // getTerritoriesList,
     updateDonorSettings,
     getDonorSettings,
   })(LabSettings)

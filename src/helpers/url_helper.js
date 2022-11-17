@@ -100,9 +100,9 @@ export const UPDATE_DISCOUNT_LABHAZIRTOLAB = `${API_ENDPOINT}/api/marketer-admin
 export const UPDATE_DISCOUNT_ALL_LABHAZIRTOLAB = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-all-tests`;
 
 
-export const GET_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/reffer-labhazir-lab-test`;
-export const GET_PUT_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/approve-reffer-labhazir-lab-test`;
-export const UPDATE_REFERREL_FEE = `${API_ENDPOINT}/api/registration-admin/put-reffer-labhazir-lab-test`;
+export const GET_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/referrel-fee-labhazir`;
+export const GET_PUT_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/approve-referrel-fee-labhazir`;
+export const UPDATE_REFERREL_FEE = `${API_ENDPOINT}/api/registration-admin/update-referrel-fee-labhazir`;
 export const UPDATE_REFERREL_ALL_FEE = `${API_ENDPOINT}/api/registration-admin/all-reffer-labhazir-lab-test`;
 
 // DISCOUNT LAB

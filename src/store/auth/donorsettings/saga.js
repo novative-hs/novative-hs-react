@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_DONOR_SETTINGS, UPDATE_DONOR_SETTINGS, GET_TERRITORIES_LIST  } from "./actionTypes";
+import { GET_DONOR_SETTINGS, UPDATE_DONOR_SETTINGS, GET_TERRITORIES_LIST } from "./actionTypes";
 
 import {
   getTerritoriesListSuccess,

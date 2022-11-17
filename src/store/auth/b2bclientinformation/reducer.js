@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   addB2bClientError: null,
-  territoriesList: [],
+  // territoriesList: [],
   message: null,
   loading: false,
 }

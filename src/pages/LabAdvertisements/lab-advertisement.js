@@ -48,7 +48,7 @@ import {
 } from "store/lab-advertisements/actions";
 
 import {
-getTerritoriesList
+// getTerritoriesList
 } from "store/territories-list/actions";
 
 import { isEmpty, size } from "lodash";
@@ -234,10 +234,10 @@ class AdvertisementsList extends Component {
     if (advertisementPriceLists && !advertisementPriceLists.length) {
       console.log(onGetAdvertisementPriceLists(this.state.user_id));
 
-    const { territoriesList, onGetTerritoriesList } = this.props;
-    if (territoriesList && !territoriesList.length) {
-      console.log(onGetTerritoriesList(this.state.user_id));
-    }
+    // const { territoriesList, onGetTerritoriesList } = this.props;
+    // if (territoriesList && !territoriesList.length) {
+    //   // console.log(onGetTerritoriesList(this.state.user_id));
+    // }
     }
     }
     // this.setState({ labAdvertisements });
@@ -1225,7 +1225,7 @@ AdvertisementsList.propTypes = {
   advertisementPriceLists: PropTypes.array,
   territoriesList: PropTypes.array,
   onGetAdvertisementPriceLists: PropTypes.func,
-  onGetTerritoriesList: PropTypes.func,
+  // onGetTerritoriesList: PropTypes.func,
   onGetLabAdvertisements: PropTypes.func,
   onAddNewLabAdvertisement: PropTypes.func,
   onDeleteAdvertisement: PropTypes.func,
@@ -1240,7 +1240,7 @@ const mapStateToProps = ({ advertisementPriceLists,labAdvertisements, territorie
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAdvertisementPriceLists: id => dispatch(getAdvertisementPriceLists(id)),
-  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  // onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
   onGetLabAdvertisements: id => dispatch(getLabAdvertisements(id)),
   onAddNewLabAdvertisement: (labAdvertisement, id) =>
     dispatch(addNewLabAdvertisement(labAdvertisement, id)),

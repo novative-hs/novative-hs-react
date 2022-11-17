@@ -25,10 +25,10 @@ const Footer = () => {
             </Col>
             <Col md={1}>
               <div className="text-sm-end d-none d-sm-block">
-              <a href="https://www.linkedin.com/company/lab-hazir/">
+              <a href="https://www.linkedin.com/company/lab-hazir/" target="_blank"rel="noopener noreferrer">
                 <i className="bx bxl-linkedin bx-tada align-middle me-2 font-size-40" />{" "}
               </a>
-              <a href="https://www.facebook.com/profile.php?id=100084984286550">
+              <a href="https://www.facebook.com/profile.php?id=100084984286550" target="_blank" rel="noopener noreferrer">
                 <i className="bx bxl-facebook bx-tada align-middle me-2 font-size-40" />{" "}
               </a>
               </div>

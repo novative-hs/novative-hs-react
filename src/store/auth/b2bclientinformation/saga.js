@@ -1,7 +1,7 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 
 //Account Redux states
-import { ADD_B2BCLIENT_INFORMATION, GET_TERRITORIES_LIST  } from "./actionTypes";
+import { ADD_B2BCLIENT_INFORMATION, GET_TERRITORIES_LIST} from "./actionTypes";
 import {
   getTerritoriesListSuccess,
   getTerritoriesListFail,
@@ -10,7 +10,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { postB2bClientInformation, getTerritoriesList} from "../../../helpers/django_api_helper";
+import { postB2bClientInformation} from "../../../helpers/django_api_helper";
 
 // Territories
 function* fetchTerritoriesList(object) {

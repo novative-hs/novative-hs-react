@@ -1638,7 +1638,7 @@ export const updateDiscountAllLabHazirToLab = data => {
     let formData = new FormData();
     // formData.append("account_id", id);
     formData.append("discount_by_labhazir", data.discount_by_labhazir);
-    formData.append("shared_percentage", data.shared_percentage);
+    // formData.append("shared_percentage", data.shared_percentage);
   
     if (data.discount_by_labhazir > 0) {
       formData.append("start_date_by_labhazir", data.start_date_by_labhazir);

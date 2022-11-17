@@ -129,7 +129,7 @@ export default function* rootSaga() {
     fork(discountLabHazirsSaga),
     fork(discountLabHazirToLabsSaga),
     fork(labsListSaga),
-    fork(TerritoriesSaga),
+    // fork(TerritoriesSaga),
     fork(csrTerritoryListSaga),
     fork(auditorTerritoryListSaga),
     fork(discountLabSaga),
