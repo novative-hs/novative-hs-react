@@ -3,8 +3,8 @@
 The first thing to do is to clone the repository:
 
 ```sh
-git clone https://github.com/labhazir/ilaaj4u-reactjs-local.git
-cd ilaaj4u-reactjs-local
+git clone https://github.com/labhazir/ilaaj4u-reactjs.git
+cd ilaaj4u-reactjs
 ```
 
 Copy package.json and package-json.lock files from template files and add into the folder
