@@ -1,4 +1,6 @@
 import {
+  GET_TERRITORIES_LIST_SUCCESS,
+  GET_TERRITORIES_LIST_FAIL,
   ADD_PATIENT_INFORMATION,
   ADD_PATIENT_INFORMATION_SUCCESSFUL,
   ADD_PATIENT_INFORMATION_FAILED,
@@ -6,12 +8,25 @@ import {
 
 const initialState = {
   addPatientError: null,
+  territoriesList: [],
   message: null,
   loading: false,
 }
 
 const patientInformation = (state = initialState, action) => {
   switch (action.type) {
+        // territories
+    case GET_TERRITORIES_LIST_SUCCESS:
+      return {
+        ...state,
+        territoriesList: action.payload.data,
+      };
+
+    case GET_TERRITORIES_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case ADD_PATIENT_INFORMATION:
       state = {
         ...state,

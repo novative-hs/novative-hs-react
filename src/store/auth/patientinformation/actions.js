@@ -1,8 +1,29 @@
 import {
+  GET_TERRITORIES_LIST,
+  GET_TERRITORIES_LIST_SUCCESS,
+  GET_TERRITORIES_LIST_FAIL,
   ADD_PATIENT_INFORMATION,
   ADD_PATIENT_INFORMATION_SUCCESSFUL,
   ADD_PATIENT_INFORMATION_FAILED,
 } from "./actionTypes"
+
+// Territories
+export const getTerritoriesList = () => ({
+  type: GET_TERRITORIES_LIST,
+  payload: {},
+});
+
+
+export const getTerritoriesListSuccess =
+  territories => ({
+    type: GET_TERRITORIES_LIST_SUCCESS,
+    payload: territories,
+  });
+
+export const getTerritoriesListFail = error => ({
+  type: GET_TERRITORIES_LIST_FAIL,
+  payload: error,
+});
 
 export const addPatientInformation = (patient, id) => {
   return {

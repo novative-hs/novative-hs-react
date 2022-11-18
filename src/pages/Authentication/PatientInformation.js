@@ -4,12 +4,14 @@ import { Alert, Col, Container, Row, Label } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Select from "react-select";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
 import { Redirect, Link } from "react-router-dom";
 
 // action
 import {
+  getTerritoriesList,
   addPatientInformation,
   addPatientInformationFailed,
 } from "../../store/actions";
@@ -23,14 +25,25 @@ class PatientInformation extends Component {
     this.state = {
       name: "",
       phone: "",
+      city_id: "",
     };
   }
 
   componentDidMount() {
     this.props.addPatientInformationFailed("");
+    this.props.getTerritoriesList();
   }
 
   render() {
+
+    // list of city from territories
+        const cityList = [];
+        for (let i = 0; i < this.props.territoriesList.length; i++) {
+          cityList.push({
+            label: this.props.territoriesList[i].city,
+            value: this.props.territoriesList[i].id,
+          });
+        }
     // Redirect to register page if getting access directly from url
     if (typeof this.props.location.state == "undefined") {
       return <Redirect to={"/register"} />;
@@ -85,6 +98,7 @@ class PatientInformation extends Component {
                             initialValues={{
                               name: (this.state && this.state.name) || "",
                               phone: (this.state && this.state.phone) || "",
+                              city_id: (this.state && this.state.city_id) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -179,6 +193,55 @@ class PatientInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
+                                               {/* city field */}
+                        <div className="mb-3">
+
+
+<Label for="city_id" className="form-label">
+  City
+</Label>
+    <Select
+      name="city_id"
+      component="Select"
+      onChange={selectedGroup =>
+        this.setState({
+          city_id: selectedGroup.value,
+        })
+      }
+      className={
+        "defautSelectParent" +
+        (errors.city_id && touched.city_id
+          ? " is-invalid"
+          : "")
+      }
+      styles={{
+        control: (base, state) => ({
+          ...base,
+          borderColor:
+            errors.city_id && touched.city_id
+              ? "#f46a6a"
+              : "#ced4da",
+        }),
+      }}
+      options={
+        cityList
+      }
+      defaultValue={{
+        label:
+        this.state.city,
+        value:
+        this.state.id,                                       
+      }}
+    
+    />
+
+    <ErrorMessage
+      name="city_id"
+      component="div"
+      className="invalid-feedback"
+    />
+</div>
+
 
                                 <div className="mt-3 d-grid">
                                   <button
@@ -214,14 +277,20 @@ PatientInformation.propTypes = {
   addPatientInformationFailed: PropTypes.any,
   addPatientError: PropTypes.any,
   patient: PropTypes.any,
+  getTerritoriesList:PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
+
 const mapStateToProps = state => {
+  const { territoriesList } = state.PatientInformation;
   const { patient, addPatientError, loading } = state.PatientInformation;
-  return { patient, addPatientError, loading };
+  return { patient, addPatientError, loading, territoriesList };
+  
 };
 
 export default connect(mapStateToProps, {
+  getTerritoriesList,
   addPatientInformation,
   addPatientInformationFailed,
 })(PatientInformation);

@@ -62,6 +62,7 @@ export const postPatientInformation = (id, patient) => {
   let formData = new FormData();
   formData.append("name", patient.name);
   formData.append("phone", patient.phone);
+  formData.append("city_id", patient.city_id);
 
   return axios
     .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {
@@ -103,9 +104,10 @@ export const postB2bClientInformation = (id, b2bclient) => {
   formData.append("business_name", b2bclient.name);
   formData.append("landline", b2bclient.landline);
   formData.append("website_url", b2bclient.website_url);
-  formData.append("province", b2bclient.province);
-  formData.append("city", b2bclient.city);
-  formData.append("district", b2bclient.district);
+  formData.append("city_id", b2bclient.city_id);
+  // formData.append("province", b2bclient.province);
+  // formData.append("city", b2bclient.city);
+  // formData.append("district", b2bclient.district);
 
   return axios
     .post(`${url.POST_B2BCLIENT_INFORMATION}/${id}`, formData, {

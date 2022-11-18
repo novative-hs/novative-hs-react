@@ -26,9 +26,10 @@ class B2bClientInformation extends Component {
       name: "",
       landline: "",
       website_url: "",
-      city: "",
-      district: "",
-      province: "Punjab",
+      // city: "",
+      // district: "",
+      // province: "Punjab",
+      city_id: "",
     };
   }
 
@@ -41,13 +42,13 @@ class B2bClientInformation extends Component {
 
 
 
-    // const cityList = [];
-    // for (let i = 0; i < this.props.territoriesList.length; i++) {
-    //   cityList.push({
-    //     label: this.props.territoriesList[i].city,
-    //     value: this.props.territoriesList[i].id,
-    //   });
-    // }
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
 
     // const districtList = [];
     // for (let i = 0; i < this.props.territoriesList.length; i++) {
@@ -121,12 +122,12 @@ class B2bClientInformation extends Component {
                                 (this.state && this.state.landline) || "",
                               website_url:
                                 (this.state && this.state.website_url) || "",
-                              province:
-                                (this.state && this.state.province) || "",
-                              district:
-                                (this.state && this.state.district) || "",
-                              city:
-                                (this.state && this.state.city) || "",
+                              // province:
+                              //   (this.state && this.state.province) || "",
+                              // district:
+                              //   (this.state && this.state.district) || "",
+                              city_id:
+                                (this.state && this.state.city_id) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -222,7 +223,7 @@ class B2bClientInformation extends Component {
                                   />
                                 </div>
                                                  {/* Province field */}
-                                                 <div className="mb-3">
+                                                 {/* <div className="mb-3">
                                   <Label for="type" className="form-label">
                                     Province
                                   </Label>
@@ -249,11 +250,11 @@ class B2bClientInformation extends Component {
                                       Islamabad Capital Territory
                                     </option>
                                   </Field>
-                                </div>
+                                </div> */}
 
 
                                 {/* District field */}
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                           <Label for="district" className="form-label">
                             District
                           </Label>
@@ -289,27 +290,27 @@ class B2bClientInformation extends Component {
                             component="div"
                             className="invalid-feedback"
                           />
-                        </div>
+                        </div> */}
 
 
                                 {/* city field */}
                         <div className="mb-3">
 
 
-                          <Label for="city" className="form-label">
+                          <Label for="city_id" className="form-label">
                             City
                           </Label>
                               <Select
-                                name="city"
+                                name="city_id"
                                 component="Select"
                                 onChange={selectedGroup =>
                                   this.setState({
-                                    city: selectedGroup.value,
+                                    city_id: selectedGroup.value,
                                   })
                                 }
                                 className={
                                   "defautSelectParent" +
-                                  (errors.city && touched.city
+                                  (errors.city_id && touched.city_id
                                     ? " is-invalid"
                                     : "")
                                 }
@@ -317,17 +318,23 @@ class B2bClientInformation extends Component {
                                   control: (base, state) => ({
                                     ...base,
                                     borderColor:
-                                      errors.city && touched.city
+                                      errors.city_id && touched.city_id
                                         ? "#f46a6a"
                                         : "#ced4da",
                                   }),
                                 }}
-                                options={CITIES}
-                                placeholder="Select City..."
-                              />
-
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                  this.state.city,
+                                  value:
+                                  this.state.id,                                       
+                                }}
+                                />
                               <ErrorMessage
-                                name="city"
+                                name="city_id"
                                 component="div"
                                 className="invalid-feedback"
                               />
