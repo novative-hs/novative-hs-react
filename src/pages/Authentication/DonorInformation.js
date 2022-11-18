@@ -11,7 +11,7 @@ import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 
 // action
 import {
-  // getTerritoriesList,
+  getTerritoriesList,
   addDonorInformation,
   addDonorInformationFailed,
 } from "../../store/auth/donorinformation/actions";
@@ -41,7 +41,7 @@ class DonorInformation extends Component {
 
   componentDidMount() {
     this.props.addDonorInformationFailed("");
-    // this.props.getTerritoriesList();
+    this.props.getTerritoriesList();
   }
 
   render() {
@@ -358,7 +358,6 @@ class DonorInformation extends Component {
                                       this.setState({
                                         district: selectedGroup.value,
                                       })
-
                                     }
                                     className="defautSelectParent"
                                     options={
@@ -371,7 +370,6 @@ class DonorInformation extends Component {
                                       this.state.id,                                       
                                     }}
                                   />
-
                                   <ErrorMessage
                                     name="district"
                                     component="div"
@@ -509,7 +507,7 @@ DonorInformation.propTypes = {
   addDonorInformationFailed: PropTypes.any,
   addDonorError: PropTypes.any,
   donor: PropTypes.any,
-  // getTerritoriesList:PropTypes.func,
+  getTerritoriesList:PropTypes.func,
   territoriesList: PropTypes.array,
 };
 
@@ -519,8 +517,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  // getTerritoriesList,
+  getTerritoriesList,
   addDonorInformation,
   addDonorInformationFailed,
 })(DonorInformation);
-

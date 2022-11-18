@@ -5,6 +5,8 @@ import {
   GET_TESTS_FAIL,
   GET_OFFERED_TESTS_SUCCESS,
   GET_OFFERED_TESTS_FAIL,
+  GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
+  GET_OFFEREDTEST_REFERRELFEE_FAIL,
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
   UPDATE_OFFERED_TEST_SUCCESS,
@@ -46,13 +48,25 @@ const tests = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    case GET_OFFERED_TESTS_SUCCESS:
+      case GET_OFFERED_TESTS_SUCCESS:
+        return {
+          ...state,
+          offeredTests: action.payload.data,
+        };
+  
+      case GET_OFFERED_TESTS_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
+
+    case GET_OFFEREDTEST_REFERRELFEE_SUCCESS:
       return {
         ...state,
         offeredTests: action.payload.data,
       };
 
-    case GET_OFFERED_TESTS_FAIL:
+    case GET_OFFEREDTEST_REFERRELFEE_FAIL:
       return {
         ...state,
         error: action.payload,

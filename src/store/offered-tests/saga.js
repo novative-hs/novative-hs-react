@@ -5,6 +5,7 @@ import {
   GET_UNITS,
   GET_TESTS,
   GET_OFFERED_TESTS,
+  GET_OFFEREDTEST_REFERRELFEE,
   ADD_NEW_OFFERED_TEST,
   DELETE_OFFERED_TEST,
   UPDATE_OFFERED_TEST,
@@ -17,6 +18,8 @@ import {
   getTestsFail,
   getOfferedTestsSuccess,
   getOfferedTestsFail,
+  getOfferedTestsReferrelSuccess,
+  getOfferedTestsReferrelFail,
   addOfferedTestFail,
   addOfferedTestSuccess,
   updateOfferedTestSuccess,
@@ -30,6 +33,7 @@ import {
   getUnits,
   getTests,
   getOfferedTests,
+  getOfferedTestsReferrel,
   addNewOfferedTest,
   updateOfferedTest,
   deleteOfferedTest,
@@ -59,6 +63,14 @@ function* fetchOfferedTests(object) {
     yield put(getOfferedTestsSuccess(response));
   } catch (error) {
     yield put(getOfferedTestsFail(error));
+  }
+}
+function* fetchOfferedTestsReferrel(object) {
+  try {
+    const response = yield call(getOfferedTestsReferrel, object.payload);
+    yield put(getOfferedTestsReferrelSuccess(response));
+  } catch (error) {
+    yield put(getOfferedTestsReferrelFail(error));
   }
 }
 
@@ -97,6 +109,7 @@ function* offeredTestsSaga() {
   yield takeEvery(GET_UNITS, fetchUnits);
   yield takeEvery(GET_TESTS, fetchTests);
   yield takeEvery(GET_OFFERED_TESTS, fetchOfferedTests);
+  yield takeEvery(GET_OFFEREDTEST_REFERRELFEE, fetchOfferedTestsReferrel);
   yield takeEvery(ADD_NEW_OFFERED_TEST, onAddNewOfferedTest);
   yield takeEvery(UPDATE_OFFERED_TEST, onUpdateOfferedTest);
   yield takeEvery(DELETE_OFFERED_TEST, onDeleteOfferedTest);

@@ -25,7 +25,7 @@ import "nouislider/distribute/nouislider.css";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { any } from "prop-types";
 
-import { getOfferedTests } from "store/offered-tests/actions";
+import { getOfferedTestsReferrel } from "store/offered-tests/actions";
 import { addToCart } from "store/actions";
 
 class TestsOffered extends Component {
@@ -47,9 +47,9 @@ class TestsOffered extends Component {
   }
 
   componentDidMount() {
-    const { onGetOfferedTests } = this.props;
+    const { ongetOfferedTestsReferrel } = this.props;
     if (this.state.applied) {
-      onGetOfferedTests();
+      ongetOfferedTestsReferrel();
       this.setState({ offeredTests: this.props.offeredTests });
     }
   }
@@ -307,7 +307,7 @@ TestsOffered.propTypes = {
   history: any,
   location: PropTypes.any,
   offeredTests: PropTypes.array,
-  onGetOfferedTests: PropTypes.func,
+  ongetOfferedTestsReferrel: PropTypes.func,
   onAddToCart: PropTypes.func,
   success: PropTypes.any,
   error: PropTypes.any,
@@ -320,8 +320,8 @@ const mapStateToProps = ({ offeredTests, carts }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetOfferedTests: () =>
-    dispatch(getOfferedTests(ownProps.match.params.lab_account_id)),
+  ongetOfferedTestsReferrel: () =>
+    dispatch(getOfferedTestsReferrel(ownProps.match.params.lab_account_id)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
 });
 

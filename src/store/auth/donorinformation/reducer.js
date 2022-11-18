@@ -1,13 +1,13 @@
 import {
-  // GET_TERRITORIES_LIST_SUCCESS,
-  // GET_TERRITORIES_LIST_FAIL,
+  GET_TERRITORIES_LIST_SUCCESS,
+  GET_TERRITORIES_LIST_FAIL,
   ADD_DONOR_INFORMATION,
   ADD_DONOR_INFORMATION_SUCCESSFUL,
   ADD_DONOR_INFORMATION_FAILED,
 } from "./actionTypes"
 
 const initialState = {
-  // territoriesList: [],
+  territoriesList: [],
   addDonorError: null,
   message: null,
   loading: false,
@@ -16,17 +16,17 @@ const initialState = {
 const donorInformation = (state = initialState, action) => {
   switch (action.type) {
         // territories
-        // case GET_TERRITORIES_LIST_SUCCESS:
-        //   return {
-        //     ...state,
-        //     territoriesList: action.payload.data,
-        //   };
+        case GET_TERRITORIES_LIST_SUCCESS:
+          return {
+            ...state,
+            territoriesList: action.payload.data,
+          };
     
-        // case GET_TERRITORIES_LIST_FAIL:
-        //   return {
-        //     ...state,
-        //     error: action.payload,
-        //   };
+        case GET_TERRITORIES_LIST_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
 
     case ADD_DONOR_INFORMATION:
       state = {

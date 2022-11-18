@@ -350,6 +350,10 @@ export const getOfferedTests = id =>
   get(`${url.GET_OFFERED_TESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+export const getOfferedTestsReferrel = id =>
+  get(`${url.GET_OFFEREDTEST_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 export const addNewOfferedTest = (offeredTest, id) => {
   let formData = new FormData();
