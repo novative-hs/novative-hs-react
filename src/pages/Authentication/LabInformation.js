@@ -67,9 +67,9 @@ class LabInformation extends Component {
       lab_experience: "",
       landline: "",
       address: "",
-      city: "",
-      office: "",
-      province: "Punjab",
+      city_id: "",
+      // office: "",
+      // province: "Punjab",
       is_digital_payment_accepted: "Yes",
       registered_by: "Lab",
       is_registering_for_first_time: "No",
@@ -140,13 +140,13 @@ class LabInformation extends Component {
     }
 
 // list of district from territories
-    const districtList = [];
-    for (let i = 0; i < this.props.territoriesList.length; i++) {
-      districtList.push({
-        label: this.props.territoriesList[i].district,
-        value: this.props.territoriesList[i].office,
-      });
-    }
+    // const districtList = [];
+    // for (let i = 0; i < this.props.territoriesList.length; i++) {
+    //   districtList.push({
+    //     label: this.props.territoriesList[i].district,
+    //     value: this.props.territoriesList[i].office,
+    //   });
+    // }
 
 // Redirect to register page if getting access directly from url
     if (typeof this.props.location.state == "undefined") {
@@ -221,11 +221,11 @@ class LabInformation extends Component {
                               landline:
                                 (this.state && this.state.landline) || "",
                               address: (this.state && this.state.address) || "",
-                              city: (this.state && this.state.city) || "",
-                              office:
-                                (this.state && this.state.office) || "",
-                              province:
-                                (this.state && this.state.province) || "Punjab",
+                              city_id: (this.state && this.state.city_id) || "",
+                              // office:
+                              //   (this.state && this.state.office) || "",
+                              // province:
+                              //   (this.state && this.state.province) || "Punjab",
                               is_digital_payment_accepted:
                                 (this.state &&
                                   this.state.is_digital_payment_accepted) ||
@@ -346,22 +346,15 @@ class LabInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              city: Yup.string()
-                                .trim()
-                                .required("Please select your city")
-                                .max(255, "Please enter maximum 255 characters")
-                                .matches(
-                                  /^[a-zA-Z][a-zA-Z ]+$/,
-                                  "Please enter only alphabets and spaces"
-                                ),
-                              office: Yup.string()
-                                .trim()
-                                .required("Please select your office")
-                                .max(255, "Please enter maximum 255 characters")
-                                .matches(
-                                  /^[a-zA-Z][a-zA-Z ]+$/,
-                                  "Please enter only alphabets and spaces"
-                                ),
+                              // city: Yup.string()
+                              //   .trim()
+                              //   .required("Please select your city")
+                              //   .max(255, "Please enter maximum 255 characters")
+                              //   .matches(
+                              //     /^[a-zA-Z][a-zA-Z ]+$/,
+                              //     "Please enter only alphabets and spaces"
+                              //   ),
+                          
                               lab_staff_name: Yup.string().when(
                                 "registered_by",
                                 {
@@ -839,7 +832,7 @@ class LabInformation extends Component {
                                 </div>
 
                                 {/* Province field */}
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                   <Label for="type" className="form-label">
                                     Province
                                   </Label>
@@ -866,11 +859,11 @@ class LabInformation extends Component {
                                       Islamabad Capital Territory
                                     </option>
                                   </Field>
-                                </div>
+                                </div> */}
 
 
-                                {/* District field
-                                <div className="mb-3">
+                                  {/* District field */}
+                                {/* <div className="mb-3">
                           <Label for="office" className="form-label">
                             District
                           </Label>
@@ -906,27 +899,27 @@ class LabInformation extends Component {
                             component="div"
                             className="invalid-feedback"
                           />
-                        </div> */}
+                        </div>  */}
 
 
                                 {/* city field */}
                         <div className="mb-3">
 
 
-                          <Label for="city" className="form-label">
+                          <Label for="city_id" className="form-label">
                             City
                           </Label>
                               <Select
-                                name="city"
+                                name="city_id"
                                 component="Select"
                                 onChange={selectedGroup =>
                                   this.setState({
-                                    city: selectedGroup.value,
+                                    city_id: selectedGroup.value,
                                   })
                                 }
                                 className={
                                   "defautSelectParent" +
-                                  (errors.city && touched.city
+                                  (errors.city_id && touched.city_id
                                     ? " is-invalid"
                                     : "")
                                 }
@@ -934,17 +927,25 @@ class LabInformation extends Component {
                                   control: (base, state) => ({
                                     ...base,
                                     borderColor:
-                                      errors.city && touched.city
+                                      errors.city_id && touched.city_id
                                         ? "#f46a6a"
                                         : "#ced4da",
                                   }),
                                 }}
-                                options={CITIES}
-                                placeholder="Select City..."
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                  this.state.city,
+                                  value:
+                                  this.state.id,                                       
+                                }}
+                              
                               />
 
                               <ErrorMessage
-                                name="city"
+                                name="city_id"
                                 component="div"
                                 className="invalid-feedback"
                               />
@@ -952,7 +953,7 @@ class LabInformation extends Component {
                        
 
                                 {/* District field */}
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                   <Label for="office" className="form-label">
                                     District
                                   </Label>
@@ -982,7 +983,7 @@ class LabInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-                                </div>
+                                </div> */}
                                 
                                 {/* City field */}
                                 {/* <div className="mb-3">

@@ -150,9 +150,9 @@ export const postDonorInformation = (id, donor) => {
   formData.append("email", donor.email);
   formData.append("type", donor.type);
   formData.append("cnic", donor.cnic);
-  formData.append("province", donor.province);
-  formData.append("city", donor.city);
-  formData.append("district", donor.district);
+  // formData.append("province", donor.province);
+  formData.append("city_id", donor.city_id);
+  // formData.append("district", donor.district);
   formData.append("company_name", donor.company_name);
   formData.append("is_income_tax_payable", donor.is_income_tax_payable);
   formData.append("is_blocked", donor.is_blocked);
@@ -211,10 +211,10 @@ export const postLabInformation = (id, lab) => {
   // formData.append("phone", lab.phone);
   formData.append("landline", lab.landline);
   formData.append("address", lab.address);
-  formData.append("province", lab.province);
+  // formData.append("province", lab.province);
   // formData.append("district", lab.district);
-  formData.append("city", lab.city);
-  formData.append("office", lab.office);
+  formData.append("city_id", lab.city_id);
+  // formData.append("office", lab.office);
   // formData.append("complaint_handling_email", lab.complaint_handling_email);
   // formData.append("complaint_handling_phone", lab.complaint_handling_phone);
   formData.append(

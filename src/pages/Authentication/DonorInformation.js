@@ -31,9 +31,9 @@ class DonorInformation extends Component {
       company_name:"",
       is_income_tax_payable:"",
       is_blocked:"",
-      city: "",
-      district: "",
-      province: "Punjab",
+      city_id: "",
+      // district: "",
+      // province: "Punjab",
 
 
     };
@@ -45,13 +45,13 @@ class DonorInformation extends Component {
   }
 
   render() {
-    // const cityList = [];
-    // for (let i = 0; i < this.props.territoriesList.length; i++) {
-    //   cityList.push({
-    //     label: this.props.territoriesList[i].city,
-    //     value: this.props.territoriesList[i].id,
-    //   });
-    // }
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
 
     // const districtList = [];
     // for (let i = 0; i < this.props.territoriesList.length; i++) {
@@ -127,12 +127,12 @@ class DonorInformation extends Component {
                               company_name: (this.state && this.state.company_name) || "",
                               is_income_tax_payable: (this.state && this.state.is_income_tax_payable) || "",
                               is_blocked: (this.state && this.state.is_blocked) || "",
-                              province:
-                              (this.state && this.state.province) || "",
-                              district:
-                                (this.state && this.state.district) || "",
-                              city:
-                                (this.state && this.state.city) || "",
+                              // province:
+                              // (this.state && this.state.province) || "",
+                              // district:
+                              //   (this.state && this.state.district) || "",
+                              city_id:
+                                (this.state && this.state.city_id) || "",
 
                             }}
                             validationSchema={Yup.object().shape({
@@ -318,7 +318,7 @@ class DonorInformation extends Component {
                                   </div>
                                 )}
                                      {/* Province field */}
-                                     <div className="mb-3">
+                                     {/* <div className="mb-3">
                                   <Label for="type" className="form-label">
                                     Province
                                   </Label>
@@ -345,9 +345,9 @@ class DonorInformation extends Component {
                                       Islamabad Capital Territory
                                     </option>
                                   </Field>
-                                </div>
+                                </div> */}
                                    {/* District field */}
-                                   <div className="mb-3">
+                                   {/* <div className="mb-3">
                                   <Label for="district" className="form-label">
                                     District
                                   </Label>
@@ -377,19 +377,19 @@ class DonorInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-                                </div>
+                                </div> */}
                                 
                                 {/* City field */}
                                 <div className="mb-3">
-                                  <Label for="city" className="form-label">
+                                  <Label for="city_id" className="form-label">
                                     City
                                   </Label>
                                   <Select
-                                    name="city"
+                                    name="city_id"
                                     component="Select"
                                     onChange={selectedGroup =>
                                       this.setState({
-                                        city: selectedGroup.value,
+                                        city_id: selectedGroup.value,
                                       })
                                     }
                                     placeholder="Select City..."
@@ -399,7 +399,7 @@ class DonorInformation extends Component {
                                     }
                                     defaultValue={{
                                       label:
-                                      this.state.city,
+                                      this.state.city_id,
                                       value:
                                       this.state.id,                                       
                                     }}
@@ -407,7 +407,7 @@ class DonorInformation extends Component {
                                   />
 
                                   <ErrorMessage
-                                    name="city"
+                                    name="city_id"
                                     component="div"
                                     className="invalid-feedback"
                                   />

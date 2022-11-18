@@ -152,9 +152,7 @@ class LabSummary extends Component {
                       <h4 className="mb-0">
                         {/* Converting number to thousands separator string for readability */}
                         Rs.
-                        {this.state.monthlyRevenue
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        {this.state.monthlyRevenue}
                       </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">

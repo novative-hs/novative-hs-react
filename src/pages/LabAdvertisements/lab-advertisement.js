@@ -151,6 +151,26 @@ class AdvertisementsList extends Component {
           sort: true,
         },
         {
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,
+          formatter: (cellContent, labAdvertisement) => (
+            <>
+              {labAdvertisement.payment_status == "Not Paid" ? (
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                  {labAdvertisement.payment_method},{" "}
+                  {labAdvertisement.payment_status}
+                </span>
+              ) : (
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                  {labAdvertisement.payment_method},{" "}
+                  {labAdvertisement.payment_status}
+                </span>
+              )}
+            </>
+          ),
+        },
+        {
           dataField: "invoice",
           text: "Invoice",
           isDummyField: true,
