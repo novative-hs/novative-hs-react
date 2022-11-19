@@ -305,7 +305,6 @@ class AssignedAudits extends Component {
                                             console.log(data);
 
                                             onUpdateAssignedAudits(data);
-
                                             setTimeout(() => {
                                               onGetAssignedAudits(
                                                 this.state.user_id
@@ -315,6 +314,11 @@ class AssignedAudits extends Component {
                                             this.setState({
                                               auditModal: false,
                                             });
+                                            setTimeout(() => {
+                                              onGetAssignedAudits(
+                                                this.state.user_id
+                                              );
+                                            }, 100);
                                           }}
                                         >
                                           {({ errors, status, touched }) => (
@@ -394,11 +398,9 @@ class AssignedAudits extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                  {this.state.audit_status ===
-                                                    "Fail" && (
                                                     <div className="mb-3">
                                                       <Label className="form-label">
-                                                        Reason of Failure
+                                                        Comment
                                                       </Label>
                                                       <Field
                                                         name="comment"
@@ -428,7 +430,6 @@ class AssignedAudits extends Component {
                                                         className="invalid-feedback"
                                                       />
                                                     </div>
-                                                  )}
                                                 </Col>
                                               </Row>
                                               <Row>

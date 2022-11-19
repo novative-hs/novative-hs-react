@@ -10,7 +10,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { postB2bClientInformation} from "../../../helpers/django_api_helper";
+import { postB2bClientInformation, getTerritoriesList} from "../../../helpers/django_api_helper";
 
 // Territories
 function* fetchTerritoriesList(object) {

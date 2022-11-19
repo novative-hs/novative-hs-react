@@ -634,17 +634,8 @@ class SidebarContent extends Component {
                     <Link to={"/discount-labhazir"}>
                       {this.props.t("Against Test")}
                     </Link>
-                    <ul className="sub-menu" aria-expanded="false">
-                      <li>
-                        <Link to={"/discount-labhazir"}>
-                          {this.props.t("Lab Hazir")}
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to={"/labs-list"}>{this.props.t("Lab")}</Link>
-                      </li>
-                    </ul>
                   </li>
+
                     <li>
                       <Link to={"/labs-list"}>
                         {this.props.t("Against Lab")}

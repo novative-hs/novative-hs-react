@@ -284,7 +284,6 @@ class B2bClientInformation extends Component {
                             options={DISTRICTS}
                             placeholder="Select District..."
                           />
-
                           <ErrorMessage
                             name="district"
                             component="div"
