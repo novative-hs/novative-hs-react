@@ -28,7 +28,7 @@ import {
   getLabs,
 } from "store/inpayments/actions";
 import {
-  // getTerritoriesList
+  getTerritoriesList
   } from "store/territories-list/actions";
   
 
@@ -56,9 +56,9 @@ class Contact extends Component {
     this.setState({ complaint: selectedGroup.value });
   };
   componentDidMount() {
-      // const { territoriesList, onGetTerritoriesList } = this.props;
+      const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
-      // console.log(onGetTerritoriesList(this.state.user_id));
+      console.log(onGetTerritoriesList(this.state.user_id));
     }
     const { labs, onGetlabs } = this.props;
     if (labs && !labs.length) {
@@ -522,7 +522,7 @@ Contact.propTypes = {
   onGetlabs: PropTypes.func,
   onAddNewComplaint: PropTypes.func,
   addNewComplaint: PropTypes.func,
-  // onGetTerritoriesList: PropTypes.func,
+  onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
 };
 const mapStateToProps = ({ complaints, territoriesList}) => ({
@@ -533,7 +533,7 @@ const mapStateToProps = ({ complaints, territoriesList}) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddNewComplaint: complaint => dispatch(addNewComplaint(complaint)),
   onGetlabs: () => dispatch(getLabs()),
-  // onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
 });
 export default connect(
   mapStateToProps,
