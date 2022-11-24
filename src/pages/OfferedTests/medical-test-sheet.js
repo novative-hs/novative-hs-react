@@ -49,10 +49,10 @@ class MedicalTestSheet extends Component {
                             list, leave the row empty. Please{" "}
                             <strong>do not delete</strong> the row.
                           </li>
-                          <li>
+                          {/* <li>
                             If you are offering a test that is not in the list,
                             add the test at the end.
-                          </li>
+                          </li> */}
                           <li>
                             Select from the drop down where drop down is
                             provided.

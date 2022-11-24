@@ -197,6 +197,13 @@ class Header extends Component {
                     <i className="mdi mdi-key align-middle me-1 font-size-20" />{" "}
                     {/* <span className="pt-4 font-size-12">Cart</span> */}
                   </Link>
+                  <Link
+                    to="/contact-us"
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                    {/* <span className="pt-4 font-size-12">Cart</span> */}
+                  </Link>
 
                   <Link
                     to={

@@ -100,6 +100,10 @@ class ProfileMenu extends Component {
               <i className="mdi mdi-account-lock font-size-16 align-middle ms-1" />{" "}
               {this.props.t("Change Password")}
             </DropdownItem>
+            <DropdownItem tag="a" href={"/contact-us"}>
+              <i className="mdi mdi-phone align-middle me-1 font-size-16 align-middle ms-1" />{" "}
+              {this.props.t("Contact Us")}
+            </DropdownItem>
 
             <Link to="/logout" className="dropdown-item">
               <i className="mdi mdi-power font-size-16 align-middle me-1 text-danger" />{" "}

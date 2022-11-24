@@ -818,7 +818,7 @@ class Checkout extends Component {
                                       <th scope="col">Price (Rs)</th>
                                       <th scope="col">Discount by <br></br>(Lab)</th>
                                       <th scope="col">Discount by <br></br>(LabHazir)</th>
-                                      <th scope="col">Discount by <br></br>LabHazir(Against Test)</th> 
+                                      {/* <th scope="col">Discount by <br></br>LabHazir(Against Test)</th>  */}
                                       <th scope="col">Net Payment</th>
 
                                     </tr>
@@ -853,11 +853,11 @@ class Checkout extends Component {
                                                   {item.discount_by_labhazir+item.discount_by_labhazird_by_test}
                                                   </p>
                                                 </td>
-                                                <td>
+                                                {/* <td>
                                                   <p className="float-end">
                                                   {item.discount_by_labhazird_by_test.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                   </p>
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                   <p className="float-end bg-success bg-soft p-4">
                                                   {item.net_payment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -881,7 +881,7 @@ class Checkout extends Component {
                                   {this.state.checkoutItems.map(
                                       (checkoutItem, key) => (
                                         <>
-                                              <tr className="table-light p-3 rounded">
+                                              {/* <tr className="table-light p-3 rounded">
                                                 <td>
                                                   <h5 className="font-size-14 text-truncate float-center">
                                                     Total
@@ -905,7 +905,7 @@ class Checkout extends Component {
                                                   {checkoutItem.total_discount_by_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                   </p>
                                                 </td> */}
-                                                <td>
+                                                {/* <td>
                                                   <p className="float-end">
                                                   {checkoutItem.total_discount_by_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                   </p>
@@ -914,18 +914,21 @@ class Checkout extends Component {
                                                   <p>
                                                     
                                                   </p>
-                                                </td>
-                                              </tr>
+                                                </td> */}
+                                              {/* </tr>  */}
                                             
 
                                           {checkoutItem.lab_home_sampling_charges !=
                                             0 && (
                                             <tr key={"_checkoutItem_" + key}>
-                                              <td colSpan="5">
+                                              <td colSpan="6">
                                                 <div className="bg-primary bg-soft p-3 rounded">
                                                   <h5 className="font-size-14 text-primary mb-0">
                                                     <i className="fas fa-shipping-fast me-2" />{" "}
                                                     Home Sampling Charges{" "}
+                                                    {/* {
+                                                        checkoutItem.lab_name
+                                                      } */}
                                                     <span className="float-end">
                                                       Rs.{" "}
                                                       {
@@ -940,7 +943,7 @@ class Checkout extends Component {
 
                                           {checkoutItem.total_test_cost && (
                                             <tr>
-                                              <td colSpan="5">
+                                              <td colSpan="6">
                                                 <div className="bg-success bg-soft p-3 rounded">
                                                   <h5 className="font-size-14 text-success mb-0">
                                                     <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
