@@ -67,6 +67,9 @@ class DiscountLabHazirList extends Component {
             dataField: "test_name",
             text: "Test Name",
             sort: true,
+            headerStyle: () => {
+              return { width: "30%" };
+            } 
           },
           // {
           //   dataField: "duration_required",

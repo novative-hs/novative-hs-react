@@ -236,7 +236,8 @@ class Register extends Component {
                             })}
                             onSubmit={values => {
                               this.props.registerUser(values);
-
+                              console.log(window.location.href)
+                              window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
                               // If no error messages then show wait message
                               setTimeout(() => {
                                 if (
@@ -398,7 +399,7 @@ class Register extends Component {
                                     {/* <option value="corporate">Corporate</option> */}
                                   </Field>
                                 </div>
-
+                  
                                 <div className="mt-3 d-grid">
                                   <button
                                     className="btn btn-primary btn-block"

@@ -75,6 +75,7 @@ class ForgetPasswordPage extends Component {
                                   values,
                                   this.props.history
                                 );
+                                window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
                               }}
                             >
                               {({ errors, status, touched }) => (

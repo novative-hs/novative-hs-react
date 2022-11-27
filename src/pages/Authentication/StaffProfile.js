@@ -118,6 +118,7 @@ class StaffProfile extends Component {
                     this.props.updateStaffProfile(values, this.state.user_id);
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
+                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                     // To get updated profile again
                     setTimeout(() => {

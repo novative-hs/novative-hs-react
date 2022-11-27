@@ -154,6 +154,7 @@ class B2bClientInformation extends Component {
                                 values,
                                 this.props.match.params.id
                               );
+                              window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                               // Redirecting back to the login page
                               setTimeout(() => {

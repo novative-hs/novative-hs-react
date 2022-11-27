@@ -138,6 +138,7 @@ class LabSettings extends Component {
                   
                       // To show success message of update
                       this.setState({ isSettingsUpdated: true });
+                      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                       setTimeout(() => {
                         this.props.updateDonorSettings(

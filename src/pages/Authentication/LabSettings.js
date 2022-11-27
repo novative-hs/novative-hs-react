@@ -184,7 +184,7 @@ class LabSettings extends Component {
                       ),
                   })}
                   onSubmit={values => {
-                    values.health_dept_certified =
+                    values.health_dept_certificate =
                       this.state.health_dept_certificate;
 
                     // If health dept certified is selected and certificate is uploaded
@@ -217,6 +217,7 @@ class LabSettings extends Component {
 
                       // To show success message of update
                       this.setState({ isSettingsUpdated: true });
+                      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                       setTimeout(() => {
                         this.props.updateLabSettings(

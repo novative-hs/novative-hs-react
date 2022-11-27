@@ -88,6 +88,7 @@ class ChangePassword extends Component {
                       })}
                       onSubmit={values => {
                         this.props.userChangePassword(values);
+                        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                         setTimeout(() => {
                           this.setState({

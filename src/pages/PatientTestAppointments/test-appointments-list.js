@@ -25,6 +25,7 @@ import paginationFactory, {
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import Tooltip from "@material-ui/core/Tooltip";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -78,12 +79,20 @@ class TestAppointmentsList extends Component {
           dataField: "patient_name",
           text: "Name",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              <span>
+                <Link
+                  to="#"
+                  onClick={e => this.openPatientModal(e, testAppointment)}
+                >
+                  {testAppointment.patient_name}
+                </Link>
+              </span>
+            </>
+          ),
         },
-        {
-          dataField: "relationsip_with_patient",
-          text: "Booked for",
-          sort: true,
-        },
+
         // {
         //   dataField: "patient_city",
         //   text: "City",
@@ -94,34 +103,34 @@ class TestAppointmentsList extends Component {
         //   text: "District",
         //   sort: true,
         // },
-        {
-          dataField: "booked_at",
-          text: "Booked at",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              <span>
-                {new Date(patientTestAppointment.booked_at).toLocaleString(
-                  "en-US"
-                )}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "appointment_requested_at",
-          text: "Schedule time by Patient",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.appointment_requested_at
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "booked_at",
+        //   text: "Booked at",
+        //   sort: true,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(patientTestAppointment.booked_at).toLocaleString(
+        //           "en-US"
+        //         )}
+        //       </span>
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "appointment_requested_at",
+        //   text: "Schedule time by Patient",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(
+        //           testAppointment.appointment_requested_at
+        //         ).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "is_home_sampling_availed",
           text: "Home sampling availing",
@@ -245,16 +254,18 @@ class TestAppointmentsList extends Component {
                     {testAppointment.collection_status}
                   </span>
                 )}
-              
+
               {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Sample+Payment Collected" && (
+                testAppointment.collection_status ==
+                  "Sample+Payment Collected" && (
                   <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                     {testAppointment.collection_status}
                   </span>
                 )}
 
               {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Sample+Payment Delivered" && (
+                testAppointment.collection_status ==
+                  "Sample+Payment Delivered" && (
                   <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                     {testAppointment.collection_status}
                   </span>
@@ -424,29 +435,29 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
-        {
-          dataField: "result_uploaded_at",
-          text: "Result uploaded at",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              {patientTestAppointment.status != "Result Uploaded" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(
-                    patientTestAppointment.result_uploaded_at
-                  ).toLocaleString("en-US")}
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "dues",
-          text: "Dues",
-          sort: true,
-        },
+        // {
+        //   dataField: "result_uploaded_at",
+        //   text: "Result uploaded at",
+        //   sort: true,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       {patientTestAppointment.status != "Result Uploaded" ? (
+        //         <span>Not available yet</span>
+        //       ) : (
+        //         <span>
+        //           {new Date(
+        //             patientTestAppointment.result_uploaded_at
+        //           ).toLocaleString("en-US")}
+        //         </span>
+        //       )}
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "dues",
+        //   text: "Dues",
+        //   sort: true,
+        // },
         {
           dataField: "payment_status",
           text: "Payment Status",
@@ -547,12 +558,12 @@ class TestAppointmentsList extends Component {
           editable: false,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <Link
-                className="btn btn-primary btn-rounded font-size-10"
-                to={`/invoice-detail/${patientTestAppointment.id}`}
-              >
-                Invoice
-              </Link>
+              <Tooltip title="Invoice">
+                <Link
+                  className="mdi mdi-receipt font-size-18"
+                  to={`/invoice-detail/${patientTestAppointment.id}`}
+                ></Link>
+              </Tooltip>
             </>
           ),
         },
@@ -563,6 +574,7 @@ class TestAppointmentsList extends Component {
     this.toggleReschedulingModal = this.toggleReschedulingModal.bind(this);
     this.handlePatientFeedbackClick =
       this.handlePatientFeedbackClick.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
     // this.handlePatientFeedbackClicks = this.handlePatientFeedbackClicks.bind(this);
   }
 
@@ -578,6 +590,25 @@ class TestAppointmentsList extends Component {
       modal: !prevState.modal,
     }));
   }
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      relationsip_with_patient: arg.relationsip_with_patient,
+      booked_at: arg.booked_at,
+      appointment_requested_at: arg.appointment_requested_at,
+      // patient_city: arg.patient_city,
+      // patient_phone: arg.patient_phone,
+    });
+  };
+
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
 
   openCollectorModal = (e, arg) => {
     this.setState({
@@ -719,7 +750,81 @@ class TestAppointmentsList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                  
+                                    <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Booked for
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .relationsip_with_patient
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
 
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Booked at
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={new Date(
+                                                        this.state.booked_at
+                                                      ).toLocaleString("en-US")}
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Schedule time
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={new Date(
+                                                        this.state.appointment_requested_at
+                                                      ).toLocaleString("en-US")}
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}

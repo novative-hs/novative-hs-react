@@ -57,6 +57,9 @@ class CartList extends Component {
           dataField: "test_name",
           text: "Test name",
           sort: true,
+          headerStyle: () => {
+            return { width: "30%" };
+          } 
         },
         {
           dataField: "price",

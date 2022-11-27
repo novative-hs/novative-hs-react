@@ -71,6 +71,9 @@ class OfferedTestsList extends Component {
           dataField: "test_name",
           text: "Test",
           sort: true,
+          headerStyle: () => {
+            return { width: "30%" };
+          }  
         },
 
         {

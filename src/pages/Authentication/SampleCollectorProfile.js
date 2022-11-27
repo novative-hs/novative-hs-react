@@ -119,6 +119,7 @@ class SampleCollectorProfile extends Component {
                     );
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
+                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                     // To get updated profile again
                     setTimeout(() => {

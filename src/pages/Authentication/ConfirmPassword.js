@@ -92,7 +92,10 @@ class ConfirmPasswordPage extends Component {
                                   values,
                                   this.props.match.params.token
                                 );
-                              }}
+                                window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+
+                              }
+                            }
                             >
                               {({ errors, status, touched }) => (
                                 <Form className="form-horizontal">
