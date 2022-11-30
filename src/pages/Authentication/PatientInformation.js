@@ -26,7 +26,6 @@ class PatientInformation extends Component {
       name: "",
       phone: "",
       city_id: "",
-      url: "",
     };
   }
 
@@ -98,7 +97,6 @@ class PatientInformation extends Component {
                               name: (this.state && this.state.name) || "",
                               phone: (this.state && this.state.phone) || "",
                               city_id: (this.state && this.state.city_id) || "",
-                              url: (this.state && this.state.url) || "",
 
                             }}
                             validationSchema={Yup.object().shape({
@@ -124,7 +122,6 @@ class PatientInformation extends Component {
                                 values,
                                 this.props.match.params.id
                               );
-                              console.log(url)
                               window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                               // Redirecting back to the login page
@@ -168,33 +165,6 @@ class PatientInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
-
-                                {/* <div className="mb-3">
-                                  {/* <Label for="url" className="form-label">
-                                    url
-                                  </Label>
-                                  <Field
-                                    id="url"
-                                    name="url"
-                                    type="hidden"
-                                    // placeholder="Please enter your name"
-                                    onChange={e =>
-                                      this.setState({ url: e.target.value })
-                                    }
-                                    value={window.location.pathname}
-                                    className={
-                                      "form-control" +
-                                      (errors.url && touched.url
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="url"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div> */}
                                 
 
                                 {/* Phone field */}
