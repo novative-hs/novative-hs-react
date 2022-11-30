@@ -81,7 +81,7 @@ class PatientInformation extends Component {
                               color="success"
                               style={{ marginTop: "13px" }}
                             >
-                              Hello meri jaan{" "}
+                              Login by Using Your Username and Password.{" "}
                             </Alert>
                           ) : null}
 
