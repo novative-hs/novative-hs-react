@@ -45,6 +45,10 @@ import {
   deleteAdvertisement,
 } from "store/advertisements/actions";
 
+import {
+  getTerritoriesList
+  } from "store/territories-list/actions";
+
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 
@@ -56,6 +60,7 @@ class AdvertisementsList extends Component {
       advertisements: [],
       advertisement: "",
       advertisementImg: "",
+      territoriesList: [],
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -168,6 +173,11 @@ class AdvertisementsList extends Component {
     if (advertisements && !advertisements.length) {
       console.log(onGetAdvertisements(this.state.user_id));
     }
+
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
     // this.setState({ advertisements });
   }
 
@@ -247,7 +257,7 @@ class AdvertisementsList extends Component {
         posted_till: advertisement.posted_till,
         region_type: advertisement.region_type,
         province: advertisement.province,
-        city: advertisement.city,
+        city_id: advertisement.city_id,
         district: advertisement.district,
       },
       advertisementImg: "",
@@ -258,6 +268,16 @@ class AdvertisementsList extends Component {
   };
 
   render() {
+
+    // list of city from territories
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
+
     const { SearchBar } = Search;
 
     const { advertisements } = this.props;
@@ -410,8 +430,8 @@ class AdvertisementsList extends Component {
                                               (this.state &&
                                                 this.state.province) ||
                                               "",
-                                            city:
-                                              (this.state && this.state.city) ||
+                                            city_id:
+                                              (this.state && this.state.city_id) ||
                                               "",
                                             district:
                                               (this.state &&
@@ -495,7 +515,7 @@ class AdvertisementsList extends Component {
                                                     region_type:
                                                       values.region_type,
                                                     province: values.province,
-                                                    city: values.city,
+                                                    city_id: values.city_id,
                                                     district: values.district,
                                                   };
 
@@ -525,7 +545,7 @@ class AdvertisementsList extends Component {
                                                   region_type:
                                                     values.region_type,
                                                   province: values.province,
-                                                  city: values.city,
+                                                  city_id: values.city_id,
                                                   district: values.district,
                                                 };
 
@@ -555,7 +575,7 @@ class AdvertisementsList extends Component {
                                                 posted_till: values.posted_till,
                                                 region_type: values.region_type,
                                                 province: values.province,
-                                                city: values.city,
+                                                city_id: values.city_id,
                                                 district: values.district,
                                               };
 
@@ -662,7 +682,7 @@ class AdvertisementsList extends Component {
                                                               advertisement.region_type,
                                                             province:
                                                               advertisement.province,
-                                                            city: advertisement.city,
+                                                            city_id: advertisement.city_id,
                                                             district:
                                                               advertisement.district,
                                                           },
@@ -701,7 +721,7 @@ class AdvertisementsList extends Component {
                                                               advertisement.region_type,
                                                             province:
                                                               advertisement.province,
-                                                            city: advertisement.city,
+                                                            city_id: advertisement.city_id,
                                                             district:
                                                               advertisement.district,
                                                           },
@@ -837,7 +857,7 @@ class AdvertisementsList extends Component {
                                                                 e.target.value,
                                                               province:
                                                                 advertisement.province,
-                                                              city: advertisement.city,
+                                                              city_id: advertisement.city_id,
                                                               district:
                                                                 advertisement.district,
                                                             },
@@ -938,20 +958,20 @@ class AdvertisementsList extends Component {
                         <div className="mb-3">
 
 
-                          <Label for="city" className="form-label">
+                          <Label for="city_id" className="form-label">
                             City
                           </Label>
                               <Select
-                                name="city"
+                                name="city_id"
                                 component="Select"
                                 onChange={selectedGroup =>
                                   this.setState({
-                                    city: selectedGroup.value,
+                                    city_id: selectedGroup.value,
                                   })
                                 }
                                 className={
                                   "defautSelectParent" +
-                                  (errors.city && touched.city
+                                  (errors.city_id && touched.city_id
                                     ? " is-invalid"
                                     : "")
                                 }
@@ -959,17 +979,25 @@ class AdvertisementsList extends Component {
                                   control: (base, state) => ({
                                     ...base,
                                     borderColor:
-                                      errors.city && touched.city
+                                      errors.city_id && touched.city_id
                                         ? "#f46a6a"
                                         : "#ced4da",
                                   }),
                                 }}
-                                options={CITIES}
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                  this.state.city,
+                                  value:
+                                  this.state.id,                                       
+                                }}
                                 placeholder="Select City..."
                               />
 
                               <ErrorMessage
-                                name="city"
+                                name="city_id"
                                 component="div"
                                 className="invalid-feedback"
                               />
@@ -1028,11 +1056,14 @@ AdvertisementsList.propTypes = {
   onAddNewAdvertisement: PropTypes.func,
   onDeleteAdvertisement: PropTypes.func,
   onUpdateAdvertisement: PropTypes.func,
-
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
-const mapStateToProps = ({ advertisements }) => ({
+const mapStateToProps = ({ advertisements , territoriesList}) => ({
   advertisements: advertisements.advertisements,
+  territoriesList:territoriesList.territoriesList,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -1043,6 +1074,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(updateAdvertisement(advertisement)),
   onDeleteAdvertisement: advertisement =>
     dispatch(deleteAdvertisement(advertisement)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
 });
 
 export default connect(

@@ -20,11 +20,11 @@ function* fetchTerritoriesList(object) {
   }
 }
 
-function* TerritoriesSaga() {
+function* TerritoriesListSaga() {
   yield takeEvery(
     GET_TERRITORIES_LIST,
     fetchTerritoriesList
   );
 }
 
-export default TerritoriesSaga;
+export default TerritoriesListSaga;

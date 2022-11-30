@@ -48,7 +48,7 @@ import {
 } from "store/lab-advertisements/actions";
 
 import {
-// getTerritoriesList
+getTerritoriesList
 } from "store/territories-list/actions";
 
 import { isEmpty, size } from "lodash";
@@ -246,20 +246,20 @@ class AdvertisementsList extends Component {
   };
 
   componentDidMount() {
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
     const { labAdvertisements, onGetLabAdvertisements } = this.props;
     if (labAdvertisements && !labAdvertisements.length) {
       console.log(onGetLabAdvertisements(this.state.user_id));
+    }
 
     const { advertisementPriceLists, onGetAdvertisementPriceLists } = this.props;
     if (advertisementPriceLists && !advertisementPriceLists.length) {
       console.log(onGetAdvertisementPriceLists(this.state.user_id));
-
-    // const { territoriesList, onGetTerritoriesList } = this.props;
-    // if (territoriesList && !territoriesList.length) {
-    //   // console.log(onGetTerritoriesList(this.state.user_id));
-    // }
     }
-    }
+    
     // this.setState({ labAdvertisements });
   }
 
@@ -339,7 +339,7 @@ class AdvertisementsList extends Component {
         posted_till: labAdvertisement.posted_till,
         region_type: labAdvertisement.region_type,
         province: labAdvertisement.province,
-        city: labAdvertisement.city,
+        city_id: labAdvertisement.city_id,
         district: labAdvertisement.district,
         number_of_days: labAdvertisement.number_of_days,
       },
@@ -351,6 +351,15 @@ class AdvertisementsList extends Component {
   };
 
   render() {
+
+    // list of city from territories
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
     const { SearchBar } = Search;
 
     const { labAdvertisements } = this.props;
@@ -519,8 +528,8 @@ const advertisementPriceList = [];
                                               (this.state &&
                                                 this.state.province) ||
                                               "",
-                                            city:
-                                              (this.state && this.state.city) ||
+                                            city_id:
+                                              (this.state && this.state.city_id) ||
                                               "",
                                             district:
                                               (this.state &&
@@ -613,7 +622,7 @@ const advertisementPriceList = [];
                                                     region_type:
                                                       values.region_type,
                                                     province: values.province,
-                                                    city: values.city,
+                                                    city_id: values.city_id,
                                                     district: values.district,
                                                     number_of_days: values.number_of_days,
                                                     amount: values.amount,
@@ -648,7 +657,7 @@ const advertisementPriceList = [];
                                                   region_type:
                                                     values.region_type,
                                                   province: values.province,
-                                                  city: values.city,
+                                                  city_id: values.city_id,
                                                   district: values.district,
                                                   number_of_days: values.number_of_days,
                                                   amount: values.amount,
@@ -683,7 +692,7 @@ const advertisementPriceList = [];
                                                 posted_till: values.posted_till,
                                                 region_type: values.region_type,
                                                 province: values.province,
-                                                city: values.city,
+                                                city_id: values.city_id,
                                                 district: values.district,
                                                 number_of_days: values.number_of_days,
                                                 amount: values.amount,
@@ -794,7 +803,7 @@ const advertisementPriceList = [];
                                                               labAdvertisement.region_type,
                                                             province:
                                                               labAdvertisement.province,
-                                                            city: labAdvertisement.city,
+                                                            city_id: labAdvertisement.city_id,
                                                             district:
                                                               labAdvertisement.district,
                                                             number_of_days:
@@ -836,7 +845,7 @@ const advertisementPriceList = [];
                                                               labAdvertisement.region_type,
                                                             province:
                                                               labAdvertisement.province,
-                                                            city: labAdvertisement.city,
+                                                            city_id: labAdvertisement.city_id,
                                                             district:
                                                               labAdvertisement.district,
                                                             number_of_days:
@@ -974,7 +983,7 @@ const advertisementPriceList = [];
                                                                 e.target.value,
                                                               province:
                                                                 labAdvertisement.province,
-                                                              city: labAdvertisement.city,
+                                                              city_id: labAdvertisement.city_id,
                                                               district:
                                                                 labAdvertisement.district,
                                                               number_of_days:
@@ -1078,20 +1087,20 @@ const advertisementPriceList = [];
                         <div className="mb-3">
 
 
-                          <Label for="city" className="form-label">
+                          <Label for="city_id" className="form-label">
                             City
                           </Label>
                               <Select
-                                name="city"
+                                name="city_id"
                                 component="Select"
                                 onChange={selectedGroup =>
                                   this.setState({
-                                    city: selectedGroup.value,
+                                    city_id: selectedGroup.value,
                                   })
                                 }
                                 className={
                                   "defautSelectParent" +
-                                  (errors.city && touched.city
+                                  (errors.city_id && touched.city_id
                                     ? " is-invalid"
                                     : "")
                                 }
@@ -1099,17 +1108,25 @@ const advertisementPriceList = [];
                                   control: (base, state) => ({
                                     ...base,
                                     borderColor:
-                                      errors.city && touched.city
+                                      errors.city_id && touched.city_id
                                         ? "#f46a6a"
                                         : "#ced4da",
                                   }),
                                 }}
-                                options={CITIES}
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                  this.state.city,
+                                  value:
+                                  this.state.id,                                       
+                                }}
                                 placeholder="Select City..."
                               />
 
                               <ErrorMessage
-                                name="city"
+                                name="city_id"
                                 component="div"
                                 className="invalid-feedback"
                               />
@@ -1245,7 +1262,7 @@ AdvertisementsList.propTypes = {
   advertisementPriceLists: PropTypes.array,
   territoriesList: PropTypes.array,
   onGetAdvertisementPriceLists: PropTypes.func,
-  // onGetTerritoriesList: PropTypes.func,
+  onGetTerritoriesList: PropTypes.func,
   onGetLabAdvertisements: PropTypes.func,
   onAddNewLabAdvertisement: PropTypes.func,
   onDeleteAdvertisement: PropTypes.func,
@@ -1260,7 +1277,7 @@ const mapStateToProps = ({ advertisementPriceLists,labAdvertisements, territorie
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAdvertisementPriceLists: id => dispatch(getAdvertisementPriceLists(id)),
-  // onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
   onGetLabAdvertisements: id => dispatch(getLabAdvertisements(id)),
   onAddNewLabAdvertisement: (labAdvertisement, id) =>
     dispatch(addNewLabAdvertisement(labAdvertisement, id)),

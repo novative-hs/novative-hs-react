@@ -477,9 +477,9 @@ class ReferrelLabFee extends Component {
                                                     <Field
                                                       name="shared_percentage"
                                                       type="number"
-                                                      step="0.1"
-                                                      min="0"
-                                                      max="1"
+                                                      step="0.01"
+                                                      min="0.30"
+                                                      max="1.00"
                                                       value={
                                                         this.state
                                                           .referrelFeeLab

@@ -94,10 +94,11 @@ class Login extends Component {
 
                                 if (success.account_type == "patient") {
                                   this.props.history.push(
-                                    this.props.match.params.uuid
+                                    this.props.match.params.uuid 
                                       ? `/nearby-labs/${this.props.match.params.uuid}`
                                       : `/nearby-labs`
                                   );
+                                console.log(this.props.match.params.uuid)
                                 } else if (success.account_type == "labowner") {
                                   this.props.history.push("/dashboard-lab");
                                 } else if (

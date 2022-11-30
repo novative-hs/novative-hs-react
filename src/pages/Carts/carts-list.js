@@ -69,7 +69,7 @@ class CartList extends Component {
         },
         {
           dataField: "discount",
-          text: "Discount",
+          text: "Discount (%)",
           sort: true,
         },
         {

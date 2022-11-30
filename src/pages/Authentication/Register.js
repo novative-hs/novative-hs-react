@@ -68,6 +68,7 @@ class Register extends Component {
   render() {
     if (this.props.userID) {
       if (this.props.userAccountType == "patient") {
+        console.log("uuid",this.props.match.params.uuid)
         if (!this.props.match.params.uuid) {
           return (
             <Redirect

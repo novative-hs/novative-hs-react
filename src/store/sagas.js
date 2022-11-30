@@ -47,7 +47,7 @@ import discountLabHazirsSaga from "./discount-labhazir/saga";
 import discountLabHazirToLabsSaga from "./discount-labhazir-to-lab/saga";
 import referrelFeeLabsSaga from "./referrel-fee-to-lab/saga";
 import labsListSaga from "./labs-list/saga";
-import TerritoriesSaga from "./territories-list/saga";
+import TerritoriesListSaga from "./territories-list/saga";
 import csrTerritoryListSaga from "./csr-territory-list/saga";
 import auditorTerritoryListSaga from "./auditor-territory-list/saga";
 import discountLabSaga from "./discount-lab/saga";
@@ -130,6 +130,7 @@ export default function* rootSaga() {
     fork(discountLabHazirToLabsSaga),
     fork(labsListSaga),
     // fork(TerritoriesSaga),
+    fork(TerritoriesListSaga),
     fork(csrTerritoryListSaga),
     fork(auditorTerritoryListSaga),
     fork(discountLabSaga),

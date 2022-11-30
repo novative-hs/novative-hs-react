@@ -169,8 +169,7 @@ class ReferrelLabFee extends Component {
     };
     this.handleEditBtnClick = this.handleEditBtnClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    // this.handleEditAllBtnClick = this.handleEditAllBtnClick.bind(this);
-    this.handleEditAllBtnClicks = this.handleEditAllBtnClicks.bind(this);
+    this.handleEditAllBtnClick = this.handleEditAllBtnClick.bind(this);
 
   }
 
@@ -194,7 +193,7 @@ class ReferrelLabFee extends Component {
 
     const { referrelFeeLabs, ongetReferrelFeeLabs } = this.props;
     // if (referrelFeeLabs && !referrelFeeLabs.length) {
-      ongetReferrelFeeLabs(this.state.user_id);
+      ongetReferrelFeeLabs(this.props.match.params.id);
     
     this.setState({ referrelFeeLabs });
   }
@@ -204,47 +203,69 @@ class ReferrelLabFee extends Component {
       modal: !prevState.modal,
     }));
   }
-  handleEditAllBtnClicks = () => {
-    this.setState({ referrelFeeLab: "", isEdit: false, lab_id: "" });
-    this.toggle();
-  };
   handleEditAllBtnClick = () => {
     this.setState({ isEditAll: true, referrelFeeLab: ""});
 
     this.toggle();
   };
 
-  handleAPICall = () => {
-    const {
-      ongetReferrelFeeLabs,
-      onupdateReferrelAllFeeLab,
-      onupdateReferrelFeeLab,
-    } = this.props;
+  // handleAPICall = () => {
+  //   const {
+  //     ongetReferrelFeeLabs,
+  //     onupdateReferrelAllFeeLab,
+  //     onupdateReferrelFeeLab,
+  //   } = this.props;
 
-    if (this.state.isEditAll) {
-      onupdateReferrelAllFeeLab(this.state.referrelFeeLab);
+  //   if (this.state.isEditAll) {
+  //     onupdateReferrelAllFeeLab(this.state.referrelFeeLab);
 
-      // console.log(onAddNewLabShare(this.state.b2bLabShare));
+  //     // console.log(onAddNewLabShare(this.state.b2bLabShare));
 
-      setTimeout(() => {
-        ongetReferrelFeeLabs(this.state.user_id);
+  //     setTimeout(() => {
+  //       ongetReferrelFeeLabs(this.props.match.params.id);
 
+  //       setTimeout(() => {
+  //         this.setState({ referrelFeeLabs: this.props.referrelFeeLabs });
+  //       }, 1000);
+  //     }, 1000);
+  //   } else {
+  //     onupdateReferrelFeeLab(this.state.b2bLabShare);
+
+  //     setTimeout(() => {
+  //       ongetReferrelFeeLabs(this.props.match.params.id);
+
+  //       setTimeout(() => {
+  //         this.setState({ referrelFeeLabs: this.props.referrelFeeLabs });
+  //       }, 1000);
+  //     }, 1000);
+  //   }
+    handleAPICall = () => {
+      const {
+        ongetReferrelFeeLabs,
+        onupdateReferrelAllFeeLab,
+        onupdateReferrelFeeLab,
+      } = this.props;
+  
+      if (this.state.isEditAll) {
+        onupdateReferrelAllFeeLab(this.state.referrelFeeLab);
+  
+        ongetReferrelFeeLabs();
+  
         setTimeout(() => {
-          this.setState({ referrelFeeLabs: this.props.referrelFeeLabs });
+          this.setState({ referrelFeeLabs: this.props.match.params.id });
         }, 1000);
-      }, 1000);
-    } else {
-      onupdateReferrelFeeLab(this.state.b2bLabShare);
-
-      setTimeout(() => {
-        ongetReferrelFeeLabs(this.state.user_id);
-
+      } else {
+        onupdateReferrelFeeLab(this.state.referrelFeeLab);
+  
+        ongetReferrelFeeLabs();
+  
         setTimeout(() => {
-          this.setState({ referrelFeeLabs: this.props.referrelFeeLabs });
+          this.setState({ referrelFeeLabs: this.props.match.params.id });
         }, 1000);
-      }, 1000);
-    }
-
+      }
+  
+      this.toggle();
+    };
     // if (this.state.isEditAll) {
     //   onupdateReferrelAllFeeLab(this.state.referrelFeeLab);
 
@@ -263,8 +284,8 @@ class ReferrelLabFee extends Component {
     //   }, 1000);
     // }
 
-    this.toggle();
-  };
+    // this.toggle();
+  // };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { referrelFeeLabs } = this.props;
@@ -445,7 +466,7 @@ class ReferrelLabFee extends Component {
 
                                             setTimeout(() => {
                                               ongetReferrelFeeLabs(
-                                                this.state.user_id
+                                                this.props.match.params.id
                                               );
 
                                               setTimeout(() => {
@@ -477,9 +498,9 @@ class ReferrelLabFee extends Component {
                                                     <Field
                                                       name="shared_percentage"
                                                       type="number"
-                                                      step="0.1"
-                                                      min="0"
-                                                      max="1"
+                                                      step="0.01"
+                                                      min="0.30"
+                                                      max="1.00"
                                                       value={
                                                         this.state
                                                           .referrelFeeLab

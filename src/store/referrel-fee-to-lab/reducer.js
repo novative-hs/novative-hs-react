@@ -56,15 +56,15 @@ const referrelFeeLabs = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
+
     case UPDATE_REFERREL_ALL_FEE_SUCCESS:
       return {
         ...state,
-        referrelFeeLab: action.payload,
-        // state.referrelAllFees.map(referrelAllFee =>
-        //   referrelAllFee.id.toString() === action.payload.id.toString()
-        //     ? { referrelAllFee, ...action.payload }
-        //     : referrelAllFee
-        //),
+        referrelFeeLab: state.referrelAllFees.map(referrelAllFee =>
+          referrelAllFee.id.toString() === action.payload.id.toString()
+            ? { referrelAllFee, ...action.payload }
+              : referrelAllFee
+        ),
       };
 
     case UPDATE_REFERREL_ALL_FEE_FAIL:

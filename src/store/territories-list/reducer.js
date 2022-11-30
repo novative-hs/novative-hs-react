@@ -8,7 +8,7 @@ const INIT_STATE = {
   error: {},
 };
 
-const territories = (state = INIT_STATE, action) => {
+const territoriesList = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_TERRITORIES_LIST_SUCCESS:
       return {
@@ -27,4 +27,5 @@ const territories = (state = INIT_STATE, action) => {
   }
 };
 
-export default territories;
+
+export default territoriesList;

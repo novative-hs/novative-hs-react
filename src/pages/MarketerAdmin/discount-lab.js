@@ -440,9 +440,9 @@ class DiscountLabHazirList extends Component {
                                                     <Field
                                                       name="discount"
                                                       type="number"
-                                                      step="0.1"
-                                                      min="0"
-                                                      max="1"
+                                                      step="0.01"
+                                                      min="0.00"
+                                                      max="1.00"
                                                       value={
                                                         this.state
                                                           .discountLab

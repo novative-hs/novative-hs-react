@@ -55,9 +55,9 @@ function* onUpdateReferrelFeeLab({ payload: ReferrelFeeLab }) {
   }
 }
 
-function* onUpdateReferrelAllFeeLab(object) {
+function* onUpdateReferrelAllFeeLab({payload: ReferrelFeeLab}) {
   try {
-    const response = yield call(updateReferrelAllFeeLab, object.payload);
+    const response = yield call(updateReferrelAllFeeLab, ReferrelFeeLab);
     yield put(updateReferrelAllFeeLabSuccess(response));
   } catch (error) {
     yield put(updateReferrelAllFeeLabFail(error));

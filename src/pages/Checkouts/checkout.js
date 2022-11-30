@@ -25,6 +25,7 @@ import {
   Alert,
 } from "reactstrap";
 
+
 import classnames from "classnames";
 
 import { isEmpty, map, size } from "lodash";
@@ -37,6 +38,10 @@ import {
   getCheckoutItems,
   addCheckoutData,
 } from "store/checkout/actions";
+import {
+  getTerritoriesList
+  } from "store/territories-list/actions";
+
 
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 
@@ -46,6 +51,7 @@ class Checkout extends Component {
     this.state = {
       homeSampledTests: [],
       checkoutItems: [],
+      territoriesList: [],
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -54,8 +60,8 @@ class Checkout extends Component {
       patient_gender: "Male",
       relationsip_with_patient: "Self",
       patient_address: "",
-      patient_city: "",
-      patient_district: "",
+      city_id: "",
+      // patient_district: "",
       appointment_requested_at: "",
       is_home_sampling_availed: "Yes",
       payment_method: "Card",
@@ -113,8 +119,8 @@ class Checkout extends Component {
           patient_gender: this.state.patient_gender,
           relationsip_with_patient: this.state.relationsip_with_patient,
           patient_address: this.state.patient_address,
-          patient_city: this.state.patient_city,
-          patient_district: this.state.patient_district,
+          city_id: this.state.city_id,
+          // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
           is_home_sampling_availed: this.state.is_home_sampling_availed,
           payment_method: this.state.payment_method,
@@ -147,8 +153,8 @@ class Checkout extends Component {
     if (
       this.state.patient_name &&
       this.state.patient_address &&
-      this.state.patient_city &&
-      this.state.patient_district &&
+      this.state.city_id &&
+      // this.state.patient_district &&
       this.state.patient_age &&
       this.state.appointment_requested_at
     ) {
@@ -188,7 +194,18 @@ class Checkout extends Component {
     const { onGetCheckoutItems } = this.props;
     onGetCheckoutItems(this.state.user_id, "Yes");
     this.setState({ checkoutItems: this.props.checkoutItems });
+
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
   }
+    toggle() {
+      this.setState(prevState => ({
+        modal: !prevState.modal,
+      }));
+  }
+
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -217,6 +234,15 @@ class Checkout extends Component {
   }
 
   render() {
+
+    // list of city from territories
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
     // let total =  0;
     return (
       <React.Fragment>
@@ -456,7 +482,7 @@ class Checkout extends Component {
                                 </Col>
                               </FormGroup>
 
-                              <FormGroup className="mb-4" row>
+                              {/* <FormGroup className="mb-4" row>
                                 <Label
                                   htmlFor="patient-name"
                                   md="2"
@@ -471,20 +497,43 @@ class Checkout extends Component {
                                   </span>
                                 </Label>
                                 <Col md="10">
-                                  <Select
-                                    name="patient_city"
-                                    component="Select"
-                                    onChange={selectedGroup =>
-                                      this.setState({
-                                        patient_city: selectedGroup.value,
-                                      })
-                                    }
-                                    className="defautSelectParent"
-                                    options={CITIES}
-                                    placeholder="Select City..."
-                                  />
+                                <Select
+                                name="city_id"
+                                component="Select"
+                                onChange={selectedGroup =>
+                                  this.setState({
+                                    city_id: selectedGroup.value,
+                                  })
+                                }
+                                className={
+                                  "defautSelectParent" +
+                                  (errors.city_id && touched.city_id
+                                    ? " is-invalid"
+                                    : "")
+                                }
+                                styles={{
+                                  control: (base, state) => ({
+                                    ...base,
+                                    borderColor:
+                                      errors.city_id && touched.city_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                  }),
+                                }}
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                  this.state.city,
+                                  value:
+                                  this.state.id,                                       
+                                }}
+                                placeholder="Select City..."
+                              />
+
                                 </Col>
-                              </FormGroup>
+                              </FormGroup> */}
 
                               <FormGroup className="mb-4" row>
                                 <Label
@@ -492,7 +541,7 @@ class Checkout extends Component {
                                   md="2"
                                   className="col-form-label"
                                 >
-                                  District
+                                  city
                                   <span
                                     style={{ color: "#f46a6a" }}
                                     className="font-size-18"
@@ -502,16 +551,24 @@ class Checkout extends Component {
                                 </Label>
                                 <Col md="10">
                                   <Select
-                                    name="patient_district"
+                                    name="city_id"
                                     component="Select"
                                     onChange={selectedGroup =>
                                       this.setState({
-                                        patient_district: selectedGroup.value,
+                                        city_id: selectedGroup.value,
                                       })
                                     }
                                     className="defautSelectParent"
-                                    options={DISTRICTS}
-                                    placeholder="Select District..."
+                                    options={
+                                      cityList
+                                    }
+                                    defaultValue={{
+                                      label:
+                                      this.state.city,
+                                      value:
+                                      this.state.id,                                       
+                                    }}
+                                    placeholder="Select City..."
                                   />
                                 </Col>
                               </FormGroup>
@@ -816,8 +873,8 @@ class Checkout extends Component {
                                     <tr>
                                       <th scope="col">Test Name</th>
                                       <th scope="col">Price (Rs)</th>
-                                      <th scope="col">Discount by <br></br>(Lab)</th>
-                                      <th scope="col">Discount by <br></br>(LabHazir)</th>
+                                      <th scope="col">Discount by <br></br>(Lab)(Rs)</th>
+                                      <th scope="col">Discount by <br></br>(LabHazir)(Rs)</th>
                                       {/* <th scope="col">Discount by <br></br>LabHazir(Against Test)</th>  */}
                                       <th scope="col">Net Payment</th>
 
@@ -845,23 +902,22 @@ class Checkout extends Component {
                                                  </td>
                                                 <td>
                                                   <p className="float-end">
-                                                  {item.discount}
+                                                  {item.discount_per}
                                                   </p>
                                                 </td>
                                                 <td>
                                                   <p className="float-end">
-                                                  {item.discount_by_labhazir+item.discount_by_labhazird_by_test}
+                                                  {item.discount_by_labhazir_per+item.discount_by_labhazird_by_test_per}
                                                   </p>
                                                 </td>
                                                 {/* <td>
                                                   <p className="float-end">
-                                                  {item.discount_by_labhazird_by_test.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                  {item.discount_by_labhazird_by_test_per.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                   </p>
                                                 </td> */}
                                                 <td>
                                                   <p className="float-end bg-success bg-soft p-4">
                                                   {item.net_payment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            
                                                   </p>
                                                 </td>
                                                 <td>
@@ -1015,12 +1071,15 @@ Checkout.propTypes = {
   onGetCheckoutItems: PropTypes.func,
   onAddCheckoutData: PropTypes.func,
   checkedoutData: PropTypes.array,
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = state=> ({
   homeSampledTests: state.checkout.homeSampledTests,
   checkoutItems: state.checkout.checkoutItems,
   checkedoutData: state.checkout.checkedoutData,
+  territoriesList: state.territoriesList.territoriesList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -1029,6 +1088,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(getCheckoutItems(id, is_home_sampling_availed)),
   onAddCheckoutData: (checkoutData, id) =>
     dispatch(addCheckoutData(checkoutData, id)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
 });
 
 export default connect(

@@ -12,7 +12,7 @@ export const getTerritoriesList = () => ({
 export const getTerritoriesListSuccess =
   territories => ({
     type: GET_TERRITORIES_LIST_SUCCESS,
-    payload: territories,
+    payload: territoriesList,
   });
 
 export const getTerritoriesListFail = error => ({

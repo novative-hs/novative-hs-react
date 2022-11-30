@@ -63,7 +63,8 @@ export const postPatientInformation = (id, patient) => {
   formData.append("name", patient.name);
   formData.append("phone", patient.phone);
   formData.append("city_id", patient.city_id);
-
+  formData.append("url", patient.url);
+  console.log(url, patient.city_id)
   return axios
     .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -318,7 +319,6 @@ export const postLogin = user => {
   let formData = new FormData();
   formData.append("username", user.username);
   formData.append("password", user.password);
-
   return axios.post(url.POST_LOGIN, formData, {
     headers: getHeader(authHeader()),
   });
@@ -963,8 +963,9 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("patient_age", checkoutData.patient_age);
   formData.append("patient_gender", checkoutData.patient_gender);
   formData.append("patient_address", checkoutData.patient_address);
-  formData.append("patient_city", checkoutData.patient_city);
-  formData.append("patient_district", checkoutData.patient_district);
+  formData.append("city_id", checkoutData.city_id);
+  // formData.append("patient_city", checkoutData.patient_city);
+  // formData.append("patient_district", checkoutData.patient_district);
   formData.append(
     "relationsip_with_patient",
     checkoutData.relationsip_with_patient
@@ -1541,7 +1542,7 @@ export const addNewAdvertisement = (advertisement, id) => {
   formData.append("posted_till", advertisement.posted_till);
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
-  formData.append("city", advertisement.city);
+  formData.append("city_id", advertisement.city_id);
   formData.append("district", advertisement.district);
 
   return axios.post(`${url.ADD_NEW_ADVERTISEMENT}/${id}`, formData, {
@@ -1559,7 +1560,7 @@ export const updateAdvertisement = advertisement => {
   formData.append("posted_till", advertisement.posted_till);
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
-  formData.append("city", advertisement.city);
+  formData.append("city_id", advertisement.city_id);
   formData.append("district", advertisement.district);
 
   return axios.put(
@@ -1778,7 +1779,7 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   formData.append("posted_till", advertisement.posted_till);
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
-  formData.append("city", advertisement.city);
+  formData.append("city_id", advertisement.city_id);
   formData.append("district", advertisement.district);
   formData.append("amount", advertisement.amount);
   formData.append("number_of_days", advertisement.number_of_days);
@@ -1799,7 +1800,7 @@ export const updateLabAdvertisement = advertisement => {
   formData.append("posted_till", advertisement.posted_till);
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
-  formData.append("city", advertisement.city);
+  formData.append("city_id", advertisement.city_id);
   formData.append("district", advertisement.district);
   formData.append("amount", advertisement.amount);
   formData.append("number_of_days", advertisement.number_of_days);
