@@ -1,11 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row, Modal, Label, ModalBody, ModalHeader} from "reactstrap";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Label,
+  Modal,
+  ModalBody,
+} from "reactstrap";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -13,510 +20,139 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-
-import {
-  getTestAppointmentsCompletedList,
-  updateTestAppointment,
-} from "store/test-appointments/actions";
-
+import { getB2bReferredPatientsList } from "store/b2b-referred-patients/actions";
 import "assets/scss/table.scss";
 
-class TestAppointmentsCompletedList extends Component {
+class ReferredPatientsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      testAppointments: [],
-      testAppointment: "",
-      btnText: "Copy",
+      b2bReferredPatients: [],
+      id: "",
+      b2bReferredPatient: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      testAppointmentListColumns: [
-        {
-          text: "id",
-          dataField: "id",
-          sort: true,
-          hidden: true,
-          formatter: (cellContent, testAppointment) => (
-            <>{testAppointment.id}</>
-          ),
-        },
+      b2bReferredPatientListColumns: [
         {
           dataField: "order_id",
           text: "Order ID",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
+          formatter: (cellContent, patientTestAppointment) => (
             <>
-              <strong>{testAppointment.order_id}</strong>
+              <strong>{patientTestAppointment.order_id}</strong>
             </>
           ),
         },
         {
-          dataField: "name",
-          text: "Patient name",
+          dataField: "patient_name",
+          text: "Name",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                  <Link
-                    to="#"
-                    onClick={e => this.openPatientModal(e, testAppointment)}
-                  >
-                   {testAppointment.patient_name}
-                  </Link>
-              </span>
-            </>
-          ),
+        },
+        {
+          dataField: "dues",
+          text: "Payment",
+          sort: true,
         },
         {
           dataField: "booked_at",
           text: "Booked at",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
+          formatter: (cellContent, b2bReferredPatient) => (
             <>
               <span>
-                {new Date(testAppointment.booked_at).toLocaleString("en-US")}
+                {new Date(b2bReferredPatient.booked_at).toLocaleString("en-US")}
               </span>
             </>
           ),
         },
+        // {
+        //   dataField: "payment_status",
+        //   text: "Payment Status",
+        //   sort: true,
+        //   formatter: (cellContent, b2bReferredPatient) => (
+        //     <>
+        //       {/* {b2bReferredPatient.payment_status == "Not Paid" ? (
+        //         <span
+        //           className="pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger"
+        //           style={{ width: "100px" }}
+        //         >
+        //           {b2bReferredPatient.payment_status}
+        //         </span>
+        //       ) : (
+        //         <span
+        //           className="pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-info"
+        //           style={{ width: "100px" }}
+        //         >
+        //           {b2bReferredPatient.payment_status}
+        //         </span>
+        //       )} */}
+        //       {b2bReferredPatient.payment_status}
+        //     </>
+        //   ),
+        // },
         {
-          dataField: "is_home_sampling_availed",
-          text: "Home sampling",
+          dataField: "status",
+          text: "Status",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
+          formatter: (cellContent, b2bReferredPatient) => (
             <>
-              {testAppointment.is_home_sampling_availed == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "estimated_sample_collection_at",
-          text: "Estimated sample collection time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
-        },
-        {
-          dataField: "sample_collected_at",
-          text: "Sample collected at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ||
-              testAppointment.status == "Confirmed" ||
-              testAppointment.status == "Rescheduled" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(testAppointment.sample_collected_at).toLocaleString(
-                    "en-US"
-                  )}
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "Collector",
-          text: "Home Sampling",
-          dataField: "collector_name",
-          text: "Sample Collector",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collector_name && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Not assigned
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collector_name && (
-                  <span>{testAppointment.collector_name}</span>
-                )}
-
-              {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "collection_status",
-          text: "Collection Status",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collection_status && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Pending
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Assigned" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "On way" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Reached" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Patient Unavailable" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-              
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Sample+Payment Collected" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Sample+Payment Delivered" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule_count",
-          text: "Reschedule Limit",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_count > 1 && (
-                <span className="text-danger">
-                  {testAppointment.reschedule_count} Used, Limit Reached
-                </span>
-              )}
-
-              {(!testAppointment.reschedule_reason ||
-                testAppointment.reschedule_count < 2) && (
-                <span className="text-info">0 Used, 2 Left</span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule_reason",
-          text: "Rescheduling Reason",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_reason &&
-                testAppointment.reschedule_reason == "Other" && (
-                  <Link
-                    className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
-                    to="#"
-                    onClick={e => this.openReasonModal(e, testAppointment)}
-                  >
-                    {testAppointment.reason.slice(0, 10) + "..."}
-                  </Link>
-                )}
-
-              {testAppointment.reschedule_reason &&
-                testAppointment.reschedule_reason != "Other" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                    {testAppointment.reschedule_reason}
-                  </span>
-                )}
-
-              {!testAppointment.reschedule_reason && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                  Not Rescheduled
-                </span>
-              )}
-              {/* <Link
-                to="#"
-                onClick={e => this.openMessageModal(e, testAppointment)}
-              >
-                {testAppointment.reschedule_reason.slice(0, 10) + "..."}
-              </Link>{" "} */}
-            </>
-          ),
-        },
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated turn around time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
-        },
-        {
-          dataField: "result_uploaded_at",
-          text: "Result uploaded at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                <span>
-                  {testAppointment.is_home_sampling_availed &&
-                    !testAppointment.collector_name && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        Not assigned
-                      </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collector_name && (
-                      <span>{testAppointment.collector_name}</span>
-                    )}
-
-                  {!testAppointment.is_home_sampling_availed && (
-                    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                      Not availed
-                    </span>
-                  )}
-                  {testAppointment.is_home_sampling_availed &&
-                    !testAppointment.collection_status && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        Pending
-                      </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Assigned" && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                        {testAppointment.collection_status}
-                      </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "On way" && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
-                        {testAppointment.collection_status}
-                      </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Reached" && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                        {testAppointment.collection_status}
-                      </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Patient Unavailable" && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        {testAppointment.collection_status}
-                      </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Handovered" && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                        {testAppointment.collection_status}
-                      </span>
-                    )}
-
-                  {!testAppointment.is_home_sampling_availed && (
-                    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                      Not availed
-                    </span>
-                  )}
-                </span>
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "payment_status",
-          text: "Payment Status",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.payment_status == "Not Paid" ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                  {testAppointment.payment_method},{" "}
-                  {testAppointment.payment_status}
-                </span>
-              ) : (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-info">
-                  {testAppointment.payment_method},{" "}
-                  {testAppointment.payment_status}
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated turn around time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
-        },
-        {
-          dataField: "result_uploaded_at",
-          text: "Result uploaded at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status != "Result Uploaded" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(testAppointment.result_uploaded_at).toLocaleString(
-                    "en-US"
-                  )}
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: process.env.REACT_APP_BACKENDURL + "result",
-          text: "Result",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.result_type == "File" ? (
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL + testAppointment.result,
-                  }}
-                  target="_blank"
+              {b2bReferredPatient.status == "Pending" ? (
+                <span
+                  className="pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger"
+                  style={{ width: "150px" }}
                 >
-                  View
-                </Link>
-              ) : (
-                <Link
-                  to={{
-                    pathname: testAppointment.url,
-                  }}
-                  target="_blank"
+                  {b2bReferredPatient.status}
+                </span>
+              ) : null}
+
+              {b2bReferredPatient.status == "Confirmed" ? (
+                <span
+                  className="pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-info"
+                  style={{ width: "150px" }}
                 >
-                  View
-                </Link>
-              )}
+                  {b2bReferredPatient.status}
+                </span>
+              ) : null}
+
+              {b2bReferredPatient.status == "Sample Collected" ? (
+                <span
+                  className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-warning"
+                  style={{ width: "150px" }}
+                >
+                  {b2bReferredPatient.status}
+                </span>
+              ) : null}
+
+              {b2bReferredPatient.status == "Result Uploaded" ? (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-success">
+                  {b2bReferredPatient.status}
+                </span>
+              ) : null}
             </>
           ),
         },
       ],
     };
-    // this.toggle = this.toggle.bind(this);
-    this.toggleReasonModal = this.toggleReasonModal.bind(this);
-    this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    const { onGetTestAppointmentsCompletedList } = this.props;
-    onGetTestAppointmentsCompletedList(this.state.user_id);
-    this.setState({ testAppointments: this.props.testAppointments });
+    const { b2bReferredPatients, onGetB2bReferredPatientsList } = this.props;
+    onGetB2bReferredPatientsList(this.state.user_id);
+    this.setState({ b2bReferredPatients });
   }
 
-  // toggle() {
-  //   this.setState(prevState => ({
-  //     modal: !prevState.modal,
-  //   }));
-  // }
-  openPatientModal = (e, arg) => {
-    this.setState({
-      PatientModal: true,
-      appointment_requested_at: arg.appointment_requested_at,
-      patient_unique_id: arg.patient_unique_id,
-      patient_gender: arg.patient_gender,
-      patient_address: arg.patient_address,
-      patient_city: arg.patient_city,
-      patient_phone: arg.patient_phone,
-    });
-  };
-  
-  togglePatientModal = () => {
+  toggle() {
     this.setState(prevState => ({
-      PatientModal: !prevState.PatientModal,
+      modal: !prevState.modal,
     }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
-  };
-  openReasonModal = (e, arg) => {
-    this.setState({ reasonModal: true, reason: arg.reason });
-  };
-
-  toggleReasonModal = () => {
-    this.setState(prevState => ({
-      reasonModal: !prevState.reasonModal,
-    }));
-  };
+  }
 
   onPaginationPageChange = page => {
     if (
@@ -533,11 +169,12 @@ class TestAppointmentsCompletedList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { testAppointments } = this.props;
+    const { b2bReferredPatients } = this.props;
+    const { onGetB2bReferredPatientsList } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: 1000, // replace later with size(testAppointments),
+      totalSize: b2bReferredPatients.length, // replace later with size(b2bReferredPatients),
       custom: true,
     };
 
@@ -552,14 +189,11 @@ class TestAppointmentsCompletedList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Test Appointments List | Lab Hazir</title>
+            <title>B2B Referred Patients List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs
-              title="Test Appointments"
-              breadcrumbItem="Completed List"
-            />
+            <Breadcrumbs title="B2B Referreds" breadcrumbItem=" List" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -567,14 +201,14 @@ class TestAppointmentsCompletedList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.testAppointmentListColumns}
-                      data={testAppointments}
+                      columns={this.state.b2bReferredPatientListColumns}
+                      data={b2bReferredPatients}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.testAppointmentListColumns}
-                          data={testAppointments}
+                          columns={this.state.b2bReferredPatientListColumns}
+                          data={b2bReferredPatients}
                           search
                         >
                           {toolkitprops => (
@@ -587,6 +221,8 @@ class TestAppointmentsCompletedList extends Component {
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
+
+                                      {/* <p>{"https://labhazir.com/nearby-labs/?uuid=" + "b2bReferredPatients.uuid"}</p> */}
                                     </div>
                                   </div>
                                 </Col>
@@ -605,196 +241,11 @@ class TestAppointmentsCompletedList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
-                                  </div>
-                                  <Modal
-                                      isOpen={this.state.PatientModal}
+                                    <Modal
+                                      isOpen={this.state.modal}
                                       className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Patient Unique Id
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_unique_id
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      City
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_city
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Schedule time by Patient
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.appointment_requested_at
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Mobile No.
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_phone
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .patient_phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
-                                                  </div>
-                                                </div>
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
-                                  <Modal
-                                    isOpen={this.state.reasonModal}
-                                    role="dialog"
-                                    autoFocus={true}
-                                    data-toggle="modal"
-                                    centered
-                                    toggle={this.toggleReasonModal}
-                                  >
-                                    <div className="modal-content">
-                                      <div className="modal-header border-bottom-0">
-                                        <button
-                                          type="button"
-                                          className="btn-close"
-                                          onClick={() =>
-                                            this.setState({
-                                              reasonModal: false,
-                                            })
-                                          }
-                                          data-bs-dismiss="modal"
-                                          aria-label="Close"
-                                        ></button>
-                                      </div>
-                                      <div className="modal-body">
-                                        <div className="text-center mb-4">
-                                          {/* <div className="avatar-md mx-auto mb-4">
-                                              <div className="avatar-title bg-light rounded-circle text-primary h3">
-                                                <i className="mdi mdi-email-open"></i>
-                                              </div>
-                                            </div> */}
-
-                                          <div className="row justify-content-center">
-                                            <div className="col-xl-10">
-                                              <h4 className="text-danger">
-                                                Rescheduling Reason
-                                              </h4>
-                                              <p className="text-muted font-size-14 mb-4">
-                                                {this.state.reason}
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </Modal>
+                                    ></Modal>
+                                  </div>
                                 </Col>
                               </Row>
                               <Row className="align-items-md-center mt-30">
@@ -820,26 +271,21 @@ class TestAppointmentsCompletedList extends Component {
   }
 }
 
-TestAppointmentsCompletedList.propTypes = {
+ReferredPatientsList.propTypes = {
   match: PropTypes.object,
-  testAppointments: PropTypes.array,
+  b2bReferredPatients: PropTypes.array,
   className: PropTypes.any,
-  onGetTestAppointmentsCompletedList: PropTypes.func,
-  // onUpdateTestAppointment: PropTypes.func,
+  onGetB2bReferredPatientsList: PropTypes.func,
 };
-
-const mapStateToProps = ({ testAppointments }) => ({
-  testAppointments: testAppointments.testAppointmentsCompletedList,
+const mapStateToProps = ({ b2bReferredPatients }) => ({
+  b2bReferredPatients: b2bReferredPatients.b2bReferredPatientsList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointmentsCompletedList: id =>
-    dispatch(getTestAppointmentsCompletedList(id)),
-  // onUpdateTestAppointment: testAppointment =>
-  //   dispatch(updateTestAppointment(testAppointment)),
+  onGetB2bReferredPatientsList: id => dispatch(getB2bReferredPatientsList(id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(TestAppointmentsCompletedList));
+)(withRouter(ReferredPatientsList));
