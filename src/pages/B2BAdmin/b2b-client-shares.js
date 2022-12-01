@@ -639,9 +639,9 @@ class B2bLabSharesList extends Component {
                                                     <Field
                                                       name="b2b_shares"
                                                       type="number"
-                                                      step="0.1"
-                                                      min="0.3"
-                                                      max="0.9"
+                                                      step="0.01"
+                                                      min="0.03"
+                                                      max="1.00"
                                                       value={
                                                         this.state.b2bLabShare
                                                           .b2b_shares
