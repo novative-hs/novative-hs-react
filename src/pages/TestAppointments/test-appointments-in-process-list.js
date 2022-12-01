@@ -173,8 +173,8 @@ class TestAppointmentsInProcessList extends Component {
           ),
         },
         {
-          dataField: "Collector",
-          text: "Home Sampling",
+          dataField: "sample_collector",
+          text: "Sample Collector",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -197,12 +197,50 @@ class TestAppointmentsInProcessList extends Component {
                       Not availed
                     </span>
                   )}
-                  {testAppointment.is_home_sampling_availed &&
+                   {testAppointment.is_home_sampling_availed &&
                     !testAppointment.collection_status && (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                         Pending
                       </span>
+                    )} 
+
+             
+                </span>
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "collection status",
+          text: "Sample Collection Status",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              <span>
+                <span>
+                  {/* {testAppointment.is_home_sampling_availed &&
+                    !testAppointment.collector_name && (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        Not assigned
+                      </span>
                     )}
+
+                  {testAppointment.is_home_sampling_availed &&
+                    testAppointment.collector_name && (
+                      <span>{testAppointment.collector_name}</span>
+                    )}
+
+                  {!testAppointment.is_home_sampling_availed && (
+                    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+                      Not availed
+                    </span>
+                  )} */}
+                  {/* {testAppointment.is_home_sampling_availed &&
+                    !testAppointment.collection_status && (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        Pending
+                      </span>
+                    )} */}
 
                   {testAppointment.is_home_sampling_availed &&
                     testAppointment.collection_status == "Assigned" && (
@@ -231,9 +269,15 @@ class TestAppointmentsInProcessList extends Component {
                         {testAppointment.collection_status}
                       </span>
                     )}
+                      {testAppointment.is_home_sampling_availed &&
+                    testAppointment.collection_status == "Sample+Payment Collected" && (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        {testAppointment.collection_status}
+                      </span>
+                    )}
 
                   {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Handovered" && (
+                    testAppointment.collection_status == "Sample+Payment Delivered" && (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                         {testAppointment.collection_status}
                       </span>
