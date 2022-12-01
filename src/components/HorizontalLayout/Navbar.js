@@ -79,24 +79,55 @@ class Navbar extends Component {
               >
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <Link to="/nearby-labs" className="dropdown-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                        : `/nearby-labs/`
+                    }
+                    className="dropdown-item"
+                    >
                       {this.props.t("Nearby Labs")}
                     </Link>
                   </li>
 
                   <li className="nav-item">
-                    <Link to="/nearby-tests" className="dropdown-item">
+                    {/* <Link to="/nearby-tests" className="dropdown-item">
                       {this.props.t("Search by Tests")}
+                    </Link> */}
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-tests/${this.props.match.params.uuid}`
+                        : `/nearby-tests/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {this.props.t("Nearby Labs")}
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/nearby-profiles" className="dropdown-item">
-                      {this.props.t("Search by Profiles")}
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-profiles/${this.props.match.params.uuid}`
+                        : `/nearby-profiles/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {this.props.t("Nearby Labs")}
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/nearby-packages" className="dropdown-item">
-                      {this.props.t("Search by Packages")}
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-packages/${this.props.match.params.uuid}`
+                        : `/nearby-packages/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {this.props.t("Nearby Labs")}
                     </Link>
                   </li>
                   {/* <li className="nav-item dropdown">
@@ -171,6 +202,7 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   location: PropTypes.object,
+  match: PropTypes.object,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
 };

@@ -167,7 +167,12 @@ class Header extends Component {
                   </Link>
 
                   <Link
-                    to="/contact-us"
+                    // to="/contact-us"
+                    to={
+                      this.props.match.params.uuid
+                        ? `/contact-us/${this.props.match.params.uuid}`
+                        : `/contact-us`
+                    }
                     className="btn header-items noti-icon right-bar-toggle"
                   >
                     <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
