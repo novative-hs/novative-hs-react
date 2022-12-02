@@ -73,24 +73,45 @@ class NearbyLabs extends Component {
 
   componentDidMount() {
 
+
     const { nearbyLabs, onGetAdvLive } = this.props;
     onGetAdvLive(this.state.user_id);
     this.setState({ nearbyLabs });
-  
-  
+    // window.location.reload();
     let latitude;
     let longitude;
 
     navigator.geolocation.getCurrentPosition(function (position) {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
+     
+
+      if (window.localStorage) {
+  
+        // If there is no item as 'reload'
+        // in localstorage then create one &
+        // reload the page
+        if (!localStorage.getItem('reload')) {
+            localStorage['reload'] = true;
+            window.location.reload();
+        } else {
+
+            // If there exists a 'reload' item
+            // then clear the 'reload' item in
+            // local storage
+            localStorage.removeItem('reload');
+        }
+    }
+
     });
 
     const { onGetNearbyLabs } = this.props;
 
     setTimeout(() => {
+ 
       this.setState({ currentLatitude: latitude });
       this.setState({ currentLongitude: longitude });
+   
 
       var locationDetails = {
         latitude: this.state.currentLatitude,
@@ -102,9 +123,13 @@ class NearbyLabs extends Component {
 
       if (this.state.currentLatitude && this.state.currentLongitude) {
         onGetNearbyLabs(locationDetails);
+        console.log("location", this.state.currentLatitude && this.state.currentLongitude)
+
 
         setTimeout(() => {
           this.setState({ nearbyLabs: this.props.nearbyLabs });
+          setTimeout(() => {
+          }, 1000);
         }, 1000);
       }
     }, 1000);
@@ -157,7 +182,7 @@ class NearbyLabs extends Component {
     } = this.state;
     let filteredProducts = productsData;
     if (!!checked && parseInt(value) === 0) {
-      filteredProducts = productsData.filter(nearbyLab => nearbyLab.offer < 10);
+      filteredProducts = productsData.filter(nearbyLab => nearbyLab.offer < 100);
     } else if (discount.length > 0) {
       filteredProducts = productsData.filter(
         nearbyLab => nearbyLab.offer >= Math.min(...discount)
