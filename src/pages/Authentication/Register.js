@@ -208,7 +208,7 @@ class Register extends Component {
                                 (this.state && this.state.password2) || "",
                               account_type:
                                 (this.state && this.state.account_type) ||
-                                "labowner",
+                                "patient",
                             }}
                             validationSchema={Yup.object().shape({
                               username: Yup.string()

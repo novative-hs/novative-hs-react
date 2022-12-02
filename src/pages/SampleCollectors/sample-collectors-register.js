@@ -108,15 +108,15 @@ class SampleCollectorRegister extends Component {
                       {this.state.incompleteRegistrationError && (
                         <div>
                           <Alert color="danger" style={{ marginTop: "13px" }}>
-                            Your registration process was{" "}
-                            <strong>
-                              incomplete last time when you registered
+                            Did not Exist Your Username or Email,{" "}
+                             <strong>
+                              Please Enter Your Unique Username and Email.
                             </strong>
-                            . If you want to
+                            {/* . If you want to
                             regispatient-information/113893749834ter now, please
-                            click on <strong>Next</strong> button once again.
+                            click on <strong>Next</strong> button once again. */}
                           </Alert>
-                          <Alert color="info" style={{ marginTop: "13px" }}>
+                          {/* <Alert color="info" style={{ marginTop: "13px" }}>
                             After completing the step 2 of registration, please
                             make sure to{" "}
                             <strong>
@@ -125,7 +125,7 @@ class SampleCollectorRegister extends Component {
                             you will receive from us and{" "}
                             <strong>ignore the old one</strong> (if any) you
                             have received last time.
-                          </Alert>
+                          </Alert> */}
                         </div>
                       )}
 

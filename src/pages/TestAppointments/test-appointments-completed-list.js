@@ -5,6 +5,8 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row, Modal, Label, ModalBody, ModalHeader} from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import Tooltip from "@material-ui/core/Tooltip";
+
 
 import paginationFactory, {
   PaginationProvider,
@@ -72,18 +74,18 @@ class TestAppointmentsCompletedList extends Component {
             </>
           ),
         },
-        {
-          dataField: "booked_at",
-          text: "Booked at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(testAppointment.booked_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "booked_at",
+        //   text: "Booked at",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(testAppointment.booked_at).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "is_home_sampling_availed",
           text: "Home sampling",
@@ -118,6 +120,27 @@ class TestAppointmentsCompletedList extends Component {
             </>
           ),
         },
+       
+        {
+          dataField: "estimated_result_uploading_at",
+          text: "Estimated Reporting Time by Lab",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              {testAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {testAppointment.status != "Pending" ? (
+                <span>
+                  {new Date(
+                    testAppointment.estimated_result_uploading_at
+                  ).toLocaleString("en-US")}
+                </span>
+              ) : null}
+            </>
+          ),
+        },
         {
           dataField: "sample_collected_at",
           text: "Sample collected at",
@@ -139,176 +162,8 @@ class TestAppointmentsCompletedList extends Component {
           ),
         },
         {
-          dataField: "Collector",
-          text: "Home Sampling",
-          dataField: "collector_name",
+          dataField: "sample_collector",
           text: "Sample Collector",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collector_name && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Not assigned
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collector_name && (
-                  <span>{testAppointment.collector_name}</span>
-                )}
-
-              {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "collection_status",
-          text: "Collection Status",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collection_status && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Pending
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Assigned" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "On way" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Reached" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Patient Unavailable" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-              
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Sample+Payment Collected" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Sample+Payment Delivered" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule_count",
-          text: "Reschedule Limit",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_count > 1 && (
-                <span className="text-danger">
-                  {testAppointment.reschedule_count} Used, Limit Reached
-                </span>
-              )}
-
-              {(!testAppointment.reschedule_reason ||
-                testAppointment.reschedule_count < 2) && (
-                <span className="text-info">0 Used, 2 Left</span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule_reason",
-          text: "Rescheduling Reason",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_reason &&
-                testAppointment.reschedule_reason == "Other" && (
-                  <Link
-                    className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
-                    to="#"
-                    onClick={e => this.openReasonModal(e, testAppointment)}
-                  >
-                    {testAppointment.reason.slice(0, 10) + "..."}
-                  </Link>
-                )}
-
-              {testAppointment.reschedule_reason &&
-                testAppointment.reschedule_reason != "Other" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                    {testAppointment.reschedule_reason}
-                  </span>
-                )}
-
-              {!testAppointment.reschedule_reason && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                  Not Rescheduled
-                </span>
-              )}
-              {/* <Link
-                to="#"
-                onClick={e => this.openMessageModal(e, testAppointment)}
-              >
-                {testAppointment.reschedule_reason.slice(0, 10) + "..."}
-              </Link>{" "} */}
-            </>
-          ),
-        },
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated turn around time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
-        },
-        {
-          dataField: "result_uploaded_at",
-          text: "Result uploaded at",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -402,51 +257,25 @@ class TestAppointmentsCompletedList extends Component {
               )}
             </>
           ),
-        },
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated turn around time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
-        },
-        {
-          dataField: "result_uploaded_at",
-          text: "Result uploaded at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status != "Result Uploaded" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(testAppointment.result_uploaded_at).toLocaleString(
-                    "en-US"
-                  )}
-                </span>
-              )}
-            </>
-          ),
-        },
+        }, 
         {
           dataField: process.env.REACT_APP_BACKENDURL + "result",
           text: "Result",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
+            <div className="d-flex gap-3">
+              <Link className="text-success" to="#">
+              <Tooltip title="Reschedual Appoitment Info">
+                <i
+                  className="mdi mdi-calendar-clock font-size-18"
+                  id="edittooltip"
+                  onClick={e => this.openReshedualModal(e, testAppointment)
+                  }
+                ></i>
+              </Tooltip>
+
+              </Link>
               {testAppointment.result_type == "File" ? (
                 <Link
                   to={{
@@ -467,6 +296,9 @@ class TestAppointmentsCompletedList extends Component {
                   View
                 </Link>
               )}
+              
+            </div>
+              
             </>
           ),
         },
@@ -475,6 +307,8 @@ class TestAppointmentsCompletedList extends Component {
     // this.toggle = this.toggle.bind(this);
     this.toggleReasonModal = this.toggleReasonModal.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.toggleReshedualModal = this.toggleReshedualModal.bind(this);
+
   }
 
   componentDidMount() {
@@ -497,12 +331,30 @@ class TestAppointmentsCompletedList extends Component {
       patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
+      booked_at: arg.booked_at,
+    });
+  };
+  openReshedualModal = (e, arg) => {
+    this.setState({
+      ReshedualModal: true,
+      reschedule_reason: arg.reschedule_reason,
+      reason: arg.reason,
+      reschedule_count: arg.reschedule_count,
+      rescheduled_at: arg.rescheduled_at,
     });
   };
   
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+  toggleReshedualModal = () => {
+    this.setState(prevState => ({
+      ReshedualModal: !prevState.ReshedualModal,
     }));
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
@@ -709,6 +561,23 @@ class TestAppointmentsCompletedList extends Component {
                                                     />
                                                   </div>
                                                 </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Booked At
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.booked_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -745,6 +614,97 @@ class TestAppointmentsCompletedList extends Component {
                                                     </button>
                                                   </div>
                                                 </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
+                                  <Modal
+                                      isOpen={this.state.ReshedualModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleReshedualModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                {/* <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    reschedule_reason
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reschedule_reason
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div> */}
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Reschedule Reason
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reschedule_reason
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Reschedule Count
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reschedule_count
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Reschedule time
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.rescheduled_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
                                               </Col>
                                             </Row>
                                           </Form>

@@ -77,7 +77,7 @@ class TestAppointmentsList extends Component {
         // },
         {
           dataField: "patient_name",
-          text: "Name",
+          text: "Patient Name",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -133,7 +133,7 @@ class TestAppointmentsList extends Component {
         // },
         {
           dataField: "is_home_sampling_availed",
-          text: "Home sampling availing",
+          text: "Home Sampling",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -164,25 +164,43 @@ class TestAppointmentsList extends Component {
           ),
         },
         {
-          dataField: "sample_collected_at",
-          text: "Sample collected at",
+          dataField: "estimated_result_uploading_at",
+          text: "Estimated Reporting Time by Lab",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              {patientTestAppointment.status == "Pending" ||
-              patientTestAppointment.status == "Confirmed" ||
-              patientTestAppointment.status == "Rescheduled" ? (
+              {patientTestAppointment.status == "Pending" ? (
                 <span>Not available yet</span>
               ) : (
                 <span>
                   {new Date(
-                    patientTestAppointment.sample_collected_at
+                    patientTestAppointment.estimated_result_uploading_at
                   ).toLocaleString("en-US")}
                 </span>
               )}
             </>
           ),
         },
+        // {
+        //   dataField: "sample_collected_at",
+        //   text: "Sample collected at",
+        //   sort: true,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       {patientTestAppointment.status == "Pending" ||
+        //       patientTestAppointment.status == "Confirmed" ||
+        //       patientTestAppointment.status == "Rescheduled" ? (
+        //         <span>Not available yet</span>
+        //       ) : (
+        //         <span>
+        //           {new Date(
+        //             patientTestAppointment.sample_collected_at
+        //           ).toLocaleString("en-US")}
+        //         </span>
+        //       )}
+        //     </>
+        //   ),
+        // },
         {
           dataField: "collector_name",
           text: "Sample collector details",
@@ -279,9 +297,111 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
+
+        // {
+        //   dataField: "reschedule_count",
+        //   text: "Reschedule Limit",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       {testAppointment.reschedule_count > 1 && (
+        //         <span className="text-danger">
+        //           {testAppointment.reschedule_count} Used, Limit Reached
+        //         </span>
+        //       )}
+
+        //       {(!testAppointment.reschedule_reason ||
+        //         testAppointment.reschedule_count < 2) && (
+        //         <span className="text-info">
+        //           {testAppointment.reschedule_count} Used,{" "}
+        //           {2 - testAppointment.reschedule_count} Left
+        //         </span>
+        //       )}
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "reschedule_reason",
+        //   text: "Rescheduling Reason",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       {testAppointment.reschedule_reason &&
+        //         testAppointment.reschedule_reason == "Other" && (
+        //           <Link
+        //             className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
+        //             to="#"
+        //             onClick={e => this.openReasonModal(e, testAppointment)}
+        //           >
+        //             {testAppointment.reason.slice(0, 10) + "..."}
+        //           </Link>
+        //         )}
+
+        //       {testAppointment.reschedule_reason &&
+        //         testAppointment.reschedule_reason != "Other" && (
+        //           <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+        //             {testAppointment.reschedule_reason}
+        //           </span>
+        //         )}
+
+        //       {!testAppointment.reschedule_reason && (
+        //         <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
+        //           Not Rescheduled
+        //         </span>
+        //       )}
+        //       {/* <Link
+        //         to="#"
+        //         onClick={e => this.openMessageModal(e, testAppointment)}
+        //       >
+        //         {testAppointment.reschedule_reason.slice(0, 10) + "..."}
+        //       </Link>{" "} */}
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "reschedule",
+        //   text: "Rescheduling option",
+        //   isDummyField: true,
+        //   editable: false,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       {testAppointment.reschedule_count < 2 &&
+        //         testAppointment.is_home_sampling_availed &&
+        //         testAppointment.collection_status == "Patient Unavailable" && (
+        //           <Link
+        //             className="btn btn-primary btn-rounded font-size-10"
+        //             to="#"
+        //             onClick={e =>
+        //               this.handleReschedulingClick(e, testAppointment.id)
+        //             }
+        //           >
+        //             Reschedule
+        //           </Link>
+        //         )}
+
+        //       {testAppointment.reschedule_count >= 2 &&
+        //         testAppointment.is_home_sampling_availed && (
+        //           <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+        //             Limit Exceeded
+        //           </span>
+        //         )}
+
+        //       {(!testAppointment.is_home_sampling_availed ||
+        //         (testAppointment.reschedule_count < 2 &&
+        //           testAppointment.is_home_sampling_availed &&
+        //           testAppointment.collection_status !=
+        //             "Patient Unavailable")) && (
+        //         <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+        //           Not available
+        //         </span>
+        //       )}
+        //     </>
+        //   ),
+        // },
+       
         {
           dataField: "status",
-          text: "Status",
+          text: "Appointment Status",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -312,124 +432,6 @@ class TestAppointmentsList extends Component {
               {testAppointment.status == "Result Uploaded" && (
                 <span className="badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                   {testAppointment.status}
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule_count",
-          text: "Reschedule Limit",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_count > 1 && (
-                <span className="text-danger">
-                  {testAppointment.reschedule_count} Used, Limit Reached
-                </span>
-              )}
-
-              {(!testAppointment.reschedule_reason ||
-                testAppointment.reschedule_count < 2) && (
-                <span className="text-info">
-                  {testAppointment.reschedule_count} Used,{" "}
-                  {2 - testAppointment.reschedule_count} Left
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule_reason",
-          text: "Rescheduling Reason",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_reason &&
-                testAppointment.reschedule_reason == "Other" && (
-                  <Link
-                    className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
-                    to="#"
-                    onClick={e => this.openReasonModal(e, testAppointment)}
-                  >
-                    {testAppointment.reason.slice(0, 10) + "..."}
-                  </Link>
-                )}
-
-              {testAppointment.reschedule_reason &&
-                testAppointment.reschedule_reason != "Other" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                    {testAppointment.reschedule_reason}
-                  </span>
-                )}
-
-              {!testAppointment.reschedule_reason && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                  Not Rescheduled
-                </span>
-              )}
-              {/* <Link
-                to="#"
-                onClick={e => this.openMessageModal(e, testAppointment)}
-              >
-                {testAppointment.reschedule_reason.slice(0, 10) + "..."}
-              </Link>{" "} */}
-            </>
-          ),
-        },
-        {
-          dataField: "reschedule",
-          text: "Rescheduling option",
-          isDummyField: true,
-          editable: false,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.reschedule_count < 2 &&
-                testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Patient Unavailable" && (
-                  <Link
-                    className="btn btn-primary btn-rounded font-size-10"
-                    to="#"
-                    onClick={e =>
-                      this.handleReschedulingClick(e, testAppointment.id)
-                    }
-                  >
-                    Reschedule
-                  </Link>
-                )}
-
-              {testAppointment.reschedule_count >= 2 &&
-                testAppointment.is_home_sampling_availed && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                    Limit Exceeded
-                  </span>
-                )}
-
-              {(!testAppointment.is_home_sampling_availed ||
-                (testAppointment.reschedule_count < 2 &&
-                  testAppointment.is_home_sampling_availed &&
-                  testAppointment.collection_status !=
-                    "Patient Unavailable")) && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not available
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated turn around time by Lab",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              {patientTestAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(
-                    patientTestAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
                 </span>
               )}
             </>
@@ -558,6 +560,16 @@ class TestAppointmentsList extends Component {
           editable: false,
           formatter: (cellContent, patientTestAppointment) => (
             <>
+            <Link className="text-success" to="#">
+              <Tooltip title="Reschedual Appoitment Info">
+                <i
+                  className="mdi mdi-calendar-clock font-size-18"
+                  id="edittooltip"
+                  onClick={e => this.openReshedualModal(e, patientTestAppointment)
+                  }
+                ></i>
+              </Tooltip>
+            </Link>
               <Tooltip title="Invoice">
                 <Link
                   className="mdi mdi-receipt font-size-18"
@@ -575,6 +587,8 @@ class TestAppointmentsList extends Component {
     this.handlePatientFeedbackClick =
       this.handlePatientFeedbackClick.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.toggleReshedualModal = this.toggleReshedualModal.bind(this);
+
     // this.handlePatientFeedbackClicks = this.handlePatientFeedbackClicks.bind(this);
   }
 
@@ -590,6 +604,15 @@ class TestAppointmentsList extends Component {
       modal: !prevState.modal,
     }));
   }
+  toggleReshedualModal = () => {
+    this.setState(prevState => ({
+      ReshedualModal: !prevState.ReshedualModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -609,6 +632,15 @@ class TestAppointmentsList extends Component {
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
   };
+  openReshedualModal = (e, arg) => {
+    this.setState({
+      ReshedualModal: true,
+      reschedule_reason: arg.reschedule_reason,
+      reason: arg.reason,
+      reschedule_count: arg.reschedule_count,
+      rescheduled_at: arg.rescheduled_at,
+    });
+  };
 
   openCollectorModal = (e, arg) => {
     this.setState({
@@ -618,6 +650,7 @@ class TestAppointmentsList extends Component {
       collector_cnic: arg.collector_cnic,
       collector_phone: arg.collector_phone,
       collector_photo: arg.collector_photo,
+      sample_collected_at: arg.sample_collected_at,
     });
   };
 
@@ -819,6 +852,97 @@ class TestAppointmentsList extends Component {
                                                     />
                                                   </div>
                                                 </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                    <Modal
+                                      isOpen={this.state.ReshedualModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleReshedualModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                {/* <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    reschedule_reason
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reschedule_reason
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div> */}
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Reschedule Reason
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reschedule_reason
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Reschedule Count
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reschedule_count
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Reschedule time
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.rescheduled_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
                                               </Col>
                                             </Row>
                                           </Form>
@@ -1061,6 +1185,23 @@ class TestAppointmentsList extends Component {
                                                       value={
                                                         this.state
                                                           .collector_cnic
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Sample Collected At
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.sample_collected_at
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

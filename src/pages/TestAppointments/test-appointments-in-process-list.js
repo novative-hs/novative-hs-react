@@ -108,18 +108,18 @@ class TestAppointmentsInProcessList extends Component {
             </>
           ),
         },
-        {
-          dataField: "booked_at",
-          text: "Booked at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(testAppointment.booked_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "booked_at",
+        //   text: "Booked at",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(testAppointment.booked_at).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "is_home_sampling_availed",
           text: "Home sampling",
@@ -586,6 +586,7 @@ class TestAppointmentsInProcessList extends Component {
       patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
+      booked_at: arg.booked_at,
     });
   };
   openReshedualModal = (e, arg) => {
@@ -830,6 +831,23 @@ class TestAppointmentsInProcessList extends Component {
                                                       type="text"
                                                       value={
                                                         this.state.appointment_requested_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Booked At
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.booked_at
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
