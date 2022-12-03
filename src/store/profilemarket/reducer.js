@@ -1,10 +1,13 @@
 import {
   GET_NEARBY_PROFILES_FAIL,
   GET_NEARBY_PROFILES_SUCCESS,
+  GET_PROFILES_FAIL,
+  GET_PROFILES_SUCCESS,
 } from "./actionTypes";
 
 const INIT_STATE = {
   nearbyProfiles: [],
+  Profiles:[],
   error: {},
 };
 
@@ -21,6 +24,17 @@ const ProfileMarket = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+      case GET_PROFILES_SUCCESS:
+        return {
+          ...state,
+          Profiles: action.payload.data,
+        };
+  
+      case GET_PROFILES_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
 
     default:
       return state;

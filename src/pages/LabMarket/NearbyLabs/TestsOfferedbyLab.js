@@ -4,6 +4,7 @@ import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import ScrollButton from "components/Common/Scrollbutton";
 import {
   Card,
   Button,
@@ -18,6 +19,8 @@ import {
 } from "reactstrap";
 
 import { isEmpty, map, size } from "lodash";
+import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
+
 
 import "nouislider/distribute/nouislider.css";
 
@@ -37,10 +40,13 @@ class TestsOffered extends Component {
         : "",
       activeTab: "1",
       offeredTests: [],
+      carts: [],
+      cart: "",
       success: "",
       error: "",
       applied: true,
       page: 1,
+      count: 0,
       totalPage: 5, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
@@ -52,7 +58,15 @@ class TestsOffered extends Component {
       ongetOfferedTestsReferrel();
       this.setState({ offeredTests: this.props.offeredTests });
     }
+
+    const { onGetCarts } = this.props;
+    onGetCarts(this.state.user_id);
+    this.setState({ carts: this.props.carts });
   }
+      // incrementCart = () =>{
+    //   this.setState({count: this.state.count + 1})
+    //    }
+
 
   // eslint-disable-next-line no-unused-vars
   // componentDidUpdate(prevProps, prevState, snapshot) {
@@ -87,6 +101,7 @@ class TestsOffered extends Component {
 
   handleAddToCart = cart => {
     const { onAddToCart } = this.props;
+    
 
     if (!this.state.user_id) {
       this.props.history.push(
@@ -96,17 +111,31 @@ class TestsOffered extends Component {
       );
     } else {
       onAddToCart(cart, this.state.user_id);
+      
+      
     }
+    setTimeout(() => {
+      this.setState({ success: this.props.success })
+
+      this.setState({ error: this.props.error });
+    }, 1000);
 
     setTimeout(() => {
-      this.setState({ success: this.props.success });
-      this.setState({ error: this.props.error });
-    }, 2000);
+    if (this.props.success){
+      this.setState({count: this.state.count + 1});
+    }
+    else{
+      this.setState({count: this.state.count});
+    }
+  }, 2000);
+
   };
 
   render() {
     const { page, totalPage } = this.state;
     const { offeredTests } = this.props.offeredTests;
+    const { carts } = this.props;
+
 
     return (
       <React.Fragment>
@@ -126,8 +155,29 @@ class TestsOffered extends Component {
                 {this.state.error}
               </Alert>
             ) : null}
-
+            
             <Row>
+       
+             <div className="mt- text-left">
+
+            <Link
+              to={
+                this.props.match.params.uuid
+                ? `/cart/${this.props.match.params.uuid}`
+                : `/cart`
+              }
+              className="btn btn-danger btn-rounded"
+            >
+              <i className="bx bx-cart-alt bx-tada align-middle me-1 font-size-22" />{" "}
+              {/* {this.state.count} */}
+             
+                {!isEmpty(this.props.carts) &&
+                 
+                  this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                  }
+            </Link>
+          </div>
+    
               <Row>
                 {!isEmpty(this.props.offeredTests) &&
                   this.props.offeredTests.map((offeredTest, key) => (
@@ -168,24 +218,24 @@ class TestsOffered extends Component {
                             </div>
                             <div className="my-0">
                               <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                {/* {offeredTest.price
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
+                                {offeredTest.discount} % Discount By Lab
+
+                              </span>
+                            </div>
+                            {/* <div className="my-0">
+                              <span className="text-muted me-2"> */}
                                 {/* <i className="fas fa-money-bill"></i>{" "} */}
                                 {/* {offeredTest.price
                                   .toString()
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
-                                {offeredTest.discount} % Discount
+                                {/* {offeredTest.discount_by_labhazir} % Discount By LabHazir
 
                               </span>
-                            </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                {/* {offeredTest.price
-                                  .toString()
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
-                                {offeredTest.discount_by_labhazir} % Discount By LabHazir
-
-                              </span>
-                            </div>
+                            </div> */}
 
                             <div className="my-0">
                                 <span className="text-muted me-2">
@@ -223,6 +273,7 @@ class TestsOffered extends Component {
                                 {offeredTest.duration_type}
                               </span>
                             </div> 
+                            
                            
                             <div className="mt-3 text-center">
                               <Link
@@ -244,6 +295,7 @@ class TestsOffered extends Component {
                               onClick={() => this.handleAddToCart(offeredTest)}
                             >
                               <i className="bx bx-cart me-2" /> Add to cart
+                             
                             </Button>
                           </div>
                         </CardBody>
@@ -262,6 +314,7 @@ class TestsOffered extends Component {
                     </Col>
                   </Row>
                 )}
+                
               </Row>
 
               <Row>
@@ -294,6 +347,7 @@ class TestsOffered extends Component {
                   </Pagination>
                 </Col>
               </Row>
+              <ScrollButton />
             </Row>
           </Container>
         </div>
@@ -311,10 +365,14 @@ TestsOffered.propTypes = {
   onAddToCart: PropTypes.func,
   success: PropTypes.any,
   error: PropTypes.any,
+  carts: PropTypes.array,
+  onGetCarts: PropTypes.func,
+
 };
 
 const mapStateToProps = ({ offeredTests, carts }) => ({
   offeredTests: offeredTests.offeredTests,
+  carts: carts.carts,
   success: carts.success,
   error: carts.error,
 });
@@ -323,6 +381,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   ongetOfferedTestsReferrel: () =>
     dispatch(getOfferedTestsReferrel(ownProps.match.params.lab_account_id)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
+  onGetCarts: id => dispatch(getCarts(id)),
+
 });
 
 export default connect(

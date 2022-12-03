@@ -238,7 +238,7 @@ class ApprovedDonors extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={"table align-middle table-condensed table-hover"}
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses={"table-light"}

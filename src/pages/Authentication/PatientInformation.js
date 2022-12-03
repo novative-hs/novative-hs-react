@@ -80,7 +80,7 @@ class PatientInformation extends Component {
                               color="success"
                               style={{ marginTop: "13px" }}
                             >
-                              Login by Using Your Username and Password.{" "}
+                              Hello meri jaan{" "}
                             </Alert>
                           ) : null}
 
@@ -165,7 +165,6 @@ class PatientInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
-                                
 
                                 {/* Phone field */}
                                 <div className="mb-3">

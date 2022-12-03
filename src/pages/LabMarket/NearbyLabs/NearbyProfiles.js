@@ -33,12 +33,13 @@ import "nouislider/distribute/nouislider.css";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
+import ScrollButton from "components/Common/Scrollbutton";
 
 //Import data
 import { productsData } from "common/data";
 
 //Import actions
-import { getNearbyProfiles } from "store/profilemarket/actions";
+import { getNearbyProfiles, getProfiles } from "store/profilemarket/actions";
 import { addToCart } from "store/actions";
 import { any } from "prop-types";
 import "./nearbylabs.scss";
@@ -54,11 +55,12 @@ class NearbyProfiles extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       ratingvalues: [],
+      Profiles: [],
       nearbyProfiles: [],
       activeTab: "1",
       address: "",
       test_name: "",
-      test_type:"",
+      test_type: "",
       search_type: "Current Location",
       city: "",
       latitude: "",
@@ -88,7 +90,10 @@ class NearbyProfiles extends Component {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
     });
-
+    const { Profiles, onGetProfiles } = this.props;
+    if (Profiles && !Profiles.length) {
+      console.log(onGetProfiles(this.state.user_id));
+    }
     const { onGetNearbyProfiles } = this.props;
 
     setTimeout(() => {
@@ -175,7 +180,8 @@ class NearbyProfiles extends Component {
     this.setState({
       nearbyProfiles: productsData.filter(
         nearbyProfile =>
-          nearbyProfile.newPrice >= value[0] && nearbyProfile.newPrice <= value[1]
+          nearbyProfile.newPrice >= value[0] &&
+          nearbyProfile.newPrice <= value[1]
       ),
     });
   };
@@ -393,7 +399,15 @@ class NearbyProfiles extends Component {
 
   render() {
     const { page, totalPage } = this.state;
+    const { Profiles } = this.props;
 
+    const cityList = [];
+    for (let i = 0; i < this.props.Profiles.length; i++) {
+      cityList.push({
+        label: this.props.Profiles[i].name,
+        value: this.props.Profiles[i].id,
+      });
+    }
     return (
       <React.Fragment>
         <div className="page-content">
@@ -401,7 +415,10 @@ class NearbyProfiles extends Component {
             <title>Search by Profiles | Lab Hazir - Dashboard</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search by Profiles" />
+            <Breadcrumbs
+              title="Lab Marketplace"
+              breadcrumbItem="Search by Profiles"
+            />
             <Row>
               {/* <Col lg="3">
                 <Card>
@@ -440,7 +457,7 @@ class NearbyProfiles extends Component {
                     >
                       {/* Type field */}
                       <Row>
-                        <Col lg="3">
+                        {/* <Col lg="3">
                           <div className="mb-3">
                             <Input
                               type="text"
@@ -456,8 +473,33 @@ class NearbyProfiles extends Component {
                               value={this.state.test_name}
                             />
                           </div>
+                        </Col> */}
+                        <Col lg="3">
+                          <div className="mb-3">
+                            <Select
+                              name="profile"
+                              component="Select"
+                              
+                              onChange={selectedGroup =>
+                                this.setState({
+                                  test_name: selectedGroup.value,
+                                })
+                              }
+                              onBlur={this.handleBlur}
+                              value={this.state.test_name}
+                              className="defautSelectParent"
+                              options={
+                                cityList
+                              }
+                              defaultValue={{
+                                label:
+                                  Profiles.test_name,
+                                value:
+                                  Profiles.test_name,
+                              }}
+                            />
+                          </div>
                         </Col>
-
                         <Col lg="3">
                           {/* {this.state.test_name && ( */}
                           <div className="mb-3">
@@ -591,7 +633,8 @@ class NearbyProfiles extends Component {
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-medal"></i> EQA
-                                Participation: {nearbyProfile.is_eqa_participation}
+                                Participation:{" "}
+                                {nearbyProfile.is_eqa_participation}
                               </span>
                             </div>
 
@@ -614,7 +657,9 @@ class NearbyProfiles extends Component {
                               type="button"
                               color="primary"
                               className="btn mt-3 me-1"
-                              onClick={() => this.handleAddToCart(nearbyProfile)}
+                              onClick={() =>
+                                this.handleAddToCart(nearbyProfile)
+                              }
                             >
                               <i className="bx bx-cart me-2" /> Add to cart
                             </Button>
@@ -668,6 +713,8 @@ class NearbyProfiles extends Component {
                 </Col>
               </Row> */}
               {/* </Col> */}
+              <ScrollButton />
+
             </Row>
           </Container>
         </div>
@@ -682,6 +729,8 @@ NearbyProfiles.propTypes = {
   match: PropTypes.object,
   nearbyProfiles: PropTypes.array,
   onGetNearbyProfiles: PropTypes.func,
+  onGetProfiles: PropTypes.func,
+  Profiles: PropTypes.array,
   onAddToCart: PropTypes.func,
   success: PropTypes.any,
   error: PropTypes.any,
@@ -690,6 +739,7 @@ NearbyProfiles.propTypes = {
 
 const mapStateToProps = ({ ProfileMarket, carts }) => ({
   nearbyProfiles: ProfileMarket.nearbyProfiles,
+  Profiles: ProfileMarket.Profiles,
   success: carts.success,
   error: carts.error,
 });
@@ -700,6 +750,7 @@ const mapStateToProps = ({ ProfileMarket, carts }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyProfiles: data => dispatch(getNearbyProfiles(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
+  onGetProfiles: () => dispatch(getProfiles()),
 });
 
 export default connect(

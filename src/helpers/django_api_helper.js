@@ -786,6 +786,8 @@ export const getNearbyLabs = locationDetails => {
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
 
+  console.log("donorSetting: ", locationDetails)
+
   return axios.post(`${url.GET_NEARBY_LABS}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -801,6 +803,7 @@ export const getNearbyTests = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("test_name", data.test_name);
+  console.log("donorSetting: ", data)
 
   return axios.post(`${url.GET_NEARBY_TESTS}`, formData, {
     headers: getHeader(authHeader()),
@@ -816,12 +819,17 @@ export const getNearbyProfiles = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("test_name", data.test_name);
+  console.log("donorSetting: ", data);
 
   return axios.post(`${url.GET_NEARBY_PROFILES}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
 
+export const getProfiles = () =>
+  get(url.GET_PROFILES, {
+    headers: getHeader(authHeader()),
+  });
 // Get Nearby Packages
 export const getNearbyPackages = data => {
   let formData = new FormData();

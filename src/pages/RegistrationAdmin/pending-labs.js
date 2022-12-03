@@ -66,10 +66,7 @@ class PendingLabs extends Component {
         {
           dataField: "address",
           text: "Address",
-          sort: true,
-          headerStyle: () => {
-            return { width: "50%" };
-          }      
+          sort: true,     
         },
         // {
         //   dataField: "city",
@@ -314,7 +311,7 @@ class PendingLabs extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={"table align-middle table-condensed table-hover"}
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses={"table-light"}

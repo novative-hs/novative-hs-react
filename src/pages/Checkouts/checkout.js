@@ -75,6 +75,7 @@ class Checkout extends Component {
       checkedoutData: "",
       activeTab: "1",
       selectedGroup: null,
+      checkoutSuccess: "",
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
@@ -136,6 +137,15 @@ class Checkout extends Component {
       setTimeout(() => {
         onAddCheckoutData(this.state.checkoutData, this.state.user_id);
       }, 2000);
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+      setTimeout(() => {
+        if (this.props.checkedoutData) {
+          this.setState({
+            checkoutSuccess:
+              "Order has been placed successfully! Thank you for choosing Labhazir.",
+          });
+        }
+      }, 1000);
 
       setTimeout(() => {
         this.setState({ checkedoutData: this.props.checkedoutData });
@@ -144,7 +154,7 @@ class Checkout extends Component {
         if (this.props.checkedoutData) {
           this.props.history.push("/nearby-labs");
         }
-      }, 2000);
+      }, 4000);
     }
   };
 
@@ -253,7 +263,11 @@ class Checkout extends Component {
           <Container fluid>
             {/* Render Breadcrumb */}
             <Breadcrumbs title="Test" breadcrumbItem="Checkout" />
-
+            {this.state.checkoutSuccess && (
+              <Alert color="success" className="col-md-8">
+                {this.state.checkoutSuccess}
+              </Alert>
+            )}
             <div className="checkout-tabs">
               <Row>
                 <Col lg="2" sm="3">
@@ -633,7 +647,7 @@ class Checkout extends Component {
                               </select>
                             </FormGroup>
 
-                            <Table className="align-middle mb-0 table-nowrap">
+                            <Table >
                               <thead className="table-light">
                                 <tr>
                                   <th scope="col">Test name</th>
@@ -645,7 +659,7 @@ class Checkout extends Component {
                                   (homeSampledTest, key) => (
                                     <tr key={"_homeSampledTest_" + key}>
                                       <td>
-                                        <h5 className="font-size-14 text-truncate">
+                                        <h5 className="font-size-14">
                                           <a
                                             href="/ecommerce-product-details/1"
                                             className="text-dark"
@@ -1041,6 +1055,7 @@ class Checkout extends Component {
                                   onClick={this.handleProceedClick}
                                   to="/checkout"
                                   className="btn btn-success mb-4"
+                                  disabled={this.state.checkoutSuccess}
                                 >
                                   <i className="mdi mdi-truck-fast me-1" />{" "}
                                   Proceed to Shipping{" "}

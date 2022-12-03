@@ -23,6 +23,7 @@ import {
 } from "reactstrap";
 
 import { isEmpty, map, size } from "lodash";
+import ScrollButton from "components/Common/Scrollbutton";
 
 //Import Star Ratings
 import StarRatings from "react-star-ratings";
@@ -668,6 +669,7 @@ class NearbyPackage extends Component {
                 </Col>
               </Row> */}
               {/* </Col> */}
+              <ScrollButton />
             </Row>
           </Container>
         </div>

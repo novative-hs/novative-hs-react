@@ -396,7 +396,7 @@ class ReferrelLabFee extends Component {
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
                                       classes={
-                                        "table align-middle table-nowrap table-hover"
+                                        "table align-middle table-condensed table-hover"
                                       }
                                       bordered={false}
                                       striped={false}

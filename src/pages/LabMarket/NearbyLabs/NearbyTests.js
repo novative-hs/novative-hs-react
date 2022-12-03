@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import ScrollButton from "components/Common/Scrollbutton";
 
 import {
   Alert,
@@ -39,9 +40,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { productsData } from "common/data";
 
 //Import actions
-import {
-  getAdvertisementLives,
-} from "store/advertisement-live/actions";
+import { getAdvertisementLives } from "store/advertisement-live/actions";
 import { getNearbyTests } from "store/testmarket/actions";
 import { addToCart } from "store/actions";
 import { any } from "prop-types";
@@ -64,7 +63,7 @@ class NearbyTests extends Component {
       activeTab: "1",
       address: "",
       test_name: "",
-      test_type:"",
+      test_type: "",
       search_type: "Current Location",
       city: "",
       latitude: "",
@@ -87,11 +86,9 @@ class NearbyTests extends Component {
   }
 
   componentDidMount() {
-
     const { advertisementLives, onGetAdvertisementLives } = this.props;
     onGetAdvertisementLives(this.state.user_id);
     this.setState({ advertisementLives });
-
 
     let latitude;
     let longitude;
@@ -413,7 +410,10 @@ class NearbyTests extends Component {
             <title>Search by Tests | Lab Hazir - Dashboard</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search by Tests" />
+            <Breadcrumbs
+              title="Lab Marketplace"
+              breadcrumbItem="Search by Tests"
+            />
             <Row>
               {/* <Col lg="3">
                 <Card>
@@ -457,7 +457,7 @@ class NearbyTests extends Component {
                             <Input
                               type="text"
                               className="form-control"
-                              name="patient_name"
+                              name="test_name"
                               placeholder="Search Test..."
                               onChange={e =>
                                 this.setState({
@@ -592,7 +592,18 @@ class NearbyTests extends Component {
                                 {nearbyTest.price} Rs
                               </span>
                             </div>
-
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                {nearbyTest.discount} % Discount By Lab
+                              </span>
+                            </div>
+                            {/* <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                {nearbyTest.discount_by_labhazir} % Discount By Labhazir
+                              </span>
+                            </div> */}
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-stopwatch"></i> Reporting
@@ -624,16 +635,16 @@ class NearbyTests extends Component {
                             <div className="my-0">
                               {" "}
                               <Link
-                                  to={
+                                to={
                                   this.props.match.params.uuid
-                                  ? `/${nearbyTest.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
-                                  : `/${nearbyTest.lab_account_id}/lab-quality-certificates`
-                                  }
+                                    ? `/${nearbyTest.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
+                                    : `/${nearbyTest.lab_account_id}/lab-quality-certificates`
+                                }
                                 className="text-dark"
                               >
                                 <span className="text-primary">
-                                {/* {nearbyTest.lab_name}{" "} */}
-                                View Certificate
+                                  {/* {nearbyTest.lab_name}{" "} */}
+                                  View Certificate
                                 </span>
                               </Link>
                               {/* <span className="text-muted me-2">
@@ -641,7 +652,6 @@ class NearbyTests extends Component {
                                 {nearbyTest.lab_name}
                               </span> */}
                             </div>
-                            
 
                             <Button
                               type="button"
@@ -657,48 +667,44 @@ class NearbyTests extends Component {
                     </Col>
                   ))}
 
-
                 {isEmpty(this.props.nearbyTests) && (
                   <Row>
                     <Col lg="12">
                       <div className=" mb-5">
-                        <h4 className="text-uppercase">
-                          Loading.....
-                        </h4>
+                        <h4 className="text-uppercase">Loading.....</h4>
                       </div>
                     </Col>
                   </Row>
                 )}
-                
 
-{/* ROW FOR ADVERTISEMENT */}
-{!isEmpty(this.props.advertisementLives) &&
-  this.props.advertisementLives.map((advertisementLive, key) => (
-    <Col xl="3" sm="12" key={"_col_" + key}>
-      <Card>
-        <CardBody>
-             <div className="mb-3 mt-3">
-              <img
-                src={
-                  process.env.REACT_APP_BACKENDURL +
-                  advertisementLive.poster
-                }
-                alt="Lab Logo"
-                style={{
-                  width: "200px",
-                  height: "300px",
-                  objectFit: "cover",
-                }}
-                className="img-fluid mx-right d-block"
-                
-              />
-            </div>
-        </CardBody>
-      </Card>
-    </Col>
-  ))} 
-
-</Row>
+                {/* ROW FOR ADVERTISEMENT */}
+                {!isEmpty(this.props.advertisementLives) &&
+                  this.props.advertisementLives.map(
+                    (advertisementLive, key) => (
+                      <Col xl="3" sm="12" key={"_col_" + key}>
+                        <Card>
+                          <CardBody>
+                            <div className="mb-3 mt-3">
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  advertisementLive.poster
+                                }
+                                alt="Lab Logo"
+                                style={{
+                                  width: "200px",
+                                  height: "300px",
+                                  objectFit: "cover",
+                                }}
+                                className="img-fluid mx-right d-block"
+                              />
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    )
+                  )}
+              </Row>
 
               {/* <Row>
                 <Col lg="12">
@@ -731,8 +737,8 @@ class NearbyTests extends Component {
                 </Col>
               </Row> */}
               {/* </Col> */}
+              <ScrollButton />
             </Row>
-            
           </Container>
         </div>
       </React.Fragment>
