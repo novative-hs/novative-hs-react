@@ -142,12 +142,16 @@ class TestAppointmentsList extends Component {
               ) : (
                 <span>No</span>
               )}
+              <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+              {patientTestAppointment.lab_name}
+              </span>
+
             </>
           ),
         },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Estimated sample collection time by Lab",
+          text: "Collection time by Lab",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -163,24 +167,7 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated Reporting Time by Lab",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              {patientTestAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(
-                    patientTestAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              )}
-            </>
-          ),
-        },
+
         // {
         //   dataField: "sample_collected_at",
         //   text: "Sample collected at",
@@ -481,6 +468,24 @@ class TestAppointmentsList extends Component {
           ),
         },
         {
+          dataField: "estimated_result_uploading_at",
+          text: "Reporting Time by Lab",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : (
+                <span>
+                  {new Date(
+                    patientTestAppointment.estimated_result_uploading_at
+                  ).toLocaleString("en-US")}
+                </span>
+              )}
+            </>
+          ),
+        },
+        {
           dataField: process.env.REACT_APP_BACKENDURL + "result",
           text: "Result",
           sort: true,
@@ -516,50 +521,77 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
-        {
-          dataField: "feedback",
-          text: "id",
-          isDummyField: true,
-          editable: false,
-          text: "Rate Us",
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              {patientTestAppointment.status == "Result Uploaded" &&
-              !patientTestAppointment.does_feedback_exist ? (
-                <Link
-                  className="text-warning font-size-12"
-                  to="#"
-                  onClick={e =>
-                    this.handlePatientFeedbackClick(
-                      e,
-                      patientTestAppointment.id
-                    )
-                  }
-                >
-                  <i className="bx bxs-star font-size-14"></i> Give feedback
-                </Link>
-              ) : patientTestAppointment.status == "Result Uploaded" &&
-                patientTestAppointment.does_feedback_exist ? (
-                <span className="text-success font-size-12">
-                  <i className="bx bxs-happy-alt font-size-14"></i> Given
-                  feedback
-                </span>
-              ) : (
-                <span className="text-secondary font-size-12">
-                  <i className="bx bxs-notification-off font-size-14"></i> Not
-                  available
-                </span>
-              )}
-            </>
-          ),
-        },
+        // {
+        //   dataField: "feedback",
+        //   text: "id",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Rate Us",
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       {patientTestAppointment.status == "Result Uploaded" &&
+        //       !patientTestAppointment.does_feedback_exist ? (
+        //         <Link
+        //           className="text-warning font-size-12"
+        //           to="#"
+        //           onClick={e =>
+        //             this.handlePatientFeedbackClick(
+        //               e,
+        //               patientTestAppointment.id
+        //             )
+        //           }
+        //         >
+        //           <i className="bx bxs-star font-size-14"></i>
+        //         </Link>
+        //       ) : patientTestAppointment.status == "Result Uploaded" &&
+        //         patientTestAppointment.does_feedback_exist ? (
+        //         <span className="text-success font-size-12">
+        //           <i className="bx bxs-happy-alt font-size-14"></i> 
+        //         </span>
+        //       ) : (
+        //         <span className="text-secondary font-size-12">
+        //           <i className="bx bxs-star font-size-14"></i> 
+        //         </span>
+        //       )}
+        //     </>
+        //   ),
+        // },
         {
           dataField: "invoice",
-          text: "Invoice",
+          text: "Actions",
           isDummyField: true,
           editable: false,
           formatter: (cellContent, patientTestAppointment) => (
-            <>
+            <> 
+          <div>
+          <Tooltip title="Feedback">
+            {patientTestAppointment.status == "Result Uploaded" &&
+            !patientTestAppointment.does_feedback_exist ? (
+              <Link
+                className="text-warning font-size-12"
+                to="#"
+                onClick={e =>
+                  this.handlePatientFeedbackClick(
+                    e,
+                    patientTestAppointment.id
+                  )
+                }
+              >
+                <i className="bx bxs-star font-size-14"></i>
+              </Link>
+            ) : patientTestAppointment.status == "Result Uploaded" &&
+              patientTestAppointment.does_feedback_exist ? (
+              <span className="text-success font-size-12">
+                <i className="bx bxs-happy-alt font-size-14"></i> 
+              </span>
+            ) : (
+              <span className="text-secondary font-size-12">
+                <i className="bx bxs-star font-size-14"></i> 
+              </span>
+            )}
+          </Tooltip>
+
+
             <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i
@@ -576,6 +608,7 @@ class TestAppointmentsList extends Component {
                   to={`/invoice-detail/${patientTestAppointment.id}`}
                 ></Link>
               </Tooltip>
+            </div>
             </>
           ),
         },

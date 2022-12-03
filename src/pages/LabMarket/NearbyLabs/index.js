@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { Formik, Field, Form } from "formik";
-import ScrollButton from "components/Common/Scrollbutton";
+// import ScrollButton from "components/Common/Scrollbutton";
 import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
@@ -736,7 +736,7 @@ class NearbyLabs extends Component {
                   </Col>
                 </Row>
               )}
-              <ScrollButton />
+              {/* <ScrollButton /> */}
             </Row>
 
             {/* <Row>

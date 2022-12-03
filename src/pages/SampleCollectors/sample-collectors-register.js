@@ -96,8 +96,13 @@ class SampleCollectorRegister extends Component {
               <Col lg="12">
                 <Card>
                   <CardBody>
+                    <h5>  <span className="text-primary font-size-12">
+                                    <strong>
+                                    Note: Use UNIQUE Name and Email ID of the sample Collector. Do not use Email ID of the Lab already used at Lab Registration                                    </strong>
+                                  </span></h5>
                     {/* To show submitted message of processing if submission is succesful */}
                     <div className="mt-4">
+                      
                       {this.state.submittedMessage && (
                         <Alert color="success" style={{ marginTop: "13px" }}>
                           {this.state.submittedMessage}
@@ -108,9 +113,9 @@ class SampleCollectorRegister extends Component {
                       {this.state.incompleteRegistrationError && (
                         <div>
                           <Alert color="danger" style={{ marginTop: "13px" }}>
-                            Did not Exist Your Username or Email,{" "}
-                             <strong>
-                              Please Enter Your Unique Username and Email.
+                            The Username or Email Already Used,{" "}
+                            <strong>
+                            Please Enter Your Unique Username and Email.
                             </strong>
                             {/* . If you want to
                             regispatient-information/113893749834ter now, please

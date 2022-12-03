@@ -33,7 +33,7 @@ import "nouislider/distribute/nouislider.css";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import ScrollButton from "components/Common/Scrollbutton";
+// import ScrollButton from "components/Common/Scrollbutton";
 
 //Import data
 import { productsData } from "common/data";
@@ -713,7 +713,7 @@ class NearbyProfiles extends Component {
                 </Col>
               </Row> */}
               {/* </Col> */}
-              <ScrollButton />
+              {/* <ScrollButton /> */}
 
             </Row>
           </Container>

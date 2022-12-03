@@ -664,8 +664,8 @@ class TestAppointmentsPendingList extends Component {
                                                       for="Estimated sample
                                                       collection at"
                                                     >
-                                                      Estimated sample
-                                                      collection at
+                                                    
+                                                      Collection Time by Lab
                                                     </Label>
                                                     <input
                                                       type="datetime-local"

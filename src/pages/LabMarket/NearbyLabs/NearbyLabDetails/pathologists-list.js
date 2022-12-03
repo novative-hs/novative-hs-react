@@ -201,7 +201,7 @@ class LabPathologists extends Component {
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-cellphone-android"></i>{" "}
-                                  Mobile No: {pathologist.phone}{" "}
+                                  Mobile No/ WhatsApp: {pathologist.phone}{" "}
                                 </span>
                               </div>
                             )}

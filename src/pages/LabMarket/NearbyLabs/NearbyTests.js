@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import ScrollButton from "components/Common/Scrollbutton";
+// import ScrollButton from "components/Common/Scrollbutton";
 
 import {
   Alert,
@@ -737,7 +737,7 @@ class NearbyTests extends Component {
                 </Col>
               </Row> */}
               {/* </Col> */}
-              <ScrollButton />
+              {/* <ScrollButton /> */}
             </Row>
           </Container>
         </div>

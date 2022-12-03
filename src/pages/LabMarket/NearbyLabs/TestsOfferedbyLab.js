@@ -4,7 +4,7 @@ import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import ScrollButton from "components/Common/Scrollbutton";
+// import ScrollButton from "components/Common/Scrollbutton";
 import {
   Card,
   Button,
@@ -347,7 +347,7 @@ class TestsOffered extends Component {
                   </Pagination>
                 </Col>
               </Row>
-              <ScrollButton />
+              {/* <ScrollButton /> */}
             </Row>
           </Container>
         </div>

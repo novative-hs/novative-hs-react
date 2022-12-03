@@ -102,7 +102,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Estimated sample collection time by Lab",
+          text: "Collection time by Lab",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -120,27 +120,7 @@ class TestAppointmentsCompletedList extends Component {
             </>
           ),
         },
-       
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Estimated Reporting Time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
-        },
+        
         {
           dataField: "sample_collected_at",
           text: "Sample collected at",
@@ -222,7 +202,13 @@ class TestAppointmentsCompletedList extends Component {
                     )}
 
                   {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Handovered" && (
+                    testAppointment.collection_status == "Sample+Payment Collected" && (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                        {testAppointment.collection_status}
+                      </span>
+                    )}
+                  {testAppointment.is_home_sampling_availed &&
+                    testAppointment.collection_status == "Sample+Payment Delivered" && (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                         {testAppointment.collection_status}
                       </span>
@@ -258,6 +244,26 @@ class TestAppointmentsCompletedList extends Component {
             </>
           ),
         }, 
+        {
+          dataField: "estimated_result_uploading_at",
+          text: "Reporting Time by Lab",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              {testAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {testAppointment.status != "Pending" ? (
+                <span>
+                  {new Date(
+                    testAppointment.estimated_result_uploading_at
+                  ).toLocaleString("en-US")}
+                </span>
+              ) : null}
+            </>
+          ),
+        },
         {
           dataField: process.env.REACT_APP_BACKENDURL + "result",
           text: "Result",
