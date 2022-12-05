@@ -91,32 +91,32 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
             </>
           ),
         },
-        {
-          dataField: "booked_at",
-          text: "Booked at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(testAppointment.booked_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "appointment_requested_at",
-          text: "Schedule time by Patient",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.appointment_requested_at
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "booked_at",
+        //   text: "Booked at",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(testAppointment.booked_at).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "appointment_requested_at",
+        //   text: "Schedule time by Patient",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(
+        //           testAppointment.appointment_requested_at
+        //         ).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "estimated_sample_collection_at",
           text: "Collection time by Lab",
@@ -320,6 +320,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
       patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
+      appointment_requested_at: arg.appointment_requested_at
     });
   };
 
@@ -529,6 +530,24 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                         this.state
                                                           .patient_address
                                                       }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Schedule time by patient
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value= {new Date(
+                                                        this.state.appointment_requested_at
+                                                      ).toLocaleString("en-US")}
+                                                      
                                                       className="form-control"
                                                       readOnly={true}
                                                     />

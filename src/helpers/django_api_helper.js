@@ -897,7 +897,7 @@ export const addNewComplaint = complaint => {
   formData.append("phone", complaint.phone);
   formData.append("subject", complaint.subject);
   formData.append("message", complaint.message);
-
+ console.log("data",complaint )
   return axios.post(`${url.ADD_NEW_COMPLAINT}`, formData, {
     headers: getHeader(authHeader()),
   });

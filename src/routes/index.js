@@ -224,9 +224,6 @@ const publicRoutes = [
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
-  { path: "/handled-complaints", component: HandledComplaints },
-  { path: "/unhandled-complaints", component: UnhandledComplaints },
-  { path: "/dashboard-csr", component: DashboardCsr },
 
 ];
 

@@ -571,13 +571,15 @@ class NearbyTests extends Component {
                               <Link
                                 to={
                                   this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearbyTest.account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyTest.account_id}`
+                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
                                 }
+                                
                                 className="text-dark"
                               >
                                 <span className="text-primary">
                                   {nearbyTest.lab_name}{" "}
+                                  
                                 </span>
                               </Link>
                               {/* <span className="text-muted me-2">

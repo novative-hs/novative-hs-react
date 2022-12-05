@@ -81,7 +81,7 @@ class StaffProfile extends Component {
               </Alert>
             ) : null}
 
-            <h4 className="card-title mb-4">Update Profile</h4>
+            <h4 className="card-title mb-4">Your Profile</h4>
 
             <Card>
               <CardBody>
@@ -173,9 +173,7 @@ class StaffProfile extends Component {
                           id="phone"
                           name="phone"
                           type="text"
-                          onChange={e =>
-                            this.setState({ phone: e.target.value })
-                          }
+                          readOnly={true}
                           value={this.state.phone}
                           className={
                             "form-control" +
@@ -188,11 +186,11 @@ class StaffProfile extends Component {
                           className="invalid-feedback"
                         />
                       </div>
-                      <div className="text-center mt-4">
+                      {/* <div className="text-center mt-4">
                         <Button type="submit" color="danger">
                           Update Profile
                         </Button>
-                      </div>
+                      </div> */}
                     </Form>
                   )}
                 </Formik>

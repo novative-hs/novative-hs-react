@@ -82,7 +82,7 @@ class InProcessComplaintsLabhazir extends Component {
         },
         {
           dataField: "name",
-          text: "Name",
+          text: "Complainant Name",
           sort: true,
           formatter: (cellContent, inProcessComplaintLabhazir) => (
             <>

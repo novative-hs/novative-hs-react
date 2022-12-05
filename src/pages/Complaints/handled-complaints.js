@@ -72,7 +72,7 @@ class handledComplaintsList extends Component {
         },
         {
           dataField: "name",
-          text: "Name",
+          text: "Complainant Name",
           sort: true,
           formatter: (cellContent, unhandledComplaint) => (
             <>
@@ -115,7 +115,8 @@ class handledComplaintsList extends Component {
             <>
                   {/* {resolvedComplaint.complainee},{" "} */}
                   {handledComplaint.labhazir_complainee}{" "}
-                  {handledComplaint.lab_id}
+                  {handledComplaint.lab_name
+                  }
             </>
           ),
         },

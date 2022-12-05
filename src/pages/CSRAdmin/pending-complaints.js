@@ -85,7 +85,7 @@ class PendingComplaints extends Component {
         },
         {
           dataField: "name",
-          text: "Name",
+          text: "Complainant Name",
           sort: true,
           formatter: (cellContent, pendingComplaint) => (
             <>
@@ -112,7 +112,7 @@ class PendingComplaints extends Component {
         // },
         {
           dataField: "subject",
-          text: "Subject",
+          text: "Complaint Subject",
           sort: true,
         },
         {
