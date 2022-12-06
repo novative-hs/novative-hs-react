@@ -352,7 +352,7 @@ class B2bClientInformation extends Component {
                                   <Field
                                     id="website_url"
                                     name="website_url"
-                                    placeholder="Enter Website URL"
+                                    placeholder="Enter Website URL (https://)"
                                     type="text"
                                     onChange={e =>
                                       this.setState({

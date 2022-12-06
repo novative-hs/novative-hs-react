@@ -119,7 +119,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
         // },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Collection time by Lab",
+          text: "Sampling time by Lab",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -704,7 +704,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                            {/* Certificate Collection status field */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Collection Status
+                                                      Sampling Status
                                                     </Label>
                                                     <Field
                                                       name="collection_status"

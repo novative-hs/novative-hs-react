@@ -102,7 +102,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Collection time by Lab",
+          text: "Sampling time by Lab",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>

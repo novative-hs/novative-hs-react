@@ -107,7 +107,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "appointment_requested_at",
-          text: "Schedule time by Patient",
+          text: "Sampling time by Patient",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -665,7 +665,7 @@ class TestAppointmentsPendingList extends Component {
                                                       collection at"
                                                     >
                                                     
-                                                      Collection Time by Lab
+                                                    Sampling time by Lab
                                                     </Label>
                                                     <input
                                                       type="datetime-local"

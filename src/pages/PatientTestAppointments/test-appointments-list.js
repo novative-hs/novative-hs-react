@@ -133,7 +133,7 @@ class TestAppointmentsList extends Component {
         // },
         {
           dataField: "is_home_sampling_availed",
-          text: "Home Sampling",
+          text: "Home Sampling/ Lab Name",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -151,7 +151,7 @@ class TestAppointmentsList extends Component {
         },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Collection time by Lab",
+          text: "Sampling time by Lab",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -221,7 +221,7 @@ class TestAppointmentsList extends Component {
         },
         {
           dataField: "collection_status",
-          text: "Collection Status",
+          text: "Sampling Status",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>

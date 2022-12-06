@@ -36,6 +36,7 @@ class Payments extends Component {
       received_by:"",
       payment_method: "Cash",
       isPaymentUpdated: false,
+      isPaymentFailed: false,
 
       // id: localStorage.getItem("authUser")
       //   ? JSON.parse(localStorage.getItem("authUser")).id
@@ -71,7 +72,13 @@ class Payments extends Component {
             <Breadcrumb title="Donor" breadcrumbItem="Profile" />
            {
              this.state.isPaymentUpdated && this.state.isPaymentUpdated ? (
-              <Alert color="success">Your profile is updated.</Alert>
+              <Alert color="success">Payment Status Update.</Alert>
+            ) : null}
+
+            {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
+            {
+             this.state.isPaymentFailed && this.state.isPaymentFailed ? (
+              <Alert color="success">Make sure and Enter the Currect Amount and Counter Discount</Alert>
             ) : null}
 
             {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
@@ -137,6 +144,10 @@ class Payments extends Component {
                       console.log("Smount:",this.state.counter_discount);
                       console.log("Rmount:",this.state.amount_received);
                       this.setState({ isPaymentUpdated: true });
+                     }
+                     
+                     if (this.state.amount !== (this.state.counter_discount + this.state.amount_received)){
+                      this.setState({ isPaymentFailed: true });
                      }              
                       
                      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});

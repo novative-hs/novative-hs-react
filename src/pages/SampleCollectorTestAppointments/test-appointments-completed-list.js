@@ -81,7 +81,7 @@ class TestAppointmentsCompletedList extends Component {
         // },
         {
           dataField: "appointment_requested_at",
-          text: "Scheduled time by Patient",
+          text: "Sampling time by Patient",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -95,7 +95,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Collection time by Lab",
+          text: "Sampling time by Lab",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>

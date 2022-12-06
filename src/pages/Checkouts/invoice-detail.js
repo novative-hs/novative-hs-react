@@ -145,9 +145,7 @@ class InvoiceDetail extends Component {
                                   <td className="text-end">{item.discount_by_labhazir+item.discount_by_labhazird_by_test}</td>
                                   {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
                                   <td className="text-end">
-                                  {this.props.invoiceDetail[0].total_dues -
-                                    this.props.invoiceDetail[0]
-                                      .home_sampling_charges}
+                                  {item.total_test_cost}
                               </td>
                                 </tr>
                               )
@@ -169,7 +167,9 @@ class InvoiceDetail extends Component {
                               </td>
                               <td className="border-10 text-end">
                                 <h4 className="m-0">
-                                  {this.props.invoiceDetail[0].total_dues}
+                                  {this.props.invoiceDetail[0].total_test_cost +
+                                    this.props.invoiceDetail[0]
+                                      .home_sampling_charges}
                                 </h4>
                               </td>
                             </tr>

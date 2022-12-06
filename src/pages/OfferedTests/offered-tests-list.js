@@ -97,6 +97,11 @@ class OfferedTestsList extends Component {
           sort: true,
         },
         {
+          dataField: "shared_percentage",
+          text: "Referrel Fee",
+          sort: true,
+        },
+        {
           dataField: "price",
           text: "Price",
           sort: true,
@@ -314,6 +319,15 @@ class OfferedTestsList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Offered Tests" breadcrumbItem="Tests List" />
             <Row>
+            <div> <span className="text-danger font-size-12">
+                                    <strong>
+                                      Note: If the referral fee of each test is not entered by Labhazir, then the test will not be displayed.
+                                      <p><strong>
+                                      For more information, please contact Labhazir team.
+                                      </strong></p>
+                                    </strong>
+                                  </span>
+                                  </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -370,6 +384,7 @@ class OfferedTestsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
+                             
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">

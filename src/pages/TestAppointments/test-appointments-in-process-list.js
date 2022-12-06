@@ -136,7 +136,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "estimated_sample_collection_at",
-          text: "Collection time by Lab",
+          text: "Sampling time by Lab",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -161,7 +161,7 @@ class TestAppointmentsInProcessList extends Component {
               {patientTestAppointment.status == "Pending" ||
                 patientTestAppointment.status == "Confirmed" ||
                 patientTestAppointment.status == "Rescheduled" ? (
-                <span>Not available yet</span>
+                <span>----</span>
               ) : (
                 <span>
                   {new Date(
@@ -505,22 +505,22 @@ class TestAppointmentsInProcessList extends Component {
         //     </>
         //   ),
         // },
-        {
-          dataField: "payment",
-          text: "Payment",
-          isDummyField: true,
-          editable: false,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <Link
-                className="btn btn-primary btn-rounded font-size-10"
-                to={`/lab-payments/${testAppointment.id}`}
-              >
-                Payment
-              </Link>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "payment",
+        //   text: "Payment",
+        //   isDummyField: true,
+        //   editable: false,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <Link
+        //         className="btn btn-primary btn-rounded font-size-10"
+        //         to={`/lab-payments/${testAppointment.id}`}
+        //       >
+        //         Payment
+        //       </Link>
+        //     </>
+        //   ),
+        // },
 
         {
           dataField: "menu",
@@ -529,6 +529,13 @@ class TestAppointmentsInProcessList extends Component {
           text: "Action",
           formatter: (cellContent, testAppointment) => (
             <div className="d-flex gap-3">
+            <Tooltip title="Payment">
+               <Link
+                className="far fa-money-bill-alt font-size-18"
+                to={`/lab-payments/${testAppointment.id}`}
+              >
+              </Link>
+            </Tooltip>
               <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i
@@ -1401,7 +1408,8 @@ class TestAppointmentsInProcessList extends Component {
                                                   {testAppointment.payment_status ==
                                                     "Not Paid" &&
                                                     testAppointment.status ==
-                                                    "Sample Collected" && (
+                                                    "Sample Collected" && 
+                                                    (
                                                       <Alert color="warning mb-3">
                                                         We&#39;ve disabled{" "}
                                                         <strong>
@@ -1417,6 +1425,26 @@ class TestAppointmentsInProcessList extends Component {
                                                         .
                                                       </Alert>
                                                     )}
+                                                  {/* {testAppointment.payment_status ==
+                                                    "Paid" &&
+                                                    testAppointment.status ==
+                                                  // "Sample Collected" && 
+                                                    "rescheduling" && (
+                                                      <Alert color="warning mb-3">
+                                                        We&#39;ve disabled{" "}
+                                                        <strong>
+                                                          result uploading
+                                                        </strong>{" "}
+                                                        option from this
+                                                        appointment as
+                                                        patient&#39;s payment
+                                                        status is{" "}
+                                                        <strong>
+                                                          Paid
+                                                        </strong>
+                                                        .
+                                                      </Alert>
+                                                  )} */}
                                                   {/* <div className="mb-3">
                                                     <Label className="form-label">
                                                       Name
@@ -1660,12 +1688,25 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={false}
                                                       multiple={false}
                                                     >
-                                                      <option value="Confirmed">
+                                                      {/* <option value="Confirmed">
                                                         Confirmed
-                                                      </option>
-                                                      <option value="Sample Collected">
+                                                      </option> */}
+                                                      {testAppointment.status !=
+                                                      "Sample Collected" && (
+                                                        <option value="Confirmed">
+                                                          Confirmed
+                                                        </option>
+                                                      )}
+
+                                                      {/* <option value="Sample Collected">
                                                         Sample Collected
-                                                      </option>
+                                                      </option> */}
+                                                      {testAppointment.is_home_sampling_availed && (
+                                                          <option value="Sample Collected">
+                                                            Sample Collected
+                                                          </option>
+                                                        )}
+                                                      
                                                       {/* <option value="Sample Declined">
                                                         Sample Declined
                                                       </option>
@@ -1684,7 +1725,9 @@ class TestAppointmentsInProcessList extends Component {
                                                         )}
 
                                                       {testAppointment.payment_status !=
-                                                        "Not Paid" && (
+                                                        "Not Paid" && 
+                                                        testAppointment.status !==
+                                                        "Rescheduled" && (
                                                           <option value="Result Uploaded">
                                                             Result Uploaded
                                                           </option>

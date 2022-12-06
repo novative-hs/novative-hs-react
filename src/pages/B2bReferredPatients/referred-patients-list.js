@@ -3,11 +3,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import {
   Card,
   CardBody,
   Col,
   Container,
+  ModalHeader,
   Row,
   Label,
   Modal,
@@ -45,7 +48,36 @@ class ReferredPatientsList extends Component {
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              <strong>{patientTestAppointment.order_id}</strong>
+            <span>
+              <Tooltip title="Order ID">
+                <Link
+                  to="#"
+                  onClick={e => this.openbookedModal(e, patientTestAppointment)}
+                >
+                  {patientTestAppointment.order_id}
+                </Link>
+              </Tooltip>
+              </span>
+              {/* <strong>{patientTestAppointment.order_id}</strong> */}
+            </>
+          ),
+        },
+        {
+          dataField: "name",
+          text: "Patient name",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              <span>
+              <Tooltip title="Patient Info">
+                <Link
+                  to="#"
+                  onClick={e => this.openPatientModal(e, patientTestAppointment)}
+                >
+                  {patientTestAppointment.patient_name}
+                </Link>
+              </Tooltip>
+              </span>
             </>
           ),
         },
@@ -55,22 +87,47 @@ class ReferredPatientsList extends Component {
           sort: true,
         },
         {
+          dataField: "name",
+          text: "Lab Name",
+          sort: true,
+          },
+        {
+          dataField: "city",
+          text: "Lab City",
+          sort: true,
+        },
+       
+        {
           dataField: "dues",
           text: "Payment",
           sort: true,
         },
         {
-          dataField: "booked_at",
-          text: "Booked at",
+          dataField: "is_home_sampling_availed",
+          text: "Home sampling",
           sort: true,
-          formatter: (cellContent, b2bReferredPatient) => (
-            <>
-              <span>
-                {new Date(b2bReferredPatient.booked_at).toLocaleString("en-US")}
-              </span>
-            </>
+          formatter: (cellContent, patientTestAppointment) => (
+          <>
+          {patientTestAppointment.is_home_sampling_availed == true ? (
+          <span>Yes</span>
+          ) : (
+          <span>No</span>
+          )}
+          </>
           ),
-        },
+          },
+        // {
+        //   dataField: "booked_at",
+        //   text: "Booked at",
+        //   sort: true,
+        //   formatter: (cellContent, b2bReferredPatient) => (
+        //     <>
+        //       <span>
+        //         {new Date(b2bReferredPatient.booked_at).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         // {
         //   dataField: "payment_status",
         //   text: "Payment Status",
@@ -97,8 +154,28 @@ class ReferredPatientsList extends Component {
         //   ),
         // },
         {
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+          <>
+          {patientTestAppointment.payment_status == "Not Paid" ? (
+          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+          {patientTestAppointment.payment_method},{" "}
+          {patientTestAppointment.payment_status}
+          </span>
+          ) : (
+          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+          {patientTestAppointment.payment_method},{" "}
+          {patientTestAppointment.payment_status}
+          </span>
+          )}
+          </>
+          ),
+        },
+        {
           dataField: "status",
-          text: "Status",
+          text: "Appointment Status",
           sort: true,
           formatter: (cellContent, b2bReferredPatient) => (
             <>
@@ -140,6 +217,9 @@ class ReferredPatientsList extends Component {
       ],
     };
     this.toggle = this.toggle.bind(this);
+    this.togglebookModal = this.togglebookModal.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
+
   }
 
   componentDidMount() {
@@ -153,6 +233,40 @@ class ReferredPatientsList extends Component {
       modal: !prevState.modal,
     }));
   }
+  togglebookModal = () => {
+    this.setState(prevState => ({
+      bookModal: !prevState.bookModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+  openbookedModal = (e, arg) => {
+    this.setState({
+      bookModal: true,
+      booked_at: arg.booked_at,
+    });
+  };
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      appointment_requested_at: arg.appointment_requested_at,
+      patient_unique_id: arg.patient_unique_id,
+      patient_gender: arg.patient_gender,
+      patient_address: arg.patient_address,
+      patient_city: arg.patient_city,
+      patient_phone: arg.patient_phone,
+      booked_at: arg.booked_at,
+    });
+  };
 
   onPaginationPageChange = page => {
     if (
@@ -241,6 +355,206 @@ class ReferredPatientsList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                      <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Patient Unique Id
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.patient_unique_id
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Age
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.patient_age
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .patient_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.patient_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Schedule time by Patient
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.appointment_requested_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Booked At
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.booked_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                {/* <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.patient_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .patient_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div> */}
+                                                {/* </div> */}
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                      <Modal
+                                      isOpen={this.state.bookModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglebookModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                    Booked At
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.booked_at
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
