@@ -67,15 +67,26 @@ function* fetchUnhandledComplaints(object) {
   }
 }
 
+// function* onUpdateUnhandledComplaints(object) {
+//   try {
+//     const response = yield call(updateUnhandledComplaints, object.payload);
+//     yield put(updateUnhandledComplaintsSuccess(response));
+//   } catch (error) {
+//     yield put(updateUnhandledComplaintsFail(error));
+//   }
+// }
 function* onUpdateUnhandledComplaints(object) {
   try {
-    const response = yield call(updateUnhandledComplaints, object.payload);
+    console.log(" object.payload: ", object.payload.unhandledComplaints);
+    const response = yield call(
+      updateUnhandledComplaints,
+      object.payload.unhandledComplaints
+    );
     yield put(updateUnhandledComplaintsSuccess(response));
   } catch (error) {
     yield put(updateUnhandledComplaintsFail(error));
   }
 }
-
 function* complaintsSaga() {
   yield takeEvery(GET_HANDLED_COMPLAINTS, fetchHandledComplaints);
   yield takeEvery(GET_LABS, fetchLabs);

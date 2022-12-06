@@ -6,16 +6,12 @@ import { withRouter, Link } from "react-router-dom";
 import {
   Card,
   CardBody,
-  CardImg,
   Col,
   Container,
   Row,
-  Modal,
-  Form,
-  Button,
-  ModalHeader,
-  ModalBody,
   Label,
+  Modal,
+  ModalBody,
   Input,
 } from "reactstrap";
 
@@ -26,23 +22,17 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
-import { Formik, Field, ErrorMessage } from "formik";
+
+import { Formik, Field, Form, ErrorMessage } from "formik";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-import {
-  getUnhandledComplaints,
-  updateUnhandledComplaints,
-} from "store/complaints/actions";
-
-import { isEmpty, size } from "lodash";
-
-import ConfirmModal from "components/Common/ConfirmModal";
-
+import { getUnhandledComplaints, updateUnhandledComplaints } from "store/complaints/actions";
+import * as Yup from "yup";
 import "assets/scss/table.scss";
 
-class UnhandledComplaintsList extends Component {
+class UnhandledComplaints extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
@@ -79,7 +69,7 @@ class UnhandledComplaintsList extends Component {
         },
         {
           dataField: "name",
-          text: "Complainant Name",
+          text: "Name",
           sort: true,
           formatter: (cellContent, unhandledComplaint) => (
             <>
@@ -161,7 +151,7 @@ class UnhandledComplaintsList extends Component {
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
-                onClick={e => this.onClickHandledEvent(e, complaint.id)}
+                onClick={e => this.onClickAuditedEvent(e, complaint.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
               </Link>{" "}
@@ -170,83 +160,46 @@ class UnhandledComplaintsList extends Component {
         },
       ],
     };
-    this.toggle = this.toggle.bind(this);
-    this.onClickHandledEvent = this.onClickHandledEvent.bind(this);
+    // this.toggle = this.toggle.bind(this);
+    this.onClickAuditedEvent = this.onClickAuditedEvent.bind(this);
   }
-
-  componentDidMount() {
-    const { unhandledComplaints, onGetUnhandledComplaints } = this.props;
-    onGetUnhandledComplaints(this.state.user_id);
-    this.setState({ unhandledComplaints });
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-    }));
-  }
-
-  toggleMessageModal = () => {
-    this.setState(prevState => ({
-      messageModal: !prevState.messageModal,
-    }));
-  };
-  openPatientModal = (e, arg) => {
-    this.setState({
-      PatientModal: true,
-      email: arg.email,
-      phone:arg.phone,
-    });
-  };
-  
-  togglePatientModal = () => {
-    this.setState(prevState => ({
-      PatientModal: !prevState.PatientModal,
-    }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
-  };
-  openMessageModal = (e, arg) => {
-    this.setState({ messageModal: true, message: arg.message });
-  };
 
   toggleHandleModal = () => {
     this.setState(prevState => ({
-      handleModal: !prevState.handleModal,
+      auditModal: !prevState.auditModal,
     }));
   };
 
-  onClickHandledEvent = (e, arg) => {
+  onClickAuditedEvent = (e, arg) => {
     this.setState({
       id: arg,
     });
 
-    this.setState({ handleModal: true });
+    this.setState({ auditModal: true });
   };
 
-  handleAPICall = () => {
-    const { onUpdateUnhandledComplaints, onGetUnhandledComplaints } =
-      this.props;
+  // handleAPICall = () => {
+  //   const { onUpdateUnhandledComplaints, onGetUnhandledComplaints } = this.props;
 
-    onUpdateUnhandledComplaints(this.state.id);
-    setTimeout(() => {
-      onGetUnhandledComplaints(this.state.user_id);
-    }, 1000);
+  //   onUpdateUnhandledComplaints(this.state.id);
+  //   setTimeout(() => {
+  //     onGetUnhandledComplaints(this.state.user_id);
+  //   }, 1000);
 
-    this.setState({ handleModal: false });
-  };
+  //   this.setState({ auditModal: false });
+  // };
 
-  // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { unhandledComplaints } = this.props;
-    if (
-      !isEmpty(unhandledComplaints) &&
-      size(prevProps.unhandledComplaints) !== size(unhandledComplaints)
-    ) {
-      this.setState({ unhandledComplaints: {}, isEdit: false });
-    }
+  componentDidMount() {
+    const { onGetUnhandledComplaints } = this.props;
+    onGetUnhandledComplaints(this.state.user_id);
+    this.setState({ unhandledComplaints: this.props.unhandledComplaints });
   }
+
+  // toggle() {
+  //   this.setState(prevState => ({
+  //     modal: !prevState.modal,
+  //   }));
+  // }
 
   onPaginationPageChange = page => {
     if (
@@ -265,9 +218,6 @@ class UnhandledComplaintsList extends Component {
 
     const { unhandledComplaints } = this.props;
 
-    const { onGetUnhandledComplaints } = this.props;
-    const unhandledComplaint = this.state.unhandledComplaint;
-
     const pageOptions = {
       sizePerPage: 10,
       totalSize: unhandledComplaints.length, // replace later with size(unhandledComplaints),
@@ -283,19 +233,19 @@ class UnhandledComplaintsList extends Component {
 
     return (
       <React.Fragment>
-        <ConfirmModal
-          show={this.state.handleModal}
-          onConfirmClick={this.handleAPICall}
-          onCloseClick={() => this.setState({ handleModal: false })}
-        />
+        {/* <DeleteModal
+          show={this.state.auditModal}
+          onDeleteClick={this.handleAPICall}
+          onCloseClick={() => this.setState({ auditModal: false })}
+        /> */}
 
         <div className="page-content">
           <MetaTags>
-            <title>Unhandled Complaints List | Lab Hazir</title>
+            <title>Unhandled Complaints| Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="UnhandledComplaints" breadcrumbItem="List" />
+            <Breadcrumbs title="CSR" breadcrumbItem="Unhandled Complaints" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -324,117 +274,6 @@ class UnhandledComplaintsList extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
-                                    <Modal
-                                      isOpen={this.state.PatientModal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
-
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      E-mail
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.email
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Mobile No.
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.phone
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
-                                                  </div>
-                                                </div>
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
                                   </div>
                                 </Col>
                               </Row>
@@ -454,59 +293,134 @@ class UnhandledComplaintsList extends Component {
                                     />
 
                                     <Modal
-                                      isOpen={this.state.messageModal}
-                                      role="dialog"
-                                      autoFocus={true}
-                                      data-toggle="modal"
-                                      centered
-                                      toggle={this.toggleMessageModal}
+                                      isOpen={this.state.auditModal}
+                                      className={this.props.className}
                                     >
-                                      <div className="modal-content">
-                                        <div className="modal-header border-bottom-0">
-                                          <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() =>
-                                              this.setState({
-                                                messageModal: false,
-                                              })
-                                            }
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"
-                                          ></button>
-                                        </div>
-                                        <div className="modal-body">
-                                          <div className="text-center mb-4">
-                                            <div className="avatar-md mx-auto mb-4">
-                                              <div className="avatar-title bg-light rounded-circle text-primary h3">
-                                                <i className="mdi mdi-email-open"></i>
-                                              </div>
-                                            </div>
-
-                                            <div className="row justify-content-center">
-                                              <div className="col-xl-10">
-                                                <h4 className="text-primary">
-                                                  Complaint Message
-                                                </h4>
-                                                <p className="text-muted font-size-14 mb-4">
-                                                  {this.state.message}
-                                                </p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
+                                      <div className="modal-header">
+                                        <button
+                                          type="button"
+                                          className="btn-close"
+                                          onClick={() =>
+                                            this.setState({
+                                              auditModal: false,
+                                            })
+                                          }
+                                          data-bs-dismiss="modal"
+                                          aria-label="Close"
+                                        ></button>
                                       </div>
+                                      <ModalBody>
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                            
+                                            comment:
+                                              (this.state &&
+                                                this.state.comment) ||
+                                              "",
+                                          }}
+                                          validationSchema={Yup.object().shape({
+                                           
+                                            comment: Yup.string().required(
+                                              "Please enter your comments/reason of result"
+                                            ),
+                                          })}
+                                          onSubmit={values => {
+                                            const {
+                                              onUpdateUnhandledComplaints,
+                                              onGetUnhandledComplaints,
+                                            } = this.props;
+
+                                            const data = {
+                                              id: this.state.id,
+                                              comment: values.comment,
+                                            };
+
+                                            console.log(data);
+
+                                            onUpdateUnhandledComplaints(data);
+                                            setTimeout(() => {
+                                              onGetUnhandledComplaints(
+                                                this.state.user_id
+                                              );
+                                            }, 1000);
+
+                                            this.setState({
+                                              auditModal: false,
+                                            });
+                                            setTimeout(() => {
+                                              onGetUnhandledComplaints(
+                                                this.state.user_id
+                                              );
+                                            }, 100);
+                                          }}
+                                        >
+                                          {({ errors, status, touched }) => (
+                                            <Form>
+                                              <Row>
+                                                <Col className="col-12">
+                                                  
+                                                    <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Comment
+                                                      </Label>
+                                                      <Field
+                                                        name="comment"
+                                                        as="textarea"
+                                                        rows="4"
+                                                        cols="50"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.comment &&
+                                                          touched.comment
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        value={
+                                                          this.state.comment
+                                                        }
+                                                        onChange={e =>
+                                                          this.setState({
+                                                            comment:
+                                                              e.target.value,
+                                                          })
+                                                        }
+                                                      />
+                                                      <ErrorMessage
+                                                        name="comment"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col>
+                                                  <div className="text-end">
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                    >
+                                                      Save
+                                                    </button>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          )}
+                                        </Formik>
+                                      </ModalBody>
                                     </Modal>
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>
@@ -523,7 +437,7 @@ class UnhandledComplaintsList extends Component {
   }
 }
 
-UnhandledComplaintsList.propTypes = {
+UnhandledComplaints.propTypes = {
   match: PropTypes.object,
   unhandledComplaints: PropTypes.array,
   className: PropTypes.any,
@@ -537,10 +451,10 @@ const mapStateToProps = ({ complaints }) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnhandledComplaints: id => dispatch(getUnhandledComplaints(id)),
-  onUpdateUnhandledComplaints: id => dispatch(updateUnhandledComplaints(id)),
+  onUpdateUnhandledComplaints: data => dispatch(updateUnhandledComplaints(data)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(UnhandledComplaintsList));
+)(withRouter(UnhandledComplaints));

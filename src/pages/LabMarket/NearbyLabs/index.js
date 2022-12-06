@@ -85,7 +85,7 @@ class NearbyLabs extends Component {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
      
-
+//https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
       if (window.localStorage) {
   
         // If there is no item as 'reload'
@@ -567,7 +567,7 @@ class NearbyLabs extends Component {
 
               {/* ROW FOR ADVERTISEMENT */}
               {/* <Row> */}
-              {!isEmpty(this.props.advLives) &&
+              {
                 this.props.advLives.map((advLive, key) => (
                   <Col md="3" xl="3" sm="6" key={"_col_" + key}>
                     <Card>
@@ -575,8 +575,8 @@ class NearbyLabs extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/advertisement/${advLive.lab_id}/${this.props.match.params.uuid}`
-                              : `/advertisement/${advLive.lab_id}`
+                              ? `/nearby-lab-detail/${advLive.lab_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${advLive.lab_id}`
                           }
                         >
                           <div className="mt-4 text-center">

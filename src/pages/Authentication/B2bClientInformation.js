@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Alert, Col, Container, Row, Label } from "reactstrap";
+import { Alert, Col, Input, Container, Row, Label } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -26,7 +26,7 @@ class B2bClientInformation extends Component {
       name: "",
       landline: "",
       website_url: "",
-      // city: "",
+      business_logo: "",
       // district: "",
       // province: "Punjab",
       city_id: "",
@@ -122,8 +122,8 @@ class B2bClientInformation extends Component {
                                 (this.state && this.state.landline) || "",
                               website_url:
                                 (this.state && this.state.website_url) || "",
-                              // province:
-                              //   (this.state && this.state.province) || "",
+                              business_logo:
+                                (this.state && this.state.business_logo) || "",
                               // district:
                               //   (this.state && this.state.district) || "",
                               city_id:
@@ -194,6 +194,36 @@ class B2bClientInformation extends Component {
                                   />
                                 </div>
 
+                                <div className="mb-3">
+                                      <Label for="name" className="form-label">
+                                        Business Logo
+                                      </Label>
+                                      <Input
+                                        id="formFile"
+                                        name="business_logo"
+                                        type="file"
+                                        multiple={false}
+                                        accept=".jpg,.jpeg,.png"
+                                        onChange={e =>
+                                          this.setState({
+                                            business_logo: e.target.files[0],
+                                          })
+                                        }
+                                        className={
+                                          "form-control" +
+                                          (errors.business_logo && touched.business_logo
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+
+                                      <ErrorMessage
+                                        name="business_logo"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+
                                 {/* Landline field */}
                                 <div className="mb-3">
                                   <Label for="phone" className="form-label">
@@ -223,6 +253,8 @@ class B2bClientInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
+                            
+
                                                  {/* Province field */}
                                                  {/* <div className="mb-3">
                                   <Label for="type" className="form-label">

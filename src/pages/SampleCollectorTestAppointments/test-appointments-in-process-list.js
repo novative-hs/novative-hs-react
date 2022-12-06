@@ -387,6 +387,9 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
         patient_unique_id: testAppointment.patient_unique_id,
         status: testAppointment.status,
         collection_status: testAppointment.collection_status,
+        payment_status: testAppointment.payment_status,
+
+        
         result_type: "File",
         url: "",
         result: "",
@@ -635,6 +638,10 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                             //   (testAppointment &&
                                             //     testAppointment.amount_recieved_by_collector) ||
                                             //   "",
+                                            payment_status:
+                                              (testAppointment &&
+                                                testAppointment.payment_status) ||
+                                              "",
                                             dues:
                                               (testAppointment &&
                                                 testAppointment.dues) ||
@@ -655,6 +662,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                   values.collection_status,
                                                 // amount_recieved_by_collector:
                                                 //   values.amount_recieved_by_collector,
+                                                payment_status: testAppointment.payment_status,
                                                 dues:
                                                   testAppointment.dues,
                                                 is_exact_amount_collected:
@@ -679,8 +687,58 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
+
+{/*                                                                
+                                                { this.state.testAppointment
+                                                    .collection_status ==
+                                                    "Sample+Payment Collected" && 
+                                                    this.state.testAppointment.payment_status == "Not Paid" &&(
+                                                      <div className="mb-3">
+                                                           <div className="col-md-3">
+                                                        <Label className="form-label">
+                                                          Amount
+                                                        </Label>
+                                                      </div>
+                                                      <div className="col-md-6">
+                                                        <input
+                                                          type="text"
+                                                          value={
+                                                          testAppointment.dues
+                                                          }
+                                                          className="form-control"
+                                                          readOnly={true}
+                                                        />
+                                                      </div>
+                                                      <Label className="form-label">
+                                                        Yes! I Collected the Due Amount from Patient
+                                                      </Label> 
+                                                    
+                                                      <input
+                                                       name="is_exact_amount_collected"
+                                                       type="checkbox"
+                                                       required= {true}
+                                                      // checked={false}
+                                                      checked={this.state.isChecked}
+                                                      onChange={e => {
+                                                        
+                                                        this.setState({
+                                                          testAppointment: {
+                                                            id: testAppointment.id,
+                                                            collection_status:
+                                                              e.target.value,
+                                                            payment_status: testAppointment.payment_status,
+                                                            // amount_recieved_by_collector: testAppointment.amount_recieved_by_collector,
+                                                            is_exact_amount_collected: e.target.value,
+                                                            dues: testAppointment.dues,
+                                                          },
+                                                        });
+                                                      } 
+                                                    }
+                                                      />
+                                                     </div>  
+                                                    )}   */}
                                               {/* Certificate Amount field */}
-                                              {this.state.testAppointment
+                                              {/* {this.state.testAppointment
                                                     .collection_status ===
                                                     "Sample+Payment Collected" &&(
                                                       <div className="mb-3 row">
@@ -700,7 +758,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                         />
                                                       </div>
                                                     </div>
-                                                    )}
+                                                    )} */}
                                            {/* Certificate Collection status field */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
@@ -719,8 +777,10 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                             collection_status:
                                                               e.target.value,
                                                             // amount_recieved_by_collector: testAppointment.amount_recieved_by_collector,
+
                                                             is_exact_amount_collected: testAppointment.is_exact_amount_collected,
                                                             dues: testAppointment.dues,
+                                                            payment_status: testAppointment.payment_status,
                                                           },
                                                         });
                                                       }}
@@ -794,7 +854,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                     )}    */}
 
                                                     
-                                                  {this.state.testAppointment
+                                                  {/* {this.state.testAppointment
                                                     .collection_status ===
                                                     "Sample+Payment Collected" &&(
                                                     
@@ -825,7 +885,59 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                     }
                                                       />
                                                      </div>  
-                                                    )}                            
+                                                    )}                             */}
+                                                                      
+                                                { this.state.testAppointment
+                                                    .collection_status ==
+                                                    "Sample+Payment Collected" && 
+                                                    this.state.testAppointment.payment_status == "Not Paid" &&(
+                                                      <div className="mb-3">
+                                                           <div className="col-md-3">
+                                                        <Label className="form-label">
+                                                          Amount
+                                                        </Label>
+                                                      </div>
+                                                      <div className="col-md-6">
+                                                        <input
+                                                          type="text"
+                                                          value={
+                                                          testAppointment.dues
+                                                          }
+                                                          className="form-control"
+                                                          readOnly={true}
+                                                        />
+                                                      </div>
+
+                                                      <div>
+                                                      <Label className="form-label">
+                                                       <b> Yes! I Collected the Due Amount from Patient </b>
+                                                      </Label> 
+                                                    
+                                                      <input
+                                                       name="is_exact_amount_collected"
+                                                       type="checkbox"
+                                                       required= {true}
+                                                      // checked={false}
+                                                      checked={this.state.isChecked}
+                                                      onChange={e => {
+                                                        
+                                                        this.setState({
+                                                          testAppointment: {
+                                                            id: testAppointment.id,
+                                                            collection_status:
+                                                              testAppointment.collection_status,
+                                                            payment_status: testAppointment.payment_status,
+                                                            // amount_recieved_by_collector: testAppointment.amount_recieved_by_collector,
+                                                            is_exact_amount_collected: e.target.value,
+                                                            dues: testAppointment.dues,
+                                                          },
+                                                        });
+                                                      } 
+                                                    }
+                                                      />
+                                                      </div>
+                                                     </div>  
+                                                    )}  
                                                 </Col>
                                               </Row>
                                           

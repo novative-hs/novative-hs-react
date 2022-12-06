@@ -639,9 +639,9 @@ class B2bLabSharesList extends Component {
                                                     <Field
                                                       name="b2b_shares"
                                                       type="number"
-                                                      step="0.1"
-                                                      min="0.3"
-                                                      max="0.9"
+                                                      step="0.01"
+                                                      min="0.03"
+                                                      max="1.00"
                                                       value={
                                                         this.state.b2bLabShare
                                                           .b2b_shares
@@ -698,13 +698,13 @@ class B2bLabSharesList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>

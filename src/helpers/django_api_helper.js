@@ -106,7 +106,7 @@ export const postB2bClientInformation = (id, b2bclient) => {
   formData.append("landline", b2bclient.landline);
   formData.append("website_url", b2bclient.website_url);
   formData.append("city_id", b2bclient.city_id);
-  // formData.append("province", b2bclient.province);
+  formData.append("business_logo", b2bclient.business_logo);
   // formData.append("city", b2bclient.city);
   // formData.append("district", b2bclient.district);
 
@@ -908,13 +908,22 @@ export const getUnhandledComplaints = id =>
     headers: getHeader(authHeader()),
   });
 
-export const updateUnhandledComplaints = id => {
-  let formData = new FormData();
+  export const updateUnhandledComplaints = data => {
+    let formData = new FormData();
+    formData.append("comment", data.comment);
+    console.log("Form data: ", formData);
+  
+    return axios.put(`${url.UPDATE_UNHANDLED_COMPLAINTS}/${data.id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+// export const updateUnhandledComplaints = id => {
+//   let formData = new FormData();
 
-  return axios.put(`${url.UPDATE_UNHANDLED_COMPLAINTS}/${id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
-};
+//   return axios.put(`${url.UPDATE_UNHANDLED_COMPLAINTS}/${id}`, formData, {
+//     headers: getHeader(authHeader()),
+//   });
+// };
 
 export const getHandledComplaints = id =>
   get(`${url.GET_HANDLED_COMPLAINTS}/${id}`, {
@@ -1032,6 +1041,10 @@ export const getB2bLabSharesList = id =>
   get(`${url.GET_B2B_LAB_SHARES_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
+export const getB2bSharesLabList = id =>
+  get(`${url.GET_B2B_SHARES_LAB_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 export const updateLabShare = b2bLabShare => {
   let formData = new FormData();
   // formData.append("account_id", id);
@@ -1085,6 +1098,7 @@ export const updateB2bProfile = (b2bProfile, id) => {
   formData.append("email", b2bProfile.email);
   formData.append("landline", b2bProfile.landline);
   formData.append("website_url", b2bProfile.website_url);
+  formData.append("business_logo", b2bProfile.business_logo)
 
   return axios.put(`${url.UPDATE_B2B_PROFILE}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1301,8 +1315,9 @@ export const addStaff = (staff, id) => {
   formData.append("phone", staff.phone);
   formData.append("roles", staff.roles);
   formData.append("city", staff.city);
+  formData.append("photo", staff.photo);
   formData.append("territory_office", staff.territory_office);
-
+  console.log("data",formData);
   return axios.post(`${url.ADD_STAFF}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1360,6 +1375,7 @@ export const updateSampleCollectionStatus = data => {
   let formData = new FormData();
   formData.append("id", data.id);
   formData.append("collection_status", data.collection_status);
+  formData.append("payment_method", data.payment_method);
   // formData.append("amount_recieved_by_collector", data.amount_recieved_by_collector);
   formData.append("is_exact_amount_collected", data.is_exact_amount_collected);
 

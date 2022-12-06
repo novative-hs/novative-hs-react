@@ -75,19 +75,26 @@ class DiscountLabHazirList extends Component {
           dataField: "discount",
           text: "Discount",
           sort: true,
+          formatter: (cellContent, discountLabHazir) => (
+            <>
+              {(
+                <span>{(discountLabHazir.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "start_date",
           text: "Start Date",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLabHazir) => (
             <>
-              {!test.start_date ? (
+              {!discountLabHazir.start_date ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                   Date not set
                 </span>
               ) : (
-                <span>{new Date(test.start_date).toLocaleString("en-US")}</span>
+                <span>{discountLabHazir.start_date}</span>
               )}
             </>
           ),
@@ -96,14 +103,14 @@ class DiscountLabHazirList extends Component {
           dataField: "end_date",
           text: "End Date",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLabHazir) => (
             <>
-              {!test.end_date ? (
+              {!discountLabHazir.end_date ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                   Date not set
                 </span>
               ) : (
-                <span>{new Date(test.end_date).toLocaleString("en-US")}</span>
+                <span>{discountLabHazir.end_date}</span>
               )}
             </>
           ),
@@ -470,6 +477,7 @@ class DiscountLabHazirList extends Component {
                                                         <Field
                                                           name="start_date"
                                                           type="date"
+                                                          min={new Date().toISOString().split("T")[0]}
                                                           value={
                                                             this.state
                                                               .discountLabHazir
@@ -516,6 +524,7 @@ class DiscountLabHazirList extends Component {
                                                         <Field
                                                           name="end_date"
                                                           type="date"
+                                                          min={new Date().toISOString().split("T")[0]}
                                                           value={
                                                             this.state
                                                               .discountLabHazir

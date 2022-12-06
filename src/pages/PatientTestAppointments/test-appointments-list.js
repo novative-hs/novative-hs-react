@@ -188,37 +188,7 @@ class TestAppointmentsList extends Component {
         //     </>
         //   ),
         // },
-        {
-          dataField: "collector_name",
-          text: "Sample collector details",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collector_name && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Not assigned
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collector_name && (
-                  <Link
-                    to="#"
-                    onClick={e => this.openCollectorModal(e, testAppointment)}
-                  >
-                    <i className="mdi mdi-eye font-size-14"></i> View
-                  </Link>
-                )}
-
-              {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
-                </span>
-              )}
-            </>
-          ),
-        },
+      
         {
           dataField: "collection_status",
           text: "Sampling Status",
@@ -413,6 +383,7 @@ class TestAppointmentsList extends Component {
               {testAppointment.status == "Rescheduled" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                   {testAppointment.status}
+                  
                 </span>
               )}
 
@@ -502,7 +473,7 @@ class TestAppointmentsList extends Component {
                   target="_blank"
                 >
                   <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-                  View
+                  Result
                 </Link>
               ) : patientTestAppointment.status == "Result Uploaded" &&
                 patientTestAppointment.result_type == "Link" ? (
@@ -513,7 +484,7 @@ class TestAppointmentsList extends Component {
                   target="_blank"
                 >
                   <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-                  View
+                  Result
                 </Link>
               ) : (
                 <span>Not uploaded</span>
@@ -556,14 +527,94 @@ class TestAppointmentsList extends Component {
         //     </>
         //   ),
         // },
+        // {
+        //   dataField: "invoice",
+        //   text: "Actions",
+        //   isDummyField: true,
+        //   editable: false,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <> 
+        //   <div>
+        //   <Tooltip title="Feedback">
+        //     {patientTestAppointment.status == "Result Uploaded" &&
+        //     !patientTestAppointment.does_feedback_exist ? (
+        //       <Link
+        //         className="text-warning font-size-12"
+        //         to="#"
+        //         onClick={e =>
+        //           this.handlePatientFeedbackClick(
+        //             e,
+        //             patientTestAppointment.id
+        //           )
+        //         }
+        //       >
+        //         <i className="bx bxs-star font-size-14"></i>
+        //       </Link>
+        //     ) : patientTestAppointment.status == "Result Uploaded" &&
+        //       patientTestAppointment.does_feedback_exist ? (
+        //       <span className="text-success font-size-12">
+        //         <i className="bx bxs-happy-alt font-size-14"></i> 
+        //       </span>
+        //     ) : (
+        //       <span className="text-secondary font-size-12">
+        //         <i className="bx bxs-star font-size-14"></i> 
+        //       </span>
+        //     )}
+        //   </Tooltip>
+
+
+        //     <Link className="text-success" to="#">
+        //       <Tooltip title="Reschedual Appoitment Info">
+        //         <i
+        //           className="mdi mdi-calendar-clock font-size-18"
+        //           id="edittooltip"
+        //           onClick={e => this.openReshedualModal(e, patientTestAppointment)
+        //           }
+        //         ></i>
+        //       </Tooltip>
+        //     </Link>
+        //       <Tooltip title="Invoice">
+        //         <Link
+        //           className="mdi mdi-receipt font-size-18"
+        //           to={`/invoice-detail/${patientTestAppointment.id}`}
+        //         ></Link>
+        //       </Tooltip>
+        //   </div>
+        //     </>
+        //   ),
+        // },
         {
-          dataField: "invoice",
+          dataField: "collector_name",
           text: "Actions",
-          isDummyField: true,
-          editable: false,
-          formatter: (cellContent, patientTestAppointment) => (
-            <> 
-          <div>
+          sort: true,
+          formatter: (cellContent, testAppointment, patientTestAppointment) => (
+            <>
+              {testAppointment.is_home_sampling_availed &&
+                !testAppointment.collector_name && (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                    Not assigned
+                  </span>
+                )}
+
+              {testAppointment.is_home_sampling_availed &&
+                testAppointment.collector_name && (
+                  <Tooltip title="Sample Collector Details">
+
+                  <Link
+                    to="#"
+                    onClick={e => this.openCollectorModal(e, testAppointment)}
+                  >
+                    <i className="mdi mdi-eye font-size-14"></i> View
+                  </Link>
+                  </Tooltip>
+                )}
+
+              {!testAppointment.is_home_sampling_availed && (
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+                  Not availed
+                </span>
+              )}
+               <div>
           <Tooltip title="Feedback">
             {patientTestAppointment.status == "Result Uploaded" &&
             !patientTestAppointment.does_feedback_exist ? (
@@ -608,7 +659,7 @@ class TestAppointmentsList extends Component {
                   to={`/invoice-detail/${patientTestAppointment.id}`}
                 ></Link>
               </Tooltip>
-            </div>
+          </div>
             </>
           ),
         },

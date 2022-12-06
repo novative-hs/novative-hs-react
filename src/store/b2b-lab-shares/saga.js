@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_B2B_LAB_SHARES_LIST, GET_LABS, ADD_NEW_LAB_SHARE,
+import { GET_B2B_LAB_SHARES_LIST, GET_B2B_SHARES_LAB_LIST, GET_LABS, ADD_NEW_LAB_SHARE,
   UPDATE_LAB_SHARE, UPDATE_ALL_LAB_SHARE } from "./actionTypes";
 
 import {
@@ -9,6 +9,8 @@ import {
   getLabsFail,
   getB2bLabSharesListSuccess,
   getB2bLabSharesListFail,
+  getB2bSharesLabListSuccess,
+  getB2bSharesLabListFail,
   updateLabShareSuccess,
   updateLabShareFail,
   addLabShareFail,
@@ -18,7 +20,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getB2bLabSharesList,   getLabs,
+import { getB2bLabSharesList,  getB2bSharesLabList, getLabs,
   addNewLabShare,
   updateLabShare, updateAllLabShare } from "../../helpers/django_api_helper";
 
@@ -37,6 +39,14 @@ function* fetchB2bLabSharesList(object) {
     yield put(getB2bLabSharesListSuccess(response));
   } catch (error) {
     yield put(getB2bLabSharesListFail(error));
+  }
+}
+function* fetchB2bSharesLabList(object) {
+  try {
+    const response = yield call(getB2bSharesLabList, object.payload);
+    yield put(getB2bSharesLabListSuccess(response));
+  } catch (error) {
+    yield put(getB2bSharesLabListFail(error));
   }
 }
 
@@ -73,6 +83,11 @@ function* B2bLabSharesSaga() {
   yield takeEvery(
     GET_B2B_LAB_SHARES_LIST,
     fetchB2bLabSharesList
+    
+  );
+  yield takeEvery(
+    GET_B2B_SHARES_LAB_LIST,
+    fetchB2bSharesLabList
     
   );
   yield takeEvery(GET_LABS, fetchLabs);

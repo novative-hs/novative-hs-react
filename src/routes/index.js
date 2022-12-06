@@ -108,6 +108,7 @@ import DonorPayments from "pages/DonorPaymentMathods/payment-mathod";
 import DonorSettings from "pages/Authentication/DonorSettings";
 import DonorAccountStatements from "pages/AccountStatements/donor-account-statements";
 import B2bAccountStatements from "pages/AccountStatements/b2b-account-statements";
+import Invoiceb2b from "pages/Checkouts/invoice-detail"
 
 import CreateBanks from "pages/CreateBanks/create-bank";
 import BankAccounts from "pages/BankAccounts/bank-account"
@@ -206,6 +207,7 @@ import Payments from "pages/Authentication/Payments";
 
 import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
+import { invoiceList } from "common/data";
 
 // All general public routes will be listed here
 const publicRoutes = [
@@ -315,7 +317,10 @@ const b2bclientAuthProtectedRoutes = [
   },
   { path: "/b2b-payment", component: B2bPayments },
   { path: "/b2b-account-statements", component: B2bAccountStatements },
-
+  {
+    path: "/in-process-b2b/:id",
+    component: Invoiceb2b,
+  },
   {
     path: "/b2b-shares",
     component: B2bLabShare,

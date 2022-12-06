@@ -81,6 +81,29 @@ class FinanceOfficerList extends Component {
           text: "Mobile No.",
           sort: true,
         },
+        {
+          dataField: "territory_office",
+          text: "Territory Office",
+          sort: true,
+        },
+        {
+          dataField: "photo",
+          text: "Photo",
+          sort: true,
+          formatter: (cellContent, FinanceOfficer) => (
+            <>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + FinanceOfficer.photo,
+                }}
+                target="_blank"
+              >
+                View
+              </Link>
+            </>
+          ),
+        },
 
         {
           dataField: "roles",

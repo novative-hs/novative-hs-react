@@ -78,9 +78,9 @@ export const getUnhandledComplaintsFail = error => ({
   payload: error,
 });
 
-export const updateUnhandledComplaints = id => ({
+export const updateUnhandledComplaints = unhandledComplaints => ({
   type: UPDATE_UNHANDLED_COMPLAINTS,
-  payload: id,
+  payload: { unhandledComplaints }
 });
 
 export const updateUnhandledComplaintsSuccess = unhandledComplaints => ({

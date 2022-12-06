@@ -621,12 +621,13 @@ class Checkout extends Component {
                             </Form>
                           </div>
                         </TabPane>
-                        <TabPane
+                         <TabPane
                           tabId="2"
                           id="v-pills-payment"
                           role="tabpanel"
                           aria-labelledby="v-pills-payment-tab"
                         >
+
                           <div>
                             <CardTitle className="h4">
                               Home Sampled Tests
@@ -676,6 +677,7 @@ class Checkout extends Component {
                             </Table>
                           </div>
                         </TabPane>
+                      
                         <TabPane
                           tabId="3"
                           id="v-pills-payment"

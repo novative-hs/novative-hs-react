@@ -5,6 +5,9 @@ import {
   GET_B2B_LAB_SHARES_LIST,
   GET_B2B_LAB_SHARES_LIST_SUCCESS,
   GET_B2B_LAB_SHARES_LIST_FAIL,
+  GET_B2B_SHARES_LAB_LIST,
+  GET_B2B_SHARES_LAB_LIST_SUCCESS,
+  GET_B2B_SHARES_LAB_LIST_FAIL,
   UPDATE_LAB_SHARE,
   UPDATE_LAB_SHARE_SUCCESS,
   UPDATE_LAB_SHARE_FAIL,
@@ -42,6 +45,20 @@ export const getB2bLabSharesListSuccess = b2bLabShares => ({
 
 export const getB2bLabSharesListFail = error => ({
   type: GET_B2B_LAB_SHARES_LIST_FAIL,
+  payload: error,
+});
+export const getB2bSharesLabList = id => ({
+  type: GET_B2B_SHARES_LAB_LIST,
+  payload: id,
+});
+
+export const getB2bSharesLabListSuccess = b2bLabShares => ({
+  type: GET_B2B_SHARES_LAB_LIST_SUCCESS,
+  payload: b2bLabShares,
+});
+
+export const getB2bSharesLabListFail = error => ({
+  type: GET_B2B_SHARES_LAB_LIST_FAIL,
   payload: error,
 });
 export const updateLabShare = b2bLabShare => ({

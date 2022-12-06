@@ -25,7 +25,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getB2bLabSharesList } from "store/b2b-lab-shares/actions";
+import { getB2bSharesLabList } from "store/b2b-lab-shares/actions";
 import "assets/scss/table.scss";
 
 class B2bLabSharesList extends Component {
@@ -71,8 +71,8 @@ class B2bLabSharesList extends Component {
   }
 
   componentDidMount() {
-    const { b2bLabShares, onGetB2bLabSharesList } = this.props;
-    onGetB2bLabSharesList(this.state.user_id);
+    const { b2bLabShares, onGetB2bSharesLabList } = this.props;
+    onGetB2bSharesLabList(this.state.user_id);
     this.setState({ b2bLabShares });
   }
 
@@ -98,7 +98,7 @@ class B2bLabSharesList extends Component {
     const { SearchBar } = Search;
 
     const { b2bLabShares } = this.props;
-    const { onGetB2bLabSharesList } = this.props;
+    const { onGetB2bSharesLabList } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
@@ -203,14 +203,14 @@ B2bLabSharesList.propTypes = {
   match: PropTypes.object,
   b2bLabShares: PropTypes.array,
   className: PropTypes.any,
-  onGetB2bLabSharesList: PropTypes.func,
+  onGetB2bSharesLabList: PropTypes.func,
 };
 const mapStateToProps = ({ b2bLabShares }) => ({
   b2bLabShares: b2bLabShares.b2bLabSharesList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetB2bLabSharesList: id => dispatch(getB2bLabSharesList(id)),
+  onGetB2bSharesLabList: id => dispatch(getB2bSharesLabList(id)),
 });
 
 export default connect(

@@ -81,26 +81,41 @@ class ReferredPatientsList extends Component {
             </>
           ),
         },
-        {
-          dataField: "patient_name",
-          text: "Name",
-          sort: true,
-        },
+        
         {
           dataField: "name",
           text: "Lab Name",
           sort: true,
+          formatter: (cellContent, b2bReferredPatient) => (
+            <>
+              <span>
+              <Tooltip title="Patient Info">
+                <Link
+                  to="#"
+                  onClick={e => this.openLabModal(e, b2bReferredPatient)}
+                >
+                  {b2bReferredPatient.name}
+                </Link>
+              </Tooltip>
+              </span>
+            </>
+          ),
           },
-        {
-          dataField: "city",
-          text: "Lab City",
-          sort: true,
-        },
+        // {
+        //   dataField: "city",
+        //   text: "Lab City",
+        //   sort: true,
+        // },
        
         {
           dataField: "dues",
           text: "Payment",
           sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+            {patientTestAppointment.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </>
+            ),
         },
         {
           dataField: "is_home_sampling_availed",
@@ -214,11 +229,30 @@ class ReferredPatientsList extends Component {
             </>
           ),
         },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, b2bReferredPatient) => (
+            <div className="d-flex gap-3">
+              <Link className="text-success" to="#">
+              <Tooltip title="Invoice">
+              <Link
+                className="mdi mdi-receipt font-size-18"
+                to={`/in-process-b2b/${b2bReferredPatient.id}`}              >
+              </Link>
+              </Tooltip>
+              </Link>
+            </div>
+          ),
+        },
       ],
     };
     this.toggle = this.toggle.bind(this);
     this.togglebookModal = this.togglebookModal.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.toggleLabModal = this.toggleLabModal.bind(this);
 
   }
 
@@ -255,6 +289,14 @@ class ReferredPatientsList extends Component {
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
   };
+  toggleLabModal = () => {
+    this.setState(prevState => ({
+      LabModal: !prevState.LabModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -265,6 +307,18 @@ class ReferredPatientsList extends Component {
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
       booked_at: arg.booked_at,
+    });
+  };
+  openLabModal = (e, arg) => {
+    this.setState({
+      LabModal: true,
+      // appointment_requested_at: arg.appointment_requested_at,
+      // patient_unique_id: arg.patient_unique_id,
+      // patient_gender: arg.patient_gender,
+      // patient_address: arg.patient_address,
+      city: arg.city,
+      // patient_phone: arg.patient_phone,
+      // booked_at: arg.booked_at,
     });
   };
 
@@ -517,6 +571,66 @@ class ReferredPatientsList extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
+                                    <Modal
+                                      isOpen={this.state.LabModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleLabModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Lab Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                           
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Lab City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                 
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
                                       <Modal
                                       isOpen={this.state.bookModal}
                                       className={this.props.className}
@@ -562,13 +676,13 @@ class ReferredPatientsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import StarRatings from "react-star-ratings";
+
 import {
   Card,
   CardBody,
@@ -17,6 +19,7 @@ import {
   Label,
   Input,
 } from "reactstrap";
+
 
 import paginationFactory, {
   PaginationProvider,
@@ -42,6 +45,7 @@ class FeedbacksList extends Component {
     this.state = {
       feedbacks: [],
       feedback: "",
+      rating_values:"",
       modal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -55,8 +59,18 @@ class FeedbacksList extends Component {
           formatter: (cellContent, feedback) => <>{feedback.id}</>,
         },
         {
+          dataField: "order_id",
+          text: "Order id",
+          sort: true,
+        },
+        {
           dataField: "patient_name",
           text: "Name",
+          sort: true,
+        },
+        {
+          dataField: "city",
+          text: "City",
           sort: true,
         },
         {
@@ -164,6 +178,22 @@ class FeedbacksList extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
+                                  </div>
+                                </Col>
+                                <Col sm="2" lg="2">
+                                  <div className="text-sm-end">
+                                  
+                            <StarRatings
+                              // rating={feedback.rating_values}
+                              rating={3.5}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="20px"
+                              starSpacing="3px"
+                            />
+                       
                                   </div>
                                 </Col>
                               </Row>

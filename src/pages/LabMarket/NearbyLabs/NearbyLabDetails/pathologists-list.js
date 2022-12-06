@@ -184,20 +184,21 @@ class LabPathologists extends Component {
                             {/* <h5 className="mb-2 text-truncate">
                                 {pathologists.lab_id.name}{" "}
                               </h5> */}
-                            <div className="my-0">
+                           {pathologist.designation && <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-account-star"></i>{" "}
                                 Designation : {pathologist.designation}{" "}
                               </span>
                             </div>
-                            <div className="my-0">
+  }
+                           {pathologist.email &&   <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-email"></i> Email :{" "}
                                 {pathologist.email}{" "}
                               </span>
                             </div>
-
-                            {pathologist.is_available_on_whatsapp === "Yes" && (
+  }
+                            {pathologist.phone && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-cellphone-android"></i>{" "}
@@ -206,8 +207,7 @@ class LabPathologists extends Component {
                               </div>
                             )}
 
-                            {pathologist.is_available_for_consultation ===
-                              "Yes" &&
+                          {
                               pathologist.landline && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
@@ -258,29 +258,33 @@ class LabPathologists extends Component {
                               </div>
                             )}
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-check-circle"></i>{" "}
-                                Available for Online Consultation:{" "}
-                                {pathologist.is_available_for_consultation}{" "}
-                              </span>
-                            </div>
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-cellphone-message"></i>{" "}
-                                Available on WhatsApp:{" "}
-                                {pathologist.is_available_on_whatsapp}{" "}
-                              </span>
-                            </div>
-
-                            <div className="my-0">
+                    {this.state.pathologists.is_available_for_consultation == "Yes" &&
+                          <div className="my-0">
+                                    <span className="text-muted me-2">
+                                      <i className="mdi mdi-check-circle"></i>{" "}
+                                      Available for Online Consultation:{" "}
+                                      {pathologist.is_available_for_consultation}{" "}
+                                    </span>
+                                  </div>
+  }
+                                   {this.state.pathologists.is_available_on_whatsapp == "Yes"
+                                   && <div className="my-0">
+                                    <span className="text-muted me-2">
+                                      <i className="mdi mdi-cellphone-message"></i>{" "}
+                                      Available on WhatsApp:{" "}
+                                      {pathologist.is_available_on_whatsapp}{" "}
+                                    </span>
+                                  </div>
+  }
+                    {this.state.pathologists.is_associated_with_pap == "Yes"
+                           && <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="bx bxs-certification"></i>{" "}
                                 Associated with PAP :{" "}
                                 {pathologist.is_associated_with_pap}{" "}
                               </span>
                             </div>
+  }
                           </div>
                         </CardBody>
                       </Card>

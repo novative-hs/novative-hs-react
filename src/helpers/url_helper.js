@@ -151,6 +151,8 @@ export const GET_B2B_LAB_SHARES_LIST = `${API_ENDPOINT}/api/b2bclient/list-b2bSh
 export const UPDATE_LAB_SHARE = `${API_ENDPOINT}/api/b2bclient/list-b2bShare`;
 export const UPDATE_ALL_LAB_SHARE = `${API_ENDPOINT}/api/b2bclient/b2bshare-update`;
 
+export const GET_B2B_SHARES_LAB_LIST = `${API_ENDPOINT}/api/b2bclient/b2b-Share`;
+
 
 // Donor SETTINGS
 export const ADD_NEW_B2B_PAYMENT = `${API_ENDPOINT}/api/b2bclient/b2b-payment`;

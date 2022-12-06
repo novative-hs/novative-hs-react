@@ -77,7 +77,29 @@ class AuditorList extends Component {
           text: "Mobile No.",
           sort: true,
         },
-
+        {
+          dataField: "territory_office",
+          text: "Territory Office",
+          sort: true,
+        },
+        {
+          dataField: "photo",
+          text: "Photo",
+          sort: true,
+          formatter: (cellContent, Auditor) => (
+            <>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + Auditor.photo,
+                }}
+                target="_blank"
+              >
+                View
+              </Link>
+            </>
+          ),
+        },
         {
           dataField: "roles",
           text: "Roles",

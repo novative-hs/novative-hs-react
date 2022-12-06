@@ -394,7 +394,7 @@ class LabInformation extends Component {
                                     )
                                     .matches(
                                       /^[a-zA-Z][a-zA-Z ]+$/,
-                                      "Please enter only alphabets and spaces"
+                                      "Please enter only alphabets  spaces"
                                     ),
                                 }
                               ),

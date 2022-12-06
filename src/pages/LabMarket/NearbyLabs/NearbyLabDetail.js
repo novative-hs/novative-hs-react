@@ -120,7 +120,68 @@ class NearbyLabDetail extends Component {
                           </Col>
                         </Row>
                         <Row className="mt-4">
-                          <Col sm="6">
+                          <div className=" mb-3">
+                            <Col sm="6">
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
+                                    : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
+                                }
+                                className=" linklist btn btn-primary btn-md"
+                              >
+                                <i className="mdi mdi-arrow-right " /> Offered
+                                Tests{" "}
+                              </Link>
+                            </Col>
+                          </div>
+                          <div className="mb-3">
+                            <Col sm="6">
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
+                                    : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
+                                }
+                                className="linklist btn btn-primary btn-md"
+                              >
+                                <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                Quality-Certificates{" "}
+                              </Link>
+                            </Col>
+                          </div>
+                          <div className="mb-3">
+                            <Col sm="6">
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
+                                    : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
+                                }
+                                className="linklist btn btn-primary btn-md"
+                              >
+                                <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                Sample-Collectors{" "}
+                              </Link>
+                            </Col>
+                          </div>
+                          <div className="mb-3">
+                            <Col sm="6">
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
+                                    : `/${this.props.match.params.lab_account_id}/lab-pathologists`
+                                }
+                                className="linklist btn btn-primary btn-md"
+                              >
+                                <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                Pathologists{" "}
+                              </Link>
+                            </Col>
+                          </div>
+
+                          {/* <Col sm="6">
                             <Link
                               to={
                                 this.props.match.params.uuid
@@ -146,7 +207,7 @@ class NearbyLabDetail extends Component {
                                 the Lab
                               </Link>
                             </div>
-                          </Col>
+                          </Col> */}
                         </Row>
                         {/* <GoogleMaps /> */}
                       </div>
@@ -159,7 +220,35 @@ class NearbyLabDetail extends Component {
 
                 <Col xl="3">
                   <Card>
-                    <CardBody>
+                    <Col sm="12">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-labs/${this.props.match.params.uuid}`
+                            : `/nearby-labs`
+                        }
+                        className="btn btn-secondary"
+                      >
+                        <i className="bx bxs-shopping-bags me-1" /> Continue
+                        Shopping{" "}
+                      </Link>
+                    </Col>
+
+                    <Col sm="12">
+                      <div className="mb-3 mt-3">
+                        <Link
+                          to={{
+                            pathname: `http://maps.google.com/?q=${this.props.success.address}`,
+                          }}
+                          className="btn btn-success mb-2 mt-2"
+                          target="_blank"
+                        >
+                          <i className="bx bxs-navigation" /> Navigate to the
+                          Lab
+                        </Link>
+                      </div>
+                    </Col>
+                    {/* <CardBody>
                       <div className=" mb-3 mt-3">
                         <Col sm="12">
                           <Link
@@ -219,7 +308,7 @@ class NearbyLabDetail extends Component {
                           </Link>
                         </Col>
                       </div>
-                    </CardBody>
+                    </CardBody> */}
                   </Card>
 
                   {(this.props.success.complaint_handling_email ||

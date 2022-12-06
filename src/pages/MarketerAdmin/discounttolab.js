@@ -110,6 +110,13 @@ class DiscountLabHazirList extends Component {
           dataField: "discount_by_labhazir",
           text: "Discount",
           sort: true,
+          formatter: (cellContent, test) => (
+            <>
+              {(
+                <span>{(test.discount_by_labhazir*100).toFixed()}%</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "start_date_by_labhazir",
@@ -122,7 +129,7 @@ class DiscountLabHazirList extends Component {
                   Date not set
                 </span>
               ) : (
-                <span>{new Date(test.start_date_by_labhazir).toLocaleString("en-US")}</span>
+                <span>{test.start_date_by_labhazir}</span>
               )}
             </>
           ),
@@ -138,7 +145,7 @@ class DiscountLabHazirList extends Component {
                   Date not set
                 </span>
               ) : (
-                <span>{new Date(test.end_date_by_labhazir).toLocaleString("en-US")}</span>
+                <span>{test.end_date_by_labhazir}</span>
               )}
             </>
           ),
@@ -515,6 +522,8 @@ class DiscountLabHazirList extends Component {
                                                         <Field
                                                           name="start_date_by_labhazir"
                                                           type="date"
+                                                          min={new Date().toISOString().split("T")[0]}
+
                                                           value={
                                                             this.state
                                                               .discountLabHazirToLab
@@ -561,6 +570,8 @@ class DiscountLabHazirList extends Component {
                                                         <Field
                                                           name="end_date_by_labhazir"
                                                           type="date"
+                                                          min={new Date().toISOString().split("T")[0]}
+
                                                           value={
                                                             this.state
                                                               .discountLabHazirToLab

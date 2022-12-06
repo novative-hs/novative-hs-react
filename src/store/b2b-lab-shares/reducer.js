@@ -3,6 +3,8 @@ import {
   GET_LABS_FAIL,
   GET_B2B_LAB_SHARES_LIST_SUCCESS,
   GET_B2B_LAB_SHARES_LIST_FAIL,
+  GET_B2B_SHARES_LAB_LIST_SUCCESS,
+  GET_B2B_SHARES_LAB_LIST_FAIL,
   UPDATE_LAB_SHARE_SUCCESS,
   UPDATE_LAB_SHARE_FAIL,
   UPDATE_ALL_LAB_SHARE_SUCCESS,
@@ -39,6 +41,17 @@ const b2bLabShares = (state = INIT_STATE, action) => {
       };
 
     case GET_B2B_LAB_SHARES_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_B2B_SHARES_LAB_LIST_SUCCESS:
+      return {
+        ...state,
+        b2bLabSharesList: action.payload.data,
+      };
+
+    case GET_B2B_SHARES_LAB_LIST_FAIL:
       return {
         ...state,
         error: action.payload,

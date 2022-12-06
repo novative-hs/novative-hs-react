@@ -84,11 +84,11 @@ class OfferedTestsList extends Component {
         }
           }  
         },
-        // {
-        //   dataField: "duration_required",
-        //   text: "Turn Around Time",
-        //   sort: true,
-        // },
+        {
+          dataField: "test_details",
+          text: "Details",
+          sort: true,
+        },
         {
           dataField: "duration_type",
           text: "Duration type",
@@ -349,10 +349,8 @@ class OfferedTestsList extends Component {
             <Breadcrumbs title="Offered Tests" breadcrumbItem="Tests List" />
             <Row>
             <div> <span className="text-danger font-size-12">
-                                    <strong>
-                                    Note: If referral fee of any offered test is not entered by Labhazir,                                      <p><strong>
-                                    All such tests will not be online.
-                                      </strong></p>
+                                    <strong> 
+                                    Note: If referral fee of any offered test is not entered by Labhazir, all such tests will not be online.
                                     </strong>
                                   </span>
                                   </div>
@@ -579,6 +577,7 @@ class OfferedTestsList extends Component {
                                                 test_id: this.state.test_id,
                                                 // unit_id: values.unit_id,
                                                 test_type: this.state.test_type,
+                                                test_details: this.state.test_details,
                                                 duration_required:
                                                   values.duration_required,
                                                 duration_type:

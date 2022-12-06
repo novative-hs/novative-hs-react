@@ -24,6 +24,7 @@ class StaffInfo extends Component {
     this.state = {
       staff: [],
       staff: "",
+      collectorImg: "",
       // territoriesList: [],
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -65,6 +66,7 @@ class StaffInfo extends Component {
                         territory_office: (staff && staff.territory_office) || "",
                         roles: (staff && staff.roles) || "",
                         city: (staff && staff.city) || "",
+                        photo: (this.state && this.state.collectorImg) || "",
                       }}
                       validationSchema={Yup.object().shape({
                         hiddentEditFlag: Yup.boolean(),
@@ -87,6 +89,7 @@ class StaffInfo extends Component {
                             /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                             "Please enter a valid Pakistani phone number e.g. 03123456789"
                           ),
+                          photo: Yup.string().required("Please upload photo"),
                         roles: Yup.string()
                           .trim()
                           .required("Please enter roles"),
@@ -99,6 +102,7 @@ class StaffInfo extends Component {
                           name: values.name,
                           cnic: values.cnic,
                           phone: values.phone,
+                          photo: this.state.collectorImg,
                           territory_office: values.territory_office,
                           roles: values.roles,
                           city: values.city,
@@ -160,6 +164,7 @@ class StaffInfo extends Component {
                                         territory_office: staff.territory_office,
                                         roles: staff.roles,
                                         city: staff.city,
+                                        photo: staff.photo,
                                       },
                                     });
                                   }}
@@ -242,6 +247,36 @@ class StaffInfo extends Component {
                                   className="invalid-feedback"
                                 />
                               </div>
+                              <div className="mb-3">
+                                <Label for="name" className="form-label">
+                                  Photo
+                                </Label>
+                                <Input
+                                  id="formFile"
+                                  name="photo"
+                                  placeholder="Choose image"
+                                  type="file"
+                                  multiple={false}
+                                  accept=".jpg,.jpeg,.png"
+                                  onChange={e =>
+                                    this.setState({
+                                      collectorImg: e.target.files[0],
+                                    })
+                                  }
+                                  className={
+                                    "form-control" +
+                                    (errors.photo && touched.photo
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+
+                                <ErrorMessage
+                                  name="photo"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
                                      {/* territory_office field */}
                                                  
@@ -262,6 +297,7 @@ class StaffInfo extends Component {
                                                             territory_office: e.target.value,
                                                             roles: staff.roles,
                                                             city: staff.city,
+                                                            photo:staff.photo,
                                                           },
                                                         });
                                                       }}
@@ -302,6 +338,7 @@ class StaffInfo extends Component {
                                         territory_office: staff.territory_office,
                                         roles: e.target.value,
                                         city: staff.city,
+                                        photo: staff.photo,
                                       },
                                     });
                                   }}

@@ -32,6 +32,7 @@ class B2bProfile extends Component {
     this.state = {
       btnText: "Copy",
       business_name: "",
+      business_logo: "",
       email: "",
       landline: "",
       website_url: "",
@@ -42,12 +43,40 @@ class B2bProfile extends Component {
     };
   }
 
+    // The code for converting "image source" (url) to "Base64"
+    toDataURL = url =>
+    fetch(url)
+      .then(response => response.blob())
+      .then(
+        blob =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
+
+  // The code for converting "Base64" to javascript "File Object"
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   componentDidMount() {
     this.props.getB2bProfile(this.state.user_id);
 
     setTimeout(() => {
       this.setState({
         business_name: this.props.success.business_name,
+        business_logo: this.props.success.business_logo,
         email: this.props.success.email,
         landline: this.props.success.landline,
         website_url: this.props.success.website_url,
@@ -76,6 +105,8 @@ class B2bProfile extends Component {
                   initialValues={{
                     business_name:
                       (this.state && this.state.business_name) || "",
+                    business_logo:
+                      (this.state && this.state.business_logo) || "",
                     email: (this.state && this.state.email) || "",
                     landline: (this.state && this.state.landline) || "",
                     website_url: (this.state && this.state.website_url) || "",
@@ -107,6 +138,23 @@ class B2bProfile extends Component {
                       .max(255, "Please enter maximum 255 characters"),
                   })}
                   onSubmit={values => {
+                          // if no file was selected for business_logo then get current image from url and convert to file
+                    if (typeof values.business_logo == "string") {
+                      this.toDataURL(values.business_logo).then(dataUrl => {
+                        var fileData = this.dataURLtoFile(
+                          dataUrl,
+                          values.business_logo.split("/").at(-1)
+                        );
+                        values.business_logo = fileData;
+
+                        this.props.updateB2bProfile(values, this.state.user_id);
+                      });
+                    }
+
+                    // Otherwise just call update method
+                    else {
+                      this.props.updateB2bProfile(values, this.state.user_id);
+                    }
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
                     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
@@ -116,6 +164,14 @@ class B2bProfile extends Component {
                     setTimeout(() => {
                       this.props.getB2bProfile(this.state.user_id);
                     }, 1000);
+
+                    setTimeout(() => {
+                      this.setState({
+                        business_logo:
+                          process.env.REACT_APP_BACKENDURL +
+                          this.props.success.business_logo,
+                      });
+                    }, 2000);
 
                     // To make success message disappear after sometime
                     setTimeout(() => {
@@ -152,6 +208,44 @@ class B2bProfile extends Component {
                           component="div"
                           className="invalid-feedback"
                         />
+                      </div>
+                      <div className="mb-3">
+                        <Label for="name" className="form-label">
+                          Logo (Choose file only if you want to change business_logo)
+                        </Label>
+                        <Row>
+                          <Col md={8} lg={8}>
+                            <Input
+                              id="formFile"
+                              name="business_logo"
+                              type="file"
+                              multiple={false}
+                              accept=".jpg,.jpeg,.png"
+                              onChange={e =>
+                                this.setState({
+                                  business_logo: e.target.files[0],
+                                })
+                              }
+                              className="form-control"
+                            />
+                          </Col>
+
+                          <Col md={4} lg={4}>
+                            <div className="mt-2">
+                              <strong>Currently: </strong>{" "}
+                              <Link
+                                to={{
+                                  pathname:
+                                    process.env.REACT_APP_BACKENDURL +
+                                    this.props.success.business_logo,
+                                }}
+                                target="_blank"
+                              >
+                                Logo
+                              </Link>
+                            </div>
+                          </Col>
+                        </Row>
                       </div>
                       {/* Email field */}
                       <div className="mb-3">
@@ -234,7 +328,7 @@ class B2bProfile extends Component {
                       <div>
                         <input
                           value={
-                            "https://localhost:3000/nearby-labs/" +
+                            "https://labhazir.com/nearby-labs/" +
                             this.props.success.uuid
                           }
                           className="form-control"
@@ -246,7 +340,7 @@ class B2bProfile extends Component {
                           className="btn btn-secondary"
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              "http://localhost:3000/nearby-labs/" +
+                              "https://labhazir.com/nearby-labs/" +
                                 this.props.success.uuid
                             );
                             this.setState({ btnText: "Copied" });
