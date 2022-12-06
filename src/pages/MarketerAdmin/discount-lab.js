@@ -71,26 +71,64 @@ class DiscountLabHazirList extends Component {
           text: "Test Name",
           sort: true,
           headerStyle: () => {
-            return { width: "30%" };
+            return { 
+            style: {width: "30%",
+              textAlign: "left"
+          },
+        }
+
           } 
+          
+        },
+        {
+          dataField: "price",
+          text: "Price",
+          sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{discountLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "discount",
           text: "Discount",
           sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{(discountLab.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
         },
+        {
+            dataField: "discounted_price",
+            text: "discounted price",
+            sort: true,
+            formatter: (cellContent, discountLab) => (
+              <>
+                {(
+                  <span>{(discountLab.price-((discountLab.price*(discountLab.discount*100))/100)).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                )}
+              </>
+            ),
+          },
+          
         {
           dataField: "start_date",
           text: "Start Date",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLab) => (
             <>
-              {!test.start_date ? (
+              {!discountLab.start_date ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                   Date not set
                 </span>
               ) : (
-                <span>{new Date(test.start_date).toLocaleString("en-US")}</span>
+                <span>{discountLab.start_date}</span>
               )}
             </>
           ),
@@ -99,14 +137,14 @@ class DiscountLabHazirList extends Component {
           dataField: "end_date",
           text: "End Date",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLab) => (
             <>
-              {!test.end_date ? (
+              {!discountLab.end_date ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                   Date not set
                 </span>
               ) : (
-                <span>{new Date(test.end_date).toLocaleString("en-US")}</span>
+                <span>{discountLab.end_date}</span>
               )}
             </>
           ),
@@ -488,6 +526,7 @@ class DiscountLabHazirList extends Component {
                                                         <Field
                                                           name="start_date"
                                                           type="date"
+                                                          min={new Date().toISOString().split("T")[0]}
                                                           value={
                                                             this.state
                                                               .discountLab
@@ -533,6 +572,7 @@ class DiscountLabHazirList extends Component {
                                                         <Field
                                                           name="end_date"
                                                           type="date"
+                                                          min={new Date().toISOString().split("T")[0]}
                                                           value={
                                                             this.state
                                                               .discountLab

@@ -68,48 +68,77 @@ class OfferedTestsList extends Component {
           formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
         },
         {
-          dataField: "test_name",
-          text: "Test",
-          sort: true,
-          headerStyle: () => {
-            return { width: "30%" };
-          }  
-        },
-
-        {
           dataField: "test_type",
           text: "Type",
           sort: true,
         },
         {
-          dataField: "duration_required",
-          text: "Turn Around Time",
+          dataField: "test_name",
+          text: "Test",
           sort: true,
+          headerStyle: () => {
+            return { 
+            style: {width: "30%",
+              textAlign: "left"
+          },
+        }
+          }  
         },
+        // {
+        //   dataField: "duration_required",
+        //   text: "Turn Around Time",
+        //   sort: true,
+        // },
         {
           dataField: "duration_type",
           text: "Duration type",
           sort: true,
+        formatter: (cellContent, offeredTest) => (
+          <>
+            {offeredTest.duration_required}{""}
+            <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-info">
+            {offeredTest.duration_type}{" "}
+                </span>
+
+          </>
+        ),
         },
+
         {
           dataField: "sample_type",
           text: "Sample Type",
           sort: true,
         },
         {
-          dataField: "shared_percentage",
-          text: "Referrel Fee",
+          dataField: "is_eqa_participation",
+          text: "EQA",
           sort: true,
         },
+    
         {
           dataField: "price",
           text: "Price",
           sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{discountLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
+
         },
         {
-          dataField: "is_eqa_participation",
-          text: "EQA participation",
+          dataField: "shared_percentage",
+          text: "Referrel Fee",
           sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{(discountLab.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "is_home_sampling_available",
@@ -321,9 +350,8 @@ class OfferedTestsList extends Component {
             <Row>
             <div> <span className="text-danger font-size-12">
                                     <strong>
-                                      Note: If the referral fee of each test is not entered by Labhazir, then the test will not be displayed.
-                                      <p><strong>
-                                      For more information, please contact Labhazir team.
+                                    Note: If referral fee of any offered test is not entered by Labhazir,                                      <p><strong>
+                                    All such tests will not be online.
                                       </strong></p>
                                     </strong>
                                   </span>
@@ -954,13 +982,13 @@ class OfferedTestsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>
