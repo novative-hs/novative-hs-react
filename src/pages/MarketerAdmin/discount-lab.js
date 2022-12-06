@@ -58,7 +58,7 @@ class DiscountLabHazirList extends Component {
       discountLabHazirListColumns: [
         {
           dataField: "id",
-          text: "Test ID",
+          text: "Test ID (LH)",
           sort: true,
           formatter: (cellContent, discountLab) => (
             <>
@@ -106,7 +106,7 @@ class DiscountLabHazirList extends Component {
         },
         {
             dataField: "discounted_price",
-            text: "discounted price",
+            text: "Price After Discount",
             sort: true,
             formatter: (cellContent, discountLab) => (
               <>
@@ -638,13 +638,13 @@ class DiscountLabHazirList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>
