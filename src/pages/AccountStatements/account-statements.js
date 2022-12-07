@@ -351,6 +351,12 @@ class AccountStatements extends Component {
             <Breadcrumbs title="Lab" breadcrumbItem="Account Statements" />
             {!isEmpty(this.props.accountStatements) && (
             <Row>
+                 <div> <span className="text-danger font-size-12">
+                                    <strong> 
+                                    Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
+                                    </strong>
+                                  </span>
+                                  </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -360,15 +366,16 @@ class AccountStatements extends Component {
                           <tr>
                             <th scope="col">Order ID</th>
                             <th scope="col">Ordered At</th>
+                            <th scope="col">Patient Name</th>
                             <th scope="col">Payment Status</th>
-                            <th scope="col">Dues Before Discount</th>
-                            <th scope="col">Sample Collector Amount</th>
-                            <th scope="col">Discount By abc Lab</th>
+                            <th scope="col">Total Without Discount</th>
+                            <th scope="col">Home Sampling Amount</th>
+                            <th scope="col">Discount By Lab</th>
                             <th scope="col">Discount By LabHazir</th>
+                            <th scope="col">Payable After Discount</th>
                             {/* <th scope="col">Payment Received By LabHazir</th> */}
-                            <th scope="col">Labhazir Share</th>
-                            <th scope="col">abc Lab Share</th>
-                            <th scope="col">Dues After Discount</th>
+                            <th scope="col">Share by Lab</th>
+                            <th scope="col">Share by LabHazir</th>
                             <th scope="col">Payment Received By Lab</th>
                             <th scope="col">Credit</th>
                             <th scope="col">Payment Received By LabHazir</th>
@@ -392,6 +399,11 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
+                                  <p className="text-muted mb-0">
+                                    {accountStatement.patient_name}
+                                  </p>
+                                </td>
+                                <td>
                                   {/* <p className="float-end"> */}
                                   {accountStatement.payment_status == "Not Paid" ? (
                                     <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
@@ -408,91 +420,44 @@ class AccountStatements extends Component {
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.dues_before_discount}
+                                    {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.sample_collector_amount}
+                                    {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.discounted_by_lab}
+                                    {accountStatement.discounted_by_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.discounted_by_labhazir}
+                                    {accountStatement.discounted_by_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.labhazir_share}
+                                    {accountStatement.labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.lab_share}
+                                    {accountStatement.lab_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.dues}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p>
-                                    {accountStatement.payment_method == "Cash" ? (
-                                      <span>
-                                        {accountStatement.dues}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
+                                    {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
-                                        {accountStatement.payable}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p>
-                                    {accountStatement.payment_method == "Card" ? (
-                                      <span>
-                                        {accountStatement.dues}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                    {accountStatement.payment_method == "Donation" ? (
-                                      <span>
-                                        {accountStatement.dues}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p>
-                                    {accountStatement.payment_method == "Card" ? (
-                                      <span>
-                                        {accountStatement.Receivable}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                    {accountStatement.payment_method == "Donation" ? (
-                                      <span>
-                                        {accountStatement.Receivable}
+                                        {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
@@ -503,21 +468,68 @@ class AccountStatements extends Component {
                                   <p>
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
-                                        {accountStatement.payable}
+                                        {accountStatement.payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
                                     )}
+                                  </p>
+                                </td>
+                                <td>
+                                  <p>
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
-                                        {accountStatement.Receivable}
+                                        {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
                                     )}
                                     {accountStatement.payment_method == "Donation" ? (
                                       <span>
-                                        {accountStatement.Receivable}
+                                        {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </span>
+                                    ) : (
+                                      null
+                                    )}
+                                  </p>
+                                </td>
+                                <td>
+                                  <p>
+                                    {accountStatement.payment_method == "Card" ? (
+                                      <span>
+                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </span>
+                                    ) : (
+                                      null
+                                    )}
+                                    {accountStatement.payment_method == "Donation" ? (
+                                      <span>
+                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </span>
+                                    ) : (
+                                      null
+                                    )}
+                                  </p>
+                                </td>
+                                <td>
+                                  <p>
+                                    {accountStatement.payment_method == "Cash" ? (
+                                      <span>
+                                        {accountStatement.payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </span>
+                                    ) : (
+                                      null
+                                    )}
+                                    {accountStatement.payment_method == "Card" ? (
+                                      <span>
+                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </span>
+                                    ) : (
+                                      null
+                                    )}
+                                    {accountStatement.payment_method == "Donation" ? (
+                                      <span>
+                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
@@ -542,67 +554,67 @@ class AccountStatements extends Component {
                           )
                           )}
                             <tr className="bg-success bg-soft">
-                              <td colSpan="3" className="border-0 text-end">
+                              <td colSpan="4" className="border-0 text-end">
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_testby_labhazir
+                                  this.props.accountStatements.slice(-1).pop().total_testby_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                                 <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_sample_collector
+                                  this.props.accountStatements.slice(-1).pop().total_sample_collector.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_discount_lab
+                                  this.props.accountStatements.slice(-1).pop().total_discount_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_discount_labhazir
+                                  this.props.accountStatements.slice(-1).pop().total_discount_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                              <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_labhazirshare
+                                  this.props.accountStatements.slice(-1).pop().total_labhazirshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_labshare
+                                  this.props.accountStatements.slice(-1).pop().total_labshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_dues
+                                  this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_payment_lab
+                                  this.props.accountStatements.slice(-1).pop().total_payment_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_payable
+                                  this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_payment_labhazir
+                                  this.props.accountStatements.slice(-1).pop().total_payment_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_Receivable
+                                  this.props.accountStatements.slice(-1).pop().total_Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_statement
+                                  this.props.accountStatements.slice(-1).pop().total_statement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">

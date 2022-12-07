@@ -64,6 +64,13 @@ class B2bLabSharesList extends Component {
           dataField: "b2b_shares",
           text: "B2B Shares",
           sort: true,
+          formatter: (cellContent, b2bLabShare) => (
+            <>
+              {(
+                <span>{(b2bLabShare.b2b_shares*100).toFixed()}%</span>
+                )}
+            </>
+          ),
         },
       ],
     };

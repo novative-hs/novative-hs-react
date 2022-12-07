@@ -168,26 +168,7 @@ class ReferredPatientsList extends Component {
         //     </>
         //   ),
         // },
-        {
-          dataField: "payment_status",
-          text: "Payment Status",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-          <>
-          {patientTestAppointment.payment_status == "Not Paid" ? (
-          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-          {patientTestAppointment.payment_method},{" "}
-          {patientTestAppointment.payment_status}
-          </span>
-          ) : (
-          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-          {patientTestAppointment.payment_method},{" "}
-          {patientTestAppointment.payment_status}
-          </span>
-          )}
-          </>
-          ),
-        },
+
         {
           dataField: "status",
           text: "Appointment Status",
@@ -227,6 +208,26 @@ class ReferredPatientsList extends Component {
                 </span>
               ) : null}
             </>
+          ),
+        },
+        {
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+          <>
+          {patientTestAppointment.payment_status == "Not Paid" ? (
+          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+          {patientTestAppointment.payment_method},{" "}
+          {patientTestAppointment.payment_status}
+          </span>
+          ) : (
+          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+          {patientTestAppointment.payment_method},{" "}
+          {patientTestAppointment.payment_status}
+          </span>
+          )}
+          </>
           ),
         },
         {
@@ -304,6 +305,8 @@ class ReferredPatientsList extends Component {
       patient_unique_id: arg.patient_unique_id,
       patient_gender: arg.patient_gender,
       patient_address: arg.patient_address,
+      patient_age: arg.patient_age,
+      patient_unique_id: arg.patient_unique_id,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
       booked_at: arg.booked_at,

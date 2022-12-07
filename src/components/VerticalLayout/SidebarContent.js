@@ -142,12 +142,12 @@ class SidebarContent extends Component {
                     <span>{this.props.t("B2B Shares")}</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to={"/b2b-payment"}>
                     <i className="far fa-money-bill-alt" />
                     <span>{this.props.t("Payment Method")}</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </SimpleBar>

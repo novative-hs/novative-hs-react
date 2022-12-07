@@ -458,7 +458,7 @@ class TestAppointmentsList extends Component {
         },
         {
           dataField: process.env.REACT_APP_BACKENDURL + "result",
-          text: "Result",
+          text: "Report",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -473,7 +473,7 @@ class TestAppointmentsList extends Component {
                   target="_blank"
                 >
                   <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-                  Result
+                  Report
                 </Link>
               ) : patientTestAppointment.status == "Result Uploaded" &&
                 patientTestAppointment.result_type == "Link" ? (
@@ -484,7 +484,7 @@ class TestAppointmentsList extends Component {
                   target="_blank"
                 >
                   <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-                  Result
+                  Report
                 </Link>
               ) : (
                 <span>Not uploaded</span>
