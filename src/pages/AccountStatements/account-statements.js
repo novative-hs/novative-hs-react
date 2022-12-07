@@ -454,7 +454,7 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
-                                  <p className="float-end bg-success bg-soft p-7">
+                                  <p >
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
                                         {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -476,7 +476,7 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
-                                  <p className="float-end bg-danger bg-soft p-7">
+                                  <p>
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
                                         {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -494,7 +494,7 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
-                                  <p>
+                                  <p className="float-end bg-success bg-soft p-7">
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
                                         {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -512,7 +512,7 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
-                                  <p>
+                                  <p className="float-end bg-success bg-soft p-7">
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
                                         {accountStatement.payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
