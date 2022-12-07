@@ -390,7 +390,9 @@ class AccountStatements extends Component {
                               <tr key={i}>
                               <td>
                                   <p className="text-muted mb-0">
-                                    {accountStatement.ordered_at}
+                                      
+                                    {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+   
                                   </p>
                                 </td>
                                 <td>
@@ -440,7 +442,7 @@ class AccountStatements extends Component {
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
@@ -448,9 +450,10 @@ class AccountStatements extends Component {
                                     {accountStatement.lab_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
+                              
                                 <td>
                                   <p>
-                                    {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    {accountStatement.labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
