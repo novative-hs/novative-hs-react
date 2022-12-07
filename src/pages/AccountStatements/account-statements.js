@@ -364,8 +364,8 @@ class AccountStatements extends Component {
                       <Table>
                         <thead className="table-light">
                           <tr>
+                            <th scope="col">Ordered Date</th>
                             <th scope="col">Order ID</th>
-                            <th scope="col">Ordered At</th>
                             <th scope="col">Patient Name</th>
                             <th scope="col">Payment Status</th>
                             <th scope="col">Total Without Discount</th>
@@ -375,7 +375,7 @@ class AccountStatements extends Component {
                             <th scope="col">Payable After Discount</th>
                             {/* <th scope="col">Payment Received By LabHazir</th> */}
                             <th scope="col">Share by Lab</th>
-                            <th scope="col">Share by LabHazir</th>
+                            <th scope="col">Referrel Fee of LabHazir</th>
                             <th scope="col">Payment Received By Lab</th>
                             <th scope="col">Credit</th>
                             <th scope="col">Payment Received By LabHazir</th>
@@ -388,15 +388,15 @@ class AccountStatements extends Component {
                           {accountStatements.map((accountStatement, i)  => (
                             <>
                               <tr key={i}>
+                              <td>
+                                  <p className="text-muted mb-0">
+                                    {accountStatement.ordered_at}
+                                  </p>
+                                </td>
                                 <td>
                                   <h5 className="font-size-14 text-truncate">
                                   <strong>{accountStatement.order_id}</strong>
                                   </h5>
-                                </td>
-                                <td>
-                                  <p className="text-muted mb-0">
-                                    {accountStatement.ordered_at}
-                                  </p>
                                 </td>
                                 <td>
                                   <p className="text-muted mb-0">
@@ -454,7 +454,7 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
-                                  <p>
+                                  <p className="float-end bg-success bg-soft p-7">
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
                                         {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -476,7 +476,7 @@ class AccountStatements extends Component {
                                   </p>
                                 </td>
                                 <td>
-                                  <p>
+                                  <p className="float-end bg-danger bg-soft p-7">
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
                                         {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
