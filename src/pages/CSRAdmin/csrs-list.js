@@ -58,9 +58,22 @@ class CSRsList extends Component {
           formatter: (cellContent, CSR) => <>{CSR.id}</>,
         },
         {
-          dataField: "name",
-          text: "Name",
+          dataField: "photo",
+          text: "Photo",
           sort: true,
+          formatter: (cellContent, CSR) => (
+            <>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + CSR.photo,
+                }}
+                target="_blank"
+              >
+                {CSR.name}
+              </Link>
+            </>
+          ),
         },
         {
           dataField: "email",

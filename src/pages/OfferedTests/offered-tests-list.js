@@ -90,6 +90,31 @@ class OfferedTestsList extends Component {
           sort: true,
         },
         {
+          dataField: "price",
+          text: "Price",
+          sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{discountLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
+
+        },
+        {
+          dataField: "shared_percentage",
+          text: "Referrel Fee",
+          sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{(discountLab.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
+        {
           dataField: "duration_type",
           text: "Duration type",
           sort: true,
@@ -115,31 +140,7 @@ class OfferedTestsList extends Component {
           sort: true,
         },
     
-        {
-          dataField: "price",
-          text: "Price",
-          sort: true,
-          formatter: (cellContent, discountLab) => (
-            <>
-              {(
-                <span>{discountLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-              )}
-            </>
-          ),
-
-        },
-        {
-          dataField: "shared_percentage",
-          text: "Referrel Fee",
-          sort: true,
-          formatter: (cellContent, discountLab) => (
-            <>
-              {(
-                <span>{(discountLab.discount*100).toFixed()}%</span>
-              )}
-            </>
-          ),
-        },
+        
         {
           dataField: "is_home_sampling_available",
           text: "Home sampling",

@@ -62,9 +62,22 @@ class FinanceOfficerList extends Component {
           formatter: (cellContent, FinanceOfficer) => <>{FinanceOfficer.id}</>,
         },
         {
-          dataField: "name",
-          text: "Name",
+          dataField: "photo",
+          text: "Photo",
           sort: true,
+          formatter: (cellContent, FinanceOfficer) => (
+            <>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + FinanceOfficer.photo,
+                }}
+                target="_blank"
+              >
+                {FinanceOfficer.name}
+              </Link>
+            </>
+          ),
         },
         {
           dataField: "email",

@@ -39,65 +39,83 @@ class B2bAccountStatements extends Component {
           ),
         },
         {
-          dataField: "PaidAt",
-          text: "Payment Date",
+          dataField: "ordered_at",
+          text: "Ordered Date",
           sort: true,
+          formatter: (cellContent, b2baccountStatement) => (
+            <>
+         
+                  {new Date(
+                    b2baccountStatement.ordered_at
+                  ).toLocaleString("en-US")}
+            </>
+          ),
         },
         {
-          dataField: "Particulars",
-          text: "Particulars",
+          dataField: "order_id",
+          text: "Order Id",
           sort: true,
-        formatter: (cellContent, b2baccountStatement) => (
-          <>
-            <span>
-              <span>
-                {b2baccountStatement.paymentout}{""},
-                {/* {b2baccountStatement.testappointment}{""}, */}
-                {b2baccountStatement.PaidMethod}{" "}
-                {b2baccountStatement.payment_type}{" "}
-                {b2baccountStatement.bank_name}{" "}
-                {b2baccountStatement.account_no}{" "}
-                {b2baccountStatement.cheque_no}{" "}
-                {b2baccountStatement.refered_no}
+
+        },
+        {
+          dataField: "test_appointment_id",
+          text: "Test Appointment Id",
+          sort: true,
+        },
 
 
-              </span>
-            </span>
-          </>
-        ),
-        },
         {
-          dataField: "Status",
-          text: "Status of Respective Form",
+          dataField: "payment_status",
+          text: "Payment Status",
           sort: true,
+          formatter: (cellContent, b2baccountStatement) => (
+            <>
+              {/* <p className="float-end"> */}
+              {b2baccountStatement.payment_status == "Not Paid" ? (
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                  {b2baccountStatement.payment_method},{" "}
+                  {b2baccountStatement.payment_status}
+                </span>
+              ) : (
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                  {b2baccountStatement.payment_method},{" "}
+                  {b2baccountStatement.payment_status}
+                </span>
+              )}
+              {/* </p> */}
+            </>
+          ),
         },
         {
-          dataField: "transaction_type",
-          text: "Transaction Type",
-          sort: true,
-        },
-        {
-          dataField: "Credit",
-          text: "Credit",
-          sort: true,
-        },
-        {
-          dataField: "Debit",
-          text: "Debit",
-          sort: true,
-        },
-        {
-          dataField: "Balance",
+          dataField: "amount",
           text: "Balance",
           sort: true,
         formatter: (cellContent, b2baccountStatement) => (
           <>
             <span>
               <span>
-                {b2baccountStatement.Balance}{""}
+                {b2baccountStatement.amount}{""}
               </span>
             </span>
           </>
+        ),
+        },
+        {
+          dataField: "is_settled",
+          text: "Settled",
+          sort: true,
+          formatter: (cellContent, b2baccountStatement) => (
+            <>
+          {b2baccountStatement.is_settled == true ? (
+            <div className="text-success">
+              <i className="mdi mdi-check-circle font-size-18"></i>
+            </div>
+          ) : (
+            <div className="text-danger">
+              <i className="mdi mdi-close-circle font-size-18"></i>
+            </div>
+          )}
+            </>
         ),
         },
       ],

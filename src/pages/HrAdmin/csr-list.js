@@ -58,9 +58,22 @@ class CSRList extends Component {
           formatter: (cellContent, CSR) => <>{CSR.id}</>,
         },
         {
-          dataField: "name",
-          text: "Name",
+          dataField: "photo",
+          text: "Photo",
           sort: true,
+          formatter: (cellContent, CSR) => (
+            <>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + CSR.photo,
+                }}
+                target="_blank"
+              >
+                {CSR.name}
+              </Link>
+            </>
+          ),
         },
         {
           dataField: "email",
@@ -82,24 +95,7 @@ class CSRList extends Component {
           text: "Territory Office",
           sort: true,
         },
-        {
-          dataField: "photo",
-          text: "Photo",
-          sort: true,
-          formatter: (cellContent, CSR) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + CSR.photo,
-                }}
-                target="_blank"
-              >
-                View
-              </Link>
-            </>
-          ),
-        },
+      
 
         {
           dataField: "roles",

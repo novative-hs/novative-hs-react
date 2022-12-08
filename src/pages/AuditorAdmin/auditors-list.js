@@ -57,31 +57,6 @@ class AuditorsList extends Component {
           formatter: (cellContent, Auditor) => <>{Auditor.id}</>,
         },
         {
-          dataField: "name",
-          text: "Name",
-          sort: true,
-        },
-        {
-          dataField: "email",
-          text: "Email",
-          sort: true,
-        },
-        {
-          dataField: "cnic",
-          text: "CNIC",
-          sort: true,
-        },
-        {
-          dataField: "phone",
-          text: "Mobile No.",
-          sort: true,
-        },
-        {
-          dataField: "territory_office",
-          text: "Territory Office",
-          sort: true,
-        },
-        {
           dataField: "photo",
           text: "Photo",
           sort: true,
@@ -94,11 +69,32 @@ class AuditorsList extends Component {
                 }}
                 target="_blank"
               >
-                View
+                {Auditor.name}
               </Link>
             </>
           ),
         },
+        {
+          dataField: "email",
+          text: "Email",
+          sort: true,
+        },
+        // {
+        //   dataField: "cnic",
+        //   text: "CNIC",
+        //   sort: true,
+        // },
+        {
+          dataField: "phone",
+          text: "Mobile No.",
+          sort: true,
+        },
+        {
+          dataField: "territory_office",
+          text: "Territory Office",
+          sort: true,
+        },
+      
 
         // {
         //   dataField: "menu",

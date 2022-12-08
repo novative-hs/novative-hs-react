@@ -13,6 +13,7 @@ import {
   Label,
   Modal,
   ModalBody,
+  ModalHeader,
 } from "reactstrap";
 
 
@@ -50,6 +51,7 @@ class PendingAudits extends Component {
       auditorSouthTerritoryList: [],
       auditorNorthTerritoryList: [],
       id: "",
+      btnText: "Copy",
       assignedTo: "",
       PendingAudits: "",
       pendingAudit: "",
@@ -69,17 +71,39 @@ class PendingAudits extends Component {
           dataField: "lab_name",
           text: "Lab name",
           sort: true,
+          formatter: (cellContent, pendingAudit) => (
+            <>
+              <span>
+                  <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, pendingAudit)}
+                  >
+                   {pendingAudit.lab_name}
+                  </Link>
+              </span>
+            </>
+          ),
         },
-        {
-          dataField: "lab_city",
-          text: "City",
-          sort: true,
-        },
-        {
-          dataField: "lab_address",
-          text: "Address",
-          sort: true,
-        },
+        // {
+        //   dataField: "lab_phone",
+        //   text: "Phone",
+        //   sort: true,
+        // },
+        // {
+        //   dataField: "lab_email",
+        //   text: "email",
+        //   sort: true,
+        // },
+        // {
+        //   dataField: "lab_city",
+        //   text: "City",
+        //   sort: true,
+        // },
+        // {
+        //   dataField: "lab_address",
+        //   text: "Address",
+        //   sort: true,
+        // },
         {
           dataField: "office",
           text: "Office",
@@ -119,6 +143,7 @@ class PendingAudits extends Component {
     };
     this.toggle = this.toggle.bind(this);
     this.toggleMessageModal.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
     this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
   }
 
@@ -144,7 +169,23 @@ class PendingAudits extends Component {
     onGetAuditorNorthList();
     this.setState({ auditorNorthTerritoryList });
   }
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      lab_address: arg.lab_address,
+      lab_city: arg.lab_city,
+      lab_phone: arg.lab_phone,
+      lab_email: arg.lab_email,
+    });
+  };
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -295,6 +336,114 @@ class PendingAudits extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                      <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Lab Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      email
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_email
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Contact No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .lab_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}

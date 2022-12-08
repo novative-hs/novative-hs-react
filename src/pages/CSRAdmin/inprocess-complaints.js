@@ -113,11 +113,7 @@ class InProcessComplaints extends Component {
         //   text: "Phone No.",
         //   sort: true,
         // },
-        {
-          dataField: "subject",
-          text: "Subject",
-          sort: true,
-        },
+
         {
           dataField: "message",
           text: "Message",
@@ -247,7 +243,7 @@ class InProcessComplaints extends Component {
   };
 
   openMessageModal = (e, arg) => {
-    this.setState({ messageModal: true, message: arg.message });
+    this.setState({ messageModal: true, message: arg.message , subject:arg.subject});
   };
 
   handleApprovedEvent = (e, arg) => {
@@ -768,7 +764,7 @@ class InProcessComplaints extends Component {
                                             <div className="row justify-content-center">
                                               <div className="col-xl-10">
                                                 <h4 className="text-primary">
-                                                  Complaint Message
+                                                {this.state.subject}
                                                 </h4>
                                                 <p className="text-muted font-size-14 mb-4">
                                                   {this.state.message}

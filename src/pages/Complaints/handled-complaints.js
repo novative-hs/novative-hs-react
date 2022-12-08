@@ -71,6 +71,11 @@ class handledComplaintsList extends Component {
           ),
         },
         {
+          dataField: "complainant",
+          text: "Complainant",
+          sort: true,
+        },
+        {
           dataField: "name",
           text: "Complainant Name",
           sort: true,
@@ -97,16 +102,7 @@ class handledComplaintsList extends Component {
         //   text: "Phone",
         //   sort: true,
         // },
-        {
-          dataField: "subject",
-          text: "Subject",
-          sort: true,
-        },
-        {
-          dataField: "complainant",
-          text: "Complainant",
-          sort: true,
-        },
+       
         {
           dataField: "complainee",
           text: "Complainee",
@@ -159,6 +155,9 @@ class handledComplaintsList extends Component {
       ],
     };
     this.toggle = this.toggle.bind(this);
+    this.toggleMessageModal.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
+
   }
 
   componentDidMount() {
@@ -196,7 +195,10 @@ class handledComplaintsList extends Component {
   };
 
   openMessageModal = (e, arg) => {
-    this.setState({ messageModal: true, message: arg.message });
+    this.setState({ messageModal: true, 
+      message: arg.message,
+      subject: arg.subject,
+     });
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -442,7 +444,7 @@ class handledComplaintsList extends Component {
                                             <div className="row justify-content-center">
                                               <div className="col-xl-10">
                                                 <h4 className="text-primary">
-                                                  Complaint Message
+                                                {this.state.subject}
                                                 </h4>
                                                 <p className="text-muted font-size-14 mb-4">
                                                   {this.state.message}

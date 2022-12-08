@@ -185,7 +185,7 @@ class FeedbacksList extends Component {
                                   
                             <StarRatings
                               // rating={feedback.rating_values}
-                              rating={3.5}
+                              rating={5}
                               starRatedColor="#F1B44C"
                               starEmptyColor="#2D363F"
                               numberOfStars={5}
