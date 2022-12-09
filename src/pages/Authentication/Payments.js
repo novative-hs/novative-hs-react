@@ -331,7 +331,7 @@ class Payments extends Component {
                         <Button type="submit" color="danger"
                          disabled={this.state.isPaymentUpdated}
                         >
-                          Update Profile
+                          Update Payment
                         </Button>
                       </div>
                     </Form>
