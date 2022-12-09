@@ -620,41 +620,6 @@ class NearbyTests extends Component {
                                 {nearbyTest.is_home_sampling_available}
                               </span>
                             </div>
-
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-medal"></i> EQA
-                                Participation: {nearbyTest.is_eqa_participation}
-                              </span>
-                            </div> */}
-
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Test Performed:{" "}
-                                {nearbyTest.is_test_performed}
-                              </span>
-                            </div> */}
-                            <div className="my-0">
-                              {" "}
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${nearbyTest.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
-                                    : `/${nearbyTest.lab_account_id}/lab-quality-certificates`
-                                }
-                                className="text-dark"
-                              >
-                                <span className="text-primary">
-                                  {/* {nearbyTest.lab_name}{" "} */}
-                                  View Certificate
-                                </span>
-                              </Link>
-                              {/* <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Lab:{" "}
-                                {nearbyTest.lab_name}
-                              </span> */}
-                            </div>
-
                             <Button
                               type="button"
                               color="primary"

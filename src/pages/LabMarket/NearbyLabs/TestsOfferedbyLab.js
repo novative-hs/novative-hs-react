@@ -4,11 +4,17 @@ import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import { Formik, Field, Form } from "formik";
+
 // import ScrollButton from "components/Common/Scrollbutton";
 import {
   Card,
   Button,
   CardBody,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Col,
   Container,
   Pagination,
@@ -20,7 +26,6 @@ import {
 
 import { isEmpty, map, size } from "lodash";
 import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
-
 
 import "nouislider/distribute/nouislider.css";
 
@@ -63,10 +68,9 @@ class TestsOffered extends Component {
     onGetCarts(this.state.user_id);
     this.setState({ carts: this.props.carts });
   }
-      // incrementCart = () =>{
-    //   this.setState({count: this.state.count + 1})
-    //    }
-
+  // incrementCart = () =>{
+  //   this.setState({count: this.state.count + 1})
+  //    }
 
   // eslint-disable-next-line no-unused-vars
   // componentDidUpdate(prevProps, prevState, snapshot) {
@@ -98,10 +102,23 @@ class TestsOffered extends Component {
   handlePageClick = page => {
     this.setState({ page });
   };
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      test_details: arg.test_details,
+    });
+  };
+  
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   handleAddToCart = cart => {
     const { onAddToCart } = this.props;
-    
 
     if (!this.state.user_id) {
       this.props.history.push(
@@ -111,31 +128,27 @@ class TestsOffered extends Component {
       );
     } else {
       onAddToCart(cart, this.state.user_id);
-      
-      
     }
     setTimeout(() => {
-      this.setState({ success: this.props.success })
+      this.setState({ success: this.props.success });
 
       this.setState({ error: this.props.error });
     }, 1000);
 
     setTimeout(() => {
-    if (this.props.success){
-      this.setState({count: this.state.count + 1});
-    }
-    else{
-      this.setState({count: this.state.count});
-    }
-  }, 2000);
-
+      if (this.props.success) {
+        this.setState({ count: this.state.count + 1 });
+      } else {
+        this.setState({ count: this.state.count });
+      }
+    }, 2000);
   };
 
   render() {
     const { page, totalPage } = this.state;
     const { offeredTests } = this.props.offeredTests;
     const { carts } = this.props;
-
+    const offeredTest = this.state.offeredTest;
 
     return (
       <React.Fragment>
@@ -155,29 +168,72 @@ class TestsOffered extends Component {
                 {this.state.error}
               </Alert>
             ) : null}
-            
-            <Row>
-       
-             <div className="mt- text-left">
 
-            <Link
-              to={
-                this.props.match.params.uuid
-                ? `/cart/${this.props.match.params.uuid}`
-                : `/cart`
-              }
-              className="btn btn-danger btn-rounded"
-            >
-              <i className="bx bx-cart-alt bx-tada align-middle me-1 font-size-22" />{" "}
-              {/* {this.state.count} */}
-             
-                {!isEmpty(this.props.carts) &&
-                 
-                  this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+            <Row>
+            <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Included Tests
+                                                    </Label>
+                                                  </div>
+                                                  <textarea
+                                  name="test_details"
+                                  id="test_details"
+                                  rows="10"
+                                  cols="10"
+                                  value={this.state.test_details}
+                                  className="form-control"
+                                  readOnly={true}
+                                />
+                                                  {/* <div >
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.test_details
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div> */}
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
+              <div className="mt- text-left">
+                <Link
+                  to={
+                    this.props.match.params.uuid
+                      ? `/cart/${this.props.match.params.uuid}`
+                      : `/cart`
                   }
-            </Link>
-          </div>
-    
+                  className="btn btn-danger btn-rounded"
+                >
+                  <i className="bx bx-cart-alt bx-tada align-middle me-1 font-size-22" />{" "}
+                  {/* {this.state.count} */}
+                  {!isEmpty(this.props.carts) &&
+                    this.props.carts.slice(-1).pop().cart_quantity +
+                      this.state.count}
+                </Link>
+              </div>
+
               <Row>
                 {!isEmpty(this.props.offeredTests) &&
                   this.props.offeredTests.map((offeredTest, key) => (
@@ -205,6 +261,24 @@ class TestsOffered extends Component {
                             <h5 className="mb-2 text-truncate">
                               {offeredTest.test_name}{" "}
                             </h5>
+                            {offeredTest.test_type != "Test" && (
+                              <div className="mb-3">
+                                <Link
+                                to="#"
+                                onClick={e => this.openPatientModal(e, offeredTest)}
+                              >
+                                <span>
+                                  Included Tests
+                                </span>
+                              </Link>
+                              </div>
+                            )}
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-hand-holding-medical"></i>{" "}
+                                {offeredTest.test_type}
+                              </span>
+                            </div>
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -213,7 +287,6 @@ class TestsOffered extends Component {
                                   .toString()
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
                                 {offeredTest.price} Rs
-
                               </span>
                             </div>
                             <div className="my-0">
@@ -223,26 +296,25 @@ class TestsOffered extends Component {
                                   .toString()
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
                                 {offeredTest.discount} % Discount By Lab
-
                               </span>
                             </div>
                             {/* <div className="my-0">
                               <span className="text-muted me-2"> */}
-                                {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                {/* {offeredTest.price
+                            {/* <i className="fas fa-money-bill"></i>{" "} */}
+                            {/* {offeredTest.price
                                   .toString()
                                   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
-                                {/* {offeredTest.discount_by_labhazir} % Discount By LabHazir
+                            {/* {offeredTest.discount_by_labhazir} % Discount By LabHazir
 
                               </span>
                             </div> */}
 
                             <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="fas fa-hand-holding-medical"></i>{" "}
-                                  Offered by {" "}{offeredTest.lab_name}
-                                </span>
-                              </div>
+                              <span className="text-muted me-2">
+                                <i className="fas fa-hand-holding-medical"></i>{" "}
+                                Offered by {offeredTest.lab_name}
+                              </span>
+                            </div>
 
                             {/* <div className="my-0">
                               <span className="text-muted me-2">
@@ -272,9 +344,8 @@ class TestsOffered extends Component {
                                 Time: {offeredTest.duration_required}{" "}
                                 {offeredTest.duration_type}
                               </span>
-                            </div> 
-                            
-                           
+                            </div>
+
                             <div className="mt-3 text-center">
                               <Link
                                 to={
@@ -295,7 +366,6 @@ class TestsOffered extends Component {
                               onClick={() => this.handleAddToCart(offeredTest)}
                             >
                               <i className="bx bx-cart me-2" /> Add to cart
-                             
                             </Button>
                           </div>
                         </CardBody>
@@ -314,7 +384,6 @@ class TestsOffered extends Component {
                     </Col>
                   </Row>
                 )}
-                
               </Row>
 
               <Row>
@@ -365,9 +434,9 @@ TestsOffered.propTypes = {
   onAddToCart: PropTypes.func,
   success: PropTypes.any,
   error: PropTypes.any,
+  className: PropTypes.any,
   carts: PropTypes.array,
   onGetCarts: PropTypes.func,
-
 };
 
 const mapStateToProps = ({ offeredTests, carts }) => ({
@@ -382,7 +451,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(getOfferedTestsReferrel(ownProps.match.params.lab_account_id)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetCarts: id => dispatch(getCarts(id)),
-
 });
 
 export default connect(

@@ -13,6 +13,9 @@ import {
   CardBody,
   CardTitle,
   Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
   Container,
   Input,
   Label,
@@ -208,7 +211,21 @@ class NearbyProfiles extends Component {
       ),
     });
   };
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      test_details: arg.test_details,
+    });
+  };
+  
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   onUncheckMark = value => {
     var modifiedRating = [...this.state.ratingvalues];
     const modifiedData = (modifiedRating || []).filter(x => x !== value);
@@ -420,6 +437,53 @@ class NearbyProfiles extends Component {
               breadcrumbItem="Search by Profiles"
             />
             <Row>
+            <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Included Tests
+                                                    </Label>
+                                                  </div>
+                                                  <textarea
+                                  name="test_details"
+                                  id="test_details"
+                                  rows="10"
+                                  cols="10"
+                                  value={this.state.test_details}
+                                  className="form-control"
+                                  readOnly={true}
+                                />
+                                                  {/* <div >
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.test_details
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div> */}
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
               {/* <Col lg="3">
                 <Card>
                   <CardBody>
@@ -595,9 +659,17 @@ class NearbyProfiles extends Component {
                             <h5 className="mb-2 text-truncate">
                               {nearbyProfile.test_name}{" "}
                             </h5>
-
                             <div className="my-0">
-                              Performed by{" "}
+                              <Link
+                                to="#"
+                                onClick={e => this.openPatientModal(e, nearbyProfile)}
+                              >
+                                <span>
+                                  Included Tests
+                                </span>
+                              </Link>
+                            </div>
+                            <div className="my-0">
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -726,6 +798,7 @@ class NearbyProfiles extends Component {
 NearbyProfiles.propTypes = {
   history: any,
   location: any,
+  className: PropTypes.any,
   match: PropTypes.object,
   nearbyProfiles: PropTypes.array,
   onGetNearbyProfiles: PropTypes.func,

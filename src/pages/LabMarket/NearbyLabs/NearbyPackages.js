@@ -13,6 +13,9 @@ import {
   CardBody,
   CardTitle,
   Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Container,
   Input,
   Label,
@@ -114,7 +117,21 @@ class NearbyPackage extends Component {
       }
     }, 1000);
   }
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      test_details: arg.test_details,
+    });
+  };
+  
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { nearbyPackages } = this.props;
@@ -404,6 +421,53 @@ class NearbyPackage extends Component {
           <Container fluid>
             <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search byPackages" />
             <Row>
+            <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Included Tests
+                                                    </Label>
+                                                  </div>
+                                                  <textarea
+                                  name="test_details"
+                                  id="test_details"
+                                  rows="10"
+                                  cols="10"
+                                  value={this.state.test_details}
+                                  className="form-control"
+                                  readOnly={true}
+                                />
+                                                  {/* <div >
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.test_details
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div> */}
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
               {/* <Col lg="3">
                 <Card>
                   <CardBody>
@@ -554,9 +618,17 @@ class NearbyPackage extends Component {
                             <h5 className="mb-2 text-truncate">
                               {nearbyPackage.test_name}{" "}
                             </h5>
-
                             <div className="my-0">
-                              Performed by{" "}
+                              <Link
+                                to="#"
+                                onClick={e => this.openPatientModal(e, nearbyPackage)}
+                              >
+                                <span>
+                                  Included Tests
+                                </span>
+                              </Link>
+                            </div>
+                            <div className="my-0">
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -686,6 +758,7 @@ NearbyPackage.propTypes = {
   onGetNearbyPackages: PropTypes.func,
   onAddToCart: PropTypes.func,
   success: PropTypes.any,
+  className: PropTypes.any,
   error: PropTypes.any,
   PackageMarket: PropTypes.any,
 };

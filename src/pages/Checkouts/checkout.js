@@ -58,7 +58,7 @@ class Checkout extends Component {
       patient_name: "",
       patient_age: "",
       patient_gender: "Male",
-      relationsip_with_patient: "Self",
+      // relationsip_with_patient: "Self",
       patient_address: "",
       city_id: "",
       // patient_district: "",
@@ -118,7 +118,7 @@ class Checkout extends Component {
           patient_name: this.state.patient_name,
           patient_age: this.state.patient_age,
           patient_gender: this.state.patient_gender,
-          relationsip_with_patient: this.state.relationsip_with_patient,
+          // relationsip_with_patient: this.state.relationsip_with_patient,
           patient_address: this.state.patient_address,
           city_id: this.state.city_id,
           // patient_district: this.state.patient_district,
@@ -336,6 +336,7 @@ class Checkout extends Component {
                   <Card>
                     <CardBody>
                       <TabContent activeTab={this.state.activeTab}>
+
                         <TabPane tabId="1">
                           <div>
                             <CardTitle className="h4">
@@ -345,45 +346,6 @@ class Checkout extends Component {
                               Fill all the information for the patient below
                             </p>
                             <Form>
-                            <FormGroup className="mb-4" row>
-                                <Label md="2" className="col-form-label">
-                                  Testing For
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                  <select
-                                    className="form-control select2"
-                                    title="Gender"
-                                    name="relationsip_with_patient"
-                                    onChange={e =>
-                                      this.setState({
-                                        relationsip_with_patient:
-                                          e.target.value,
-                                      })
-                                    }
-                                  >
-                                    <option value="Self">Self</option>
-                                    <option value="Mother">Mother</option>
-                                    <option value="Father">Father</option>
-                                    <option value="Sister">Sister</option>
-                                    <option value="Brother">Brother</option>
-                                    <option value="Daughter">Daughter</option>
-                                    <option value="Son">Son</option>
-                                    <option value="Grand Mother">
-                                      Grand Mother
-                                    </option>
-                                    <option value="Grand Father">
-                                      Grand Father
-                                    </option>
-                                    <option value="Others">Others</option>
-                                  </select>
-                                </Col>
-                              </FormGroup>
                               <FormGroup className="mb-4" row>
                                 <Label
                                   htmlFor="patient-name"
@@ -463,6 +425,7 @@ class Checkout extends Component {
                                   >
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
                                   </select>
                                 </Col>
                               </FormGroup>
@@ -495,60 +458,6 @@ class Checkout extends Component {
                                   />
                                 </Col>
                               </FormGroup>
-
-                              {/* <FormGroup className="mb-4" row>
-                                <Label
-                                  htmlFor="patient-name"
-                                  md="2"
-                                  className="col-form-label"
-                                >
-                                  City
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                <Select
-                                name="city_id"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    city_id: selectedGroup.value,
-                                  })
-                                }
-                                className={
-                                  "defautSelectParent" +
-                                  (errors.city_id && touched.city_id
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                                styles={{
-                                  control: (base, state) => ({
-                                    ...base,
-                                    borderColor:
-                                      errors.city_id && touched.city_id
-                                        ? "#f46a6a"
-                                        : "#ced4da",
-                                  }),
-                                }}
-                                options={
-                                  cityList
-                                }
-                                defaultValue={{
-                                  label:
-                                  this.state.city,
-                                  value:
-                                  this.state.id,                                       
-                                }}
-                                placeholder="Select City..."
-                              />
-
-                                </Col>
-                              </FormGroup> */}
-
                               <FormGroup className="mb-4" row>
                                 <Label
                                   htmlFor="patient-name"
@@ -618,9 +527,29 @@ class Checkout extends Component {
                                   />
                                 </Col>
                               </FormGroup>
+
                             </Form>
+                            <Row className="mt-4">
+                              <Col sm="6"></Col>
+                            <Col sm="6">
+                              <div className="text-end">
+                              <button
+                              component={Link}
+                              onClick={() => {
+                                this.toggleTab("2");
+                              }}
+                              to="/checkout"
+                              className="btn btn-success mb-4"
+                            >
+                              <i className="mdi mdi-truck-fast me-1" />{" "}
+                              Next{" "}
+                            </button>
+                              </div>
+                            </Col>
+                          </Row>
                           </div>
                         </TabPane>
+
                          <TabPane
                           tabId="2"
                           id="v-pills-payment"
@@ -675,6 +604,35 @@ class Checkout extends Component {
                                 )}
                               </tbody>
                             </Table>
+                            <Row className="mt-4">
+                            <Col sm="6">
+                              {/* <Link
+                                component={Link}
+                                onClick={() => {
+                                  this.toggleTab("1");
+                                }}                                
+                                className="btn text-muted d-none d-sm-inline-block btn-link"
+                              >
+                                <i className="mdi mdi-arrow-left me-1" /> Back
+                                {" "}
+                              </Link> */}
+                            </Col>
+                            <Col sm="6">
+                              <div className="text-end">
+                              <button
+                              component={Link}
+                              onClick={() => {
+                                this.toggleTab("3");
+                              }}
+                              to="/checkout"
+                              className="btn btn-success mb-4"
+                            >
+                              <i className="mdi mdi-truck-fast me-1" />{" "}
+                              Next{" "}
+                            </button>
+                              </div>
+                            </Col>
+                          </Row>
                           </div>
                         </TabPane>
                       
@@ -875,7 +833,39 @@ class Checkout extends Component {
                               </div>
                             ) : null}
                           </div>
+                          <Row className="mt-4">
+                            <Col sm="6">
+                              {/* <Link
+                                component={Link}
+                                onClick={() => {
+                                  this.toggleTab("2");
+                                }}                                
+                                className="btn text-muted d-none d-sm-inline-block btn-link"
+                              >
+                                <i className="mdi mdi-arrow-left me-1" /> Back
+                                {" "}
+                              </Link> */}
+                            </Col>
+                            
+                            <Col sm="6">
+                              <div className="text-end">
+                              <button
+                              component={Link}
+                              onClick={() => {
+                                this.toggleTab("4");
+                              }}
+                              to="/checkout"
+                              className="btn btn-success mb-4"
+                            >
+                              <i className="mdi mdi-truck-fast me-1" />{" "}
+                              Next{" "}
+                            </button>
+                              </div>
+                            </Col>
+                          </Row>
+                          
                         </TabPane>
+
                         <TabPane tabId="4" id="v-pills-confir" role="tabpanel">
                           <Card className="shadow-none border mb-0">
                             <CardBody>
@@ -1041,13 +1031,13 @@ class Checkout extends Component {
                           </Card>
 
                           <Row className="mt-4">
-                            <Col sm="6">
-                              <Link
+                          <Col sm="6">
+                            <Link
                                 to="/cart"
                                 className="btn text-muted d-none d-sm-inline-block btn-link"
                               >
                                 <i className="mdi mdi-arrow-left me-1" /> Back
-                                {" "}
+                                to Shopping Cart{" "}
                               </Link>
                             </Col>
                             <Col sm="6">
@@ -1066,6 +1056,7 @@ class Checkout extends Component {
                             </Col>
                           </Row>
                         </TabPane>
+
                       </TabContent>
                     </CardBody>
                   </Card>

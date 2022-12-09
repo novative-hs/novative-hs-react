@@ -619,7 +619,7 @@ class TestAppointmentsList extends Component {
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
-      relationsip_with_patient: arg.relationsip_with_patient,
+      // relationsip_with_patient: arg.relationsip_with_patient,
       booked_at: arg.booked_at,
       appointment_requested_at: arg.appointment_requested_at,
       // patient_city: arg.patient_city,
@@ -802,7 +802,7 @@ class TestAppointmentsList extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Booked for
@@ -819,7 +819,7 @@ class TestAppointmentsList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">

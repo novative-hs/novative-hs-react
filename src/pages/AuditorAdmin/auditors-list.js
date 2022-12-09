@@ -58,7 +58,7 @@ class AuditorsList extends Component {
         },
         {
           dataField: "photo",
-          text: "Photo",
+          text: "Name",
           sort: true,
           formatter: (cellContent, Auditor) => (
             <>

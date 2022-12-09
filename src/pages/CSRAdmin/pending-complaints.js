@@ -349,6 +349,7 @@ class PendingComplaints extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
+                                    <p>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</p>
                                   </div>
                                   <Modal
                                       isOpen={this.state.PatientModal}

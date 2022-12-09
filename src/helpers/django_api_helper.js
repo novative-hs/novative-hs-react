@@ -981,12 +981,12 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("patient_gender", checkoutData.patient_gender);
   formData.append("patient_address", checkoutData.patient_address);
   formData.append("city_id", checkoutData.city_id);
-  // formData.append("patient_city", checkoutData.patient_city);
-  // formData.append("patient_district", checkoutData.patient_district);
-  formData.append(
-    "relationsip_with_patient",
-    checkoutData.relationsip_with_patient
-  );
+  formData.append("patient_city", checkoutData.patient_city);
+  formData.append("patient_district", checkoutData.patient_district);
+  // formData.append(
+  //   "relationsip_with_patient",
+  //   checkoutData.relationsip_with_patient
+  // );
   formData.append(
     "appointment_requested_at",
     checkoutData.appointment_requested_at

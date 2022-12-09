@@ -452,6 +452,9 @@ class AssignedAudits extends Component {
                                           {({ errors, status, touched }) => (
                                             <Form>
                                               <Row>
+                                              <div className="mb-3">
+                                                <p><b>Note: an email will be sent to the lab with your comments and report.</b></p>
+                                                </div>
                                                 <Col className="col-12">
                                                   <div className="mb-3">
                                                     <Label className="form-label">
