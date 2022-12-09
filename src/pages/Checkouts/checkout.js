@@ -1060,7 +1060,7 @@ class Checkout extends Component {
                                   disabled={this.state.checkoutSuccess}
                                 >
                                   <i className="mdi mdi-truck-fast me-1" />{" "}
-                                  Proceed to Shipping{" "}
+                                  Book Appointment{" "}
                                 </button>
                               </div>
                             </Col>

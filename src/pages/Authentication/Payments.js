@@ -69,7 +69,7 @@ class Payments extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Donor" breadcrumbItem="Profile" />
+            <Breadcrumb title="Payments" breadcrumbItem="Payment Update" />
            {
              this.state.isPaymentUpdated && this.state.isPaymentUpdated ? (
               <Alert color="success">Payment Status Update.</Alert>
