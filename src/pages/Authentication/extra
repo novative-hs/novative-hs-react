@@ -1,0 +1,298 @@
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import {
+  Alert,
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Label,
+  Input,
+} from "reactstrap";
+
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+// Redux
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+
+//Import Breadcrumb
+import Breadcrumb from "../../components/Common/Breadcrumb";
+
+// actions
+import { updateLabPayments, getLabPayments } from "../../store/actions";
+
+class Payments extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      amount: "",
+      counter_discount: "",
+      amount_received: "",
+      received_by: "",
+      payment_method: "",
+
+      isSettingsUpdated: false,
+      // id: localStorage.getItem("authUser")
+      //   ? JSON.parse(localStorage.getItem("authUser")).id
+      //   : "",
+    };
+  }
+
+  componentDidMount() {
+    this.props.getLabPayments(this.props.match.params.id);
+
+    // setTimeout(() => {
+    //   this.setState({
+    //     amount: this.props.success.amount,
+    //     counter_discount: this.props.success.counter_discount,
+    //     amount_received: this.props.success.amount_received,
+    //     received_by: this.props.success.received_by,
+    //     payment_method: this.props.success.payment_method,
+    //   });
+    // }, 1500);
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <div className="page-content">
+          <Container fluid>
+            {/* Render Breadcrumb */}
+            <Breadcrumb title="Lab" breadcrumbItem="Settings" />
+
+            {this.state.isSettingsUpdated && this.state.isSettingsUpdated ? (
+              <Alert color="success">Your Payments are updated.</Alert>
+            ) : null}
+
+            <Card>
+              <CardBody>
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    amount: (this.state && this.state.amount) || "",
+                    counter_discount:
+                      (this.state && this.state.counter_discount) || "",
+                    amount_received:
+                      (this.state && this.state.amount_received) || "",
+                    received_by: (this.state && this.state.received_by) || "",
+                    payment_method:
+                      (this.state && this.state.payment_method) || "",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    // home_sampling_charges: Yup.number(
+                    //   "Please enter number only"
+                    // )
+                    //   .positive()
+                    //   .integer()
+                    //   .min(
+                    //     0,
+                    //     "Please enter a number greater than or equal to 0"
+                    //   )
+                    //   .max(
+                    //     5000,
+                    //     "Please enter a number less than or equal to 150"
+                    //   ),
+                    // complaint_handling_email: Yup.string()
+                    //   // .required("Please enter your complaint handling email")
+                    //   .email("Please enter valid email")
+                    //   .max(255, "Please enter maximum 255 characters"),
+                    // complaint_handling_phone: Yup.string()
+                    //   // .required(
+                    //   //   "Please enter your complaint handling phone no."
+                    //   // )
+                    //   .max(255, "Please enter maximum 255 characters")
+                    //   .matches(
+                    //     /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{10}$|^\d{3}-\d{7}|^\d{11}$|^\d{3}-\d{8}$/,
+                    //     "Please enter a valid Pakistani landline number e.g. 0512345678"
+                    //   ),
+                  })}
+                  onSubmit={values => {
+                    // values.health_dept_certificate =
+                    //   this.state.health_dept_certificate;
+                    // To show success message of update
+                    this.setState({ isSettingsUpdated: true });
+
+                    setTimeout(() => {
+                      this.props.updateLabPayments(
+                        values,
+                        this.props.match.params.id
+                      );
+
+                      // To get updated settings again
+                      setTimeout(() => {
+                        this.props.getLabPayments(this.props.match.params.id);
+                      }, 1000);
+
+                      // To make success message disappear after sometime
+                      setTimeout(() => {
+                        this.setState({
+                          isSettingsUpdated: false,
+                        });
+                      }, 5000);
+                    }, 2000);
+                  }}
+                >
+                  {({ errors, status, touched }) => (
+                    <Form className="form-horizontal">
+                      {/* Operational Hours Fields */}
+                      {/* Health Dept Certified */}
+
+                      {/* Phone field */}
+                      <div className="mb-3">
+                        <Label for="amount" className="form-label">
+                          Amount
+                        </Label>
+                        <Field
+                          id="amount"
+                          name="amount"
+                          type="text"
+                          onChange={e =>
+                            this.setState({ amount: e.target.value })
+                          }
+                          value={this.state.amount}
+                          className="form-control"
+                        />
+                      </div>
+                      {/* <div className="mb-3 row">
+                        <div className="col-md-3">
+                          <Label className="form-label">Amount</Label>
+                        </div>
+                        <div className="col-md-9">
+                          <input
+                            type="text"
+                            value={this.state.amount}
+                            className="form-control"
+                            readOnly={true}
+                          />
+                        </div>
+                      </div> */}
+
+                      {/* Complaint Handling Phone field */}
+                      <div className="mb-3">
+                        <Label for="counter_discount" className="form-label">
+                          Counter Discount
+                        </Label>
+                        <Field
+                          id="counter_discount"
+                          name="counter_discount"
+                          type="text"
+                          onChange={e =>
+                            this.setState({
+                              counter_discount: e.target.value,
+                            })
+                          }
+                          value={this.state.counter_discount}
+                          className={
+                            "form-control" +
+                            (errors.counter_discount && touched.counter_discount
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="counter_discount"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+
+                      {/* Home Sampling Charges field */}
+                      <div className="mb-3">
+                        <Label for="amount_received" className="form-label">
+                          Amount Received
+                        </Label>
+                        <Field
+                          id="amount_received"
+                          name="amount_received"
+                          type="number"
+                          onChange={e =>
+                            this.setState({
+                              amount_received: e.target.value,
+                            })
+                          }
+                          value={this.state.amount_received}
+                          className={
+                            "form-control" +
+                            (errors.amount_received && touched.amount_received
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="amount_received"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+                      {/* Complaint Handling Email field */}
+                      <div className="mb-3">
+                        <Label for="received_by" className="form-label">
+                          Received By
+                        </Label>
+                        <Field
+                          name="received_by"
+                          type="text"
+                          onChange={e =>
+                            this.setState({
+                              received_by: e.target.value,
+                            })
+                          }
+                          value={this.state.received_by}
+                          className={
+                            "form-control" +
+                            (errors.received_by && touched.received_by
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="received_by"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+                      <div className="text-center mt-4">
+                        <Button
+                          type="submit"
+                          color="danger"
+                          disabled={this.state.isSettingsUpdated}
+                        >
+                          Update Settings
+                        </Button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </CardBody>
+            </Card>
+          </Container>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+Payments.propTypes = {
+  match: PropTypes.object,
+  location: PropTypes.object,
+  updateLabPayments: PropTypes.func,
+  error: PropTypes.any,
+  success: PropTypes.any,
+  getLabPayments: PropTypes.func,
+};
+
+const mapStateToProps = state => {
+  const { error, success } = state.Payments;
+  return { error, success };
+};
+
+export default withRouter(
+  connect(mapStateToProps, {
+    updateLabPayments,
+    getLabPayments,
+  })(Payments)
+);
