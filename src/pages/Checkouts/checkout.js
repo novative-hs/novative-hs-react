@@ -1047,7 +1047,7 @@ class Checkout extends Component {
                                 className="btn text-muted d-none d-sm-inline-block btn-link"
                               >
                                 <i className="mdi mdi-arrow-left me-1" /> Back
-                                to Shopping Cart{" "}
+                                {" "}
                               </Link>
                             </Col>
                             <Col sm="6">
