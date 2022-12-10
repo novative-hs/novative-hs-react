@@ -302,7 +302,7 @@ class OfferedTestsList extends Component {
     const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 10000,
       totalSize: offeredTests.length, // replace later with size(offeredTests),
       custom: true,
     };
