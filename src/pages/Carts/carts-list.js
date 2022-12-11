@@ -44,11 +44,11 @@ class CartList extends Component {
           hidden: true,
           formatter: (cellContent, cart) => <>{cart.id}</>,
         },
-        {
-          dataField: "patient_name",
-          text: "Patient name",
-          sort: true,
-        },
+        // {
+        //   dataField: "patient_name",
+        //   text: "Patient name",
+        //   sort: true,
+        // },
         {
           dataField: "lab_name",
           text: "Lab name",
@@ -67,10 +67,22 @@ class CartList extends Component {
           text: "Price",
           sort: true,
         },
+        // {
+        //   dataField: "discount",
+        //   text: "Discount (%)",
+        //   sort: true,
+        // },
         {
           dataField: "discount",
           text: "Discount (%)",
           sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{(cart.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "menu",
@@ -78,7 +90,7 @@ class CartList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, cart) => (
-            <div className="d-flex gap-3">
+            <Col>
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -86,7 +98,7 @@ class CartList extends Component {
                   onClick={() => this.onClickDelete(cart)}
                 ></i>
               </Link>
-            </div>
+            </Col>
           ),
         },
       ],
