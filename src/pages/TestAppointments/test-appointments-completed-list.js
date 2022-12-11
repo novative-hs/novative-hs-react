@@ -266,7 +266,7 @@ class TestAppointmentsCompletedList extends Component {
         },
         {
           dataField: process.env.REACT_APP_BACKENDURL + "result",
-          text: "Result",
+          text: "Actions",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -280,6 +280,14 @@ class TestAppointmentsCompletedList extends Component {
                   }
                 ></i>
               </Tooltip>
+                  <Tooltip title="Invoice">
+                    
+              <Link 
+                className="mdi mdi-receipt font-size-18"
+                to={`/lab-invoice-detail/${testAppointment.id}`}
+              >
+              </Link>
+              </Tooltip>
 
               </Link>
               {testAppointment.result_type == "File" ? (
@@ -290,7 +298,7 @@ class TestAppointmentsCompletedList extends Component {
                   }}
                   target="_blank"
                 >
-                  View
+                Report
                 </Link>
               ) : (
                 <Link

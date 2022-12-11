@@ -76,19 +76,43 @@ class OfferedTestsList extends Component {
           dataField: "test_name",
           text: "Test",
           sort: true,
-          headerStyle: () => {
-            return { 
-            style: {width: "30%",
-              textAlign: "left"
-          },
-        }
-          }  
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span>
+              {offeredTest.test_type != "Test" && (
+                              <div>
+                                <Link
+                                to="#"
+                                onClick={e => this.openPatientModal(e, offeredTest)}
+                              >
+                                <span>
+                                {offeredTest.test_name}
+                                </span>
+                              </Link>
+                              </div>
+                            )}
+               {offeredTest.test_type == "Test" && (
+                              <div>
+                                <span>
+                                {offeredTest.test_name}
+                                </span>
+                              </div>
+                            )}
+                  {/* <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, offeredTest)}
+                  >
+                   {offeredTest.test_name}
+                  </Link> */}
+              </span>
+            </>
+          ), 
         },
-        {
-          dataField: "test_details",
-          text: "Details",
-          sort: true,
-        },
+        // {
+        //   dataField: "test_details",
+        //   text: "Details",
+        //   sort: true,
+        // },
         {
           dataField: "price",
           text: "Price",
@@ -209,7 +233,21 @@ class OfferedTestsList extends Component {
   handleSelectGroup = selectedGroup => {
     this.setState({ offeredTest: selectedGroup.value });
   };
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      test_details: arg.test_details,
+    });
+  };
+  
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   handleOfferedTestClicks = () => {
     this.setState({ offeredTest: "", isEdit: false, test_id: "" });
     this.toggle();
@@ -426,6 +464,46 @@ class OfferedTestsList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Included Tests
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                  <textarea
+                                  name="test_details"
+                                  id="test_details"
+                                  rows="10"
+                                  cols="10"
+                                  value={this.state.test_details}
+                                  className="form-control"
+                                  readOnly={true}
+                                />
+                                                  </div>
+                                                </div>
+
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
 
                                     <Modal
                                       isOpen={this.state.modal}

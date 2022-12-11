@@ -66,20 +66,29 @@ class CartList extends Component {
           dataField: "price",
           text: "Price",
           sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
+
         },
-        // {
-        //   dataField: "discount",
-        //   text: "Discount (%)",
-        //   sort: true,
-        // },
+ 
         {
           dataField: "discount",
           text: "Discount (%)",
           sort: true,
+        },
+        {
+          dataField: "total_balance",
+          text: "After Discount",
+          sort: true,
           formatter: (cellContent, cart) => (
             <>
               {(
-                <span>{(cart.discount*100).toFixed()}%</span>
+                <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               )}
             </>
           ),

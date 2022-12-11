@@ -270,8 +270,8 @@ class Checkout extends Component {
             )}
             <div className="checkout-tabs">
               <Row>
-                <Col lg="2" sm="3">
-                  <Nav className="flex-column" pills>
+                <Col>
+                  <Nav className="mt-4 mb-2 gap-4" pills>
                     <NavItem>
                       <NavLink
                         className={classnames({
@@ -281,8 +281,8 @@ class Checkout extends Component {
                           this.toggleTab("1");
                         }}
                       >
-                        <i className="bx bx-user d-block check-nav-icon mt-4 mb-2" />
-                        <p className="font-weight-bold mb-4">Patient Info</p>
+                        <i className="bx bx-user d-block check-nav-icon font-size-18" />
+                        {/* <p className="font-weight-bold mb-4">Patient Info</p> */}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -294,8 +294,8 @@ class Checkout extends Component {
                           this.toggleTab("2");
                         }}
                       >
-                        <i className="bx bx-home d-block check-nav-icon mt-4 mb-2" />
-                        <p className="font-weight-bold mb-4">Home Sample</p>
+                        <i className="bx bx-home d-block check-nav-icon font-size-18" />
+                        {/* <p className="font-weight-bold mb-4">Home Sample</p> */}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -307,8 +307,8 @@ class Checkout extends Component {
                           this.toggleTab("3");
                         }}
                       >
-                        <i className="bx bx-money d-block check-nav-icon mt-4 mb-2" />
-                        <p className="font-weight-bold mb-4">Payment Info</p>
+                        <i className="bx bx-money d-block check-nav-icon font-size-18" />
+                        {/* <p className="font-weight-bold mb-4">Payment Info</p> */}
                       </NavLink>
                     </NavItem>
                     <NavItem>
@@ -320,13 +320,15 @@ class Checkout extends Component {
                           this.toggleTab("4");
                         }}
                       >
-                        <i className="bx bx-badge-check d-block check-nav-icon mt-4 mb-2" />
-                        <p className="font-weight-bold mb-4">Confirmation</p>
+                        <i className="bx bx-badge-check d-block check-nav-icon font-size-18" />
+                        {/* <p className="font-weight-bold mb-4">Confirmation</p> */}
                       </NavLink>
                     </NavItem>
                   </Nav>
                 </Col>
-                <Col lg="10" sm="9">
+              </Row>
+              <Row>
+                <Col>
                   {!this.state.isRequiredFilled ? (
                     <Alert color="danger" className="col-md-5">
                       Please fill the required fields.

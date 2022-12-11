@@ -73,9 +73,9 @@ class NearbyLabs extends Component {
   }
 
   componentDidMount() {
-    const { nearbyLabs, onGetAdvLive } = this.props;
+    const { advLives, onGetAdvLive } = this.props;
     onGetAdvLive(this.state.user_id);
-    this.setState({ nearbyLabs });
+    this.setState({ advLives });
   
   
     let latitude;
@@ -575,8 +575,8 @@ class NearbyLabs extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-lab-detail/${advLive.lab_id}/${this.props.match.params.uuid}`
-                              : `/nearby-lab-detail/${advLive.lab_id}`
+                              ? `/nearby-lab-detail/${advLive.lab_id.id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${advLive.lab_id.id}`
                           }
                         >
                           <div className="mt-4 text-center">

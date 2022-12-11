@@ -160,7 +160,7 @@ class Navbar extends Component {
                   {this.state.user_id && this.state.user_type == "patient" && (
                     <li className="nav-item">
                       <Link to={"/test-appointments"} className="dropdown-item">
-                        {this.props.t("Test Appointments")}
+                        {this.props.t("My Appointments")}
                       </Link>
                     </li>
                     /* <li className="nav-item dropdown">
