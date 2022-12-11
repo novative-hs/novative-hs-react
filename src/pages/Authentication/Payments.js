@@ -78,7 +78,7 @@ class Payments extends Component {
             {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
             {
              this.state.isPaymentFailed && this.state.isPaymentFailed ? (
-              <Alert color="success">Make sure and Enter the Currect Amount and Counter Discount</Alert>
+              <Alert color="success">Make sure and Enter the Current Amount and Counter Discount</Alert>
             ) : null}
 
             {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
@@ -305,7 +305,7 @@ class Payments extends Component {
                        {/* Email field */}
                        <div className="mb-3">
                         <Label for="received_by" className="form-label">
-                          Beceived By
+                          Received By
                         </Label>
                         <Field
                           name="received_by"

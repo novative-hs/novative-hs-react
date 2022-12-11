@@ -87,7 +87,7 @@ class Navbar extends Component {
                     }
                     className="dropdown-item"
                     >
-                      {this.props.t("Nearby Labs")}
+                      {this.props.t("Labs")}
                     </Link>
                   </li>
 
@@ -103,7 +103,7 @@ class Navbar extends Component {
                     }
                     className="dropdown-item"
                     >
-                      {this.props.t("Search by Tests")}
+                      {this.props.t("Tests")}
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -115,7 +115,7 @@ class Navbar extends Component {
                     }
                     className="dropdown-item"
                     >
-                      {this.props.t("Search by Profiles")}
+                      {this.props.t("Profiles")}
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -127,7 +127,7 @@ class Navbar extends Component {
                     }
                     className="dropdown-item"
                     >
-                      {this.props.t("Search by Packages")}
+                      {this.props.t("Packages")}
                     </Link>
                   </li>
                   {/* <li className="nav-item dropdown">

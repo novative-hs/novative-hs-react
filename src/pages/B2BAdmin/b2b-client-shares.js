@@ -91,7 +91,7 @@ class B2bLabSharesList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, b2bLabShare) => (
-            <div className="d-flex gap-3">
+            <Col>
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -99,7 +99,7 @@ class B2bLabSharesList extends Component {
                   onClick={() => this.handleEditBtnClick(b2bLabShare)}
                 ></i>
               </Link>
-            </div>
+            </Col>
           ),
         },
       ],
@@ -318,7 +318,7 @@ class B2bLabSharesList extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                                <Col sm="2" lg="2">
+                                <Col sm="6">
                                   <div className="text-sm-end">
                                     <Button
                                       color="primary"
@@ -329,7 +329,7 @@ class B2bLabSharesList extends Component {
                                     </Button>
                                   </div>
                                 </Col>
-                                <Col sm="2" lg="2">
+                                <Col sm="6" lg="2">
                                   <div className="text-sm-end">
                                     <Button
                                       color="primary"
@@ -423,7 +423,7 @@ class B2bLabSharesList extends Component {
                                                       name="b2b_shares"
                                                       type="number"
                                                       step="0.01"
-                                                      min="0.03"
+                                                      min="0.00"
                                                       max="1.00"
                                                       value={
                                                         this.state.b2bLabShare
@@ -640,7 +640,7 @@ class B2bLabSharesList extends Component {
                                                       name="b2b_shares"
                                                       type="number"
                                                       step="0.01"
-                                                      min="0.03"
+                                                      min="0.00"
                                                       max="1.00"
                                                       value={
                                                         this.state.b2bLabShare
