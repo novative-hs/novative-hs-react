@@ -456,42 +456,42 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
-        // {
-        //   dataField: process.env.REACT_APP_BACKENDURL + "result",
-        //   text: "Report",
-        //   sort: true,
-        //   formatter: (cellContent, patientTestAppointment) => (
-        //     <>
-        //       {patientTestAppointment.status == "Result Uploaded" &&
-        //       patientTestAppointment.result_type == "File" ? (
-        //         <Link
-        //           to={{
-        //             pathname:
-        //               process.env.REACT_APP_BACKENDURL +
-        //               patientTestAppointment.result,
-        //           }}
-        //           target="_blank"
-        //         >
-        //           <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-        //           Report
-        //         </Link>
-        //       ) : patientTestAppointment.status == "Result Uploaded" &&
-        //         patientTestAppointment.result_type == "Link" ? (
-        //         <Link
-        //           to={{
-        //             pathname: patientTestAppointment.url,
-        //           }}
-        //           target="_blank"
-        //         >
-        //           <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-        //           Report
-        //         </Link>
-        //       ) : (
-        //         <span>Not uploaded</span>
-        //       )}
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: process.env.REACT_APP_BACKENDURL + "result",
+          text: "Report",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Result Uploaded" &&
+              patientTestAppointment.result_type == "File" ? (
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL +
+                      patientTestAppointment.result,
+                  }}
+                  target="_blank"
+                >
+                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
+                  Report
+                </Link>
+              ) : patientTestAppointment.status == "Result Uploaded" &&
+                patientTestAppointment.result_type == "Link" ? (
+                <Link
+                  to={{
+                    pathname: patientTestAppointment.url,
+                  }}
+                  target="_blank"
+                >
+                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
+                  Report
+                </Link>
+              ) : (
+                <span>Not uploaded</span>
+              )}
+            </>
+          ),
+        },
         {
           dataField: "collector_name",
           text: "Collector Detail",
