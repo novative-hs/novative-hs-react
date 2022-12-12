@@ -123,9 +123,9 @@ class InvoiceDetail extends Component {
                             <tr>
                               <th style={{ width: "70px" }}>No.</th>
                               <th>Test Name</th>
-                              <th className="text-end">Total Price</th>
-                              <th className="text-end">Total Discount By Lab</th>
-                              <th className="text-end">Total Discount By LabHazir</th>
+                              <th className="text-end">Price</th>
+                              <th className="text-end">Discount By Lab</th>
+                              <th className="text-end">Discount By LabHazir</th>
                               {/* <th className="text-end">Discount</th> */}
                               <th className="text-end">
                                 Sub Total
@@ -139,15 +139,17 @@ class InvoiceDetail extends Component {
                               (item, key) => (
                                 <tr key={key}>
                                   <td>{key + 1}</td>
-                                  <td className="text-end">{item.test_name}</td>
+                                  <td>{item.test_name}</td>
                                   <td className="text-end">{item.price}</td>
-                                  <td className="text-end">{item.discount}</td>
-                                  <td className="text-end">{item.discount_by_labhazir+item.discount_by_labhazird_by_test}</td>
-                                  {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
-                                  <td className="text-end">
-                                  {item.total_test_cost -
-                                    this.props.invoiceDetail[0]
-                                      .home_sampling_charges}
+                                  <td className="text-end">{item.discount}{"%"}</td>
+                                  <td className="text-end">{item.discount_by_labhazir+item.discount_by_labhazird_by_test}{"%"}</td>
+                                   {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
+                                   <td className="text-end">
+                                  {item.total_test_cost
+                                  //  -
+                                  //   this.props.invoiceDetail[0]
+                                  //     .home_sampling_charges
+                                      }
                               </td>
                                 </tr>
                               )
@@ -169,7 +171,9 @@ class InvoiceDetail extends Component {
                               </td>
                               <td className="border-10 text-end">
                                 <h4 className="m-0">
-                                  {this.props.invoiceDetail[0].total_dues}
+                                  {this.props.invoiceDetail[0].total_dues +
+                                    this.props.invoiceDetail[0]
+                                      .home_sampling_charges}
                                 </h4>
                               </td>
                             </tr>

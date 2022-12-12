@@ -62,6 +62,18 @@ class PendingLabs extends Component {
           dataField: "name",
           text: "Lab name",
           sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span>
+                  <Link
+                    to="#"
+                    onClick={e => this.openLabModal(e, pendingLab)}
+                  >
+                   {pendingLab.name}
+                  </Link>
+              </span>
+            </>
+          ),
         },
         {
           dataField: "address",
@@ -163,6 +175,23 @@ class PendingLabs extends Component {
       lab_staff_name: arg.lab_staff_name,
       lab_staff_designation: arg.lab_staff_designation,
 
+    });
+  };
+  toggleLabModal = () => {
+    this.setState(prevState => ({
+     LabModal: !prevState.LabModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+  openLabModal = (e, arg) => {
+    this.setState({
+      LabModal: true,
+      lab_address: arg.lab_address,
+      lab_city: arg.lab_city,
+      lab_phone: arg.lab_phone,
+      lab_email: arg.lab_email,
     });
   };
   togglePatientModal = () => {
@@ -318,6 +347,114 @@ class PendingLabs extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                      <Modal
+                                      isOpen={this.state.LabModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleLabModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Lab Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      email
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_email
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Contact No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .lab_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
                                     <Modal
                                       isOpen={this.state.MarketerModal}
                                       className={this.props.className}

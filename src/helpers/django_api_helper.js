@@ -950,6 +950,14 @@ export const addToCart = (cart, id) => {
   let formData = new FormData();
   formData.append("lab_id", cart.lab_id);
   formData.append("offered_test_id", cart.id);
+  formData.append("amount", cart.price);
+  formData.append("invoice_discount", cart.discount);
+  formData.append("invoice_labhazir_discount", cart.discount_by_labhazir);
+  // formData.append("amount", cart.price);
+
+
+
+  console.log("cart items", cart)
 
   return axios.post(`${url.ADD_TO_CART}/${id}`, formData, {
     headers: getHeader(authHeader()),
