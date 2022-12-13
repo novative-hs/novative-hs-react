@@ -20,6 +20,7 @@ class B2bProfile extends Component {
       email: "",
       landline: "",
       website_url: "",
+      business_logo:"",
       inProcessAppointments: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -33,6 +34,7 @@ class B2bProfile extends Component {
     setTimeout(() => {
       this.setState({
         business_name: this.props.success.business_name,
+        business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
         email: this.props.success.email,
         landline: this.props.success.landline,
         website_url: this.props.success.website_url,
@@ -65,6 +67,13 @@ class B2bProfile extends Component {
                   <div className="pt-4">
                     <Row>
                       <Col xs="6">
+                      <div className="avatar-md profile-user-wid mb-4">
+                  <img
+                    src={this.state.business_logo}
+                    alt=""
+                    className="img-thumbnail rounded-circle"
+                  />
+                </div>
                         <h5 className="font-size-15 text-truncate">
                           {this.state.business_name}
                         </h5>

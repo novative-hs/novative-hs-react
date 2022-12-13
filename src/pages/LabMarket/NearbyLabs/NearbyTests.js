@@ -597,6 +597,7 @@ class NearbyTests extends Component {
 
               {/* Alerts to show success and error messages when item is added to the cart */}
               {this.state.success ? (
+               window.location.reload()>
                 <Alert color="success" className="col-md-5">
                   {this.state.success}
                 </Alert>
@@ -633,7 +634,30 @@ class NearbyTests extends Component {
                             <h5 className="mb-2 text-truncate">
                               {nearbyTest.test_name}
                             </h5>
-
+                            {/* <div className="mt-3 text-center"> */}
+                              <Link
+                                to="#"
+                                onClick={e =>
+                                  this.openDescriptionModal(e, nearbyTest)
+                                }
+                              >
+                                <span>View Test Description</span>
+                              </Link>
+                            {/* </div> */}
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Rs {nearbyTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                              </span>
+                            </div>
+                            {nearbyTest.discount>=0.01 && (
+                              <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Discount: {(nearbyTest.discount*100).toFixed()} % 
+                              </span>
+                            </div>
+                            )}
                             <div className="my-0">
                               {" "}
                               <Link
@@ -655,19 +679,6 @@ class NearbyTests extends Component {
                                 {nearbyTest.lab_name}
                               </span> */}
                             </div>
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {nearbyTest.price} Rs
-                              </span>
-                            </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {nearbyTest.discount} % Discount By Lab
-                              </span>
-                            </div>
                             {/* <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-money-bill"></i>{" "}
@@ -687,16 +698,6 @@ class NearbyTests extends Component {
                                 <i className="fas fa-home"></i> Home Sampling:{" "}
                                 {nearbyTest.is_home_sampling_available}
                               </span>
-                            </div>
-                            <div className="mt-3 text-center">
-                              <Link
-                                to="#"
-                                onClick={e =>
-                                  this.openDescriptionModal(e, nearbyTest)
-                                }
-                              >
-                                <span>View Test Description</span>
-                              </Link>
                             </div>
                             <Button
                               type="button"

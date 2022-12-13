@@ -45,7 +45,7 @@ const discountLabHazirToLabs = (state = INIT_STATE, action) => {
     case UPDATE_DISCOUNT_ALL_LABHAZIRTOLAB_SUCCESS:
       return {
         ...state,
-        discountAllLabHazirs: state.discountAllLabHazirs.map(discountAllLabHazir =>
+        discountLabHazirToLabs: state.discountLabHazirToLabs.map(discountAllLabHazir =>
           discountAllLabHazir.id.toString() === action.payload.id.toString()
             ? { discountAllLabHazir, ...action.payload }
             : discountAllLabHazir

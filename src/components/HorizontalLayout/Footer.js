@@ -8,7 +8,7 @@ const Footer = () => {
       <footer className="footer">
         <Container fluid={true}>
           <Row>
-            <Col md={4}>{new Date().getFullYear()} © Lab Hazir</Col>
+            <Col md={4}>{new Date().getFullYear()} © Lab Hazir (Private) Limited</Col>
             <Col md={3}>
               <div className="text-sm-end d-none d-sm-block">
                 <Link to="/disclaimer">
@@ -23,10 +23,10 @@ const Footer = () => {
                 </Link>
               </div>
             </Col>
-            <Col md={1}>
+            <Col md={2}>
               <div className="text-sm-end d-none d-sm-block">
                 <Link to="/terms-conditions">
-                  <span>Terms Conditions</span>
+                  <span>Terms</span>
                 </Link>
               </div>
             </Col>
@@ -41,12 +41,12 @@ const Footer = () => {
               </div>
             </Col>
 
-            <Col md={3}>
+            {/* <Col md={3}>
               <div className="text-sm-end d-none d-sm-block">
                 Welcome to Lab Hazir Family!
               
               </div>
-            </Col>
+            </Col> */}
             {/* <Col>
             <div className="social-container">
               <h3>Social Follow</h3>

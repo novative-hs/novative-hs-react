@@ -178,13 +178,14 @@ class LabPathologists extends Component {
                           )}
 
                           <div className="mt-4 text-center">
+                          <h5 className="mb-2 text-truncate">
+                                {pathologist.lab_name}{" "}
+                              </h5>
                             <h5 className="mb-2 text-truncate">
                               {pathologist.name}{" "}
                             </h5>
-                            {/* <h5 className="mb-2 text-truncate">
-                                {pathologists.lab_id.name}{" "}
-                              </h5> */}
-                           {pathologist.designation && <div className="my-0">
+                          
+                           {/* {pathologist.designation && <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-account-star"></i>{" "}
                                 Designation : {pathologist.designation}{" "}
@@ -205,9 +206,9 @@ class LabPathologists extends Component {
                                   Mobile No/ WhatsApp: {pathologist.phone}{" "}
                                 </span>
                               </div>
-                            )}
+                            )} */}
 
-                          {
+                          {/* {
                               pathologist.landline && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
@@ -215,7 +216,7 @@ class LabPathologists extends Component {
                                     No : {pathologist.landline}{" "}
                                   </span>
                                 </div>
-                              )}
+                              )} */}
                             {/* <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="fas fa-user-clock"></i> 

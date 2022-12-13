@@ -51,7 +51,7 @@ class TestsOffered extends Component {
       error: "",
       applied: true,
       page: 1,
-      count: 0,
+      // count: 0,
       totalPage: 5, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
@@ -160,6 +160,7 @@ class TestsOffered extends Component {
     }, 2000);
   };
 
+
   render() {
     const { page, totalPage } = this.state;
     const { offeredTests } = this.props.offeredTests;
@@ -176,6 +177,7 @@ class TestsOffered extends Component {
             <Breadcrumbs title="Nearby Labs" breadcrumbItem="Tests Offered" />
 
             {this.state.success ? (
+              window.location.reload()>
               <Alert color="success" className="col-md-4">
                 {this.state.success}
               </Alert>

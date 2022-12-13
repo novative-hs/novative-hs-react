@@ -162,7 +162,7 @@ class Checkout extends Component {
     // Check if patient's name, age and appointment Booked for is filled
     if (
       this.state.patient_name &&
-      this.state.patient_address &&
+      // this.state.patient_address &&
       this.state.city_id &&
       // this.state.patient_district &&
       this.state.patient_age &&
@@ -431,7 +431,7 @@ class Checkout extends Component {
                                   </select>
                                 </Col>
                               </FormGroup>
-
+{/* 
                               <FormGroup className="mb-4" row>
                                 <Label
                                   htmlFor="patient-name"
@@ -459,7 +459,7 @@ class Checkout extends Component {
                                     }
                                   />
                                 </Col>
-                              </FormGroup>
+                              </FormGroup> */}
                               <FormGroup className="mb-4" row>
                                 <Label
                                   htmlFor="patient-name"
@@ -579,6 +579,37 @@ class Checkout extends Component {
                                 <option value="No">No</option>
                               </select>
                             </FormGroup>
+                           
+                            {this.state.is_home_sampling_availed=="Yes" &&
+                                                    (
+                                                        <FormGroup className="mb-4" row>
+                                <Label
+                                  htmlFor="patient-name"
+                                  md="2"
+                                  className="col-form-label"
+                                >
+                                  Address
+                                  <span
+                                    style={{ color: "#f46a6a" }}
+                                    className="font-size-18"
+                                  >
+                                  </span>
+                                </Label>
+                                <Col md="10">
+                                  <Input
+                                    type="text"
+                                    className="form-control"
+                                    name="patient_address"
+                                    placeholder="Enter your complete address"
+                                    onChange={e =>
+                                      this.setState({
+                                        patient_address: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </Col>
+                              </FormGroup>          
+                                                    )}
 
                             <Table >
                               <thead className="table-light">
@@ -724,7 +755,6 @@ class Checkout extends Component {
                               </div>
                             </div>
 
-
                             {this.state.payment_method == "Donation" ? (
                               <div>
                                 <h5 className="mt-5 mb-3 font-size-15">
@@ -746,8 +776,6 @@ class Checkout extends Component {
                                 </div>
                               </div>
                             ) : null}
-
-                            
 
                             {this.state.payment_method == "Card" ? (
                               <div>

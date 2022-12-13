@@ -520,7 +520,7 @@ class NearbyProfiles extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Included Tests
+                                                    Test Description
                                                     </Label>
                                                   </div>
                                                   <textarea
@@ -688,6 +688,7 @@ class NearbyProfiles extends Component {
 
               {/* Alerts to show success and error messages when item is added to the cart */}
               {this.state.success ? (
+                window.location.reload()>
                 <Alert color="success" className="col-md-5">
                   {this.state.success}
                 </Alert>
@@ -730,10 +731,24 @@ class NearbyProfiles extends Component {
                                 onClick={e => this.openPatientModal(e, nearbyProfile)}
                               >
                                 <span>
-                                  Included Tests
+                                View Test Description
                                 </span>
                               </Link>
                             </div>
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Rs {nearbyProfile.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                              </span>
+                            </div>
+                            {nearbyProfile.discount>=0.01 && (
+                              <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Discount: {(nearbyProfile.discount*100).toFixed()} % 
+                              </span>
+                            </div>
+                            )}
                             <div className="my-0">
                               <Link
                                 to={
@@ -753,43 +768,21 @@ class NearbyProfiles extends Component {
                               </span> */}
                             </div>
 
+                            
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {nearbyProfile.price} Rupees
+                                <i className="fas fa-stopwatch"></i> Reporting
+                                Time: {nearbyProfile.duration_required}{" "}
+                                {nearbyProfile.duration_type}
                               </span>
                             </div>
-
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-home"></i> Home Sampling:{" "}
                                 {nearbyProfile.is_home_sampling_available}
                               </span>
                             </div>
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-medal"></i> EQA
-                                Participation:{" "}
-                                {nearbyProfile.is_eqa_participation}
-                              </span>
-                            </div>
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Test Performed:{" "}
-                                {nearbyProfile.is_test_performed}
-                              </span>
-                            </div>
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-stopwatch"></i> Duration
-                                Required: {nearbyProfile.duration_required}{" "}
-                                {nearbyProfile.duration_type}
-                              </span>
-                            </div>
-                            <div className="mt-3 text-center">
+                            {/* <div className="mt-3 text-center">
                               <Link
                                 to="#"
                                 onClick={e =>
@@ -798,7 +791,7 @@ class NearbyProfiles extends Component {
                               >
                                 <span>View Test Description</span>
                               </Link>
-                            </div>
+                            </div> */}
                             <Button
                               type="button"
                               color="primary"

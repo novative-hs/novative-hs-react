@@ -4,6 +4,7 @@ import ReactDrawer from "react-drawer";
 import "react-drawer/lib/react-drawer.css";
 
 import { connect } from "react-redux";
+import { isEmpty, map, size } from "lodash";
 
 import { withRouter, Link } from "react-router-dom";
 // Import menuDropdown
@@ -13,6 +14,7 @@ import logoLightSvg from "../../assets/images/logo-light.svg";
 
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
+import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 
 //i18n
 import { withTranslation } from "react-i18next";
@@ -27,6 +29,9 @@ class Header extends Component {
     this.state = {
       isSearch: false,
       open: false,
+      count: 0,
+      carts: [],
+      cart: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -43,9 +48,37 @@ class Header extends Component {
     this.toggleSearch = this.toggleSearch.bind(this);
   }
 
+  componentDidMount() {
+
+    const { getCarts } = this.props;
+    getCarts(this.state.user_id);
+    this.setState({ carts: this.props.carts });
+    // if (window.localStorage) {
+  
+    //   // If there is no item as 'reload'
+    //   // in localstorage then create one &
+    //   // reload the page
+    //   if (!localStorage.getItem('reload')) {
+    //       localStorage['reload'] = true;
+    //       window.location.reload();
+    //   } else {
+    
+    //       // If there exists a 'reload' item
+    //       // then clear the 'reload' item in
+    //       // local storage
+    //       localStorage.removeItem('reload');
+    //   }
+    // }
+  }
   toggleSearch = () => {
     this.setState({ isSearch: !this.state.isSearch });
   };
+
+  handlePageClick = page => {
+    this.setState({ page });
+  };
+
+  
   /**
    * Toggle sidebar
    */
@@ -209,21 +242,32 @@ class Header extends Component {
                     <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
                     {/* <span className="pt-4 font-size-12">Cart</span> */}
                   </Link>
-
+                
                   <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/cart/${this.props.match.params.uuid}`
-                        : `/cart`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    {/* <i className="mdi mdi-cart mdi-tada align-middle me-1 font-size-20" />{" "} */}
-                    {/* <span className="pt-4 font-size-12">Cart</span> */}
-                    <i className="bx bx-cart-alt bx-tada align-middle me-1 font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Cart</span> */}
-                    {/* <span className="badge bg-danger rounded-pill">{this.state.patient_name.split(" ")[0]}</span> */}
-                  </Link>
+
+              to={
+                this.props.match.params.uuid
+                ? `/cart/${this.props.match.params.uuid}`
+                : `/cart`
+              }
+              className="btn btn-danger btn-rounded"
+
+            >
+
+
+              <i className="bx bx-cart-alt bx-tada align-middle me-1 font-size-22" />{" "}
+              {/* {this.state.count} */}
+
+              
+             
+                {!isEmpty(this.props.carts) &&
+                
+                  this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                  }
+               
+
+            </Link>
+          
 
                   <Link
                     to="/logout"
@@ -332,11 +376,14 @@ Header.propTypes = {
   openLeftMenuCallBack: PropTypes.func,
   t: PropTypes.any,
   toggleRightSidebar: PropTypes.func,
+  carts: PropTypes.array,
+  getCarts: PropTypes.func,
 };
 
 const mapStateToProps = state => {
   const { layoutType } = state.Layout;
-  return { layoutType };
+  const {carts}= state.carts;
+  return { layoutType , carts};
 };
 
 // export default connect(mapStatetoProps, { toggleRightSidebar })(
@@ -344,5 +391,5 @@ const mapStateToProps = state => {
 // );
 
 export default withRouter(
-  connect(mapStateToProps, { toggleRightSidebar })(withTranslation()(Header))
+  connect(mapStateToProps, { getCarts, toggleRightSidebar })(withTranslation()(Header))
 );

@@ -60,7 +60,7 @@ const referrelFeeLabs = (state = INIT_STATE, action) => {
     case UPDATE_REFERREL_ALL_FEE_SUCCESS:
       return {
         ...state,
-        referrelFeeLab: state.referrelAllFees.map(referrelAllFee =>
+        referrelFeeLabs: state.referrelFeeLabs.map(referrelAllFee =>
           referrelAllFee.id.toString() === action.payload.id.toString()
             ? { referrelAllFee, ...action.payload }
               : referrelAllFee

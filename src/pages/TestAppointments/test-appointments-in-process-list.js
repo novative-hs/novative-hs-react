@@ -1884,7 +1884,11 @@ class TestAppointmentsInProcessList extends Component {
                                                     )}
 
                                                   {this.state.testAppointment
-                                                    .is_home_sampling_availed && (
+                                                    .is_home_sampling_availed 
+                                                    // ||
+                                                    // this.state.testAppointment
+                                                    // .status == "Rescheduled" 
+                                                    && (
                                                       <div className="mb-3">
                                                         <Label>
                                                           Assigned to (Sample
