@@ -724,6 +724,29 @@ class Checkout extends Component {
                               </div>
                             </div>
 
+
+                            {this.state.payment_method == "Donation" ? (
+                              <div>
+                                <h5 className="mt-5 mb-3 font-size-15">
+                                  For Donation
+                                </h5>
+                                <div className="p-4 border">
+                                  <Form>
+                                    <FormGroup className="mb-0">
+                                    <input
+                                                       name="donation"
+                                                       type="checkbox"
+                                                       required= {true}
+                                                      // checked={false}
+                                                      checked={this.state.isChecked}
+                                                      />
+                                                       <b> I hereby confirm that I am deserving individual who fall into eligible category to avail obligatory charity / donation money.</b>                               
+                                    </FormGroup>
+                                  </Form>
+                                </div>
+                              </div>
+                            ) : null}
+
                             
 
                             {this.state.payment_method == "Card" ? (
