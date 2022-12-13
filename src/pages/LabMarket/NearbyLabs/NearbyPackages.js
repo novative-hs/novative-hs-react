@@ -712,7 +712,7 @@ class NearbyPackage extends Component {
                                 onClick={e => this.openPatientModal(e, nearbyPackage)}
                               >
                                 <span>
-                                View Test Description
+                                Test Description
                                 </span>
                               </Link>
                             </div>

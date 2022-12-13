@@ -322,7 +322,7 @@ class TestsOffered extends Component {
                             />
                           </div> */}
 
-                          <div className="mt-4 text-center">
+                          {/* <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
                               {offeredTest.test_name}{" "}
                             </h5>
@@ -350,7 +350,7 @@ class TestsOffered extends Component {
                                 <i className="fas fa-money-bill"></i>{" "}
                                 {/* {offeredTest.price
                                   .toString()
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                                 {offeredTest.price} Rs
                               </span>
                             </div>
@@ -359,7 +359,7 @@ class TestsOffered extends Component {
                                 <i className="fas fa-money-bill"></i>{" "}
                                 {/* {offeredTest.price
                                   .toString()
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
                                 {offeredTest.discount} % Discount By Lab
                               </span>
                             </div>
@@ -372,7 +372,7 @@ class TestsOffered extends Component {
                             {/* {offeredTest.discount_by_labhazir} % Discount By LabHazir
 
                               </span>
-                            </div> */}
+                            </div> 
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -401,7 +401,7 @@ class TestsOffered extends Component {
                                 <i className="fas fa-vial"></i> Test Performed:{" "}
                                 {offeredTest.is_test_performed}
                               </span>
-                          </div> */}
+                          </div>
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -418,8 +418,86 @@ class TestsOffered extends Component {
                                   this.openDescriptionModal(e, offeredTest)
                                 }
                               >
-                                <span>View Test Description</span>
+                                <span>Test Description</span>
                               </Link>
+                            </div>
+                            <Button
+                              type="button"
+                              color="primary"
+                              className="btn mt-3 me-1"
+                              onClick={() => this.handleAddToCart(offeredTest)}
+                            >
+                              <i className="bx bx-cart me-2" /> Add to cart
+                            </Button>
+                          </div> */}
+                           <div className="mt-4 text-center">
+                            <h5 className="mb-2 text-truncate">
+                              {offeredTest.test_name}
+                            </h5>
+                            {/* <div className="mt-3 text-center"> */}
+                              <Link
+                                to="#"
+                                onClick={e =>
+                                  this.openDescriptionModal(e, offeredTest)
+                                }
+                              >
+                                <span>Test Description</span>
+                              </Link>
+                            {/* </div> */}
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
+                              </span>
+                            </div>
+                            {offeredTest.discount>=0.01 && (
+                              <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Discount: {(offeredTest.discount*100).toFixed()} % 
+                              </span>
+                            </div>
+                            )}
+                            <div className="my-0">
+                              {" "}
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${offeredTest.lab_account_id}`
+                                }
+                                
+                                className="text-dark"
+                              >
+                                <span className="text-primary">
+                                  {offeredTest.lab_name}{" "}
+                                  
+                                </span>
+                              </Link>
+                              {/* <span className="text-muted me-2">
+                                <i className="fas fa-vial"></i> Lab:{" "}
+                                {offeredTest.lab_name}
+                              </span> */}
+                            </div>
+                            {/* <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                {offeredTest.discount_by_labhazir} % Discount By Labhazir
+                              </span>
+                            </div> */}
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-stopwatch"></i> Reporting
+                                Time: {offeredTest.duration_required}{" "}
+                                {offeredTest.duration_type}
+                              </span>
+                            </div>
+
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-home"></i> Home Sampling:{" "}
+                                {offeredTest.is_home_sampling_available}
+                              </span>
                             </div>
                             <Button
                               type="button"

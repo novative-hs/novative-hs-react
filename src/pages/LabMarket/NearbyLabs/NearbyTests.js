@@ -641,7 +641,7 @@ class NearbyTests extends Component {
                                   this.openDescriptionModal(e, nearbyTest)
                                 }
                               >
-                                <span>View Test Description</span>
+                                <span>Test Description</span>
                               </Link>
                             {/* </div> */}
                             <div className="my-0">
