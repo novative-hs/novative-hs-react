@@ -127,6 +127,7 @@ import AccountStatements from "pages/AccountStatements/account-statements";
 import MedicalTestSheet from "pages/OfferedTests/medical-test-sheet";
 import Disclaimer from "pages/Public/disclaimer";
 import AboutUs from "pages/Public/about-us";
+import TermsConditions from "pages/Public/terms-conditions";
 import ChangePassword from "pages/Authentication/ChangePassword";
 import DashboardAuditor from "pages/Dashboard-Auditor";
 import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
@@ -532,6 +533,7 @@ const patientPublicRoutes = [
   { path: "/contact-us", component: ContactUs },
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
+  { path: "/terms-conditions", component: TermsConditions},
   { path: "/nearby-labs/:uuid?", component: NearbyLabs },
   {
     path: "/nearby-tests/:uuid?",

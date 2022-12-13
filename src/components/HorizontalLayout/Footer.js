@@ -25,6 +25,13 @@ const Footer = () => {
             </Col>
             <Col md={1}>
               <div className="text-sm-end d-none d-sm-block">
+                <Link to="/terms-conditions">
+                  <span>Terms Conditions</span>
+                </Link>
+              </div>
+            </Col>
+            <Col md={1}>
+              <div className="text-sm-end d-none d-sm-block">
               <a href="https://www.linkedin.com/company/lab-hazir/" target="_blank"rel="noopener noreferrer">
                 <i className="bx bxl-linkedin bx-tada align-middle me-2 font-size-40" />{" "}
               </a>
