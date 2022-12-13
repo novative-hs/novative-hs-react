@@ -262,6 +262,7 @@ export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 export const GET_NEARBY_TESTS = `${API_ENDPOINT}/api/patient/tests-offered`;
 export const GET_NEARBY_PROFILES = `${API_ENDPOINT}/api/patient/profiles-offered`;
 export const GET_PROFILES = `${API_ENDPOINT}/api/medicaltest/profile-list`;
+export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
 export const GET_NEARBY_PACKAGES = `${API_ENDPOINT}/api/patient/packages-offered`;
 
 // CHECKOUT

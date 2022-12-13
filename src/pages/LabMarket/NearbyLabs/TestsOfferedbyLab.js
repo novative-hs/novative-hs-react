@@ -108,10 +108,26 @@ class TestsOffered extends Component {
       test_details: arg.test_details,
     });
   };
-  
+
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+  openDescriptionModal = (e, arg) => {
+    this.setState({
+      DescriptionModal: true,
+      description_in_english: arg.description_in_english,
+      description_in_urdu: arg.description_in_urdu,
+    });
+  };
+
+  toggleDescriptionModal = () => {
+    this.setState(prevState => ({
+      DescriptionModal: !prevState.DescriptionModal,
     }));
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
@@ -170,37 +186,84 @@ class TestsOffered extends Component {
             ) : null}
 
             <Row>
-            <Modal
-                                      isOpen={this.state.PatientModal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Included Tests
-                                                    </Label>
-                                                  </div>
-                                                  <textarea
-                                  name="test_details"
-                                  id="test_details"
-                                  rows="10"
-                                  cols="10"
-                                  value={this.state.test_details}
-                                  className="form-control"
-                                  readOnly={true}
-                                />
-                                                  {/* <div >
+              <Modal
+                isOpen={this.state.DescriptionModal}
+                className={this.props.className}
+              >
+                <ModalHeader toggle={this.toggleDescriptionModal} tag="h4">
+                  <span></span>
+                </ModalHeader>
+                <ModalBody>
+                  <Formik>
+                    <Form>
+                      <Row>
+                        <Col className="col-12">
+                          <div className="mb-3 row">
+                            <div className="col-md-3">
+                              <Label className="form-label">Description in english</Label>
+                            </div>
+                            <div>
+                              <textarea
+                                name="description_in_english"
+                                id="description_in_english"
+                                rows="4"
+                                cols="4"
+                                value={this.state.description_in_english}
+                                className="form-control"
+                                readOnly={true}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-3 row">
+                            <div className="col-md-3">
+                              <Label className="form-label">Description in urdu</Label>
+                            </div>
+                            <div>
+                              <textarea
+                                name="description_in_urdu"
+                                id="description_in_urdu"
+                                rows="4"
+                                cols="4"
+                                value={this.state.description_in_urdu}
+                                className="form-control"
+                                readOnly={true}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </Formik>
+                </ModalBody>
+              </Modal>
+              <Modal
+                isOpen={this.state.PatientModal}
+                className={this.props.className}
+              >
+                <ModalHeader toggle={this.togglePatientModal} tag="h4">
+                  <span></span>
+                </ModalHeader>
+                <ModalBody>
+                  <Formik>
+                    <Form>
+                      <Row>
+                        <Col className="col-12">
+                          <div className="mb-3 row">
+                            <div className="col-md-3">
+                              <Label className="form-label">
+                                Included Tests
+                              </Label>
+                            </div>
+                            <textarea
+                              name="test_details"
+                              id="test_details"
+                              rows="10"
+                              cols="10"
+                              value={this.state.test_details}
+                              className="form-control"
+                              readOnly={true}
+                            />
+                            {/* <div >
                                                     <input
                                                       type="text"
                                                       value={
@@ -210,13 +273,13 @@ class TestsOffered extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div> */}
-                                                </div>
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                  </Modal>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </Formik>
+                </ModalBody>
+              </Modal>
               <div className="mt- text-left">
                 <Link
                   to={
@@ -264,13 +327,13 @@ class TestsOffered extends Component {
                             {offeredTest.test_type != "Test" && (
                               <div className="mb-3">
                                 <Link
-                                to="#"
-                                onClick={e => this.openPatientModal(e, offeredTest)}
-                              >
-                                <span>
-                                  Included Tests
-                                </span>
-                              </Link>
+                                  to="#"
+                                  onClick={e =>
+                                    this.openPatientModal(e, offeredTest)
+                                  }
+                                >
+                                  <span>Included Tests</span>
+                                </Link>
                               </div>
                             )}
                             <div className="my-0">
@@ -348,16 +411,13 @@ class TestsOffered extends Component {
 
                             <div className="mt-3 text-center">
                               <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/test-descriptions/${offeredTest.test_id}/${this.props.match.params.uuid}`
-                                    : `/test-descriptions/${offeredTest.test_id}`
+                                to="#"
+                                onClick={e =>
+                                  this.openDescriptionModal(e, offeredTest)
                                 }
-                                className="fw-medium text-primary"
                               >
-                                {" "}
-                                View Test Description
-                              </Link>{" "}
+                                <span>View Test Description</span>
+                              </Link>
                             </div>
                             <Button
                               type="button"

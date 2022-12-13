@@ -830,6 +830,11 @@ export const getProfiles = () =>
   get(url.GET_PROFILES, {
     headers: getHeader(authHeader()),
   });
+
+export const getPackages = () =>
+  get(url.GET_PACKAGES, {
+    headers: getHeader(authHeader()),
+  });
 // Get Nearby Packages
 export const getNearbyPackages = data => {
   let formData = new FormData();

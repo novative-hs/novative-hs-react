@@ -107,7 +107,18 @@ class PendingComplaintsLabhazir extends Component {
         //   text: "Phone No.",
         //   sort: true,
         // },
-       
+        {
+          dataField: "registered_at",
+          text: "Registered at",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {new Date(complaint.registered_at).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
+        },
         {
           dataField: "message",
           text: "Message",
@@ -265,6 +276,9 @@ class PendingComplaintsLabhazir extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Complaints" breadcrumbItem="Pending" />
             <Row>
+            <div className="mb-3">
+                                                <p><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
+                                                </div>
               <Col lg="12">
                 <Card>
                   <CardBody>

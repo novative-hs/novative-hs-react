@@ -42,7 +42,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { productsData } from "common/data";
 
 //Import actions
-import { getNearbyPackages } from "store/packagemarket/actions";
+import { getNearbyPackages, getPackages } from "store/packagemarket/actions";
 import { addToCart } from "store/actions";
 import { any } from "prop-types";
 import "./nearbylabs.scss";
@@ -59,6 +59,7 @@ class NearbyPackage extends Component {
         : "",
       ratingvalues: [],
       nearbyPackages: [],
+      Packages: [],
       activeTab: "1",
       address: "",
       test_name: "",
@@ -92,7 +93,10 @@ class NearbyPackage extends Component {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
     });
-
+    const { Packages, onGetPackages } = this.props;
+    if (Packages && !Packages.length) {
+      console.log(onGetPackages(this.state.user_id));
+    }
     const { onGetNearbyPackages } = this.props;
 
     setTimeout(() => {
@@ -117,6 +121,22 @@ class NearbyPackage extends Component {
       }
     }, 1000);
   }
+  openDescriptionModal = (e, arg) => {
+    this.setState({
+      DescriptionModal: true,
+      description_in_english: arg.description_in_english,
+      description_in_urdu: arg.description_in_urdu,
+    });
+  };
+
+  toggleDescriptionModal = () => {
+    this.setState(prevState => ({
+      DescriptionModal: !prevState.DescriptionModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -411,7 +431,15 @@ class NearbyPackage extends Component {
 
   render() {
     const { page, totalPage } = this.state;
+    const { Packages } = this.props;
 
+    const cityList = [];
+    for (let i = 0; i < this.props.Packages.length; i++) {
+      cityList.push({
+        label: this.props.Packages[i].name,
+        value: this.props.Packages[i].id,
+      });
+    }
     return (
       <React.Fragment>
         <div className="page-content">
@@ -421,6 +449,56 @@ class NearbyPackage extends Component {
           <Container fluid>
             <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search byPackages" />
             <Row>
+            <Modal
+                isOpen={this.state.DescriptionModal}
+                className={this.props.className}
+              >
+                <ModalHeader toggle={this.toggleDescriptionModal} tag="h4">
+                  <span></span>
+                </ModalHeader>
+                <ModalBody>
+                  <Formik>
+                    <Form>
+                      <Row>
+                        <Col className="col-12">
+                          <div className="mb-3 row">
+                            <div className="col-md-3">
+                              <Label className="form-label">Description in english</Label>
+                            </div>
+                            <div>
+                              <textarea
+                                name="description_in_english"
+                                id="description_in_english"
+                                rows="4"
+                                cols="4"
+                                value={this.state.description_in_english}
+                                className="form-control"
+                                readOnly={true}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-3 row">
+                            <div className="col-md-3">
+                              <Label className="form-label">Description in urdu</Label>
+                            </div>
+                            <div>
+                              <textarea
+                                name="description_in_urdu"
+                                id="description_in_urdu"
+                                rows="4"
+                                cols="4"
+                                value={this.state.description_in_urdu}
+                                className="form-control"
+                                readOnly={true}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </Formik>
+                </ModalBody>
+              </Modal>
             <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
@@ -505,20 +583,29 @@ class NearbyPackage extends Component {
                     >
                       {/* Type field */}
                       <Row>
-                        <Col lg="3">
+                      <Col lg="3">
                           <div className="mb-3">
-                            <Input
-                              type="text"
-                              className="form-control"
-                              name="patient_name"
-                              placeholder="Search Package..."
-                              onChange={e =>
+                            <Select
+                              name="profile"
+                              component="Select"
+                              
+                              onChange={selectedGroup =>
                                 this.setState({
-                                  test_name: e.target.value,
+                                  test_name: selectedGroup.value,
                                 })
                               }
                               onBlur={this.handleBlur}
                               value={this.state.test_name}
+                              className="defautSelectParent"
+                              options={
+                                cityList
+                              }
+                              defaultValue={{
+                                label:
+                                  Packages.test_name,
+                                value:
+                                  Packages.test_name,
+                              }}
                             />
                           </div>
                         </Col>
@@ -682,6 +769,16 @@ class NearbyPackage extends Component {
                                 {nearbyPackage.duration_type}
                               </span>
                             </div>
+                            <div className="mt-3 text-center">
+                              <Link
+                                to="#"
+                                onClick={e =>
+                                  this.openDescriptionModal(e, nearbyPackage)
+                                }
+                              >
+                                <span>View Test Description</span>
+                              </Link>
+                            </div>
 
                             <Button
                               type="button"
@@ -757,6 +854,8 @@ NearbyPackage.propTypes = {
   nearbyPackages: PropTypes.array,
   onGetNearbyPackages: PropTypes.func,
   onAddToCart: PropTypes.func,
+  onGetPackages: PropTypes.func,
+  Packages: PropTypes.array,
   success: PropTypes.any,
   className: PropTypes.any,
   error: PropTypes.any,
@@ -765,6 +864,7 @@ NearbyPackage.propTypes = {
 
 const mapStateToProps = ({ PackageMarket, carts }) => ({
   nearbyPackages: PackageMarket.nearbyPackages,
+  Packages: PackageMarket.Packages,
   success: carts.success,
   error: carts.error,
 });
@@ -772,6 +872,7 @@ const mapStateToProps = ({ PackageMarket, carts }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyPackages: data => dispatch(getNearbyPackages(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
+  onGetPackages: () => dispatch(getPackages()),
 });
 
 export default connect(
