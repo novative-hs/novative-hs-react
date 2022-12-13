@@ -235,8 +235,35 @@ class ReferredPatientsList extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, b2bReferredPatient) => (
+          formatter: (cellContent, b2bReferredPatient, patientTestAppointment) => (
             <div className="d-flex gap-3">
+              {patientTestAppointment.status == "Result Uploaded" &&
+               patientTestAppointment.result_type == "File" ? (
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL +
+                      patientTestAppointment.result,
+                  }}
+                  target="_blank"
+                >
+                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
+                  Report
+                </Link>
+              ) : patientTestAppointment.status == "Result Uploaded" &&
+                 patientTestAppointment.result_type == "Link" ? (
+                <Link
+                  to={{
+                    pathname: patientTestAppointment.url,
+                  }}
+                  target="_blank"
+                >
+                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
+                  Report
+                </Link>
+              ) : (
+                <span>Not uploaded</span>
+              )}
               <Link className="text-success" to="#">
               <Tooltip title="Invoice">
               <Link
