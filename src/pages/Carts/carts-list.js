@@ -75,11 +75,17 @@ class CartList extends Component {
           ),
 
         },
- 
         {
           dataField: "discount",
           text: "Discount (%)",
           sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{(cart.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "total_balance",

@@ -934,9 +934,9 @@ class Checkout extends Component {
                                   <thead className="table-light">
                                     <tr>
                                       <th scope="col">Test Name</th>
-                                      <th scope="col">Price (Rs)</th>
-                                      <th scope="col">Discount by <br></br>(Lab)(Rs)</th>
-                                      <th scope="col">Discount by <br></br>(LabHazir)(Rs)</th>
+                                      <th scope="col">Price</th>
+                                      <th scope="col">Discount by <br></br>(Lab)</th>
+                                      <th scope="col">Discount by <br></br>(LabHazir)</th>
                                       {/* <th scope="col">Discount by <br></br>LabHazir(Against Test)</th>  */}
                                       <th scope="col">Net Payment</th>
 
