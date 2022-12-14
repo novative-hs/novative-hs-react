@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
+import Pdf from 'pdf/LabHazir - Terms & Conditions.pdf';
+
 
 const Footer = () => {
   return (
@@ -24,11 +26,9 @@ const Footer = () => {
               </div>
             </Col>
             <Col md={2}>
-              <div className="text-sm-end d-none d-sm-block">
-                <Link to="/terms-conditions">
-                  <span>Terms</span>
-                </Link>
-              </div>
+            <div className = "App">
+               <a href = {Pdf} rel="noopener">Terms</a>
+               </div>
             </Col>
             <Col md={1}>
               <div className="text-sm-end d-none d-sm-block">
