@@ -59,7 +59,7 @@ class CSRList extends Component {
         },
         {
           dataField: "photo",
-          text: "Photo",
+          text: "Name",
           sort: true,
           formatter: (cellContent, CSR) => (
             <>

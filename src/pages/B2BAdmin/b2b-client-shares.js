@@ -287,7 +287,8 @@ class B2bLabSharesList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B Client" breadcrumbItem="Shares" />
+            <Breadcrumbs title="B2B Client" breadcrumbItem="Shares"
+            />
             <Row>
               <Col lg="12">
                 <Card>

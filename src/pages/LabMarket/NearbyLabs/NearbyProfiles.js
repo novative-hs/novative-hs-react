@@ -782,6 +782,16 @@ class NearbyProfiles extends Component {
                                 {nearbyProfile.is_home_sampling_available}
                               </span>
                             </div>
+                            {/* <div className="mt-3 text-center">
+                              <Link
+                                to="#"
+                                onClick={e =>
+                                  this.openDescriptionModal(e, nearbyProfile)
+                                }
+                              >
+                                <span>View Test Description</span>
+                              </Link>
+                            </div> */}
                             <Button
                               type="button"
                               color="primary"

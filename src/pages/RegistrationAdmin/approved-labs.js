@@ -257,7 +257,7 @@ class ApprovedLabs extends Component {
                                       responsive
                                       ref={this.node}
                                     />
-                                         <Modal
+                                    <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
                                     >

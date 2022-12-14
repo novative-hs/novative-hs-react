@@ -139,7 +139,7 @@ class Payments extends Component {
                   onSubmit={values => {
                      // If no error messages then show wait message
                     //  setTimeout(() => {
-                     if (this.state.amount == (this.state.counter_discount + this.state.amount_received)) {
+                     if ((this.state.counter_discount + this.state.amount_received)==this.state.amount ) {
                       console.log("Amount:",this.state.amount);
                       console.log("Smount:",this.state.counter_discount);
                       console.log("Rmount:",this.state.amount_received);

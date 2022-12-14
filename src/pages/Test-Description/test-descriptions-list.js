@@ -60,11 +60,11 @@ class testDescriptionsList extends Component {
           text: "Name",
           sort: true,
         },
-        {
-          dataField: "method",
-          text: "Method",
-          sort: true,
-        },
+        // {
+        //   dataField: "method",
+        //   text: "Method",
+        //   sort: true,
+        // },
         {
           dataField: "description_in_english",
           text: "Description_in_English",
@@ -82,7 +82,7 @@ class testDescriptionsList extends Component {
 
   componentDidMount() {
     const { testDescriptions, onGetTestDescriptions } = this.props;
-    onGetTestDescriptions(this.state.user_id);
+    onGetTestDescriptions(this.props.match.params.id);
     this.setState({ testDescriptions });
   }
 
