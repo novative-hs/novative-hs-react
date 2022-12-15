@@ -130,6 +130,7 @@ class NearbyTests extends Component {
       DescriptionModal: true,
       description_in_english: arg.description_in_english,
       description_in_urdu: arg.description_in_urdu,
+      test_name:arg.test_name,
     });
   };
 
@@ -446,8 +447,10 @@ class NearbyTests extends Component {
                       <Row>
                         <Col className="col-12">
                           <div className="mb-3 row">
-                            <div className="col-md-3">
-                              <Label className="form-label">Description in english</Label>
+                            <div className="col-md-6">
+                            <Label className="form-label">{this.state.test_name}</Label>
+                            <br></br>
+                              <Label className="form-label">English</Label>
                             </div>
                             <div>
                               <textarea
@@ -463,7 +466,7 @@ class NearbyTests extends Component {
                           </div>
                           <div className="mb-3 row">
                             <div className="col-md-3">
-                              <Label className="form-label">Description in urdu</Label>
+                              <Label className="form-label">Urdu</Label>
                             </div>
                             <div>
                               <textarea

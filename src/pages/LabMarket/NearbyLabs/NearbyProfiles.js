@@ -465,8 +465,9 @@ class NearbyProfiles extends Component {
                       <Row>
                         <Col className="col-12">
                           <div className="mb-3 row">
-                            <div className="col-md-3">
-                              <Label className="form-label">Description in english</Label>
+                            <div className="col-md-6">
+                            <Label className="form-label">{this.state.test_name}</Label>
+                              <Label className="form-label">English</Label>
                             </div>
                             <div>
                               <textarea
@@ -482,7 +483,7 @@ class NearbyProfiles extends Component {
                           </div>
                           <div className="mb-3 row">
                             <div className="col-md-3">
-                              <Label className="form-label">Description in urdu</Label>
+                              <Label className="form-label">Urdu</Label>
                             </div>
                             <div>
                               <textarea
@@ -518,7 +519,7 @@ class NearbyProfiles extends Component {
                                             <Row>
                                               <Col className="col-12">
                                                 <div className="mb-3 row">
-                                                  <div className="col-md-3">
+                                                  <div className="col-md-6">
                                                     <Label className="form-label">
                                                     Test Description
                                                     </Label>

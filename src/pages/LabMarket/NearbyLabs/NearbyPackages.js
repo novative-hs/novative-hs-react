@@ -515,7 +515,7 @@ class NearbyPackage extends Component {
                                             <Row>
                                               <Col className="col-12">
                                                 <div className="mb-3 row">
-                                                  <div className="col-md-3">
+                                                  <div className="col-md-6">
                                                     <Label className="form-label">
                                                     Test Description
                                                     </Label>

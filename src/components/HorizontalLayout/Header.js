@@ -52,7 +52,7 @@ class Header extends Component {
 
     const { getCarts } = this.props;
     getCarts(this.state.user_id);
-    this.setState({ carts: this.props.carts });
+    this.setState({ carts: this.state.carts });
     // if (window.localStorage) {
   
     //   // If there is no item as 'reload'
@@ -69,6 +69,15 @@ class Header extends Component {
     //       localStorage.removeItem('reload');
     //   }
     // }
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { carts } = this.props;
+    if (
+      !isEmpty(carts) &&
+      size(prevProps.carts) !== size(carts)
+    ) {
+      this.setState({ carts: {} });
+    }
   }
   toggleSearch = () => {
     this.setState({ isSearch: !this.state.isSearch });
@@ -250,16 +259,14 @@ class Header extends Component {
                 ? `/cart/${this.props.match.params.uuid}`
                 : `/cart`
               }
-              className="btn btn-danger btn-rounded"
+              className="btn header-items noti-icon right-bar-toggle"
+              // className="btn btn-danger btn-rounded"
 
             >
 
+{/* bx bx-cart-alt bx-tada align-middle me-1 font-size-20 */}
+              <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-              <i className="bx bx-cart-alt bx-tada align-middle me-1 font-size-22" />{" "}
-              {/* {this.state.count} */}
-
-              
-             
                 {!isEmpty(this.props.carts) &&
                 
                   this.props.carts.slice(-1).pop().cart_quantity+this.state.count
