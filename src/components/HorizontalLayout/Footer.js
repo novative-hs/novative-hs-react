@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
-import Pdf from 'pdf/LabHazir - Terms & Conditions.pdf';
+import Pdf from 'pdf/terms.pdf';
 
 const Footer = () => {
   
@@ -32,7 +32,7 @@ const Footer = () => {
                 </Link>
               </div> */}
               <div className = "App">
-              <a href = {Pdf} target="_blank"rel="noopener noreferrer">Download Pdf</a>
+              <a href = {Pdf} rel="noopener noreferrer">Terms</a>
               </div>
             </Col>
             <Col md={1}>
