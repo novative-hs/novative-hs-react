@@ -32,7 +32,7 @@ const Footer = () => {
                 </Link>
               </div> */}
                <div className = "App">
-               <a href = {Pdf} target="_blank"rel="noopener noreferrer">Terms</a>
+               <a href = {Pdf} rel="noopener noreferrer">Terms</a>
                </div>
             </Col>
             <Col md={1}>
