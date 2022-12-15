@@ -533,7 +533,6 @@ const patientPublicRoutes = [
   { path: "/contact-us", component: ContactUs },
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
-  { path: "/terms-conditions", component: TermsConditions},
   { path: "/nearby-labs/:uuid?", component: NearbyLabs },
   {
     path: "/nearby-tests/:uuid?",
