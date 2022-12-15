@@ -107,8 +107,8 @@ class Checkout extends Component {
     }, 2000);
   };
 
-  handleProceedClick = () => {
-    const canProceed = this.checkForValidations();
+  handleFullProceedClick = () => {
+    const canProceed = this.checkForFullValidations();
     if (canProceed) {
       this.setState({
         checkoutData: {
@@ -119,7 +119,7 @@ class Checkout extends Component {
           patient_age: this.state.patient_age,
           patient_gender: this.state.patient_gender,
           // relationsip_with_patient: this.state.relationsip_with_patient,
-          patient_address: this.state.patient_address,
+          // patient_address: this.state.patient_address,
           city_id: this.state.city_id,
           // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
@@ -158,7 +158,7 @@ class Checkout extends Component {
     }
   };
 
-  checkForValidations = () => {
+  checkForFullValidations = () => {
     // Check if patient's name, age and appointment Booked for is filled
     if (
       this.state.patient_name &&
@@ -183,11 +183,91 @@ class Checkout extends Component {
           return false;
         }
       }
-      // If patient's payment method is not Card (Cash) then set isRequiredFilled to true
-      else {
+      // // If patient's payment method is not Card (Cash) then set isRequiredFilled to true
         this.setState({ isRequiredFilled: true });
         return true;
-      }
+    } else {
+      this.setState({ isRequiredFilled: false });
+      return false;
+    }
+  };
+
+  handleProceedClick = () => {
+    const canProceed = this.checkForValidations();
+    if (canProceed) {
+      this.setState({
+        checkoutData: {
+          uuid: this.props.match.params.uuid
+            ? this.props.match.params.uuid
+            : "",
+          patient_name: this.state.patient_name,
+          patient_age: this.state.patient_age,
+          patient_gender: this.state.patient_gender,
+          // relationsip_with_patient: this.state.relationsip_with_patient,
+          // patient_address: this.state.patient_address,
+          city_id: this.state.city_id,
+          // patient_district: this.state.patient_district,
+          appointment_requested_at: this.state.appointment_requested_at,
+          // is_home_sampling_availed: this.state.is_home_sampling_availed,
+          // payment_method: this.state.payment_method,
+          // card_number: this.state.card_number,
+          // name_on_card: this.state.name_on_card,
+          // expiry_date: this.state.expiry_date,
+          // cvv_code: this.state.cvv_code,
+        },
+      });
+
+      // API call to get the checkout items
+      // const { onAddCheckoutData } = this.props;
+      // setTimeout(() => {
+      //   onAddCheckoutData(this.state.checkoutData, this.state.user_id);
+      // }, 2000);
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+      setTimeout(() => {
+        if (this.props.checkedoutData) {
+          this.toggleTab("2")
+        }
+      }, 1000);
+
+      // setTimeout(() => {
+      //   this.setState({ checkedoutData: this.props.checkedoutData });
+
+      //   // If checkout operation is successful.
+      //   if (this.props.checkedoutData) {
+      //     this.props.history.push("/nearby-labs");
+      //   }
+      // }, 4000);
+    }
+  };
+
+  checkForValidations = () => {
+    // Check if patient's name, age and appointment Booked for is filled
+    if (
+      this.state.patient_name &&
+      // this.state.patient_address &&
+      this.state.city_id &&
+      // this.state.patient_district &&
+      this.state.patient_age &&
+      this.state.appointment_requested_at
+    ) {
+      // Check if patient's card information is filled in case of payment method is Card
+      // if (this.state.payment_method == "Card") {
+      //   if (
+      //     this.state.card_number &&
+      //     this.state.name_on_card &&
+      //     this.state.expiry_date &&
+      //     this.state.cvv_code
+      //   ) {
+      //     this.setState({ isRequiredFilled: true });
+      //     return true;
+      //   } else {
+      //     this.setState({ isRequiredFilled: false });
+      //     return false;
+      //   }
+      // }
+      // // If patient's payment method is not Card (Cash) then set isRequiredFilled to true
+        this.setState({ isRequiredFilled: true });
+        return true;
     } else {
       this.setState({ isRequiredFilled: false });
       return false;
@@ -536,12 +616,16 @@ class Checkout extends Component {
                             <Col sm="6">
                               <div className="text-end">
                               <button
-                              component={Link}
-                              onClick={() => {
-                                this.toggleTab("2");
-                              }}
-                              to="/checkout"
-                              className="btn btn-success mb-4"
+                                component={Link}
+                                onClick={this.handleProceedClick}
+                                to="/checkout"
+                                className="btn btn-success mb-4"
+                              // component={Link}
+                              // onClick={() => {
+                              //   this.toggleTab("2");
+                              // }}
+                              // to="/checkout"
+                              // className="btn btn-success mb-4"
                             >
                               <i className="mdi mdi-truck-fast me-1" />{" "}
                               Next{" "}
@@ -1100,7 +1184,7 @@ class Checkout extends Component {
                               <div className="text-end">
                                 <button
                                   component={Link}
-                                  onClick={this.handleProceedClick}
+                                  onClick={this.handleFullProceedClick}
                                   to="/checkout"
                                   className="btn btn-success mb-4"
                                   disabled={this.state.checkoutSuccess}
