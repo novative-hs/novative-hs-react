@@ -31,9 +31,9 @@ const Footer = () => {
                   <span>Terms</span>
                 </Link>
               </div> */}
-              <div className = "App">
-              <a href = {Pdf} rel="noopener noreferrer">Terms</a>
-              </div>
+               <div className = "App">
+               <a href = {Pdf} target="_blank"rel="noopener noreferrer">Terms</a>
+               </div>
             </Col>
             <Col md={1}>
               <div className="text-sm-end d-none d-sm-block">

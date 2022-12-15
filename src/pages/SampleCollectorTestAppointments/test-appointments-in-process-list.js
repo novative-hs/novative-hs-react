@@ -268,11 +268,11 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
           text: "Invoice",
           isDummyField: true,
           editable: false,
-          formatter: (cellContent, testAppointment) => (
+          formatter: (cellContent, sampleCollector) => (
             <>
               <Link
                 className="btn btn-primary btn-rounded font-size-10"
-                to={`/lab-invoice-detail/${testAppointment.id}`}
+                to={`/collector-invoice-detail/${sampleCollector.id}`}
               >
                 Invoice
               </Link>
