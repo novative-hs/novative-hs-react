@@ -127,6 +127,7 @@ import AccountStatements from "pages/AccountStatements/account-statements";
 import MedicalTestSheet from "pages/OfferedTests/medical-test-sheet";
 import Disclaimer from "pages/Public/disclaimer";
 import AboutUs from "pages/Public/about-us";
+import TermsConditions from "pdf/LabHazir - Terms & Conditions.pdf";
 import ChangePassword from "pages/Authentication/ChangePassword";
 import DashboardAuditor from "pages/Dashboard-Auditor";
 import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
@@ -226,7 +227,6 @@ const publicRoutes = [
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
-
 
 ];
 
@@ -533,6 +533,7 @@ const patientPublicRoutes = [
   { path: "/contact-us", component: ContactUs },
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
+  { path: "/terms", component: TermsConditions},
   { path: "/nearby-labs/:uuid?", component: NearbyLabs },
   {
     path: "/nearby-tests/:uuid?",

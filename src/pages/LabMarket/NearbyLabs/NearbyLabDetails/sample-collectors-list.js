@@ -220,7 +220,7 @@ class LabSampleCollectors extends Component {
                 )}
               </Row>
 
-              <Row>
+              {/* <Row>
                 <Col lg="12">
                   <Pagination className="pagination pagination-rounded justify-content-end mb-2">
                     <PaginationItem disabled={page === 1}>
@@ -249,7 +249,7 @@ class LabSampleCollectors extends Component {
                     </PaginationItem>
                   </Pagination>
                 </Col>
-              </Row>
+              </Row> */}
             </Row>
           </Container>
         </div>
