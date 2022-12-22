@@ -730,6 +730,24 @@ class NearbyPackage extends Component {
                               </span>
                             </div>
                             )}
+                            {nearbyPackage.all_discount_by_labhazir + nearbyPackage.discount_by_labhazir>=0.01 && (
+                              <div className="my-0">
+                              <span className="text-success" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Discount LabHazir: {((nearbyPackage.all_discount_by_labhazir*100)+(nearbyPackage.discount_by_labhazir*100)).toFixed()} % 
+                              </span>
+                              
+                            </div>
+                            )}
+                              {/* {nearbyPackage.discount_by_labhazir>=0.01 && (
+                              <div className="my-0">
+                              <span className="text-success" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                discount labhazir to Lab: {(nearbyPackage.discount_by_labhazir*100).toFixed()} % 
+                              </span>
+                              
+                            </div>
+                            )} */}
                             
                             <div className="my-0">
                               <Link

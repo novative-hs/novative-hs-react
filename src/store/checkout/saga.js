@@ -36,8 +36,10 @@ function* fetchCheckoutItems(object) {
     const response = yield call(
       getCheckoutItems,
       object.payload.id,
-      object.payload.is_home_sampling_availed
+      object.payload.is_home_sampling_availed,
+      object.payload.is_state_sampling_availed,
     );
+    console.log("object saga",object)
     yield put(getCheckoutItemsSuccess(response.data));
   } catch (error) {
     yield put(getCheckoutItemsFail(error));

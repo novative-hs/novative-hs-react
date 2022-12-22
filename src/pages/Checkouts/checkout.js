@@ -64,6 +64,7 @@ class Checkout extends Component {
       // patient_district: "",
       appointment_requested_at: "",
       is_home_sampling_availed: "",
+      is_state_sampling_availed: "",
       payment_method: "Card",
       card_number: "",
       name_on_card: "",
@@ -93,13 +94,33 @@ class Checkout extends Component {
     this.setState({ selectedGroup });
   };
 
-  handleHomeSamplingChange = e => {
-    this.setState({ is_home_sampling_availed: e.target.value });
+
+  handleStateSamplingChange = e => {
+    this.setState({ 
+      is_state_sampling_availed: e.target.value
+     });
+
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
     setTimeout(() => {
-      onGetCheckoutItems(this.state.user_id, e.target.value);
+      onGetCheckoutItems(this.state.user_id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed);
+    }, 1000);
+
+    setTimeout(() => {
+      this.setState({ checkoutItems: this.props.checkoutItems });
+    }, 2000);
+  };
+
+  handleHomeSamplingChange = e => {
+    this.setState({ 
+      is_home_sampling_availed: e.target.value});
+
+
+    // API call to get the checkout items
+    const { onGetCheckoutItems } = this.props;
+    setTimeout(() => {
+      onGetCheckoutItems(this.state.user_id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed );
     }, 1000);
 
     setTimeout(() => {
@@ -124,6 +145,7 @@ class Checkout extends Component {
           // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
           is_home_sampling_availed: this.state.is_home_sampling_availed,
+          is_state_sampling_availed: this.state.is_state_sampling_availed,
           payment_method: this.state.payment_method,
           card_number: this.state.card_number,
           name_on_card: this.state.name_on_card,
@@ -208,7 +230,6 @@ class Checkout extends Component {
           city_id: this.state.city_id,
           // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
-          // is_home_sampling_availed: this.state.is_home_sampling_availed,
           // payment_method: this.state.payment_method,
           // card_number: this.state.card_number,
           // name_on_card: this.state.name_on_card,
@@ -651,6 +672,7 @@ class Checkout extends Component {
                               Please choose whether you want to avail home
                               sampling services for the following tests
                             </p>
+                          
                             <FormGroup className="mb-4">
                               <select
                                 className="form-control select2"
@@ -658,15 +680,15 @@ class Checkout extends Component {
                                 name="is_home_sampling_availed"
                                 onChange={this.handleHomeSamplingChange}
                               >
-                                 <option value="">Select</option>
+                                 <option value="">Please Select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                               </select>
                             </FormGroup>
                            
                             {this.state.is_home_sampling_availed=="Yes" &&
-                                                    (
-                                                        <FormGroup className="mb-4" row>
+                              (
+                              <FormGroup className="mb-4" row>
                                 <Label
                                   htmlFor="patient-name"
                                   md="2"
@@ -693,11 +715,48 @@ class Checkout extends Component {
                                   />
                                 </Col>
                               </FormGroup>          
-                                                    )}
-
+                            )}
+                             
+                            {this.state.is_home_sampling_availed=="Yes" &&
+                              (
+                              <FormGroup className="mb-4" row>
+                           
+                                <Label
+                                  htmlFor="patient-name"
+                                  md="2"
+                                  className="col-form-label"
+                                >
+                                  Urgent Sampling
+                                  <span
+                                    style={{ color: "#f46a6a" }}
+                                    className="font-size-18"
+                                  >
+                                  </span>
+                                </Label>
+                                <Col md="10">
+                                <select
+                                className="form-control select2"
+                                title="state-sampling"
+                                name="is_state_sampling_availed"
+                                onChange={this.handleStateSamplingChange}
+                              >
+                                <option value="">Please Select</option>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                              </select>
+                              <span className="text-primary font-size-12">
+                                    <strong>
+                                      Note:    Please choose whether you want to avail Urgent sampling service, this will include extra charges.
+                                    </strong>
+                                  </span>
+                                </Col>
+                              </FormGroup>          
+                            )}
+                       
                             <Table >
                               <thead className="table-light">
                                 <tr>
+                                  <th scope="col">Home Sampling</th>
                                   <th scope="col">Test name</th>
                                   <th scope="col">Lab name</th>
                                 </tr>
@@ -707,6 +766,8 @@ class Checkout extends Component {
                                   (homeSampledTest, key) => (
                                     // homeSampledTest.is_home_sampling_available == "Yes" &&(
                                     <tr key={"_homeSampledTest_" + key}>
+                                      <td>{homeSampledTest.is_home_sampling_available}</td>
+
                                       <td>
                                         <h5 className="font-size-14">
                                           <a
@@ -724,6 +785,8 @@ class Checkout extends Component {
                                 )}
                               </tbody>
                             </Table>
+
+                      
                             <Row className="mt-4">
                             <Col sm="6">
                               {/* <Link
@@ -754,6 +817,7 @@ class Checkout extends Component {
                             </Col>
                           </Row>
                           </div>
+                          
                         </TabPane>
                       
                         <TabPane
@@ -848,13 +912,13 @@ class Checkout extends Component {
                                   <Form>
                                     <FormGroup className="mb-0">
                                     <input
-                                                       name="donation"
-                                                       type="checkbox"
-                                                       required= {true}
-                                                      // checked={false}
-                                                      checked={this.state.isChecked}
-                                                      />
-                                                       <b> I hereby confirm that I am deserving individual who fall into eligible category to avail obligatory charity / donation money.</b>                               
+                                      name="donation"
+                                      type="checkbox"
+                                      required= {true}
+                                    // checked={false}
+                                    checked={this.state.isChecked}
+                                    />
+                                      <b> I hereby confirm that I am deserving individual who fall into eligible category to avail obligatory charity / donation money.</b>                               
                                     </FormGroup>
                                   </Form>
                                 </div>
@@ -975,16 +1039,6 @@ class Checkout extends Component {
                           </div>
                           <Row className="mt-4">
                             <Col sm="6">
-                              {/* <Link
-                                component={Link}
-                                onClick={() => {
-                                  this.toggleTab("2");
-                                }}                                
-                                className="btn text-muted d-none d-sm-inline-block btn-link"
-                              >
-                                <i className="mdi mdi-arrow-left me-1" /> Back
-                                {" "}
-                              </Link> */}
                             </Col>
                             
                             <Col sm="6">
@@ -1019,8 +1073,8 @@ class Checkout extends Component {
                                     <tr>
                                       <th scope="col">Test Name</th>
                                       <th scope="col">Price</th>
-                                      <th scope="col">Discount by <br></br>(Lab)</th>
-                                      <th scope="col">Discount by <br></br>(LabHazir)</th>
+                                      {/* <th scope="col">Discount by <br></br>(Lab)</th> */}
+                                      <th scope="col">Sum Of Discount <br></br>(Lab+LabHazir)</th>
                                       {/* <th scope="col">Discount by <br></br>LabHazir(Against Test)</th>  */}
                                       <th scope="col">Net Payment</th>
 
@@ -1043,17 +1097,17 @@ class Checkout extends Component {
                                             
                                                 </td>
                                                 
-                                                <td><p className="float-end"> 
+                                                <td><p className="font-size-14 text-truncate"> 
                                                 {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                                                  </td>
-                                                <td>
+                                                {/* <td>
                                                   <p className="float-end">
                                                   {item.discount_per}
                                                   </p>
-                                                </td>
+                                                </td> */}
                                                 <td>
-                                                  <p className="float-end">
-                                                  {item.discount_by_labhazir_per+item.discount_by_labhazird_by_test_per}
+                                                  <p className="font-size-14 text-truncate">
+                                                  {item.discount_per+item.discount_by_labhazir_per+item.discount_by_labhazird_by_test_per}
                                                   </p>
                                                 </td>
                                                 {/* <td>
@@ -1124,7 +1178,8 @@ class Checkout extends Component {
                                             0 && (
                                             <tr key={"_checkoutItem_" + key}>
                                               <td colSpan="6">
-                                                <div className="bg-primary bg-soft p-3 rounded">
+                                              {this.state.is_home_sampling_availed=="Yes"  &&  (
+                                                          <div className="bg-primary bg-soft p-3 rounded">
                                                   <h5 className="font-size-14 text-primary mb-0">
                                                     <i className="fas fa-shipping-fast me-2" />{" "}
                                                     Home Sampling Charges{" "}
@@ -1133,12 +1188,15 @@ class Checkout extends Component {
                                                       } */}
                                                     <span className="float-end">
                                                       Rs.{" "}
-                                                      {
-                                                        checkoutItem.lab_home_sampling_charges.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                                      {                              
+                                                        checkoutItem.total_sampling_charges.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                                       }
+                                                      
                                                     </span>
                                                   </h5>
                                                 </div>
+                                                        )}
+                                               
                                               </td>
                                             </tr>
                                           )}
@@ -1232,8 +1290,8 @@ const mapStateToProps = state=> ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetHomeSampledTests: id => dispatch(getHomeSampledTests(id)),
-  onGetCheckoutItems: (id, is_home_sampling_availed) =>
-    dispatch(getCheckoutItems(id, is_home_sampling_availed)),
+  onGetCheckoutItems: (id, is_home_sampling_availed, is_state_sampling_availed) =>
+    dispatch(getCheckoutItems(id, is_home_sampling_availed, is_state_sampling_availed)),
   onAddCheckoutData: (checkoutData, id) =>
     dispatch(addCheckoutData(checkoutData, id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),

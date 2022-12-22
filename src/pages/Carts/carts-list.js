@@ -44,11 +44,6 @@ class CartList extends Component {
           hidden: true,
           formatter: (cellContent, cart) => <>{cart.id}</>,
         },
-        // {
-        //   dataField: "patient_name",
-        //   text: "Patient name",
-        //   sort: true,
-        // },
         {
           dataField: "lab_name",
           text: "Lab name",
@@ -91,13 +86,13 @@ class CartList extends Component {
           dataField: "total_balance",
           text: "After Discount",
           sort: true,
-          formatter: (cellContent, cart) => (
-            <>
-              {(
-                <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-              )}
-            </>
-          ),
+          // formatter: (cellContent, cart) => (
+          //   <>
+          //     {(
+          //       <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+          //     )}
+          //   </>
+          // ),
         },
         {
           dataField: "menu",

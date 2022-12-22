@@ -120,6 +120,18 @@ class PendingComplaintsLabhazir extends Component {
           ),
         },
         {
+          dataField: "registered_at",
+          text: "Pending Since",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+              {new Date().getDate() - new Date(complaint.registered_at).getDate()} days
+              </span>
+            </>
+          ),
+        },
+        {
           dataField: "message",
           text: "Message",
           sort: true,

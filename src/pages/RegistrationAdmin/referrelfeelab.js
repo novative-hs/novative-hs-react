@@ -450,7 +450,7 @@ class ReferrelLabFee extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             shared_percentage: Yup.number().required(
-                                              "Please enter Referrel Fee from 0 to 0.9"
+                                              "Please enter Referrel Fee from 0 to 1.0"
                                             ),
                                           })}
                                           onSubmit={values => {
@@ -499,7 +499,7 @@ class ReferrelLabFee extends Component {
                                                       name="shared_percentage"
                                                       type="number"
                                                       step="0.01"
-                                                      min="0.30"
+                                                      min="0.01"
                                                       max="1.00"
                                                       value={
                                                         this.state

@@ -101,7 +101,7 @@ class InvoiceDetail extends Component {
 
                         <Col sm="6" className="mt-3 text-sm-end">
                           <address>
-                            <strong>Order Date:</strong>
+                            <strong>Order Detail:</strong>
                             <br />
                             {new Date(
                               this.props.invoiceDetail[0].invoice_generated_at
@@ -122,7 +122,8 @@ class InvoiceDetail extends Component {
                           <thead>
                             <tr>
                               <th style={{ width: "70px" }}>No.</th>
-                              <th>Test Name</th>
+                              <th className="text-start">Test Name</th>
+                              <th className="text-start">Test Type</th>
                               <th className="text-end">Price</th>
                               <th className="text-end">Discount By Lab</th>
                               <th className="text-end">Discount By LabHazir</th>
@@ -139,13 +140,14 @@ class InvoiceDetail extends Component {
                               (item, key) => (
                                 <tr key={key}>
                                   <td>{key + 1}</td>
-                                  <td>{item.test_name}</td>
-                                  <td className="text-end">{item.price}</td>
+                                  <td className="text-start">{item.test_name}</td>
+                                  <td className="text-start">{item.test_categories}</td>
+                                  <td className="text-end">{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
                                   <td className="text-end">{item.discount}{"%"}</td>
                                   <td className="text-end">{item.discount_by_labhazir+item.discount_by_labhazird_by_test}{"%"}</td>
                                    {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
                                    <td className="text-end">
-                                  {item.total_test_cost
+                                  {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   //  -
                                   //   this.props.invoiceDetail[0]
                                   //     .home_sampling_charges
@@ -155,18 +157,18 @@ class InvoiceDetail extends Component {
                               )
                             )}
                             <tr>
-                              <td colSpan="5" className="border-0 text-end">
-                                <strong>Home Sampling</strong>
+                              <td colSpan="6" className="border-0 text-end">
+                                <strong>Sampling Fee</strong>
                               </td>
                               <td className="border-10 text-end">
                                 {
                                   this.props.invoiceDetail[0]
-                                    .home_sampling_charges
+                                    .home_sampling_charges.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                             </tr>
                             <tr>
-                              <td colSpan="5" className="border-10 text-end">
+                              <td colSpan="6" className="border-10 text-end">
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10 text-end">
@@ -180,6 +182,12 @@ class InvoiceDetail extends Component {
                           </tbody>
                         </Table>
                       </div>
+                      <div> <span className="text-danger font-size-12">
+                                    <strong> 
+                                    Note: Numbers may not add up due to rounding, it is inconsequential enough to be ignored.
+                                    </strong>
+                                  </span>
+                                  </div>
                       <div className="d-print-none">
                         <div className="float-end">
                           <Link

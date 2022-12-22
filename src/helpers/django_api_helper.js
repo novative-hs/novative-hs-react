@@ -715,6 +715,7 @@ export const updateLabSettings = (labSettings, id) => {
     labSettings.complaint_handling_phone
   );
   formData.append("home_sampling_charges", labSettings.home_sampling_charges);
+  formData.append("state_sampling_charges", labSettings.state_sampling_charges);
   formData.append(
     "is_digital_payment_accepted",
     labSettings.is_digital_payment_accepted
@@ -738,17 +739,6 @@ export const updateLabPayments = (labPayments, id) => {
   formData.append("counter_discount", labPayments.counter_discount);
   formData.append("amount_received", labPayments.amount_received);
   formData.append("received_by", labPayments.received_by);
-
-  // if (labPayments.amount == labPayments.amount_received) {
-  //   formData.append("counter_discount", labPayments.counter_discount == 0);
-  //   formData.append("amount_received", labPayments.amount_received);
-  //   formData.append("received_by", labPayments.received_by);
-  //   } else {
-  //   formData.append("counter_discount", labPayments.counter_discount);
-  //   formData.append("amount_received", labPayments.amount_received);
-  //   formData.append("received_by", labPayments.received_by);
-  // }
-
   return axios.put(`${url.UPDATE_LAB_PAYMENTS}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -976,9 +966,13 @@ export const getHomeSampledTests = id =>
   });
 
 // Get Checkout Items
-export const getCheckoutItems = (id, is_home_sampling_availed) => {
+export const getCheckoutItems = (id, is_home_sampling_availed, is_state_sampling_availed) => {
   let formData = new FormData();
   formData.append("is_home_sampling_availed", is_home_sampling_availed);
+  formData.append("is_state_sampling_availed", is_state_sampling_availed);
+  console.log("different values", id, is_home_sampling_availed);
+  console.log("different values", id, is_state_sampling_availed);
+
 
   return axios.post(`${url.GET_CHECKOUT_ITEMS}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1008,11 +1002,17 @@ export const addCheckoutData = (checkoutData, id) => {
     "is_home_sampling_availed",
     checkoutData.is_home_sampling_availed
   );
+  formData.append(
+    "is_state_sampling_availed",
+    checkoutData.is_state_sampling_availed
+  );
   formData.append("payment_method", checkoutData.payment_method);
   formData.append("card_number", checkoutData.card_number);
   formData.append("name_on_card", checkoutData.name_on_card);
   formData.append("expiry_date", checkoutData.expiry_date);
   formData.append("cvv_code", checkoutData.cvv_code);
+
+  console.log("add different data with state sampling", checkoutData);
 
   return axios.post(`${url.ADD_CHECKOUT_DATA}/${id}`, formData, {
     headers: getHeader(authHeader()),

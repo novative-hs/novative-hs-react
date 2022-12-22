@@ -88,11 +88,15 @@ class AssignedAudits extends Component {
         },
         {
           dataField: "assigned_at",
-          text: "Assigned at",
+          text: "Assigned since",
           sort: true,
           formatter: (cellContent, audit) => (
             <>
-              <span>{new Date(audit.assigned_at).toLocaleString("en-US")}</span>
+              <span>
+              {new Date().getDate() - new Date(audit.assigned_at).getDate()} days
+
+                {/* {new Date(audit.assigned_at).toLocaleString("en-US")} */}
+                </span>
             </>
           ),
         },

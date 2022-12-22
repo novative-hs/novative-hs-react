@@ -657,10 +657,29 @@ class NearbyTests extends Component {
                               <div className="my-0">
                               <span className="text-danger" >
                                 <i className="fas fa-money-bill"></i>{" "}
-                                Discount: {(nearbyTest.discount*100).toFixed()} % 
+                                Discount Lab: {(nearbyTest.discount*100).toFixed()} % 
                               </span>
+                              
                             </div>
                             )}
+                            {nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir >=0.01 && (
+                              <div className="my-0">
+                              <span className="text-success" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Discount LabHazir: {((nearbyTest.all_discount_by_labhazir*100)+(nearbyTest.discount_by_labhazir*100)).toFixed()} % 
+                              </span>
+                              
+                            </div>
+                            )}
+                               {/* {nearbyTest.discount_by_labhazir>=0.01 && (
+                              <div className="my-0">
+                              <span className="text-success" >
+                                <i className="fas fa-money-bill"></i>{" "}
+                                Discount Lab: {(nearbyTest.discount_by_labhazir*100).toFixed()} % 
+                              </span>
+                              
+                            </div>
+                            )} */}
                             <div className="my-0">
                               {" "}
                               <Link

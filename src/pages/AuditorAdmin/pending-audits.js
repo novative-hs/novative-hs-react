@@ -122,6 +122,19 @@ class PendingAudits extends Component {
           ),
         },
         {
+          dataField: "generated_at",
+          text: "Pending Since",
+          sort: true,
+          formatter: (cellContent, audit) => (
+            <>
+              <span>
+
+              {new Date().getDate() - new Date(audit.generated_at).getDate()} days
+              </span>
+            </>
+          ),
+        },
+        {
           dataField: "data",
           text: "id",
           isDummyField: true,
