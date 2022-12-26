@@ -145,12 +145,12 @@ class Payments extends Component {
                       console.log("Rmount:",this.state.amount_received);
                       this.setState({ isPaymentUpdated: true }
                         );
-                      setTimeout(() => {
+                      setTifmeout(() => {
                         this.props.history.push("/in-process-test-appointments");}, 5000);
                       
                      }
                      
-                     if (this.state.amount != (this.state.counter_discount + this.state.amount_received)){
+                     if (this.state.amount !== (this.state.counter_discount + this.state.amount_received)){
                       console.log("hell",this.state.counter_discount + this.state.amount_received)
                       this.setState({ isPaymentFailed: true });
                      }              

@@ -134,6 +134,8 @@ import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
 
 // registration admin
 import PendingLabs from "pages/RegistrationAdmin/pending-labs";
+import labsListPendingFeeOffered from "pages/RegistrationAdmin/labs-list-pending-fee";
+import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-percentage-pending-Fee";
 import ApprovedLabs from "pages/RegistrationAdmin/approved-labs";
 import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
 import PendingB2bClients from "pages/RegistrationAdmin/pending-b2b-clients";
@@ -209,6 +211,7 @@ import Payments from "pages/Authentication/Payments";
 import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
 import { invoiceList } from "common/data";
+import labsListPendingFee from "store/labs-list-pending/reducer";
 
 // All general public routes will be listed here
 const publicRoutes = [
@@ -439,6 +442,10 @@ const auditorAuthProtectedRoutes = [
 
 const registrationAdminAuthProtectedRoutes = [
   { path: "/pending-labs", component: PendingLabs },
+  { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
+  {
+    path: "/shared-percentage-pending-Fee/:id",component: sharedPercentagePendingFeeTests,
+  },
   { path: "/approved-labs", component: ApprovedLabs },
   { path: "/unapproved-labs", component: UnapprovedLabs },
   { path: "/pending-b2b-clients", component: PendingB2bClients },

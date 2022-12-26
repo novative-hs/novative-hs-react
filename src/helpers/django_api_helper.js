@@ -1467,6 +1467,42 @@ export const approveUnapproveB2BClient = data => {
     headers: getHeader(authHeader()),
   });
 };
+// Pending offered test labs list
+
+export const getLabsListPendingFee = ()=>
+  get(`${url.GET_LABS_LIST_PENDING_FEE}`, {
+    headers: getHeader(authHeader()),
+  });
+
+
+export const getSharedPercentagePendingFeeTests = id =>
+  get(`${url.GET_SHARED_PERCENTAGE_PENDING_FEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const updateSharedPercentagePendingFeeTest = data => {
+    let formData = new FormData();
+  
+    formData.append("shared_percentage", data.shared_percentage);
+  
+    return axios.put(`${url.UPDATE_SHARED_PERCENTAGE_PENDING_FEE}/${data.id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+  
+export const updateSharedPercentageAllPendingFeeTest = data => {
+    let formData = new FormData();
+    // formData.append("account_id", id);
+    formData.append("shared_percentage", data.shared_percentage);
+    // formData.append("shared_percentage", data.shared_percentage);
+  
+    return axios.put(`${url.UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE}/${data.lab_id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+
+
+
+// ------------- Donors requests START -------------
 
 export const getPendingDonors = () =>
   get(`${url.GET_PENDING_DONORS}`, {

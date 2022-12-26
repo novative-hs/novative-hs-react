@@ -96,7 +96,7 @@ export const GET_DISCOUNT_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discoun
 export const UPDATE_DISCOUNT_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-test`;
 export const UPDATE_DISCOUNT_ALL_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-all-tests`;
 export const GET_LABS_LIST = `${API_ENDPOINT}/api/marketer-admin/labs-list`;
-export const GET_DISCOUNT_LABHAZIRTOLABS = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-test`;
+export const GET_DISCOUNT_LABHAZIRTOLABS = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-test`; 
 export const UPDATE_DISCOUNT_LABHAZIRTOLAB = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-test`;
 export const UPDATE_DISCOUNT_ALL_LABHAZIRTOLAB = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-all-tests`;
 
@@ -105,6 +105,10 @@ export const GET_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/referre
 export const GET_PUT_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/approve-referrel-fee-labhazir`;
 export const UPDATE_REFERREL_FEE = `${API_ENDPOINT}/api/registration-admin/update-referrel-fee-labhazir`;
 export const UPDATE_REFERREL_ALL_FEE = `${API_ENDPOINT}/api/registration-admin/all-referrel-fee-labhazir`;
+export const GET_LABS_LIST_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/lab-list-pending`;
+export const GET_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
+export const UPDATE_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
+export const UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_all_pending_tests`;
 
 // DISCOUNT LAB
 export const GET_DISCOUNT_LAB = `${API_ENDPOINT}/api/lab/offered-test-discount-list`;

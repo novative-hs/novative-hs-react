@@ -94,6 +94,13 @@ export * from "./csr-territory-list/actions";
 // auditor territories list
 export * from "./auditor-territory-list/actions";
 
+// Lab List Pending
+export * from "./labs-list-pending/actions";
+
+
+// shared percentage pending fee
+export * from "./shared-percentage-pending-fee/actions";
+
 // feedbacks
 export * from "./feedbacks/actions";
 

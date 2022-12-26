@@ -32,6 +32,8 @@ import offeredTestsSaga from "./offered-tests/saga";
 import pathologistsSaga from "./pathologists/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
+import LabsListPendingFeeSaga from "./labs-list-pending/saga";
+import sharedPercentagePendingFeeTestsSaga from "./shared-percentage-pending-fee/saga";
 import sampleCollectorsSaga from "./sample-collectors/saga";
 import sampleCollectorDatasSaga from "./sample-collector-test-appointments/saga";
 import qualityCertificatesSaga from "./quality-certificates/saga";
@@ -118,6 +120,8 @@ export default function* rootSaga() {
     fork(offeredTestsSaga),
     fork(pathologistsSaga),
     fork(cartsSaga),
+    fork(LabsListPendingFeeSaga),
+    fork(sharedPercentagePendingFeeTestsSaga),
     fork(sampleCollectorsSaga),
     fork(sampleCollectorDatasSaga),
     fork(qualityCertificatesSaga),

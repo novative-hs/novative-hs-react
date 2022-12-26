@@ -494,9 +494,14 @@ class SidebarContent extends Component {
                           {this.props.t("Unapproved")}
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to={"/referrellab"}>
                           {this.props.t("Pending Referrel Fee")}
+                        </Link>
+                      </li> */}
+                      <li>
+                        <Link to={"/labs-list-pending-fee"}>
+                          {this.props.t("Lab Pending Referrel Fee")}
                         </Link>
                       </li>
                       <li>
