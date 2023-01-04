@@ -28,6 +28,7 @@ export const GET_UNITS = `${API_ENDPOINT}/api/medicaltest/unit-list`;
 export const GET_OFFERED_TESTS = `${API_ENDPOINT}/api/lab/offered-test-list`;
 export const GET_OFFEREDTEST_REFERRELFEE = `${API_ENDPOINT}/api/lab/offered-test-share-list`;
 export const ADD_NEW_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
+export const ADD_NEW_OFFERED_MAINTEST = `${API_ENDPOINT}/api/lab/offered-test-main-lab`;
 export const UPDATE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 

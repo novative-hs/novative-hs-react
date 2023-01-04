@@ -37,7 +37,9 @@ import {
   // getUnits,
   getTests,
   getOfferedTests,
+  getLabProfile,
   addNewOfferedTest,
+  addNewOfferedMainTest,
   updateOfferedTest,
   deleteOfferedTest,
 } from "store/offered-tests/actions";
@@ -52,8 +54,10 @@ class OfferedTestsList extends Component {
     this.state = {
       offeredTests: [],
       tests: [],
+      labProfiles: [],
       // units: [],
       offeredTest: "",
+      type: "",
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -218,9 +222,18 @@ class OfferedTestsList extends Component {
     onGetTests();
     this.setState({ tests });
 
-    const { offeredTests, onGetOfferedTests } = this.props;
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({ 
+      labProfiles
+    });
+    console.log("state",labProfiles)
+
+    const { offeredTests, onGetOfferedTests,  } = this.props;
     onGetOfferedTests(this.state.user_id);
     this.setState({ offeredTests });
+    console.log("state",offeredTests)
+
   }
 
   toggle() {
@@ -300,6 +313,38 @@ class OfferedTestsList extends Component {
       this.setState({ deleteModal: false });
     }
   };
+  // handleAPICall = () => {
+  //   const { onAddNewOfferedMainTest} = this.props;
+  //   const { offeredTests } = this.state;
+  //   // if (offeredTests.main_lab_tests == "Yes") 
+  //   {
+  //     onAddNewOfferedMainTest(offeredTests, this.state.user_id);
+  //     console.log("sjdhjd",offeredTests)
+
+  //     // setTimeout(() => {
+  //     //   onAddNewOfferedMainTest(this.props.match.params);
+  //     // }, 1000);
+  //   }
+  // };
+  handleAPICall = () => {
+    this.setState({
+      offeredTests: {
+        main_lab_tests: "Yes",
+
+      },
+    });
+
+    // API call to get the checkout items
+    const { onAddNewOfferedMainTest, onGetOfferedTests } = this.props;
+    setTimeout(() => {
+      console.log(
+        onAddNewOfferedMainTest(this.state.offeredTests, this.state.user_id)
+      );
+    },);
+    setTimeout(() => {
+      onGetOfferedTests(this.state.user_id);
+    }, 1000);
+  };
 
   handleOfferedTestClick = arg => {
     const offeredTest = arg;
@@ -331,11 +376,12 @@ class OfferedTestsList extends Component {
 
     const { offeredTests } = this.props;
     const { tests } = this.props;
+    const {labProfiles} = this.props;
     // const { units } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
+    const { onAddNewOfferedTest, onAddNewOfferedMainTest, onUpdateOfferedTest, onGetOfferedTests, onGetLabProfile } =
       this.props;
     const offeredTest = this.state.offeredTest;
 
@@ -1074,6 +1120,39 @@ class OfferedTestsList extends Component {
                     </PaginationProvider>
                   </CardBody>
                 </Card>
+              <Row>
+                <Col sm="2" lg="2">
+                </Col>
+                {isEmpty(this.props.offeredTests)&&
+                this.props.labProfiles.type == "Collection Point" &&
+                // console.log("desh desh",this.props.offeredTests)
+                 (
+                  <Col sm="2" lg="10">
+                  <Card className="col-md-9">
+                    <CardBody >
+                    <div>
+
+                    <input
+                      name="main_lab_tests"
+                      type="checkbox"
+                      required= {true}
+                    // checked={false}
+                      checked={this.state.isChecked}
+                      onChange={this.handleAPICall
+                    }
+                    />
+                      
+                        <b> Do you want to add your main labs tests as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the tests offered by your main lab with all the details will be added <br></br>this will not be undone, You can edit the test details only</b>
+                    
+                    </div>
+                    </CardBody>
+                  </Card>
+
+                  </Col>
+                )}
+               
+              </Row>
+             
               </Col>
             </Row>
           </Container>
@@ -1086,13 +1165,16 @@ class OfferedTestsList extends Component {
 OfferedTestsList.propTypes = {
   match: PropTypes.object,
   tests: PropTypes.array,
+  labProfiles: PropTypes.array,
   // units: PropTypes.array,
   offeredTests: PropTypes.array,
   className: PropTypes.any,
   onGetOfferedTests: PropTypes.func,
+  onGetLabProfile: PropTypes.func,
   onGetTests: PropTypes.func,
   // onGetUnits: PropTypes.func,
   onAddNewOfferedTest: PropTypes.func,
+  onAddNewOfferedMainTest: PropTypes.func,
   onDeleteOfferedTest: PropTypes.func,
   onUpdateOfferedTest: PropTypes.func,
 };
@@ -1100,15 +1182,18 @@ OfferedTestsList.propTypes = {
 const mapStateToProps = ({ offeredTests }) => ({
   offeredTests: offeredTests.offeredTests,
   tests: offeredTests.tests,
-  // units: offeredTests.units,
+  labProfiles: offeredTests.labProfiles,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTests: () => dispatch(getTests()),
   // onGetUnits: () => dispatch(getUnits()),
   onGetOfferedTests: id => dispatch(getOfferedTests(id)),
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
   onAddNewOfferedTest: (offeredTest, id) =>
     dispatch(addNewOfferedTest(offeredTest, id)),
+  onAddNewOfferedMainTest: (offeredTest, id) =>
+    dispatch(addNewOfferedMainTest(offeredTest, id)),
   onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
   onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
 });

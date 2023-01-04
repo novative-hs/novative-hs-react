@@ -5,13 +5,17 @@ import {
   GET_UNITS,
   GET_TESTS,
   GET_OFFERED_TESTS,
+  GET_LAB_PROFILE,
   GET_OFFEREDTEST_REFERRELFEE,
   ADD_NEW_OFFERED_TEST,
+  ADD_NEW_OFFERED_MAINTEST,
   DELETE_OFFERED_TEST,
   UPDATE_OFFERED_TEST,
 } from "./actionTypes";
 
 import {
+  getLabProfileSuccess,
+  getLabProfileFail,
   getUnitsSuccess,
   getUnitsFail,
   getTestsSuccess,
@@ -22,6 +26,8 @@ import {
   getOfferedTestsReferrelFail,
   addOfferedTestFail,
   addOfferedTestSuccess,
+  addOfferedMainTestFail,
+  addOfferedMainTestSuccess,
   updateOfferedTestSuccess,
   updateOfferedTestFail,
   deleteOfferedTestSuccess,
@@ -34,10 +40,22 @@ import {
   getTests,
   getOfferedTests,
   getOfferedTestsReferrel,
+  getLabProfile,
   addNewOfferedTest,
+  addNewOfferedMainTest,
   updateOfferedTest,
   deleteOfferedTest,
 } from "../../helpers/django_api_helper";
+
+function* fetchLabProfile(object) {
+  try {
+    const response = yield call(getLabProfile, object.payload);
+    yield put(getLabProfileSuccess(response));
+
+  } catch (error) {
+    yield put(getLabProfileFail(error));
+  }
+}
 
 function* fetchTests() {
   try {
@@ -86,6 +104,18 @@ function* onAddNewOfferedTest(object) {
     yield put(addOfferedTestFail(error));
   }
 }
+function* onAddNewOfferedMainTest(object) {
+  try {
+    const response = yield call(
+      addNewOfferedMainTest,
+      object.payload.offeredTest,
+      object.payload.id
+    );
+    yield put(addOfferedMainTestSuccess(response));
+  } catch (error) {
+    yield put(addOfferedMainTestFail(error));
+  }
+}
 
 function* onUpdateOfferedTest({ payload: offeredTest }) {
   try {
@@ -109,8 +139,10 @@ function* offeredTestsSaga() {
   yield takeEvery(GET_UNITS, fetchUnits);
   yield takeEvery(GET_TESTS, fetchTests);
   yield takeEvery(GET_OFFERED_TESTS, fetchOfferedTests);
+  yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);
   yield takeEvery(GET_OFFEREDTEST_REFERRELFEE, fetchOfferedTestsReferrel);
   yield takeEvery(ADD_NEW_OFFERED_TEST, onAddNewOfferedTest);
+  yield takeEvery(ADD_NEW_OFFERED_MAINTEST, onAddNewOfferedMainTest);
   yield takeEvery(UPDATE_OFFERED_TEST, onUpdateOfferedTest);
   yield takeEvery(DELETE_OFFERED_TEST, onDeleteOfferedTest);
 }

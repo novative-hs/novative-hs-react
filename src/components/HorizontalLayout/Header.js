@@ -221,7 +221,7 @@ class Header extends Component {
                   </Link>
                 </div>
               ) : this.state.user_type == "patient" ? (
-                <div className="dropdown d-lg-inline-block ms-4 mt-4">
+                <div className="dropdown">
                   <Link
                     // to={"/profile"}
                     to={

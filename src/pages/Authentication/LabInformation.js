@@ -1145,8 +1145,8 @@ class LabInformation extends Component {
                                   </div>
                                 )}
 
-                                {/* Marketer's fields */}
-                                {this.state.registered_by === "Marketer" && (
+                              {/* Marketer's fields */}
+                              {this.state.registered_by === "Marketer" && (
                                   <div>
                                     {/* Is Registering First Time field */}
                                     <div className="mb-3">
@@ -1333,18 +1333,25 @@ class LabInformation extends Component {
                                                   selectedGroup.value,
                                               })
                                             }
-                                            className="defautSelectParent"
-                                            options={
-                                              cityList
+                                            className={
+                                              "defautSelectParent" +
+                                              (errors.marketer_city &&
+                                              touched.marketer_city
+                                                ? " is-invalid"
+                                                : "")
                                             }
-                                            defaultValue={{
-                                              label:
-                                              this.state.city,
-                                              value:
-                                              this.state.id,                                       
+                                            styles={{
+                                              control: (base, state) => ({
+                                                ...base,
+                                                borderColor:
+                                                  errors.marketer_city &&
+                                                  touched.marketer_city
+                                                    ? "#f46a6a"
+                                                    : "#ced4da",
+                                              }),
                                             }}
-
-                                          placeholder="Select City..."
+                                            options={CITIES}
+                                            placeholder="Select City..."
                                           />
 
                                           <ErrorMessage

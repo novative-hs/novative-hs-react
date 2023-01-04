@@ -7,8 +7,12 @@ import {
   GET_OFFERED_TESTS_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
+  GET_LAB_PROFILE_SUCCESS,
+  GET_LAB_PROFILE_FAIL,
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
+  ADD_OFFERED_MAINTEST_SUCCESS,
+  ADD_OFFERED_MAINTEST_FAIL,
   UPDATE_OFFERED_TEST_SUCCESS,
   UPDATE_OFFERED_TEST_FAIL,
   DELETE_OFFERED_TEST_SUCCESS,
@@ -18,6 +22,7 @@ import {
 const INIT_STATE = {
   units: [],
   tests: [],
+  labProfiles: [],
   offeredTests: [],
   error: {},
 };
@@ -59,6 +64,17 @@ const tests = (state = INIT_STATE, action) => {
           ...state,
           error: action.payload,
         };
+      case GET_LAB_PROFILE_SUCCESS:
+        return {
+          ...state,
+          labProfiles: action.payload.data,
+        };
+  
+      case GET_LAB_PROFILE_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
 
     case GET_OFFEREDTEST_REFERRELFEE_SUCCESS:
       return {
@@ -79,6 +95,17 @@ const tests = (state = INIT_STATE, action) => {
       };
 
     case ADD_OFFERED_TEST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ADD_OFFERED_MAINTEST_SUCCESS:
+      return {
+        ...state,
+        offeredTests: [...state.offeredTests, action.payload],
+      };
+
+    case ADD_OFFERED_MAINTEST_FAIL:
       return {
         ...state,
         error: action.payload,

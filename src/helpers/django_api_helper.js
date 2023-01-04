@@ -374,7 +374,15 @@ export const addNewOfferedTest = (offeredTest, id) => {
     headers: getHeader(authHeader()),
   });
 };
+export const addNewOfferedMainTest = (offeredTest, id) => {
+  let formData = new FormData();
+  formData.append("main_lab_tests", offeredTest.main_lab_tests);
+  // formData.append("unit_id", offeredTest.unit_id);
 
+  return axios.post(`${url.ADD_NEW_OFFERED_MAINTEST}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 export const updateOfferedTest = offeredTest => {
   let formData = new FormData();
   formData.append("id", offeredTest.id);
