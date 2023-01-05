@@ -1178,11 +1178,12 @@ class Checkout extends Component {
                                             0 && (
                                             <tr key={"_checkoutItem_" + key}>
                                               <td colSpan="6">
-                                              {this.state.is_home_sampling_availed=="Yes"  &&  (
+                                              {this.state.is_home_sampling_availed=="Yes"  &&
+                                              this.state.is_state_sampling_availed=="Yes" &&  (
                                                           <div className="bg-primary bg-soft p-3 rounded">
                                                   <h5 className="font-size-14 text-primary mb-0">
                                                     <i className="fas fa-shipping-fast me-2" />{" "}
-                                                    Home Sampling Charges{" "}
+                                                    Sum of Home Sampling + Urgent Sampling Charges{" "}
                                                     {/* {
                                                         checkoutItem.lab_name
                                                       } */}
@@ -1195,8 +1196,26 @@ class Checkout extends Component {
                                                     </span>
                                                   </h5>
                                                 </div>
-                                                        )}
-                                               
+                                               )}
+                                              {this.state.is_home_sampling_availed=="Yes"  && 
+                                              this.state.is_state_sampling_availed != "Yes" && (
+                                                          <div className="bg-primary bg-soft p-3 rounded">
+                                                  <h5 className="font-size-14 text-primary mb-0">
+                                                    <i className="fas fa-shipping-fast me-2" />{" "}
+                                                   Sum of Home Sampling Charges{" "}
+                                                    {/* {
+                                                        checkoutItem.lab_name
+                                                      } */}
+                                                    <span className="float-end">
+                                                      Rs.{" "}
+                                                      {                              
+                                                        checkoutItem.total_sampling_charges.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                                      }
+                                                      
+                                                    </span>
+                                                  </h5>
+                                                </div>
+                                               )}
                                               </td>
                                             </tr>
                                           )}
