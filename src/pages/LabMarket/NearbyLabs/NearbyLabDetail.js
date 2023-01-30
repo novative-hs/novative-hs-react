@@ -28,6 +28,12 @@ class NearbyLabDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user_id: localStorage.getItem("authUser")
+      ? JSON.parse(localStorage.getItem("authUser")).user_id
+      : "",
+      // guest_id: localStorage.getItem("guest_id")
+      // ? JSON.parse(localStorage.getItem("guest_id")).guest_id
+      // : "",
       activeTab: "1",
       logo: "",
       name: "",
@@ -119,7 +125,99 @@ class NearbyLabDetail extends Component {
                             </div>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        {!this.state.user_id ? (
+                          <Row className="mt-4">
+                            <div className=" mb-3">
+                              <Col sm="6">
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                  }
+                                  className=" linklist btn btn-primary btn-md"
+                                >
+                                  <i className="mdi mdi-arrow-right " /> Offered
+                                  Tests{" "}
+                                </Link>
+                              </Col>
+                            </div>
+                            <div className="mb-3">
+                              <Col sm="6">
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                  }
+                                  className="linklist btn btn-primary btn-md"
+                                >
+                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                  Quality-Certificates{" "}
+                                </Link>
+                              </Col>
+                            </div>
+                            <div className="mb-3">
+                              <Col sm="6">
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                  }
+                                  className="linklist btn btn-primary btn-md"
+                                >
+                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                  Sample-Collectors{" "}
+                                </Link>
+                              </Col>
+                            </div>
+                            <div className="mb-3">
+                              <Col sm="6">
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                  }
+                                  className="linklist btn btn-primary btn-md"
+                                >
+                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                  Pathologists{" "}
+                                </Link>
+                              </Col>
+                            </div>
+
+                            {/* <Col sm="6">
+    <Link
+      to={
+        this.props.match.params.uuid
+          ? `/nearby-labs/${this.props.match.params.uuid}`
+          : `/nearby-labs`
+      }
+      className="btn btn-secondary"
+    >
+      <i className="bx bxs-shopping-bags me-1" />{" "}
+      Continue Shopping{" "}
+    </Link>
+  </Col>
+  <Col sm="6">
+    <div className="text-sm-end mt-2 mt-sm-0">
+      <Link
+        to={{
+          pathname: `http://maps.google.com/?q=${this.props.success.address}`,
+        }}
+        className="btn btn-success mb-2 mt-2"
+        target="_blank"
+      >
+        <i className="bx bxs-navigation" /> Navigate to
+        the Lab
+      </Link>
+    </div>
+  </Col> */}
+                          </Row>
+                        ) : this.state.user_id ? (
+                          <Row className="mt-4">
                           <div className=" mb-3">
                             <Col sm="6">
                               <Link
@@ -182,33 +280,38 @@ class NearbyLabDetail extends Component {
                           </div>
 
                           {/* <Col sm="6">
-                            <Link
-                              to={
-                                this.props.match.params.uuid
-                                  ? `/nearby-labs/${this.props.match.params.uuid}`
-                                  : `/nearby-labs`
-                              }
-                              className="btn btn-secondary"
-                            >
-                              <i className="bx bxs-shopping-bags me-1" />{" "}
-                              Continue Shopping{" "}
-                            </Link>
-                          </Col>
-                          <Col sm="6">
-                            <div className="text-sm-end mt-2 mt-sm-0">
-                              <Link
-                                to={{
-                                  pathname: `http://maps.google.com/?q=${this.props.success.address}`,
-                                }}
-                                className="btn btn-success mb-2 mt-2"
-                                target="_blank"
-                              >
-                                <i className="bx bxs-navigation" /> Navigate to
-                                the Lab
-                              </Link>
-                            </div>
-                          </Col> */}
+                           <Link
+                             to={
+                               this.props.match.params.uuid
+                                 ? `/nearby-labs/${this.props.match.params.uuid}`
+                                 : `/nearby-labs`
+                             }
+                             className="btn btn-secondary"
+                           >
+                             <i className="bx bxs-shopping-bags me-1" />{" "}
+                             Continue Shopping{" "}
+                           </Link>
+                         </Col>
+                         <Col sm="6">
+                           <div className="text-sm-end mt-2 mt-sm-0">
+                             <Link
+                               to={{
+                                 pathname: `http://maps.google.com/?q=${this.props.success.address}`,
+                               }}
+                               className="btn btn-success mb-2 mt-2"
+                               target="_blank"
+                             >
+                               <i className="bx bxs-navigation" /> Navigate to
+                               the Lab
+                             </Link>
+                           </div>
+                         </Col> */}
                         </Row>
+                        ): null}
+                        {/* {this.state.user_id && ( */}
+                       
+                        {/* )} */}
+
                         {/* <GoogleMaps /> */}
                       </div>
                     </CardBody>
@@ -221,17 +324,32 @@ class NearbyLabDetail extends Component {
                 <Col xl="3">
                   <Card>
                     <Col sm="12">
-                      <Link
-                        to={
-                          this.props.match.params.uuid
-                            ? `/nearby-labs/${this.props.match.params.uuid}`
-                            : `/nearby-labs`
-                        }
-                        className="btn btn-secondary"
-                      >
-                        <i className="bx bxs-shopping-bags me-1" /> Continue
-                        Shopping{" "}
-                      </Link>
+                      {!this.state.user_id && (
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-labs/${this.props.match.params.uuid}`
+                              : `/nearby-labs/${this.props.match.params.guest_id}`
+                          }
+                          className="btn btn-secondary"
+                        >
+                          <i className="bx bxs-shopping-bags me-1" /> Continue
+                          Shopping{" "}
+                        </Link>
+                      )}
+                      {this.state.user_id && (
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-labs/${this.props.match.params.uuid}`
+                              : `/nearby-labs/`
+                          }
+                          className="btn btn-secondary"
+                        >
+                          <i className="bx bxs-shopping-bags me-1" /> Continue
+                          Shopping{" "}
+                        </Link>
+                      )}
                     </Col>
 
                     <Col sm="12">
@@ -313,27 +431,27 @@ class NearbyLabDetail extends Component {
 
                   {(this.props.success.complaint_handling_email ||
                     this.props.success.complaint_handling_phone) && (
-                    <Card>
-                      <CardBody>
-                        <div className="text-muted float-start">
-                          <h5>Help & Support</h5>
-                          {this.props.success.complaint_handling_email && (
-                            <p>
-                              <i className="bx bx-mail-send me-1 mt-3" />
-                              {this.props.success.complaint_handling_email}
-                            </p>
-                          )}
+                      <Card>
+                        <CardBody>
+                          <div className="text-muted float-start">
+                            <h5>Help & Support</h5>
+                            {this.props.success.complaint_handling_email && (
+                              <p>
+                                <i className="bx bx-mail-send me-1 mt-3" />
+                                {this.props.success.complaint_handling_email}
+                              </p>
+                            )}
 
-                          {this.props.success.complaint_handling_phone && (
-                            <p>
-                              <i className="bx bx-phone-call me-1" />
-                              {this.props.success.complaint_handling_phone}
-                            </p>
-                          )}
-                        </div>
-                      </CardBody>
-                    </Card>
-                  )}
+                            {this.props.success.complaint_handling_phone && (
+                              <p>
+                                <i className="bx bx-phone-call me-1" />
+                                {this.props.success.complaint_handling_phone}
+                              </p>
+                            )}
+                          </div>
+                        </CardBody>
+                      </Card>
+                    )}
                   {/* <Card>
                   <CardBody>
                     <div className="mt-3 ">

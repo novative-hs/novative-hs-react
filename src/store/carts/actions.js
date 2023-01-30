@@ -17,6 +17,7 @@ import {
 export const getCarts = id => ({
   type: GET_CARTS,
   payload: id,
+  
 });
 
 export const getCartsSuccess = carts => ({
@@ -58,12 +59,16 @@ export const emptyCartFail = error => ({
   payload: error,
 });
 
-export const addToCart = (cart, id) => ({
+export const addToCart = (cart, id) => (
+  console.log("action", cart),
+  {
   type: ADD_TO_CART,
-  payload: { cart, id },
+  payload: { cart, id},
 });
 
-export const addToCartSuccess = cart => ({
+export const addToCartSuccess = cart => (
+  console.log("action", cart),
+  {
   type: ADD_TO_CART_SUCCESS,
   payload: cart,
 });

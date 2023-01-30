@@ -283,18 +283,8 @@ class LabInformation extends Component {
                               }),
                               // Validation for logo based on type value
                               type: Yup.string(),
-                              logo: Yup.mixed().test(
-                                "required",
-                                "Please upload logo",
-                                function (val) {
-                                  const { type, logo } = this.parent;
-                                  if (type === "Main Lab") {
-                                    return logo ? true : false;
-                                  } else {
-                                    return true;
-                                  }
-                                }
-                              ),
+                              logo: Yup.mixed().required("Please select an image of yourself for upload")
+                              .test("FILE_SIZE", "File size is too big", (value) => value && value.size < 1024 * 1024 * 1024 * 1024 * 1024),
                               national_taxation_no: Yup.string().when("type", {
                                 is: val => val === "Main Lab",
                                 then: Yup.string()
@@ -677,7 +667,7 @@ class LabInformation extends Component {
                                         name="logo"
                                         type="file"
                                         multiple={false}
-                                        accept=".jpg,.jpeg,.png"
+                                        accept=".jpg,.jpeg,.png,.jpg"
                                         onChange={e =>
                                           this.setState({
                                             logo: e.target.files[0],

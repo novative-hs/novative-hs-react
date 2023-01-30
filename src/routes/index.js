@@ -11,6 +11,7 @@ import StaffProfile from "../pages/Authentication/StaffProfile";
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
 import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 // TestMarket Pages
+import labs from "pages/LabMarket/NearbyLabs/labs";
 import NearbyTests from "pages/LabMarket/NearbyLabs/NearbyTests";
 import NearbyProfiles from "pages/LabMarket/NearbyLabs/NearbyProfiles";
 import NearbyPackages from "pages/LabMarket/NearbyLabs/NearbyPackages";
@@ -217,7 +218,7 @@ import labsListPendingFee from "store/labs-list-pending/reducer";
 const publicRoutes = [
   { path: "/register/:uuid?", component: Register },
   { path: "/logout", component: Logout },
-  { path: "/login/:uuid?", component: Login },
+  { path: "/login/:guest_id?/:uuid?", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/:token/confirm-password", component: ConfirmPwd },
   { path: "/patient-information/:id/:uuid?", component: PatientInformation },
@@ -230,6 +231,32 @@ const publicRoutes = [
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
+  {
+    path: "/cart/:guest_id?/:uuid?",
+    component: CartsList,
+  },
+  {
+    path: "/labs/:uuid?",
+    component: labs,
+  },
+  {
+    path: "/nearby-tests/:guest_id?/:uuid?",
+    component: NearbyTests,
+  },
+  {  path: "/nearby-profiles/:guest_id?/:uuid?",
+     component: NearbyProfiles 
+  },
+  {  path: "/nearby-packages/:guest_id?/:uuid?",
+    component: NearbyPackages 
+  },
+  {
+    path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
+    component: NearbyLabDetail,
+  },
+  {
+    path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
+    component: TestsOfferedbyLab,
+  },
 
 ];
 
@@ -532,6 +559,18 @@ const patientAuthProtectedRoutes = [
     path: "/invoice-detail/:id",
     component: InvoiceDetail,
   },
+  // { path: "/nearby-labs/:uuid?", component: NearbyLabs },
+
+    // {
+    //   path: "/nearby-tests/:uuid?",
+    //   component: NearbyTests,
+    // },
+    // {  path: "/nearby-profiles/:uuid?",
+    //    component: NearbyProfiles 
+    // },
+    // {  path: "/nearby-packages/:uuid?",
+    //   component: NearbyPackages 
+    // },
 ];
 
 // All public routes of the patient module will be listed here
@@ -543,21 +582,25 @@ const patientPublicRoutes = [
   { path: "/terms", component: TermsConditions},
   { path: "/nearby-labs/:uuid?", component: NearbyLabs },
   {
-    path: "/nearby-tests/:uuid?",
+    path: "/labs/:guest_id?/:uuid?",
+    component: labs,
+  },
+  {
+    path: "/nearby-tests/:guest_id?/:uuid?",
     component: NearbyTests,
   },
-  {  path: "/nearby-profiles/:uuid?",
+  {  path: "/nearby-profiles/:guest_id?/:uuid?",
      component: NearbyProfiles 
-},
-{  path: "/nearby-packages/:uuid?",
-   component: NearbyPackages 
-},
+  },
+  {  path: "/nearby-packages/:guest_id?/:uuid?",
+    component: NearbyPackages 
+  },
   {
-    path: "/nearby-lab-detail/:lab_account_id/:uuid?",
+    path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
     component: NearbyLabDetail,
   },
   {
-    path: "/:lab_account_id/offered-test-by-lab/:uuid?",
+    path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
     component: TestsOfferedbyLab,
   },
   {

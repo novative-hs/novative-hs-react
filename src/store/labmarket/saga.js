@@ -1,13 +1,13 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // LabMarket Redux States
-import { GET_NEARBY_LABS, 
+import { GET_NEARBY_LABS, GET_REGION_WISE_ADVERTISEMENT,
   GET_ADV_LIVE } from "./actionTypes";
-import { getNearbyLabsFail, getNearbyLabsSuccess, 
+import { getNearbyLabsFail, getNearbyLabsSuccess, getRegionWiseAdvertisementFail, getRegionWiseAdvertisementSuccess, 
   getAdvLiveFail, getAdvLiveSuccess } from "./actions";
 
 // Include Helper File with needed methods
-import { getNearbyLabs, getAdvLive } from "helpers/django_api_helper";
+import { getNearbyLabs, getRegionWiseAdvertisement, getAdvLive } from "helpers/django_api_helper";
 
 function* fetchNearbyLabs(object) {
   try {
@@ -15,6 +15,16 @@ function* fetchNearbyLabs(object) {
     yield put(getNearbyLabsSuccess(response.data));
   } catch (error) {
     yield put(getNearbyLabsFail(error));
+  }
+}
+
+
+function* fetchRegionWiseAdvertisement(object) {
+  try {
+    const response = yield call(getRegionWiseAdvertisement, object.payload.locationDetails);
+    yield put(getRegionWiseAdvertisementSuccess(response.data));
+  } catch (error) {
+    yield put(getRegionWiseAdvertisementFail(error));
   }
 }
 
@@ -29,6 +39,7 @@ function* fetchAdvLive(object) {
 
 function* labMarketSaga() {
   yield takeEvery(GET_NEARBY_LABS, fetchNearbyLabs);
+  yield takeEvery(GET_REGION_WISE_ADVERTISEMENT, fetchRegionWiseAdvertisement);
   yield takeEvery(GET_ADV_LIVE, fetchAdvLive);
 }
 

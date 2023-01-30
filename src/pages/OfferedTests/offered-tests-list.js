@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import axios from "axios";
 import { withRouter, Link } from "react-router-dom";
+// import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import {
   Card,
   CardBody,

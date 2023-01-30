@@ -12,6 +12,8 @@ function* loginUser({ payload: { user, history } }) {
     const response = yield call(postLogin, {
       username: user.username,
       password: user.password,
+      guest_id: user.guest_id,
+
     });
 
     // If there is data in response then execute this block

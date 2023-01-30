@@ -260,6 +260,9 @@ export const UPDATE_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 
+// REGION WISE ADVERTISEMENT
+export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/region-wise-advertisements`;
+
 export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 
 

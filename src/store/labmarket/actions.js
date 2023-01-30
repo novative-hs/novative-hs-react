@@ -2,6 +2,9 @@ import {
   GET_NEARBY_LABS,
   GET_NEARBY_LABS_FAIL,
   GET_NEARBY_LABS_SUCCESS,
+  GET_REGION_WISE_ADVERTISEMENT,
+  GET_REGION_WISE_ADVERTISEMENT_FAIL,
+  GET_REGION_WISE_ADVERTISEMENT_SUCCESS,
   GET_ADV_LIVE,
   GET_ADV_LIVE_FAIL,
   GET_ADV_LIVE_SUCCESS,
@@ -19,6 +22,21 @@ export const getNearbyLabsSuccess = nearbyLabs => ({
 
 export const getNearbyLabsFail = error => ({
   type: GET_NEARBY_LABS_FAIL,
+  payload: error,
+});
+
+export const getRegionWiseAdvertisement = locationDetails => ({
+  type: GET_REGION_WISE_ADVERTISEMENT,
+  payload: { locationDetails },
+});
+
+export const getRegionWiseAdvertisementSuccess = regionWiseAdvertisement => ({
+  type: GET_REGION_WISE_ADVERTISEMENT_SUCCESS,
+  payload: regionWiseAdvertisement,
+});
+
+export const getRegionWiseAdvertisementFail = error => ({
+  type: GET_REGION_WISE_ADVERTISEMENT_FAIL,
   payload: error,
 });
 

@@ -101,6 +101,7 @@
     "simplebar-react": "^2.3.6",
     "toastr": "^2.1.4",
     "uuid": "^8.3.2",
+    "uuidv4": "^6.2.13",
     "yup": "^0.32.11"
   },
   "scripts": {

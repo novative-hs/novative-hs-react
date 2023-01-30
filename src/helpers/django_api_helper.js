@@ -319,6 +319,9 @@ export const postLogin = user => {
   let formData = new FormData();
   formData.append("username", user.username);
   formData.append("password", user.password);
+  formData.append("guest_id", user.guest_id);
+
+  console.log("django api", user)
   return axios.post(url.POST_LOGIN, formData, {
     headers: getHeader(authHeader()),
   });
@@ -775,6 +778,22 @@ export const updatePatientProfile = (patientProfile, id) => {
   });
 };
 
+// Get Region Wise Advertisement
+export const getRegionWiseAdvertisement = locationDetails => {
+  let formData = new FormData();
+  formData.append("latitude", locationDetails.latitude);
+  formData.append("longitude", locationDetails.longitude);
+  formData.append("search_type", locationDetails.search_type);
+  formData.append("address", locationDetails.address);
+  formData.append("city", locationDetails.city);
+
+  // console.log("donorSetting: ", locationDetails)
+
+  return axios.post(`${url.GET_REGION_WISE_ADVERTISEMENT}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 // Get Nearby Labs
 export const getNearbyLabs = locationDetails => {
   let formData = new FormData();
@@ -783,8 +802,10 @@ export const getNearbyLabs = locationDetails => {
   formData.append("search_type", locationDetails.search_type);
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
+  formData.append("guest_id", locationDetails.guest_id);
 
-  console.log("donorSetting: ", locationDetails)
+
+  console.log("locationDetails: ", locationDetails)
 
   return axios.post(`${url.GET_NEARBY_LABS}`, formData, {
     headers: getHeader(authHeader()),
@@ -936,8 +957,10 @@ export const getHandledComplaints = id =>
 // ------------- Cart START -------------
 export const getCarts = id =>
   get(`${url.GET_CARTS}/${id}`, {
-    headers: getHeader(authHeader()),
-  });
+    
+  headers: getHeader(authHeader()),
+  });    
+
 
 export const emptyCart = id =>
   del(`${url.EMPTY_CART}/${id}`, {
@@ -951,16 +974,18 @@ export const deleteCart = cart =>
 
 export const addToCart = (cart, id) => {
   let formData = new FormData();
+  // formData.append("account_id", cart.patient_id);
   formData.append("lab_id", cart.lab_id);
   formData.append("offered_test_id", cart.id);
   formData.append("amount", cart.price);
+  formData.append("guest_id", cart.guest_id);
   formData.append("invoice_discount", cart.discount);
   formData.append("invoice_labhazir_discount", cart.discount_by_labhazir);
   // formData.append("amount", cart.price);
 
 
 
-  console.log("cart items", cart)
+  console.log("cart items", cart, cart.patient_id)
 
   return axios.post(`${url.ADD_TO_CART}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1861,9 +1886,11 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
+  formData.append("price_id", advertisement.price_id);
+
   formData.append("district", advertisement.district);
-  formData.append("amount", advertisement.amount);
-  formData.append("number_of_days", advertisement.number_of_days);
+  // formData.append("amount", advertisement.amount);
+  // formData.append("number_of_days", advertisement.number_of_days);
 
 
   return axios.post(`${url.ADD_NEW_LAB_ADVERTISEMENT}/${id}`, formData, {
@@ -1882,9 +1909,9 @@ export const updateLabAdvertisement = advertisement => {
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
+  formData.append("price_id", advertisement.price_id);
   formData.append("district", advertisement.district);
-  formData.append("amount", advertisement.amount);
-  formData.append("number_of_days", advertisement.number_of_days);
+
 
   return axios.put(`${url.UPDATE_LAB_ADVERTISEMENT}/${advertisement.id}`,
   formData,

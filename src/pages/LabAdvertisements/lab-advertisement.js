@@ -340,8 +340,9 @@ class AdvertisementsList extends Component {
         region_type: labAdvertisement.region_type,
         province: labAdvertisement.province,
         city_id: labAdvertisement.city_id,
+        price_id: labAdvertisement.price_id,
         district: labAdvertisement.district,
-        number_of_days: labAdvertisement.number_of_days,
+        // number_of_days: labAdvertisement.number_of_days,
       },
       advertisementImg: "",
       isEdit: true,
@@ -360,6 +361,14 @@ class AdvertisementsList extends Component {
         value: this.props.territoriesList[i].id,
       });
     }
+
+    const myadvertisementPriceList = [];
+    for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
+      myadvertisementPriceList.push({
+        label: this.props.advertisementPriceLists[i].number_of_days,
+        value: this.props.advertisementPriceLists[i].id,
+      });
+    }
     const { SearchBar } = Search;
 
     const { labAdvertisements } = this.props;
@@ -370,7 +379,6 @@ class AdvertisementsList extends Component {
       onAddNewLabAdvertisement,
       onUpdateLabAdvertisement,
       onGetLabAdvertisements,
-      onGetAdvertisementPriceLists,
     } = this.props;
     const labAdvertisement = this.state.labAdvertisement;
 
@@ -386,22 +394,15 @@ class AdvertisementsList extends Component {
         order: "desc", // desc or asc
       },
     ];
-const advertisementNumberOfDaysList = [];
-    for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
-      advertisementNumberOfDaysList.push({
-        label: this.props.advertisementPriceLists[i].number_of_days,
-        value: this.props.advertisementPriceLists[i].number_of_days,
+// const advertisementNumberOfDaysList = [];
+//     for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
+//       advertisementNumberOfDaysList.push({
+//         label: this.props.advertisementPriceLists[i].number_of_days,
+//         value: this.props.advertisementPriceLists[i].number_of_days,
 
-      });
-    }
-const advertisementPriceList = [];
-    for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
-      advertisementPriceList.push({
-        label: this.props.advertisementPriceLists[i].number_of_days,
-        value: this.props.advertisementPriceLists[i].amount,
+//       });
+//     }
 
-      });
-    }
     return (
       <React.Fragment>
         <DeleteModal
@@ -531,18 +532,21 @@ const advertisementPriceList = [];
                                             city_id:
                                               (this.state && this.state.city_id) ||
                                               "",
+                                            price_id:
+                                              (this.state && this.state.price_id) ||
+                                              "",
                                             district:
                                               (this.state &&
                                                 this.state.district) ||
                                               "",
-                                            number_of_days:
-                                              (this.state &&
-                                                this.state.number_of_days) ||
-                                              "",
-                                            amount:
-                                              (this.state &&
-                                                this.state.amount) ||
-                                              "",
+                                            // number_of_days:
+                                            //   (this.state &&
+                                            //     this.state.number_of_days) ||
+                                            //   "",
+                                            // amount:
+                                            //   (this.state &&
+                                            //     this.state.amount) ||
+                                            //   "",
                                          
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -623,9 +627,10 @@ const advertisementPriceList = [];
                                                       values.region_type,
                                                     province: values.province,
                                                     city_id: values.city_id,
+                                                    price_id: values.price_id,
                                                     district: values.district,
-                                                    number_of_days: values.number_of_days,
-                                                    amount: values.amount,
+                                                    // number_of_days: values.number_of_days,
+                                                    // amount: values.amount,
 
                                                   
 
@@ -658,9 +663,10 @@ const advertisementPriceList = [];
                                                     values.region_type,
                                                   province: values.province,
                                                   city_id: values.city_id,
+                                                  price_id: values.price_id,
                                                   district: values.district,
-                                                  number_of_days: values.number_of_days,
-                                                  amount: values.amount,
+                                                  // number_of_days: values.number_of_days,
+                                                  // amount: values.amount,
 
                                                   
 
@@ -693,9 +699,10 @@ const advertisementPriceList = [];
                                                 region_type: values.region_type,
                                                 province: values.province,
                                                 city_id: values.city_id,
+                                                price_id: values.price_id,
                                                 district: values.district,
-                                                number_of_days: values.number_of_days,
-                                                amount: values.amount,
+                                                // number_of_days: values.number_of_days,
+                                                // amount: values.amount,
 
                                              
                                               };
@@ -804,11 +811,12 @@ const advertisementPriceList = [];
                                                             province:
                                                               labAdvertisement.province,
                                                             city_id: labAdvertisement.city_id,
+                                                            price_id: labAdvertisement.price_id,
                                                             district:
                                                               labAdvertisement.district,
-                                                            number_of_days:
-                                                              labAdvertisement.number_of_days,
-                                                            amount: labAdvertisement.amount,
+                                                            // number_of_days:
+                                                            //   labAdvertisement.number_of_days,
+                                                            // amount: labAdvertisement.amount,
                                                            
                                                           },
                                                         });
@@ -846,11 +854,12 @@ const advertisementPriceList = [];
                                                             province:
                                                               labAdvertisement.province,
                                                             city_id: labAdvertisement.city_id,
+                                                            price_id: labAdvertisement.price_id,
                                                             district:
                                                               labAdvertisement.district,
-                                                            number_of_days:
-                                                              labAdvertisement.number_of_days,
-                                                            amount: labAdvertisement.amount,
+                                                            // number_of_days:
+                                                            //   labAdvertisement.number_of_days,
+                                                            // amount: labAdvertisement.amount,
                                                            
                                                           },
                                                         });
@@ -984,11 +993,12 @@ const advertisementPriceList = [];
                                                               province:
                                                                 labAdvertisement.province,
                                                               city_id: labAdvertisement.city_id,
+                                                              price_id: labAdvertisement.price_id,
                                                               district:
                                                                 labAdvertisement.district,
-                                                              number_of_days:
-                                                                labAdvertisement.number_of_days,
-                                                              amount: labAdvertisement.amount,
+                                                              // number_of_days:
+                                                              //   labAdvertisement.number_of_days,
+                                                              // amount: labAdvertisement.amount,
 
                                                             },
                                                         });
@@ -1013,7 +1023,10 @@ const advertisementPriceList = [];
                                                     </Field>
                                                   </div>
                                                    {/* Province field */}
-                                <div className="mb-3">
+                               
+                                                   {this.state.labAdvertisement
+                                                    .region_type == "Province" &&
+                                                   ( <div className="mb-3">
                                   <Label for="type" className="form-label">
                                     Province
                                   </Label>
@@ -1041,10 +1054,12 @@ const advertisementPriceList = [];
                                     </option>
                                   </Field>
                                 </div>
-
+                                                   )}
 
                                 {/* District field */}
-                                <div className="mb-3">
+                                {this.state.labAdvertisement
+                                                    .region_type == "District"  &&
+                                                   (    <div className="mb-3">
                           <Label for="district" className="form-label">
                             District
                           </Label>
@@ -1081,10 +1096,11 @@ const advertisementPriceList = [];
                             className="invalid-feedback"
                           />
                         </div>
+                                                   )}
 
 
                                 {/* city field */}
-                        <div className="mb-3">
+                              <div className="mb-3">
 
 
                           <Label for="city_id" className="form-label">
@@ -1092,7 +1108,7 @@ const advertisementPriceList = [];
                           </Label>
                               <Select
                                 name="city_id"
-                                component="Select"
+                                 component="Select"
                                 onChange={selectedGroup =>
                                   this.setState({
                                     city_id: selectedGroup.value,
@@ -1131,6 +1147,7 @@ const advertisementPriceList = [];
                                 className="invalid-feedback"
                               />
                         </div>
+                                                            
                        
                                                  {/* Advertisement number of days field */}
 
@@ -1139,77 +1156,38 @@ const advertisementPriceList = [];
                                                       Number of Days
                                                     </Label>
                                                     <Select
-                                                      name="number_of_days"
+                                                      name="price_id"
                                                       component="Select"
                                                       placeholder="Select Number of Days..."
                                                     
                                                       onChange={selectedGroup =>
                                                         this.setState({
                                                           
-                                                            number_of_days:
+                                                            price_id:
                                                               selectedGroup.value,
                                                         
                                                         })
                                                       }
                                                       className="defautSelectParent"
                                                       options={
-                                                        advertisementNumberOfDaysList
+                                                        myadvertisementPriceList
                                                       }
                                                       defaultValue={{
                                                         label:
                                                         labAdvertisement.number_of_days,
                                                         value:
-                                                        labAdvertisement.number_of_days,
-                                                        
+                                                        labAdvertisement.id,
                                                       
                                                       }}
                                                     
                                                     />
                                                     <ErrorMessage
-                                                      name="number_of_days"
+                                                      name="price_id"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                 {/* Advertisement Amount field */}
-
-                                                 <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Amount
-                                                    </Label>
-                                                    <Select
-                                                      name="amount"
-                                                      component="Select"
-                                                      placeholder="Select Number of Days To Get Price/days..."
-                                                    
-                                                      onChange={selectedGroup =>
-                                                        this.setState({
-                                                          
-                                                            amount:
-                                                              selectedGroup.value,
-                                                        
-                                                        })
-                                                      }
-                                                      className="defautSelectParent"
-                                                      options={
-                                                        advertisementPriceList
-                                                      }
-                                                      defaultValue={{
-                                                        label:
-                                                        labAdvertisement.number_of_days,
-                                                        value:
-                                                        labAdvertisement.amount,
-                                                        
-                                                      
-                                                      }}
-                                                    
-                                                    />
-                                                    <ErrorMessage
-                                                      name="amount"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
+                                               
                                                 </Col>
                                               </Row>
                                               <Row>

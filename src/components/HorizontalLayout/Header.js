@@ -51,7 +51,8 @@ class Header extends Component {
   componentDidMount() {
 
     const { getCarts } = this.props;
-    getCarts(this.state.user_id);
+    getCarts(this.props.match.params.id);
+    // console.log("header id:",getCarts(this.props.match.params.id))
     this.setState({ carts: this.state.carts });
     // if (window.localStorage) {
   
@@ -139,7 +140,7 @@ class Header extends Component {
                   to={
                     this.props.match.params.uuid
                       ? `/nearby-labs/${this.props.match.params.uuid}`
-                      : `/nearby-labs`
+                      : `/nearby-labs/`
                   }
                   className="logo logo-dark"
                 >
@@ -155,7 +156,7 @@ class Header extends Component {
                   to={
                     this.props.match.params.uuid
                       ? `/nearby-labs/${this.props.match.params.uuid}`
-                      : `/nearby-labs`
+                      : `/nearby-labs/`
                   }
                   className="logo logo-light"
                 >
@@ -185,10 +186,25 @@ class Header extends Component {
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Link
+                      to={
+                        this.props.match.params.uuid
+                        ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                        : `/cart/${this.props.match.params.guest_id}`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                  >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                        {!isEmpty(this.props.carts) &&
+                        
+                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                          }
+                  </Link>
+                  <Link
                     to={
                       this.props.match.params.uuid
-                        ? `/login/${this.props.match.params.uuid}`
-                        : `/login`
+                        ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                        : `/login/${console.log("yaha h guest id",this.props.match.params.guest_id)}`
                     }
                     className="btn header-items noti-icon right-bar-toggle"
                   >
@@ -229,60 +245,54 @@ class Header extends Component {
                         ? `/profile/${this.props.match.params.uuid}`
                         : `/profile`
                     }
-                    className="btn header-items noti-icon right-bar-toggle"
+                    className="dropdown-content me-2 text-light"
                   >
-                    <i className="mdi mdi-account-box align-middle me-1 font-size-20" />{" "}
+                    <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
                     <span className="pt-4 font-size-12">
                       {this.state.patient_name.split(" ")[0]}
                     </span>
-                  </Link>
+                  </Link>{" "}
 
                   <Link
                     to="/change-password"
-                    className="btn header-items noti-icon right-bar-toggle"
+                    className="dropdown-content me-2 text-light"
                   >
                     <i className="mdi mdi-key align-middle me-1 font-size-20" />{" "}
                     {/* <span className="pt-4 font-size-12">Cart</span> */}
-                  </Link>
+                  </Link>{" "}
                   <Link
                     to="/contact-us"
-                    className="btn header-items noti-icon right-bar-toggle"
+                    className="dropdown-content me-2 text-light"
                   >
                     <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
                     {/* <span className="pt-4 font-size-12">Cart</span> */}
                   </Link>
+                  {" "}
                 
                   <Link
+                      to={
+                        this.props.match.params.uuid
+                        ? `/cart/${this.props.match.params.uuid}`
+                        : `/cart`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                  >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-              to={
-                this.props.match.params.uuid
-                ? `/cart/${this.props.match.params.uuid}`
-                : `/cart`
-              }
-              className="btn header-items noti-icon right-bar-toggle"
-              // className="btn btn-danger btn-rounded"
-
-            >
-
-{/* bx bx-cart-alt bx-tada align-middle me-1 font-size-20 */}
-              <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                {!isEmpty(this.props.carts) &&
-                
-                  this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                  }
-               
-
-            </Link>
+                        {!isEmpty(this.props.carts) &&
+                        
+                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                          }
+                  </Link>
           
-
                   <Link
                     to="/logout"
-                    className="btn header-items noti-icon right-bar-toggle"
+                    className="dropdown-content me-2 text-light"
                   >
                     <i className="mdi mdi-power align-middle font-size-20" />{" "}
                     {/* <span className="pt-4 font-size-12">Logout</span> */}
                   </Link>
+                  {" "}
                 </div>
               ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">

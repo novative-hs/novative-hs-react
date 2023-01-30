@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
+// import { v4 as uuidv4 } from 'uuid';
+
 
 const AppRoute = ({
   component: Component,
@@ -35,10 +37,23 @@ const AppRoute = ({
 
       /* If the route is PatientAuthProtected or LabAuthProtected then check if account type is corporate
         - If yes then redirect it to the dashboard of the corporate */
+
       if (isAuthProtected && !localStorage.getItem("authUser")) {
+        // const guest_id = Math.floor(Math.random() * 10);
+        // this.setState({ guest_id: guest_id });
+        // guest_id = this.state.guest_id
+        // console.log("differ route main set hoi:",guest_id)
+
+
+
+
         return (
           <Redirect
-            to={{ pathname: "/nearby-labs", state: { from: props.location } }}
+            // to={{ pathname: "/nearby-labs/"+ guest_id, state: { from: props.location } }}
+            to={
+              { pathname: "/nearby-labs", state: { from: props.location } }
+       
+            }
           />
         );
       }
