@@ -1418,7 +1418,7 @@ class NearbyLabs extends Component {
                   </Col>
                 ))}
                 
-         {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
+         {!isEmpty(nearbyLabs) && (this.state.user_id) &&
            nearbyLabs.map((nearbyLab, key) => (
              <Col xl="4" sm="9" key={"col" + key}>
                <Card
