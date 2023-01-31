@@ -78,7 +78,7 @@ class App extends Component {
             {publicRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
-                layout={HorizontalLayout}
+                layout={NonAuthLayout}
                 component={route.component}
                 key={idx}
                 isAuthProtected={false}

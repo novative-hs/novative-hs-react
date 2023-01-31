@@ -235,28 +235,28 @@ const publicRoutes = [
     path: "/cart/:guest_id?/:uuid?",
     component: CartsList,
   },
-  {
-    path: "/labs/:uuid?",
-    component: labs,
-  },
-  {
-    path: "/nearby-tests/:guest_id?/:uuid?",
-    component: NearbyTests,
-  },
-  {  path: "/nearby-profiles/:guest_id?/:uuid?",
-     component: NearbyProfiles 
-  },
-  {  path: "/nearby-packages/:guest_id?/:uuid?",
-    component: NearbyPackages 
-  },
-  {
-    path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
-    component: NearbyLabDetail,
-  },
-  {
-    path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
-    component: TestsOfferedbyLab,
-  },
+  // {
+  //   path: "/labs/:uuid?",
+  //   component: labs,
+  // },
+  // {
+  //   path: "/nearby-tests/:guest_id?/:uuid?",
+  //   component: NearbyTests,
+  // },
+  // {  path: "/nearby-profiles/:guest_id?/:uuid?",
+  //    component: NearbyProfiles 
+  // },
+  // {  path: "/nearby-packages/:guest_id?/:uuid?",
+  //   component: NearbyPackages 
+  // },
+  // {
+  //   path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
+  //   component: NearbyLabDetail,
+  // },
+  // {
+  //   path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
+  //   component: TestsOfferedbyLab,
+  // },
 
 ];
 
