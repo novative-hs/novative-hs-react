@@ -1069,6 +1069,7 @@ class NearbyLabs extends Component {
             </div>
           </div>
         </header>
+
         <div className="page-content">
        
        <Row  style={{ marginLeft: "20px"}}>
@@ -1416,7 +1417,8 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-         {!isEmpty(nearbyLabs) && (this.state.user_id) &&
+                
+         {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
            nearbyLabs.map((nearbyLab, key) => (
              <Col xl="4" sm="9" key={"col" + key}>
                <Card
