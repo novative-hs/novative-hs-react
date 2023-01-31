@@ -1318,8 +1318,8 @@ class NearbyLabs extends Component {
                                 height: "200px",
                                 objectFit: "cover",
                               }}
-                              className="img-fluid mx-auto d-block"
-                            />
+                              className="img-thumbnail mx-auto d-block rounded"
+                              />
                           </div>
                         </Link>
 
@@ -1445,6 +1445,11 @@ class NearbyLabs extends Component {
                            nearbyLab.logo
                          }
                          alt="Lab Logo"
+                         style={{
+                          width: "300px",
+                          height: "200px",
+                          objectFit: "cover",
+                        }}
                     
                          className="img-thumbnail mx-auto d-block rounded"
                        />
