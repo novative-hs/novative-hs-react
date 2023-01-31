@@ -409,7 +409,12 @@ class NearbyTests extends Component {
     const { onAddToCart } = this.props;
 
     if (!this.state.user_id) {
-      this.props.history.push("/login");
+        // this.props.history.push("/login");
+        this.setState({ guest_id: this.props.match.params.guest_id });
+        cart.guest_id= this.props.match.params.guest_id
+        onAddToCart(cart, cart.guest_id);
+  
+       console.log("uuid:", cart.guest_id, this.props.match.params.guest_id   )   
     } else {
       onAddToCart(cart, this.state.user_id);
     }
