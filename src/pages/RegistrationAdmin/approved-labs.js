@@ -12,6 +12,8 @@ import {
   Label,
   Modal,
   ModalBody,
+  ModalHeader,
+
 } from "reactstrap";
 
 import paginationFactory, {
@@ -36,6 +38,7 @@ class ApprovedLabs extends Component {
     this.state = {
       approvedLabs: [],
       id: "",
+      btnText: "Copy",
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       approvedLab: "",
       user_id: localStorage.getItem("authUser")
@@ -53,14 +56,18 @@ class ApprovedLabs extends Component {
           dataField: "name",
           text: "Lab Name",
           sort: true,
-          // formatter: (cellContent, approvedLab) => (
-          //   <>
-          //     {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-          //     <Link to={`/referrellab/${approvedLab.id}`}>
-          //       {approvedLab.name}
-          //     </Link>
-          //   </>
-          // ),
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span>
+                  <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, approvedLab)}
+                  >
+                   {approvedLab.name}
+                  </Link>
+              </span>
+            </>
+          ),
         },
         {
           dataField: "address",
@@ -72,11 +79,11 @@ class ApprovedLabs extends Component {
           text: "City",
           sort: true,
         },
-        {
-          dataField: "shared_percentage",
-          text: "Referee Fee (%)",
-          sort: true,
-        },
+        // {
+        //   dataField: "shared_percentage",
+        //   text: "Referee Fee (%)",
+        //   sort: true,
+        // },
         {
           dataField: "registered_at",
           text: "Registered at",
@@ -137,6 +144,24 @@ class ApprovedLabs extends Component {
       modal: !prevState.modal,
     }));
   }
+
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      lab_address: arg.lab_address,
+      lab_city: arg.lab_city,
+      lab_phone: arg.lab_phone,
+      lab_email: arg.lab_email,
+    });
+  };
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
 
   handlePatientFeedbackClick = (e, arg) => {
     this.setState({
@@ -232,6 +257,114 @@ class ApprovedLabs extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Lab Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      email
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_email
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Contact No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .lab_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                  </Modal>
                                   </div>
                                 </Col>
                               </Row>

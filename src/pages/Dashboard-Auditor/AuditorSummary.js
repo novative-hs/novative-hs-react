@@ -17,6 +17,7 @@ class AuditorSummary extends Component {
     this.state = {
       name: "",
       email: "",
+      photo:"",
       approvedLabs: "",
       pendingLabs: "",
       user_id: localStorage.getItem("authUser")
@@ -32,6 +33,7 @@ class AuditorSummary extends Component {
       this.setState({
         name: this.props.success.name,
         email: this.props.success.email,
+        photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
         approvedLabs: this.props.success.approved_labs,
         pendingLabs: this.props.success.pending_labs,
       });
@@ -63,6 +65,13 @@ class AuditorSummary extends Component {
                   <div className="pt-4">
                     <Row>
                       <Col xs="6">
+                      <div className="avatar-md profile-user-wid mb-4">
+                  <img
+                    src={this.state.photo}
+                    alt=""
+                    className="img-thumbnail rounded-circle"
+                  />
+                </div>
                         <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>

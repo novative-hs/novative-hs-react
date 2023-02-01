@@ -44,6 +44,7 @@ const carts = (state = INIT_STATE, action) => {
       };
 
     case DELETE_CART_SUCCESS:
+      console.log("reducer", action.payload.id)
       return {
         ...state,
         carts: state.carts.filter(
@@ -58,11 +59,11 @@ const carts = (state = INIT_STATE, action) => {
       };
 
     case ADD_TO_CART_SUCCESS:
+    console.log("reducer", action.payload.data)
       return {
         ...state,
-        success: action.payload,
+        success: action.payload.data,
       };
-
     case ADD_TO_CART_FAIL:
       return {
         ...state,

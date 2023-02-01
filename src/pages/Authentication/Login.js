@@ -22,6 +22,7 @@ class Login extends Component {
     super(props);
     this.state = {
       count: 0,
+      guest_id:"",
     };
   }
 
@@ -31,6 +32,8 @@ class Login extends Component {
     while (elem.attributes.length > 0) {
       elem.removeAttribute(elem.attributes[0].name);
     }
+    // const guest_id = this.props.match.params.guest_id;
+    // console.log("dis mount",guest_id)
 
     if (localStorage.getItem("authUser")) {
       this.props.history.push("/logout");
@@ -77,7 +80,10 @@ class Login extends Component {
                                 (this.state && this.state.username) || "",
                               password:
                                 (this.state && this.state.password) || "",
-                            }}
+                              guest_id:
+                                (this.props && this.props.match.params.guest_id) || "",
+                            }
+                          }
                             validationSchema={Yup.object().shape({
                               username: Yup.string().required(
                                 "Please enter your username or email"
@@ -88,8 +94,9 @@ class Login extends Component {
                             })}
                             onSubmit={values => {
                               this.props.loginUser(values, this.props.history);
-
+                              console.log("page: ",values)
                               setTimeout(() => {
+                                console.log(values)
                                 const success = this.props.success;
 
                                 if (success.account_type == "patient") {

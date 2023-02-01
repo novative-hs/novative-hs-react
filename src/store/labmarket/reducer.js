@@ -1,11 +1,14 @@
 import {
   GET_NEARBY_LABS_FAIL,
   GET_NEARBY_LABS_SUCCESS,
+  GET_REGION_WISE_ADVERTISEMENT_FAIL,
+  GET_REGION_WISE_ADVERTISEMENT_SUCCESS,
   GET_ADV_LIVE_FAIL,
   GET_ADV_LIVE_SUCCESS,
 } from "./actionTypes";
 
 const INIT_STATE = {
+  regionWiseAdvertisement:[],
   nearbyLabs: [],
   advLives: [],
   error: {},
@@ -24,6 +27,18 @@ const labMarket = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+
+    case GET_REGION_WISE_ADVERTISEMENT_SUCCESS:
+        return {
+          ...state,
+          regionWiseAdvertisement: action.payload.data,
+        };
+  
+    case GET_REGION_WISE_ADVERTISEMENT_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
 
     case GET_ADV_LIVE_SUCCESS:
         return {

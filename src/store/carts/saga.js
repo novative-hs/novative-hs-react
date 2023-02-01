@@ -51,11 +51,13 @@ function* onDeleteCart({ payload: cart }) {
 }
 
 function* onAddToCart(object) {
+  console.log("sagaaa", object);
   try {
     const response = yield call(
       addToCart,
       object.payload.cart,
-      object.payload.id
+      object.payload.id,
+      // object.payload.guest_id
     );
 
     // Throw error if status is not 200

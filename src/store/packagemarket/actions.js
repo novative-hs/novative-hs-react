@@ -2,6 +2,10 @@ import {
   GET_NEARBY_PACKAGES,
   GET_NEARBY_PACKAGES_FAIL,
   GET_NEARBY_PACKAGES_SUCCESS,
+  GET_PACKAGES,
+  GET_PACKAGES_FAIL,
+  GET_PACKAGES_SUCCESS,
+  
 } from "./actionTypes";
 
 export const getNearbyPackages = (search_type, address, id, test_name) => ({
@@ -20,3 +24,17 @@ export const getNearbyPackagesFail = error => ({
   payload: error,
 });
 
+export const getPackages = () => ({
+  type: GET_PACKAGES,
+  // payload: {},
+});
+
+export const getPackagesSuccess = Packages => ({
+  type: GET_PACKAGES_SUCCESS,
+  payload: Packages,
+});
+
+export const getPackagesFail = error => ({
+  type: GET_PACKAGES_FAIL,
+  payload: error,
+});

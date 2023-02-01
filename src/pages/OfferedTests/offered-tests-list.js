@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import axios from "axios";
 import { withRouter, Link } from "react-router-dom";
+// import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import {
   Card,
   CardBody,
@@ -37,7 +38,9 @@ import {
   // getUnits,
   getTests,
   getOfferedTests,
+  getLabProfile,
   addNewOfferedTest,
+  addNewOfferedMainTest,
   updateOfferedTest,
   deleteOfferedTest,
 } from "store/offered-tests/actions";
@@ -52,8 +55,10 @@ class OfferedTestsList extends Component {
     this.state = {
       offeredTests: [],
       tests: [],
+      labProfiles: [],
       // units: [],
       offeredTest: "",
+      type: "",
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -76,19 +81,43 @@ class OfferedTestsList extends Component {
           dataField: "test_name",
           text: "Test",
           sort: true,
-          headerStyle: () => {
-            return { 
-            style: {width: "30%",
-              textAlign: "left"
-          },
-        }
-          }  
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span>
+              {offeredTest.test_type != "Test" && (
+                              <div>
+                                <Link
+                                to="#"
+                                onClick={e => this.openPatientModal(e, offeredTest)}
+                              >
+                                <span>
+                                {offeredTest.test_name}
+                                </span>
+                              </Link>
+                              </div>
+                            )}
+               {offeredTest.test_type == "Test" && (
+                              <div>
+                                <span>
+                                {offeredTest.test_name}
+                                </span>
+                              </div>
+                            )}
+                  {/* <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, offeredTest)}
+                  >
+                   {offeredTest.test_name}
+                  </Link> */}
+              </span>
+            </>
+          ), 
         },
-        {
-          dataField: "test_details",
-          text: "Details",
-          sort: true,
-        },
+        // {
+        //   dataField: "test_details",
+        //   text: "Details",
+        //   sort: true,
+        // },
         {
           dataField: "price",
           text: "Price",
@@ -194,9 +223,18 @@ class OfferedTestsList extends Component {
     onGetTests();
     this.setState({ tests });
 
-    const { offeredTests, onGetOfferedTests } = this.props;
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({ 
+      labProfiles
+    });
+    console.log("state",labProfiles)
+
+    const { offeredTests, onGetOfferedTests,  } = this.props;
     onGetOfferedTests(this.state.user_id);
     this.setState({ offeredTests });
+    console.log("state",offeredTests)
+
   }
 
   toggle() {
@@ -209,7 +247,21 @@ class OfferedTestsList extends Component {
   handleSelectGroup = selectedGroup => {
     this.setState({ offeredTest: selectedGroup.value });
   };
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      test_details: arg.test_details,
+    });
+  };
+  
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   handleOfferedTestClicks = () => {
     this.setState({ offeredTest: "", isEdit: false, test_id: "" });
     this.toggle();
@@ -262,6 +314,38 @@ class OfferedTestsList extends Component {
       this.setState({ deleteModal: false });
     }
   };
+  // handleAPICall = () => {
+  //   const { onAddNewOfferedMainTest} = this.props;
+  //   const { offeredTests } = this.state;
+  //   // if (offeredTests.main_lab_tests == "Yes") 
+  //   {
+  //     onAddNewOfferedMainTest(offeredTests, this.state.user_id);
+  //     console.log("sjdhjd",offeredTests)
+
+  //     // setTimeout(() => {
+  //     //   onAddNewOfferedMainTest(this.props.match.params);
+  //     // }, 1000);
+  //   }
+  // };
+  handleAPICall = () => {
+    this.setState({
+      offeredTests: {
+        main_lab_tests: "Yes",
+
+      },
+    });
+
+    // API call to get the checkout items
+    const { onAddNewOfferedMainTest, onGetOfferedTests } = this.props;
+    setTimeout(() => {
+      console.log(
+        onAddNewOfferedMainTest(this.state.offeredTests, this.state.user_id)
+      );
+    },);
+    setTimeout(() => {
+      onGetOfferedTests(this.state.user_id);
+    }, 1000);
+  };
 
   handleOfferedTestClick = arg => {
     const offeredTest = arg;
@@ -293,16 +377,17 @@ class OfferedTestsList extends Component {
 
     const { offeredTests } = this.props;
     const { tests } = this.props;
+    const {labProfiles} = this.props;
     // const { units } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onAddNewOfferedTest, onUpdateOfferedTest, onGetOfferedTests } =
+    const { onAddNewOfferedTest, onAddNewOfferedMainTest, onUpdateOfferedTest, onGetOfferedTests, onGetLabProfile } =
       this.props;
     const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 10000,
       totalSize: offeredTests.length, // replace later with size(offeredTests),
       custom: true,
     };
@@ -426,6 +511,46 @@ class OfferedTestsList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Included Tests
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                  <textarea
+                                  name="test_details"
+                                  id="test_details"
+                                  rows="10"
+                                  cols="10"
+                                  value={this.state.test_details}
+                                  className="form-control"
+                                  readOnly={true}
+                                />
+                                                  </div>
+                                                </div>
+
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
 
                                     <Modal
                                       isOpen={this.state.modal}
@@ -996,6 +1121,39 @@ class OfferedTestsList extends Component {
                     </PaginationProvider>
                   </CardBody>
                 </Card>
+              <Row>
+                <Col sm="2" lg="2">
+                </Col>
+                {isEmpty(this.props.offeredTests)&&
+                this.props.labProfiles.type == "Collection Point" &&
+                // console.log("desh desh",this.props.offeredTests)
+                 (
+                  <Col sm="2" lg="10">
+                  <Card className="col-md-9">
+                    <CardBody >
+                    <div>
+
+                    <input
+                      name="main_lab_tests"
+                      type="checkbox"
+                      required= {true}
+                    // checked={false}
+                      checked={this.state.isChecked}
+                      onChange={this.handleAPICall
+                    }
+                    />
+                      
+                        <b> Do you want to add your main labs tests as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the tests offered by your main lab with all the details will be added <br></br>this will not be undone, You can edit the test details only</b>
+                    
+                    </div>
+                    </CardBody>
+                  </Card>
+
+                  </Col>
+                )}
+               
+              </Row>
+             
               </Col>
             </Row>
           </Container>
@@ -1008,13 +1166,16 @@ class OfferedTestsList extends Component {
 OfferedTestsList.propTypes = {
   match: PropTypes.object,
   tests: PropTypes.array,
+  labProfiles: PropTypes.array,
   // units: PropTypes.array,
   offeredTests: PropTypes.array,
   className: PropTypes.any,
   onGetOfferedTests: PropTypes.func,
+  onGetLabProfile: PropTypes.func,
   onGetTests: PropTypes.func,
   // onGetUnits: PropTypes.func,
   onAddNewOfferedTest: PropTypes.func,
+  onAddNewOfferedMainTest: PropTypes.func,
   onDeleteOfferedTest: PropTypes.func,
   onUpdateOfferedTest: PropTypes.func,
 };
@@ -1022,15 +1183,18 @@ OfferedTestsList.propTypes = {
 const mapStateToProps = ({ offeredTests }) => ({
   offeredTests: offeredTests.offeredTests,
   tests: offeredTests.tests,
-  // units: offeredTests.units,
+  labProfiles: offeredTests.labProfiles,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTests: () => dispatch(getTests()),
   // onGetUnits: () => dispatch(getUnits()),
   onGetOfferedTests: id => dispatch(getOfferedTests(id)),
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
   onAddNewOfferedTest: (offeredTest, id) =>
     dispatch(addNewOfferedTest(offeredTest, id)),
+  onAddNewOfferedMainTest: (offeredTest, id) =>
+    dispatch(addNewOfferedMainTest(offeredTest, id)),
   onUpdateOfferedTest: offeredTest => dispatch(updateOfferedTest(offeredTest)),
   onDeleteOfferedTest: offeredTest => dispatch(deleteOfferedTest(offeredTest)),
 });

@@ -22,6 +22,7 @@ import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 import { isEmpty, size } from "lodash";
 
 import "assets/scss/table.scss";
+import carts from "pages/CartsList/carts";
 
 class CartList extends Component {
   constructor(props) {
@@ -45,11 +46,6 @@ class CartList extends Component {
           formatter: (cellContent, cart) => <>{cart.id}</>,
         },
         {
-          dataField: "patient_name",
-          text: "Patient name",
-          sort: true,
-        },
-        {
           dataField: "lab_name",
           text: "Lab name",
           sort: true,
@@ -66,11 +62,38 @@ class CartList extends Component {
           dataField: "price",
           text: "Price",
           sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
+
         },
         {
           dataField: "discount",
           text: "Discount (%)",
           sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{(cart.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
+        {
+          dataField: "total_balance",
+          text: "After Discount",
+          sort: true,
+          // formatter: (cellContent, cart) => (
+          //   <>
+          //     {(
+          //       <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+          //     )}
+          //   </>
+          // ),
         },
         {
           dataField: "menu",
@@ -78,7 +101,7 @@ class CartList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, cart) => (
-            <div className="d-flex gap-3">
+            <Col>
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -86,7 +109,7 @@ class CartList extends Component {
                   onClick={() => this.onClickDelete(cart)}
                 ></i>
               </Link>
-            </div>
+            </Col>
           ),
         },
       ],
@@ -94,12 +117,29 @@ class CartList extends Component {
     this.handleCartClick = this.handleCartClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    console.log(this.props.match.params.guest_id)
   }
 
   componentDidMount() {
-    const { onGetCarts } = this.props;
-    onGetCarts(this.state.user_id);
-    this.setState({ carts: this.props.carts });
+    const { onGetCarts} = this.props;
+    console.log(this.props.match.params.uuid)
+    
+    // onGetCarts(this.props.match.params.id);
+    // this.setState({ carts: this.props.carts });
+    if ((!this.state.user_id))
+    {
+      console.log(onGetCarts(this.props.match.params.guest_id));
+      this.setState({ carts: this.props.carts });
+      console.log("carts:", this.props.match.params.uuid)
+    }
+    else
+    {
+      onGetCarts(this.state.user_id);
+      this.setState({ carts: this.props.carts });
+      console.log("carts:", this.state.user_id)
+      console.log("carts:", carts)
+
+    }
   }
 
   toggle() {
@@ -302,11 +342,22 @@ class CartList extends Component {
                           <button
                             component={Link}
                             onClick={() => {
-                              this.props.history.push(
-                                this.props.match.params.uuid
-                                  ? `/checkout/${this.props.match.params.uuid}`
-                                  : `/checkout`
-                              );
+                              if (this.state.user_id){
+                                this.props.history.push(
+                                  this.props.match.params.uuid
+                                    ? `/checkout/${this.props.match.params.uuid}`
+                                    : `/checkout`
+                                );
+                              }
+                              if (!this.state.user_id){
+                                this.props.history.push(
+                                  this.props.match.params.uuid
+                                    ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                    : `/login/${this.props.match.params.guest_id}`
+                                );
+                                      // this.props.history.push("/login");
+                              }
+                            
                             }}
                             className="btn btn-success"
                             disabled={this.state.carts.length == 0}

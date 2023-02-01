@@ -11,6 +11,7 @@ import StaffProfile from "../pages/Authentication/StaffProfile";
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
 import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 // TestMarket Pages
+import labs from "pages/LabMarket/NearbyLabs/labs";
 import NearbyTests from "pages/LabMarket/NearbyLabs/NearbyTests";
 import NearbyProfiles from "pages/LabMarket/NearbyLabs/NearbyProfiles";
 import NearbyPackages from "pages/LabMarket/NearbyLabs/NearbyPackages";
@@ -127,12 +128,15 @@ import AccountStatements from "pages/AccountStatements/account-statements";
 import MedicalTestSheet from "pages/OfferedTests/medical-test-sheet";
 import Disclaimer from "pages/Public/disclaimer";
 import AboutUs from "pages/Public/about-us";
+import TermsConditions from "pdf/LabHazir - Terms & Conditions.pdf";
 import ChangePassword from "pages/Authentication/ChangePassword";
 import DashboardAuditor from "pages/Dashboard-Auditor";
 import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
 
 // registration admin
 import PendingLabs from "pages/RegistrationAdmin/pending-labs";
+import labsListPendingFeeOffered from "pages/RegistrationAdmin/labs-list-pending-fee";
+import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-percentage-pending-Fee";
 import ApprovedLabs from "pages/RegistrationAdmin/approved-labs";
 import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
 import PendingB2bClients from "pages/RegistrationAdmin/pending-b2b-clients";
@@ -208,12 +212,13 @@ import Payments from "pages/Authentication/Payments";
 import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
 import { invoiceList } from "common/data";
+import labsListPendingFee from "store/labs-list-pending/reducer";
 
 // All general public routes will be listed here
 const publicRoutes = [
   { path: "/register/:uuid?", component: Register },
   { path: "/logout", component: Logout },
-  { path: "/login/:uuid?", component: Login },
+  { path: "/login/:guest_id?/:uuid?", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/:token/confirm-password", component: ConfirmPwd },
   { path: "/patient-information/:id/:uuid?", component: PatientInformation },
@@ -226,6 +231,32 @@ const publicRoutes = [
   { path: "/pages-comingsoon", component: PagesComingsoon },
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
+  {
+    path: "/cart/:guest_id?/:uuid?",
+    component: CartsList,
+  },
+  // {
+  //   path: "/labs/:uuid?",
+  //   component: labs,
+  // },
+  // {
+  //   path: "/nearby-tests/:guest_id?/:uuid?",
+  //   component: NearbyTests,
+  // },
+  // {  path: "/nearby-profiles/:guest_id?/:uuid?",
+  //    component: NearbyProfiles 
+  // },
+  // {  path: "/nearby-packages/:guest_id?/:uuid?",
+  //   component: NearbyPackages 
+  // },
+  // {
+  //   path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
+  //   component: NearbyLabDetail,
+  // },
+  // {
+  //   path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
+  //   component: TestsOfferedbyLab,
+  // },
 
 ];
 
@@ -438,6 +469,10 @@ const auditorAuthProtectedRoutes = [
 
 const registrationAdminAuthProtectedRoutes = [
   { path: "/pending-labs", component: PendingLabs },
+  { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
+  {
+    path: "/shared-percentage-pending-Fee/:id",component: sharedPercentagePendingFeeTests,
+  },
   { path: "/approved-labs", component: ApprovedLabs },
   { path: "/unapproved-labs", component: UnapprovedLabs },
   { path: "/pending-b2b-clients", component: PendingB2bClients },
@@ -524,6 +559,18 @@ const patientAuthProtectedRoutes = [
     path: "/invoice-detail/:id",
     component: InvoiceDetail,
   },
+  // { path: "/nearby-labs/:uuid?", component: NearbyLabs },
+
+    // {
+    //   path: "/nearby-tests/:uuid?",
+    //   component: NearbyTests,
+    // },
+    // {  path: "/nearby-profiles/:uuid?",
+    //    component: NearbyProfiles 
+    // },
+    // {  path: "/nearby-packages/:uuid?",
+    //   component: NearbyPackages 
+    // },
 ];
 
 // All public routes of the patient module will be listed here
@@ -532,23 +579,28 @@ const patientPublicRoutes = [
   { path: "/contact-us", component: ContactUs },
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
+  { path: "/terms", component: TermsConditions},
   { path: "/nearby-labs/:uuid?", component: NearbyLabs },
   {
-    path: "/nearby-tests/:uuid?",
+    path: "/labs/:guest_id?/:uuid?",
+    component: labs,
+  },
+  {
+    path: "/nearby-tests/:guest_id?/:uuid?",
     component: NearbyTests,
   },
-  {  path: "/nearby-profiles/:uuid?",
+  {  path: "/nearby-profiles/:guest_id?/:uuid?",
      component: NearbyProfiles 
-},
-{  path: "/nearby-packages/:uuid?",
-   component: NearbyPackages 
-},
+  },
+  {  path: "/nearby-packages/:guest_id?/:uuid?",
+    component: NearbyPackages 
+  },
   {
-    path: "/nearby-lab-detail/:lab_account_id/:uuid?",
+    path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
     component: NearbyLabDetail,
   },
   {
-    path: "/:lab_account_id/offered-test-by-lab/:uuid?",
+    path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
     component: TestsOfferedbyLab,
   },
   {

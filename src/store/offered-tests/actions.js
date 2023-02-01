@@ -11,9 +11,15 @@ import {
   GET_OFFEREDTEST_REFERRELFEE,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
+  GET_LAB_PROFILE,
+  GET_LAB_PROFILE_FAIL,
+  GET_LAB_PROFILE_SUCCESS,
   ADD_NEW_OFFERED_TEST,
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
+  ADD_NEW_OFFERED_MAINTEST,
+  ADD_OFFERED_MAINTEST_SUCCESS,
+  ADD_OFFERED_MAINTEST_FAIL,
   UPDATE_OFFERED_TEST,
   UPDATE_OFFERED_TEST_SUCCESS,
   UPDATE_OFFERED_TEST_FAIL,
@@ -23,6 +29,22 @@ import {
 } from "./actionTypes";
 
 // ----------- Test list APIs actions -----------------
+export const getLabProfile = id => ({
+  type: GET_LAB_PROFILE,
+  payload: id,
+});
+
+export const getLabProfileSuccess = labProfiles => (
+  console.log("actions",labProfiles),
+  {
+  type: GET_LAB_PROFILE_SUCCESS,
+  payload: labProfiles,
+});
+
+export const getLabProfileFail = error => ({
+  type: GET_LAB_PROFILE_FAIL,
+  payload: error,
+});
 export const getTests = () => ({
   type: GET_TESTS,
 });
@@ -95,6 +117,21 @@ export const addOfferedTestSuccess = offeredTest => ({
 
 export const addOfferedTestFail = error => ({
   type: ADD_OFFERED_TEST_FAIL,
+  payload: error,
+});
+
+export const addNewOfferedMainTest = (offeredTest, id) => ({
+  type: ADD_NEW_OFFERED_MAINTEST,
+  payload: { offeredTest, id },
+});
+
+export const addOfferedMainTestSuccess = offeredTest => ({
+  type: ADD_OFFERED_MAINTEST_SUCCESS,
+  payload: offeredTest,
+});
+
+export const addOfferedMainTestFail = error => ({
+  type: ADD_OFFERED_MAINTEST_FAIL,
   payload: error,
 });
 

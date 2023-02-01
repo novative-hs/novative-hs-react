@@ -123,7 +123,7 @@ class LabQualityCertificates extends Component {
                                 {qualityCertificate.name}{" "}
                               </h5>
                               <h5 className="mb-2 text-truncate">
-                                {qualityCertificate.lab_id.name}{" "}
+                                {qualityCertificate.lab_name}{" "}
                               </h5>
 
                               <div className="my-0">

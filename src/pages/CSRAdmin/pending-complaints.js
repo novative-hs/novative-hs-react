@@ -105,6 +105,31 @@ class PendingComplaints extends Component {
             </>
           ),
         },
+        {
+          dataField: "registered_at",
+          text: "Registered at",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {new Date(complaint.registered_at).toLocaleString("en-US")}
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "registered_at",
+          text: "Pending Since",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+              {new Date().getDate() - new Date(complaint.registered_at).getDate()} days
+
+              </span>
+            </>
+          ),
+        },
         // {
         //   dataField: "email",
         //   text: "Email",
@@ -322,6 +347,9 @@ class PendingComplaints extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Complaints" breadcrumbItem="Pending" />
             <Row>
+            <div className="mb-3">
+                                                <p><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
+                                                </div>
               <Col lg="12">
                 <Card>
                   <CardBody>

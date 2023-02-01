@@ -72,6 +72,11 @@ import labAdvertisements from "./lab-advertisements/reducer";
 //lab Advertisement
 import labAdvertisementRequests from "./lab-advertisement-requests/reducer";
 
+//lab list Pending
+import labsListPendingFee from "./labs-list-pending/reducer";
+
+//shared-percentage-pending-fee
+import sharedPercentagePendingFeeTests from "./shared-percentage-pending-fee/reducer";
 
 //Discount Labhazir
 import discountLabHazirs from "./discount-labhazir/reducer";
@@ -181,10 +186,12 @@ const rootReducer = combineReducers({
   B2bProfile,
   b2baccountStatements,
   StaffProfile,
+  labsListPendingFee,
   SampleCollectorProfile,
   sampleCollectorDatas,
   LabSettings,
   Payments,
+  sharedPercentagePendingFeeTests,
   PatientProfile,
   CorporateProfile,
   donorReferredAppointments,

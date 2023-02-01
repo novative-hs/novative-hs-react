@@ -17,6 +17,7 @@ class SampleCollectorSummary extends Component {
     this.state = {
       name: "",
       phone: "",
+      photo:"",
       samplesCollected: "",
       samplesInprocess: "",
       user_id: localStorage.getItem("authUser")
@@ -32,6 +33,7 @@ class SampleCollectorSummary extends Component {
       this.setState({
         name: this.props.success.name,
         phone: this.props.success.phone,
+        photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
         samplesCollected: this.props.success.samples_collected,
         samplesInprocess: this.props.success.samples_inprocess,
       });
@@ -63,6 +65,13 @@ class SampleCollectorSummary extends Component {
                   <div className="pt-4">
                     <Row>
                       <Col xs="6">
+                      <div className="avatar-md profile-user-wid mb-4">
+                  <img
+                    src={this.state.photo}
+                    alt=""
+                    className="img-thumbnail rounded-circle"
+                  />
+                </div>
                         <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>

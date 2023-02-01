@@ -70,6 +70,13 @@ class LabSummary extends Component {
                   <div className="pt-4">
                     <Row>
                       <Col xs="6">
+                      <div className="avatar-md profile-user-wid mb-4">
+                  <img
+                    src={this.state.logo}
+                    alt=""
+                    className="img-thumbnail rounded-circle"
+                  />
+                </div>
                         <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>

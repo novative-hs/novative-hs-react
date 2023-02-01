@@ -319,6 +319,9 @@ export const postLogin = user => {
   let formData = new FormData();
   formData.append("username", user.username);
   formData.append("password", user.password);
+  formData.append("guest_id", user.guest_id);
+
+  console.log("django api", user)
   return axios.post(url.POST_LOGIN, formData, {
     headers: getHeader(authHeader()),
   });
@@ -374,7 +377,15 @@ export const addNewOfferedTest = (offeredTest, id) => {
     headers: getHeader(authHeader()),
   });
 };
+export const addNewOfferedMainTest = (offeredTest, id) => {
+  let formData = new FormData();
+  formData.append("main_lab_tests", offeredTest.main_lab_tests);
+  // formData.append("unit_id", offeredTest.unit_id);
 
+  return axios.post(`${url.ADD_NEW_OFFERED_MAINTEST}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 export const updateOfferedTest = offeredTest => {
   let formData = new FormData();
   formData.append("id", offeredTest.id);
@@ -715,6 +726,7 @@ export const updateLabSettings = (labSettings, id) => {
     labSettings.complaint_handling_phone
   );
   formData.append("home_sampling_charges", labSettings.home_sampling_charges);
+  formData.append("state_sampling_charges", labSettings.state_sampling_charges);
   formData.append(
     "is_digital_payment_accepted",
     labSettings.is_digital_payment_accepted
@@ -738,17 +750,6 @@ export const updateLabPayments = (labPayments, id) => {
   formData.append("counter_discount", labPayments.counter_discount);
   formData.append("amount_received", labPayments.amount_received);
   formData.append("received_by", labPayments.received_by);
-
-  // if (labPayments.amount == labPayments.amount_received) {
-  //   formData.append("counter_discount", labPayments.counter_discount == 0);
-  //   formData.append("amount_received", labPayments.amount_received);
-  //   formData.append("received_by", labPayments.received_by);
-  //   } else {
-  //   formData.append("counter_discount", labPayments.counter_discount);
-  //   formData.append("amount_received", labPayments.amount_received);
-  //   formData.append("received_by", labPayments.received_by);
-  // }
-
   return axios.put(`${url.UPDATE_LAB_PAYMENTS}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -777,6 +778,22 @@ export const updatePatientProfile = (patientProfile, id) => {
   });
 };
 
+// Get Region Wise Advertisement
+export const getRegionWiseAdvertisement = locationDetails => {
+  let formData = new FormData();
+  formData.append("latitude", locationDetails.latitude);
+  formData.append("longitude", locationDetails.longitude);
+  formData.append("search_type", locationDetails.search_type);
+  formData.append("address", locationDetails.address);
+  formData.append("city", locationDetails.city);
+
+  // console.log("donorSetting: ", locationDetails)
+
+  return axios.post(`${url.GET_REGION_WISE_ADVERTISEMENT}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 // Get Nearby Labs
 export const getNearbyLabs = locationDetails => {
   let formData = new FormData();
@@ -785,8 +802,10 @@ export const getNearbyLabs = locationDetails => {
   formData.append("search_type", locationDetails.search_type);
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
+  formData.append("guest_id", locationDetails.guest_id);
 
-  console.log("donorSetting: ", locationDetails)
+
+  console.log("locationDetails: ", locationDetails)
 
   return axios.post(`${url.GET_NEARBY_LABS}`, formData, {
     headers: getHeader(authHeader()),
@@ -828,6 +847,11 @@ export const getNearbyProfiles = data => {
 
 export const getProfiles = () =>
   get(url.GET_PROFILES, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getPackages = () =>
+  get(url.GET_PACKAGES, {
     headers: getHeader(authHeader()),
   });
 // Get Nearby Packages
@@ -933,8 +957,10 @@ export const getHandledComplaints = id =>
 // ------------- Cart START -------------
 export const getCarts = id =>
   get(`${url.GET_CARTS}/${id}`, {
-    headers: getHeader(authHeader()),
-  });
+    
+  headers: getHeader(authHeader()),
+  });    
+
 
 export const emptyCart = id =>
   del(`${url.EMPTY_CART}/${id}`, {
@@ -948,8 +974,18 @@ export const deleteCart = cart =>
 
 export const addToCart = (cart, id) => {
   let formData = new FormData();
+  // formData.append("account_id", cart.patient_id);
   formData.append("lab_id", cart.lab_id);
   formData.append("offered_test_id", cart.id);
+  formData.append("amount", cart.price);
+  formData.append("guest_id", cart.guest_id);
+  formData.append("invoice_discount", cart.discount);
+  formData.append("invoice_labhazir_discount", cart.discount_by_labhazir);
+  // formData.append("amount", cart.price);
+
+
+
+  console.log("cart items", cart, cart.patient_id)
 
   return axios.post(`${url.ADD_TO_CART}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -963,9 +999,13 @@ export const getHomeSampledTests = id =>
   });
 
 // Get Checkout Items
-export const getCheckoutItems = (id, is_home_sampling_availed) => {
+export const getCheckoutItems = (id, is_home_sampling_availed, is_state_sampling_availed) => {
   let formData = new FormData();
   formData.append("is_home_sampling_availed", is_home_sampling_availed);
+  formData.append("is_state_sampling_availed", is_state_sampling_availed);
+  console.log("different values", id, is_home_sampling_availed);
+  console.log("different values", id, is_state_sampling_availed);
+
 
   return axios.post(`${url.GET_CHECKOUT_ITEMS}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -981,12 +1021,12 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("patient_gender", checkoutData.patient_gender);
   formData.append("patient_address", checkoutData.patient_address);
   formData.append("city_id", checkoutData.city_id);
-  // formData.append("patient_city", checkoutData.patient_city);
-  // formData.append("patient_district", checkoutData.patient_district);
-  formData.append(
-    "relationsip_with_patient",
-    checkoutData.relationsip_with_patient
-  );
+  formData.append("patient_city", checkoutData.patient_city);
+  formData.append("patient_district", checkoutData.patient_district);
+  // formData.append(
+  //   "relationsip_with_patient",
+  //   checkoutData.relationsip_with_patient
+  // );
   formData.append(
     "appointment_requested_at",
     checkoutData.appointment_requested_at
@@ -995,11 +1035,17 @@ export const addCheckoutData = (checkoutData, id) => {
     "is_home_sampling_availed",
     checkoutData.is_home_sampling_availed
   );
+  formData.append(
+    "is_state_sampling_availed",
+    checkoutData.is_state_sampling_availed
+  );
   formData.append("payment_method", checkoutData.payment_method);
   formData.append("card_number", checkoutData.card_number);
   formData.append("name_on_card", checkoutData.name_on_card);
   formData.append("expiry_date", checkoutData.expiry_date);
   formData.append("cvv_code", checkoutData.cvv_code);
+
+  console.log("add different data with state sampling", checkoutData);
 
   return axios.post(`${url.ADD_CHECKOUT_DATA}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1454,6 +1500,42 @@ export const approveUnapproveB2BClient = data => {
     headers: getHeader(authHeader()),
   });
 };
+// Pending offered test labs list
+
+export const getLabsListPendingFee = ()=>
+  get(`${url.GET_LABS_LIST_PENDING_FEE}`, {
+    headers: getHeader(authHeader()),
+  });
+
+
+export const getSharedPercentagePendingFeeTests = id =>
+  get(`${url.GET_SHARED_PERCENTAGE_PENDING_FEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const updateSharedPercentagePendingFeeTest = data => {
+    let formData = new FormData();
+  
+    formData.append("shared_percentage", data.shared_percentage);
+  
+    return axios.put(`${url.UPDATE_SHARED_PERCENTAGE_PENDING_FEE}/${data.id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+  
+export const updateSharedPercentageAllPendingFeeTest = data => {
+    let formData = new FormData();
+    // formData.append("account_id", id);
+    formData.append("shared_percentage", data.shared_percentage);
+    // formData.append("shared_percentage", data.shared_percentage);
+  
+    return axios.put(`${url.UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE}/${data.lab_id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+
+
+
+// ------------- Donors requests START -------------
 
 export const getPendingDonors = () =>
   get(`${url.GET_PENDING_DONORS}`, {
@@ -1804,9 +1886,11 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
+  formData.append("price_id", advertisement.price_id);
+
   formData.append("district", advertisement.district);
-  formData.append("amount", advertisement.amount);
-  formData.append("number_of_days", advertisement.number_of_days);
+  // formData.append("amount", advertisement.amount);
+  // formData.append("number_of_days", advertisement.number_of_days);
 
 
   return axios.post(`${url.ADD_NEW_LAB_ADVERTISEMENT}/${id}`, formData, {
@@ -1825,9 +1909,9 @@ export const updateLabAdvertisement = advertisement => {
   formData.append("region_type", advertisement.region_type);
   formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
+  formData.append("price_id", advertisement.price_id);
   formData.append("district", advertisement.district);
-  formData.append("amount", advertisement.amount);
-  formData.append("number_of_days", advertisement.number_of_days);
+
 
   return axios.put(`${url.UPDATE_LAB_ADVERTISEMENT}/${advertisement.id}`,
   formData,

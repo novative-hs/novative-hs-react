@@ -157,7 +157,7 @@ class Contact extends Component {
                           if (this.props.complaint) {
                             this.setState({
                               complaintSuccess:
-                                "Thank you for contacting us. Our customer service representative will get back to you soon.",
+                                "Thank you for contacting us. Our customer service representative will get back to you soon.Check your email for Complaint ID",
                             });
                           }
                         }, 1000);

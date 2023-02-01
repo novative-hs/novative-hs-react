@@ -160,6 +160,7 @@ class TestAppointmentsInProcessList extends Component {
             <>
               {patientTestAppointment.status == "Pending" ||
                 patientTestAppointment.status == "Confirmed" ||
+                // patientTestAppointment.status == "Sample Collected" ||
                 patientTestAppointment.status == "Rescheduled" ? (
                 <span>----</span>
               ) : (
@@ -1365,8 +1366,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 url: values.url,
                                                 result: this.state.resultFile,
                                                 assigned_to:
-                                                  this.state.testAppointment
-                                                    .assigned_to,
+                                                 values.assigned_to,
                                                 process: "inprocess",
                                               };
 
@@ -1691,22 +1691,16 @@ class TestAppointmentsInProcessList extends Component {
                                                       {/* <option value="Confirmed">
                                                         Confirmed
                                                       </option> */}
-                                                      {testAppointment.status !=
-                                                      "Sample Collected" && (
+                                                 
                                                         <option value="Confirmed">
                                                           Confirmed
                                                         </option>
-                                                      )}
-
-                                                      {/* <option value="Sample Collected">
-                                                        Sample Collected
-                                                      </option> */}
-                                                      {testAppointment.is_home_sampling_availed && (
+                                                    
                                                           <option value="Sample Collected">
                                                             Sample Collected
                                                           </option>
-                                                        )}
-                                                      
+                                                    
+                                            
                                                       {/* <option value="Sample Declined">
                                                         Sample Declined
                                                       </option>
@@ -1884,7 +1878,7 @@ class TestAppointmentsInProcessList extends Component {
                                                     )}
 
                                                   {this.state.testAppointment
-                                                    .is_home_sampling_availed && (
+                                                    .is_home_sampling_availed == true && (
                                                       <div className="mb-3">
                                                         <Label>
                                                           Assigned to (Sample
@@ -1936,7 +1930,6 @@ class TestAppointmentsInProcessList extends Component {
                                                         />
                                                       </div>
                                                     )}
-
                                                   {this.state.testAppointment
                                                     .status ===
                                                     "Result Uploaded" && (

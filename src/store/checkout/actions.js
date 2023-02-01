@@ -25,9 +25,9 @@ export const getHomeSampledTestsFail = error => ({
   payload: error,
 });
 
-export const getCheckoutItems = (id, is_home_sampling_availed) => ({
+export const getCheckoutItems = (id, is_home_sampling_availed, is_state_sampling_availed) => ({
   type: GET_CHECKOUT_ITEMS,
-  payload: { id, is_home_sampling_availed },
+  payload: { id, is_home_sampling_availed, is_state_sampling_availed},
 });
 
 export const getCheckoutItemsSuccess = checkoutItems => ({

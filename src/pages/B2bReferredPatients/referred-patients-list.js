@@ -231,6 +231,55 @@ class ReferredPatientsList extends Component {
           ),
         },
         {
+          dataField: "result",
+          isDummyField: true,
+          editable: false,
+          text: "Result",
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Result Uploaded" &&
+              patientTestAppointment.result_type == "File" ? (
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL +
+                      patientTestAppointment.result,
+                  }}
+                  target="_blank"
+                >
+                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
+                  Report
+                </Link>
+              ) : patientTestAppointment.status == "Result Uploaded" &&
+                patientTestAppointment.result_type == "Link" ? (
+                <Link
+                  to={{
+                    pathname: patientTestAppointment.url,
+                  }}
+                  target="_blank"
+                >
+                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
+                  Report
+                </Link>
+              ) : (
+                <span>Not uploaded</span>
+              )}
+            </>
+          ),
+          // formatter: (cellContent, b2bReferredPatient) => (
+          //   <div className="d-flex gap-3">
+          //     <Link className="text-success" to="#">
+          //     <Tooltip title="Invoice">
+          //     <Link
+          //       className="mdi mdi-receipt font-size-18"
+          //       to={`/in-process-b2b/${b2bReferredPatient.id}`}              >
+          //     </Link>
+          //     </Tooltip>
+          //     </Link>
+          //   </div>
+          // ),
+        },
+        {
           dataField: "menu",
           isDummyField: true,
           editable: false,

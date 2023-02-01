@@ -130,7 +130,7 @@ class LabInformation extends Component {
   };
 
   render() {
-// list of city from territories
+    // list of city from territories
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -139,7 +139,7 @@ class LabInformation extends Component {
       });
     }
 
-// list of district from territories
+    // list of district from territories
     // const districtList = [];
     // for (let i = 0; i < this.props.territoriesList.length; i++) {
     //   districtList.push({
@@ -148,7 +148,7 @@ class LabInformation extends Component {
     //   });
     // }
 
-// Redirect to register page if getting access directly from url
+    // Redirect to register page if getting access directly from url
     if (typeof this.props.location.state == "undefined") {
       return <Redirect to={"/register"} />;
     }
@@ -354,7 +354,7 @@ class LabInformation extends Component {
                               //     /^[a-zA-Z][a-zA-Z ]+$/,
                               //     "Please enter only alphabets and spaces"
                               //   ),
-                          
+
                               lab_staff_name: Yup.string().when(
                                 "registered_by",
                                 {
@@ -503,7 +503,7 @@ class LabInformation extends Component {
                                 values,
                                 this.props.match.params.id
                               );
-                              window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                              window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
 
                               // Redirecting back to the login page
@@ -591,7 +591,7 @@ class LabInformation extends Component {
                                       className={
                                         "form-control" +
                                         (errors.branch_name &&
-                                        touched.branch_name
+                                          touched.branch_name
                                           ? " is-invalid"
                                           : "")
                                       }
@@ -616,7 +616,7 @@ class LabInformation extends Component {
                                     <Select
                                       styles={
                                         errors.main_lab_account_id &&
-                                        touched.main_lab_account_id
+                                          touched.main_lab_account_id
                                           ? errorStyle
                                           : style
                                       }
@@ -721,7 +721,7 @@ class LabInformation extends Component {
                                         className={
                                           "form-control" +
                                           (errors.national_taxation_no &&
-                                          touched.national_taxation_no
+                                            touched.national_taxation_no
                                             ? " is-invalid"
                                             : "")
                                         }
@@ -755,7 +755,7 @@ class LabInformation extends Component {
                                         className={
                                           "form-control" +
                                           (errors.lab_experience &&
-                                          touched.lab_experience
+                                            touched.lab_experience
                                             ? " is-invalid"
                                             : "")
                                         }
@@ -864,7 +864,7 @@ class LabInformation extends Component {
                                 </div> */}
 
 
-                                  {/* District field */}
+                                {/* District field */}
                                 {/* <div className="mb-3">
                           <Label for="office" className="form-label">
                             District
@@ -905,54 +905,54 @@ class LabInformation extends Component {
 
 
                                 {/* city field */}
-                        <div className="mb-3">
+                                <div className="mb-3">
 
 
-                          <Label for="city_id" className="form-label">
-                            City
-                          </Label>
-                              <Select
-                                name="city_id"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    city_id: selectedGroup.value,
-                                  })
-                                }
-                                className={
-                                  "defautSelectParent" +
-                                  (errors.city_id && touched.city_id
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                                styles={{
-                                  control: (base, state) => ({
-                                    ...base,
-                                    borderColor:
-                                      errors.city_id && touched.city_id
-                                        ? "#f46a6a"
-                                        : "#ced4da",
-                                  }),
-                                }}
-                                options={
-                                  cityList
-                                }
-                                defaultValue={{
-                                  label:
-                                  this.state.city,
-                                  value:
-                                  this.state.id,                                       
-                                }}
-                              
-                              />
+                                  <Label for="city_id" className="form-label">
+                                    City
+                                  </Label>
+                                  <Select
+                                    name="city_id"
+                                    component="Select"
+                                    onChange={selectedGroup =>
+                                      this.setState({
+                                        city_id: selectedGroup.value,
+                                      })
+                                    }
+                                    className={
+                                      "defautSelectParent" +
+                                      (errors.city_id && touched.city_id
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                    styles={{
+                                      control: (base, state) => ({
+                                        ...base,
+                                        borderColor:
+                                          errors.city_id && touched.city_id
+                                            ? "#f46a6a"
+                                            : "#ced4da",
+                                      }),
+                                    }}
+                                    options={
+                                      cityList
+                                    }
+                                    defaultValue={{
+                                      label:
+                                        this.state.city,
+                                      value:
+                                        this.state.id,
+                                    }}
 
-                              <ErrorMessage
-                                name="city_id"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                        </div>
-                       
+                                  />
+
+                                  <ErrorMessage
+                                    name="city_id"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+
 
                                 {/* District field */}
                                 {/* <div className="mb-3">
@@ -986,7 +986,7 @@ class LabInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div> */}
-                                
+
                                 {/* City field */}
                                 {/* <div className="mb-3">
                                   <Label for="city" className="form-label">
@@ -1020,7 +1020,6 @@ class LabInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div> */}
-
                                 {/* Accept Digital Payments field */}
                                 <div className="mb-3">
                                   <Label
@@ -1096,7 +1095,7 @@ class LabInformation extends Component {
                                         className={
                                           "form-control" +
                                           (errors.lab_staff_name &&
-                                          touched.lab_staff_name
+                                            touched.lab_staff_name
                                             ? " is-invalid"
                                             : "")
                                         }
@@ -1131,7 +1130,7 @@ class LabInformation extends Component {
                                         className={
                                           "form-control" +
                                           (errors.lab_staff_designation &&
-                                          touched.lab_staff_designation
+                                            touched.lab_staff_designation
                                             ? " is-invalid"
                                             : "")
                                         }
@@ -1198,7 +1197,7 @@ class LabInformation extends Component {
                                         className={
                                           "form-control" +
                                           (errors.marketer_email &&
-                                          touched.marketer_email
+                                            touched.marketer_email
                                             ? " is-invalid"
                                             : "")
                                         }
@@ -1213,148 +1212,155 @@ class LabInformation extends Component {
                                     {this.state
                                       .is_registering_for_first_time ===
                                       "Yes" && (
-                                      <div>
-                                        {/* Marketer Name field */}
-                                        <div className="mb-3">
-                                          <Label
-                                            for="marketer_name"
-                                            className="form-label"
-                                          >
-                                            Marketer Name
-                                          </Label>
-                                          <Field
-                                            id="marketer_name"
-                                            name="marketer_name"
-                                            type="text"
-                                            placeholder="Please enter marketer name"
-                                            onChange={e =>
-                                              this.setState({
-                                                marketer_name: e.target.value,
-                                              })
-                                            }
-                                            value={this.state.marketer_name}
-                                            className={
-                                              "form-control" +
-                                              (errors.marketer_name &&
-                                              touched.marketer_name
-                                                ? " is-invalid"
-                                                : "")
-                                            }
-                                          />
-                                          <ErrorMessage
-                                            name="marketer_name"
-                                            component="div"
-                                            className="invalid-feedback"
-                                          />
+                                        <div>
+                                          {/* Marketer Name field */}
+                                          <div className="mb-3">
+                                            <Label
+                                              for="marketer_name"
+                                              className="form-label"
+                                            >
+                                              Marketer Name
+                                            </Label>
+                                            <Field
+                                              id="marketer_name"
+                                              name="marketer_name"
+                                              type="text"
+                                              placeholder="Please enter marketer name"
+                                              onChange={e =>
+                                                this.setState({
+                                                  marketer_name: e.target.value,
+                                                })
+                                              }
+                                              value={this.state.marketer_name}
+                                              className={
+                                                "form-control" +
+                                                (errors.marketer_name &&
+                                                  touched.marketer_name
+                                                  ? " is-invalid"
+                                                  : "")
+                                              }
+                                            />
+                                            <ErrorMessage
+                                              name="marketer_name"
+                                              component="div"
+                                              className="invalid-feedback"
+                                            />
+                                          </div>
+
+                                          {/* Marketer CNIC field */}
+                                          <div className="mb-3">
+                                            <Label
+                                              for="marketer_cnic"
+                                              className="form-label"
+                                            >
+                                              Marketer CNIC
+                                            </Label>
+                                            <Field
+                                              id="marketer_cnic"
+                                              name="marketer_cnic"
+                                              type="text"
+                                              placeholder="Please enter marketer cnic"
+                                              onChange={e =>
+                                                this.setState({
+                                                  marketer_cnic: e.target.value,
+                                                })
+                                              }
+                                              value={this.state.marketer_cnic}
+                                              className={
+                                                "form-control" +
+                                                (errors.marketer_cnic &&
+                                                  touched.marketer_cnic
+                                                  ? " is-invalid"
+                                                  : "")
+                                              }
+                                            />
+                                            <ErrorMessage
+                                              name="marketer_cnic"
+                                              component="div"
+                                              className="invalid-feedback"
+                                            />
+                                          </div>
+
+                                          {/* Marketer Phone field */}
+                                          <div className="mb-3">
+                                            <Label
+                                              for="marketer_phone"
+                                              className="form-label"
+                                            >
+                                              Marketer Mobile No.
+                                            </Label>
+                                            <Field
+                                              id="marketer_phone"
+                                              name="marketer_phone"
+                                              type="text"
+                                              placeholder="Please enter marketer mobile no."
+                                              onChange={e =>
+                                                this.setState({
+                                                  marketer_phone: e.target.value,
+                                                })
+                                              }
+                                              value={this.state.marketer_phone}
+                                              className={
+                                                "form-control" +
+                                                (errors.marketer_phone &&
+                                                  touched.marketer_phone
+                                                  ? " is-invalid"
+                                                  : "")
+                                              }
+                                            />
+                                            <ErrorMessage
+                                              name="marketer_phone"
+                                              component="div"
+                                              className="invalid-feedback"
+                                            />
+                                          </div>
+
+                                          {/* Marketer City field */}
+                                          <div className="mb-3">
+                                            <Label
+                                              for="marketer_city"
+                                              className="form-label"
+                                            >
+                                              Marketer City
+                                            </Label>
+                                            <Select
+                                              name="marketer_city"
+                                              component="Select"
+                                              onChange={selectedGroup =>
+                                                this.setState({
+                                                  marketer_city:
+                                                    selectedGroup.value,
+                                                })
+                                              }
+                                              className={
+                                                "defautSelectParent" +
+                                                (errors.marketer_city &&
+                                                  touched.marketer_city
+                                                  ? " is-invalid"
+                                                  : "")
+                                              }
+                                              styles={{
+                                                control: (base, state) => ({
+                                                  ...base,
+                                                  borderColor:
+                                                    errors.marketer_city &&
+                                                      touched.marketer_city
+                                                      ? "#f46a6a"
+                                                      : "#ced4da",
+                                                }),
+                                              }}
+                                              options={CITIES}
+                                              placeholder="Select City..."
+                                            />
+
+                                            <ErrorMessage
+                                              name="marketer_city"
+                                              component="div"
+                                              className="invalid-feedback"
+                                            />
+                                          </div>
                                         </div>
-
-                                        {/* Marketer CNIC field */}
-                                        <div className="mb-3">
-                                          <Label
-                                            for="marketer_cnic"
-                                            className="form-label"
-                                          >
-                                            Marketer CNIC
-                                          </Label>
-                                          <Field
-                                            id="marketer_cnic"
-                                            name="marketer_cnic"
-                                            type="text"
-                                            placeholder="Please enter marketer cnic"
-                                            onChange={e =>
-                                              this.setState({
-                                                marketer_cnic: e.target.value,
-                                              })
-                                            }
-                                            value={this.state.marketer_cnic}
-                                            className={
-                                              "form-control" +
-                                              (errors.marketer_cnic &&
-                                              touched.marketer_cnic
-                                                ? " is-invalid"
-                                                : "")
-                                            }
-                                          />
-                                          <ErrorMessage
-                                            name="marketer_cnic"
-                                            component="div"
-                                            className="invalid-feedback"
-                                          />
-                                        </div>
-
-                                        {/* Marketer Phone field */}
-                                        <div className="mb-3">
-                                          <Label
-                                            for="marketer_phone"
-                                            className="form-label"
-                                          >
-                                            Marketer Mobile No.
-                                          </Label>
-                                          <Field
-                                            id="marketer_phone"
-                                            name="marketer_phone"
-                                            type="text"
-                                            placeholder="Please enter marketer mobile no."
-                                            onChange={e =>
-                                              this.setState({
-                                                marketer_phone: e.target.value,
-                                              })
-                                            }
-                                            value={this.state.marketer_phone}
-                                            className={
-                                              "form-control" +
-                                              (errors.marketer_phone &&
-                                              touched.marketer_phone
-                                                ? " is-invalid"
-                                                : "")
-                                            }
-                                          />
-                                          <ErrorMessage
-                                            name="marketer_phone"
-                                            component="div"
-                                            className="invalid-feedback"
-                                          />
-                                        </div>
-
-                                        {/* Marketer City field */}
-                                        <div className="mb-3">
-                                          <Label
-                                            for="marketer_city"
-                                            className="form-label"
-                                          >
-                                            Marketer City
-                                          </Label>
-                                          <Select
-                                            name="marketer_city"
-                                            component="Select"
-                                            onChange={selectedGroup =>
-                                              this.setState({
-                                                marketer_city:
-                                                  selectedGroup.value,
-                                              })
-                                            }
-                                            className="defautSelectParent"
-                                            options={
-                                              cityList
-                                            }
-                                            defaultValue={{
-                                              label:
-                                              this.state.city,
-                                              value:
-                                              this.state.id,                                       
-                                            }}
-
-                                          placeholder="Select City..."
-                                          />
-
-                                          <ErrorMessage
-                                            name="marketer_city"
-                                            component="div"
-                                            className="invalid-feedback"
-                                          />
-                                        </div>
-                                      </div>
-                                    )}
+                                      )}
                                   </div>
                                 )}
                                 <div className="mt-3 d-grid">
@@ -1389,7 +1395,7 @@ LabInformation.propTypes = {
   location: PropTypes.object,
   onGetLabs: PropTypes.func,
   labs: PropTypes.array,
-  getTerritoriesList:PropTypes.func,
+  getTerritoriesList: PropTypes.func,
   getLabs: PropTypes.func,
   getLabsSuccess: PropTypes.func,
   addLabInformation: PropTypes.func,

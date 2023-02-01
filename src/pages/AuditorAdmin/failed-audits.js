@@ -147,6 +147,20 @@ class FailedAudits extends Component {
             </>
           ),
         },
+        {
+          dataField: "lab_status",
+          text: "Lab status",
+          sort: true,
+          formatter: (cellContent, audit) => (
+            <>
+              {audit.is_temporary_blocked == "Yes" ? (
+                <span>Warning</span>
+              ) : (
+                <span>--</span>
+              )}
+            </>
+          ),
+        },
       ],
     };
     this.toggle = this.toggle.bind(this);

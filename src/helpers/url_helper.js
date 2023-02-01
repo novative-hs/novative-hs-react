@@ -28,6 +28,7 @@ export const GET_UNITS = `${API_ENDPOINT}/api/medicaltest/unit-list`;
 export const GET_OFFERED_TESTS = `${API_ENDPOINT}/api/lab/offered-test-list`;
 export const GET_OFFEREDTEST_REFERRELFEE = `${API_ENDPOINT}/api/lab/offered-test-share-list`;
 export const ADD_NEW_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
+export const ADD_NEW_OFFERED_MAINTEST = `${API_ENDPOINT}/api/lab/offered-test-main-lab`;
 export const UPDATE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 
@@ -96,7 +97,7 @@ export const GET_DISCOUNT_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discoun
 export const UPDATE_DISCOUNT_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-test`;
 export const UPDATE_DISCOUNT_ALL_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-all-tests`;
 export const GET_LABS_LIST = `${API_ENDPOINT}/api/marketer-admin/labs-list`;
-export const GET_DISCOUNT_LABHAZIRTOLABS = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-test`;
+export const GET_DISCOUNT_LABHAZIRTOLABS = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-test`; 
 export const UPDATE_DISCOUNT_LABHAZIRTOLAB = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-test`;
 export const UPDATE_DISCOUNT_ALL_LABHAZIRTOLAB = `${API_ENDPOINT}/api/marketer-admin/discount-labhazir-lab-all-tests`;
 
@@ -105,6 +106,10 @@ export const GET_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/referre
 export const GET_PUT_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/approve-referrel-fee-labhazir`;
 export const UPDATE_REFERREL_FEE = `${API_ENDPOINT}/api/registration-admin/update-referrel-fee-labhazir`;
 export const UPDATE_REFERREL_ALL_FEE = `${API_ENDPOINT}/api/registration-admin/all-referrel-fee-labhazir`;
+export const GET_LABS_LIST_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/lab-list-pending`;
+export const GET_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
+export const UPDATE_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
+export const UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_all_pending_tests`;
 
 // DISCOUNT LAB
 export const GET_DISCOUNT_LAB = `${API_ENDPOINT}/api/lab/offered-test-discount-list`;
@@ -255,6 +260,9 @@ export const UPDATE_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 
+// REGION WISE ADVERTISEMENT
+export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/region-wise-advertisements`;
+
 export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 
 
@@ -262,6 +270,7 @@ export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 export const GET_NEARBY_TESTS = `${API_ENDPOINT}/api/patient/tests-offered`;
 export const GET_NEARBY_PROFILES = `${API_ENDPOINT}/api/patient/profiles-offered`;
 export const GET_PROFILES = `${API_ENDPOINT}/api/medicaltest/profile-list`;
+export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
 export const GET_NEARBY_PACKAGES = `${API_ENDPOINT}/api/patient/packages-offered`;
 
 // CHECKOUT

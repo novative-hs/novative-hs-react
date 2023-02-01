@@ -57,12 +57,11 @@ class B2bAccountStatements extends Component {
           sort: true,
 
         },
-        {
-          dataField: "test_appointment_id",
-          text: "Test Appointment Id",
-          sort: true,
-        },
-
+        // {
+        //   dataField: "test_appointment_id",
+        //   text: "Test Appointment Id",
+        //   sort: true,
+        // },
 
         {
           dataField: "payment_status",
@@ -90,15 +89,23 @@ class B2bAccountStatements extends Component {
           dataField: "amount",
           text: "Balance",
           sort: true,
-        formatter: (cellContent, b2baccountStatement) => (
-          <>
-            <span>
-              <span>
-                {b2baccountStatement.amount}{""}
-              </span>
-            </span>
-          </>
-        ),
+          formatter: (cellContent, b2baccountStatement) => (
+            <>
+              {(
+                <span>{b2baccountStatement.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
+
+        // formatter: (cellContent, b2baccountStatement) => (
+        //   <>
+        //     <span>
+        //       <span>
+        //         {b2baccountStatement.amount}{""}
+        //       </span>
+        //     </span>
+        //   </>
+        // ),
         },
         {
           dataField: "is_settled",

@@ -176,30 +176,31 @@ class LabSampleCollectors extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
+                                {sampleCollector.lab_name}{" "}
+                            </h5>
+                            <h5 className="mb-2 text-truncate">
                               {sampleCollector.name}{" "}
                             </h5>
-                            {/* <h5 className="mb-2 text-truncate">
-                                {sampleCollector.lab_id.name}{" "}
-                              </h5> */}
+                          
 
-                            <div className="my-0">
+                            {/* <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-account-question"></i>{" "}
                                 Gender: {sampleCollector.gender}{" "}
                               </span>
-                            </div>
-                            <div className="my-0">
+                            </div> */}
+                            {/* <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-card-account-details"></i>{" "}
                                 CNIC: {sampleCollector.cnic}{" "}
                               </span>
-                            </div>
-                            <div className="my-0">
+                            </div> */}
+                            {/* <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-cellphone-android"></i>{" "}
                                 Mobile No : {sampleCollector.phone}{" "}
                               </span>
-                            </div>
+                            </div> */}
                           </div>
                         </CardBody>
                       </Card>
@@ -219,7 +220,7 @@ class LabSampleCollectors extends Component {
                 )}
               </Row>
 
-              <Row>
+              {/* <Row>
                 <Col lg="12">
                   <Pagination className="pagination pagination-rounded justify-content-end mb-2">
                     <PaginationItem disabled={page === 1}>
@@ -248,7 +249,7 @@ class LabSampleCollectors extends Component {
                     </PaginationItem>
                   </Pagination>
                 </Col>
-              </Row>
+              </Row> */}
             </Row>
           </Container>
         </div>

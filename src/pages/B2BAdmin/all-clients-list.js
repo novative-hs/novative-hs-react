@@ -50,6 +50,19 @@ class B2bAllClientsList extends Component {
           ),
         },
         {
+          dataField: "business_name",
+          text: "Business Name",
+          sort: true,
+          formatter: (cellContent, b2bAllClient) => (
+            <>
+              {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
+              <Link to={`/b2b-clients-shares/${b2bAllClient.id}`}>
+                {b2bAllClient.business_name}
+              </Link>
+            </>
+          ),
+        },
+        {
           dataField: "email",
           text: "Email",
           sort: true,
@@ -76,19 +89,7 @@ class B2bAllClientsList extends Component {
             </>
           ),
         },
-        {
-          dataField: "business_name",
-          text: "Business Name",
-          sort: true,
-          formatter: (cellContent, b2bAllClient) => (
-            <>
-              {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-              <Link to={`/b2b-clients-shares/${b2bAllClient.id}`}>
-                {b2bAllClient.business_name}
-              </Link>
-            </>
-          ),
-        },
+      
       ],
     };
     this.toggle = this.toggle.bind(this);

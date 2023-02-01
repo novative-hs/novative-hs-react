@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes, { any } from "prop-types";
 import Select from "react-select";
 import React, { Component } from "react";
 import {
@@ -69,7 +69,7 @@ class Payments extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Payments" breadcrumbItem="Payment Update" />
+            <Breadcrumb title="Donor" breadcrumbItem="Payment Update" />
            {
              this.state.isPaymentUpdated && this.state.isPaymentUpdated ? (
               <Alert color="success">Payment Status Update.</Alert>
@@ -78,7 +78,7 @@ class Payments extends Component {
             {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
             {
              this.state.isPaymentFailed && this.state.isPaymentFailed ? (
-              <Alert color="success">Make sure and Enter the Currect Amount and Counter Discount</Alert>
+              <Alert color="danger"><b>Make sure Amount Received and Counter Discount equal to Total Amount.</b></Alert>
             ) : null}
 
             {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
@@ -139,25 +139,23 @@ class Payments extends Component {
                   onSubmit={values => {
                      // If no error messages then show wait message
                     //  setTimeout(() => {
-                     if (this.state.amount == (this.state.counter_discount + this.state.amount_received)) {
+                     if ((this.state.counter_discount + this.state.amount_received)==this.state.amount ) {
                       console.log("Amount:",this.state.amount);
                       console.log("Smount:",this.state.counter_discount);
                       console.log("Rmount:",this.state.amount_received);
-                      this.setState({ isPaymentUpdated: true });
+                      this.setState({ isPaymentUpdated: true }
+                        );
+                      setTifmeout(() => {
+                        this.props.history.push("/in-process-test-appointments");}, 5000);
+                      
                      }
                      
                      if (this.state.amount !== (this.state.counter_discount + this.state.amount_received)){
+                      console.log("hell",this.state.counter_discount + this.state.amount_received)
                       this.setState({ isPaymentFailed: true });
                      }              
                       
                      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-
-                    //   {
-                    //     // To show success message of update
-                    //     this.setState({ isPaymentUpdated: true });
-                    //   }
-                    // }, 1000);
-                    
 
                     // To get updated profile again
                     setTimeout(() => {
@@ -175,6 +173,11 @@ class Payments extends Component {
                       setTimeout(() => {
                         this.setState({
                           isPaymentUpdated: false,
+                        });
+                      }, 5000);
+                      setTimeout(() => {
+                        this.setState({
+                          isPaymentFailed: false,
                         });
                       }, 5000);
                     }, 2000);
@@ -305,7 +308,7 @@ class Payments extends Component {
                        {/* Email field */}
                        <div className="mb-3">
                         <Label for="received_by" className="form-label">
-                          Beceived By
+                          Received By
                         </Label>
                         <Field
                           name="received_by"
@@ -348,6 +351,7 @@ class Payments extends Component {
 
 Payments.propTypes = {
   match: PropTypes.object,
+  history: any,
   location: PropTypes.object,
   payment_method: PropTypes.object,
   updateLabPayments: PropTypes.func,
