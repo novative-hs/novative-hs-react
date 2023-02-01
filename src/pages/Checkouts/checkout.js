@@ -59,6 +59,8 @@ class Checkout extends Component {
       patient_name: "",
       patient_age: "",
       patient_gender: "Male",
+      patient_phone: "",
+
       // relationsip_with_patient: "Self",
       patient_address: "",
       city_id: "",
@@ -140,6 +142,8 @@ class Checkout extends Component {
           patient_name: this.state.patient_name,
           patient_age: this.state.patient_age,
           patient_gender: this.state.patient_gender,
+          patient_phone: this.state.patient_phone,
+
           // relationsip_with_patient: this.state.relationsip_with_patient,
           // patient_address: this.state.patient_address,
           city_id: this.state.city_id,
@@ -226,6 +230,8 @@ class Checkout extends Component {
           patient_name: this.state.patient_name,
           patient_age: this.state.patient_age,
           patient_gender: this.state.patient_gender,
+          patient_phone: this.state.patient_phone,
+
           // relationsip_with_patient: this.state.relationsip_with_patient,
           // patient_address: this.state.patient_address,
           city_id: this.state.city_id,
@@ -473,6 +479,31 @@ class Checkout extends Component {
                                     onChange={e =>
                                       this.setState({
                                         patient_name: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </Col>
+                              </FormGroup>
+
+                              <FormGroup className="mb-4" row>
+                                <Label md="2" className="col-form-label">
+                                Patient Phone
+                                  <span
+                                    style={{ color: "#f46a6a" }}
+                                    className="font-size-18"
+                                  >
+                                    *
+                                  </span>
+                                </Label>
+                                <Col md={10}>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    name="patient_phone"
+                                    placeholder="Enter Contact no of Patient"
+                                    onChange={e =>
+                                      this.setState({
+                                        patient_phone: e.target.value,
                                       })
                                     }
                                   />

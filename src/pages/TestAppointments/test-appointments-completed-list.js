@@ -342,6 +342,7 @@ class TestAppointmentsCompletedList extends Component {
       appointment_requested_at: arg.appointment_requested_at,
       patient_unique_id: arg.patient_unique_id,
       patient_gender: arg.patient_gender,
+      patient_age: arg.patient_age,
       patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,

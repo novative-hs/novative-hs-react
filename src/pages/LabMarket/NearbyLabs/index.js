@@ -1313,7 +1313,7 @@ class NearbyLabs extends Component {
                                 nearbyLab.logo
                               }
                               alt="Lab Logo"
-                            
+                           
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div>
@@ -1435,16 +1435,17 @@ class NearbyLabs extends Component {
                      }
                    >
                      <div className="product-img position-relative">
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                          
-                              className="img-thumbnail mx-auto d-block rounded"
-                              />
-                      </div>
+                       <img
+                         src={
+                           process.env.REACT_APP_BACKENDURL +
+                           nearbyLab.logo
+                         }
+                         alt="Lab Logo"
+                       
+                    
+                         className="img-thumbnail mx-auto d-block rounded"
+                       />
+                     </div>
                    </Link>
 
                    <div className="mt-4 text-center">

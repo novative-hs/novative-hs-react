@@ -372,6 +372,7 @@ export const addNewOfferedTest = (offeredTest, id) => {
     offeredTest.is_home_sampling_available
   );
   formData.append("is_test_performed", offeredTest.is_test_performed);
+  formData.append("is_active", offeredTest.is_active);
 
   return axios.post(`${url.ADD_NEW_OFFERED_TEST}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -401,6 +402,7 @@ export const updateOfferedTest = offeredTest => {
     offeredTest.is_home_sampling_available
   );
   formData.append("is_test_performed", offeredTest.is_test_performed);
+  formData.append("is_active", offeredTest.is_active);
 
   return axios.put(`${url.UPDATE_OFFERED_TEST}/${offeredTest.id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1018,6 +1020,7 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("uuid", checkoutData.uuid);
   formData.append("patient_name", checkoutData.patient_name);
   formData.append("patient_age", checkoutData.patient_age);
+  formData.append("patient_phone", checkoutData.patient_phone);
   formData.append("patient_gender", checkoutData.patient_gender);
   formData.append("patient_address", checkoutData.patient_address);
   formData.append("city_id", checkoutData.city_id);

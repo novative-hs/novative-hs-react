@@ -11,6 +11,8 @@ import {
   Container,
   Row,
   Modal,
+  Button,
+  Input,
   ModalHeader,
   ModalBody,
   Label,
@@ -52,6 +54,7 @@ class TestAppointmentsPendingList extends Component {
       modal: false,
       btnText: "Copy",
       confirmModal: false,
+      appointmentmodal: false,
       appointmentId: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -71,7 +74,7 @@ class TestAppointmentsPendingList extends Component {
           text: "Order ID",
           sort: true,
           formatter: (cellContent, testAppointment) => (
-            <>;
+            <>
               <strong>{testAppointment.order_id}</strong>
             </>
           ),
@@ -183,12 +186,40 @@ class TestAppointmentsPendingList extends Component {
     this.handleTestAppointmentClicks =
       this.handleTestAppointmentClicks.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.toggleappointmentmodal = this.toggleappointmentmodal.bind(this);
   }
 
   componentDidMount() {
     const { onGetTestAppointmentsPendingList } = this.props;
     onGetTestAppointmentsPendingList(this.state.user_id);
-    this.setState({ testAppointments: this.props.testAppointments });
+    
+    this.setState({
+      testAppointments: this.props.testAppointments,
+      // appointmentmodal: true,
+    });
+ 
+    // try {
+    //   setInterval(async () => {
+    //     const prev=this.props.testAppointments.length;
+    //     console.log("pre",prev)
+    //     const res = await fetch(onGetTestAppointmentsPendingList(this.state.user_id));
+    //     // const blocks = await res.json();
+    //     this.setState({
+    //       testAppointments: this.props.testAppointments,
+    //       // appointmentmodal: true,
+    //     })
+    //     const newlen= this.state.testAppointments.length;
+    //     console.log("new",newlen)
+    //     if (newlen != prev){
+    //       this.setState({
+    //         appointmentmodal: true,
+    //       })
+    //     }
+    //   }, 5000);
+    // } catch(e) {
+    //   console.log(e);
+    // }
+    // this.setState({ testAppointments: this.props.testAppointments, appointmentmodal: true });
   }
 
   toggle() {
@@ -196,6 +227,11 @@ class TestAppointmentsPendingList extends Component {
       modal: !prevState.modal,
     }));
   }
+  toggleappointmentmodal = () => {
+    this.setState(prevState => ({
+      appointmentmodal: !prevState.appointmentmodal,
+    }));
+  };
 
   toggleConfirmModal = () => {
     this.setState(prevState => ({
@@ -206,6 +242,7 @@ class TestAppointmentsPendingList extends Component {
     this.setState({
       PatientModal: true,
       patient_age: arg.patient_age,
+      patient_gender: arg.patient_gender,
       patient_gender: arg.patient_gender,
       patient_address: arg.patient_address,
       patient_city: arg.patient_city,
@@ -247,13 +284,20 @@ class TestAppointmentsPendingList extends Component {
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { testAppointments } = this.props;
+    const { testAppointments,onGetTestAppointmentsPendingList } = this.props;
     if (
       !isEmpty(testAppointments) &&
       size(prevProps.testAppointments) !== size(testAppointments)
-    ) {
+    )
+     {
       this.setState({ testAppointments: {} });
     }
+    // if ((testAppointments.length) >= size(prevProps.testAppointments.length)) {
+    //   this.setState({ testAppointments: {},appointmentmodal :true });
+    // }
+    console.log(size(testAppointments))
+    console.log( size(prevProps.testAppointments))
+  
   }
 
   onPaginationPageChange = page => {
@@ -371,6 +415,60 @@ class TestAppointmentsPendingList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    <Modal
+                                      isOpen={this.state.appointmentmodal}
+                                      role="dialog"
+                                      autoFocus={true}
+                                      data-toggle="modal"
+                                      centered
+                                      toggle={this.toggleappointmentmodal}
+                                    >
+                                      <div className="modal-content">
+                                        <div className="modal-header border-bottom-0">
+                                          <button
+                                            type="button"
+                                            className="btn-close"
+                                            onClick={() =>
+                                              this.setState({
+                                                appointmentmodal: false,
+                                              })
+                                            }
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                          ></button>
+                                        </div>
+                                        <div className="modal-body">
+                                          <div className="text-center mb-4">
+                                            <div className="avatar-md mx-auto mb-4">
+                                              <div className="avatar-title bg-light  rounded-circle text-primary h1">
+                                                <i className="mdi mdi-email-open"></i>
+                                              </div>
+                                            </div>
+
+                                            <div className="row justify-content-center">
+                                              <div className="col-xl-10">
+                                                <h4 className="text-primary">
+                                                  New Orders !
+                                                </h4>
+                                                <p className="text-muted font-size-14 mb-4">
+                                                  You have new orders, Kindly
+                                                  Check the Pending Appointment
+                                                  list..
+                                                </p>
+
+                                                {/* <div className="input-group  rounded bg-light"  >
+                      <Input type="email" className="form-control bg-transparent border-0" placeholder="Enter Email address" />
+                      <Button color="primary" type="button" id="button-addon2">
+                        <i className="bx bxs-paper-plane"></i>
+                      </Button>
+
+                    </div> */}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Modal>
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
@@ -664,8 +762,7 @@ class TestAppointmentsPendingList extends Component {
                                                       for="Estimated sample
                                                       collection at"
                                                     >
-                                                    
-                                                    Sampling time by Lab
+                                                      Sampling time by Lab
                                                     </Label>
                                                     <input
                                                       type="datetime-local"

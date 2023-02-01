@@ -4,6 +4,7 @@ import Select from "react-select";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import axios from "axios";
+import { useParams } from 'react-router-dom'
 import { withRouter, Link } from "react-router-dom";
 // import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import {
@@ -132,6 +133,11 @@ class OfferedTestsList extends Component {
 
         },
         {
+          dataField: "test_categories",
+          text: "Test Category",
+          sort: true,
+        },
+        {
           dataField: "shared_percentage",
           text: "Referrel Fee",
           sort: true,
@@ -145,7 +151,7 @@ class OfferedTestsList extends Component {
         },
         {
           dataField: "duration_type",
-          text: "Duration type",
+          text: "Duration",
           sort: true,
         formatter: (cellContent, offeredTest) => (
           <>
@@ -169,10 +175,14 @@ class OfferedTestsList extends Component {
           sort: true,
         },
     
-        
         {
           dataField: "is_home_sampling_available",
           text: "Home sampling",
+          sort: true,
+        },
+        {
+          dataField: "is_active",
+          text: "Active",
           sort: true,
         },
         {
@@ -328,6 +338,8 @@ class OfferedTestsList extends Component {
   //   }
   // };
   handleAPICall = () => {
+    const { id } = useParams();
+    console.log("id is",id);
     this.setState({
       offeredTests: {
         main_lab_tests: "Yes",
@@ -360,11 +372,12 @@ class OfferedTestsList extends Component {
         // unit_id: offeredTest.unit_id,
         duration_required: offeredTest.duration_required,
         duration_type: offeredTest.duration_type,
-        sample_type: offeredTest.sample_type,
+        // sample_type: offeredTest.sample_type,
         price: offeredTest.price,
         is_eqa_participation: offeredTest.is_eqa_participation,
         is_home_sampling_available: offeredTest.is_home_sampling_available,
         is_test_performed: offeredTest.is_test_performed,
+        is_active:'Yes',
       },
       isEdit: true,
     });
@@ -469,8 +482,10 @@ class OfferedTestsList extends Component {
                                     </div>
                                   </div>
                                 </Col>
+                                
                                 <Col sm="2" lg="2">
                                   <div>
+                                  {this.props.labProfiles.type == "Main Lab" && (
                                     <Link
                                       to={"/medical-test-sheet"}
                                       className="w-100 font-16 btn btn-secondary"
@@ -479,11 +494,13 @@ class OfferedTestsList extends Component {
                                       <i className="mdi mdi-microsoft-excel me-1" />
                                       Tests Sheet{" "}
                                     </Link>
+                                  )}
                                   </div>
                                 </Col>
 
                                 <Col sm="2" lg="2">
                                   <div className="text-sm-end">
+                                  {this.props.labProfiles.type == "Main Lab" && (
                                     <Button
                                       color="primary"
                                       className="w-100 font-16 btn-block btn btn-primary"
@@ -493,8 +510,10 @@ class OfferedTestsList extends Component {
                                       <i className="mdi mdi-plus-circle-outline me-1" />
                                       Add New Test
                                     </Button>
+                                  )}
                                   </div>
                                 </Col>
+                              
                               </Row>
                              
                               <Row className="mb-4">
@@ -604,6 +623,10 @@ class OfferedTestsList extends Component {
                                               (offeredTest &&
                                                 offeredTest.is_test_performed) ||
                                               "",
+                                            is_active:
+                                              (offeredTest &&
+                                                offeredTest.is_active) ||
+                                              "Yes",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             duration_required: Yup.number(
@@ -643,17 +666,23 @@ class OfferedTestsList extends Component {
                                               .required(
                                                 "Please select duration type"
                                               ),
-                                            is_eqa_participation: Yup.string()
-                                              .trim()
-                                              .required(
-                                                "Please select one option from dropdown"
-                                              ),
+                                            // is_eqa_participation: Yup.string()
+                                            //   .trim()
+                                            //   .required(
+                                            //     "Please select one option from dropdown"
+                                            //   ),
                                             is_home_sampling_available:
                                               Yup.string()
                                                 .trim()
                                                 .required(
                                                   "Please select one option from dropdown"
                                                 ),
+                                            // is_active:
+                                            //     Yup.string()
+                                            //       .trim()
+                                            //       .required(
+                                            //         "Please select one option from dropdown"
+                                            //       ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -677,12 +706,14 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                                 is_test_performed:
                                                   values.is_test_performed,
+                                                is_active:
+                                                  values.is_active,
                                               };
 
                                               // update OfferedTest
                                               onUpdateOfferedTest(
                                                 updateOfferedTest,
-                                                this.state.user_id
+                                                this.state.user_id,
                                               );
 
                                               setTimeout(() => {
@@ -716,6 +747,8 @@ class OfferedTestsList extends Component {
                                                   values.is_home_sampling_available,
                                                 is_test_performed:
                                                   values.is_test_performed,
+                                                is_active:
+                                                  values.is_active,
                                               };
 
                                               // save new OfferedTest
@@ -890,7 +923,7 @@ class OfferedTestsList extends Component {
                                                     </Row>
                                                   </div>
                                                  
-
+                                                  {!!isEdit &&(
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Sample type
@@ -900,7 +933,7 @@ class OfferedTestsList extends Component {
                                                     </Label>
                                                     <Field
                                                       name="sample_type"
-                                                      as="select"
+                                                      component="select"
                                                       // className="form-control"
                                                       className={
                                                         "form-control" +
@@ -911,24 +944,35 @@ class OfferedTestsList extends Component {
                                                       }
                                                       multiple={false}
                                                     >
-                                                      <option value="">
-                                                        ----Select Sample Type
-                                                        ----
+                                                      <option value="Serum(Gel/Yellow Vial)">
+                                                        Serum(Gel/Yellow Vial)
+                                                      </option>
+                                                      <option value="Blood(Aerobic Culture Bottle)">
+                                                        Blood(Aerobic Culture Bottle)
+                                                      </option>
+                                                      <option value="Plasma(Sodium Floride/Gray Tube)">
+                                                        Plasma(Sodium Floride/Gray Tube)
+                                                      </option>
+                                                      <option value="Plasma(Sodium Citrate/Blue Vial)">
+                                                        Plasma(Sodium Citrate/Blue Vial)
+                                                      </option>
+                                                      <option value="Plasma(EDTA/Purple Tube)">
+                                                        Plasma(EDTA/Purple Tube)
+                                                      </option>
+                                                      <option value="Plasma(Heparin/Green Tube)">
+                                                        Plasma(Heparin/Green Tube)
                                                       </option>
                                                       <option value="Whole blood">
                                                         Whole Blood
                                                       </option>
-                                                      <option value="Serum">
-                                                        Serum
-                                                      </option>
-                                                      <option value="Plasma">
-                                                        Plasma
-                                                      </option>
                                                       <option value="Biopsy">
                                                         Biopsy
                                                       </option>
-                                                      <option value="Swap">
-                                                        Swap
+                                                      <option value="Tissue">
+                                                        Tissue
+                                                      </option>
+                                                      <option value="Swab">
+                                                        Swab
                                                       </option>
                                                       <option value="Urine">
                                                         Urine
@@ -951,13 +995,16 @@ class OfferedTestsList extends Component {
                                                       <option value="Body Fluids">
                                                         Body Fluids
                                                       </option>
+                                                      <option value="Others">
+                                                        Others
+                                                      </option>
                                                     </Field>
                                                     <ErrorMessage
                                                       name="sample_type"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div>
+                                                  </div>)}
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
@@ -979,44 +1026,6 @@ class OfferedTestsList extends Component {
                                                     />
                                                     <ErrorMessage
                                                       name="price"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Is EQA participating
-                                                      <span className="text-danger font-size-12">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="is_eqa_participation"
-                                                      as="select"
-                                                      // className="form-control"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_eqa_participation &&
-                                                        touched.is_eqa_participation
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      multiple={false}
-                                                    >
-                                                      <option value="">
-                                                        --- Is EQA participating
-                                                        for the test? ---
-                                                      </option>
-                                                      <option value="Yes">
-                                                        Yes
-                                                      </option>
-                                                      <option value="No">
-                                                        No
-                                                      </option>
-                                                    </Field>
-                                                    <ErrorMessage
-                                                      name="is_eqa_participation"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -1061,7 +1070,62 @@ class OfferedTestsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                    Are you active for performing this test?
+                                                    </Label>
+                                                    <Field
+                                                      name="is_active"
+                                                      as="select"
+                                                      defaultValue="Yes"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is EQA participating
+                                                      <span className="text-danger font-size-12">
+                                                        (optional)
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="is_eqa_participation"
+                                                      as="select"
+                                                      // className="form-control"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_eqa_participation &&
+                                                        touched.is_eqa_participation
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      multiple={false}
+                                                    >
+                                                      <option value="">
+                                                        --- Is EQA participating
+                                                        for the test? ---
+                                                      </option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="is_eqa_participation"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       How test is performed?
@@ -1082,8 +1146,10 @@ class OfferedTestsList extends Component {
                                                       </option>
                                                     </Field>
                                                   </div>
+                                                 
                                                 </Col>
                                               </Row>
+                     
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
