@@ -442,43 +442,12 @@ class NearbyPackage extends Component {
     }
 
     setTimeout(() => {
-      this.setState({ success: this.props.success });
+      this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
     }, 2000);
-    setTimeout(() => {
-      if (this.props.success) {
-        this.setState({ count: this.state.count + 1 });
-      } else {
-        this.setState({ count: this.state.count });
-      }
-    }, 2000);
+
   };
-  activateParentDropdown = item => {
-    item.classList.add("active");
-    const parent = item.parentElement;
-    if (parent) {
-      parent.classList.add("active"); // li
-      const parent2 = parent.parentElement;
-      parent2.classList.add("active"); // li
-      const parent3 = parent2.parentElement;
-      if (parent3) {
-        parent3.classList.add("active"); // li
-        const parent4 = parent3.parentElement;
-        if (parent4) {
-          parent4.classList.add("active"); // li
-          const parent5 = parent4.parentElement;
-          if (parent5) {
-            parent5.classList.add("active"); // li
-            const parent6 = parent5.parentElement;
-            if (parent6) {
-              parent6.classList.add("active"); // li
-            }
-          }
-        }
-      }
-    }
-    return false;
-  };
+
 
   render() {
     const { page, totalPage } = this.state;
@@ -493,7 +462,7 @@ class NearbyPackage extends Component {
     }
     return (
       <React.Fragment>
-          <div className="topnav">
+              <div className="topnav">
           <div className="container-fluid left-space">
             <nav
               className="navbar navbar-light navbar-expand-lg topnav-menu"

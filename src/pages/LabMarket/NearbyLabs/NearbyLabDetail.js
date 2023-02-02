@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes, { number, string } from "prop-types";
 import MetaTags from "react-meta-tags";
 import Select from "react-select";
+import { Collapse } from "reactstrap";
+
 import * as Yup from "yup";
 
 import { connect } from "react-redux";
@@ -51,6 +53,274 @@ class NearbyLabDetail extends Component {
   render() {
     return (
       <React.Fragment>
+                <div className="topnav">
+          <div className="container-fluid left-space">
+            <nav
+              className="navbar navbar-light navbar-expand-lg topnav-menu"
+              id="navigation"
+            >
+              {!this.state.user_id
+              ? (
+                 <Collapse
+                 isOpen={this.props.menuOpen}
+                 className="navbar-collapse"
+                 id="topnav-menu-content"
+               >
+                 <ul className="navbar-nav">
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/labs/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                    <span className="pt-4 font-size-12">Labs</span>
+                     </Link>
+                   </li>
+ 
+                   <li className="nav-item">
+
+                     {/* <Link to="/nearby-tests" className="dropdown-item">
+                       {this.props.t("Search by Tests")}
+                     </Link> */}
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-tests/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                       <span className="pt-4 font-size-12">Search by Tests</span>
+                       {/* {this.props.t("Tests")} */}
+                     </Link>
+                   </li>
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-profiles/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                      <span className="pt-4 font-size-12">Profiles</span>
+                       {/* {this.props.t("Profiles")} */}
+                     </Link>
+                   </li>
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-packages/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                      <span className="pt-4 font-size-12">Packages</span>
+                       {/* {this.props.t("Packages")} */}
+                     </Link>
+                   </li>
+                   {/* <li className="nav-item dropdown">
+                     <Link
+                       to="/#"
+                       onClick={e => {
+                         e.preventDefault();
+                         this.setState({ appState: !this.state.appState });
+                       }}
+                       className="nav-link dropdown-toggle arrow-none"
+                     >
+                       <i className="bx bx-store me-2" />
+                       {this.props.t("Lab Marketplace")}{" "}
+                       <div className="arrow-down" />
+                     </Link>
+                     <div
+                       className={classname("dropdown-menu", {
+                         show: this.state.appState,
+                       })}
+                     >
+                       <Link to="/nearby-labs" className="dropdown-item">
+                         {this.props.t("Nearby Labs")}
+                       </Link>
+                       <Link to="/nearby-tests" className="dropdown-item">
+                         {this.props.t("Nearby Tests")}
+                       </Link>
+                     </div>
+                   </li> */}
+ 
+                   {this.state.user_id && this.state.user_type == "patient" && (
+                     <li className="nav-item">
+                       <Link to={"/test-appointments"} className="dropdown-item">
+                         {/* {this.props.t("My Appointments")} */}
+                         <span className="pt-4 font-size-12">My Appointments</span>
+
+                       </Link>
+                     </li>
+                     /* <li className="nav-item dropdown">
+                        <Link
+                         to="/#"
+                         onClick={e => {
+                           e.preventDefault();
+                           this.setState({ appState: !this.state.appState });
+                         }}
+                         className="nav-link dropdown-toggle arrow-none"
+                       >
+                         <i className="bx bx-test-tube me-2" />
+                         {this.props.t("Appointments")}{" "}
+                         <div className="arrow-down" />
+                       </Link>
+                       <div
+                         className={classname("dropdown-menu", {
+                           show: this.state.appState,
+                         })}
+                       >
+                         <Link
+                           to={"/test-appointments"}
+                           className="dropdown-item"
+                         >
+                           {this.props.t("Test Appointments")}
+                         </Link>
+                       </div>
+                       </li> */
+                   )}
+                 </ul>
+               </Collapse>
+
+              ): this.state.user_id ? (
+                <Collapse
+                isOpen={this.props.menuOpen}
+                className="navbar-collapse"
+                id="topnav-menu-content"
+              >
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                        : `/nearby-labs/`
+                    }
+                    className="dropdown-item"
+                    >
+                      <span className="pt-4 font-size-12">Labs</span>
+                      {/* {this.props.t("Labs")} */}
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    {/* <Link to="/nearby-tests" className="dropdown-item">
+                      {this.props.t("Search by Tests")}
+                    </Link> */}
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-tests/${this.props.match.params.uuid}`
+                        : `/nearby-tests/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {/* {this.props.t("Tests")} */}
+                      <span className="pt-4 font-size-12">Tests</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-profiles/${this.props.match.params.uuid}`
+                        : `/nearby-profiles/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {/* {this.props.t("Profiles")} */}
+                      <span className="pt-4 font-size-12">Profiles</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-packages/${this.props.match.params.uuid}`
+                        : `/nearby-packages/`
+                    }
+                    className="dropdown-item"
+                    >
+                      <span className="pt-4 font-size-12">Packages</span>
+                      {/* {this.props.t("Packages")} */}
+                    </Link>
+                  </li>
+                  {/* <li className="nav-item dropdown">
+                    <Link
+                      to="/#"
+                      onClick={e => {
+                        e.preventDefault();
+                        this.setState({ appState: !this.state.appState });
+                      }}
+                      className="nav-link dropdown-toggle arrow-none"
+                    >
+                      <i className="bx bx-store me-2" />
+                      {this.props.t("Lab Marketplace")}{" "}
+                      <div className="arrow-down" />
+                    </Link>
+                    <div
+                      className={classname("dropdown-menu", {
+                        show: this.state.appState,
+                      })}
+                    >
+                      <Link to="/nearby-labs" className="dropdown-item">
+                        {this.props.t("Nearby Labs")}
+                      </Link>
+                      <Link to="/nearby-tests" className="dropdown-item">
+                        {this.props.t("Nearby Tests")}
+                      </Link>
+                    </div>
+                  </li> */}
+
+                  {this.state.user_id && this.state.user_type == "patient" && (
+                    <li className="nav-item">
+                      <Link to={"/test-appointments"} className="dropdown-item">
+                        {/* {this.props.t("My Appointments")} */}
+                        <span className="pt-4 font-size-12">My Appointments</span>
+
+                      </Link>
+                    </li>
+                    /* <li className="nav-item dropdown">
+                       <Link
+                        to="/#"
+                        onClick={e => {
+                          e.preventDefault();
+                          this.setState({ appState: !this.state.appState });
+                        }}
+                        className="nav-link dropdown-toggle arrow-none"
+                      >
+                        <i className="bx bx-test-tube me-2" />
+                        {this.props.t("Appointments")}{" "}
+                        <div className="arrow-down" />
+                      </Link>
+                      <div
+                        className={classname("dropdown-menu", {
+                          show: this.state.appState,
+                        })}
+                      >
+                        <Link
+                          to={"/test-appointments"}
+                          className="dropdown-item"
+                        >
+                          {this.props.t("Test Appointments")}
+                        </Link>
+                      </div>
+                      </li> */
+                  )}
+                  
+                </ul>
+              </Collapse>
+              ):null}
+             
+            </nav>
+          </div>
+        </div>
         <div className="page-content">
           <MetaTags>
             <title>Nearby Lab Detail | Lab Hazir - Dashboard</title>
@@ -532,6 +802,8 @@ NearbyLabDetail.propTypes = {
   getLabProfile: PropTypes.func,
   onGetProductDetail: PropTypes.func,
   comments: PropTypes.array,
+  menuOpen: PropTypes.any,
+  t: PropTypes.any,
 };
 
 const mapStateToProps = state => {

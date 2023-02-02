@@ -22,6 +22,7 @@ import { DropdownItem } from "reactstrap";
 import Navbar from "./Navbar";
 
 import "./horizontal-navbar.scss";
+import carts from "pages/CartsList/carts";
 
 class Header extends Component {
   constructor(props) {
@@ -51,9 +52,26 @@ class Header extends Component {
   componentDidMount() {
 
     const { getCarts } = this.props;
-    getCarts(this.props.match.params.id);
-    // console.log("header id:",getCarts(this.props.match.params.id))
-    this.setState({ carts: this.state.carts });
+    if (!this.state.user_id) {
+      // this.props.history.push("/login");
+        getCarts(this.props.match.params.guest_id );
+        this.setState({ carts: this.state.carts });
+
+     console.log("uuid:", carts, this.props.match.params.guest_id   ) 
+    //  window.location.reload()
+    } else {
+        getCarts(this.state.user_id);
+        this.setState({ carts: this.state.carts });
+        console.log("uuid:", carts, this.state.user_id) 
+
+          // window.location.reload()
+    }
+    // getCarts(this.state.user_id);
+    // this.setState({ carts: this.state.carts });
+
+    // getCarts(this.props.match.params.id);
+    // // console.log("header id:",getCarts(this.props.match.params.id))
+    // this.setState({ carts: this.state.carts });
     // if (window.localStorage) {
   
     //   // If there is no item as 'reload'
@@ -204,7 +222,7 @@ class Header extends Component {
                     to={
                       this.props.match.params.uuid
                         ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                        : `/login/${console.log("yaha h guest id",this.props.match.params.guest_id)}`
+                        : `/login/${this.props.match.params.guest_id}`
                     }
                     className="btn header-items noti-icon right-bar-toggle"
                   >

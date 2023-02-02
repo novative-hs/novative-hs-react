@@ -880,7 +880,7 @@ class NearbyLabs extends Component {
                         ? `/cart/${this.state.guest_id}/${this.props.match.params.uuid}`
                         : `/cart/${this.state.guest_id}`
                       }
-                      className="btn header-items noti-icon right-bar-toggle"
+                      className="btn header-items noti-icon right-bar-toggle d-none"
                   >
                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
@@ -925,7 +925,8 @@ class NearbyLabs extends Component {
                     <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
                   </Link>
                 </div>
-              ) : this.state.user_type == "patient" ? (
+              )
+               : this.state.user_type == "patient" ? (
                 <div className="dropdown">
                   <Link
                     // to={"/profile"}
