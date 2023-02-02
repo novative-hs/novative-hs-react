@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
@@ -511,7 +512,7 @@ class LabInformation extends Component {
                                 if (this.props.lab) {
                                   this.props.history.push("/login");
                                 }
-                              }, 4000);
+                              }, 6000);
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -895,7 +896,6 @@ class LabInformation extends Component {
                             options={DISTRICTS}
                             placeholder="Select District..."
                           />
-
                           <ErrorMessage
                             name="office"
                             component="div"
@@ -979,7 +979,6 @@ class LabInformation extends Component {
                                                                             
                                     }}
                                   />
-
                                   <ErrorMessage
                                     name="office"
                                     component="div"
@@ -1013,7 +1012,6 @@ class LabInformation extends Component {
                                     }}
                                   
                                   />
-
                                   <ErrorMessage
                                     name="city"
                                     component="div"
