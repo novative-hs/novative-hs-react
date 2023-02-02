@@ -338,8 +338,6 @@ class OfferedTestsList extends Component {
   //   }
   // };
   handleAPICall = () => {
-    const { id } = useParams();
-    console.log("id is",id);
     this.setState({
       offeredTests: {
         main_lab_tests: "Yes",
