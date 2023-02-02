@@ -511,7 +511,7 @@ class LabInformation extends Component {
                                 if (this.props.lab) {
                                   this.props.history.push("/login");
                                 }
-                              }, 1000);
+                              }, 4000);
                             }}
                           >
                             {({ errors, status, touched }) => (
