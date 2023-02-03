@@ -123,10 +123,10 @@ class OfferedTestsList extends Component {
           dataField: "price",
           text: "Price",
           sort: true,
-          formatter: (cellContent, discountLab) => (
+          formatter: (cellContent, offeredTest) => (
             <>
               {(
-                <span>{discountLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                <span>{offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               )}
             </>
           ),
@@ -141,10 +141,10 @@ class OfferedTestsList extends Component {
           dataField: "shared_percentage",
           text: "Referrel Fee",
           sort: true,
-          formatter: (cellContent, discountLab) => (
+          formatter: (cellContent, offeredTest) => (
             <>
               {(
-                <span>{(discountLab.discount*100).toFixed()}%</span>
+                <span>{(offeredTest.shared_percentage*100).toFixed()}%</span>
               )}
             </>
           ),
@@ -338,10 +338,11 @@ class OfferedTestsList extends Component {
   //   }
   // };
   handleAPICall = () => {
+    // const { id } = useParams();
+    // console.log("id is",id);
     this.setState({
       offeredTests: {
         main_lab_tests: "Yes",
-
       },
     });
 
