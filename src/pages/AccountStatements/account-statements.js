@@ -373,9 +373,9 @@ class AccountStatements extends Component {
                             <th scope="col">Discount By Lab</th>
                             <th scope="col">Discount By LabHazir</th>
                             <th scope="col">Payable After Discount</th>
-                            {/* <th scope="col">Payment Received By LabHazir</th> */}
                             <th scope="col">Share by Lab</th>
                             <th scope="col">Referrel Fee of LabHazir</th>
+                            {/* <th scope="col">Payment Received By LabHazir</th> */}
                             <th scope="col">Payment Received By Lab</th>
                             <th scope="col">Credit</th>
                             <th scope="col">Payment Received By LabHazir</th>
@@ -430,27 +430,28 @@ class AccountStatements extends Component {
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.discounted_by_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.discounted_by_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p>
-                                    {accountStatement.labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p>
-                                    {accountStatement.lab_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
                                   <p>
                                     {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  </p>
+                                </td>
+                                <td>
+                                  <p>
+                                    {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  </p>
+                                </td>
+                              
+                                <td>
+                                  <p>
+                                    {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
@@ -468,7 +469,7 @@ class AccountStatements extends Component {
                                   <p className="float-end bg-success bg-soft p-7">
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
-                                        {accountStatement.payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
@@ -479,14 +480,14 @@ class AccountStatements extends Component {
                                   <p>
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
-                                        {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
                                     )}
                                     {accountStatement.payment_method == "Donation" ? (
                                       <span>
-                                        {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
@@ -497,14 +498,14 @@ class AccountStatements extends Component {
                                   <p className="float-end bg-danger bg-soft p-7">
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
-                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
                                     )}
                                     {accountStatement.payment_method == "Donation" ? (
                                       <span>
-                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
@@ -515,21 +516,21 @@ class AccountStatements extends Component {
                                   <p>
                                     {accountStatement.payment_method == "Cash" ? (
                                       <span>
-                                        {accountStatement.payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
                                     )}
                                     {accountStatement.payment_method == "Card" ? (
                                       <span>
-                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
                                     )}
                                     {accountStatement.payment_method == "Donation" ? (
                                       <span>
-                                        {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </span>
                                     ) : (
                                       null
