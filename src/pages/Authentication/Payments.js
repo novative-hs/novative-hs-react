@@ -145,7 +145,7 @@ class Payments extends Component {
                       console.log("Rmount:",this.state.amount_received);
                       this.setState({ isPaymentUpdated: true }
                         );
-                      setTifmeout(() => {
+                      setTimeout(() => {
                         this.props.history.push("/in-process-test-appointments");}, 5000);
                       
                      }
