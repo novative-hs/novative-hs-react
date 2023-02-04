@@ -178,9 +178,9 @@ class Checkout extends Component {
         this.setState({ checkedoutData: this.props.checkedoutData });
 
         // If checkout operation is successful.
-        // if (this.props.checkedoutData) {
-        //   this.props.history.push("/nearby-labs");
-        // }
+        if (this.props.checkedoutData) {
+          this.props.history.push("/nearby-labs");
+        }
       }, 4000);
     }
   };

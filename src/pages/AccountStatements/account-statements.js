@@ -373,7 +373,7 @@ class AccountStatements extends Component {
                             <th scope="col">Discount By Lab</th>
                             <th scope="col">Discount By LabHazir</th>
                             <th scope="col">Payable After Discount</th>
-                            <th scope="col">Share by Lab</th>
+                            <th scope="col">Share of Lab</th>
                             <th scope="col">Referrel Fee of LabHazir</th>
                             {/* <th scope="col">Payment Received By LabHazir</th> */}
                             <th scope="col">Payment Received By Lab</th>
@@ -440,7 +440,7 @@ class AccountStatements extends Component {
                                 </td>
                                 <td>
                                   <p>
-                                    {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                   </p>
                                 </td>
                                 <td>
@@ -578,9 +578,9 @@ class AccountStatements extends Component {
                                   this.props.accountStatements.slice(-1).pop().total_discount_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
-                             <td className="border-10">
+                              <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_labhazirshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">
@@ -590,7 +590,7 @@ class AccountStatements extends Component {
                               </td>
                               <td className="border-10">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  this.props.accountStatements.slice(-1).pop().total_labhazirshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                               <td className="border-10">

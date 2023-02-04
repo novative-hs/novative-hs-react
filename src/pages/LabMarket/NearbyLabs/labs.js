@@ -170,7 +170,7 @@ class NearbyLabs extends Component {
       //   // guest_id = locationDetails.guest_id
       //   console.log("differ:",guest_id)
       //   this.setState({ guest_id: guest_id });
-      //   console.log("differ:",this.state.guest_id)
+      //   console.log("differ:",this.props.match.params.guest_id)
       //   console.log(window.location.href)
 
       //   // locationDetails.guest_id =  guest_id
@@ -208,7 +208,7 @@ class NearbyLabs extends Component {
         // const guest_id = locationDetails.guest_id
         // console.log("differ:",guest_id)
         // this.setState({ guest_id: guest_id });
-        // locationDetails.guest_id =  this.state.guest_id
+        // locationDetails.guest_id =  this.props.match.params.guest_id
         // console.log("differ:",locationDetails.guest_id)
 
         onGetNearbyLabs(locationDetails);
@@ -965,8 +965,8 @@ class NearbyLabs extends Component {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-lab-detail/${advLive.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
-                                : `/nearby-lab-detail/${advLive.account_id}/${this.state.guest_id}`
+                                ? `/nearby-lab-detail/${advLive.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${advLive.account_id}/${this.props.match.params.guest_id}`
                             }
                           >
                             <div className="mt-4 text-center">
@@ -1018,8 +1018,8 @@ class NearbyLabs extends Component {
                       onClick={() =>
                         history.push(
                           this.props.match.params.uuid
-                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                         )
                       }
                     >
@@ -1027,8 +1027,8 @@ class NearbyLabs extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                           }
                         >
                           <div className="product-img position-relative">
@@ -1049,8 +1049,8 @@ class NearbyLabs extends Component {
                             <Link
                               to={
                                 this.props.match.params.uuid
-                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
-                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                               }
                               className="text-dark"
                             >

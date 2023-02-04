@@ -142,12 +142,12 @@ class InvoiceDetail extends Component {
                                   <td>{key + 1}</td>
                                   <td className="text-start">{item.test_name}</td>
                                   <td className="text-start">{item.test_categories}</td>
-                                  <td className="text-end">{item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
-                                  <td className="text-end">{item.discount}{"%"}</td>
-                                  <td className="text-end">{item.discount_by_labhazir+item.discount_by_labhazird_by_test}{"%"}</td>
+                                  <td className="text-end">{item.price.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                  <td className="text-end">{item.discount.toFixed(0)}{"%"}</td>
+                                  <td className="text-end">{(item.discount_by_labhazir+item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td>
                                    {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
                                    <td className="text-end">
-                                  {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  {item.total_test_cost.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   //  -
                                   //   this.props.invoiceDetail[0]
                                   //     .home_sampling_charges
@@ -163,7 +163,7 @@ class InvoiceDetail extends Component {
                               <td className="border-10 text-end">
                                 {
                                   this.props.invoiceDetail[0]
-                                    .home_sampling_charges.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    .home_sampling_charges.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                             </tr>
@@ -173,9 +173,9 @@ class InvoiceDetail extends Component {
                               </td>
                               <td className="border-10 text-end">
                                 <h4 className="m-0">
-                                  {this.props.invoiceDetail[0].total_dues +
+                                  {(this.props.invoiceDetail[0].total_dues +
                                     this.props.invoiceDetail[0]
-                                      .home_sampling_charges}
+                                      .home_sampling_charges).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </h4>
                               </td>
                             </tr>
