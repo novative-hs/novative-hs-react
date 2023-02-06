@@ -31,6 +31,7 @@ class CartList extends Component {
     this.state = {
       carts: [],
       cart: "",
+      abc: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -56,7 +57,7 @@ class CartList extends Component {
           sort: true,
           headerStyle: () => {
             return { width: "30%" };
-          } 
+          }
         },
         {
           dataField: "price",
@@ -78,7 +79,7 @@ class CartList extends Component {
           formatter: (cellContent, cart) => (
             <>
               {(
-                <span>{(cart.discount*100).toFixed()}%</span>
+                <span>{(cart.discount * 100).toFixed()}%</span>
               )}
             </>
           ),
@@ -117,23 +118,19 @@ class CartList extends Component {
     this.handleCartClick = this.handleCartClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
-    console.log(this.props.match.params.guest_id)
   }
 
   componentDidMount() {
-    const { onGetCarts} = this.props;
-    console.log(this.props.match.params.uuid)
-    
+    const { onGetCarts } = this.props;
+
     // onGetCarts(this.props.match.params.id);
     // this.setState({ carts: this.props.carts });
-    if ((!this.state.user_id))
-    {
+    if ((!this.state.user_id)) {
       console.log(onGetCarts(this.props.match.params.guest_id));
       this.setState({ carts: this.props.carts });
       console.log("carts:", this.props.match.params.uuid)
     }
-    else
-    {
+    else {
       onGetCarts(this.state.user_id);
       this.setState({ carts: this.props.carts });
       console.log("carts:", this.state.user_id)
@@ -191,6 +188,27 @@ class CartList extends Component {
         onGetCarts(this.state.user_id);
       }, 1000);
       this.setState({ deleteModal: false });
+    }
+  };
+
+  handleCart = () => {
+    this.props.match.params.uuid = this.props.match.params.guest_id
+    console.log(this.props.match.params.uuid)
+
+    if (this.state.user_id) {
+      this.props.history.push(
+        this.props.match.params.uuid
+          ? `/checkout/${this.props.match.params.uuid}`
+          : `/checkout`
+      );
+    }
+    if (!this.state.user_id) {
+      this.props.history.push(
+        this.props.match.params.uuid
+          ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+          : `/login/${this.props.match.params.guest_id}`
+      );
+      // this.props.history.push("/login");
     }
   };
 
@@ -340,26 +358,13 @@ class CartList extends Component {
                       <Col sm="6">
                         <div className="text-sm-end mt-2 mt-sm-0">
                           <button
-                            component={Link}
-                            onClick={() => {
-                              if (this.state.user_id){
-                                this.props.history.push(
-                                  this.props.match.params.uuid
-                                    ? `/checkout/${this.props.match.params.uuid}`
-                                    : `/checkout`
-                                );
-                              }
-                              if (!this.state.user_id){
-                                this.props.history.push(
-                                  this.props.match.params.uuid
-                                    ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/login/${this.props.match.params.guest_id}`
-                                );
-                                      // this.props.history.push("/login");
-                              }
-                            
-                            }}
+                            // component={Link}
+                            to="/checkout"
                             className="btn btn-success"
+
+                            onClick={
+                              this.handleCart}
+
                             disabled={this.state.carts.length == 0}
                           >
                             <i className="mdi mdi-cart-arrow-right me-1" />{" "}

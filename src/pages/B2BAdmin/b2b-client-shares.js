@@ -106,7 +106,7 @@ class B2bLabSharesList extends Component {
     };
     this.handleEditBtnClick = this.handleEditBtnClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleEditAllBtnClicks = this.handleEditAllBtnClicks.bind(this);
+    this.handleEditAllBtnClick = this.handleEditAllBtnClick.bind(this);
     this.handleb2bLabShareClicks = this.handleb2bLabShareClicks.bind(this);
 
 
@@ -211,23 +211,35 @@ class B2bLabSharesList extends Component {
   };
 
 
-  /* Insert,Update Delete data */
   handleEditBtnClick = arg => {
     const b2bLabShare = arg;
 
     this.setState({
-      b2bLabShare: {
-        id: b2bLabShare.id,
-        lab_name: b2bLabShare.lab_name,
-        // unit_name: offeredTest.unit_name,
-        lab_id: b2bLabShare.lab_id,
-        b2b_shares: b2bLabShare.b2b_shares,
-      },
-      isEdit: true,
+      isEditAll: false,
+      b2bLabShare: b2bLabShare,
+      // id: discountLab.id,
     });
 
     this.toggle();
   };
+
+  // /* Insert,Update Delete data */
+  // handleEditBtnClick = arg => {
+  //   const b2bLabShare = arg;
+
+  //   this.setState({
+  //     b2bLabShare: {
+  //       id: b2bLabShare.id,
+  //       lab_name: b2bLabShare.lab_name,
+  //       // unit_name: offeredTest.unit_name,
+  //       lab_id: b2bLabShare.lab_id,
+  //       b2b_shares: b2bLabShare.b2b_shares,
+  //     },
+  //     isEdit: true,
+  //   });
+
+  //   this.toggle();
+  // };
 
 
   render() {
