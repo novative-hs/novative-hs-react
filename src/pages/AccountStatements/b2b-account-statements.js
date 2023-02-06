@@ -92,7 +92,7 @@ class B2bAccountStatements extends Component {
           formatter: (cellContent, b2baccountStatement) => (
             <>
               {(
-                <span>{b2baccountStatement.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                <span>{b2baccountStatement.price}</span>
               )}
             </>
           ),

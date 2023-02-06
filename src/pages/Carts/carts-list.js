@@ -192,10 +192,10 @@ class CartList extends Component {
   };
 
   handleCart = () => {
-    this.props.match.params.uuid = this.props.match.params.guest_id
-    console.log(this.props.match.params.uuid)
 
     if (this.state.user_id) {
+      this.props.match.params.uuid = this.props.match.params.guest_id
+      console.log(this.props.match.params.uuid)
       this.props.history.push(
         this.props.match.params.uuid
           ? `/checkout/${this.props.match.params.uuid}`
