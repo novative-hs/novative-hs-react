@@ -174,14 +174,14 @@ class Checkout extends Component {
         }
       }, 1000);
 
-      setTimeout(() => {
-        this.setState({ checkedoutData: this.props.checkedoutData });
+      // setTimeout(() => {
+      //   this.setState({ checkedoutData: this.props.checkedoutData });
 
-        // If checkout operation is successful.
-        if (this.props.checkedoutData) {
-          this.props.history.push("/nearby-labs");
-        }
-      }, 4000);
+      //   // If checkout operation is successful.
+      //   if (this.props.checkedoutData) {
+      //     this.props.history.push("/nearby-labs");
+      //   }
+      // }, 4000);
     }
   };
 
