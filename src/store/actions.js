@@ -32,12 +32,14 @@ export * from "./labmarket/actions";
 export * from "./testmarket/actions";
 export * from "./profilemarket/actions";
 export * from "./packagemarket/actions";
+export * from "./radiologymarket/actions";
 
 // offered tests
 export * from "./offered-tests/actions";
 
 // pathologists
 export * from "./pathologists/actions";
+export * from "./activtylog/actions";
 
 // pathologists
 export * from "./bankaccounts/actions";

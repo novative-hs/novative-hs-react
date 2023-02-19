@@ -89,7 +89,7 @@ class ReferredPatientsList extends Component {
           formatter: (cellContent, b2bReferredPatient) => (
             <>
               <span>
-              <Tooltip title="Patient Info">
+              <Tooltip title="Lab Info">
                 <Link
                   to="#"
                   onClick={e => this.openLabModal(e, b2bReferredPatient)}
@@ -279,24 +279,25 @@ class ReferredPatientsList extends Component {
           //   </div>
           // ),
         },
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, b2bReferredPatient) => (
-            <div className="d-flex gap-3">
-              <Link className="text-success" to="#">
-              <Tooltip title="Invoice">
-              <Link
-                className="mdi mdi-receipt font-size-18"
-                to={`/in-process-b2b/${b2bReferredPatient.id}`}              >
-              </Link>
-              </Tooltip>
-              </Link>
-            </div>
-          ),
-        },
+        //comments patient invoive in b2b reffered patient list 
+        // {
+        //   dataField: "menu",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Action",
+        //   formatter: (cellContent, b2bReferredPatient) => (
+        //     <div className="d-flex gap-3">
+        //       <Link className="text-success" to="#">
+        //       <Tooltip title="Invoice">
+        //       <Link
+        //         className="mdi mdi-receipt font-size-18"
+        //         to={`/in-process-b2b/${b2bReferredPatient.id}`}              >
+        //       </Link>
+        //       </Tooltip>
+        //       </Link>
+        //     </div>
+        //   ),
+        // },
       ],
     };
     this.toggle = this.toggle.bind(this);

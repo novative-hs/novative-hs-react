@@ -43,7 +43,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { productsData } from "common/data";
 
 //Import actions
-import { getNearbyPackages, getPackages } from "store/packagemarket/actions";
+import { getNearbyRadiology, getRadiology } from "store/radiologymarket/actions";
 import { addToCart } from "store/actions";
 import { any } from "prop-types";
 import "./nearbylabs.scss";
@@ -59,8 +59,8 @@ class NearbyPackage extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       ratingvalues: [],
-      nearbyPackages: [],
-      Packages: [],
+      nearbyRadiology: [],
+      Radiology: [],
       activeTab: "1",
       address: "",
       test_name: "",
@@ -106,11 +106,11 @@ class NearbyPackage extends Component {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
     });
-    const { Packages, onGetPackages } = this.props;
-    if (Packages && !Packages.length) {
-      console.log(onGetPackages(this.state.user_id));
+    const { Radiology, onGetRadiology } = this.props;
+    if (Radiology && !Radiology.length) {
+      console.log(onGetRadiology(this.state.user_id));
     }
-    const { onGetNearbyPackages } = this.props;
+    const { onGetNearbyRadiology } = this.props;
 
     setTimeout(() => {
       this.setState({ currentLatitude: latitude });
@@ -126,10 +126,10 @@ class NearbyPackage extends Component {
       };
 
       if (this.state.currentLatitude && this.state.currentLongitude) {
-        onGetNearbyPackages(data);
+        onGetNearbyRadiology(data);
 
         setTimeout(() => {
-          this.setState({ nearbyPackages: this.props.nearbyPackages });
+          this.setState({ nearbyRadiology: this.props.nearbyRadiology });
         }, 1000);
       }
     }, 1000);
@@ -167,13 +167,13 @@ class NearbyPackage extends Component {
   };
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { nearbyPackages } = this.props;
+    const { nearbyRadiology } = this.props;
     if (
-      isEmpty(prevProps.nearbyPackages) &&
-      !isEmpty(nearbyPackages) &&
-      size(nearbyPackages) !== size(prevProps.nearbyPackages)
+      isEmpty(prevProps.nearbyRadiology) &&
+      !isEmpty(nearbyRadiology) &&
+      size(nearbyRadiology) !== size(prevProps.nearbyRadiology)
     ) {
-      this.setState({ nearbyPackages });
+      this.setState({ nearbyRadiology });
     }
   }
   toggleTab(tab) {
@@ -219,12 +219,12 @@ class NearbyPackage extends Component {
         nearbyPackage => nearbyPackage.offer >= Math.min(...discount)
       );
     }
-    this.setState({ nearbyPackages: filteredProducts });
+    this.setState({ nearbyRadiology: filteredProducts });
   };
 
   onUpdate = (render, handle, value) => {
     this.setState({
-      nearbyPackages: productsData.filter(
+      nearbyRadiology: productsData.filter(
         nearbyPackage =>
           nearbyPackage.newPrice >= value[0] && nearbyPackage.newPrice <= value[1]
       ),
@@ -236,7 +236,7 @@ class NearbyPackage extends Component {
   */
   onChangeRating = value => {
     this.setState({
-      nearbyPackages: productsData.filter(
+      nearbyRadiology: productsData.filter(
         nearbyPackage => nearbyPackage.rating >= value
       ),
     });
@@ -248,7 +248,7 @@ class NearbyPackage extends Component {
 
   onSelectRating = value => {
     this.setState({
-      nearbyPackages: productsData.filter(
+      nearbyRadiology: productsData.filter(
         nearbyPackage => nearbyPackage.rating === value
       ),
     });
@@ -273,7 +273,7 @@ class NearbyPackage extends Component {
     } else {
       filteredProducts = productsData;
     }
-    this.setState({ nearbyPackages: filteredProducts });
+    this.setState({ nearbyRadiology: filteredProducts });
   };
 
   handlePageClick = page => {
@@ -282,7 +282,7 @@ class NearbyPackage extends Component {
 
   handleBlur = () => {
     // Calling API when focus is out of test name and setting nearby tests array
-    const { onGetNearbyPackages } = this.props;
+    const { onGetNearbyRadiology } = this.props;
 
     var latitude;
     var longitude;
@@ -305,10 +305,10 @@ class NearbyPackage extends Component {
         test_name: this.state.test_name,
       };
 
-    onGetNearbyPackages(data);
+    onGetNearbyRadiology(data);
 
     setTimeout(() => {
-      this.setState({ nearbyPackages: this.props.nearbyPackages });
+      this.setState({ nearbyRadiology: this.props.nearbyRadiology });
     }, 1000);
   };
 
@@ -331,7 +331,7 @@ class NearbyPackage extends Component {
 
       // Calling API whenever address changes and setting nearby tests array
       setTimeout(() => {
-        const { onGetNearbyPackages } = this.props;
+        const { onGetNearbyRadiology } = this.props;
 
         var data = {
           latitude: "",
@@ -342,10 +342,10 @@ class NearbyPackage extends Component {
           test_name: this.state.test_name,
         };
 
-        onGetNearbyPackages(data);
+        onGetNearbyRadiology(data);
 
         setTimeout(() => {
-          this.setState({ nearbyPackages: this.props.nearbyPackages });
+          this.setState({ nearbyRadiology: this.props.nearbyRadiology });
         }, 1000);
       }, 1000);
     });
@@ -359,7 +359,7 @@ class NearbyPackage extends Component {
       this.setState({ city: "" });
       this.setState({ address: "" });
 
-      const { onGetNearbyPackages } = this.props;
+      const { onGetNearbyRadiology } = this.props;
 
       var data = {
         latitude: this.state.currentLatitude,
@@ -370,10 +370,10 @@ class NearbyPackage extends Component {
         test_name: this.state.test_name,
       };
 
-      onGetNearbyPackages(data);
+      onGetNearbyRadiology(data);
 
       setTimeout(() => {
-        this.setState({ nearbyPackages: this.props.nearbyPackages });
+        this.setState({ nearbyRadiology: this.props.nearbyRadiology });
       }, 1000);
     }
   };
@@ -381,7 +381,7 @@ class NearbyPackage extends Component {
   onChangeCity = selectedGroup => {
     this.setState({ city: selectedGroup.value });
 
-    const { onGetNearbyPackages } = this.props;
+    const { onGetNearbyRadiology } = this.props;
 
     // ------------- Call API on city name START -------------
     var data = {
@@ -393,10 +393,10 @@ class NearbyPackage extends Component {
       test_name: this.state.test_name,
     };
 
-    onGetNearbyPackages(data);
+    onGetNearbyRadiology(data);
 
     setTimeout(() => {
-      this.setState({ nearbyPackages: this.props.nearbyPackages });
+      this.setState({ nearbyRadiology: this.props.nearbyRadiology });
     }, 1000);
 
     // ------------- Call API on city name END -------------
@@ -451,13 +451,13 @@ class NearbyPackage extends Component {
 
   render() {
     const { page, totalPage } = this.state;
-    const { Packages } = this.props;
+    const { Radiology } = this.props;
 
     const cityList = [];
-    for (let i = 0; i < this.props.Packages.length; i++) {
+    for (let i = 0; i < this.props.Radiology.length; i++) {
       cityList.push({
-        label: this.props.Packages[i].name,
-        value: this.props.Packages[i].id,
+        label: this.props.Radiology[i].name,
+        value: this.props.Radiology[i].id,
       });
     }
     return (
@@ -758,10 +758,10 @@ class NearbyPackage extends Component {
         </div>
         <div className="page-content">
           <MetaTags>
-            <title>Search by Packages | Lab Hazir - Dashboard</title>
+            <title>Search by Radiology | Lab Hazir - Dashboard</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search byPackages" />
+            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search by Radiology" />
             <Row>
             <Modal
                 isOpen={this.state.DescriptionModal}
@@ -916,9 +916,9 @@ class NearbyPackage extends Component {
                               }
                               defaultValue={{
                                 label:
-                                  Packages.test_name,
+                                  Radiology.test_name,
                                 value:
-                                  Packages.test_name,
+                                  Radiology.test_name,
                               }}
                             />
                           </div>
@@ -994,8 +994,8 @@ class NearbyPackage extends Component {
               ) : null}
 
               <Row>
-                {!isEmpty(this.props.nearbyPackages) &&
-                  this.props.nearbyPackages.map((nearbyPackage, key) => (
+                {!isEmpty(this.props.nearbyRadiology) &&
+                  this.props.nearbyRadiology.map((nearbyPackage, key) => (
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
                       <Card>
                         <CardBody>
@@ -1131,7 +1131,7 @@ class NearbyPackage extends Component {
                     </Col>
                   ))}
 
-                {isEmpty(this.props.nearbyPackages) && (
+                {isEmpty(this.props.nearbyRadiology) && (
                   <Row>
                     <Col lg="12">
                       <div className=" mb-5">
@@ -1188,30 +1188,30 @@ NearbyPackage.propTypes = {
   history: any,
   location: any,
   match: PropTypes.object,
-  nearbyPackages: PropTypes.array,
-  onGetNearbyPackages: PropTypes.func,
+  nearbyRadiology: PropTypes.array,
+  onGetNearbyRadiology: PropTypes.func,
   onAddToCart: PropTypes.func,
-  onGetPackages: PropTypes.func,
-  Packages: PropTypes.array,
+  onGetRadiology: PropTypes.func,
+  Radiology: PropTypes.array,
   success: PropTypes.any,
   className: PropTypes.any,
   error: PropTypes.any,
-  PackageMarket: PropTypes.any,
+  RadiologyMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
 };
 
-const mapStateToProps = ({ PackageMarket, carts }) => ({
-  nearbyPackages: PackageMarket.nearbyPackages,
-  Packages: PackageMarket.Packages,
+const mapStateToProps = ({ RadiologyMarket, carts }) => ({
+  nearbyRadiology: RadiologyMarket.nearbyRadiology,
+  Radiology: RadiologyMarket.Radiology,
   success: carts.success,
   error: carts.error,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetNearbyPackages: data => dispatch(getNearbyPackages(data)),
+  onGetNearbyRadiology: data => dispatch(getNearbyRadiology(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
-  onGetPackages: () => dispatch(getPackages()),
+  onGetRadiology: () => dispatch(getRadiology()),
 });
 
 export default connect(

@@ -91,11 +91,11 @@ class ReferrelLabFee extends Component {
           //   text: "Sample Type",
           //   sort: true,
           // },
-          // {
-          //   dataField: "price",
-          //   text: "Price",
-          //   sort: true,
-          // },
+          {
+            dataField: "price",
+            text: "Test Price",
+            sort: true,
+          },
           // {
           //   dataField: "is_eqa_participation",
           //   text: "EQA participation",
@@ -113,8 +113,28 @@ class ReferrelLabFee extends Component {
           // },
         {
           dataField: "shared_percentage",
-          text: "Referrel Fee",
+          text: "Referrel Fee (%)",
           sort: true,
+          formatter: (cellContent, referrelFeeLab) => (
+            <>
+              {(                <span>{(referrelFeeLab.shared_percentage * 100).toFixed()}%</span>
+
+              )}
+            </>
+          ),
+        },
+        {
+          dataField: "shared_percentage",
+          text: "Referrel Values (Rs)",
+          sort: true,
+          formatter: (cellContent, referrelFeeLab) => (
+            <>
+              {(
+                <span>{(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}</span>
+
+              )}
+            </>
+          ),
         },
         // {
         //   dataField: "start_date_by_labhazir",
@@ -154,7 +174,7 @@ class ReferrelLabFee extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, referrelFeeLab) => (
-            <div className="d-flex gap-3">
+            <div className="float-middle">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"

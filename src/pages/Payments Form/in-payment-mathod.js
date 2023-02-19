@@ -84,7 +84,7 @@ class InPaymentsForm extends Component {
       // invoice_id: "",
       // cleared_at: "",
       // verified_by: "",
-      status: "",
+      payment_status: "",
       // isDisabled: true,
       // isRequiredFilled: true,
       checkedoutData: "",
@@ -110,7 +110,7 @@ class InPaymentsForm extends Component {
   //       cheque_no: this.state.cheque_no,
   //       cheque_image: this.state.cheque_image,
   //       refered_no: this.state.refered_no,
-  //       status: "Deposited",
+  //       payment_status: "Deposited",
   //     },
   //   });
 
@@ -150,7 +150,7 @@ class InPaymentsForm extends Component {
         cheque_no: this.state.cheque_no,
         cheque_image: this.state.cheque_image,
         refered_no: this.state.refered_no,
-        status: "Created",
+        payment_status: "Created",
       },
     });
 
@@ -278,6 +278,21 @@ class InPaymentsForm extends Component {
       },
     ];
 
+    // const labList = [];
+    // for (let i = 0; i < labs.length; i++) {
+    //   let flag = 0;
+    //   // for (let j = 0; j < inPayments.length; j++) {
+    //   //   if (labs[i].id == inPayments[j].lab_id) {
+    //   //     flag = 1;
+    //   //   }
+    //   // }
+    //   if (!flag) {
+    //     labList.push({
+    //       label: labs[i].name,
+    //       value: labs[i].id,
+    //     });
+    //   }
+    // }
     const labList = [];
     for (let i = 0; i < labs.length; i++) {
       let flag = 0;
@@ -287,12 +302,15 @@ class InPaymentsForm extends Component {
       //   }
       // }
       if (!flag) {
-        labList.push({
-          label: labs[i].name,
-          value: labs[i].id,
-        });
+        labList.push(
+          {
+            label: `${labs[i].name} - ${labs[i].order_id}`,
+            value: `${labs[i].id}`,
+          },
+        );
       }
     }
+
 
     const advertisementList = [];
     for (let i = 0; i < advertisements.length; i++) {
@@ -1096,7 +1114,7 @@ class InPaymentsForm extends Component {
                           </div>
                           {/* <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput">
-                              Status
+                              payment_status
                               <span
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"
@@ -1105,14 +1123,14 @@ class InPaymentsForm extends Component {
                               </span>
                             </Label>
                             <select
-                              name="status"
+                              name="payment_status"
                               component="select"
                               onChange={e =>
                                 this.setState({
-                                  status: e.target.value,
+                                  payment_status: e.target.value,
                                 })
                               }
-                              defaultValue={this.state.status}
+                              defaultValue={this.state.payment_status}
                               className="form-select"
                             >
                               <option

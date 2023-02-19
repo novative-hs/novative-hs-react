@@ -759,17 +759,14 @@ class TestAppointmentsPendingList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label
-                                                      for="Estimated sample
-                                                      collection at"
+                                                      for="estimated_sample_collection_at"
                                                     >
                                                       Sampling time by Lab
                                                     </Label>
                                                     <input
                                                       type="datetime-local"
-                                                      id="Estimated sample
-                                                      collection at"
-                                                      name="Estimated sample
-                                                      collection at"
+                                                      id="estimated_sample_collection_at"
+                                                      name="estimated_sample_collection_at"
                                                       min={new Date(
                                                         new Date()
                                                           .toString()

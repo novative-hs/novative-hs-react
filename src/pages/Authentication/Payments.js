@@ -150,7 +150,7 @@ class Payments extends Component {
                       
                      }
                      
-                     if (this.state.amount !== (this.state.counter_discount + this.state.amount_received)){
+                     if (this.state.amount !== (Number(this.state.counter_discount) + Number(this.state.amount_received))) {
                       console.log("hell",this.state.counter_discount + this.state.amount_received)
                       this.setState({ isPaymentFailed: true });
                      }              

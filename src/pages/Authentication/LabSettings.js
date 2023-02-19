@@ -43,6 +43,9 @@ class LabSettings extends Component {
       complaint_handling_phone: "",
       is_digital_payment_accepted: "",
       is_active: "",
+      account_number:"",
+      bank:"",
+      branch_code:"",
       isSettingsUpdated: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -115,6 +118,10 @@ class LabSettings extends Component {
         is_digital_payment_accepted:
           this.props.success.is_digital_payment_accepted,
         is_active: this.props.success.is_active,
+        bank: this.props.success.bank,
+        branch_code: this.props.success.branch_code,
+        account_number: this.props.success.account_number,
+
       });
     }, 1500);
   }
@@ -158,6 +165,12 @@ class LabSettings extends Component {
                       (this.state && this.state.is_digital_payment_accepted) ||
                       "No",
                     is_active: (this.state && this.state.is_active) || "Yes",
+                    bank:
+                      (this.state && this.state.bank) || "",
+                    branch_code:
+                      (this.state && this.state.branch_code) || "",
+                    account_number:
+                      (this.state && this.state.account_number) || "",
                   }}
                   validationSchema={Yup.object().shape({
                     state_sampling_charges: Yup.number(
@@ -276,7 +289,7 @@ class LabSettings extends Component {
                           <option value="Yes">Yes</option>
                           <option value="No">No</option>
                         </Field>
-                      </div>
+                      </div> 
 
                       {this.state.is_247_opened == "No" && (
                         <Row>
@@ -331,7 +344,129 @@ class LabSettings extends Component {
                           </Col>
                         </Row>
                       )}
-
+                       <div className="mb-3">
+                        <Label
+                          for="bank"
+                          className="form-label"
+                        >
+                          Bank
+                        </Label>
+                        <Field
+                          name="bank"
+                          component="select"
+                          onChange={e =>
+                            this.setState({
+                              bank: e.target.value,
+                            })
+                          }
+                          value={this.state.bank}
+                          className="form-select"
+                        >
+                          <option
+                            value=""
+                            selected={
+                              this.props.success.bank === ""
+                            }
+                          >
+                            --- Select Bank
+                            ---
+                          </option>
+                        
+                                                          <option value="Askari Bank">
+                                                            Askari Bank
+                                                          </option>
+                                                          <option value="Allied Bank">
+                                                            Allied Bank
+                                                          </option>
+                                                          <option value="Bank Al Habib Limited">
+                                                            Bank Al Habib Limited
+                                                          </option>
+                                                          <option value="Bank Alfalah">
+                                                            Bank Alfalah
+                                                          </option>
+                                                          <option value="MCB Bank Limited">
+                                                            MCB Bank Limited
+                                                          </option>
+                                                          <option value="HBL / Konnect">
+                                                            HBL / Konnect
+                                                          </option>
+                                                          <option value="MCB Islamic">
+                                                            MCB Islamic
+                                                          </option>
+                                                          <option value="Meezan Bank">
+                                                            Meezan Bank
+                                                          </option>
+                                                          <option value="National Bank of Pakistan(NBP)">
+                                                            National Bank of Pakistan(NBP)
+                                                          </option>
+                                                          <option value="Soneri Bank">
+                                                            Soneri Bank
+                                                          </option>
+                                                          <option value="United Bank Limited">
+                                                            United Bank Limited
+                                                          </option>
+                        </Field>
+                      </div>
+                      {this.state.bank && (               
+                                                      <div className="mb-3">
+                            <Label for="branch_code" className="form-label">
+                              Branch Code
+                            </Label>
+                            <Field
+                              id="branch_code"
+                              name="branch_code"
+                              type="text"
+                              onChange={e =>
+                                this.setState({
+                                  branch_code: e.target.value,
+                                })
+                              }
+                              value={this.state.branch_code}
+                              className={
+                                "form-control" +
+                                (errors.branch_code &&
+                                touched.branch_code
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                            />
+                            <ErrorMessage
+                              name="branch_code"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                          </div>
+                      )}
+                      {this.state.bank && (
+                          <div className="mb-3">
+                            <Label for="account_number" className="form-label">
+                              Account No.
+                            </Label>
+                            <Field
+                              id="account_number"
+                              name="account_number"
+                              type="text"
+                              onChange={e =>
+                                this.setState({
+                                  account_number: e.target.value,
+                                })
+                              }
+                              value={this.state.account_number}
+                              className={
+                                "form-control" +
+                                (errors.account_number &&
+                                touched.account_number
+                                  ? " is-invalid"
+                                  : "")
+                              }
+                            />
+                            <ErrorMessage
+                              name="account_number"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                          </div>
+                      )}
                       {/* Health Dept Certified */}
                       <div className="mb-3">
                         <Label
@@ -444,7 +579,6 @@ class LabSettings extends Component {
                               </Col>
                             </Row>
                           </div>
-
                           {/* Registration No. field */}
                           <div className="mb-3">
                             <Label for="registration_no" className="form-label">
@@ -474,6 +608,7 @@ class LabSettings extends Component {
                               className="invalid-feedback"
                             />
                           </div>
+                          
 
                           {/* License No. field */}
                           <div className="mb-3">

@@ -15,6 +15,8 @@ import labs from "pages/LabMarket/NearbyLabs/labs";
 import NearbyTests from "pages/LabMarket/NearbyLabs/NearbyTests";
 import NearbyProfiles from "pages/LabMarket/NearbyLabs/NearbyProfiles";
 import NearbyPackages from "pages/LabMarket/NearbyLabs/NearbyPackages";
+import NearbyRadiology from "pages/LabMarket/NearbyLabs/NearbyRadiology";
+
 //ContactUs
 import ContactUs from "../pages/Contact/contact-us";
 import ChatBox from "../pages/Public/chat";
@@ -103,6 +105,7 @@ import B2bLabShare from "pages/B2bLabShares/lab-shares-list";
 import B2bProfile from "pages/Authentication/B2bProfile";
 
 // Donor
+import DonorDashboard from "pages/Dashboard-Donor/index";
 import DonorProfile from "pages/Authentication/DonorProfile";
 import DonorAppointments from "pages/DonorReferredAppointments/referred-appointments-list";
 import DonorPayments from "pages/DonorPaymentMathods/payment-mathod";
@@ -185,6 +188,7 @@ import HandledComplaints from "pages/Complaints/handled-complaints";
 
 import AssignedAudits from "pages/Auditor/assigned-audits";
 import LabAudits from "pages/Dashboard-Lab/lab-audits";
+import activityLog from "pages/Dashboard-Lab/activity-log";
 import AuditorCompletedAudits from "pages/Auditor/completed-audits";
 import AuditorProfile from "../pages/Authentication/StaffProfile";
 
@@ -317,6 +321,10 @@ const labAuthProtectedRoutes = [
     component: LabAudits,
   },
   {
+    path: "/activity-log",
+    component: activityLog,
+  },
+  {
     path: "/lab-profile",
     component: LabProfile,
   },
@@ -415,6 +423,7 @@ const financeAdminAuthProtectedRoutes = [
   // { path: "/financeadmin-profile", component: FinanceAdminProfile },
 ];
 const donorAuthProtectedRoutes = [
+  { path: "/dashboard-donor", component: DonorDashboard },
   { path: "/donor-profile", component: DonorProfile },
   { path: "/donor-appointment", component: DonorAppointments },
   { path: "/donor-payment", component: DonorPayments },
@@ -597,6 +606,9 @@ const patientPublicRoutes = [
   {  path: "/nearby-packages/:guest_id?/:uuid?",
     component: NearbyPackages 
   },
+  {  path: "/nearby-radiology/:guest_id?/:uuid?",
+  component: NearbyRadiology 
+},
   {
     path: "/nearby-lab-detail/:lab_account_id/:guest_id?/:uuid?",
     component: NearbyLabDetail,

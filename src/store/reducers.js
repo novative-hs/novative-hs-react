@@ -34,12 +34,15 @@ import LabMarket from "./labmarket/reducer";
 import TestMarket from "./testmarket/reducer";
 import ProfileMarket from "./profilemarket/reducer";
 import PackageMarket from "./packagemarket/reducer";
+import RadiologyMarket from "./radiologymarket/reducer";
+
 
 //offered tests
 import offeredTests from "./offered-tests/reducer";
 
 //pathologists
 import pathologists from "./pathologists/reducer";
+import activitylog from "./activtylog/reducer";
 
 //pathologists
 import bankaccounts from "./bankaccounts/reducer";
@@ -201,8 +204,10 @@ const rootReducer = combineReducers({
   TestMarket,
   ProfileMarket,
   PackageMarket,
+  RadiologyMarket,
   offeredTests,
   pathologists,
+  activitylog,
   donorPayments,
   inPayments,
   paymentStatuss,

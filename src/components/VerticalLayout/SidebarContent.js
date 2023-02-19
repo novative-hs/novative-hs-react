@@ -156,14 +156,12 @@ class SidebarContent extends Component {
           <SimpleBar className="h-100" ref={this.refDiv}>
             <div id="sidebar-menu">
               <ul className="metismenu list-unstyled" id="side-menu">
-                {/* Lab Settings */}
-                {/* <li>
-                  <Link to="/donor-settings">
-                    <i className="mdi mdi-cog" />
-                    <span>{this.props.t("Settings")}</span>
+                <li>
+                  <Link to={"/dashboard-donor"}>
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Dashboard")}</span>
                   </Link>
-                </li> */}
-                {/* Donor Statements */}
+                </li>
                 <li>
                   <Link to={"/donor-account-statements"}>
                     <i className="bx bx-receipt" />

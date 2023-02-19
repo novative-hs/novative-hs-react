@@ -529,7 +529,10 @@ class TestAppointmentsInProcessList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, testAppointment) => (
+            
+            
             <div className="d-flex gap-3">
+{testAppointment.payment_status == "Not Paid"&& (
             <Tooltip title="Payment">
                <Link
                 className="far fa-money-bill-alt font-size-18"
@@ -537,6 +540,7 @@ class TestAppointmentsInProcessList extends Component {
               >
               </Link>
             </Tooltip>
+          )}
               <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i
@@ -915,7 +919,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Schedule time by Patient
+                                                     Sampling Time by Patient
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">

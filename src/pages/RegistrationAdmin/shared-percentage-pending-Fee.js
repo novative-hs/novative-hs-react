@@ -72,12 +72,10 @@ class SharedPercentageLabHazirList extends Component {
             } 
           },
           {
-            dataField: "lab_name",
-            text: "lab Name",
+            dataField: "price",
+            text: "Test Price",
             sort: true,
-            headerStyle: () => {
-              return { width: "30%" };
-            } 
+
           },
           {
             dataField: "status",

@@ -33,6 +33,7 @@ export const UPDATE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 
 // PATHOLOGIST
+export const GET_ACTIVITY_LOG = `${API_ENDPOINT}/api/lab/activity-log`;
 export const GET_PATHOLOGISTS = `${API_ENDPOINT}/api/lab/pathologist-list`;
 export const ADD_NEW_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 export const UPDATE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
@@ -272,6 +273,8 @@ export const GET_NEARBY_PROFILES = `${API_ENDPOINT}/api/patient/profiles-offered
 export const GET_PROFILES = `${API_ENDPOINT}/api/medicaltest/profile-list`;
 export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
 export const GET_NEARBY_PACKAGES = `${API_ENDPOINT}/api/patient/packages-offered`;
+export const GET_RADIOLOGY = `${API_ENDPOINT}/api/medicaltest/radiology-list`;
+export const GET_NEARBY_RADIOLOGY = `${API_ENDPOINT}/api/patient/radiology-tests-offered`;
 
 // CHECKOUT
 export const GET_HOME_SAMPLED_TESTS = `${API_ENDPOINT}/api/patient/home-sampled-tests`;

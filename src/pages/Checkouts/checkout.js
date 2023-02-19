@@ -788,7 +788,7 @@ class Checkout extends Component {
                             <Table >
                               <Thead className="table-light">
                                 <Tr>
-                                  <Th scope="col">Home Sampling</Th>
+                                  <Th scope="col">Home Sampling Offered</Th>
                                   <Th scope="col">Test name</Th>
                                   <Th scope="col">Lab name</Th>
                                 </Tr>
@@ -798,10 +798,13 @@ class Checkout extends Component {
                                   (homeSampledTest, key) => (
                                     // homeSampledTest.is_home_sampling_available == "Yes" &&(
                                     <Tr key={"_homeSampledTest_" + key}>
+                                      <p className="font-size-14 float-start">
                                       <Td>{homeSampledTest.is_home_sampling_available}</Td>
 
+                                      </p>
+
                                       <Td>
-                                        <h5 className="font-size-14">
+                                        <h5 className="font-size-14 float-start">
                                           <a
                                             href="/ecommerce-product-details/1"
                                             className="text-dark"
@@ -810,7 +813,8 @@ class Checkout extends Component {
                                           </a>
                                         </h5>
                                       </Td>
-                                      <Td>{homeSampledTest.lab_name}</Td>
+                                      <p className="font-size-14 float-start">
+                                      <Td>{homeSampledTest.lab_name}</Td></p>
                                     </Tr>
                                   )
                                   // )
@@ -1100,15 +1104,13 @@ class Checkout extends Component {
                               </CardTitle>
 
                               <div className="table-responsive">
-                                <Table className="align-middle mb-0 table-nowrap">
+                                <Table className="align-end mb-0 table-nowrap">
                                   <Thead className="table-light">
                                     <Tr>
-                                      <Th scope="col">Test Name</Th>
-                                      <Th scope="col">Price</Th>
-                                      {/* <Th scope="col">Discount by <br></br>(Lab)</Th> */}
-                                      <Th scope="col">Sum Of Discount <br></br>(Lab+LabHazir)</Th>
-                                      {/* <Th scope="col">Discount by <br></br>LabHazir(Against Test)</Th>  */}
-                                      <Th scope="col">Net Payment</Th>
+                                      <Th scope="col" style={{width: '20%'}} className="text-start px-4">Test Name</Th>
+                                      <Th scope="col" style={{width: '25%'}} className="text-end px-4">Price</Th>
+                                      <Th scope="col" style={{width: '25%'}} className="text-end px-4">Sum Of Discount (Lab+LabHazir)</Th>
+                                      <Th scope="col" style={{width: '25%'}} className="text-end px-4">Net Payment</Th>
 
                                     </Tr>
                                   </Thead>
@@ -1120,41 +1122,28 @@ class Checkout extends Component {
                                             (item, key) => (
                                               <Tr key={"_item_" + key}>
                                                 <Td>
+                                                  <p className="text-start px-4">
                                                   <h5 className="font-size-14 text-truncate">
                                                     {item.test_name}{" "}
                                                   </h5>
                                                   <p className="text-muted mb-0">
                                                     {item.lab_name}
                                                   </p>
-                                            
+                                            </p>
                                                 </Td>
                                                 
-                                                <Td><p className="font-size-14 text-truncate"> 
+                                                <Td>
+                                                  <p className="text-end px-4"> 
                                                 {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                                                  </Td>
-                                                {/* <Td>
-                                                  <p className="float-end">
-                                                  {item.discount_per}
-                                                  </p>
-                                                </Td> */}
                                                 <Td>
-                                                  <p className="font-size-14 text-truncate">
+                                                  <p className="text-end px-4">
                                                   {item.discount_per+item.discount_by_labhazir_per+item.discount_by_labhazird_by_test_per}
                                                   </p>
                                                 </Td>
-                                                {/* <Td>
-                                                  <p className="float-end">
-                                                  {item.discount_by_labhazird_by_test_per.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                  </p>
-                                                </Td> */}
                                                 <Td>
-                                                  <p className="bg-success bg-soft p-4">
-                                                  {item.net_payment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                  </p>
-                                                </Td>
-                                                <Td>
-                                                  <p>
-                                                    
+                                                  <p className="text-end px-4">
+                                                  {item.current_amount}
                                                   </p>
                                                 </Td>
                                               </Tr>
@@ -1169,47 +1158,10 @@ class Checkout extends Component {
                                   {this.state.checkoutItems.map(
                                       (checkoutItem, key) => (
                                         <>
-                                              {/* <Tr className="table-light p-3 rounded">
-                                                <Td>
-                                                  <h5 className="font-size-14 text-truncate float-center">
-                                                    Total
-                                                  </h5>
-                                                </Td>
-                                                <Td><p className="float-end"> 
-                                                {checkoutItem.total_price_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-                                                 </Td>
-                                                <Td>
-                                                  <p className="float-end">
-                                                  {checkoutItem.total_discount_cost}
-                                                  </p>
-                                                </Td>
-                                                <Td>
-                                                  <p className="float-end">
-                                                  {checkoutItem.total_testdiscount_cost+checkoutItem.total_discount_by_labhazir}
-                                                  </p>
-                                                </Td>
-                                                {/* <Td>
-                                                  <p className="float-end">
-                                                  {checkoutItem.total_discount_by_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                  </p>
-                                                </Td> */}
-                                                {/* <Td>
-                                                  <p className="float-end">
-                                                  {checkoutItem.total_discount_by_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                  </p>
-                                                </Td>
-                                                <Td>
-                                                  <p>
-                                                    
-                                                  </p>
-                                                </Td> */}
-                                              {/* </Tr>  */}
-                                            
-
                                           {checkoutItem.lab_home_sampling_charges !=
                                             0 && (
                                             <tr key={"_checkoutItem_" + key}>
-                                              <td colSpan="6">
+                                             <td colSpan="4">
                                               {this.state.is_home_sampling_availed=="Yes"  &&
                                               this.state.is_state_sampling_availed=="Yes" &&  (
                                                           <div className="bg-primary bg-soft p-3 rounded">
@@ -1254,7 +1206,7 @@ class Checkout extends Component {
 
                                           {checkoutItem.total_test_cost && (
                                             <Tr>
-                                              <Td colSpan="6">
+                                              <Td colSpan="4">
                                                 <div className="bg-success bg-soft p-3 rounded">
                                                   <h5 className="font-size-14 text-success mb-0">
                                                     <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}

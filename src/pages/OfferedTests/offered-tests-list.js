@@ -371,7 +371,7 @@ class OfferedTestsList extends Component {
         // unit_id: offeredTest.unit_id,
         duration_required: offeredTest.duration_required,
         duration_type: offeredTest.duration_type,
-        // sample_type: offeredTest.sample_type,
+        sample_type: offeredTest.sample_type,
         price: offeredTest.price,
         is_eqa_participation: offeredTest.is_eqa_participation,
         is_home_sampling_available: offeredTest.is_home_sampling_available,
@@ -927,7 +927,7 @@ class OfferedTestsList extends Component {
                                                     <Label className="form-label">
                                                       Sample type
                                                       <span className="text-danger font-size-12">
-                                                        *
+                                                         (Select only if you want to change the default sample type Otherwise leave it as it is.)
                                                       </span>
                                                     </Label>
                                                     <Field
@@ -943,22 +943,25 @@ class OfferedTestsList extends Component {
                                                       }
                                                       multiple={false}
                                                     >
-                                                      <option value="Serum(Gel/Yellow Vial)">
+                                                      <option>
+                                                    **Select Sample Type**
+                                                  </option>
+                                                      <option value="Serum (Gel / Yellow Vial)">
                                                         Serum(Gel/Yellow Vial)
                                                       </option>
-                                                      <option value="Blood(Aerobic Culture Bottle)">
+                                                      <option value="Blood (Aerobic Culture Bottle)">
                                                         Blood(Aerobic Culture Bottle)
                                                       </option>
-                                                      <option value="Plasma(Sodium Floride/Gray Tube)">
+                                                      <option value="Plasma (Sodium Floride / Gray Tube)">
                                                         Plasma(Sodium Floride/Gray Tube)
                                                       </option>
-                                                      <option value="Plasma(Sodium Citrate/Blue Vial)">
+                                                      <option value="Plasma (Sodium Citrate / Blue Vial)">
                                                         Plasma(Sodium Citrate/Blue Vial)
                                                       </option>
-                                                      <option value="Plasma(EDTA/Purple Tube)">
+                                                      <option value="Plasma (EDTA / Purple Tube)">
                                                         Plasma(EDTA/Purple Tube)
                                                       </option>
-                                                      <option value="Plasma(Heparin/Green Tube)">
+                                                      <option value="Plasma (Heparin / Green Tube)">
                                                         Plasma(Heparin/Green Tube)
                                                       </option>
                                                       <option value="Whole blood">
@@ -1071,7 +1074,7 @@ class OfferedTestsList extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                    Are you active for performing this test?
+                                                    Is this test?
                                                     </Label>
                                                     <Field
                                                       name="is_active"
@@ -1081,10 +1084,10 @@ class OfferedTestsList extends Component {
                                                       multiple={false}
                                                     >
                                                       <option value="Yes">
-                                                        Yes
+                                                        Active
                                                       </option>
                                                       <option value="No">
-                                                        No
+                                                        Inactive
                                                       </option>
                                                     </Field>
                                                   </div>

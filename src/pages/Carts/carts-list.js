@@ -4,6 +4,11 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link, Redirect } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import { Collapse } from "reactstrap";
+import logo from "../../../src/assets/images/logo.svg";
+import logoLight from "../../../src/assets/images/logo-light.png";
+import logoLightSvg from "../../../src/assets/images/logo-light.svg";
+
 
 import paginationFactory, {
   PaginationProvider,
@@ -66,7 +71,8 @@ class CartList extends Component {
           formatter: (cellContent, cart) => (
             <>
               {(
-                <span>{cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                                  <span>{cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+
               )}
             </>
           ),
@@ -88,13 +94,13 @@ class CartList extends Component {
           dataField: "total_balance",
           text: "After Discount",
           sort: true,
-          // formatter: (cellContent, cart) => (
-          //   <>
-          //     {(
-          //       <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-          //     )}
-          //   </>
-          // ),
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "menu",
@@ -276,6 +282,526 @@ class CartList extends Component {
           onDeleteClick={this.handleDeleteCart}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
+        <div className="p-4">
+        <div className="topnav mt-5">
+          <div className="container-fluid left-space">
+            <nav
+              className="navbar navbar-light navbar-expand-lg topnav-menu"
+              id="navigation"
+            >
+              {!this.state.user_id
+              ? (
+                 <Collapse
+                 isOpen={this.props.menuOpen}
+                 className="navbar-collapse"
+                 id="topnav-menu-content"
+               >
+                 <ul className="navbar-nav">
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/labs/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                    <span className="pt-4 font-size-12">Labs</span>
+                     </Link>
+                   </li>
+ 
+                   <li className="nav-item">
+
+                     {/* <Link to="/nearby-tests" className="dropdown-item">
+                       {this.props.t("Search by Tests")}
+                     </Link> */}
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-tests/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                       <span className="pt-4 font-size-12">Search by Tests</span>
+                       {/* {this.props.t("Tests")} */}
+                     </Link>
+                   </li>
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-profiles/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                      <span className="pt-4 font-size-12">Profiles</span>
+                       {/* {this.props.t("Profiles")} */}
+                     </Link>
+                   </li>
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-packages/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                      <span className="pt-4 font-size-12">Packages</span>
+                       {/* {this.props.t("Packages")} */}
+                     </Link>
+                   </li>
+                   {/* <li className="nav-item dropdown">
+                     <Link
+                       to="/#"
+                       onClick={e => {
+                         e.preventDefault();
+                         this.setState({ appState: !this.state.appState });
+                       }}
+                       className="nav-link dropdown-toggle arrow-none"
+                     >
+                       <i className="bx bx-store me-2" />
+                       {this.props.t("Lab Marketplace")}{" "}
+                       <div className="arrow-down" />
+                     </Link>
+                     <div
+                       className={classname("dropdown-menu", {
+                         show: this.state.appState,
+                       })}
+                     >
+                       <Link to="/nearby-labs" className="dropdown-item">
+                         {this.props.t("Nearby Labs")}
+                       </Link>
+                       <Link to="/nearby-tests" className="dropdown-item">
+                         {this.props.t("Nearby Tests")}
+                       </Link>
+                     </div>
+                   </li> */}
+ 
+                   {this.state.user_id && this.state.user_type == "patient" && (
+                     <li className="nav-item">
+                       <Link to={"/test-appointments"} className="dropdown-item">
+                         {/* {this.props.t("My Appointments")} */}
+                         <span className="pt-4 font-size-12">My Appointments</span>
+
+                       </Link>
+                     </li>
+                     /* <li className="nav-item dropdown">
+                        <Link
+                         to="/#"
+                         onClick={e => {
+                           e.preventDefault();
+                           this.setState({ appState: !this.state.appState });
+                         }}
+                         className="nav-link dropdown-toggle arrow-none"
+                       >
+                         <i className="bx bx-test-tube me-2" />
+                         {this.props.t("Appointments")}{" "}
+                         <div className="arrow-down" />
+                       </Link>
+                       <div
+                         className={classname("dropdown-menu", {
+                           show: this.state.appState,
+                         })}
+                       >
+                         <Link
+                           to={"/test-appointments"}
+                           className="dropdown-item"
+                         >
+                           {this.props.t("Test Appointments")}
+                         </Link>
+                       </div>
+                       </li> */
+                   )}
+                 </ul>
+               </Collapse>
+
+              ): this.state.user_id ? (
+                <Collapse
+                isOpen={this.props.menuOpen}
+                className="navbar-collapse"
+                id="topnav-menu-content"
+              >
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                        : `/nearby-labs/`
+                    }
+                    className="dropdown-item"
+                    >
+                      <span className="pt-4 font-size-12">Labs</span>
+                      {/* {this.props.t("Labs")} */}
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    {/* <Link to="/nearby-tests" className="dropdown-item">
+                      {this.props.t("Search by Tests")}
+                    </Link> */}
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-tests/${this.props.match.params.uuid}`
+                        : `/nearby-tests/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {/* {this.props.t("Tests")} */}
+                      <span className="pt-4 font-size-12">Tests</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-profiles/${this.props.match.params.uuid}`
+                        : `/nearby-profiles/`
+                    }
+                    className="dropdown-item"
+                    >
+                      {/* {this.props.t("Profiles")} */}
+                      <span className="pt-4 font-size-12">Profiles</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-packages/${this.props.match.params.uuid}`
+                        : `/nearby-packages/`
+                    }
+                    className="dropdown-item"
+                    >
+                      <span className="pt-4 font-size-12">Packages</span>
+                      {/* {this.props.t("Packages")} */}
+                    </Link>
+                  </li>
+                  {/* <li className="nav-item dropdown">
+                    <Link
+                      to="/#"
+                      onClick={e => {
+                        e.preventDefault();
+                        this.setState({ appState: !this.state.appState });
+                      }}
+                      className="nav-link dropdown-toggle arrow-none"
+                    >
+                      <i className="bx bx-store me-2" />
+                      {this.props.t("Lab Marketplace")}{" "}
+                      <div className="arrow-down" />
+                    </Link>
+                    <div
+                      className={classname("dropdown-menu", {
+                        show: this.state.appState,
+                      })}
+                    >
+                      <Link to="/nearby-labs" className="dropdown-item">
+                        {this.props.t("Nearby Labs")}
+                      </Link>
+                      <Link to="/nearby-tests" className="dropdown-item">
+                        {this.props.t("Nearby Tests")}
+                      </Link>
+                    </div>
+                  </li> */}
+
+                  {this.state.user_id && this.state.user_type == "patient" && (
+                    <li className="nav-item">
+                      <Link to={"/test-appointments"} className="dropdown-item">
+                        {/* {this.props.t("My Appointments")} */}
+                        <span className="pt-4 font-size-12">My Appointments</span>
+
+                      </Link>
+                    </li>
+                    /* <li className="nav-item dropdown">
+                       <Link
+                        to="/#"
+                        onClick={e => {
+                          e.preventDefault();
+                          this.setState({ appState: !this.state.appState });
+                        }}
+                        className="nav-link dropdown-toggle arrow-none"
+                      >
+                        <i className="bx bx-test-tube me-2" />
+                        {this.props.t("Appointments")}{" "}
+                        <div className="arrow-down" />
+                      </Link>
+                      <div
+                        className={classname("dropdown-menu", {
+                          show: this.state.appState,
+                        })}
+                      >
+                        <Link
+                          to={"/test-appointments"}
+                          className="dropdown-item"
+                        >
+                          {this.props.t("Test Appointments")}
+                        </Link>
+                      </div>
+                      </li> */
+                  )}
+                  
+                </ul>
+              </Collapse>
+              ):null}
+             
+            </nav>
+          </div>
+        </div>
+        </div>
+       
+        <header id="page-topbaar">
+          <div className="navbar-header">
+            <div className="d-flex">
+              <div className="navbar-brand-box">
+                <Link
+                  to={
+                    this.props.match.params.uuid
+                      ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                      : `/nearby-labs/${this.props.match.params.guest_id}`
+                  }
+                  className="logo logo-dark"
+                >
+                  <span className="logo-sm">
+                    <img src={logo} alt="" height="40" />
+                  </span>
+                  <span className="logo-lg">
+                    <img src={logoLight} alt="" height="60" />
+                  </span>
+                </Link>
+
+                <Link
+                  to={
+                    this.props.match.params.uuid
+                      ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                      : `/nearby-labs/${this.props.match.params.guest_id}`
+                  }
+                  className="logo logo-light"
+                >
+                  <span className="logo-sm">
+                    <img src={logoLightSvg} alt="" height="40" />
+                  </span>
+                  <span className="logo-lg">
+                    <img src={logoLight} alt="" height="60" />
+                  </span>
+                </Link>
+              </div>
+
+              <button
+                type="button"
+                className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                data-toggle="collapse"
+                onClick={this.toggleMenu}
+                data-target="#topnav-menu-content"
+              >
+                <i className="fa fa-fw fa-bars" />
+              </button>
+            </div>
+
+            <div className="d-flex">
+              {/* Display login and signup links if the user is not logged in,
+              otherwise show logout and cart links to the user with patient account and is logged in */}
+              {!this.state.user_id ? (
+                <div className="dropdown d-lg-inline-block ms-4 mt-4">
+                  <Link
+                      to={
+                        this.props.match.params.uuid
+                        ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                        : `/cart/${this.props.match.params.guest_id}`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle d-none"
+                  >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                        {/* {!isEmpty(this.props.carts) &&
+                        
+                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                          } */}
+                  </Link>
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                        : `/login/${this.props.match.params.guest_id}`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
+                    <span className="pt-4 font-size-12">Login</span>
+                  </Link>
+
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/register/${this.props.match.params.uuid}`
+                        : `/register`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
+                    <span className="pt-4 font-size-12">Sign up</span>
+                  </Link>
+
+                  <Link
+                    // to="/contact-us"
+                    to={
+                      this.props.match.params.uuid
+                        ? `/contact-us/${this.props.match.params.uuid}`
+                        : `/contact-us`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                  </Link>
+                </div>
+              )
+               : this.state.user_type == "patient" ? (
+                <div className="dropdown">
+                  <Link
+                    // to={"/profile"}
+                    to={
+                      this.props.match.params.uuid
+                        ? `/profile/${this.props.match.params.uuid}`
+                        : `/profile`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-account-box align-middle me-1 font-size-20" />{" "}
+                    <span className="pt-4 font-size-12">
+                      {this.state.patient_name.split(" ")[0]}
+                    </span>
+                  </Link>
+
+                  <Link
+                    to="/change-password"
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-key align-middle me-1 font-size-20" />{" "}
+                    {/* <span className="pt-4 font-size-12">Cart</span> */}
+                  </Link>
+                  <Link
+                    to="/contact-us"
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                    {/* <span className="pt-4 font-size-12">Cart</span> */}
+                  </Link>
+                
+                  <Link
+                      to={
+                        this.props.match.params.uuid
+                        ? `/cart/${this.props.match.params.uuid}`
+                        : `/cart`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                  >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                        {!isEmpty(this.props.carts) &&
+                        
+                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                          }
+                  </Link>
+          
+
+                  <Link
+                    to="/logout"
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-power align-middle font-size-20" />{" "}
+                    {/* <span className="pt-4 font-size-12">Logout</span> */}
+                  </Link>
+                </div>
+              ) : (
+                <div className="dropdown d-lg-inline-block ms-3 mt-3">
+                  {this.state.user_type == "labowner" && (
+                    <Link
+                      to={"/dashboard-lab"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "b2bclient" && (
+                    <Link
+                      to={"/dashboard-b2bclient"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "auditor" && (
+                    <Link
+                      to={"/dashboard-auditor"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "CSR" && (
+                    <Link
+                      to={"/dashboard-csr"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "registration-admin" && (
+                    <Link
+                      to={"/pending-labs"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "auditor-admin" && (
+                    <Link
+                      to={"/pending-audits"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "csr-admin" && (
+                    <Link
+                      to={"/pending-complaints-lab"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "hr-admin" && (
+                    <Link
+                      to={"/add-staff"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "marketer-admin" && (
+                    <Link
+                      to={"/discount-labhazir"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
         <div className="page-content">
           <MetaTags>
             <title>Carts List | Lab Hazir</title>
@@ -393,6 +919,8 @@ CartList.propTypes = {
   onGetCarts: PropTypes.func,
   onDeleteCart: PropTypes.func,
   onEmptyCart: PropTypes.func,
+  menuOpen: PropTypes.any,
+  t: PropTypes.any,
 };
 
 const mapStateToProps = ({ carts }) => ({

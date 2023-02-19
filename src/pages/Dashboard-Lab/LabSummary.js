@@ -155,12 +155,15 @@ class LabSummary extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Monthly Revenue</p>
-                      <h4 className="mb-0">
-                        {/* Converting number to thousands separator string for readability */}
-                        Rs.
-                        {this.state.monthlyRevenue}
-                      </h4>
+                      {/* <p className="text-muted fw-medium">History</p> */}
+                      <div className="mt-2">
+                      <Link
+                        to={"/activity-log"}
+                        className="btn btn-primary btn-sm"
+                      >
+                        History <i className="mdi mdi-arrow-right ms-1" />
+                      </Link>
+                    </div>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">

@@ -62,7 +62,6 @@ class LabInformation extends Component {
       type: "Main Lab",
       branch_name: "",
       main_lab_account_id: "",
-      financial_settlement: "Self",
       logo: "",
       national_taxation_no: "",
       lab_experience: "",
@@ -208,10 +207,6 @@ class LabInformation extends Component {
                                 (this.state &&
                                   this.state.main_lab_account_id) ||
                                 "",
-                              financial_settlement:
-                                (this.state &&
-                                  this.state.financial_settlement) ||
-                                "Self",
                               logo: (this.state && this.state.logo) || "",
                               national_taxation_no:
                                 (this.state &&
@@ -640,29 +635,6 @@ class LabInformation extends Component {
                                           Please select your main lab
                                         </div>
                                       )}
-                                  </div>
-                                )}
-                                {/* Financial settlement field */}
-                                {this.state.type === "Collection Point" && (
-                                  <div className="mb-3">
-                                    <Label for="type" className="form-label">
-                                      Who is responsible for financial
-                                      settlements?
-                                    </Label>
-                                    <Field
-                                      name="financial_settlement"
-                                      component="select"
-                                      onChange={e =>
-                                        this.setState({
-                                          financial_settlement: e.target.value,
-                                        })
-                                      }
-                                      value={this.state.financial_settlement}
-                                      className="form-select"
-                                    >
-                                      <option value="Self">Self</option>
-                                      <option value="Main Lab">Main Lab</option>
-                                    </Field>
                                   </div>
                                 )}
 

@@ -87,6 +87,7 @@ class NearbyTests extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
+    console.log(this.props.match.params.uuid)
   }
 
   componentDidMount() {
@@ -486,7 +487,7 @@ class NearbyTests extends Component {
     return (
       
       <React.Fragment>
-            <div className="topnav">
+          <div className="topnav">
           <div className="container-fluid left-space">
             <nav
               className="navbar navbar-light navbar-expand-lg topnav-menu"
@@ -526,7 +527,7 @@ class NearbyTests extends Component {
                      }
                      className="dropdown-item"
                      >
-                       <span className="pt-4 font-size-12">Search by Tests</span>
+                       <span className="pt-4 font-size-12">Tests</span>
                        {/* {this.props.t("Tests")} */}
                      </Link>
                    </li>
@@ -553,6 +554,19 @@ class NearbyTests extends Component {
                      className="dropdown-item"
                      >
                       <span className="pt-4 font-size-12">Packages</span>
+                       {/* {this.props.t("Packages")} */}
+                     </Link>
+                   </li>
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-radiology/${this.props.match.params.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                      <span className="pt-4 font-size-12">Radiology</span>
                        {/* {this.props.t("Packages")} */}
                      </Link>
                    </li>
@@ -681,6 +695,19 @@ class NearbyTests extends Component {
                     className="dropdown-item"
                     >
                       <span className="pt-4 font-size-12">Packages</span>
+                      {/* {this.props.t("Packages")} */}
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-radiology/${this.props.match.params.uuid}`
+                        : `/nearby-radiology/`
+                    }
+                    className="dropdown-item"
+                    >
+                      <span className="pt-4 font-size-12">Radiology</span>
                       {/* {this.props.t("Packages")} */}
                     </Link>
                   </li>

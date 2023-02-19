@@ -132,6 +132,18 @@ class Navbar extends Component {
                        {this.props.t("Packages")}
                      </Link>
                    </li>
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-radiology/${this.state.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-radiology/${this.state.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                       {this.props.t("Radiology")}
+                     </Link>
+                   </li>
                    {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
@@ -254,6 +266,18 @@ class Navbar extends Component {
                       {this.props.t("Packages")}
                     </Link>
                   </li>
+                  <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-radiology/${this.state.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-radiology/${this.state.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                       {this.props.t("Radiology")}
+                     </Link>
+                   </li>
                   {/* <li className="nav-item dropdown">
                     <Link
                       to="/#"

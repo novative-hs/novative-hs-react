@@ -28,8 +28,10 @@ import LabMarketSaga from "./labmarket/saga";
 import TestMarketSaga from "./testmarket/saga";
 import ProfileMarketSaga from "./profilemarket/saga";
 import PackageMarketSaga from "./packagemarket/saga";
+import RadiologyMarketSaga from "./radiologymarket/saga";
 import offeredTestsSaga from "./offered-tests/saga";
 import pathologistsSaga from "./pathologists/saga";
+import activitylogSaga from "./activtylog/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
 import LabsListPendingFeeSaga from "./labs-list-pending/saga";
@@ -117,8 +119,10 @@ export default function* rootSaga() {
     fork(TestMarketSaga),
     fork(ProfileMarketSaga),
     fork(PackageMarketSaga),
+    fork(RadiologyMarketSaga),
     fork(offeredTestsSaga),
     fork(pathologistsSaga),
+    fork(activitylogSaga),
     fork(cartsSaga),
     fork(LabsListPendingFeeSaga),
     fork(sharedPercentagePendingFeeTestsSaga),

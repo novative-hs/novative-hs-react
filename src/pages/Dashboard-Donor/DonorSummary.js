@@ -9,18 +9,17 @@ import { withTranslation } from "react-i18next";
 import profileImg from "../../assets/images/profile-img.png";
 
 // actions
-import { getB2bProfile } from "store/auth/b2bprofile/actions";
+import { getDonorProfile } from "store/auth/donorprofile/actions";
 
-class B2bProfile extends Component {
+class DonorProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      btnText: "Copy",
-      business_name: "",
-      email: "",
-      landline: "",
-      website_url: "",
-      business_logo:"",
+      // name: "",
+      // email: "",
+      // landline: "",
+      // website_url: "",
+      // business_logo:"",
       completedAppointments: "",
       inProcessAppointments: "",
       monthlyRevenue: "",
@@ -33,15 +32,15 @@ class B2bProfile extends Component {
   }
 
   componentDidMount() {
-    this.props.getB2bProfile(this.state.user_id);
+    this.props.getDonorProfile(this.state.user_id);
 
     setTimeout(() => {
       this.setState({
-        business_name: this.props.success.business_name,
-        business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
-        email: this.props.success.email,
-        landline: this.props.success.landline,
-        website_url: this.props.success.website_url,
+        // name: this.props.success.name,
+        // business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
+        // email: this.props.success.email,
+        // landline: this.props.success.landline,
+        // website_url: this.props.success.website_url,
         completedAppointments: this.props.success.completed_appointments,
         inProcessAppointments: this.props.success.inprocess_appointments,
         monthlyRevenue: this.props.success.monthly_revenue,
@@ -74,8 +73,8 @@ class B2bProfile extends Component {
                 <Col sm="12">
                   <div className="pt-4">
                     <Row>
-                      <Col xs="6">
-                      <div className="avatar-md profile-user-wid mb-4">
+                      <Col xs="4">
+                      {/* <div className="avatar-md profile-user-wid mb-4">
                   <img
                     src={this.state.business_logo}
                     alt=""
@@ -83,16 +82,16 @@ class B2bProfile extends Component {
                   />
                 </div>
                         <h5 className="font-size-15 text-truncate">
-                          {this.state.business_name}
+                          {this.state.name}
                         </h5>
                         <p className="text-muted mb-0 text-truncate">
                           {this.state.website_url}
-                        </p>
+                        </p> */}
                       </Col>
                       <Col xs="6">
                         <div className="mt-2">
                           <Link
-                            to={"/b2b-profile"}
+                            to={"/donor-profile"}
                             className="btn btn-primary btn-sm"
                           >
                             View Profile{" "}
@@ -209,20 +208,20 @@ class B2bProfile extends Component {
   }
 }
 
-B2bProfile.propTypes = {
+DonorProfile.propTypes = {
   t: PropTypes.any,
   match: PropTypes.object,
   location: PropTypes.object,
   error: PropTypes.any,
   success: PropTypes.any,
-  getB2bProfile: PropTypes.func,
+  getDonorProfile: PropTypes.func,
 };
 
 const mapStateToProps = state => {
-  const { error, success } = state.B2bProfile;
+  const { error, success } = state.DonorProfile;
   return { error, success };
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getB2bProfile })(withTranslation()(B2bProfile))
+  connect(mapStateToProps, { getDonorProfile })(withTranslation()(DonorProfile))
 );
