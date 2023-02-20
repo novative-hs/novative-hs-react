@@ -932,7 +932,7 @@ class QualityCertificatesList extends Component {
                                                     "EQA Certificate" && (
                                                       <div className="mb-3">
                                                       <Label className="form-label">
-                                                        Start Date
+                                                        End Date
                                                       </Label>
                                                       <Field
                                                         name="end_date"
