@@ -70,14 +70,14 @@ export const postPatientInformation = (id, patient) => {
       headers: getHeader(authHeader()),
     })
     .then(response => {
-      if (response.payment_status >= 200 || response.payment_status <= 299)
+      if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
     .catch(err => {
       let message;
-      if (err.response && err.response.payment_status) {
-        switch (err.response.payment_status) {
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
           case 400:
             message = err.response.data;
             break;
@@ -115,14 +115,14 @@ export const postB2bClientInformation = (id, b2bclient) => {
       headers: getHeader(authHeader()),
     })
     .then(response => {
-      if (response.payment_status >= 200 || response.payment_status <= 299)
+      if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
     .catch(err => {
       let message;
-      if (err.response && err.response.payment_status) {
-        switch (err.response.payment_status) {
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
           case 400:
             message = err.response.data;
             break;
@@ -165,14 +165,14 @@ export const postDonorInformation = (id, donor) => {
       headers: getHeader(authHeader()),
     })
     .then(response => {
-      if (response.payment_status >= 200 || response.payment_status <= 299)
+      if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
     .catch(err => {
       let message;
-      if (err.response && err.response.payment_status) {
-        switch (err.response.payment_status) {
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
           case 400:
             message = err.response.data;
             break;
@@ -242,14 +242,14 @@ export const postLabInformation = (id, lab) => {
       headers: getHeader(authHeader()),
     })
     .then(response => {
-      if (response.payment_status >= 200 || response.payment_status <= 299)
+      if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
     .catch(err => {
       let message;
-      if (err.response && err.response.payment_status) {
-        switch (err.response.payment_status) {
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
           case 400:
             message = err.response.data;
             break;
@@ -284,14 +284,14 @@ export const postCorporateInformation = (id, corporate) => {
       headers: getHeader(authHeader()),
     })
     .then(response => {
-      if (response.payment_status >= 200 || response.payment_status <= 299)
+      if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
     .catch(err => {
       let message;
-      if (err.response && err.response.payment_status) {
-        switch (err.response.payment_status) {
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
           case 400:
             message = err.response.data;
             break;
@@ -1364,7 +1364,7 @@ export const getDonorAccountStatements = id =>
       formData.append("branch_no", bankAccount.branch_no);
       formData.append("opening_balance", bankAccount.opening_balance);
       formData.append("creating_at", bankAccount.creating_at);
-      formData.append("payment_status", bankAccount.payment_status);  
+      formData.append("status", bankAccount.status);  
     
       return axios.post(`${url.ADD_NEW_BANK_ACCOUNT}/${id}`, formData, {
         headers: getHeader(authHeader()),
@@ -1982,7 +1982,7 @@ export const updateLabAdvertisement = advertisement => {
     formData.append("cheque_no", inPayment.cheque_no); 
     formData.append("cheque_image", inPayment.cheque_image);
     formData.append("refered_no", inPayment.refered_no);
-    formData.append("payment_status", inPayment.payment_status);
+    formData.append("status", inPayment.status);
 
     return axios.post(`${url.ADD_NEW_IN_PAYMENT}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -1996,7 +1996,7 @@ export const updatePaymentStatus = paymentStatus => {
   formData.append("deposit_at", paymentStatus.deposit_at);
   // formData.append("bankaccount_id", paymentStatus.bankaccount_id);
   // formData.append("deposit_slip", paymentStatus.deposit_slip);
-  formData.append("payment_status", paymentStatus.payment_status);
+  formData.append("status", paymentStatus.status);
   return axios.put(
     `${url.UPDATE_PAYMENT_STATUS}/${paymentStatus.id}`,
     formData,
@@ -2023,7 +2023,7 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
   formData.append("deposit_at", paymentInBouncedStatus.deposit_at);
   formData.append("bankaccount_id", paymentInBouncedStatus.bankaccount_id);
   formData.append("deposit_slip", paymentInBouncedStatus.deposit_slip);
-  formData.append("payment_status", paymentInBouncedStatus.payment_status);
+  formData.append("status", paymentInBouncedStatus.status);
   return axios.put(
     `${url.UPDATE_PAYMENTINBOUNCED_STATUS}/${paymentInBouncedStatus.id}`,
     formData,
@@ -2109,7 +2109,7 @@ export const updateBankaccount = bankAccount => {
   let formData = new FormData();
   formData.append("id", bankAccount.id);
   formData.append("account_no", bankAccount.account_no);
-  formData.append("payment_status", bankAccount.payment_status);
+  formData.append("status", bankAccount.status);
 
   return axios.put(`${url.UPDATE_BANKACCOUNT}/${bankAccount.id}`, formData, {
     headers: getHeader(authHeader()),
@@ -2144,7 +2144,7 @@ export const addNewOutPayment = ( outPayment, id) => {
   formData.append("cheque_no",  outPayment.cheque_no);
   formData.append("deposit_copy",   outPayment.deposit_copy);
   formData.append("refered_no",   outPayment.refered_no);
-  formData.append("payment_status",   outPayment.payment_status);
+  formData.append("status",   outPayment.status);
   // formData.append("is_cleared",  outPayment.is_cleared);
   // formData.append("cleared_at",   outPayment.cleared_at);
   formData.append("comments",  outPayment.comments);
@@ -2200,7 +2200,7 @@ export const updatePaymentOutCreatedStatuss = paymentOutCreatedStatuss => {
   // formData.append("bank_id",   paymentOutCreatedStatuss.bank_id);
   // formData.append("refered_no",   paymentOutCreatedStatuss.refered_no);
   // formData.append("cleared_at",   paymentOutCreatedStatuss.cleared_at);
-  formData.append("payment_status",  paymentOutCreatedStatuss.payment_status);
+  formData.append("status",  paymentOutCreatedStatuss.status);
   formData.append("comments",  paymentOutCreatedStatuss.comments);
 
   return axios.put(
