@@ -202,7 +202,7 @@ export const postLabInformation = (id, lab) => {
   formData.append("type", lab.type);
   formData.append("branch_name", lab.branch_name);
   formData.append("main_lab_account_id", lab.main_lab_account_id);
-  formData.append("financial_settlement", lab.financial_settlement);
+  // formData.append("financial_settlement", lab.financial_settlement);
   formData.append("logo", lab.logo);
   // formData.append("owner_name", lab.owner_name);
   // formData.append("registration_no", lab.registration_no);
