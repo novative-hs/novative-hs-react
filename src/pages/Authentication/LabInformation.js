@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
@@ -188,6 +187,15 @@ class LabInformation extends Component {
                               login.{" "}
                             </Alert>
                           ) : null}
+                          {this.props.lab && this.props.lab ? (
+                            // Redirecting back to the login page
+                            setTimeout(() => {
+                              if (this.props.lab) {
+                                this.props.history.push("/login");
+                              }
+                            }, 2000)
+                          ) : null}
+
 
                           {this.props.addLabError && this.props.addLabError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
@@ -482,32 +490,12 @@ class LabInformation extends Component {
                               ),
                             })}
                             onSubmit={values => {
-                              // if (values.is_iso_certified === "Yes") {
-                              //   if (values.iso_certificate) {
-                              //     this.props.addLabInformation(
-                              //       values,
-                              //       this.props.match.params.id
-                              //     );
-                              //   }
-                              // } else {
-                              //   this.props.addLabInformation(
-                              //     values,
-                              //     this.props.match.params.id
-                              //   );
-                              // }
                               this.props.addLabInformation(
                                 values,
                                 this.props.match.params.id
                               );
                               window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
-
-                              // Redirecting back to the login page
-                              setTimeout(() => {
-                                if (this.props.lab) {
-                                  this.props.history.push("/login");
-                                }
-                              }, 6000);
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -705,7 +693,6 @@ class LabInformation extends Component {
                                         className="invalid-feedback"
                                       />
                                     </div>
-
                                     {/* Lab experience field */}
                                     <div className="mb-3">
                                       <Label
