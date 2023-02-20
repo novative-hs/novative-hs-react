@@ -27,14 +27,14 @@ export const postRegister = user => {
   return axios
     .post(url.POST_REGISTER, user)
     .then(response => {
-      if (response.payment_status >= 200 || response.payment_status <= 299)
+      if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
     .catch(err => {
       let message;
-      if (err.response && err.response.payment_status) {
-        switch (err.response.payment_status) {
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
           case 400:
             message = err.response.data;
             break;
