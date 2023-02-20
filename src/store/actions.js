@@ -34,8 +34,10 @@ export * from "./profilemarket/actions";
 export * from "./packagemarket/actions";
 export * from "./radiologymarket/actions";
 
+
 // offered tests
 export * from "./offered-tests/actions";
+export * from "./test-list/actions";
 
 // pathologists
 export * from "./pathologists/actions";

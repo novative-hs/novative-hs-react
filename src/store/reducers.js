@@ -35,6 +35,7 @@ import TestMarket from "./testmarket/reducer";
 import ProfileMarket from "./profilemarket/reducer";
 import PackageMarket from "./packagemarket/reducer";
 import RadiologyMarket from "./radiologymarket/reducer";
+import tests from "./test-list/reducer";
 
 
 //offered tests
@@ -205,6 +206,7 @@ const rootReducer = combineReducers({
   ProfileMarket,
   PackageMarket,
   RadiologyMarket,
+  tests,
   offeredTests,
   pathologists,
   activitylog,

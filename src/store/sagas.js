@@ -29,6 +29,7 @@ import TestMarketSaga from "./testmarket/saga";
 import ProfileMarketSaga from "./profilemarket/saga";
 import PackageMarketSaga from "./packagemarket/saga";
 import RadiologyMarketSaga from "./radiologymarket/saga";
+import TestsSaga from "./test-list/saga";
 import offeredTestsSaga from "./offered-tests/saga";
 import pathologistsSaga from "./pathologists/saga";
 import activitylogSaga from "./activtylog/saga";
@@ -120,6 +121,7 @@ export default function* rootSaga() {
     fork(ProfileMarketSaga),
     fork(PackageMarketSaga),
     fork(RadiologyMarketSaga),
+    fork(TestsSaga),
     fork(offeredTestsSaga),
     fork(pathologistsSaga),
     fork(activitylogSaga),

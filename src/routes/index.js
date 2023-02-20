@@ -17,6 +17,7 @@ import NearbyProfiles from "pages/LabMarket/NearbyLabs/NearbyProfiles";
 import NearbyPackages from "pages/LabMarket/NearbyLabs/NearbyPackages";
 import NearbyRadiology from "pages/LabMarket/NearbyLabs/NearbyRadiology";
 
+
 //ContactUs
 import ContactUs from "../pages/Contact/contact-us";
 import ChatBox from "../pages/Public/chat";
@@ -45,6 +46,7 @@ import DashboardFinanceAdmin from "pages/Dashboard-FinanceAdmin";
 
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
+import TestsList from "../pages/OfferedTests/medical-tests";
 import SampleCollectorRegister from "pages/SampleCollectors/sample-collectors-register";
 import SampleCollectorInfo from "pages/SampleCollectors/sample-collector-info";
 import SampleCollectorsList from "../pages/SampleCollectors/sample-collectors-list";
@@ -271,6 +273,10 @@ const labAuthProtectedRoutes = [
   {
     path: "/offered-tests",
     component: OfferedTestsList,
+  },
+  {
+    path: "/medical-tests",
+    component: TestsList,
   },
   {
     path: "/discount-lab",

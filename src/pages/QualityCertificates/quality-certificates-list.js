@@ -238,6 +238,8 @@ class QualityCertificatesList extends Component {
         type: arg.type,
         certificate: process.env.REACT_APP_BACKENDURL + arg.certificate,
         expiry_date: arg.expiry_date,
+        start_date: arg.start_date,
+        end_date: arg.end_date,
       },
       certificateImg: "",
       isEdit: true,
@@ -391,6 +393,17 @@ class QualityCertificatesList extends Component {
                                                 this.state.qualityCertificate
                                                   .expiry_date) ||
                                               "",
+                                            start_date:
+                                              (this.state &&
+                                                this.state.qualityCertificate
+                                                  .start_date) ||
+                                              "",
+                                            end_date:
+                                              (this.state &&
+                                                this.state.qualityCertificate
+                                                  .end_date) ||
+                                              "",
+
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -437,10 +450,6 @@ class QualityCertificatesList extends Component {
                                             type: Yup.string().required(
                                               "Please select certificate is for lab or test"
                                             ),
-
-                                            expiry_date: Yup.string().required(
-                                              "Please select expiry date"
-                                            ),
                                           })}
                                           onSubmit={values => {
                                             if (
@@ -479,6 +488,10 @@ class QualityCertificatesList extends Component {
                                                           .certificateImg,
                                                       expiry_date:
                                                         values.expiry_date,
+                                                      start_date:
+                                                        values.start_date,
+                                                      end_date:
+                                                        values.end_date,
                                                     };
 
                                                   // update QualityCertificate
@@ -503,6 +516,10 @@ class QualityCertificatesList extends Component {
                                                       this.state.certificateImg,
                                                     expiry_date:
                                                       values.expiry_date,
+                                                    start_date:
+                                                      values.start_date,
+                                                    end_date:
+                                                      values.end_date,
                                                   };
 
                                                 // update QualityCertificate
@@ -532,6 +549,10 @@ class QualityCertificatesList extends Component {
                                                 certificate:
                                                   this.state.certificateImg,
                                                 expiry_date: values.expiry_date,
+                                                start_date:
+                                                        values.start_date,
+                                                end_date:
+                                                        values.end_date,
                                               };
 
                                               // save new QualityCertificate
@@ -589,6 +610,11 @@ class QualityCertificatesList extends Component {
                                                               qualityCertificate.certificate,
                                                             expiry_date:
                                                               qualityCertificate.expiry_date,
+                                                            start_date:
+                                                              qualityCertificate.start_date,
+                                                            end_date:
+                                                              qualityCertificate.end_date,
+                                                            
                                                           },
                                                         });
                                                       }}
@@ -622,7 +648,7 @@ class QualityCertificatesList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
+                                               
                                                   {/* Certificate Title field */}
                                                   {this.state.qualityCertificate
                                                     .certificate_type ===
@@ -656,6 +682,10 @@ class QualityCertificatesList extends Component {
                                                                   qualityCertificate.certificate,
                                                                 expiry_date:
                                                                   qualityCertificate.expiry_date,
+                                                                start_date:
+                                                                  qualityCertificate.start_date,
+                                                                end_date:
+                                                                  qualityCertificate.end_date,
                                                               },
                                                           });
                                                         }}
@@ -708,6 +738,10 @@ class QualityCertificatesList extends Component {
                                                               qualityCertificate.certificate,
                                                             expiry_date:
                                                               qualityCertificate.expiry_date,
+                                                            start_date:
+                                                              qualityCertificate.start_date,
+                                                            end_date:
+                                                              qualityCertificate.end_date,
                                                           },
                                                         });
                                                       }}
@@ -773,7 +807,7 @@ class QualityCertificatesList extends Component {
                                                   </div>
 
                                                   {/* Certificate Expiry date field */}
-
+                                                  {this.state.qualityCertificate.certificate_type != "EQA Certificate" &&(
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Expiry Date
@@ -809,6 +843,10 @@ class QualityCertificatesList extends Component {
                                                               qualityCertificate.certificate,
                                                             expiry_date:
                                                               e.target.value,
+                                                            start_date:
+                                                              qualityCertificate.start_date,
+                                                            end_date:
+                                                              qualityCertificate.end_date,
                                                           },
                                                         });
                                                       }}
@@ -826,6 +864,125 @@ class QualityCertificatesList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+                                                  )}
+                                                     {this.state.qualityCertificate
+                                                    .certificate_type ===
+                                                    "EQA Certificate" && (
+                                                      <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Program Cycle
+                                                        <span className="text-danger font-size-12">
+                                                          *
+                                                        </span>
+                                                      </Label>
+                                                      <br></br>
+                                                      <Label className="form-label">
+                                                        Start Date
+                                                      </Label>
+                                                      <Field
+                                                        name="start_date"
+                                                        type="date"
+                                                        min={new Date(
+                                                          new Date()
+                                                            .toString()
+                                                            .split("GMT")[0] +
+                                                            " UTC"
+                                                        )
+                                                          .toISOString()
+                                                          .slice(0, -14)}
+                                                        value={
+                                                          this.state
+                                                            .qualityCertificate
+                                                            .start_date
+                                                        }
+                                                        onChange={e => {
+                                                          this.setState({
+                                                            qualityCertificate: {
+                                                              id: qualityCertificate.id,
+                                                              certificate_type:
+                                                                qualityCertificate.certificate_type,
+                                                              name: qualityCertificate.name,
+                                                              type: qualityCertificate.type,
+                                                              certificate:
+                                                                qualityCertificate.certificate,
+                                                              start_date:
+                                                                e.target.value,
+                                                              end_date:qualityCertificate.end_date,
+                                                            },
+                                                          });
+                                                        }}
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.start_date &&
+                                                          touched.start_date
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                      />
+                                                      <ErrorMessage
+                                                        name="start_date"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                    
+                                                  )}
+                                                  {this.state.qualityCertificate
+                                                    .certificate_type ===
+                                                    "EQA Certificate" && (
+                                                      <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Start Date
+                                                      </Label>
+                                                      <Field
+                                                        name="end_date"
+                                                        type="date"
+                                                        min={new Date(
+                                                          new Date()
+                                                            .toString()
+                                                            .split("GMT")[0] +
+                                                            " UTC"
+                                                        )
+                                                          .toISOString()
+                                                          .slice(0, -14)}
+                                                        value={
+                                                          this.state
+                                                            .qualityCertificate
+                                                            .end_date
+                                                        }
+                                                        onChange={e => {
+                                                          this.setState({
+                                                            qualityCertificate: {
+                                                              id: qualityCertificate.id,
+                                                              certificate_type:
+                                                                qualityCertificate.certificate_type,
+                                                              name: qualityCertificate.name,
+                                                              type: qualityCertificate.type,
+                                                              certificate:
+                                                                qualityCertificate.certificate,
+                                                              end_date:
+                                                                e.target.value,
+                                                              start_date:
+                                                                qualityCertificate.start_date,
+                                                            },
+                                                          });
+                                                        }}
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.end_date &&
+                                                          touched.end_date
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                      />
+                                                      <ErrorMessage
+                                                        name="end_date"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                    
+                                                  )}
                                                 </Col>
                                               </Row>
                                               <Row>

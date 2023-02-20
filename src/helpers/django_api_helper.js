@@ -470,6 +470,8 @@ export const addNewQualityCertificate = (qualityCertificate, id) => {
   formData.append("certificate", qualityCertificate.certificate);
   formData.append("certificate_type", qualityCertificate.certificate_type);
   formData.append("expiry_date", qualityCertificate.expiry_date);
+  formData.append("start_date", qualityCertificate.start_date);
+  formData.append("end_date", qualityCertificate.end_date);
 
   return axios.post(`${url.ADD_NEW_QUALITY_CERTIFICATE}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -484,6 +486,8 @@ export const updateQualityCertificate = qualityCertificate => {
   formData.append("certificate", qualityCertificate.certificate);
   formData.append("certificate_type", qualityCertificate.certificate_type);
   formData.append("expiry_date", qualityCertificate.expiry_date);
+  formData.append("start_date", qualityCertificate.start_date);
+  formData.append("end_date", qualityCertificate.end_date);
 
   return axios.put(
     `${url.UPDATE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`,
@@ -882,6 +886,11 @@ export const getNearbyPackages = data => {
 
 export const getRadiology = () =>
   get(url.GET_RADIOLOGY, {
+    headers: getHeader(authHeader()),
+  });
+
+  export const getTestsList = () =>
+  get(url.GET_TESTS_LIST, {
     headers: getHeader(authHeader()),
   });
 // Get Nearby Packages

@@ -868,7 +868,13 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Offered Tests")}</span>
                   </Link>
                 </li>
-
+  {/* Offered Test Links */}
+  <li>
+                  <Link to={"/medical-tests"}>
+                    <i className="fas fa-hand-holding-medical" />
+                    <span>{this.props.t("Medical Tests")}</span>
+                  </Link>
+                </li>
                 {/* Pathologist Links */}
                 <li>
                   <Link to={"pathologists"}>
