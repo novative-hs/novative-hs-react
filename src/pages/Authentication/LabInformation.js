@@ -495,7 +495,6 @@ class LabInformation extends Component {
                                 this.props.match.params.id
                               );
                               window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-
                             }}
                           >
                             {({ errors, status, touched }) => (

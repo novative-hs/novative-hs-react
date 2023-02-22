@@ -373,7 +373,7 @@ export const addNewOfferedTest = (offeredTest, id) => {
   );
   formData.append("is_test_performed", offeredTest.is_test_performed);
   formData.append("is_active", offeredTest.is_active);
-
+  console.log("api helper",offeredTest, id)
   return axios.post(`${url.ADD_NEW_OFFERED_TEST}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -889,8 +889,12 @@ export const getRadiology = () =>
     headers: getHeader(authHeader()),
   });
 
-  export const getTestsList = () =>
-  get(url.GET_TESTS_LIST, {
+  // export const getTestsList = () =>
+  // get(url.GET_TESTS_LIST, {
+  //   headers: getHeader(authHeader()),
+  // });
+  export const getTestsList = id =>
+  get(`${url.GET_TESTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // Get Nearby Packages

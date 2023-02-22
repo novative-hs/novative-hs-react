@@ -204,13 +204,13 @@ class OfferedTestsList extends Component {
                   onClick={() => this.handleOfferedTestClick(offeredTest)}
                 ></i>
               </Link>
-              <Link className="text-danger" to="#">
+              {/* <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
                   onClick={() => this.onClickDelete(offeredTest)}
                 ></i>
-              </Link>
+              </Link> */}
             </div>
           ),
         },
@@ -497,7 +497,7 @@ class OfferedTestsList extends Component {
                                   </div>
                                 </Col>
 
-                                <Col sm="2" lg="2">
+                                {/* <Col sm="2" lg="2">
                                   <div className="text-sm-end">
                                   {this.props.labProfiles.type == "Main Lab" && (
                                     <Button
@@ -511,7 +511,7 @@ class OfferedTestsList extends Component {
                                     </Button>
                                   )}
                                   </div>
-                                </Col>
+                                </Col> */}
                               
                               </Row>
                              

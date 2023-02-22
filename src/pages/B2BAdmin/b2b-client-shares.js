@@ -61,12 +61,12 @@ class B2bLabSharesList extends Component {
         : "",
       b2bLabShareListColumns: [
         {
-          dataField: "lab_id",
+          dataField: "id",
           text: "Lab ID",
           sort: true,
           formatter: (cellContent, b2bLabShare) => (
             <>
-              <strong>{b2bLabShare.lab_id}</strong>
+              <strong>{b2bLabShare.id}</strong>
             </>
           ),
         },
@@ -261,7 +261,7 @@ class B2bLabSharesList extends Component {
     const b2bLabShare = this.state.b2bLabShare;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 10000,
       totalSize: b2bLabSharesList.length, // replace later with size(b2bLabSharesList),
       custom: true,
     };

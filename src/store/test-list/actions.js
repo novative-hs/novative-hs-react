@@ -4,9 +4,9 @@ import {
   GET_TESTS_LIST_FAIL,
 } from "./actionTypes";
 
-export const getTestsList = () => ({
+export const getTestsList = id => ({
   type: GET_TESTS_LIST,
-  payload: {},
+  payload: id,
 });
 
 export const getTestsListSuccess =
