@@ -157,7 +157,7 @@ class LabAudits extends Component {
                      <Col  key={"_col_" + key}>
                      
                           <div className="mt-3">
-                            {activitylog.actions =="Created" && (
+                            {activitylog.actions =="Added" && (
                               <div>
                               <i className="fas fa-plus-square font-size-18"></i>{" "}
                             {activitylog.lab_name} Added <b>{activitylog.test_name}</b> on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
