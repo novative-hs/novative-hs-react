@@ -203,11 +203,11 @@ class LabSettings extends Component {
                       // .required(
                       //   "Please enter your complaint handling phone no."
                       // )
-                      .max(255, "Please enter maximum 255 characters")
-                      .matches(
-                        /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{10}$|^\d{3}-\d{7}|^\d{11}$|^\d{3}-\d{8}$/,
-                        "Please enter a valid Pakistani landline number e.g. 0512345678"
-                      ),
+                      // .max(255, "Please enter maximum 255 characters")
+                      // .matches(
+                      //   /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{10}$|^\d{3}-\d{7}|^\d{11}$|^\d{3}-\d{8}$/,
+                      //   "Please enter a valid Pakistani landline number e.g. 0512345678"
+                      // ),
                   })}
                   onSubmit={values => {
                     values.health_dept_certificate =
