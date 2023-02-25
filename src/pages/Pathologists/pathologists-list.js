@@ -474,7 +474,7 @@ class PathologistsList extends Component {
                                             name: Yup.string()
                                               .trim()
                                               .matches(
-                                                /^[a-zA-Z][a-zA-Z ]+$/,
+                                                /^[a-zA-Z][a-zA-Z .]+$/,
                                                 "Please enter only alphabets and spaces"
                                               )
                                               .required("Please enter name"),
