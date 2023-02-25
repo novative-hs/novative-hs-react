@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-
 import {
   Card,
   CardBody,
+  CardImg,
   Col,
   Container,
   Row,
   Modal,
   Button,
-  Input,
   ModalHeader,
   ModalBody,
   Label,
+  Input,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -31,148 +31,130 @@ import * as Yup from "yup";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
+import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getTestAppointmentsPendingList,
-  updateTestAppointment,
-} from "store/test-appointments/actions";
-
-import { updatePaymentInfo } from "store/invoices/actions";
+  getPathologists,
+  addNewPathologist,
+  updatePathologist,
+  deletePathologist,
+} from "store/pathologists/actions";
 
 import { isEmpty, size } from "lodash";
-import ConfirmModal from "components/Common/ConfirmModal";
-
 import "assets/scss/table.scss";
 
-class TestAppointmentsPendingList extends Component {
+class PathologistsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      testAppointments: [],
-      testAppointment: "",
+      pathologists: [],
+      pathologist: "",
       modal: false,
-      btnText: "Copy",
-      confirmModal: false,
-      appointmentmodal: false,
-      appointmentId: "",
+      deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      testAppointmentListColumns: [
+      pathologistListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, testAppointment) => (
-            <>{testAppointment.id}</>
-          ),
-        },
-        {
-          dataField: "order_id",
-          text: "Order ID",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <strong>{testAppointment.order_id}</strong>
-            </>
-          ),
+          formatter: (cellContent, pathologist) => <>{pathologist.id}</>,
         },
         {
           dataField: "name",
-          text: "Patient name",
+          text: "Name",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                <Link
-                  to="#"
-                  onClick={e => this.openPatientModal(e, testAppointment)}
-                >
-                  {testAppointment.patient_name}
-                </Link>
-              </span>
-            </>
-          ),
         },
         {
-          dataField: "booked_at",
-          text: "Booked at",
+          dataField: "email",
+          text: "Email",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(testAppointment.booked_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
         },
         {
-          dataField: "appointment_requested_at",
-          text: "Sampling time by Patient",
+          dataField: "phone",
+          text: "Phone No.",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.appointment_requested_at
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
         },
         {
-          dataField: "is_home_sampling_availed",
-          text: "Home sampling",
+          dataField: "landline",
+          text: "Landline",
           sort: true,
-          formatter: (cellContent, testAppointment) => (
+        },
+        {
+          dataField: "qualification",
+          text: "Qualification",
+          sort: true,
+        },
+        {
+          dataField: "speciality",
+          text: "Speciality",
+          sort: true,
+        },
+        {
+          dataField: "pmdc_reg_no",
+          text: "PMDC Reg No.",
+          sort: true,
+        },
+        {
+          dataField: "designation",
+          text: "Designation",
+          sort: true,
+        },
+        {
+          dataField: "is_available_for_consultation",
+          text: "Available for consultation",
+          sort: true,
+        },
+        {
+          dataField: "is_available_on_whatsapp",
+          text: "Available on WhatsApp",
+          sort: true,
+        },
+        {
+          dataField: "is_associated_with_pap",
+          text: "Associated with PAP",
+          sort: true,
+        },
+        {
+          dataField: "photo",
+          text: "Photo",
+          sort: true,
+          formatter: (cellContent, pathologist) => (
             <>
-              {testAppointment.is_home_sampling_availed == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + pathologist.photo,
+                }}
+                target="_blank"
+              >
+                View
+              </Link>
             </>
           ),
         },
-        // {
-        //   dataField: "payment",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Payment",
-        //   formatter: (cellContent, testAppointment) => (
-        //     <>
-        //       {testAppointment.payment_status == "Not Paid" && (
-        //         <div className="d-flex gap-3">
-        //           <Link
-        //             className="btn btn-success btn-rounded"
-        //             onClick={() =>
-        //               this.onClickAccept(testAppointment.id)
-        //             }
-        //             // to={"/b2b-clients-list"}
-        //           >
-        //             <i className="mdi mdi-check-bold"></i> Accept
-        //           </Link>
-        //         </div>
-        //       )}
-        //     </>
-        //   ),
-        // },
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, testAppointment) => (
+          formatter: (cellContent, pathologist) => (
             <div className="d-flex gap-3">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() =>
-                    this.handleTestAppointmentClick(testAppointment)
-                  }
+                  onClick={e => this.handlePathologistClick(e, pathologist)}
+                ></i>
+              </Link>
+              <Link className="text-danger" to="#">
+                <i
+                  className="mdi mdi-delete font-size-18"
+                  id="deletetooltip"
+                  onClick={() => this.onClickDelete(pathologist)}
                 ></i>
               </Link>
             </div>
@@ -180,46 +162,29 @@ class TestAppointmentsPendingList extends Component {
         },
       ],
     };
-    this.handleTestAppointmentClick =
-      this.handleTestAppointmentClick.bind(this);
+    this.handlePathologistClick = this.handlePathologistClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleTestAppointmentClicks =
-      this.handleTestAppointmentClicks.bind(this);
-    this.togglePatientModal = this.togglePatientModal.bind(this);
-    this.toggleappointmentmodal = this.toggleappointmentmodal.bind(this);
+    this.handlePathologistClicks = this.handlePathologistClicks.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
+  // The code for converting "Base64" to javascript "File Object"
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   componentDidMount() {
-    const { onGetTestAppointmentsPendingList } = this.props;
-    onGetTestAppointmentsPendingList(this.state.user_id);
-    
-    this.setState({
-      testAppointments: this.props.testAppointments,
-      // appointmentmodal: true,
-    });
- 
-    // try {
-    //   setInterval(async () => {
-    //     const prev=this.props.testAppointments.length;
-    //     console.log("pre",prev)
-    //     const res = await fetch(onGetTestAppointmentsPendingList(this.state.user_id));
-    //     // const blocks = await res.json();
-    //     this.setState({
-    //       testAppointments: this.props.testAppointments,
-    //       // appointmentmodal: true,
-    //     })
-    //     const newlen= this.state.testAppointments.length;
-    //     console.log("new",newlen)
-    //     if (newlen != prev){
-    //       this.setState({
-    //         appointmentmodal: true,
-    //       })
-    //     }
-    //   }, 5000);
-    // } catch(e) {
-    //   console.log(e);
-    // }
-    // this.setState({ testAppointments: this.props.testAppointments, appointmentmodal: true });
+    const { pathologists, onGetPathologists } = this.props;
+    onGetPathologists(this.state.user_id);
+    this.setState({ pathologists });
   }
 
   toggle() {
@@ -227,77 +192,21 @@ class TestAppointmentsPendingList extends Component {
       modal: !prevState.modal,
     }));
   }
-  toggleappointmentmodal = () => {
-    this.setState(prevState => ({
-      appointmentmodal: !prevState.appointmentmodal,
-    }));
-  };
 
-  toggleConfirmModal = () => {
-    this.setState(prevState => ({
-      confirmModal: !prevState.confirmModal,
-    }));
-  };
-  openPatientModal = (e, arg) => {
-    this.setState({
-      PatientModal: true,
-      patient_age: arg.patient_age,
-      patient_gender: arg.patient_gender,
-      patient_gender: arg.patient_gender,
-      patient_address: arg.patient_address,
-      patient_city: arg.patient_city,
-      patient_phone: arg.patient_phone,
-    });
-  };
-
-  togglePatientModal = () => {
-    this.setState(prevState => ({
-      PatientModal: !prevState.PatientModal,
-    }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
-  };
-
-  handleTestAppointmentClicks = () => {
-    this.setState({ testAppointment: "" });
+  handlePathologistClicks = () => {
+    this.setState({ pathologist: "", photo: "", isEdit: false });
     this.toggle();
-  };
-
-  onClickAccept = id => {
-    this.setState({ appointmentId: id });
-    this.setState({ confirmModal: true });
-  };
-
-  handeAcceptPayment = () => {
-    const { onGetTestAppointmentsPendingList, onUpdatePaymentInfo } =
-      this.props;
-
-    onUpdatePaymentInfo(this.state.appointmentId); // Calling Payment API to update the payment info when payment is accepted by lab
-
-    setTimeout(() => {
-      onGetTestAppointmentsPendingList(this.state.user_id);
-    }, 1000);
-
-    this.setState({ confirmModal: false });
   };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { testAppointments,onGetTestAppointmentsPendingList } = this.props;
+    const { pathologists } = this.props;
     if (
-      !isEmpty(testAppointments) &&
-      size(prevProps.testAppointments) !== size(testAppointments)
-    )
-     {
-      this.setState({ testAppointments: {} });
+      !isEmpty(pathologists) &&
+      size(prevProps.pathologists) !== size(pathologists)
+    ) {
+      this.setState({ pathologists: {}, isEdit: false });
     }
-    // if ((testAppointments.length) >= size(prevProps.testAppointments.length)) {
-    //   this.setState({ testAppointments: {},appointmentmodal :true });
-    // }
-    console.log(size(testAppointments))
-    console.log( size(prevProps.testAppointments))
-  
   }
 
   onPaginationPageChange = page => {
@@ -313,17 +222,79 @@ class TestAppointmentsPendingList extends Component {
   };
 
   /* Insert,Update Delete data */
-  handleTestAppointmentClick = arg => {
-    const testAppointment = arg;
+
+  toggleDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  };
+
+  onClickDelete = pathologists => {
+    this.setState({ pathologists: pathologists });
+    this.setState({ deleteModal: true });
+  };
+
+  // The code for converting "image source" (url) to "Base64"
+  toDataURL = url =>
+    fetch(url)
+      .then(response => response.blob())
+      .then(
+        blob =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
+
+  // The code for converting "Base64" to javascript "File Object"
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
+  handleDeletePathologist = () => {
+    const { onDeletePathologist, onGetPathologists } = this.props;
+    const { pathologists } = this.state;
+    if (pathologists.id !== undefined) {
+      onDeletePathologist(pathologists);
+      setTimeout(() => {
+        onGetPathologists(this.state.user_id);
+      }, 1000);
+      this.setState({ deleteModal: false });
+    }
+  };
+
+  handlePathologistClick = (e, arg) => {
+    const pathologist = arg;
 
     this.setState({
-      testAppointment: {
-        id: testAppointment.id,
-        estimated_sample_collection_at:
-          testAppointment.estimated_sample_collection_at,
-        // estimated_result_uploading_at:
-        //   testAppointment.estimated_result_uploading_at,
+      pathologist: {
+        id: pathologist.id,
+        photo: process.env.REACT_APP_BACKENDURL + pathologist.photo,
+        name: pathologist.name,
+        email: pathologist.email,
+        phone: pathologist.phone,
+        landline: pathologist.landline,
+        qualification: pathologist.qualification,
+        speciality: pathologist.speciality,
+        pmdc_reg_no: pathologist.pmdc_reg_no,
+        designation: pathologist.designation,
+        is_available_for_consultation:
+          pathologist.is_available_for_consultation,
+        is_available_on_whatsapp: pathologist.is_available_on_whatsapp,
+        is_associated_with_pap: pathologist.is_associated_with_pap,
       },
+      photo: "",
+      isEdit: true,
     });
 
     this.toggle();
@@ -332,17 +303,17 @@ class TestAppointmentsPendingList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { testAppointments } = this.props;
+    const { pathologists } = this.props;
 
-    const { confirmModal } = this.state;
+    const { isEdit, deleteModal } = this.state;
 
-    const { onUpdateTestAppointment, onGetTestAppointmentsPendingList } =
+    const { onAddNewPathologist, onUpdatePathologist, onGetPathologists } =
       this.props;
-    const testAppointment = this.state.testAppointment;
+    const pathologist = this.state.pathologist;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: testAppointments.length, // replace later with size(testAppointments),
+      totalSize: pathologists.length, // replace later with size(pathologists),
       custom: true,
     };
 
@@ -355,20 +326,20 @@ class TestAppointmentsPendingList extends Component {
 
     return (
       <React.Fragment>
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeletePathologist}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
         <div className="page-content">
           <MetaTags>
-            <title>Lab Hazir | Test Appointments List</title>
+            <title>Pathologists List | Lab Hazir</title>
           </MetaTags>
-          <ConfirmModal
-            show={this.state.confirmModal}
-            onConfirmClick={this.handeAcceptPayment}
-            onCloseClick={() => this.setState({ confirmModal: false })}
-          />
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Test Appointments"
-              breadcrumbItem="Pending List"
+              title="Pathologists"
+              breadcrumbItem="Pathologists List"
             />
             <Row>
               <Col lg="12">
@@ -377,14 +348,14 @@ class TestAppointmentsPendingList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.testAppointmentListColumns}
-                      data={testAppointments}
+                      columns={this.state.pathologistListColumns}
+                      data={pathologists}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.testAppointmentListColumns}
-                          data={testAppointments}
+                          columns={this.state.pathologistListColumns}
+                          data={pathologists}
                           search
                         >
                           {toolkitprops => (
@@ -398,6 +369,18 @@ class TestAppointmentsPendingList extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
+                                  </div>
+                                </Col>
+                                <Col sm="8">
+                                  <div className="text-sm-end">
+                                    <Button
+                                      color="primary"
+                                      className="font-16 btn-block btn btn-primary"
+                                      onClick={this.handlePathologistClicks}
+                                    >
+                                      <i className="mdi mdi-plus-circle-outline me-1" />
+                                      Add New Pathologist
+                                    </Button>
                                   </div>
                                 </Col>
                               </Row>
@@ -415,171 +398,7 @@ class TestAppointmentsPendingList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
-                                    <Modal
-                                      isOpen={this.state.appointmentmodal}
-                                      role="dialog"
-                                      autoFocus={true}
-                                      data-toggle="modal"
-                                      centered
-                                      toggle={this.toggleappointmentmodal}
-                                    >
-                                      <div className="modal-content">
-                                        <div className="modal-header border-bottom-0">
-                                          <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() =>
-                                              this.setState({
-                                                appointmentmodal: false,
-                                              })
-                                            }
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"
-                                          ></button>
-                                        </div>
-                                        <div className="modal-body">
-                                          <div className="text-center mb-4">
-                                            <div className="avatar-md mx-auto mb-4">
-                                              <div className="avatar-title bg-light  rounded-circle text-primary h1">
-                                                <i className="mdi mdi-email-open"></i>
-                                              </div>
-                                            </div>
 
-                                            <div className="row justify-content-center">
-                                              <div className="col-xl-10">
-                                                <h4 className="text-primary">
-                                                  New Orders !
-                                                </h4>
-                                                <p className="text-muted font-size-14 mb-4">
-                                                  You have new orders, Kindly
-                                                  Check the Pending Appointment
-                                                  list..
-                                                </p>
-
-                                                {/* <div className="input-group  rounded bg-light"  >
-                      <Input type="email" className="form-control bg-transparent border-0" placeholder="Enter Email address" />
-                      <Button color="primary" type="button" id="button-addon2">
-                        <i className="bx bxs-paper-plane"></i>
-                      </Button>
-
-                    </div> */}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </Modal>
-                                    <Modal
-                                      isOpen={this.state.PatientModal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      City
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_city
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Mobile No.
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_phone
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .patient_phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
-                                                  </div>
-                                                </div>
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
@@ -588,85 +407,258 @@ class TestAppointmentsPendingList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        {!!isEdit
+                                          ? "Edit Pathologist"
+                                          : "Add Pathologist"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            patient_id:
-                                              (testAppointment &&
-                                                testAppointment.patient_id) ||
+                                            hiddenEditFlag: isEdit,
+                                            photo:
+                                              (pathologist &&
+                                                pathologist.photo) ||
                                               "",
-                                            patient_name:
-                                              (testAppointment &&
-                                                testAppointment.patient_name) ||
+                                            name:
+                                              (pathologist &&
+                                                pathologist.name) ||
                                               "",
-                                            patient_age:
-                                              (testAppointment &&
-                                                testAppointment.patient_age) ||
+                                            email:
+                                              (pathologist &&
+                                                pathologist.email) ||
                                               "",
-                                            patient_gender:
-                                              (testAppointment &&
-                                                testAppointment.patient_gender) ||
+                                            photo:
+                                              (this.state &&
+                                                this.state.photo) ||
                                               "",
-                                            booked_at:
-                                              (testAppointment &&
-                                                testAppointment.booked_at) ||
+                                            phone:
+                                              (pathologist &&
+                                                pathologist.phone) ||
                                               "",
-                                            appointment_requested_at:
-                                              (testAppointment &&
-                                                testAppointment.appointment_requested_at) ||
+                                            landline:
+                                              (pathologist &&
+                                                pathologist.landline) ||
                                               "",
-                                            estimated_sample_collection_at:
-                                              (testAppointment &&
-                                                testAppointment.estimated_sample_collection_at) ||
+                                            qualification:
+                                              (pathologist &&
+                                                pathologist.qualification) ||
                                               "",
-                                            // estimated_result_uploading_at:
-                                            //   (testAppointment &&
-                                            //     testAppointment.estimated_result_uploading_at) ||
-                                            //   "",
-                                            // patient_unique_id:
-                                            //   (testAppointment &&
-                                            //     testAppointment.patient_unique_id) ||
-                                            //   "",
+                                            speciality:
+                                              (pathologist &&
+                                                pathologist.speciality) ||
+                                              "",
+                                            pmdc_reg_no:
+                                              (pathologist &&
+                                                pathologist.pmdc_reg_no) ||
+                                              "",
+                                            designation:
+                                              (pathologist &&
+                                                pathologist.designation) ||
+                                              "",
+                                            is_available_for_consultation:
+                                              (pathologist &&
+                                                pathologist.is_available_for_consultation) ||
+                                              "",
+                                            is_available_on_whatsapp:
+                                              (pathologist &&
+                                                pathologist.is_available_on_whatsapp) ||
+                                              "",
+                                            is_associated_with_pap:
+                                              (pathologist &&
+                                                pathologist.is_associated_with_pap) ||
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            estimated_sample_collection_at:
-                                              Yup.string().required(
-                                                "Please select sample collection date time"
+                                            hiddentEditFlag: Yup.boolean(),
+                                            name: Yup.string()
+                                              .trim()
+                                              .matches(
+                                                /^[a-zA-Z][a-zA-Z ]+$/,
+                                                "Please enter only alphabets and spaces"
+                                              )
+                                              .required("Please enter name"),
+                                            email: Yup.string()
+                                              .required("Please enter email")
+                                              .email(
+                                                "Please enter valid email"
                                               ),
-                                            // estimated_result_uploading_at:
-                                            //   Yup.string().required(
-                                            //     "Please select result upload date time"
+                                            phone: Yup.string()
+                                              .required("Please enter phone")
+                                              .matches(
+                                                /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
+                                                "Please enter a valid Pakistani phone number e.g. 03123456789"
+                                              ),
+                                            // landline: Yup.string()
+                                            //   .required("Please enter phone")
+                                            //   .matches(
+                                            //     /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{10}$|^\d{3}-\d{7}|^\d{11}$|^\d{3}-\d{8}$/,
+                                            //     "Please enter a valid Pakistani landline number e.g. 0512345678"
                                             //   ),
-                                            // patient_unique_id:
-                                            //   Yup.string().required(
-                                            //     "Please enter patient unique id"
+                                            // qualification: Yup.string()
+                                            //   .trim()
+                                            //   .required(
+                                            //     "Please enter your qualification"
                                             //   ),
+                                            // speciality: Yup.string()
+                                            //   .trim()
+                                            //   .required(
+                                            //     "Please enter your speciality"
+                                            //   ),
+                                            pmdc_reg_no: Yup.string()
+                                              .trim()
+                                              .required(
+                                                "Please enter your pmdc reg no."
+                                              ),
+                                            // designation: Yup.string()
+                                            //   .trim()
+                                            //   .required(
+                                            //     "Please enter your designation"
+                                            //   ),
+                                            is_available_for_consultation:
+                                              Yup.string()
+                                                .trim()
+                                                .required(
+                                                  "Please select one option from dropdown"
+                                                ),
+                                            is_available_on_whatsapp:
+                                              Yup.string()
+                                                .trim()
+                                                .required(
+                                                  "Please select one option from dropdown"
+                                                ),
+                                            photo: Yup.string().when(
+                                              "hiddenEditFlag",
+                                              {
+                                                is: hiddenEditFlag =>
+                                                  hiddenEditFlag == false, //just an e.g. you can return a function
+                                                then: Yup.string().required(
+                                                  "Please upload photo"
+                                                ),
+                                              }
+                                            ),
                                           })}
                                           onSubmit={values => {
-                                            const updateTestAppointment = {
-                                              id: testAppointment.id,
-                                              estimated_sample_collection_at:
-                                                values.estimated_sample_collection_at,
-                                              // estimated_result_uploading_at:
-                                              //   values.estimated_result_uploading_at,
-                                              status: "Confirmed",
-                                              process: "pending",
-                                            };
+                                            if (isEdit) {
+                                              if (!this.state.photo) {
+                                                this.toDataURL(
+                                                  pathologist.photo
+                                                ).then(dataUrl => {
+                                                  var fileData =
+                                                    this.dataURLtoFile(
+                                                      dataUrl,
+                                                      pathologist.photo
+                                                        .split("/")
+                                                        .at(-1)
+                                                    );
+                                                  this.setState({
+                                                    photo: fileData,
+                                                  });
 
-                                            // update TestAppointment
-                                            onUpdateTestAppointment(
-                                              updateTestAppointment
-                                            );
+                                                  const updatePathologist = {
+                                                    id: pathologist.id,
+                                                    photo: this.state.photo,
+                                                    name: values.name,
+                                                    email: values.email,
+                                                    phone: values.phone,
+                                                    landline: values.landline,
+                                                    qualification:
+                                                      values.qualification,
+                                                    speciality:
+                                                      values.speciality,
+                                                    pmdc_reg_no:
+                                                      values.pmdc_reg_no,
+                                                    designation:
+                                                      values.designation,
+                                                    is_available_for_consultation:
+                                                      values.is_available_for_consultation,
+                                                    is_available_on_whatsapp:
+                                                      values.is_available_on_whatsapp,
+                                                    is_associated_with_pap:
+                                                      values.is_associated_with_pap,
+                                                  };
 
-                                            setTimeout(() => {
-                                              onGetTestAppointmentsPendingList(
+                                                  // update QualityCertificate
+                                                  onUpdatePathologist(
+                                                    updatePathologist
+                                                  );
+                                                  setTimeout(() => {
+                                                    onGetPathologists(
+                                                      this.state.user_id
+                                                    );
+                                                  }, 1000);
+                                                });
+                                              } else {
+                                                const updatePathologist = {
+                                                  id: pathologist.id,
+                                                  photo: this.state.photo,
+                                                  name: values.name,
+                                                  email: values.email,
+                                                  phone: values.phone,
+                                                  landline: values.landline,
+                                                  qualification:
+                                                    values.qualification,
+                                                  speciality: values.speciality,
+                                                  pmdc_reg_no:
+                                                    values.pmdc_reg_no,
+                                                  designation:
+                                                    values.designation,
+                                                  is_available_for_consultation:
+                                                    values.is_available_for_consultation,
+                                                  is_available_on_whatsapp:
+                                                    values.is_available_on_whatsapp,
+                                                  is_associated_with_pap:
+                                                    values.is_associated_with_pap,
+                                                };
+
+                                                // update Pathologist
+                                                onUpdatePathologist(
+                                                  updatePathologist
+                                                );
+                                                setTimeout(() => {
+                                                  onGetPathologists(
+                                                    this.state.user_id
+                                                  );
+                                                }, 1000);
+                                              }
+                                            } else {
+                                              const newPathologist = {
+                                                id:
+                                                  Math.floor(
+                                                    Math.random() * (30 - 20)
+                                                  ) + 20,
+                                                photo: this.state.photo,
+                                                name: values.name,
+                                                email: values.email,
+                                                phone: values.phone,
+                                                landline: values.landline,
+                                                qualification:
+                                                  values.qualification,
+                                                speciality: values.speciality,
+                                                pmdc_reg_no: values.pmdc_reg_no,
+                                                designation: values.designation,
+                                                is_available_for_consultation:
+                                                  values.is_available_for_consultation,
+                                                is_available_on_whatsapp:
+                                                  values.is_available_on_whatsapp,
+                                                is_associated_with_pap:
+                                                  values.is_associated_with_pap,
+                                              };
+
+                                              // save new Pathologist
+                                              onAddNewPathologist(
+                                                newPathologist,
                                                 this.state.user_id
                                               );
-                                            }, 1000);
-
+                                              setTimeout(() => {
+                                                onGetPathologists(
+                                                  this.state.user_id
+                                                );
+                                              }, 1000);
+                                            }
+                                            this.setState({
+                                              selectedPathologist: null,
+                                            });
                                             this.toggle();
                                           }}
                                         >
@@ -674,230 +666,735 @@ class TestAppointmentsPendingList extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Patient name
-                                                    </Label>
-                                                    <Field
-                                                      name="patient_name"
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .testAppointment
-                                                          .patient_name
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div> */}
-
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Patient age
-                                                    </Label>
-                                                    <Field
-                                                      name="patient_age"
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .testAppointment
-                                                          .patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div> */}
-
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Patient gender
-                                                    </Label>
-                                                    <Field
-                                                      name="patient_gender"
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .testAppointment
-                                                          .patient_gender
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div> */}
-
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Booked at
-                                                    </Label>
-                                                    <input
-                                                      name="booked_at"
-                                                      type="datetime-local"
-                                                      readOnly={true}
-                                                      defaultValue={this.state.testAppointment.booked_at.slice(
-                                                        0,
-                                                        -9
-                                                      )}
-                                                      className="form-control"
-                                                    />
-                                                  </div> */}
-
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Booked for
-                                                    </Label>
-                                                    <input
-                                                      name="appointment_requested_at"
-                                                      type="datetime-local"
-                                                      readOnly={true}
-                                                      defaultValue={this.state.testAppointment.appointment_requested_at.slice(
-                                                        0,
-                                                        -9
-                                                      )}
-                                                      className="form-control"
-                                                    />
-                                                  </div> */}
-
+                                                  <Field
+                                                    type="hidden"
+                                                    className="form-control"
+                                                    name="hiddenEditFlag"
+                                                    value={isEdit}
+                                                  />
                                                   <div className="mb-3">
-                                                    <Label
-                                                      for="estimated_sample_collection_at"
-                                                    >
-                                                      Sampling time by Lab
+                                                    <Label className="form-label">
+                                                      Name
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
                                                     </Label>
-                                                    <input
-                                                      type="datetime-local"
-                                                      id="estimated_sample_collection_at"
-                                                      name="estimated_sample_collection_at"
-                                                      min={new Date(
-                                                        new Date()
-                                                          .toString()
-                                                          .split("GMT")[0] +
-                                                          " UTC"
-                                                      )
-                                                        .toISOString()
-                                                        .slice(0, -8)}
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          testAppointment: {
-                                                            id: testAppointment.id,
-                                                            estimated_sample_collection_at:
-                                                              e.target.value +
-                                                              ":00Z",
-                                                            // estimated_result_uploading_at:
-                                                            //   testAppointment.estimated_result_uploading_at,
-                                                          },
-                                                        });
-                                                      }}
+                                                    <Field
+                                                      name="name"
+                                                      type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.estimated_sample_collection_at &&
-                                                        touched.estimated_sample_collection_at
+                                                        (errors.name &&
+                                                        touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .name
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: e.target
+                                                              .value,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
                                                     />
                                                     <ErrorMessage
-                                                      name="estimated_sample_collection_at"
+                                                      name="name"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
 
-                                                  {/* <div className="mb-3">
-                                                    <Label
-                                                      for="Estimated result uploading
-                                                      at"
-                                                    >
-                                                      Estimated result uploading
-                                                      at
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Email
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
                                                     </Label>
-                                                    <input
-                                                      type="datetime-local"
-                                                      id="Estimated result uploading
-                                                      at"
-                                                      name="Estimated result uploading
-                                                      at"
-                                                      min={new Date(
-                                                        new Date()
-                                                          .toString()
-                                                          .split("GMT")[0] +
-                                                          " UTC"
-                                                      )
-                                                        .toISOString()
-                                                        .slice(0, -8)}
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          testAppointment: {
-                                                            id: testAppointment.id,
-                                                            estimated_sample_collection_at:
-                                                              testAppointment.estimated_sample_collection_at,
-                                                            estimated_result_uploading_at:
-                                                              e.target.value +
-                                                              ":00Z",
-                                                          },
-                                                        });
-                                                      }}
+                                                    <Field
+                                                      name="email"
+                                                      type="text"
                                                       className={
                                                         "form-control" +
-                                                        (errors.estimated_result_uploading_at &&
-                                                        touched.estimated_result_uploading_at
+                                                        (errors.email &&
+                                                        touched.email
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .email
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              e.target.value,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="email"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="phone"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.phone &&
+                                                        touched.phone
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .phone
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              e.target.value,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="phone"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Landline (optional)
+                                                    </Label>
+                                                    <Field
+                                                      name="landline"
+                                                      type="text"
+                                                      // className={
+                                                      //   "form-control" +
+                                                      //   (errors.landline &&
+                                                      //   touched.landline
+                                                      //     ? " is-invalid"
+                                                      //     : "")
+                                                      // }
+                                                      className="form-control"
+                                                      value={
+                                                        this.state.pathologist
+                                                          .landline
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              e.target.value,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label
+                                                      for="photo"
+                                                      className="form-label"
+                                                    >
+                                                      Photo
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Input
+                                                      id="formFile"
+                                                      name="photo"
+                                                      placeholder="Choose image"
+                                                      type="file"
+                                                      multiple={false}
+                                                      accept=".jpg,.jpeg,.png,"
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          photo:
+                                                            e.target.files[0],
+                                                        })
+                                                      }
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.photo &&
+                                                        touched.photo
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                     />
+
                                                     <ErrorMessage
-                                                      name="estimated_result_uploading_at"
+                                                      name="photo"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div> */}
+                                                  </div>
 
-                                                  {/* <div className="mb-3">
+                                                  <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Patient Unique ID
+                                                      PMDC Reg No.
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="pmdc_reg_no"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.pmdc_reg_no &&
+                                                        touched.pmdc_reg_no
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .pmdc_reg_no
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              e.target.value,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="pmdc_reg_no"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Qualification (optional)
+                                                    </Label>
+                                                    <Field
+                                                      name="qualification"
+                                                      type="text"
+                                                      // className={
+                                                      //   "form-control" +
+                                                      //   (errors.qualification &&
+                                                      //   touched.qualification
+                                                      //     ? " is-invalid"
+                                                      //     : "")
+                                                      // }
+                                                      className="form-control"
+                                                      value={
+                                                        this.state.pathologist
+                                                          .qualification
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              e.target.value,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    {/* <ErrorMessage
+                                                      name="qualification"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    /> */}
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Speciality (optional)
+                                                    </Label>
+                                                    <Field
+                                                      name="speciality"
+                                                      type="text"
+                                                      // className={
+                                                      //   "form-control" +
+                                                      //   (errors.speciality &&
+                                                      //   touched.speciality
+                                                      //     ? " is-invalid"
+                                                      //     : "")
+                                                      // }
+                                                      className="form-control"
+                                                      value={
+                                                        this.state.pathologist
+                                                          .speciality
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              e.target.value,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    {/* <ErrorMessage
+                                                      name="speciality"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    /> */}
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Designation (optional)
+                                                    </Label>
+                                                    <Field
+                                                      name="designation"
+                                                      type="text"
+                                                      // className={
+                                                      //   "form-control" +
+                                                      //   (errors.designation &&
+                                                      //   touched.designation
+                                                      //     ? " is-invalid"
+                                                      //     : "")
+                                                      // }
+                                                      className="form-control"
+                                                      value={
+                                                        this.state.pathologist
+                                                          .designation
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              e.target.value,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    {/* <ErrorMessage
+                                                      name="designation"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    /> */}
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is available for
+                                                      consultation?
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="is_available_for_consultation"
+                                                      as="select"
+                                                      // className="form-control"
+                                                      multiple={false}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_available_for_consultation &&
+                                                        touched.is_available_for_consultation
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .is_available_for_consultation
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              e.target.value,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        Yes/No -----
+                                                      </option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+
+                                                    <ErrorMessage
+                                                      name="is_available_for_consultation"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+
+                                                    <span className="text-primary font-size-12 text-bold">
+                                                      <strong>
+                                                        Note: Your contact
+                                                        information will be
+                                                        shared publicly for
+                                                        consultation of the
+                                                        patients with you if you
+                                                        select YES.
+                                                      </strong>
+                                                    </span>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is available on WhatsApp?
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="is_available_on_whatsapp"
+                                                      as="select"
+                                                      // className="form-control"
+                                                      multiple={false}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_available_on_whatsapp &&
+                                                        touched.is_available_on_whatsapp
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .is_available_on_whatsapp
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              e.target.value,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        Yes/No -----
+                                                      </option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+
+                                                    <ErrorMessage
+                                                      name="is_available_on_whatsapp"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is associated with PAP?
                                                       (optional)
                                                     </Label>
-                                                    <input
-                                                      name="patient_unique_id"
-                                                      type="text"
-                                                      onChange={e => {
+                                                    <Field
+                                                      name="is_associated_with_pap"
+                                                      as="select"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                      value={
+                                                        this.state.pathologist
+                                                          .is_associated_with_pap
+                                                      }
+                                                      onChange={e =>
                                                         this.setState({
-                                                          testAppointment: {
-                                                            id: testAppointment.id,
-                                                            patient_id:
-                                                              testAppointment.patient_id,
-                                                            patient_name:
-                                                              testAppointment.patient_name,
-                                                            patient_age:
-                                                              testAppointment.patient_age,
-                                                            patient_gender:
-                                                              testAppointment.patient_gender,
-                                                            booked_at:
-                                                              testAppointment.booked_at,
-                                                            appointment_requested_at:
-                                                              testAppointment.appointment_requested_at,
-                                                            estimated_sample_collection_at:
-                                                              testAppointment.estimated_sample_collection_at,
-                                                            estimated_result_uploading_at:
-                                                              testAppointment.estimated_result_uploading_at,
-                                                            patient_unique_id:
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
                                                               e.target.value,
                                                           },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.patient_unique_id &&
-                                                        touched.patient_unique_id
-                                                          ? " is-invalid"
-                                                          : "")
+                                                        })
                                                       }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="patient_unique_id"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div> */}
+                                                    >
+                                                      <option
+                                                        value=""
+                                                        selected={
+                                                          this.state.pathologist
+                                                            .is_associated_with_pap ===
+                                                            undefined ||
+                                                          this.state.pathologist
+                                                            .is_associated_with_pap ===
+                                                            ""
+                                                        }
+                                                      >
+                                                        ----- Please select
+                                                        Yes/No -----
+                                                      </option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+                                                  </div>
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -943,28 +1440,29 @@ class TestAppointmentsPendingList extends Component {
   }
 }
 
-TestAppointmentsPendingList.propTypes = {
+PathologistsList.propTypes = {
   match: PropTypes.object,
-  testAppointments: PropTypes.array,
+  pathologists: PropTypes.array,
   className: PropTypes.any,
-  onGetTestAppointmentsPendingList: PropTypes.func,
-  onUpdateTestAppointment: PropTypes.func,
-  onUpdatePaymentInfo: PropTypes.func,
+  onGetPathologists: PropTypes.func,
+  onAddNewPathologist: PropTypes.func,
+  onDeletePathologist: PropTypes.func,
+  onUpdatePathologist: PropTypes.func,
 };
 
-const mapStateToProps = ({ testAppointments }) => ({
-  testAppointments: testAppointments.testAppointmentsPendingList,
+const mapStateToProps = ({ pathologists }) => ({
+  pathologists: pathologists.pathologists,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetTestAppointmentsPendingList: id =>
-    dispatch(getTestAppointmentsPendingList(id)),
-  onUpdateTestAppointment: testAppointment =>
-    dispatch(updateTestAppointment(testAppointment)),
-  onUpdatePaymentInfo: id => dispatch(updatePaymentInfo(id)),
+  onGetPathologists: id => dispatch(getPathologists(id)),
+  onAddNewPathologist: (pathologist, id) =>
+    dispatch(addNewPathologist(pathologist, id)),
+  onUpdatePathologist: pathologist => dispatch(updatePathologist(pathologist)),
+  onDeletePathologist: pathologist => dispatch(deletePathologist(pathologist)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(TestAppointmentsPendingList));
+)(withRouter(PathologistsList));
