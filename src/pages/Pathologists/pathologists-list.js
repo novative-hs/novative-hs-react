@@ -474,21 +474,16 @@ class PathologistsList extends Component {
                                             name: Yup.string()
                                               .trim()
                                               .matches(
-                                                /^[a-zA-Z][a-zA-Z .]+$/,
+                                                /^[a-zA-Z][a-zA-Z ]+$/,
                                                 "Please enter only alphabets and spaces"
                                               )
                                               .required("Please enter name"),
-                                            email: Yup.string()
-                                              .required("Please enter email")
-                                              .email(
-                                                "Please enter valid email"
-                                              ),
-                                            phone: Yup.string()
-                                              .required("Please enter phone")
-                                              .matches(
-                                                /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
-                                                "Please enter a valid Pakistani phone number e.g. 03123456789"
-                                              ),
+                                            // email: Yup.string()
+                                            //   .required("Please enter email")
+                                            //   .email(
+                                            //     "Please enter valid email"
+                                            //   ),
+                                             
                                             // landline: Yup.string()
                                             //   .required("Please enter phone")
                                             //   .matches(
@@ -521,6 +516,16 @@ class PathologistsList extends Component {
                                                 .required(
                                                   "Please select one option from dropdown"
                                                 ),
+                                            phone: Yup.string().when(
+                                              "is_available_for_consultation",
+                                              {
+                                                is: is_available_for_consultation =>
+                                                  is_available_for_consultation === "Yes",
+                                                then: Yup.string().required(
+                                                  "Please enter phone"
+                                                ),
+                                              }
+                                            ),
                                             is_available_on_whatsapp:
                                               Yup.string()
                                                 .trim()
@@ -736,7 +741,7 @@ class PathologistsList extends Component {
                                                     <Label className="form-label">
                                                       Email
                                                       <span className="text-danger">
-                                                        *
+                                                        (optional)
                                                       </span>
                                                     </Label>
                                                     <Field
@@ -791,6 +796,165 @@ class PathologistsList extends Component {
                                                     />
                                                   </div>
 
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is available for
+                                                      consultation?
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="is_available_for_consultation"
+                                                      as="select"
+                                                      // className="form-control"
+                                                      multiple={false}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_available_for_consultation &&
+                                                        touched.is_available_for_consultation
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .is_available_for_consultation
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              e.target.value,
+                                                            is_available_on_whatsapp:
+                                                              pathologist.is_available_on_whatsapp,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        Yes/No -----
+                                                      </option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+
+                                                    <ErrorMessage
+                                                      name="is_available_for_consultation"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+
+                                                    <span className="text-primary font-size-12 text-bold">
+                                                      <strong>
+                                                        Note: Your contact
+                                                        information will be
+                                                        shared publicly for
+                                                        consultation of the
+                                                        patients with you if you
+                                                        select YES.
+                                                      </strong>
+                                                    </span>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Is available on WhatsApp?
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="is_available_on_whatsapp"
+                                                      as="select"
+                                                      // className="form-control"
+                                                      multiple={false}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.is_available_on_whatsapp &&
+                                                        touched.is_available_on_whatsapp
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.pathologist
+                                                          .is_available_on_whatsapp
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          pathologist: {
+                                                            id: pathologist.id,
+                                                            photo:
+                                                              pathologist.photo,
+                                                            name: pathologist.name,
+                                                            email:
+                                                              pathologist.email,
+                                                            phone:
+                                                              pathologist.phone,
+                                                            landline:
+                                                              pathologist.landline,
+                                                            qualification:
+                                                              pathologist.qualification,
+                                                            speciality:
+                                                              pathologist.speciality,
+                                                            pmdc_reg_no:
+                                                              pathologist.pmdc_reg_no,
+                                                            designation:
+                                                              pathologist.designation,
+                                                            is_available_for_consultation:
+                                                              pathologist.is_available_for_consultation,
+                                                            is_available_on_whatsapp:
+                                                              e.target.value,
+                                                            is_associated_with_pap:
+                                                              pathologist.is_associated_with_pap,
+                                                          },
+                                                        })
+                                                      }
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        Yes/No -----
+                                                      </option>
+                                                      <option value="Yes">
+                                                        Yes
+                                                      </option>
+                                                      <option value="No">
+                                                        No
+                                                      </option>
+                                                    </Field>
+
+                                                    <ErrorMessage
+                                                      name="is_available_on_whatsapp"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                  {pathologist.is_available_for_consultation == "Yes" || 
+                                                  pathologist.is_available_on_whatsapp == "Yes" ? (
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Mobile No.
@@ -849,6 +1013,7 @@ class PathologistsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+                                                  ): null}
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
@@ -1169,165 +1334,6 @@ class PathologistsList extends Component {
                                                       className="invalid-feedback"
                                                     /> */}
                                                   </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Is available for
-                                                      consultation?
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="is_available_for_consultation"
-                                                      as="select"
-                                                      // className="form-control"
-                                                      multiple={false}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_available_for_consultation &&
-                                                        touched.is_available_for_consultation
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.pathologist
-                                                          .is_available_for_consultation
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          pathologist: {
-                                                            id: pathologist.id,
-                                                            photo:
-                                                              pathologist.photo,
-                                                            name: pathologist.name,
-                                                            email:
-                                                              pathologist.email,
-                                                            phone:
-                                                              pathologist.phone,
-                                                            landline:
-                                                              pathologist.landline,
-                                                            qualification:
-                                                              pathologist.qualification,
-                                                            speciality:
-                                                              pathologist.speciality,
-                                                            pmdc_reg_no:
-                                                              pathologist.pmdc_reg_no,
-                                                            designation:
-                                                              pathologist.designation,
-                                                            is_available_for_consultation:
-                                                              e.target.value,
-                                                            is_available_on_whatsapp:
-                                                              pathologist.is_available_on_whatsapp,
-                                                            is_associated_with_pap:
-                                                              pathologist.is_associated_with_pap,
-                                                          },
-                                                        })
-                                                      }
-                                                    >
-                                                      <option value="">
-                                                        ----- Please select
-                                                        Yes/No -----
-                                                      </option>
-                                                      <option value="Yes">
-                                                        Yes
-                                                      </option>
-                                                      <option value="No">
-                                                        No
-                                                      </option>
-                                                    </Field>
-
-                                                    <ErrorMessage
-                                                      name="is_available_for_consultation"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-
-                                                    <span className="text-primary font-size-12 text-bold">
-                                                      <strong>
-                                                        Note: Your contact
-                                                        information will be
-                                                        shared publicly for
-                                                        consultation of the
-                                                        patients with you if you
-                                                        select YES.
-                                                      </strong>
-                                                    </span>
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Is available on WhatsApp?
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="is_available_on_whatsapp"
-                                                      as="select"
-                                                      // className="form-control"
-                                                      multiple={false}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.is_available_on_whatsapp &&
-                                                        touched.is_available_on_whatsapp
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.pathologist
-                                                          .is_available_on_whatsapp
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          pathologist: {
-                                                            id: pathologist.id,
-                                                            photo:
-                                                              pathologist.photo,
-                                                            name: pathologist.name,
-                                                            email:
-                                                              pathologist.email,
-                                                            phone:
-                                                              pathologist.phone,
-                                                            landline:
-                                                              pathologist.landline,
-                                                            qualification:
-                                                              pathologist.qualification,
-                                                            speciality:
-                                                              pathologist.speciality,
-                                                            pmdc_reg_no:
-                                                              pathologist.pmdc_reg_no,
-                                                            designation:
-                                                              pathologist.designation,
-                                                            is_available_for_consultation:
-                                                              pathologist.is_available_for_consultation,
-                                                            is_available_on_whatsapp:
-                                                              e.target.value,
-                                                            is_associated_with_pap:
-                                                              pathologist.is_associated_with_pap,
-                                                          },
-                                                        })
-                                                      }
-                                                    >
-                                                      <option value="">
-                                                        ----- Please select
-                                                        Yes/No -----
-                                                      </option>
-                                                      <option value="Yes">
-                                                        Yes
-                                                      </option>
-                                                      <option value="No">
-                                                        No
-                                                      </option>
-                                                    </Field>
-
-                                                    <ErrorMessage
-                                                      name="is_available_on_whatsapp"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Is associated with PAP?

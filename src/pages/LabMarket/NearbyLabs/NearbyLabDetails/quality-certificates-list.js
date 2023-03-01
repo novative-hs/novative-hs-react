@@ -90,80 +90,191 @@ class LabQualityCertificates extends Component {
             <title>Quality Certificates List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs
+            {/* <Breadcrumbs
               title="Quality Certificates"
-              breadcrumbItem="Certificates List"
-            />
-            <Row>
-              <Row>
+              // breadcrumbItem="Certificates List"
+              
+            /> */}
+
+<Row>
+                <h5>ISO Certificates</h5>
                 {!isEmpty(this.props.qualityCertificates) &&
                   this.props.qualityCertificates.map(
                     (qualityCertificate, key) => (
-                      <Col xl="4" sm="6" key={"_col_" + key}>
-                        <Card>
-                          <CardBody>
-                            {/* <div className="product-img position-relative">
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  qualityCertificate.certificate
-                                }
-                                alt="Lab Cartificate"
-                                style={{
-                                  width: "300px",
-                                  height: "200px",
-                                  objectFit: "cover",
-                                }}
-                                className="img-fluid mx-auto d-block"
-                              />
-                            </div> */}
+                      qualityCertificate.certificate_type == "ISO 9001 Certificate" || qualityCertificate.certificate_type == "ISO 15189 Certificate" && (
 
-                            <div className="mt-4 text-center">
-                              <h5 className="mb-2 text-truncate">
-                                {qualityCertificate.name}{" "}
-                              </h5>
-                              <h5 className="mb-2 text-truncate">
-                                {qualityCertificate.lab_name}{" "}
-                              </h5>
+                        <Col xl="4" sm="6" key={"_col_" + key}>
+                          <Card>
+                            <CardBody>
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="fas fa-vial"></i> Certificate
-                                  For : {qualityCertificate.type}{" "}
-                                </span>
+
+                              <div className="mt-4 text-center">
+                                <h5 className="mb-2 text-truncate">
+                                  {qualityCertificate.name}{" "}
+                                </h5>
+                                <h5 className="mb-2 text-truncate">
+                                  {qualityCertificate.lab_name}{" "}
+                                </h5>
+
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="fas fa-vial"></i> Certificate
+                                    For : {qualityCertificate.type}{" "}
+                                  </span>
+                                </div>
+
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-calendar-month"></i>{" "}
+                                    Expiry Date:{" "}
+                                    {new Date(
+                                      qualityCertificate.expiry_date
+                                    ).toLocaleDateString("en-US")}
+                                  </span>
+                                </div>
+
+                                <div className="mt-3 text-center">
+                                  <Link
+                                    to={{
+                                      pathname:
+                                        process.env.REACT_APP_BACKENDURL +
+                                        qualityCertificate.certificate,
+                                    }}
+                                    className="fw-medium text-primary"
+                                    target="_blank"
+                                  >
+                                    {" "}
+                                    View Certificate
+                                  </Link>{" "}
+                                </div>
                               </div>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      )
+                    )
+                  )}
+              </Row>
+            <Row>
+              <Row>
+                <h5>EQA Certificates</h5>
+                {!isEmpty(this.props.qualityCertificates) &&
+                  this.props.qualityCertificates.map(
+                    (qualityCertificate, key) => (
+                      qualityCertificate.certificate_type == "EQA Certificate" && (
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-calendar-month"></i>{" "}
-                                  Expiry Date:{" "}
-                                  {new Date(
-                                    qualityCertificate.expiry_date
-                                  ).toLocaleDateString("en-US")}
-                                </span>
-                              </div>
+                        <Col xl="4" sm="6" key={"_col_" + key}>
+                          <Card>
+                            <CardBody>
 
-                              <div className="mt-3 text-center">
-                                <Link
-                                  to={{
-                                    pathname:
-                                      process.env.REACT_APP_BACKENDURL +
-                                      qualityCertificate.certificate,
-                                  }}
-                                  className="fw-medium text-primary"
-                                  target="_blank"
-                                >
-                                  {" "}
-                                  View Certificate
-                                </Link>{" "}
+
+                              <div className="mt-4 text-center">
+                                <h5 className="mb-2 text-truncate">
+                                  {qualityCertificate.name}{" "}
+                                </h5>
+                                <h5 className="mb-2 text-truncate">
+                                  {qualityCertificate.lab_name}{" "}
+                                </h5>
+
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="fas fa-vial"></i> Certificate
+                                    For : {qualityCertificate.type}{" "}
+                                  </span>
+                                </div>
+
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-calendar-month"></i>{" "}
+                                    Expiry Date:{" "}
+                                    {new Date(
+                                      qualityCertificate.expiry_date
+                                    ).toLocaleDateString("en-US")}
+                                  </span>
+                                </div>
+
+                                <div className="mt-3 text-center">
+                                  <Link
+                                    to={{
+                                      pathname:
+                                        process.env.REACT_APP_BACKENDURL +
+                                        qualityCertificate.certificate,
+                                    }}
+                                    className="fw-medium text-primary"
+                                    target="_blank"
+                                  >
+                                    {" "}
+                                    View Certificate
+                                  </Link>{" "}
+                                </div>
                               </div>
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Col>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      )
+                    )
+                  )}
+              </Row>
+              <Row>
+                <h5>Other Certificates</h5>
+                {!isEmpty(this.props.qualityCertificates) &&
+                  this.props.qualityCertificates.map(
+                    (qualityCertificate, key) => (
+                      qualityCertificate.certificate_type == "Others" && (
+                        <Col xl="4" sm="6" key={"_col_" + key}>
+                          <Card>
+                            <CardBody>
+
+
+                              <div className="mt-4 text-center">
+                                <h5 className="mb-2 text-truncate">
+                                  {qualityCertificate.name}{" "}
+                                </h5>
+                                <h5 className="mb-2 text-truncate">
+                                  {qualityCertificate.lab_name}{" "}
+                                </h5>
+
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="fas fa-vial"></i> Certificate
+                                    For : {qualityCertificate.type}{" "}
+                                  </span>
+                                </div>
+
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-calendar-month"></i>{" "}
+                                    Expiry Date:{" "}
+                                    {new Date(
+                                      qualityCertificate.expiry_date
+                                    ).toLocaleDateString("en-US")}
+                                  </span>
+                                </div>
+
+                                <div className="mt-3 text-center">
+                                  <Link
+                                    to={{
+                                      pathname:
+                                        process.env.REACT_APP_BACKENDURL +
+                                        qualityCertificate.certificate,
+                                    }}
+                                    className="fw-medium text-primary"
+                                    target="_blank"
+                                  >
+                                    {" "}
+                                    View Certificate
+                                  </Link>{" "}
+                                </div>
+                              </div>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      )
                     )
                   )}
 
+              </Row>
+              <Row>
                 {isEmpty(this.props.qualityCertificates) && (
                   <Row>
                     <Col lg="12">
