@@ -23,8 +23,8 @@ import {
   UPDATE_PAYMENTOUTCREATED_STATUS_FAIL,
   UPDATE_PAYMENTINBOUNCED_STATUS_SUCCESS,
   UPDATE_PAYMENTINBOUNCED_STATUS_FAIL,
-  ADD_OUT_PAYMENT_SUCCESS,
-  ADD_OUT_PAYMENT_FAIL,
+  // ADD_OUT_PAYMENT_SUCCESS,
+  // ADD_OUT_PAYMENT_FAIL,
   GET_LABS_SUCCESS,
   GET_LABS_FAIL,
   GET_DONORS_SUCCESS,
@@ -41,7 +41,7 @@ const INIT_STATE = {
   paymentStatuss: [],
   paymentBouncedStatuss: [],
   paymentBouncedInStatuss: [],
-  outPayment: [],
+  // outPayment: [],
   paymentCreatedStatuss: [],
   paymentOutCreatedStatuss: [],
   paymentOutStatuss: [],
@@ -262,17 +262,17 @@ const paymentStatuss = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-      case ADD_OUT_PAYMENT_SUCCESS:
-        return {
-          ...state,
-          outPayments: [...state.outPayments, action.payload.data],
-        };
+      // case ADD_OUT_PAYMENT_SUCCESS:
+      //   return {
+      //     ...state,
+      //     outPayments: [...state.outPayments, action.payload.data],
+      //   };
   
-      case ADD_OUT_PAYMENT_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+      // case ADD_OUT_PAYMENT_FAIL:
+      //   return {
+      //     ...state,
+      //     error: action.payload,
+      //   };
 
         case DELETE_PAYMENTOUT_SUCCESS:
       return {

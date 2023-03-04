@@ -24,13 +24,17 @@ function getHeader(token) {
 
 // Post Register Information to create account
 export const postRegister = user => {
+console.log("django user", user)
+
   return axios
     .post(url.POST_REGISTER, user)
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
-    })
+    }
+)
+    
     .catch(err => {
       let message;
       if (err.response && err.response.status) {
@@ -54,7 +58,9 @@ export const postRegister = user => {
         }
       }
       throw message;
-    });
+      
+    }
+    );
 };
 
 // Post Patient Information
@@ -102,6 +108,7 @@ export const postPatientInformation = (id, patient) => {
 // Post Patient Information
 export const postB2bClientInformation = (id, b2bclient) => {
   let formData = new FormData();
+  formData.append("email", b2bclient.email);
   formData.append("business_name", b2bclient.name);
   formData.append("landline", b2bclient.landline);
   formData.append("website_url", b2bclient.website_url);
@@ -202,7 +209,7 @@ export const postLabInformation = (id, lab) => {
   formData.append("type", lab.type);
   formData.append("branch_name", lab.branch_name);
   formData.append("main_lab_account_id", lab.main_lab_account_id);
-  // formData.append("financial_settlement", lab.financial_settlement);
+  formData.append("email", lab.email);
   formData.append("logo", lab.logo);
   // formData.append("owner_name", lab.owner_name);
   // formData.append("registration_no", lab.registration_no);
@@ -1401,21 +1408,25 @@ export const updateStaffProfile = (labProfile, id) => {
 export const addStaff = (staff, id) => {
   let formData = new FormData();
   formData.append("name", staff.name);
+  formData.append("email", staff.email);
   formData.append("cnic", staff.cnic);
   formData.append("phone", staff.phone);
   formData.append("roles", staff.roles);
   formData.append("city", staff.city);
   formData.append("photo", staff.photo);
   formData.append("territory_office", staff.territory_office);
-  console.log("data",formData);
+  console.log("data",staff, id);
   return axios.post(`${url.ADD_STAFF}/${id}`, formData, {
     headers: getHeader(authHeader()),
-  });
+    
+  }
+  );
 };
 
 export const updateStaff = staff => {
   let formData = new FormData();
   formData.append("name", staff.name);
+  formData.append("email", staff.email);
   formData.append("cnic", staff.cnic);
   formData.append("phone", staff.phone);
   formData.append("roles", staff.roles);
@@ -2152,6 +2163,8 @@ export const addNewOutPayment = ( outPayment, id) => {
   // formData.append("is_cleared",  outPayment.is_cleared);
   // formData.append("cleared_at",   outPayment.cleared_at);
   formData.append("comments",  outPayment.comments);
+
+  console.log("django api helper", outPayment, id)
 
 
   return axios.post(`${url.ADD_NEW_OUT_PAYMENT}/${id}`, formData, {

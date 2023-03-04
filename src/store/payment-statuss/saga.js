@@ -18,7 +18,7 @@ import {
   UPDATE_PAYMENTIN_STATUS,
   UPDATE_PAYMENTOUTCREATED_STATUS,
   UPDATE_PAYMENTINBOUNCED_STATUS,
-  ADD_NEW_OUT_PAYMENT,
+  // ADD_NEW_OUT_PAYMENT,
   DELETE_PAYMENTOUT,
 
 } from "./actionTypes";
@@ -55,8 +55,8 @@ import {
   updatePaymentOutCreatedStatusSuccess,
   updatePaymentInBouncedStatusSuccess,
   updatePaymentInBouncedStatusFail,
-  addOutPaymentFail,
-  addOutPaymentSuccess,
+  // addOutPaymentFail,
+  // addOutPaymentSuccess,
   deletePaymentoutSuccess,
   deletePaymentoutFail,
 
@@ -76,7 +76,7 @@ import {
   updatePaymentInStatus,
   updatePaymentOutCreatedStatuss,
   updatePaymentInBouncedStatus,
-  addNewOutPayment,
+  // addNewOutPayment,
   getLabs,   getBanks,   getBankAccounts, deletePaymentout, getDonors,
 
 } from "../../helpers/django_api_helper";
@@ -219,18 +219,18 @@ function* onUpdatePaymentInBouncedStatus({ payload: paymentInBouncedStatus }) {
     yield put(updatePaymentInBouncedStatusFail(error));
   }
 }
-function* onAddNewOutPayment(object) {
-  try {
-    const response = yield call(
-      addNewOutPayment,
-      object.payload.outPayment,
-      object.payload.id
-    );
-    yield put(addOutPaymentSuccess(response));
-  } catch (error) {
-    yield put(addOutPaymentFail(error));
-  }
-}
+// function* onAddNewOutPayment(object) {
+//   try {
+//     const response = yield call(
+//       addNewOutPayment,
+//       object.payload.outPayment,
+//       object.payload.id
+//     );
+//     yield put(addOutPaymentSuccess(response));
+//   } catch (error) {
+//     yield put(addOutPaymentFail(error));
+//   }
+// }
 function* onDeletePaymentout({ payload: paymentout }) {
   try {
     const response = yield call(deletePaymentout, paymentout);
@@ -255,7 +255,7 @@ function* paymentStatussSaga() {
   yield takeEvery(UPDATE_PAYMENTIN_STATUS, onUpdatePaymentInStatus);
   yield takeEvery(UPDATE_PAYMENTOUTCREATED_STATUS, onUpdatePaymentOutCreatedStatuss);
   yield takeEvery(UPDATE_PAYMENTINBOUNCED_STATUS, onUpdatePaymentInBouncedStatus);
-  yield takeEvery(ADD_NEW_OUT_PAYMENT, onAddNewOutPayment);
+  // yield takeEvery(ADD_NEW_OUT_PAYMENT, onAddNewOutPayment);
   yield takeEvery(GET_BANKS, fetchBanks);
   yield takeEvery(GET_BANK_ACCOUNTS, fetchBankAccounts);
   yield takeEvery(GET_LABS, fetchLabs);

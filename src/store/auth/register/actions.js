@@ -12,7 +12,8 @@ export const registerUser = user => {
 }
 
 export const registerUserSuccessful = user => {
-  return {
+  console.log(user)
+    return {
     type: REGISTER_USER_SUCCESSFUL,
     payload: user,
   }

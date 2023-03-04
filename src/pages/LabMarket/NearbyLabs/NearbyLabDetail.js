@@ -31,8 +31,8 @@ class NearbyLabDetail extends Component {
     super(props);
     this.state = {
       user_id: localStorage.getItem("authUser")
-      ? JSON.parse(localStorage.getItem("authUser")).user_id
-      : "",
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : "",
       // guest_id: localStorage.getItem("guest_id")
       // ? JSON.parse(localStorage.getItem("guest_id")).guest_id
       // : "",
@@ -44,6 +44,10 @@ class NearbyLabDetail extends Component {
       city: "",
       phone: "",
       email: "",
+      offered_tests: "",
+      pathologists: "",
+      quality_certificates: "",
+      sample_collectors: "",
     };
   }
   componentDidMount() {
@@ -53,77 +57,77 @@ class NearbyLabDetail extends Component {
   render() {
     return (
       <React.Fragment>
-                <div className="topnav">
+        <div className="topnav">
           <div className="container-fluid left-space">
             <nav
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
-              {!this.state.user_id
-              ? (
-                 <Collapse
-                 isOpen={this.props.menuOpen}
-                 className="navbar-collapse"
-                 id="topnav-menu-content"
-               >
-                 <ul className="navbar-nav">
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/labs/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                    <span className="pt-4 font-size-12">Labs</span>
-                     </Link>
-                   </li>
- 
-                   <li className="nav-item">
+              {!this.state.user_id ? (
+                <Collapse
+                  isOpen={this.props.menuOpen}
+                  className="navbar-collapse"
+                  id="topnav-menu-content"
+                >
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/labs/${this.props.match.params.guest_id}`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Labs</span>
+                      </Link>
+                    </li>
 
-                     {/* <Link to="/nearby-tests" className="dropdown-item">
+                    <li className="nav-item">
+                      {/* <Link to="/nearby-tests" className="dropdown-item">
                        {this.props.t("Search by Tests")}
                      </Link> */}
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-tests/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                       <span className="pt-4 font-size-12">Search by Tests</span>
-                       {/* {this.props.t("Tests")} */}
-                     </Link>
-                   </li>
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-profiles/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                      <span className="pt-4 font-size-12">Profiles</span>
-                       {/* {this.props.t("Profiles")} */}
-                     </Link>
-                   </li>
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-packages/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                      <span className="pt-4 font-size-12">Packages</span>
-                       {/* {this.props.t("Packages")} */}
-                     </Link>
-                   </li>
-                   {/* <li className="nav-item dropdown">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-tests/${this.props.match.params.guest_id}`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">
+                          Search by Tests
+                        </span>
+                        {/* {this.props.t("Tests")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-profiles/${this.props.match.params.guest_id}`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Profiles</span>
+                        {/* {this.props.t("Profiles")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-packages/${this.props.match.params.guest_id}`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Packages</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
+                    {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
                        onClick={e => {
@@ -149,16 +153,20 @@ class NearbyLabDetail extends Component {
                        </Link>
                      </div>
                    </li> */}
- 
-                   {this.state.user_id && this.state.user_type == "patient" && (
-                     <li className="nav-item">
-                       <Link to={"/test-appointments"} className="dropdown-item">
-                         {/* {this.props.t("My Appointments")} */}
-                         <span className="pt-4 font-size-12">My Appointments</span>
 
-                       </Link>
-                     </li>
-                     /* <li className="nav-item dropdown">
+                    {this.state.user_id && this.state.user_type == "patient" && (
+                      <li className="nav-item">
+                        <Link
+                          to={"/test-appointments"}
+                          className="dropdown-item"
+                        >
+                          {/* {this.props.t("My Appointments")} */}
+                          <span className="pt-4 font-size-12">
+                            My Appointments
+                          </span>
+                        </Link>
+                      </li>
+                      /* <li className="nav-item dropdown">
                         <Link
                          to="/#"
                          onClick={e => {
@@ -184,74 +192,73 @@ class NearbyLabDetail extends Component {
                          </Link>
                        </div>
                        </li> */
-                   )}
-                 </ul>
-               </Collapse>
-
-              ): this.state.user_id ? (
+                    )}
+                  </ul>
+                </Collapse>
+              ) : this.state.user_id ? (
                 <Collapse
-                isOpen={this.props.menuOpen}
-                className="navbar-collapse"
-                id="topnav-menu-content"
-              >
-                <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                        : `/nearby-labs/`
-                    }
-                    className="dropdown-item"
-                    >
-                      <span className="pt-4 font-size-12">Labs</span>
-                      {/* {this.props.t("Labs")} */}
-                    </Link>
-                  </li>
+                  isOpen={this.props.menuOpen}
+                  className="navbar-collapse"
+                  id="topnav-menu-content"
+                >
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-labs/${this.props.match.params.uuid}`
+                            : `/nearby-labs/`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Labs</span>
+                        {/* {this.props.t("Labs")} */}
+                      </Link>
+                    </li>
 
-                  <li className="nav-item">
-                    {/* <Link to="/nearby-tests" className="dropdown-item">
+                    <li className="nav-item">
+                      {/* <Link to="/nearby-tests" className="dropdown-item">
                       {this.props.t("Search by Tests")}
                     </Link> */}
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-tests/${this.props.match.params.uuid}`
-                        : `/nearby-tests/`
-                    }
-                    className="dropdown-item"
-                    >
-                      {/* {this.props.t("Tests")} */}
-                      <span className="pt-4 font-size-12">Tests</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-profiles/${this.props.match.params.uuid}`
-                        : `/nearby-profiles/`
-                    }
-                    className="dropdown-item"
-                    >
-                      {/* {this.props.t("Profiles")} */}
-                      <span className="pt-4 font-size-12">Profiles</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-packages/${this.props.match.params.uuid}`
-                        : `/nearby-packages/`
-                    }
-                    className="dropdown-item"
-                    >
-                      <span className="pt-4 font-size-12">Packages</span>
-                      {/* {this.props.t("Packages")} */}
-                    </Link>
-                  </li>
-                  {/* <li className="nav-item dropdown">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-tests/${this.props.match.params.uuid}`
+                            : `/nearby-tests/`
+                        }
+                        className="dropdown-item"
+                      >
+                        {/* {this.props.t("Tests")} */}
+                        <span className="pt-4 font-size-12">Tests</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-profiles/${this.props.match.params.uuid}`
+                            : `/nearby-profiles/`
+                        }
+                        className="dropdown-item"
+                      >
+                        {/* {this.props.t("Profiles")} */}
+                        <span className="pt-4 font-size-12">Profiles</span>
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-packages/${this.props.match.params.uuid}`
+                            : `/nearby-packages/`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Packages</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
+                    {/* <li className="nav-item dropdown">
                     <Link
                       to="/#"
                       onClick={e => {
@@ -278,15 +285,19 @@ class NearbyLabDetail extends Component {
                     </div>
                   </li> */}
 
-                  {this.state.user_id && this.state.user_type == "patient" && (
-                    <li className="nav-item">
-                      <Link to={"/test-appointments"} className="dropdown-item">
-                        {/* {this.props.t("My Appointments")} */}
-                        <span className="pt-4 font-size-12">My Appointments</span>
-
-                      </Link>
-                    </li>
-                    /* <li className="nav-item dropdown">
+                    {this.state.user_id && this.state.user_type == "patient" && (
+                      <li className="nav-item">
+                        <Link
+                          to={"/test-appointments"}
+                          className="dropdown-item"
+                        >
+                          {/* {this.props.t("My Appointments")} */}
+                          <span className="pt-4 font-size-12">
+                            My Appointments
+                          </span>
+                        </Link>
+                      </li>
+                      /* <li className="nav-item dropdown">
                        <Link
                         to="/#"
                         onClick={e => {
@@ -312,12 +323,10 @@ class NearbyLabDetail extends Component {
                         </Link>
                       </div>
                       </li> */
-                  )}
-                  
-                </ul>
-              </Collapse>
-              ):null}
-             
+                    )}
+                  </ul>
+                </Collapse>
+              ) : null}
             </nav>
           </div>
         </div>
@@ -399,62 +408,110 @@ class NearbyLabDetail extends Component {
                           <Row className="mt-4">
                             <div className=" mb-3">
                               <Col sm="6">
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
-                                  }
-                                  className=" linklist btn btn-primary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right " /> Offered
-                                  Tests{" "}
-                                </Link>
+                                {this.props.success.offered_tests === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                    }
+                                    className=" linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right " />{" "}
+                                    Offered Tests{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.offered_tests === false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right " />{" "}
+                                    Offered Tests{" "}
+                                  </Link>
+                                )}
                               </Col>
                             </div>
                             <div className="mb-3">
                               <Col sm="6">
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
-                                  }
-                                  className="linklist btn btn-primary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
+                                {this.props.success.quality_certificates ===
+                                  true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Quality-Certificates{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.quality_certificates ===
+                                  false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Quality-Certificates{" "}
+                                  </Link>
+                                )}
                               </Col>
                             </div>
                             <div className="mb-3">
                               <Col sm="6">
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
-                                  }
-                                  className="linklist btn btn-primary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Sample-Collectors{" "}
-                                </Link>
+                                {this.props.success.sample_collectors ===
+                                  true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Sample-Collectors{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.sample_collectors ===
+                                  false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Sample-Collectors{" "}
+                                  </Link>
+                                )}
                               </Col>
                             </div>
                             <div className="mb-3">
                               <Col sm="6">
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
-                                  }
-                                  className="linklist btn btn-primary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Pathologists{" "}
-                                </Link>
+                                {this.props.success.pathologists === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Pathologists{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.pathologists === false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Pathologists{" "}
+                                  </Link>
+                                )}
                               </Col>
                             </div>
 
@@ -488,68 +545,116 @@ class NearbyLabDetail extends Component {
                           </Row>
                         ) : this.state.user_id ? (
                           <Row className="mt-4">
-                          <div className=" mb-3">
-                            <Col sm="6">
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
-                                }
-                                className=" linklist btn btn-primary btn-md"
-                              >
-                                <i className="mdi mdi-arrow-right " /> Offered
-                                Tests{" "}
-                              </Link>
-                            </Col>
-                          </div>
-                          <div className="mb-3">
-                            <Col sm="6">
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
-                                }
-                                className="linklist btn btn-primary btn-md"
-                              >
-                                <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                Quality-Certificates{" "}
-                              </Link>
-                            </Col>
-                          </div>
-                          <div className="mb-3">
-                            <Col sm="6">
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
-                                }
-                                className="linklist btn btn-primary btn-md"
-                              >
-                                <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                Sample-Collectors{" "}
-                              </Link>
-                            </Col>
-                          </div>
-                          <div className="mb-3">
-                            <Col sm="6">
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/lab-pathologists`
-                                }
-                                className="linklist btn btn-primary btn-md"
-                              >
-                                <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                Pathologists{" "}
-                              </Link>
-                            </Col>
-                          </div>
+                            <div className=" mb-3">
+                              <Col sm="6">
+                                {this.props.success.offered_tests === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right " />{" "}
+                                    Offered Tests{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.offered_tests === false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right " />{" "}
+                                    Offered Tests{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                            </div>
+                            <div className="mb-3">
+                              <Col sm="6">
+                                {this.props.success.quality_certificates ===
+                                  true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Quality-Certificates{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.quality_certificates ===
+                                  false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Quality-Certificates{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                            </div>
+                            <div className="mb-3">
+                              <Col sm="6">
+                                {this.props.success.sample_collectors ===
+                                  true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Sample-Collectors{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.sample_collectors ===
+                                  false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Sample-Collectors{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                            </div>
+                            <div className="mb-3">
+                              <Col sm="6">
+                                {this.props.success.pathologists === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Pathologists{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.pathologists === false && (
+                                  <Link
+                                    to="#"
+                                    className=" linklist btn btn-secondary btn-md"
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                    Pathologists{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                            </div>
 
-                          {/* <Col sm="6">
+                            {/* <Col sm="6">
                            <Link
                              to={
                                this.props.match.params.uuid
@@ -576,10 +681,10 @@ class NearbyLabDetail extends Component {
                              </Link>
                            </div>
                          </Col> */}
-                        </Row>
-                        ): null}
+                          </Row>
+                        ) : null}
                         {/* {this.state.user_id && ( */}
-                       
+
                         {/* )} */}
 
                         {/* <GoogleMaps /> */}
@@ -701,27 +806,27 @@ class NearbyLabDetail extends Component {
 
                   {(this.props.success.complaint_handling_email ||
                     this.props.success.complaint_handling_phone) && (
-                      <Card>
-                        <CardBody>
-                          <div className="text-muted float-start">
-                            <h5>Help & Support</h5>
-                            {this.props.success.complaint_handling_email && (
-                              <p>
-                                <i className="bx bx-mail-send me-1 mt-3" />
-                                {this.props.success.complaint_handling_email}
-                              </p>
-                            )}
+                    <Card>
+                      <CardBody>
+                        <div className="text-muted float-start">
+                          <h5>Help & Support</h5>
+                          {this.props.success.complaint_handling_email && (
+                            <p>
+                              <i className="bx bx-mail-send me-1 mt-3" />
+                              {this.props.success.complaint_handling_email}
+                            </p>
+                          )}
 
-                            {this.props.success.complaint_handling_phone && (
-                              <p>
-                                <i className="bx bx-phone-call me-1" />
-                                {this.props.success.complaint_handling_phone}
-                              </p>
-                            )}
-                          </div>
-                        </CardBody>
-                      </Card>
-                    )}
+                          {this.props.success.complaint_handling_phone && (
+                            <p>
+                              <i className="bx bx-phone-call me-1" />
+                              {this.props.success.complaint_handling_phone}
+                            </p>
+                          )}
+                        </div>
+                      </CardBody>
+                    </Card>
+                  )}
                   {/* <Card>
                   <CardBody>
                     <div className="mt-3 ">

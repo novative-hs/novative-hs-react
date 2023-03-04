@@ -5,7 +5,7 @@ import {
 } from "./actionTypes";
 
 const initialState = {
-  emailError: null,
+  // emailError: null,
   usernameError: null,
   passwordError: null,
   incompleteRegistrationError: null,
@@ -21,23 +21,23 @@ const account = (state = initialState, action) => {
         userID: null,
         userAccountType: null,
         loading: true,
-        emailError: null,
+        // emailError: null,
         usernameError: null,
         passwordError: null,
         incompleteRegistrationError: null,
       };
       break;
     case REGISTER_USER_SUCCESSFUL:
-      state = {
+      console.log(state = {
         ...state,
         loading: false,
         userID: action.payload.id,
         userAccountType: action.payload.account_type,
-        emailError: null,
+        // emailError: null,
         usernameError: null,
         passwordError: null,
         incompleteRegistrationError: null,
-      };
+      });
       break;
     case REGISTER_USER_FAILED:
       state = {
@@ -45,7 +45,7 @@ const account = (state = initialState, action) => {
         userID: null,
         userAccountType: null,
         loading: false,
-        emailError: action.payload.email,
+        // emailError: action.payload.email,
         usernameError: action.payload.username,
         passwordError: action.payload.password,
         incompleteRegistrationError: action.payload.error,

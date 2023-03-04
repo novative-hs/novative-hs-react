@@ -24,6 +24,7 @@ class B2bClientInformation extends Component {
     super(props);
     this.state = {
       name: "",
+      email: "",
       landline: "",
       website_url: "",
       business_logo: "",
@@ -107,6 +108,15 @@ class B2bClientInformation extends Component {
                             </Alert>
                           ) : null}
 
+                          {this.props.b2bclient&& this.props.b2bclient? (
+                             setTimeout(() => {
+                              if (this.props.b2bclient) {
+                                this.props.history.push("/login");
+                              }
+                            }, 2000)
+                          ) : null}
+                          
+
                           {this.props.addB2bClientError &&
                           this.props.addB2bClientError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
@@ -124,8 +134,8 @@ class B2bClientInformation extends Component {
                                 (this.state && this.state.website_url) || "",
                               business_logo:
                                 (this.state && this.state.business_logo) || "",
-                              // district:
-                              //   (this.state && this.state.district) || "",
+                              email:
+                                (this.state && this.state.email) || "",
                               city_id:
                                 (this.state && this.state.city_id) || "",
                             }}
@@ -138,6 +148,9 @@ class B2bClientInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
+                              email: Yup.string()
+                                .required("Please enter your email")
+                                .email("Please enter valid email"),
                               website_url: Yup.string()
                                 .required("Please enter website url")
                                 .url("Please enter a valid url"),
@@ -157,11 +170,7 @@ class B2bClientInformation extends Component {
                               window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
                               // Redirecting back to the login page
-                              setTimeout(() => {
-                                if (this.props.b2bclient) {
-                                  this.props.history.push("/login");
-                                }
-                              }, 2000);
+                             
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -192,6 +201,36 @@ class B2bClientInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
+                                </div>
+
+                                <div className="mb-3">
+                                  <Label for="email" className="form-label">
+                                    Email
+                                  </Label>
+                                  <Field
+                                    name="email"
+                                    placeholder="Enter email"
+                                    onChange={e =>
+                                      this.setState({
+                                        email: e.target.value,
+                                      })
+                                    }
+                                    type="text"
+                                    value={this.state.email}
+
+                                    className={
+                                      "form-control" +
+                                      (errors.email && touched.email
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+
                                 </div>
 
                                 <div className="mb-3">

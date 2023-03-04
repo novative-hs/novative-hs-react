@@ -67,7 +67,7 @@ class LabInformation extends Component {
       landline: "",
       address: "",
       city_id: "",
-      // office: "",
+      email: "",
       // province: "Punjab",
       is_digital_payment_accepted: "Yes",
       registered_by: "Lab",
@@ -215,6 +215,10 @@ class LabInformation extends Component {
                                 (this.state &&
                                   this.state.main_lab_account_id) ||
                                 "",
+                              email:
+                              (this.state &&
+                                this.state.email) ||
+                              "",
                               logo: (this.state && this.state.logo) || "",
                               national_taxation_no:
                                 (this.state &&
@@ -453,7 +457,11 @@ class LabInformation extends Component {
                                     ),
                                 }
                               ),
+                              email: Yup.string()
+                                .required("Please enter your email")
+                                .email("Please enter valid email"),
                               marketer_phone: Yup.string().when(
+                                
                                 "is_registering_for_first_time",
                                 {
                                   is: val => val == "Yes",
@@ -727,6 +735,37 @@ class LabInformation extends Component {
                                     </div>
                                   </div>
                                 )}
+
+                                {/* Email field */}
+                                <div className="mb-3">
+                                  <Label for="email" className="form-label">
+                                    Email
+                                  </Label>
+                                  <Field
+                                    name="email"
+                                    placeholder="Enter email"
+                                    onChange={e =>
+                                      this.setState({
+                                        email: e.target.value,
+                                      })
+                                    }
+                                    type="text"
+                                    value={this.state.email}
+
+                                    className={
+                                      "form-control" +
+                                      (errors.email && touched.email
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+
+                                </div>
 
                                 {/* Landline field */}
                                 <div className="mb-3">

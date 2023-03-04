@@ -70,6 +70,7 @@ class OutPaymentsForm extends Component {
       payment_for: "",
       lab_id: "",
       b2b_id: "",
+      current_amount: "",
       invoice_id: "",
       bankaccount_id: "",
       bank_id: "",
@@ -80,16 +81,17 @@ class OutPaymentsForm extends Component {
       deposit_copy: "",
       cleared_at: "",
       is_cleared: "",
-      status: "Created",
+      status: "",
       comments: "",
       checkedoutData: "",
+      successMessage: "",
     };
     // this.toggleTab = this.toggleTab.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
   }
 
-  handleProceedClicks = () => {
+  handleSubmitClicks = () => {
     this.setState({
       outPayment: {
         payment_for: this.state.payment_for,
@@ -107,25 +109,21 @@ class OutPaymentsForm extends Component {
         comments: this.state.comments,
       },
     });
-
-    // API call to get the checkout items
+  
+    // API call to create a new outPayment record
     const { onAddNewOutPayment } = this.props;
     setTimeout(() => {
       console.log(
         onAddNewOutPayment(this.state.outPayment, this.state.user_id)
       );
     }, 2000);
-
-    // setTimeout(() => {
-    // this.setState({ outPayment: this.props.outPayment });
-
-    // // If checkout operation is successful.
-    // if (this.props.outPayment) {
-    // this.props.history.push("/donor-appointment");
-    // }
-    // }, 2000);
-    // }
+    setTimeout(() => {
+        this.props.history.push("/payment-out-pending-clearence-status");
+    }, 2000)
   };
+
+  
+  
   handleProceedClick = () => {
     this.setState({
       outPayment: {
@@ -140,7 +138,7 @@ class OutPaymentsForm extends Component {
         cheque_no: this.state.cheque_no,
         deposit_copy: this.state.deposit_copy,
         is_cleared: this.state.is_cleared,
-        status: this.state.status,
+        status: "Created",
         comments: this.state.comments,
       },
     });
@@ -150,18 +148,15 @@ class OutPaymentsForm extends Component {
     setTimeout(() => {
       console.log(
         onAddNewOutPayment(this.state.outPayment, this.state.user_id)
+        
       );
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
     }, 2000);
 
-    // setTimeout(() => {
-    // this.setState({ outPayment: this.props.outPayment });
-
-    // // If checkout operation is successful.
-    // if (this.props.outPayment) {
-    // this.props.history.push("/donor-appointment");
-    // }
-    // }, 2000);
-    // }
+    setTimeout(() => {
+      this.props.history.push("/payment-out-created-status");
+  }, 2000)
   };
 
   componentDidMount() {
@@ -280,6 +275,7 @@ class OutPaymentsForm extends Component {
         });
       }
     }
+
     const b2bList = [];
     for (let i = 0; i < b2bClients.length; i++) {
       let flag = 0;
@@ -293,11 +289,14 @@ class OutPaymentsForm extends Component {
       // }
       if (!flag) {
         b2bList.push({
-          label: b2bClients[i].business_name,
-          value: b2bClients[i].id,
+          label: `${b2bClients[i].business_name} - ${b2bClients[i].current_amount}`,
+          value: `${b2bClients[i].id}`,
+
         });
+
       }
     }
+
 
     const { bankAccounts } = this.props;
     const bankaccountList = [];
@@ -309,10 +308,12 @@ class OutPaymentsForm extends Component {
       //   }
       // }
       if (!flag) {
-        bankaccountList.push({
-          label: bankAccounts[i].account_no,
-          value: bankAccounts[i].id,
-        });
+        bankaccountList.push(
+          {
+            label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
+            value: `${bankAccounts[i].id}`,
+          }
+        );
       }
     }
 
@@ -333,6 +334,7 @@ class OutPaymentsForm extends Component {
       }
     }
 
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -343,6 +345,7 @@ class OutPaymentsForm extends Component {
             <Breadcrumbs title="Form" breadcrumbItem="OutPayment" />
             <Formik>
               <div className="checkout-tabs">
+              {this.state.successMessage && <div>{this.state.successMessage}</div>}
                 <Row>
                   <Col lg="1" sm="1">
                   </Col>
@@ -524,6 +527,31 @@ class OutPaymentsForm extends Component {
                             )
 
                           ) : null}
+
+                          {/* {this.state.b2b_id ? (
+                            <div className="mb-3">
+                              <Label className="form-label">B2BClient name</Label>
+                              <Field
+                                name="b2b_id"
+                                as="select"
+                                onChange={selectedGroup => {
+                                  const selectedB2B = b2bList.find(b2b_id => b2b_id.value === selectedGroup.value);
+                                  this.setState({
+                                    b2b_id: selectedGroup.value,
+                                    current_amount: selectedB2B.current_amount,
+                                  });
+                                }}
+                                className="form-control"
+                                readOnly={true}
+                                multiple={false}
+                              >
+                                <option key={this.state.b2b_id} value={this.state.b2b_id}>
+                                  {this.state.b2b_id}
+                                </option>
+                              </Field>
+                            </div>
+                          ) : null} */}
+
 
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput">
@@ -893,7 +921,7 @@ class OutPaymentsForm extends Component {
                               <button
                                 to="/dashboard-financeofficer"
                                 className="btn btn-danger"
-                                onClick={this.handleProceedClicks}
+                                onClick={this.handleSubmitClicks}
                               // disabled={this.state.carts.length == 0}
                               >
                                 <i className="mdi mdi-truck-fast me-1" />
@@ -921,6 +949,7 @@ OutPaymentsForm.propTypes = {
   labsMof: PropTypes.array,
   banks: PropTypes.array,
   bankAccounts: PropTypes.array,
+  history: PropTypes.object,
   b2bClients: PropTypes.array,
   // units: PropTypes.array,
   outPayments: PropTypes.array,

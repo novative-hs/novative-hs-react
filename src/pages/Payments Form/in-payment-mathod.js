@@ -161,6 +161,9 @@ class InPaymentsForm extends Component {
         onAddInPaymentData(this.state.inPayment, this.state.user_id)
       );
     }, 2000);
+    setTimeout(() => {
+      this.props.history.push("/payment-status");
+  }, 2000)
 
     // setTimeout(() => {
     // this.setState({ inPayment: this.props.inPayment });
@@ -304,7 +307,7 @@ class InPaymentsForm extends Component {
       if (!flag) {
         labList.push(
           {
-            label: `${labs[i].name} - ${labs[i].order_id}`,
+            label: `${labs[i].name}`,
             value: `${labs[i].id}`,
           },
         );
@@ -1152,7 +1155,7 @@ class InPaymentsForm extends Component {
                               
                             </Col>
                             <Col sm="6">
-                            <div className="text-end">
+                              <div className="text-end">
                                 <button
                                   component={Link}
                                   onClick={this.handleProceedClick}
@@ -1188,6 +1191,7 @@ InPaymentsForm.propTypes = {
   className: PropTypes.any,
   onGetlabs: PropTypes.func,
   onGetdonors: PropTypes.func,
+  history: PropTypes.object,
   onGetInPayment: PropTypes.func,
   // onGetUnits: PropTypes.func,
   onAddInPaymentData: PropTypes.func,

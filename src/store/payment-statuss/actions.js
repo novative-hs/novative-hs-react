@@ -38,9 +38,9 @@ import {
   UPDATE_PAYMENTINBOUNCED_STATUS,
   UPDATE_PAYMENTINBOUNCED_STATUS_SUCCESS,
   UPDATE_PAYMENTINBOUNCED_STATUS_FAIL,
-  ADD_NEW_OUT_PAYMENT,
-  ADD_OUT_PAYMENT_SUCCESS,
-  ADD_OUT_PAYMENT_FAIL,
+  // ADD_NEW_OUT_PAYMENT,
+  // ADD_OUT_PAYMENT_SUCCESS,
+  // ADD_OUT_PAYMENT_FAIL,
   GET_LABS,
   GET_LABS_SUCCESS,
   GET_LABS_FAIL,
@@ -284,20 +284,20 @@ export const updatePaymentInBouncedStatusFail = error => ({
   type: UPDATE_PAYMENTINBOUNCED_STATUS_FAIL,
   payload: error,
 });
-export const addNewOutPayment = (outPayment, id) => ({
-  type: ADD_NEW_OUT_PAYMENT,
-  payload: { outPayment, id },
-});
+// export const addNewOutPayment = (outPayment, id) => ({
+//   type: ADD_NEW_OUT_PAYMENT,
+//   payload: { outPayment, id },
+// });
 
-export const addOutPaymentSuccess = outPayment => ({
-  type: ADD_OUT_PAYMENT_SUCCESS,
-  payload: outPayment,
-});
+// export const addOutPaymentSuccess = outPayment => ({
+//   type: ADD_OUT_PAYMENT_SUCCESS,
+//   payload: outPayment,
+// });
 
-export const addOutPaymentFail = error => ({
-  type: ADD_OUT_PAYMENT_FAIL,
-  payload: error,
-});
+// export const addOutPaymentFail = error => ({
+//   type: ADD_OUT_PAYMENT_FAIL,
+//   payload: error,
+// });
 export const deletePaymentout = paymentout => ({
   type: DELETE_PAYMENTOUT,
   payload: paymentout,

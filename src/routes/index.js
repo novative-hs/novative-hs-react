@@ -37,7 +37,7 @@ import ConfirmPwd from "../pages/Authentication/ConfirmPassword";
 import DashboardPatient from "../pages/Dashboard-Patient/index";
 import DashboardLab from "../pages/Dashboard-Lab/index";
 import DashboardB2b from "../pages/Dashboard-B2b/index";
-import DashboardFinanceOfficer from "pages/Dashboard-FinanceOfficer/StackedColumnChart";
+// import DashboardFinanceOfficer from "pages/Dashboard-FinanceOfficer/StackedColumnChart";
 import FinanceOfficerProfile from "../pages/Authentication/StaffProfile";
 //Finance Admin
 import DashboardFinanceAdmin from "pages/Dashboard-FinanceAdmin";
@@ -166,6 +166,9 @@ import Advertisements from "pages/MarketerAdmin/advertisement";
 import AdvertisementPriceLists from "pages/MarketerAdmin/advertisement-price-list";
 import DiscountLabHazir from "pages/MarketerAdmin/discount-labhazir";
 import labsList from "pages/MarketerAdmin/labs-list";
+import labList from "pages/FinanceAdmin/labs-list";
+import donorList from "pages/FinanceAdmin/donors-list";
+import b2bList from "pages/FinanceAdmin/b2bclients-list";
 import discountLab from "pages/MarketerAdmin/discount-lab";
 import LabAdvertisementRequests from "pages/MarketerAdmin/pending-lab-advertisement-requests";
 import LabAdvertisementRequestsAccepted from "pages/MarketerAdmin/accepted-lab-advertisement-requests";
@@ -377,7 +380,7 @@ const b2bclientAuthProtectedRoutes = [
   },
 ];
 const financeOfficerAuthProtectedRoutes = [
-  { path: "/dashboard-financeofficer", component: DashboardFinanceOfficer },
+  // { path: "/dashboard-financeofficer", component: DashboardFinanceOfficer },
   { path: "/financeofficer-profile", component: FinanceOfficerProfile },
   { path: "/in-payment", component: InPayments },
   
@@ -425,6 +428,10 @@ const financeAdminAuthProtectedRoutes = [
   {path: "/bank-account", component: BankAccounts},
   {path: "/banks-list", component: BanksList},
   {path: "/bankaccounts-list", component: BankAccountsList},
+  { path: "/lab-details", component: labList},
+  { path: "/donor-details", component: donorList},
+  { path: "/b2bclients-details", component: b2bList},
+
 
   // { path: "/financeadmin-profile", component: FinanceAdminProfile },
 ];

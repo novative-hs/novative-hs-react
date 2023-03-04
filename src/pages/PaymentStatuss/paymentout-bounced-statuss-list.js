@@ -45,10 +45,13 @@ import {
   getLabs,
   getBankAccounts,
 
-  addNewOutPayment,
+  // addNewOutPayment,
   getBouncedStatuss,
   updatePaymentOutCreatedStatuss,
 } from "store/payment-statuss/actions";
+import {
+  addNewOutPayment,
+} from "store/outpayments/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";

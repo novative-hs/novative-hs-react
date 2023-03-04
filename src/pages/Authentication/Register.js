@@ -24,7 +24,7 @@ class Register extends Component {
     super(props);
     this.state = {
       usernameFieldError: null,
-      emailFieldError: null,
+      // emailFieldError: null,
       passwordFieldError: null,
       incompleteRegistrationError: null,
       submittedMessage: null,
@@ -47,9 +47,9 @@ class Register extends Component {
       this.setState({ usernameFieldError: this.props.usernameError });
     }
 
-    if (prevProps.emailError != this.props.emailError) {
-      this.setState({ emailFieldError: this.props.emailError });
-    }
+    // if (prevProps.emailError != this.props.emailError) {
+    //   this.setState({ emailFieldError: this.props.emailError });
+    // }
 
     if (prevProps.passwordError != this.props.passwordError) {
       this.setState({ passwordFieldError: this.props.passwordError });
@@ -200,7 +200,7 @@ class Register extends Component {
                             initialValues={{
                               username:
                                 (this.state && this.state.username) || "",
-                              email: (this.state && this.state.email) || "",
+                              // email: (this.state && this.state.email) || "",
                               password:
                                 (this.state && this.state.password) || "",
                               password2:
@@ -217,9 +217,9 @@ class Register extends Component {
                                   /^\S*$/,
                                   "Please do not include whitespaces"
                                 ),
-                              email: Yup.string()
-                                .required("Please enter your email")
-                                .email("Please enter valid email"),
+                              // email: Yup.string()
+                              //   .required("Please enter your email")
+                              //   .email("Please enter valid email"),
                               password: Yup.string().required(
                                 "Please enter your password"
                               ),
@@ -236,14 +236,14 @@ class Register extends Component {
                             })}
                             onSubmit={values => {
                               this.props.registerUser(values);
-                              console.log(window.location.href)
+                              // console.log(window.location.href)
                               window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
                               // If no error messages then show wait message
                               setTimeout(() => {
                                 if (
                                   !this.state.usernameFieldError &&
                                   !this.state.passwordFieldError &&
-                                  !this.state.emailFieldError &&
+                                  // !this.state.emailFieldError &&
                                   !this.state.incompleteRegistrationError
                                 ) {
                                   this.setState({
@@ -252,6 +252,8 @@ class Register extends Component {
                                   });
                                 }
                               }, 1000);
+                              console.log("submit", values)
+
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -291,7 +293,7 @@ class Register extends Component {
                                 </div>
 
                                 {/* Email field */}
-                                <div className="mb-3">
+                                {/* <div className="mb-3">
                                   <Label for="email" className="form-label">
                                     Email
                                   </Label>
@@ -319,7 +321,7 @@ class Register extends Component {
                                   <div className="invalid-feedback">
                                     {this.state.emailFieldError}
                                   </div>
-                                </div>
+                                </div> */}
 
                                 {/* Password field */}
                                 <div className="mb-3">
@@ -450,7 +452,7 @@ Register.propTypes = {
   registerUser: PropTypes.func,
   registerUserFailed: PropTypes.any,
   usernameError: PropTypes.any,
-  emailError: PropTypes.any,
+  // emailError: PropTypes.any,
   passwordError: PropTypes.any,
   incompleteRegistrationError: PropTypes.any,
   userID: PropTypes.any,
@@ -461,7 +463,7 @@ const mapStateToProps = state => {
   const {
     userID,
     userAccountType,
-    emailError,
+    // emailError,
     usernameError,
     passwordError,
     incompleteRegistrationError,
@@ -470,7 +472,7 @@ const mapStateToProps = state => {
   return {
     userID,
     userAccountType,
-    emailError,
+    // emailError,
     usernameError,
     passwordError,
     incompleteRegistrationError,

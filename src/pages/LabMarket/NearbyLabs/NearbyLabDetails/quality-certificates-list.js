@@ -96,68 +96,72 @@ class LabQualityCertificates extends Component {
               
             /> */}
 
-<Row>
+            <Row>
+              {!isEmpty(this.props.qualityCertificates) && (
                 <h5>ISO Certificates</h5>
-                {!isEmpty(this.props.qualityCertificates) &&
-                  this.props.qualityCertificates.map(
-                    (qualityCertificate, key) => (
-                      qualityCertificate.certificate_type == "ISO 9001 Certificate" || qualityCertificate.certificate_type == "ISO 15189 Certificate" && (
+              )}
+              {!isEmpty(this.props.qualityCertificates) &&
+                this.props.qualityCertificates.map(
+                  (qualityCertificate, key) => (
+                    qualityCertificate.certificate_type == "ISO 9001 Certificate" || qualityCertificate.certificate_type == "ISO 15189 Certificate" && (
 
-                        <Col xl="4" sm="6" key={"_col_" + key}>
-                          <Card>
-                            <CardBody>
+                      <Col xl="4" sm="6" key={"_col_" + key}>
+                        <Card>
+                          <CardBody>
 
 
-                              <div className="mt-4 text-center">
-                                <h5 className="mb-2 text-truncate">
-                                  {qualityCertificate.name}{" "}
-                                </h5>
-                                <h5 className="mb-2 text-truncate">
-                                  {qualityCertificate.lab_name}{" "}
-                                </h5>
+                            <div className="mt-4 text-center">
+                              <h5 className="mb-2 text-truncate">
+                                {qualityCertificate.name}{" "}
+                              </h5>
+                              <h5 className="mb-2 text-truncate">
+                                {qualityCertificate.lab_name}{" "}
+                              </h5>
 
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="fas fa-vial"></i> Certificate
-                                    For : {qualityCertificate.type}{" "}
-                                  </span>
-                                </div>
-
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-calendar-month"></i>{" "}
-                                    Expiry Date:{" "}
-                                    {new Date(
-                                      qualityCertificate.expiry_date
-                                    ).toLocaleDateString("en-US")}
-                                  </span>
-                                </div>
-
-                                <div className="mt-3 text-center">
-                                  <Link
-                                    to={{
-                                      pathname:
-                                        process.env.REACT_APP_BACKENDURL +
-                                        qualityCertificate.certificate,
-                                    }}
-                                    className="fw-medium text-primary"
-                                    target="_blank"
-                                  >
-                                    {" "}
-                                    View Certificate
-                                  </Link>{" "}
-                                </div>
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="fas fa-vial"></i> Certificate
+                                  For : {qualityCertificate.type}{" "}
+                                </span>
                               </div>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      )
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-calendar-month"></i>{" "}
+                                  Expiry Date:{" "}
+                                  {new Date(
+                                    qualityCertificate.expiry_date
+                                  ).toLocaleDateString("en-US")}
+                                </span>
+                              </div>
+
+                              <div className="mt-3 text-center">
+                                <Link
+                                  to={{
+                                    pathname:
+                                      process.env.REACT_APP_BACKENDURL +
+                                      qualityCertificate.certificate,
+                                  }}
+                                  className="fw-medium text-primary"
+                                  target="_blank"
+                                >
+                                  {" "}
+                                  View Certificate
+                                </Link>{" "}
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
                     )
-                  )}
-              </Row>
+                  )
+                )}
+            </Row>
             <Row>
               <Row>
-                <h5>EQA Certificates</h5>
+                {!isEmpty(this.props.qualityCertificates) && (
+                  <h5>EQA Certificates</h5>
+                )}
                 {!isEmpty(this.props.qualityCertificates) &&
                   this.props.qualityCertificates.map(
                     (qualityCertificate, key) => (
@@ -216,8 +220,9 @@ class LabQualityCertificates extends Component {
                   )}
               </Row>
               <Row>
-                <h5>Other Certificates</h5>
-                {!isEmpty(this.props.qualityCertificates) &&
+                {!isEmpty(this.props.qualityCertificates) && (
+                  <h5>Others Certificates</h5>
+                )}                {!isEmpty(this.props.qualityCertificates) &&
                   this.props.qualityCertificates.map(
                     (qualityCertificate, key) => (
                       qualityCertificate.certificate_type == "Others" && (

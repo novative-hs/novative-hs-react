@@ -25,7 +25,7 @@ class SampleCollectorRegister extends Component {
     super(props);
     this.state = {
       usernameFieldError: null,
-      emailFieldError: null,
+      // emailFieldError: null,
       passwordFieldError: null,
       incompleteRegistrationError: null,
       submittedMessage: null,
@@ -48,9 +48,9 @@ class SampleCollectorRegister extends Component {
       this.setState({ usernameFieldError: this.props.usernameError });
     }
 
-    if (prevProps.emailError != this.props.emailError) {
-      this.setState({ emailFieldError: this.props.emailError });
-    }
+    // if (prevProps.emailError != this.props.emailError) {
+    //   this.setState({ emailFieldError: this.props.emailError });
+    // }
 
     if (prevProps.passwordError != this.props.passwordError) {
       this.setState({ passwordFieldError: this.props.passwordError });
@@ -138,7 +138,7 @@ class SampleCollectorRegister extends Component {
                         enableReinitialize={true}
                         initialValues={{
                           username: (this.state && this.state.username) || "",
-                          email: (this.state && this.state.email) || "",
+                          // email: (this.state && this.state.email) || "",
                           password: (this.state && this.state.password) || "",
                           password2: (this.state && this.state.password2) || "",
                           account_type:
@@ -153,9 +153,9 @@ class SampleCollectorRegister extends Component {
                               /^\S*$/,
                               "Please do not include whitespaces"
                             ),
-                          email: Yup.string()
-                            .required("Please enter your email")
-                            .email("Please enter valid email"),
+                          // email: Yup.string()
+                          //   .required("Please enter your email")
+                          //   .email("Please enter valid email"),
                           password: Yup.string().required(
                             "Please enter your password"
                           ),
@@ -177,7 +177,7 @@ class SampleCollectorRegister extends Component {
                             if (
                               !this.state.usernameFieldError &&
                               !this.state.passwordFieldError &&
-                              !this.state.emailFieldError &&
+                              // !this.state.emailFieldError &&
                               !this.state.incompleteRegistrationError
                             ) {
                               this.setState({
@@ -225,7 +225,7 @@ class SampleCollectorRegister extends Component {
                             </div>
 
                             {/* Email field */}
-                            <div className="mb-3">
+                            {/* <div className="mb-3">
                               <Label for="email" className="form-label">
                                 Email
                               </Label>
@@ -255,7 +255,7 @@ class SampleCollectorRegister extends Component {
                               <div className="invalid-feedback">
                                 {this.state.emailFieldError}
                               </div>
-                            </div>
+                            </div> */}
 
                             {/* Password field */}
                             <div className="mb-3">
@@ -363,7 +363,7 @@ SampleCollectorRegister.propTypes = {
   registerUser: PropTypes.func,
   registerUserFailed: PropTypes.any,
   usernameError: PropTypes.any,
-  emailError: PropTypes.any,
+  // emailError: PropTypes.any,
   passwordError: PropTypes.any,
   incompleteRegistrationError: PropTypes.any,
   userID: PropTypes.any,
@@ -374,7 +374,7 @@ const mapStateToProps = state => {
   const {
     userID,
     userAccountType,
-    emailError,
+    // emailError,
     usernameError,
     passwordError,
     incompleteRegistrationError,
@@ -383,7 +383,7 @@ const mapStateToProps = state => {
   return {
     userID,
     userAccountType,
-    emailError,
+    // emailError,
     usernameError,
     passwordError,
     incompleteRegistrationError,

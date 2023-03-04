@@ -109,6 +109,16 @@ class DonorInformation extends Component {
                             </Alert>
                           ) : null}
 
+                          {this.props.donor&& this.props.donor? (
+                             setTimeout(() => {
+                              if (this.props.donor) {
+                                this.props.history.push("/login");
+                              }
+                            }, 2000)
+                          ) : null}
+
+                          
+
                           {this.props.addDonorError &&
                           this.props.addDonorError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
@@ -145,6 +155,9 @@ class DonorInformation extends Component {
                                   /^[a-zA-Z][a-zA-Z ]+$/,
                                   "Please enter only alphabets and spaces"
                                 ),
+                              email: Yup.string()
+                                .required("Please enter your email")
+                                .email("Please enter valid email"),
                               phone: Yup.string()
                                 .required("Please enter your phone no.")
                                 .max(255, "Please enter maximum 255 characters")
@@ -160,11 +173,7 @@ class DonorInformation extends Component {
                               );
                               window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
                               // Redirecting back to the login page
-                              setTimeout(() => {
-                                if (this.props.donor) {
-                                  this.props.history.push("/login");
-                                }
-                              }, 2000);
+                              
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -232,14 +241,17 @@ class DonorInformation extends Component {
                                   <Field
                                     name="email"
                                     placeholder="Enter email"
+                                    onChange={e =>
+                                      this.setState({
+                                        email: e.target.value,
+                                      })
+                                    }
                                     type="text"
-                                    onFocus={() => {
-                                      this.setState({ emailFieldError: null });
-                                    }}
+                                    value={this.state.email}
+
                                     className={
                                       "form-control" +
-                                      ((errors.email && touched.email) ||
-                                      this.state.emailFieldError
+                                      (errors.email && touched.email
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -250,9 +262,6 @@ class DonorInformation extends Component {
                                     className="invalid-feedback"
                                   />
 
-                                  <div className="invalid-feedback">
-                                    {this.state.emailFieldError}
-                                  </div>
                                 </div>
                                   {/* Type field */}
                                   <div className="mb-3">

@@ -30,6 +30,7 @@ class StaffInfo extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
     };
+    console.log(this.props.staff.staff_type)
   }
 
   componentDidMount() {
@@ -61,6 +62,7 @@ class StaffInfo extends Component {
                       enableReinitialize={true}
                       initialValues={{
                         name: (staff && staff.name) || "",
+                        email: (staff && staff.email) || "",
                         cnic: (staff && staff.cnic) || "",
                         phone: (staff && staff.phone) || "",
                         territory_office: (staff && staff.territory_office) || "",
@@ -83,6 +85,9 @@ class StaffInfo extends Component {
                             /^[0-9]{5}-[0-9]{7}-[0-9]$/,
                             "Please enter a valid CNIC e.g. 37106-8234782-3"
                           ),
+                        email: Yup.string()
+                          .required("Please enter your email")
+                          .email("Please enter valid email"),
                         phone: Yup.string()
                           .required("Please enter phone")
                           .matches(
@@ -99,6 +104,7 @@ class StaffInfo extends Component {
                       })}
                       onSubmit={values => {
                         const newStaff = {
+                          email: values.email,
                           name: values.name,
                           cnic: values.cnic,
                           phone: values.phone,
@@ -159,6 +165,7 @@ class StaffInfo extends Component {
                                     this.setState({
                                       staff: {
                                         name: e.target.value,
+                                        email: staff.email,
                                         cnic: staff.cnic,
                                         phone: staff.phone,
                                         territory_office: staff.territory_office,
@@ -183,6 +190,40 @@ class StaffInfo extends Component {
                               </div>
 
                               <div className="mb-3">
+                                <Label className="form-label">Name</Label>
+                                <Field
+                                  name="email"
+                                  type="text"
+                                  placeholder="Enter email"
+                                  value={this.state.staff.email}
+                                  onChange={e => {
+                                    this.setState({
+                                      staff: {
+                                        email: e.target.value,
+                                        name: staff.name,
+                                        cnic: staff.cnic,
+                                        phone: staff.phone,
+                                        territory_office: staff.territory_office,
+                                        roles: staff.roles,
+                                        city: staff.city,
+                                        photo: staff.photo,
+                                      },
+                                    });
+                                  }}
+                                  className={
+                                    "form-control" +
+                                    (errors.email && touched.email
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="email"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
+                              <div className="mb-3">
                                 <Label className="form-label">CNIC</Label>
                                 <Field
                                   name="cnic"
@@ -193,6 +234,7 @@ class StaffInfo extends Component {
                                     this.setState({
                                       staff: {
                                         name: staff.name,
+                                        email: staff.email,
                                         cnic: e.target.value,
                                         phone: staff.phone,
                                         territory_office: staff.territory_office,
@@ -226,6 +268,7 @@ class StaffInfo extends Component {
                                     this.setState({
                                       staff: {
                                         name: staff.name,
+                                        email: staff.email,
                                         cnic: staff.cnic,
                                         phone: e.target.value,
                                         territory_office: staff.territory_office,
@@ -292,6 +335,7 @@ class StaffInfo extends Component {
                                                         this.setState({
                                                           staff: {
                                                             name: staff.name,
+                                                            email: staff.email,
                                                             cnic: staff.cnic,
                                                             phone: staff.phone,
                                                             territory_office: e.target.value,
@@ -333,6 +377,7 @@ class StaffInfo extends Component {
                                     this.setState({
                                       staff: {
                                         name: staff.name,
+                                        email: staff.email,
                                         cnic: staff.cnic,
                                         phone: staff.phone,
                                         territory_office: staff.territory_office,
