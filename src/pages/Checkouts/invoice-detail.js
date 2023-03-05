@@ -207,9 +207,11 @@ class InvoiceDetail extends Component {
                           >
                             <i className="fa fa-print" />
                           </Link>{" "}
-                          <Link to="#" className="btn btn-primary w-md">
+
+                          {/* <Link to="#" className="btn btn-primary w-md">
                             Send
-                          </Link>
+                          </Link> */}
+
                         </div>
                       </div>
                     </CardBody>
