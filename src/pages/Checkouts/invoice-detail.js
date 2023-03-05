@@ -29,6 +29,18 @@ class InvoiceDetail extends Component {
     window.print();
   };
 
+  sendInvoice = () => {
+    const message = `Here's the invoice I received from Lab Hazir:
+    ${window.location.href}`;
+  
+    const url = `https://web.whatsapp.com/send?text=${encodeURIComponent(
+      message
+    )}`;
+  
+    window.open(url);
+  };
+  
+
   render() {
     return (
       <React.Fragment>
@@ -207,10 +219,10 @@ class InvoiceDetail extends Component {
                           >
                             <i className="fa fa-print" />
                           </Link>{" "}
-
                           {/* <Link to="#" className="btn btn-primary w-md">
                             Send
                           </Link> */}
+                          <button className="btn btn-success me-1" onClick={this.sendInvoice}>Send on WhatsApp</button>
 
                         </div>
                       </div>
