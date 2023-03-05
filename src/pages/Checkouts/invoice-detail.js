@@ -11,6 +11,7 @@ import logo from "../../assets/images/logo-dark.png";
 import PropTypes from "prop-types";
 import { getInvoiceDetail } from "store/invoices/actions";
 import { connect } from "react-redux";
+import QRCode from "qrcode.react";
 
 class InvoiceDetail extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class InvoiceDetail extends Component {
                       </div>
                       <hr />
                       <Row>
-                        <Col sm="6" className="mt-3">
+                        <Col sm="4" className="mt-3">
                           <address>
                             <strong>Patient Detail:</strong>
                             <br />
@@ -64,7 +65,7 @@ class InvoiceDetail extends Component {
                             {this.props.invoiceDetail[0].patient_email}
                           </address>
                         </Col>
-                        <Col sm="6" className="mt-3 text-sm-end">
+                        <Col sm="4" className="mt-3">
                           <address>
                             <strong>Lab Detail:</strong>
                             <br />
@@ -77,10 +78,15 @@ class InvoiceDetail extends Component {
                             {this.props.invoiceDetail[0].lab_address}
                           </address>
                         </Col>
+                        <Col sm="4" className="mt-3 text-sm-end">
+                        <div className="mt-3">
+                        <QRCode value="LabHazir Tax No: 9157548-3" size={100} fgColor="#000000" bgColor="#FFFFFF" />
+                      </div>
+                        </Col>
                       </Row>
 
                       <Row>
-                        <Col sm="6" className="mt-3">
+                        <Col sm="4" className="mt-3">
                           <address>
                             <strong>Payment Detail:</strong>
                             <br />
@@ -99,7 +105,7 @@ class InvoiceDetail extends Component {
                           </address>
                         </Col>
 
-                        <Col sm="6" className="mt-3 text-sm-end">
+                        <Col sm="4" className="mt-3">
                           <address>
                             <strong>Order Detail:</strong>
                             <br />
@@ -109,6 +115,8 @@ class InvoiceDetail extends Component {
                             <br />
                             <br />
                           </address>
+                        </Col>
+                        <Col sm="4" className="mt-3 text-sm-end">
                         </Col>
                       </Row>
 
@@ -188,7 +196,9 @@ class InvoiceDetail extends Component {
                                     </strong>
                                   </span>
                                   </div>
+                    
                       <div className="d-print-none">
+                      
                         <div className="float-end">
                           <Link
                             to="#"
