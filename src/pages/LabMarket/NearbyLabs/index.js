@@ -1333,6 +1333,17 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             }
                           >
+                            {/* <div className="product-img position-relative">
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                           
+                              className="img-thumbnail mx-auto d-block rounded"
+                              />
+                          </div> */}
                             <div className=" text-end" style={{
                               width: '200px',
                               height: '100px',
@@ -1340,9 +1351,13 @@ class NearbyLabs extends Component {
                               <img
                                 src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
                                 alt="Lab Logo"
+                                className=" text-end"
                                 style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
                               />
                             </div>
+
+
+
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -1460,16 +1475,15 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             }
                           >
-                            <div className="product-img position-relative">
+                            <div className=" text-end" style={{
+                              width: '200px',
+                              height: '100px',
+                            }}>
                               <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  nearbyLab.logo
-                                }
+                                src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
                                 alt="Lab Logo"
-
-
-                                className="img-thumbnail mx-auto d-block rounded"
+                                className=" text-end"
+                                style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
                               />
                             </div>
                           </Link>
