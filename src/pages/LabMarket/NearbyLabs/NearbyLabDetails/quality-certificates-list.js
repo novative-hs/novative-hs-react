@@ -103,7 +103,7 @@ class LabQualityCertificates extends Component {
               {!isEmpty(this.props.qualityCertificates) &&
                 this.props.qualityCertificates.map(
                   (qualityCertificate, key) => (
-                    qualityCertificate.certificate_type == "ISO 9001 Certificate" || qualityCertificate.certificate_type == "ISO 15189 Certificate" && (
+                    qualityCertificate.certificate_type == "ISO 9001 Certificate" || qualityCertificate.certificate_type == "ISO 15189 Certificate" ? (
 
                       <Col xl="4" sm="6" key={"_col_" + key}>
                         <Card>
@@ -153,7 +153,7 @@ class LabQualityCertificates extends Component {
                           </CardBody>
                         </Card>
                       </Col>
-                    )
+                    ): null
                   )
                 )}
             </Row>
