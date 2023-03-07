@@ -1277,16 +1277,16 @@ class AccountStatements extends Component {
                               <td className="border-10">
                               <p className="float-end">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_payment_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
-                                </p>
+                              </p>
                               </td>
                               <td className="border-10">
                               <p className="float-end">
                                 {
-                                  this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  this.props.accountStatements.slice(-1).pop().total_payment_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
-                              </p>
+                                </p>
                               </td>
                               <td className="border-10">
                               <p className="float-end">

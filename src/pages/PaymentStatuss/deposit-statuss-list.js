@@ -51,7 +51,7 @@ class PaymentStatussList extends Component {
       paymentStatuss: [],
       paymentStatus: "",
       modal: false,
-      payment_status:"Deposited",
+      status:"Deposited",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -150,7 +150,7 @@ class PaymentStatussList extends Component {
           ),
         },
         {
-          dataField: "payment_status",
+          dataField: "status",
           text: "Status",
           sort: true,
         },
@@ -242,7 +242,7 @@ class PaymentStatussList extends Component {
         id: arg.id,
         cleared_at: arg.cleared_at,
         is_cleared: arg.is_cleared,
-        payment_status: arg.payment_status,
+        status: arg.status,
       },
       isEdit: true,
     });
@@ -361,10 +361,10 @@ class PaymentStatussList extends Component {
                                                 this.state.paymentStatus
                                                   .cleared_at) ||
                                               "",
-                                            payment_status:
+                                            status:
                                               (this.state.paymentStatus &&
                                                 this.state.paymentStatus
-                                                  .payment_status) ||
+                                                  .status) ||
                                               "",
 
                                           }}
