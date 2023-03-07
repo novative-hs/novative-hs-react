@@ -160,7 +160,7 @@ class PaymentStatussList extends Component {
           sort: true,
         },
         {
-          dataField: "status",
+          dataField: "payment_status",
           text: "Status",
           sort: true,
         },

@@ -79,13 +79,37 @@ class CartList extends Component {
 
         },
         {
-          dataField: "discount",
+          dataField: "lab_discount",
           text: "Discount (%)",
           sort: true,
           formatter: (cellContent, cart) => (
             <>
               {(
-                <span>{(cart.discount * 100).toFixed()}%</span>
+                <span>{(cart.lab_discount * 100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
+        {
+          dataField: "labhaz_discount_test",
+          text: "Discount (%)",
+          sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{(cart.labhaz_discount_test * 100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
+        {
+          dataField: "discount_by_labhazir",
+          text: "Discount (%)",
+          sort: true,
+          formatter: (cellContent, cart) => (
+            <>
+              {(
+                <span>{(cart.discount_by_labhazir * 100).toFixed()}%</span>
               )}
             </>
           ),
@@ -97,7 +121,7 @@ class CartList extends Component {
           formatter: (cellContent, cart) => (
             <>
               {(
-                <span>{cart.total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                <span>{cart.total_balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               )}
             </>
           ),

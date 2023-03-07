@@ -1110,7 +1110,7 @@ class Checkout extends Component {
                                       <Th scope="col" style={{width: '20%'}} className="text-start px-4">Test Name</Th>
                                       <Th scope="col" style={{width: '25%'}} className="text-end px-4">Price</Th>
                                       <Th scope="col" style={{width: '25%'}} className="text-end px-4">Sum Of Discount (Lab+LabHazir)</Th>
-                                      <Th scope="col" style={{width: '25%'}} className="text-end px-4">Net Payment</Th>
+                                      <Th scope="col" style={{width: '25%'}} className="text-end px-4">Net Payable</Th>
 
                                     </Tr>
                                   </Thead>
@@ -1143,7 +1143,7 @@ class Checkout extends Component {
                                                 </Td>
                                                 <Td>
                                                   <p className="text-end px-4">
-                                                  {item.current_amount}
+                                                  {item.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                   </p>
                                                 </Td>
                                               </Tr>

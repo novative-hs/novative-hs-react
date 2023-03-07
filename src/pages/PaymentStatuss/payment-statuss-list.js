@@ -53,7 +53,7 @@ class PaymentStatussList extends Component {
       paymentStatuss: [],
       paymentStatus: "",
       modal: false,
-      status: "Created",
+      payment_status: "",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -173,7 +173,7 @@ class PaymentStatussList extends Component {
           ),
         },
         {
-          dataField: "status",
+          dataField: "payment_status",
           text: "Status",
           sort: true,
         },
@@ -300,7 +300,7 @@ class PaymentStatussList extends Component {
         // deposited_at: arg.deposited_at,
         bankaccount_id: arg.bankaccount_id,
         deposit_slip: arg.deposit_slip,
-        status: "Deposited",
+        payment_status: "Deposited",
       },
       isEdit: true,
     });
@@ -446,10 +446,10 @@ class PaymentStatussList extends Component {
                                                 this.state.paymentStatus
                                                   .deposit_slip) ||
                                               "",
-                                            status:
+                                            payment_status:
                                               (this.state.paymentStatus &&
                                                 this.state.paymentStatus
-                                                  .status) ||
+                                                  .payment_status) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -488,8 +488,8 @@ class PaymentStatussList extends Component {
                                               bankaccount_id: values.bankaccount_id,
                                               deposit_slip: values.deposit_slip,
                                              
-                                              status:
-                                                values.status,
+                                              payment_status:
+                                                values.payment_status,
                                                 
                                             };
 
