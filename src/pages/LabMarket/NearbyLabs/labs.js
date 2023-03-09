@@ -1057,7 +1057,7 @@ class NearbyLabs extends Component {
                               : `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                           }
                         >
-                          <div className=" text-end" style={{
+                          <div style={{
                             width: '200px',
                             height: '100px',
                           }}>
@@ -1184,7 +1184,7 @@ class NearbyLabs extends Component {
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           }
                         >
-                          <div className=" text-end" style={{
+                          <div style={{
                             width: '200px',
                             height: '100px',
                           }}>

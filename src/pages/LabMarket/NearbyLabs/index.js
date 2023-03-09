@@ -1344,7 +1344,7 @@ class NearbyLabs extends Component {
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div> */}
-                            <div className=" text-end" style={{
+                            <div style={{
                               width: '200px',
                               height: '100px',
                             }}>
@@ -1475,7 +1475,7 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             }
                           >
-                            <div className=" text-end" style={{
+                            <div style={{
                               width: '200px',
                               height: '100px',
                             }}>
