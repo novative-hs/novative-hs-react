@@ -87,18 +87,18 @@ class NearbyPackage extends Component {
   }
 
   componentDidMount() {
-    let matchingMenuItem = null;
-    const ul = document.getElementById("navigation");
-    const items = ul.getElementsByTagName("a");
-    for (let i = 0; i < items.length; ++i) {
-      if (this.props.location.pathname === items[i].pathname) {
-        matchingMenuItem = items[i];
-        break;
-      }
-    }
-    if (matchingMenuItem) {
-      this.activateParentDropdown(matchingMenuItem);
-    }
+    // let matchingMenuItem = null;
+    // const ul = document.getElementById("navigation");
+    // const items = ul.getElementsByTagName("a");
+    // for (let i = 0; i < items.length; ++i) {
+    //   if (this.props.location.pathname === items[i].pathname) {
+    //     matchingMenuItem = items[i];
+    //     break;
+    //   }
+    // }
+    // if (matchingMenuItem) {
+    //   this.activateParentDropdown(matchingMenuItem);
+    // }
     let latitude;
     let longitude;
 
@@ -165,6 +165,32 @@ class NearbyPackage extends Component {
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
   };
+  // activateParentDropdown = item => {
+  //   item.classList.add("active");
+  //   const parent = item.parentElement;
+  //   if (parent) {
+  //     parent.classList.add("active"); // li
+  //     const parent2 = parent.parentElement;
+  //     parent2.classList.add("active"); // li
+  //     const parent3 = parent2.parentElement;
+  //     if (parent3) {
+  //       parent3.classList.add("active"); // li
+  //       const parent4 = parent3.parentElement;
+  //       if (parent4) {
+  //         parent4.classList.add("active"); // li
+  //         const parent5 = parent4.parentElement;
+  //         if (parent5) {
+  //           parent5.classList.add("active"); // li
+  //           const parent6 = parent5.parentElement;
+  //           if (parent6) {
+  //             parent6.classList.add("active"); // li
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // };
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { nearbyPackages } = this.props;
@@ -1062,7 +1088,13 @@ class NearbyPackage extends Component {
                               
                             </div>
                             )} */}
-                            
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-stopwatch"></i> Reporting
+                                Time: {nearbyPackage.duration_required}{" "}
+                                {nearbyPackage.duration_type}
+                              </span>
+                            </div>
                             <div className="my-0">
                               <Link
                                 to={
@@ -1081,20 +1113,18 @@ class NearbyPackage extends Component {
                                 {nearbyPackage.lab_name}
                               </span> */}
                             </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-stopwatch"></i> Reporting
-                                Time: {nearbyPackage.duration_required}{" "}
-                                {nearbyPackage.duration_type}
-                              </span>
-                            </div>
                            
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-home"></i> Home Sampling:{" "}
-                                {nearbyPackage.is_home_sampling_available}
-                              </span>
-                            </div>
+                             <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyPackage.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
 
                             {/* <div className="my-0">
                               <span className="text-muted me-2">

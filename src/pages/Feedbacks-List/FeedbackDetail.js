@@ -66,7 +66,7 @@ class FeedbackDetail extends Component {
                         <Col lg={2} md={2} sm={4}>
                           <div className="my-0">
                             <StarRatings
-                              rating={feedback.rating}
+                              rating={feedback.rating_values}
                               starRatedColor="#F1B44C"
                               starEmptyColor="#2D363F"
                               numberOfStars={5}

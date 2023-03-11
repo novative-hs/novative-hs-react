@@ -64,18 +64,72 @@ class ReferrelLabFee extends Component {
             formatter: (cellContent, referrelFeeLabs) => <>{referrelFeeLabs.id}</>,
           },
           {
-            dataField: "lab_name",
-            text: "Lab Name",
+            dataField: "test_id",
+            text: "Test ID",
             sort: true,
           },
           {
             dataField: "test_name",
             text: "Test Name",
             sort: true,
-            headerStyle: () => {
-              return { width: "30%" };
-            } 
+            // headerStyle: () => {
+            //   return { width: "30%" };
+            // } 
+            formatter: (cellContent, referrelFeeLab) => (
+              <>
+              <div className="text-start">
+                   {referrelFeeLab.test_name}
+              </div>
+              </>
+            ),
           },
+          {
+            dataField: "test_categories",
+            text: "Test Categories",
+            sort: true,
+            // headerStyle: () => {
+            //   return { width: "30%" };
+            // } 
+            formatter: (cellContent, referrelFeeLab) => (
+              <>
+              <div className="text-start">
+                   {referrelFeeLab.test_categories}
+              </div>
+              </>
+            ),
+          },
+          {
+            dataField: "lab_city",
+            text: "Lab City",
+            sort: true,
+            // headerStyle: () => {
+            //   return { width: "30%" };
+            // } 
+            formatter: (cellContent, referrelFeeLab) => (
+              <>
+              <div className="text-start">
+                   {referrelFeeLab.lab_city}
+              </div>
+              </>
+            ),
+          },
+          {
+            dataField: "lab_name",
+            text: "Lab Name",
+            sort: true,
+            formatter: (cellContent, referrelFeeLab) => (
+              <>
+              <div className="text-start">
+                   {/* {referrelFeeLab.lab_name} */}
+                   <Link to={`/shared-percentage-approved-Fee/${referrelFeeLab.lab_id}`}>
+                        {referrelFeeLab.lab_name}
+                   </Link>
+              </div>
+              </>
+            ),
+          },
+         
+
           // {
           //   dataField: "duration_required",
           //   text: "Turn Around Time",
@@ -95,7 +149,15 @@ class ReferrelLabFee extends Component {
             dataField: "price",
             text: "Test Price",
             sort: true,
+            formatter: (cellContent, referrelFeeLab) => (
+              <>
+              <div className="text-end">
+                   {referrelFeeLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </div>
+              </>
+            ),
           },
+         
           // {
           //   dataField: "is_eqa_participation",
           //   text: "EQA participation",
@@ -113,11 +175,13 @@ class ReferrelLabFee extends Component {
           // },
         {
           dataField: "shared_percentage",
-          text: "Referrel Fee (%)",
+          text: "Referrel (%)",
           sort: true,
           formatter: (cellContent, referrelFeeLab) => (
             <>
-              {(                <span>{(referrelFeeLab.shared_percentage * 100).toFixed()}%</span>
+              {(               
+                              <div className="text-center">
+                              {(referrelFeeLab.shared_percentage * 100).toFixed()}%</div>
 
               )}
             </>
@@ -125,12 +189,13 @@ class ReferrelLabFee extends Component {
         },
         {
           dataField: "shared_percentage",
-          text: "Referrel Values (Rs)",
+          text: "Referrel Value",
           sort: true,
           formatter: (cellContent, referrelFeeLab) => (
             <>
-              {(
-                <span>{(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}</span>
+              {(              <div className="text-end">
+
+                {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}</div>
 
               )}
             </>
@@ -334,7 +399,7 @@ class ReferrelLabFee extends Component {
     const referrelFeeLab = this.state.referrelFeeLab;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 100,
       totalSize: referrelFeeLabs.length, // replace later with size(referrelFeeLabs),
       custom: true,
     };
@@ -395,7 +460,7 @@ class ReferrelLabFee extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                                <Col sm="8">
+                                {/* <Col sm="8">
                                   <div className="text-sm-end">
                                     <Button
                                       color="primary"
@@ -406,7 +471,7 @@ class ReferrelLabFee extends Component {
                                       All
                                     </Button>
                                   </div>
-                                </Col>
+                                </Col> */}
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">

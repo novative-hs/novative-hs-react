@@ -108,7 +108,9 @@ export const GET_PUT_REFERREL_FEES = `${API_ENDPOINT}/api/registration-admin/app
 export const UPDATE_REFERREL_FEE = `${API_ENDPOINT}/api/registration-admin/update-referrel-fee-labhazir`;
 export const UPDATE_REFERREL_ALL_FEE = `${API_ENDPOINT}/api/registration-admin/all-referrel-fee-labhazir`;
 export const GET_LABS_LIST_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/lab-list-pending`;
+export const GET_LABS_LIST_APPROVED_FEE = `${API_ENDPOINT}/api/registration-admin/lab-list-approved`;
 export const GET_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
+export const GET_SHARED_PERCENTAGE_APPROVED_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_Approved_tests`;
 export const UPDATE_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
 export const UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_all_pending_tests`;
 

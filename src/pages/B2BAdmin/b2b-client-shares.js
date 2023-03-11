@@ -64,6 +64,7 @@ class B2bLabSharesList extends Component {
           dataField: "id",
           text: "Lab ID",
           sort: true,
+          hidden: true,
           formatter: (cellContent, b2bLabShare) => (
             <>
               <strong>{b2bLabShare.id}</strong>

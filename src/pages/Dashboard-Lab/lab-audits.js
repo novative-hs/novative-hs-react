@@ -122,7 +122,33 @@ class LabAudits extends Component {
           text: "Result",
           sort: true,
         },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, audit) => {
+            if (audit.audit_status === "Fail") {
+              return (
+                <div className="text-sm-center">
+                  <Button
+                    color="primary"
+                    className="font-12 btn-block btn btn-primary"
+                    onClick={this.onClickAuditedEvent}
+                  >
+                    <i className="mdi mdi-plus-circle-outline me-1" />
+                    Request Reaudit
+                  </Button>
+                </div>
+              );
+            } else {
+              return null; // returning null will hide this column
+            }
+          },
+        },
       ],
+      
+     
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -136,7 +162,7 @@ class LabAudits extends Component {
     this.setState({
       id: arg,
     });
-    this.setState({ auditModal: true });
+    this.setState({ auditModal: true, });
     
   };
   toggle() {
@@ -269,7 +295,7 @@ class LabAudits extends Component {
                                                 <Col className="col-12">
                                                     <div className="mb-3">
                                                       <Label className="form-label">
-                                                        Reason of Failure
+                                                        Reason of Reaudit
                                                       </Label>
                                                       <Field
                                                         name="reason_of_reaudit"
@@ -320,7 +346,7 @@ class LabAudits extends Component {
                                     </Modal>
                                   </div>
                                 </Col>
-                                <Col sm="8">
+                                {/* <Col sm="8">
                                   <div className="text-sm-end">
                                     <Button
                                       color="primary"
@@ -332,13 +358,8 @@ class LabAudits extends Component {
                                       Request Reaudit
                                     </Button>
                                   </div>
-                                </Col>
+                                </Col> */}
                               </Row>
-                              <span className="text-primary font-size-12">
-                                    <strong>
-                                    Note: Kindly request for Reaudit only if your Audit Result is &apos;Fail&apos;, otherwise you will be fined Rs 10,000.
-                                    </strong>
-                                  </span>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">

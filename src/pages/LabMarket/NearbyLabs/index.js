@@ -16,7 +16,7 @@ import logoLightSvg from "../../../assets/images/logo-light.svg";
 
 //i18n
 import { withTranslation } from "react-i18next";
-import "../../../components/HorizontalLayout/horizontal-navbar.scss";
+// import "../../../components/HorizontalLayout/horizontal-navbar.scss";
 import {
   Card,
   CardBody,
@@ -70,7 +70,7 @@ class NearbyLabs extends Component {
       position: "right",
       ratingvalues: [],
       regionWiseAdvertisement: [],
-
+      isMenuOpened: false,
       nearbyLabs: [],
       advLives: [],
       advLive: "",
@@ -96,20 +96,24 @@ class NearbyLabs extends Component {
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
     console.log(this.state.user_type)
   }
+  openMenu = () => {
+    this.setState({ isMenuOpened: !this.state.isMenuOpened });
+    console.log(this.state.isMenuOpened)
+  };
 
   componentDidMount() {
-    let matchingMenuItem = null;
-    const ul = document.getElementById("navigation");
-    const items = ul.getElementsByTagName("a");
-    for (let i = 0; i < items.length; ++i) {
-      if (this.props.location.pathname === items[i].pathname) {
-        matchingMenuItem = items[i];
-        break;
-      }
-    }
-    if (matchingMenuItem) {
-      this.activateParentDropdown(matchingMenuItem);
-    }
+    // let matchingMenuItem = null;
+    // const ul = document.getElementById("navigation");
+    // const items = ul.getElementsByTagName("a");
+    // for (let i = 0; i < items.length; ++i) {
+    //   if (this.props.location.pathname === items[i].pathname) {
+    //     matchingMenuItem = items[i];
+    //     break;
+    //   }
+    // }
+    // if (matchingMenuItem) {
+    //   this.activateParentDropdown(matchingMenuItem);
+    // }
 
     const { advLives, onGetAdvLive } = this.props;
     onGetAdvLive(this.state.user_id);
@@ -521,32 +525,32 @@ class NearbyLabs extends Component {
     }, 1000);
   };
 
-  activateParentDropdown = item => {
-    item.classList.add("active");
-    const parent = item.parentElement;
-    if (parent) {
-      parent.classList.add("active"); // li
-      const parent2 = parent.parentElement;
-      parent2.classList.add("active"); // li
-      const parent3 = parent2.parentElement;
-      if (parent3) {
-        parent3.classList.add("active"); // li
-        const parent4 = parent3.parentElement;
-        if (parent4) {
-          parent4.classList.add("active"); // li
-          const parent5 = parent4.parentElement;
-          if (parent5) {
-            parent5.classList.add("active"); // li
-            const parent6 = parent5.parentElement;
-            if (parent6) {
-              parent6.classList.add("active"); // li
-            }
-          }
-        }
-      }
-    }
-    return false;
-  };
+  // activateParentDropdown = item => {
+  //   item.classList.add("active");
+  //   const parent = item.parentElement;
+  //   if (parent) {
+  //     parent.classList.add("active"); // li
+  //     const parent2 = parent.parentElement;
+  //     parent2.classList.add("active"); // li
+  //     const parent3 = parent2.parentElement;
+  //     if (parent3) {
+  //       parent3.classList.add("active"); // li
+  //       const parent4 = parent3.parentElement;
+  //       if (parent4) {
+  //         parent4.classList.add("active"); // li
+  //         const parent5 = parent4.parentElement;
+  //         if (parent5) {
+  //           parent5.classList.add("active"); // li
+  //           const parent6 = parent5.parentElement;
+  //           if (parent6) {
+  //             parent6.classList.add("active"); // li
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // };
 
   render() {
     const { history } = this.props;
@@ -561,27 +565,27 @@ class NearbyLabs extends Component {
               id="navigation"
             >
               {!this.state.user_id
-                ? (
-                  <Collapse
-                    isOpen={this.props.menuOpen}
-                    className="navbar-collapse"
-                    id="topnav-menu-content"
-                  >
-                    <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/labs/${this.state.guest_id}/${this.props.match.params.uuid}`
-                              : `/labs/${this.state.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
-
-                      <li className="nav-item">
+              ? (
+                 <Collapse
+                 isOpen={this.state.isMenuOpened}
+                 className="navbar-collapse"
+                 id="topnav-menu-content"
+               >
+                 <ul className="navbar-nav">
+                   <li className="nav-item">
+                     <Link 
+                     to={
+                       this.props.match.params.uuid
+                         ? `/labs/${this.state.guest_id}/${this.props.match.params.uuid}`
+                         : `/labs/${this.state.guest_id}`
+                     }
+                     className="dropdown-item"
+                     >
+                    <span className="pt-4 font-size-12">Labs</span>
+                     </Link>
+                   </li>
+ 
+                   <li className="nav-item">
 
                         {/* <Link to="/nearby-tests" className="dropdown-item">
                        {this.props.t("Search by Tests")}
@@ -711,17 +715,53 @@ class NearbyLabs extends Component {
                     <ul className="navbar-nav">
                       <li className="nav-item">
                         <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}`
-                              : `/nearby-labs/`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                          {/* {this.props.t("Labs")} */}
-                        </Link>
-                      </li>
+                         to="/#"
+                         onClick={e => {
+                           e.preventDefault();
+                           this.setState({ appState: !this.state.appState });
+                         }}
+                         className="nav-link dropdown-toggle arrow-none"
+                       >
+                         <i className="bx bx-test-tube me-2" />
+                         {this.props.t("Appointments")}{" "}
+                         <div className="arrow-down" />
+                       </Link>
+                       <div
+                         className={classname("dropdown-menu", {
+                           show: this.state.appState,
+                         })}
+                       >
+                         <Link
+                           to={"/test-appointments"}
+                           className="dropdown-item"
+                         >
+                           {this.props.t("Test Appointments")}
+                         </Link>
+                       </div>
+                       </li> */
+                 </ul>
+               </Collapse>
+
+              ): this.state.user_id ? (
+                <Collapse
+                isOpen={this.state.isMenuOpened}
+                className="navbar-collapse"
+                id="topnav-menu-content"
+              >
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link 
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                        : `/nearby-labs/`
+                    }
+                    className="dropdown-item"
+                    >
+                      <span className="pt-4 font-size-12">Labs</span>
+                      {/* {this.props.t("Labs")} */}
+                    </Link>
+                  </li>
 
                       <li className="nav-item">
                         {/* <Link to="/nearby-tests" className="dropdown-item">
@@ -888,7 +928,7 @@ class NearbyLabs extends Component {
                 type="button"
                 className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                 data-toggle="collapse"
-                onClick={this.toggleMenu}
+                onClick={this.openMenu}
                 data-target="#topnav-menu-content"
               >
                 <i className="fa fa-fw fa-bars" />
@@ -1605,7 +1645,7 @@ class NearbyLabs extends Component {
               {
                 this.props.advLives.map((advLive) => (
                   <Col lg="9" key={1}>
-                    {/* {advLive.advertisement_type=="Lab" && 
+                    {advLive.advertisement_type=="Lab" && 
               <Card>
                  <CardBody>
                    <Link
@@ -1632,7 +1672,7 @@ class NearbyLabs extends Component {
                    </Link>
                  </CardBody>
                </Card>
-                } */}
+                }
                     {advLive.advertisement_type == "Labhazir" &&
                       <Card>
                         <CardBody>
@@ -1772,8 +1812,20 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAdvLive: id => dispatch(getAdvLive(id)),
   offeredTestsList: guest_id => dispatch(offeredTestsList(guest_id)),
 });
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  (stateProps, dispatchProps, ownProps) => {
+    // Return an object that merges stateProps, dispatchProps, and ownProps
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps
+    };
+  }
 )(withRouter(NearbyLabs));
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(withRouter(NearbyLabs));

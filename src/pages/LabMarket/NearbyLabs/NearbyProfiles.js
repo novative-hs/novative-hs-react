@@ -82,23 +82,24 @@ class NearbyProfiles extends Component {
       page: 1,
       totalPage: 5, //replace this with total pages of data
     };
+    console.log("guest..",this.props.match.params.guest_id),
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
   }
 
   componentDidMount() {
-    let matchingMenuItem = null;
-    const ul = document.getElementById("navigation");
-    const items = ul.getElementsByTagName("a");
-    for (let i = 0; i < items.length; ++i) {
-      if (this.props.location.pathname === items[i].pathname) {
-        matchingMenuItem = items[i];
-        break;
-      }
-    }
-    if (matchingMenuItem) {
-      this.activateParentDropdown(matchingMenuItem);
-    }
+    // let matchingMenuItem = null;
+    // const ul = document.getElementById("navigation");
+    // const items = ul.getElementsByTagName("a");
+    // for (let i = 0; i < items.length; ++i) {
+    //   if (this.props.location.pathname === items[i].pathname) {
+    //     matchingMenuItem = items[i];
+    //     break;
+    //   }
+    // }
+    // if (matchingMenuItem) {
+    //   this.activateParentDropdown(matchingMenuItem);
+    // }
     let latitude;
     let longitude;
 
@@ -168,7 +169,32 @@ class NearbyProfiles extends Component {
       });
     }
   }
-
+  // activateParentDropdown = item => {
+  //   item.classList.add("active");
+  //   const parent = item.parentElement;
+  //   if (parent) {
+  //     parent.classList.add("active"); // li
+  //     const parent2 = parent.parentElement;
+  //     parent2.classList.add("active"); // li
+  //     const parent3 = parent2.parentElement;
+  //     if (parent3) {
+  //       parent3.classList.add("active"); // li
+  //       const parent4 = parent3.parentElement;
+  //       if (parent4) {
+  //         parent4.classList.add("active"); // li
+  //         const parent5 = parent4.parentElement;
+  //         if (parent5) {
+  //           parent5.classList.add("active"); // li
+  //           const parent6 = parent5.parentElement;
+  //           if (parent6) {
+  //             parent6.classList.add("active"); // li
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // };
   onSelectDiscount = e => {
     const { value, checked } = e.target;
     const {
@@ -1081,7 +1107,20 @@ class NearbyProfiles extends Component {
                               
                             </div>
                             )} */}
-                            
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-stopwatch"></i> Reporting
+                                Time: {nearbyProfile.duration_required}{" "}
+                                {nearbyProfile.duration_type}
+                              </span>
+                            </div>
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-home"></i> Home Sampling:{" "}
+                                {nearbyProfile.is_home_sampling_available}
+                              </span>
+                            </div>
+                             
                             <div className="my-0">
                               <Link
                                 to={
@@ -1100,21 +1139,17 @@ class NearbyProfiles extends Component {
                                 {nearbyProfile.lab_name}
                               </span> */}
                             </div>
-
-                            
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-stopwatch"></i> Reporting
-                                Time: {nearbyProfile.duration_required}{" "}
-                                {nearbyProfile.duration_type}
-                              </span>
-                            </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-home"></i> Home Sampling:{" "}
-                                {nearbyProfile.is_home_sampling_available}
-                              </span>
-                            </div>
+                            <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyProfile.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
                             {/* <div className="mt-3 text-center">
                               <Link
                                 to="#"

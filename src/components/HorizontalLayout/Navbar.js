@@ -84,8 +84,8 @@ class Navbar extends Component {
                      <Link 
                      to={
                        this.props.match.params.uuid
-                         ? `/nearby-labs/${this.state.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-labs/${this.state.guest_id}`
+                         ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-labs/${this.props.match.params.guest_id}`
                      }
                      className="dropdown-item"
                      >
@@ -100,8 +100,8 @@ class Navbar extends Component {
                      <Link 
                      to={
                        this.props.match.params.uuid
-                         ? `/nearby-tests/${this.state.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-tests/${this.state.guest_id}`
+                         ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-tests/${this.props.match.params.guest_id}`
                      }
                      className="dropdown-item"
                      >
@@ -112,8 +112,8 @@ class Navbar extends Component {
                      <Link 
                      to={
                        this.props.match.params.uuid
-                         ? `/nearby-profiles/${this.state.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-profiles/${this.state.guest_id}`
+                         ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-profiles/${this.props.match.params.guest_id}`
                      }
                      className="dropdown-item"
                      >
@@ -124,8 +124,8 @@ class Navbar extends Component {
                      <Link 
                      to={
                        this.props.match.params.uuid
-                         ? `/nearby-packages/${this.state.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-packages/${this.state.guest_id}`
+                         ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-packages/${this.props.match.params.guest_id}`
                      }
                      className="dropdown-item"
                      >
@@ -136,8 +136,8 @@ class Navbar extends Component {
                      <Link 
                      to={
                        this.props.match.params.uuid
-                         ? `/nearby-radiology/${this.state.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-radiology/${this.state.guest_id}`
+                         ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                         : `/nearby-radiology/${this.props.match.params.guest_id}`
                      }
                      className="dropdown-item"
                      >

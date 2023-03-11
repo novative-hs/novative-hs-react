@@ -138,7 +138,7 @@ class PendingB2BClients extends Component {
             // ),
           },
           {
-            dataField: "status",
+            dataField: "payment_status",
             text: "Status",
             sort: true,
           },
@@ -198,7 +198,7 @@ class PendingB2BClients extends Component {
       clearedInPayment: {
         id: arg.id,
         is_approved: arg.is_approved,
-        status: arg.status,
+        payment_status: arg.payment_status,
 
       },
       isEdit: true,

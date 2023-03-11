@@ -30,7 +30,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import {
-  getLabsListPendingFee,
+  getLabsListApprovedFee,
 } from "store/labs-list-pending/actions";
 
 
@@ -39,10 +39,10 @@ class LabsLists extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      labsListPendingFee: [],
+      labsListApprovedFee: [],
       id: "",
       LabsLists: "",
-      labsListPendingFee: "",
+      labsListApprovedFee: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -52,9 +52,9 @@ class LabsLists extends Component {
       //     dataField: "id",
       //     text: "Lab ID",
       //     sort: true,
-      //     formatter: (cellContent, labsListPendingFee) => (
+      //     formatter: (cellContent, labsListApprovedFee) => (
       //       <>
-      //         <strong>{labsListPendingFee.id}</strong>
+      //         <strong>{labsListApprovedFee.id}</strong>
       //       </>
       //     ),
       //   },
@@ -62,11 +62,11 @@ class LabsLists extends Component {
       //     dataField: "name",
       //     text: "Lab Name",
       //     sort: true,
-      //     formatter: (cellContent, labsListPendingFee) => (
+      //     formatter: (cellContent, labsListApprovedFee) => (
       //       <>
       //         {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-      //         <Link to={`/shared-percentage-pending-Fee/${labsListPendingFee.id}`}>
-      //           {labsListPendingFee.name}
+      //         <Link to={`/shared-percentage-pending-Fee/${labsListApprovedFee.id}`}>
+      //           {labsListApprovedFee.name}
       //         </Link>
       //       </>
       //     ),
@@ -96,15 +96,15 @@ class LabsLists extends Component {
   }
 
   // componentDidMount() {
-  //   const { labsListPendingFee, onGetLabsListPendingFee } = this.props;
-  //   console.log(onGetLabsListPendingFee());
-  //   this.setState({ labsListPendingFee });
+  //   const { labsListApprovedFee, onGetLabsListApprovedFee } = this.props;
+  //   console.log(onGetLabsListApprovedFee());
+  //   this.setState({ labsListApprovedFee });
   // }
   componentDidMount() {
-    const { labsListPendingFee, onGetLabsListPendingFee } = this.props;
-    onGetLabsListPendingFee(this.state.user_id);
-    console.log(onGetLabsListPendingFee());
-    this.setState({ labsListPendingFee });
+    const { labsListApprovedFee, onGetLabsListApprovedFee } = this.props;
+    onGetLabsListApprovedFee(this.state.user_id);
+    console.log(onGetLabsListApprovedFee());
+    this.setState({ labsListApprovedFee });
   }
   // componentDidMount() {
   //   const { b2bAllClients, onGetB2bAllClientsList } = this.props;
@@ -132,13 +132,13 @@ class LabsLists extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { labsListPendingFee } = this.props;
+    const { labsListApprovedFee } = this.props;
     const data = this.state.data;
-    const { onGetLabsListPendingFee } = this.props;
+    const { onGetLabsListApprovedFee } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: labsListPendingFee.length, // replace later with size(labsListPendingFee),
+      totalSize: labsListApprovedFee.length, // replace later with size(labsListApprovedFee),
       custom: true,
     };
 
@@ -158,8 +158,8 @@ class LabsLists extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Shared Percentage Pending Labs" breadcrumbItem="Labs Link" />
-            {!isEmpty(this.props.labsListPendingFee) && (
+            <Breadcrumbs title="Shared Percentage Approved Labs" breadcrumbItem="Labs Link" />
+            {!isEmpty(this.props.labsListApprovedFee) && (
               
               <Row>
                 <Col lg="12">
@@ -183,15 +183,15 @@ class LabsLists extends Component {
                           </thead>
                          
                           <tbody>
-                          {this.props.labsListPendingFee.map(
-                                      (labsListPendingFee, key) => (
+                          {this.props.labsListApprovedFee.map(
+                                      (labsListApprovedFee, key) => (
                                         <>
-                                          {labsListPendingFee.lab_list.map(
+                                          {labsListApprovedFee.lab_list.map(
                                             (lab_list, key) => (
 
                                 <tr key={key}>
                                   {/* <td>{key + 1}</td> */}
-                                 <td className="text-start"> <b><Link to={`/shared-percentage-pending-Fee/${lab_list.id}`}>
+                                 <td className="text-start"> <b><Link to={`/shared-percentage-approved-Fee/${lab_list.id}`}>
                                     {lab_list.name}
                                   </Link>
                                   </b>
@@ -227,16 +227,16 @@ class LabsLists extends Component {
 
 LabsLists.propTypes = {
   match: PropTypes.object,
-  labsListPendingFee: PropTypes.array,
+  labsListApprovedFee: PropTypes.array,
   className: PropTypes.any,
-  onGetLabsListPendingFee: PropTypes.func,
+  onGetLabsListApprovedFee: PropTypes.func,
 };
 const mapStateToProps = ({ labsListPendingFee}) => ({
-  labsListPendingFee: labsListPendingFee.labsListPendingFee,
+  labsListApprovedFee: labsListPendingFee.labsListApprovedFee,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetLabsListPendingFee: id => dispatch(getLabsListPendingFee(id)),
+  onGetLabsListApprovedFee: id => dispatch(getLabsListApprovedFee(id)),
 });
 
 export default connect(

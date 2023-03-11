@@ -1,6 +1,8 @@
 import {
   GET_SHARED_PERCENTAGE_PENDING_FEE_SUCCESS,
   GET_SHARED_PERCENTAGE_PENDING_FEE_FAIL,
+  GET_SHARED_PERCENTAGE_APPROVED_FEE_SUCCESS,
+  GET_SHARED_PERCENTAGE_APPROVED_FEE_FAIL,
   UPDATE_SHARED_PERCENTAGE_PENDING_FEE_SUCCESS,
   UPDATE_SHARED_PERCENTAGE_PENDING_FEE_FAIL,
   UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE_SUCCESS,
@@ -9,6 +11,7 @@ import {
 
 const INIT_STATE = {
   sharedPercentagePendingFeeTests: [],
+  sharedPercentageApprovedFeeTests: [],
   error: {},
 };
 
@@ -25,6 +28,18 @@ const sharedPercentagePendingFeeTests = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    case GET_SHARED_PERCENTAGE_APPROVED_FEE_SUCCESS:
+      return {
+        ...state,
+        sharedPercentageApprovedFeeTests: action.payload.data,
+      };
+
+    case GET_SHARED_PERCENTAGE_APPROVED_FEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+  
 
     case UPDATE_SHARED_PERCENTAGE_PENDING_FEE_SUCCESS:
       return {

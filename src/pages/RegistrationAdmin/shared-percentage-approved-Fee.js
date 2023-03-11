@@ -32,7 +32,7 @@ import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import {
-  getSharedPercentagePendingFeeTests,
+  getSharedPercentageApprovedFeeTests,
   updateSharedPercentagePendingFeeTest,
   updateSharedPercentageAllPendingFeeTest,
 } from "store/shared-percentage-pending-fee/actions";
@@ -46,8 +46,8 @@ class SharedPercentageLabHazirList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      sharedPercentagePendingFeeTests: [],
-      sharedPercentagePendingFeeTest: "",
+      sharedPercentageApprovedFeeTests: [],
+      sharedPercentageApprovedFeeTest: "",
       modal: false,
       confirmModal: false,
     //   isEditAll: true,
@@ -56,12 +56,12 @@ class SharedPercentageLabHazirList extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       discountLabHazirListColumns: [
-        {
+          {
             text: "id",
             dataField: "id",
             sort: true,
             hidden: true,
-            formatter: (cellContent, sharedPercentagePendingFeeTests) => <>{sharedPercentagePendingFeeTests.id}</>,
+            formatter: (cellContent, sharedPercentageApprovedFeeTests) => <>{sharedPercentageApprovedFeeTests.id}</>,
           },
           {
             text: "Test ID",
@@ -111,8 +111,7 @@ class SharedPercentageLabHazirList extends Component {
             ),
           },
           {
-            dataField: "status",
-            
+            dataField: "status", 
             text: "Status",
             sort: true,
           },
@@ -151,13 +150,13 @@ class SharedPercentageLabHazirList extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, sharedPercentagePendingFeeTest) => (
-            <div>
+          formatter: (cellContent, sharedPercentageApprovedFeeTest) => (
+            <div className="text-center">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
-                  onClick={() => this.handleEditBtnClick(sharedPercentagePendingFeeTest)}
+                  onClick={() => this.handleEditBtnClick(sharedPercentageApprovedFeeTest)}
                 ></i>
               </Link>
             </div>
@@ -171,12 +170,12 @@ class SharedPercentageLabHazirList extends Component {
   }
 
 //   componentDidMount() {
-//     const { onGetSharedPercentagePendingFeeTests } = this.props;
+//     const { onGetSharedPercentageApprovedFeeTests } = this.props;
 //     setTimeout(() => {
-//       console.log(onGetSharedPercentagePendingFeeTests());
+//       console.log(onGetSharedPercentageApprovedFeeTests());
 
 //       setTimeout(() => {
-//         this.setState({ sharedPercentagePendingFeeTests: this.props.sharedPercentagePendingFeeTests });
+//         this.setState({ sharedPercentageApprovedFeeTests: this.props.sharedPercentageApprovedFeeTests });
 //       }, 1000);
 //     }, 1000);
 //   }
@@ -188,11 +187,11 @@ class SharedPercentageLabHazirList extends Component {
     // }
     // this.setState({ labs });
 
-    const { sharedPercentagePendingFeeTests, onGetSharedPercentagePendingFeeTests } = this.props;
-    // if (sharedPercentagePendingFeeTests && !sharedPercentagePendingFeeTests.length) {
-      onGetSharedPercentagePendingFeeTests(this.props.match.params.id);
+    const { sharedPercentageApprovedFeeTests, onGetSharedPercentageApprovedFeeTests } = this.props;
+    // if (sharedPercentageApprovedFeeTests && !sharedPercentageApprovedFeeTests.length) {
+      onGetSharedPercentageApprovedFeeTests(this.props.match.params.id);
     
-    this.setState({ sharedPercentagePendingFeeTests });
+    this.setState({ sharedPercentageApprovedFeeTests });
   }
 
   toggle() {
@@ -202,33 +201,33 @@ class SharedPercentageLabHazirList extends Component {
   }
 
   handleEditAllBtnClick = () => {
-    this.setState({ isEditAll: true, sharedPercentagePendingFeeTest: "" });
+    this.setState({ isEditAll: true, sharedPercentageApprovedFeeTest: "" });
 
     this.toggle();
   };
 
   handleAPICall = () => {
     const {
-      onGetSharedPercentagePendingFeeTests,
+      onGetSharedPercentageApprovedFeeTests,
       onUpdateSharedPercentageAllPendingFeeTest,
       onUpdateSharedPercentagePendingFeeTest,
     } = this.props;
 
     if (this.state.isEditAll) {
-      onUpdateSharedPercentageAllPendingFeeTest(this.state.sharedPercentagePendingFeeTest);
+      onUpdateSharedPercentageAllPendingFeeTest(this.state.sharedPercentageApprovedFeeTest);
 
-      onGetSharedPercentagePendingFeeTests();
+      onGetSharedPercentageApprovedFeeTests();
 
       setTimeout(() => {
-        this.setState({ sharedPercentagePendingFeeTests: this.props.match.params.id});
+        this.setState({ sharedPercentageApprovedFeeTests: this.props.match.params.id});
       }, 1000);
     } else {
-      onUpdateSharedPercentagePendingFeeTest(this.state.sharedPercentagePendingFeeTest);
+      onUpdateSharedPercentagePendingFeeTest(this.state.sharedPercentageApprovedFeeTest);
 
-      onGetSharedPercentagePendingFeeTests();
+      onGetSharedPercentageApprovedFeeTests();
 
       setTimeout(() => {
-        this.setState({ sharedPercentagePendingFeeTests: this.props.match.params.id });
+        this.setState({ sharedPercentageApprovedFeeTests: this.props.match.params.id });
       }, 1000);
     }
 
@@ -236,13 +235,13 @@ class SharedPercentageLabHazirList extends Component {
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { sharedPercentagePendingFeeTests } = this.props;
+    const { sharedPercentageApprovedFeeTests } = this.props;
     if (
-      !isEmpty(sharedPercentagePendingFeeTests) &&
-      size(prevProps.sharedPercentagePendingFeeTests) !== size(sharedPercentagePendingFeeTests)
+      !isEmpty(sharedPercentageApprovedFeeTests) &&
+      size(prevProps.sharedPercentageApprovedFeeTests) !== size(sharedPercentageApprovedFeeTests)
     ) {
       this.setState({
-        sharedPercentagePendingFeeTests: {},
+        sharedPercentageApprovedFeeTests: {},
         isEdit: false,
       });
     }
@@ -262,12 +261,12 @@ class SharedPercentageLabHazirList extends Component {
 
   /* Insert,Update Delete data */
   handleEditBtnClick = arg => {
-    const sharedPercentagePendingFeeTest = arg;
+    const sharedPercentageApprovedFeeTest = arg;
 
     this.setState({
       isEditAll: false,
-      sharedPercentagePendingFeeTest: sharedPercentagePendingFeeTest,
-      // id: sharedPercentagePendingFeeTest.id,
+      sharedPercentageApprovedFeeTest: sharedPercentageApprovedFeeTest,
+      // id: sharedPercentageApprovedFeeTest.id,
     });
 
     this.toggle();
@@ -276,15 +275,15 @@ class SharedPercentageLabHazirList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { sharedPercentagePendingFeeTests } = this.props;
+    const { sharedPercentageApprovedFeeTests } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const sharedPercentagePendingFeeTest = this.state.sharedPercentagePendingFeeTest;
+    const sharedPercentageApprovedFeeTest = this.state.sharedPercentageApprovedFeeTest;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: sharedPercentagePendingFeeTests.length, // replace later with size(sharedPercentagePendingFeeTests),
+      totalSize: sharedPercentageApprovedFeeTests.length, // replace later with size(sharedPercentageApprovedFeeTests),
       custom: true,
     };
 
@@ -296,7 +295,7 @@ class SharedPercentageLabHazirList extends Component {
     ];
 
     const {
-      onGetSharedPercentagePendingFeeTests,
+      onGetSharedPercentageApprovedFeeTests,
       onUpdateSharedPercentageAllPendingFeeTest,
       onUpdateSharedPercentagePendingFeeTest,
     } = this.props;
@@ -322,13 +321,13 @@ class SharedPercentageLabHazirList extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.discountLabHazirListColumns}
-                      data={sharedPercentagePendingFeeTests}
+                      data={sharedPercentageApprovedFeeTests}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.discountLabHazirListColumns}
-                          data={sharedPercentagePendingFeeTests}
+                          data={sharedPercentageApprovedFeeTests}
                           search
                         >
                           {toolkitprops => (
@@ -357,6 +356,13 @@ class SharedPercentageLabHazirList extends Component {
                                   </div>
                                 </Col>
                               </Row>
+                              {/* <Row className="mb-2">
+                                <Col sm="4">
+                                  <div>
+                                    {console.log("lab",this.props.lab_name}
+                                  </div>
+                                </Col>
+                              </Row> */}
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -392,8 +398,8 @@ class SharedPercentageLabHazirList extends Component {
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
                                             shared_percentage:
-                                              (sharedPercentagePendingFeeTest &&
-                                                sharedPercentagePendingFeeTest.shared_percentage) ||
+                                              (sharedPercentageApprovedFeeTest &&
+                                                sharedPercentageApprovedFeeTest.shared_percentage) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -405,24 +411,24 @@ class SharedPercentageLabHazirList extends Component {
                                           onSubmit={values => {
                                             if (this.state.isEditAll) {
                                               onUpdateSharedPercentageAllPendingFeeTest(
-                                                this.state.sharedPercentagePendingFeeTest
+                                                this.state.sharedPercentageApprovedFeeTest
                                               );
                                             } else {
                                               onUpdateSharedPercentagePendingFeeTest(
-                                                this.state.sharedPercentagePendingFeeTest
+                                                this.state.sharedPercentageApprovedFeeTest
                                               );
                                             }
 
                                             setTimeout(() => {
-                                              onGetSharedPercentagePendingFeeTests(
+                                              onGetSharedPercentageApprovedFeeTests(
                                                 this.props.match.params.id
                                               );
 
                                               setTimeout(() => {
                                                 this.setState({
-                                                  sharedPercentagePendingFeeTests:
+                                                  sharedPercentageApprovedFeeTests:
                                                     this.props
-                                                      .sharedPercentagePendingFeeTests,
+                                                      .sharedPercentageApprovedFeeTests,
                                                 });
                                               }, 1000);
                                             }, 1000);
@@ -452,14 +458,14 @@ class SharedPercentageLabHazirList extends Component {
                                                       max="1.00"
                                                       value={
                                                         this.state
-                                                          .sharedPercentagePendingFeeTest
+                                                          .sharedPercentageApprovedFeeTest
                                                           .shared_percentage
                                                       }
                                                       onChange={e => {
                                                         this.setState({
-                                                          sharedPercentagePendingFeeTest: {
+                                                          sharedPercentageApprovedFeeTest: {
                                                             id: this.state
-                                                              .sharedPercentagePendingFeeTest
+                                                              .sharedPercentageApprovedFeeTest
                                                               .id,
                                                             shared_percentage:
                                                               e.target.value,
@@ -534,23 +540,24 @@ class SharedPercentageLabHazirList extends Component {
 
 SharedPercentageLabHazirList.propTypes = {
   match: PropTypes.object,
-  sharedPercentagePendingFeeTests: PropTypes.array,
+  lab_name: PropTypes.any,
+  sharedPercentageApprovedFeeTests: PropTypes.array,
   className: PropTypes.any,
-  onGetSharedPercentagePendingFeeTests: PropTypes.func,
+  onGetSharedPercentageApprovedFeeTests: PropTypes.func,
   onUpdateSharedPercentagePendingFeeTest: PropTypes.func,
   onUpdateSharedPercentageAllPendingFeeTest: PropTypes.func,
 };
 
-const mapStateToProps = ({ sharedPercentagePendingFeeTests }) => ({
-  sharedPercentagePendingFeeTests: sharedPercentagePendingFeeTests.sharedPercentagePendingFeeTests,
+const mapStateToProps = ({ sharedPercentagePendingFeeTests}) => ({
+  sharedPercentageApprovedFeeTests: sharedPercentagePendingFeeTests.sharedPercentageApprovedFeeTests,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetSharedPercentagePendingFeeTests: id => dispatch(getSharedPercentagePendingFeeTests(id)),
-  onUpdateSharedPercentagePendingFeeTest: sharedPercentagePendingFeeTest =>
-    dispatch(updateSharedPercentagePendingFeeTest(sharedPercentagePendingFeeTest)),
-  onUpdateSharedPercentageAllPendingFeeTest: sharedPercentagePendingFeeTest =>
-    dispatch(updateSharedPercentageAllPendingFeeTest(sharedPercentagePendingFeeTest)),
+  onGetSharedPercentageApprovedFeeTests: id => dispatch(getSharedPercentageApprovedFeeTests(id)),
+  onUpdateSharedPercentagePendingFeeTest: sharedPercentageApprovedFeeTest =>
+    dispatch(updateSharedPercentagePendingFeeTest(sharedPercentageApprovedFeeTest)),
+  onUpdateSharedPercentageAllPendingFeeTest: sharedPercentageApprovedFeeTest =>
+    dispatch(updateSharedPercentageAllPendingFeeTest(sharedPercentageApprovedFeeTest)),
 });
 
 export default connect(

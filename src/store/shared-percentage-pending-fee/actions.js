@@ -2,6 +2,9 @@ import {
   GET_SHARED_PERCENTAGE_PENDING_FEE,
   GET_SHARED_PERCENTAGE_PENDING_FEE_FAIL,
   GET_SHARED_PERCENTAGE_PENDING_FEE_SUCCESS, 
+  GET_SHARED_PERCENTAGE_APPROVED_FEE,
+  GET_SHARED_PERCENTAGE_APPROVED_FEE_FAIL,
+  GET_SHARED_PERCENTAGE_APPROVED_FEE_SUCCESS,
   UPDATE_SHARED_PERCENTAGE_PENDING_FEE,
   UPDATE_SHARED_PERCENTAGE_PENDING_FEE_SUCCESS,
   UPDATE_SHARED_PERCENTAGE_PENDING_FEE_FAIL,
@@ -10,6 +13,20 @@ import {
   UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE_FAIL,
 } from "./actionTypes";
 
+export const getSharedPercentageApprovedFeeTests = id => ({
+  type: GET_SHARED_PERCENTAGE_APPROVED_FEE,
+  payload: id,
+});
+
+export const getSharedPercentageApprovedFeeTestsSuccess = sharedPercentageApprovedFeeTest => ({
+  type: GET_SHARED_PERCENTAGE_APPROVED_FEE_SUCCESS,
+  payload: sharedPercentageApprovedFeeTest,
+});
+
+export const getSharedPercentageApprovedFeeTestsFail = error => ({
+  type: GET_SHARED_PERCENTAGE_APPROVED_FEE_FAIL,
+  payload: error,
+});
 export const getSharedPercentagePendingFeeTests = id => ({
   type: GET_SHARED_PERCENTAGE_PENDING_FEE,
   payload: id,

@@ -1561,10 +1561,18 @@ export const getLabsListPendingFee = ()=>
   get(`${url.GET_LABS_LIST_PENDING_FEE}`, {
     headers: getHeader(authHeader()),
   });
+export const getLabsListApprovedFee = ()=>
+  get(`${url.GET_LABS_LIST_APPROVED_FEE}`, {
+    headers: getHeader(authHeader()),
+  });
 
 
 export const getSharedPercentagePendingFeeTests = id =>
   get(`${url.GET_SHARED_PERCENTAGE_PENDING_FEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getSharedPercentageApprovedFeeTests = id =>
+  get(`${url.GET_SHARED_PERCENTAGE_APPROVED_FEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 export const updateSharedPercentagePendingFeeTest = data => {
@@ -1705,6 +1713,8 @@ export const addNewAdvertisement = (advertisement, id) => {
   formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
   formData.append("district", advertisement.district);
+
+  console.log("advertisement", advertisement, id)
 
   return axios.post(`${url.ADD_NEW_ADVERTISEMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1938,12 +1948,14 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
-  formData.append("region_type", advertisement.region_type);
-  formData.append("province", advertisement.province);
-  formData.append("city_id", advertisement.city_id);
+  // formData.append("region_type", advertisement.region_type);
+  // formData.append("province", advertisement.province);
+  // formData.append("city_id", advertisement.city_id);
   formData.append("price_id", advertisement.price_id);
 
-  formData.append("district", advertisement.district);
+  formData.append("km", advertisement.km);
+
+  console.log("advertisement",advertisement, id)
   // formData.append("amount", advertisement.amount);
   // formData.append("number_of_days", advertisement.number_of_days);
 
@@ -1997,7 +2009,7 @@ export const updateLabAdvertisement = advertisement => {
     formData.append("cheque_no", inPayment.cheque_no); 
     formData.append("cheque_image", inPayment.cheque_image);
     formData.append("refered_no", inPayment.refered_no);
-    formData.append("status", inPayment.status);
+    formData.append("payment_status", inPayment.payment_status);
 
     return axios.post(`${url.ADD_NEW_IN_PAYMENT}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -2011,7 +2023,7 @@ export const updatePaymentStatus = paymentStatus => {
   formData.append("deposit_at", paymentStatus.deposit_at);
   // formData.append("bankaccount_id", paymentStatus.bankaccount_id);
   // formData.append("deposit_slip", paymentStatus.deposit_slip);
-  formData.append("status", paymentStatus.status);
+  formData.append("payment_status", paymentStatus.payment_status);
   return axios.put(
     `${url.UPDATE_PAYMENT_STATUS}/${paymentStatus.id}`,
     formData,
@@ -2038,7 +2050,7 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
   formData.append("deposit_at", paymentInBouncedStatus.deposit_at);
   formData.append("bankaccount_id", paymentInBouncedStatus.bankaccount_id);
   formData.append("deposit_slip", paymentInBouncedStatus.deposit_slip);
-  formData.append("status", paymentInBouncedStatus.status);
+  formData.append("payment_status", paymentInBouncedStatus.payment_status);
   return axios.put(
     `${url.UPDATE_PAYMENTINBOUNCED_STATUS}/${paymentInBouncedStatus.id}`,
     formData,
@@ -2258,17 +2270,11 @@ export const getLabAdvertisementRequests = id =>
 export const updateLabAdvertisementRequest = advertisement => {
   let formData = new FormData();
    formData.append("id", advertisement.id);
-  // formData.append("title", advertisement.title);
-  // formData.append("poster", advertisement.poster);
-  // formData.append("description", advertisement.description);
-  // formData.append("posted_at", advertisement.posted_at);
-  // formData.append("posted_till", advertisement.posted_till);
-  // formData.append("region_type", advertisement.region_type);
-  // formData.append("province", advertisement.province);
-  // formData.append("city", advertisement.city);
-  // formData.append("district", advertisement.district);
-  // formData.append("amount", advertisement.amount);
-  // formData.append("number_of_days", advertisement.number_of_days);
+
+  formData.append("description", advertisement.description);
+  formData.append("posted_at", advertisement.posted_at);
+  formData.append("posted_till", advertisement.posted_till);
+
   formData.append("request_status", advertisement.request_status);
   formData.append("declined_reason", advertisement.declined_reason);
   formData.append("responded_at", advertisement.responded_at);

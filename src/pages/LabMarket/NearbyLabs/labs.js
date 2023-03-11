@@ -1349,7 +1349,7 @@ NearbyLabs.propTypes = {
   history: any,
   location: any,
   match: PropTypes.object,
-  carts: PropTypes.array,
+  // carts: PropTypes.array,
   advLives: PropTypes.array,
   nearbyLabs: PropTypes.array,
   onGetNearbyLabs: PropTypes.func,

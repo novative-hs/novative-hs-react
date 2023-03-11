@@ -141,8 +141,10 @@ import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
 
 // registration admin
 import PendingLabs from "pages/RegistrationAdmin/pending-labs";
+import labsListApprovedFeeOffered from "pages/RegistrationAdmin/labs-list-approved-fee";
 import labsListPendingFeeOffered from "pages/RegistrationAdmin/labs-list-pending-fee";
 import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-percentage-pending-Fee";
+import sharedPercentageApprovedFeeTests from "pages/RegistrationAdmin/shared-percentage-approved-Fee";
 import ApprovedLabs from "pages/RegistrationAdmin/approved-labs";
 import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
 import PendingB2bClients from "pages/RegistrationAdmin/pending-b2b-clients";
@@ -492,9 +494,13 @@ const auditorAuthProtectedRoutes = [
 
 const registrationAdminAuthProtectedRoutes = [
   { path: "/pending-labs", component: PendingLabs },
+  { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
   {
     path: "/shared-percentage-pending-Fee/:id",component: sharedPercentagePendingFeeTests,
+  },
+  {
+    path: "/shared-percentage-approved-Fee/:id",component: sharedPercentageApprovedFeeTests,
   },
   { path: "/approved-labs", component: ApprovedLabs },
   { path: "/unapproved-labs", component: UnapprovedLabs },

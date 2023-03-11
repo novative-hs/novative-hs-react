@@ -1,10 +1,13 @@
 import {
   GET_LABS_LIST_PENDING_FEE_SUCCESS,
   GET_LABS_LIST_PENDING_FEE_FAIL,
+  GET_LABS_LIST_APPROVED_FEE_SUCCESS,
+  GET_LABS_LIST_APPROVED_FEE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   labsListPendingFee: [],
+  labsListApprovedFee: [],
   error: {},
 };
 
@@ -17,6 +20,17 @@ const labsListPendingFee = (state = INIT_STATE, action) => {
       };
 
     case GET_LABS_LIST_PENDING_FEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_LABS_LIST_APPROVED_FEE_SUCCESS:
+      return {
+        ...state,
+        labsListApprovedFee: action.payload.data,
+      };
+
+    case GET_LABS_LIST_APPROVED_FEE_FAIL:
       return {
         ...state,
         error: action.payload,

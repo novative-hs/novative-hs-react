@@ -87,10 +87,22 @@ class NearbyTests extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
-    console.log(this.props.match.params.uuid)
+    console.log(this.props.match.params.guest_id)
   }
 
   componentDidMount() {
+    // let matchingMenuItem = null;
+    // const ul = document.getElementById("navigation");
+    // const items = ul.getElementsByTagName("a");
+    // for (let i = 0; i < items.length; ++i) {
+    //   if (this.props.location.pathname === items[i].pathname) {
+    //     matchingMenuItem = items[i];
+    //     break;
+    //   }
+    // }
+    // if (matchingMenuItem) {
+    //   this.activateParentDropdown(matchingMenuItem);
+    // }
     const { advertisementLives, onGetAdvertisementLives } = this.props;
     onGetAdvertisementLives(this.state.user_id);
     this.setState({ advertisementLives });
@@ -425,32 +437,32 @@ class NearbyTests extends Component {
       this.setState({ error: this.props.error });
     }, 2000);
   };
-  activateParentDropdown = item => {
-    item.classList.add("active");
-    const parent = item.parentElement;
-    if (parent) {
-      parent.classList.add("active"); // li
-      const parent2 = parent.parentElement;
-      parent2.classList.add("active"); // li
-      const parent3 = parent2.parentElement;
-      if (parent3) {
-        parent3.classList.add("active"); // li
-        const parent4 = parent3.parentElement;
-        if (parent4) {
-          parent4.classList.add("active"); // li
-          const parent5 = parent4.parentElement;
-          if (parent5) {
-            parent5.classList.add("active"); // li
-            const parent6 = parent5.parentElement;
-            if (parent6) {
-              parent6.classList.add("active"); // li
-            }
-          }
-        }
-      }
-    }
-    return false;
-  };
+  // activateParentDropdown = item => {
+  //   item.classList.add("active");
+  //   const parent = item.parentElement;
+  //   if (parent) {
+  //     parent.classList.add("active"); // li
+  //     const parent2 = parent.parentElement;
+  //     parent2.classList.add("active"); // li
+  //     const parent3 = parent2.parentElement;
+  //     if (parent3) {
+  //       parent3.classList.add("active"); // li
+  //       const parent4 = parent3.parentElement;
+  //       if (parent4) {
+  //         parent4.classList.add("active"); // li
+  //         const parent5 = parent4.parentElement;
+  //         if (parent5) {
+  //           parent5.classList.add("active"); // li
+  //           const parent6 = parent5.parentElement;
+  //           if (parent6) {
+  //             parent6.classList.add("active"); // li
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // };
     handlePageClick = page => {
     this.setState({ page });
   };
@@ -1037,27 +1049,6 @@ class NearbyTests extends Component {
                               
                             </div>
                             )} */}
-                            <div className="my-0">
-                              {" "}
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
-                                }
-                                
-                                className="text-dark"
-                              >
-                                <span className="text-primary">
-                                  {nearbyTest.lab_name}{" "}
-                                  
-                                </span>
-                              </Link>
-                              {/* <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Lab:{" "}
-                                {nearbyTest.lab_name}
-                              </span> */}
-                            </div>
                             {/* <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-money-bill"></i>{" "}
@@ -1078,6 +1069,34 @@ class NearbyTests extends Component {
                                 {nearbyTest.is_home_sampling_available}
                               </span>
                             </div>
+                            <div className="my-0">
+                              {" "}
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
+                                }
+                                
+                                className="text-dark"
+                              >
+                                <span className="text-primary">
+                                  {nearbyTest.lab_name}{" "}
+                                  
+                                </span>
+                              </Link>
+                            </div>
+                             <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyTest.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
                             <Button
                               type="button"
                               color="primary"

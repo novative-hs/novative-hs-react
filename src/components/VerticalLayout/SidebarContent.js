@@ -515,14 +515,27 @@ class SidebarContent extends Component {
                           {this.props.t("Pending Referrel Fee")}
                         </Link>
                       </li> */}
+                    </ul>
+                  </li>
+                  <li>
+                    <Link to="/#" className="has-arrow">
+                      <i className="mdi mdi-hospital-building" />
+                      <span>{this.props.t("Offered Tests")}</span>
+                    </Link>
+                    <ul className="sub-menu" aria-expanded="false">
                       <li>
                         <Link to={"/labs-list-pending-fee"}>
                           {this.props.t("Lab Pending Referrel Fee")}
                         </Link>
                       </li>
                       <li>
+                        <Link to={"/labs-list-approved-fee"}>
+                          {this.props.t("Lab Approved Referrel Fee")}
+                        </Link>
+                      </li>
+                      <li>
                         <Link to={"/approvereferrellab"}>
-                          {this.props.t("Approve Referrel Fee")}
+                          {this.props.t("Live Test")}
                         </Link>
                       </li>
                     </ul>
@@ -615,11 +628,11 @@ class SidebarContent extends Component {
                           {this.props.t("Advertisements Labhazir")}
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to={"/advertisement-price-list"}>
                           {this.props.t("Advertisement Price List")}
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link to="/#" className="has-arrow">
                           <span>{this.props.t("Lab Requests")}</span>

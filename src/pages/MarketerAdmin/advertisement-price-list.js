@@ -68,7 +68,7 @@ class AdvertisementsList extends Component {
         },
       
         {
-          dataField: "amount",
+          dataField: "district",
           text: "Price",
           sort: true,
         },
