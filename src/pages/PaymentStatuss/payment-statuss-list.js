@@ -60,7 +60,7 @@ class PaymentStatussList extends Component {
         : "",
       paymentStatusListColumns: [
         {
-          text: "id",
+          text: "MIF ID",
           dataField: "id",
           sort: true,
           hidden: false,
@@ -82,7 +82,7 @@ class PaymentStatussList extends Component {
        
         {
           dataField: "payment_for",
-          text: "Payment To",
+          text: "Payment From",
           sort: true,
         },
         {
@@ -111,20 +111,40 @@ class PaymentStatussList extends Component {
           sort: true,
         },
         {
-          dataField: "bank",
-          text: "Bank/Account#",
+          dataField: "cheque_no",
+          text: "Cheque/Ref#",
           sort: true,
           formatter: (cellContent, paymentStatus) => (
             <>
-              <span>
-                <span>
-                  {paymentStatus.bank_name},{" "}
-                  {paymentStatus.account_no}
+              {paymentStatus.cheque_no && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {paymentStatus.cheque_no}
                 </span>
-              </span>
-            </>
+              )}
+
+              {paymentStatus.cheque_no && (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {paymentStatus.refered_no}
+                </span>
+              )}
+                          </>
           ),
         },
+        // {
+        //   dataField: "bank",
+        //   text: "Cheque/Reffer#",
+        //   sort: true,
+        //   formatter: (cellContent, paymentStatus) => (
+        //     <>
+        //       <span>
+        //         <span>
+        //           {paymentStatus.bank_name},{" "}
+        //           {paymentStatus.account_no}
+        //         </span>
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "paid_at",
           text: "Payment Recieved Date",
