@@ -155,6 +155,7 @@ class OutPaymentsForm extends Component {
     }, 2000);
 
     setTimeout(() => {
+      window.location.reload()>
       this.props.history.push("/payment-out-created-status");
   }, 2000)
   };
