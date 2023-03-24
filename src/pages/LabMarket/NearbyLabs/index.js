@@ -1650,7 +1650,7 @@ class NearbyLabs extends Component {
               {
                 this.props.advLives.map((advLive) => (
                   <Col lg="9" key={1}>
-                    {/* {advLive.advertisement_type=="Lab" && 
+                    {advLive.advertisement_type=="Lab" && 
                     <Card>
                       <CardBody>
                         <Link
@@ -1677,7 +1677,7 @@ class NearbyLabs extends Component {
                         </Link>
                       </CardBody>
                     </Card>
-                      } */}
+                      }
                     {advLive.advertisement_type == "Labhazir" &&
                       <Card>
                         <CardBody>
