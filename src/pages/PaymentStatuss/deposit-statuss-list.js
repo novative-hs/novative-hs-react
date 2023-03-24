@@ -94,8 +94,8 @@ class PaymentStatussList extends Component {
           <>
             <span>
               <span>
-                {paymentStatus.lab_id}{" "}
-                {paymentStatus.donor_id}
+                {paymentStatus.lab_name}{" "}
+                {paymentStatus.donor_name}
               </span>
             </span>
           </>

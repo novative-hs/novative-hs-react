@@ -64,7 +64,7 @@ class PathologistsList extends Component {
         },
         {
           dataField: "payment_for",
-          text: "Payment To",
+          text: "Payment From",
           sort: true,
         },
      

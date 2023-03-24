@@ -114,38 +114,6 @@ class AdvertisementsList extends Component {
           sort: true,
         },
         {
-          dataField: "posted_at",
-          text: "Posted At",
-          sort: true,
-          formatter: (cellContent, labAdvertisement) => (
-            <>
-              {!labAdvertisement.posted_at ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Date not set
-                </span>
-              ) : (
-                <span>{labAdvertisement.posted_at}</span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "posted_till",
-          text: "Posted Till",
-          sort: true,
-          formatter: (cellContent, labAdvertisement) => (
-            <>
-              {!labAdvertisement.posted_till ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Date not set
-                </span>
-              ) : (
-                <span>{labAdvertisement.posted_till}</span>
-              )}
-            </>
-          ),
-        },
-        {
           dataField: "request_status",
           text: "Status",
           sort: true,
@@ -163,11 +131,6 @@ class AdvertisementsList extends Component {
                   {labAdvertisement.request_status}
                 </span>
               )}
-              {labAdvertisement.request_status == "Recreated" && (
-                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  {labAdvertisement.request_status}
-                </span>
-              )}
 
               {labAdvertisement.request_status == "Declined" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
@@ -177,16 +140,16 @@ class AdvertisementsList extends Component {
             </>
           ),
         },
-        // {
-        //   dataField: "number_of_days", 
-        //   text: "number of days",
-        //   sort: true,
-        // },
-        // {
-        //   dataField: "amount", 
-        //   text: "Price",
-        //   sort: true,
-        // },
+        {
+          dataField: "number_of_days", 
+          text: "number of days",
+          sort: true,
+        },
+        {
+          dataField: "amount", 
+          text: "Price",
+          sort: true,
+        },
         {
           dataField: "payment_status",
           text: "Payment Status",
@@ -374,10 +337,6 @@ class AdvertisementsList extends Component {
         poster: process.env.REACT_APP_BACKENDURL + labAdvertisement.poster,
         posted_at: labAdvertisement.posted_at,
         posted_till: labAdvertisement.posted_till,
-        // region_type: labAdvertisement.region_type,
-        // province: labAdvertisement.province,
-        // city_id: labAdvertisement.city_id,
-        price_id: labAdvertisement.price_id,
         km: labAdvertisement.km,
         // number_of_days: labAdvertisement.number_of_days,
       },
@@ -402,8 +361,8 @@ class AdvertisementsList extends Component {
     const myadvertisementPriceList = [];
     for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
       myadvertisementPriceList.push({
-        label: `${this.props.advertisementPriceLists[i].number_of_days}` - `${this.props.advertisementPriceLists[i].amount}`,
-        value: `${this.props.advertisementPriceLists[i].id}`,
+        label: this.props.advertisementPriceLists[i].number_of_days,
+        value: this.props.advertisementPriceLists[i].id,
       });
     }
     const { SearchBar } = Search;
@@ -551,19 +510,23 @@ class AdvertisementsList extends Component {
                                               "",
                                             posted_at:
                                               (this.state &&
-                                                this.state.labAdvertisement.posted_at) ||
+                                                this.state.posted_at) ||
                                               "",
                                             posted_till:
                                               (this.state &&
-                                                this.state.labAdvertisement.posted_till) ||
-                                              "",
-                                            price_id:
-                                              (this.state && this.state.price_id) ||
+                                                this.state.posted_till) ||
                                               "",
                                             km:
-                                              (this.state &&
-                                                this.state.km) ||
+                                              (this.state.labAdvertisement && this.state.labAdvertisement.km) ||
                                               "",
+                                            // number_of_days:
+                                            //   (this.state &&
+                                            //     this.state.number_of_days) ||
+                                            //   "",
+                                            // amount:
+                                            //   (this.state &&
+                                            //     this.state.amount) ||
+                                            //   "",
                                          
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -638,12 +601,8 @@ class AdvertisementsList extends Component {
                                                         .advertisementImg,
 
                                                     posted_at: values.posted_at,
-                                                    posted_till: values.posted_till,
-                                                    // region_type:
-                                                    //   values.region_type,
-                                                    // province: values.province,
-                                                    // city_id: values.city_id,
-                                                    price_id: values.price_id,
+                                                    posted_till:
+                                                      values.posted_till,
                                                     km: values.km,
                                                     // number_of_days: values.number_of_days,
                                                     // amount: values.amount,
@@ -675,11 +634,6 @@ class AdvertisementsList extends Component {
                                                   posted_at: values.posted_at,
                                                   posted_till:
                                                     values.posted_till,
-                                                  // region_type:
-                                                  //   values.region_type,
-                                                  // province: values.province,
-                                                  // city_id: values.city_id,
-                                                  price_id: values.price_id,
                                                   km: values.km,
                                                   // number_of_days: values.number_of_days,
                                                   // amount: values.amount,
@@ -712,10 +666,6 @@ class AdvertisementsList extends Component {
 
                                                 posted_at: values.posted_at,
                                                 posted_till: values.posted_till,
-                                                // region_type: values.region_type,
-                                                // province: values.province,
-                                                // city_id: values.city_id,
-                                                price_id: values.price_id,
                                                 km: values.km,
                                                 // number_of_days: values.number_of_days,
                                                 // amount: values.amount,
@@ -777,7 +727,7 @@ class AdvertisementsList extends Component {
                                                                 type: labAdvertisement.type,
                                                                 poster:
                                                                   labAdvertisement.poster,
-                                                                posted_at: labAdvertisement.expiry_date,
+                                                                expiry_date: labAdvertisement.expiry_date,
                                                               },
                                                           });
                                                         } 
@@ -822,10 +772,7 @@ class AdvertisementsList extends Component {
                                                               labAdvertisement.posted_at,
                                                             posted_till:
                                                               labAdvertisement.posted_till,
-                                                           
-                                                            price_id: labAdvertisement.price_id,
-                                                            km:
-                                                              labAdvertisement.km,
+                                                            km: labAdvertisement.km,
                                                             // number_of_days:
                                                             //   labAdvertisement.number_of_days,
                                                             // amount: labAdvertisement.amount,
@@ -861,11 +808,7 @@ class AdvertisementsList extends Component {
                                                               labAdvertisement.posted_at,
                                                             posted_till:
                                                               labAdvertisement.posted_till,
-                                                            
-                                                            price_id: labAdvertisement.price_id,
-                                                            km:
-                                                              labAdvertisement.km,
-                                                            // number_of_days:
+                                                            km: labAdvertisement.km,
                                                             //   labAdvertisement.number_of_days,
                                                             // amount: labAdvertisement.amount,
                                                            
@@ -927,13 +870,10 @@ class AdvertisementsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Posted At
-                                                      <span className="text-danger font-size-12">
-                                                        *
-                                                      </span>
+                                                      Posted Date
                                                     </Label>
-                                                    <Field
-                                                      name="Posted_at"
+                                                    <input
+                                                      name="posted_at"
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
@@ -941,58 +881,22 @@ class AdvertisementsList extends Component {
                                                       )
                                                         .toISOString()
                                                         .slice(0, -8)}
-                                                      value={
-                                                        this.state
-                                                          .labAdvertisement
-                                                          .posted_at
-                                                      }
-                                                      onChange={e => {
+                                                      className="form-control"
+                                                      onChange={e =>
                                                         this.setState({
-                                                          labAdvertisement:{
-                                                            id: labAdvertisement.id,
-
-                                                            title:
-                                                              labAdvertisement.title,
-                                                            poster:
-                                                              labAdvertisement.poster,
-                                                            description:
-                                                              labAdvertisement.description,
-                                                            posted_till:
-                                                              labAdvertisement.posted_till,
-                                                            price_id: labAdvertisement.price_id,
-                                                            posted_at: e.target.value,
-                                                            // district:
-                                                            //   labAdvertisement.district,
-                                                            // number_of_days:
-                                                            //   labAdvertisement.number_of_days,
-                                                            // amount: labAdvertisement.amount,
-
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.posted_at &&
-                                                        touched.posted_at
-                                                          ? " is-invalid"
-                                                          : "")
+                                                          posted_at:
+                                                            e.target.value,
+                                                        })
                                                       }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="posted_at"
-                                                      component="div"
-                                                      className="invalid-feedback"
                                                     />
                                                   </div>
+                                                  {/* Advertisement expiry date field */}
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Posted Till
-                                                      <span className="text-danger font-size-12">
-                                                        *
-                                                      </span>
+                                                      Posted till
                                                     </Label>
-                                                    <Field
+                                                    <input
                                                       name="posted_till"
                                                       type="datetime-local"
                                                       min={new Date(
@@ -1001,52 +905,20 @@ class AdvertisementsList extends Component {
                                                       )
                                                         .toISOString()
                                                         .slice(0, -8)}
-                                                      value={
-                                                        this.state
-                                                          .labAdvertisement
-                                                          .posted_till
-                                                      }
-                                                      onChange={e => {
+                                                      className="form-control"
+                                                      onChange={e =>
                                                         this.setState({
-                                                          labAdvertisement:{
-                                                            id: labAdvertisement.id,
-
-                                                            title:
-                                                              labAdvertisement.title,
-                                                            poster:
-                                                              labAdvertisement.poster,
-                                                            description:
-                                                              labAdvertisement.description,
-                                                            posted_at:
-                                                              labAdvertisement.posted_at,
-                                                            price_id: labAdvertisement.price_id,
-                                                            posted_till: e.target.value,
-
-                                                            // district:
-                                                            //   labAdvertisement.district,
-                                                            // number_of_days:
-                                                            //   labAdvertisement.number_of_days,
-                                                            // amount: labAdvertisement.amount,
-
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.posted_till &&
-                                                        touched.posted_till
-                                                          ? " is-invalid"
-                                                          : "")
+                                                          posted_till:
+                                                            e.target.value,
+                                                        })
                                                       }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="posted_till"
-                                                      component="div"
-                                                      className="invalid-feedback"
                                                     />
                                                   </div>
+                                                
+                       
+                                                 {/* Advertisement number of days field */}
 
-<div className="mb-3">
+                                                 <div className="mb-3">
                                                     <Label className="form-label">
                                                       Km
                                                     </Label>
@@ -1057,16 +929,26 @@ class AdvertisementsList extends Component {
                                                       min="05"
                                                       max="2200"
                                                       value={
-                                                        this.state.labAdvertisement
-                                                          .km
+                                                        this.state.labAdvertisement.km
                                                       }
                                                       onChange={e => {
                                                         this.setState({
                                                           labAdvertisement: {
                                                             id: labAdvertisement.id,
-                                                           
                                                             km:
                                                               e.target.value,
+                                                            poster:
+                                                              labAdvertisement.poster,
+                                                            title:
+                                                              labAdvertisement.title,
+                                                            posted_at:
+                                                              labAdvertisement.posted_at,
+                                                            posted_till:
+                                                              labAdvertisement.posted_till,
+                                                            description: labAdvertisement.description,
+                                                            //   labAdvertisement.number_of_days,
+                                                            // amount: labAdvertisement.amount,
+                                                           
                                                           },
                                                         });
                                                       }}
@@ -1084,8 +966,6 @@ class AdvertisementsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                            
-                                               
                                                 </Col>
                                               </Row>
                                               <Row>

@@ -12,15 +12,19 @@ import PropTypes from "prop-types";
 import { getAdvInvoiceDetail } from "store/adv-invoice/actions";
 import { connect } from "react-redux";
 
-class InvoiceDetail extends Component {
+class AdvInvoiceDetail extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      advInvoiceDetail: [],
+      
+    }
     this.node = React.createRef();
   }
 
   componentDidMount() {
     const { onGetAdvInvoiceDetail } = this.props;
-    onGetAdvInvoiceDetail(this.props.match.params.id);
+    console.log(onGetAdvInvoiceDetail(this.props.match.params.id));
   }
 
   //Print the Invoice
@@ -39,13 +43,14 @@ class InvoiceDetail extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Invoices" breadcrumbItem="Invoice Detail" />
             {!isEmpty(this.props.advInvoiceDetail) && (
+              console.log("advinvoice",this.props.advInvoiceDetail),
               <Row>
                 <Col lg="6">
                   <Card>
                     <CardBody>
                       <div className="invoice-title">
                         <h4 className="float-end font-size-16">
-                          Order ID: {this.props.advInvoiceDetail.invoice_id}
+                          Order ID: {this.props.advInvoiceDetail.advertisement_id}
                         </h4>
                         <div className="mb-4">
                           <img src={logo} alt="logo" height="20" />
@@ -114,7 +119,7 @@ class InvoiceDetail extends Component {
   }
 }
 
-InvoiceDetail.propTypes = {
+AdvInvoiceDetail.propTypes = {
   match: PropTypes.object,
   advInvoiceDetail: PropTypes.object,
   onGetAdvInvoiceDetail: PropTypes.func,
@@ -131,4 +136,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(InvoiceDetail));
+)(withRouter(AdvInvoiceDetail));

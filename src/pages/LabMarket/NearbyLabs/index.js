@@ -1604,26 +1604,28 @@ class NearbyLabs extends Component {
               {/* <ScrollButton /> */}
             </Col>
             <Col lg="3">
-              {/* ROW FOR ADVERTISEMENT */}
-              {/* <Row> */}
-              {
-                this.props.advLives.map((advLive) => (
-                  <Col lg="9" key={1}>
-                    {advLive.advertisement_type=="Lab" && 
-              <Card>
+            {
+           this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
+             
+               <>
+                 {regionWiseAdvertisement.nearby_adv_list.map(
+                                       (nearby_adv_list, key) => (
+                 <Col key={"col" + key}>  
+                 {nearby_adv_list.advertisement_type == "Lab" &&                 
+                 <Card>
                  <CardBody>
                    <Link
                      to={
                        this.props.match.params.uuid
-                         ? `/nearby-lab-detail/${advLive.account_id}/${this.props.match.params.uuid}`
-                         : `/nearby-lab-detail/${advLive.account_id}`
+                         ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                         : `/nearby-lab-detail/${nearby_adv_list.account_id}`
                      }
                    >
                      <div className="product-img position-relative">
                        <img
                          src={
                            process.env.REACT_APP_BACKENDURL +
-                           advLive.poster
+                           nearby_adv_list.poster
                          }
                          alt="Advertisement"
                          style={{
@@ -1636,7 +1638,46 @@ class NearbyLabs extends Component {
                    </Link>
                  </CardBody>
                </Card>
-                }
+  }
+              </Col>   
+                                       )                
+             )}
+             </>
+               )
+           
+           
+          )}
+              {
+                this.props.advLives.map((advLive) => (
+                  <Col lg="9" key={1}>
+                    {/* {advLive.advertisement_type=="Lab" && 
+                    <Card>
+                      <CardBody>
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${advLive.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${advLive.account_id}`
+                          }
+                        >
+                          <div className="product-img position-relative">
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                advLive.poster
+                              }
+                              alt="Advertisement"
+                              style={{
+                                width: "250px",
+                                height: "250px",
+                                objectFit: "cover",
+                              }}
+                              className="img-fluid mx-auto d-block"                            />
+                          </div>
+                        </Link>
+                      </CardBody>
+                    </Card>
+                      } */}
                     {advLive.advertisement_type == "Labhazir" &&
                       <Card>
                         <CardBody>
@@ -1659,57 +1700,52 @@ class NearbyLabs extends Component {
                     }
                   </Col>
                 ))}
-
-              {/* REGION WISE ROW FOR ADVERTISEMENT */}
-
-              {
-                this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
-
-                  <>
-                    {regionWiseAdvertisement.nearby_adv_list.map(
-                      (nearby_adv_list, key) => (
-                        <Col key={"col" + key}>
-                          <Card>
-                            <CardBody>
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearby_adv_list.account_id}`
-                                }
-                              >
-                                <div className="product-img position-relative">
-                                  <img
-                                    src={
-                                      process.env.REACT_APP_BACKENDURL +
-                                      nearby_adv_list.poster
-                                    }
-                                    alt="Advertisement"
-                                    style={{
-                                      width: "250px",
-                                      height: "250px",
-                                      objectFit: "cover",
-                                    }}
-                                    className="img-fluid mx-auto d-block" />
-                                </div>
-                              </Link>
-                            </CardBody>
-                          </Card>
-
-                        </Col>
-                      )
-                    )}
-
-                  </>
-                )
-
-
-                )}
             </Col>
           </Row>
 
-
-
+          {/* {
+           this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
+             
+               <>
+                 {regionWiseAdvertisement.nearby_adv_list.map(
+                                       (nearby_adv_list, key) => (
+                 <Col key={"col" + key}>  
+                 {nearby_adv_list.advertisement_type == "Lab" &&                 
+                 <Card>
+                 <CardBody>
+                   <Link
+                     to={
+                       this.props.match.params.uuid
+                         ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                         : `/nearby-lab-detail/${nearby_adv_list.account_id}`
+                     }
+                   >
+                     <div className="product-img position-relative">
+                       <img
+                         src={
+                           process.env.REACT_APP_BACKENDURL +
+                           nearby_adv_list.poster
+                         }
+                         alt="Advertisement"
+                         style={{
+                           width: "250px",
+                           height: "250px",
+                           objectFit: "cover",
+                         }}
+                         className="img-fluid mx-auto d-block"                            />
+                     </div>
+                   </Link>
+                 </CardBody>
+               </Card>
+  }
+              </Col>   
+                                       )                
+             )}
+             </>
+               )
+           
+           
+          )} */}
 
           {/* <Row>
              <Col lg="12">

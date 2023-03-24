@@ -297,6 +297,9 @@ export const GET_LAB_PAYMENTS = `${API_ENDPOINT}/api/patient/payment-info`;
 // ACCOUNT STATEMENTS
 export const GET_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/lab-account-statements`;
 
+// Bank Statements
+export const GET_BANK_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/bank-account-statements-list`;
+
 // DONOR STATEMENYTS
 export const GET_DONOR_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/donor-account-statements`;
 

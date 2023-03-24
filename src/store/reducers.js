@@ -146,6 +146,8 @@ import advInvoiceDetail from "./adv-invoice/reducer";
 import accountStatements from "./account-statements/reducer";
 import donoraccountStatements from "./donor-account-statements/reducer";
 import b2baccountStatements from "./b2b-account-statements/reducer";
+import bankaccountStatements from "./bank-account-statements/reducer";
+
 
 
 import staff from "./staff/reducer";
@@ -189,6 +191,7 @@ const rootReducer = combineReducers({
   LabProfile,
   B2bProfile,
   b2baccountStatements,
+  bankaccountStatements,
   StaffProfile,
   labsListPendingFee,
   SampleCollectorProfile,

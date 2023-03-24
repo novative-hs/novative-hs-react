@@ -39,6 +39,7 @@ import DashboardLab from "../pages/Dashboard-Lab/index";
 import DashboardB2b from "../pages/Dashboard-B2b/index";
 // import DashboardFinanceOfficer from "pages/Dashboard-FinanceOfficer/StackedColumnChart";
 import FinanceOfficerProfile from "../pages/Authentication/StaffProfile";
+import DashboardFinance from "../pages/Dashboard-Finance/index"
 //Finance Admin
 import DashboardFinanceAdmin from "pages/Dashboard-FinanceAdmin";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
@@ -114,6 +115,7 @@ import DonorPayments from "pages/DonorPaymentMathods/payment-mathod";
 import DonorSettings from "pages/Authentication/DonorSettings";
 import DonorAccountStatements from "pages/AccountStatements/donor-account-statements";
 import B2bAccountStatements from "pages/AccountStatements/b2b-account-statements";
+import BankAccountStatements from "pages/AccountStatements/bank-account-statement";
 import Invoiceb2b from "pages/Checkouts/invoice-detail"
 
 import CreateBanks from "pages/CreateBanks/create-bank";
@@ -382,7 +384,7 @@ const b2bclientAuthProtectedRoutes = [
   },
 ];
 const financeOfficerAuthProtectedRoutes = [
-  // { path: "/dashboard-financeofficer", component: DashboardFinanceOfficer },
+  { path: "/dashboard-finance", component: DashboardFinance},
   { path: "/financeofficer-profile", component: FinanceOfficerProfile },
   { path: "/in-payment", component: InPayments },
   
@@ -433,6 +435,7 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/lab-details", component: labList},
   { path: "/donor-details", component: donorList},
   { path: "/b2bclients-details", component: b2bList},
+  {path: "/bank-account-statements/:id", component: BankAccountStatements}
 
 
   // { path: "/financeadmin-profile", component: FinanceAdminProfile },

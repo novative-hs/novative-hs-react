@@ -8,7 +8,7 @@ const INIT_STATE = {
   error: {},
 };
 
-const advInvoiceDetail = (state = INIT_STATE, action) => {
+const advInvoice = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_ADV_INVOICE_DETAIL_SUCCESS:
       return {
@@ -27,4 +27,4 @@ const advInvoiceDetail = (state = INIT_STATE, action) => {
   }
 };
 
-export default advInvoiceDetail;
+export default advInvoice;

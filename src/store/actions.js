@@ -130,6 +130,9 @@ export * from "./b2b-all-clients/actions";
 export * from "./b2bcheckout/actions";
 export * from "./b2b-account-statements/actions";
 
+export * from "./bank-account-statements/actions";
+
+
 
 // Donor
 export * from "./donor-referred-appointments/actions";

@@ -13,6 +13,7 @@ import { getAdvInvoiceDetail } from "helpers/django_api_helper";
 function* fetchAdvInvoiceDetail(object) {
   try {
     const response = yield call(getAdvInvoiceDetail, object.payload);
+    console.log("response", response)
     yield put(getAdvInvoiceDetailSuccess(response));
   } catch (error) {
     yield put(getAdvInvoiceDetailFail(error));

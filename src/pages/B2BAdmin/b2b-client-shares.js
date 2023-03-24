@@ -338,7 +338,7 @@ class B2bLabSharesList extends Component {
                                   </div>
                                 </Col>
                                 <Col sm="6">
-                                  <div className="text-sm-end">
+                                  {/* <div className="text-sm-end">
                                     <Button
                                       color="primary"
                                       className="font-18 btn-block btn btn-success"
@@ -346,11 +346,18 @@ class B2bLabSharesList extends Component {
                                     >
                                       <i className="mdi mdi-pencil" /> Edit All
                                     </Button>
-                                  </div>
+                                  </div> */}
                                 </Col>
                                 <Col sm="6" lg="2">
                                   <div className="text-sm-end">
-                                    <Button
+                                  <Button
+                                      color="primary"
+                                      className="font-18 btn-block btn btn-success"
+                                      onClick={this.handleEditAllBtnClick}
+                                    >
+                                      <i className="mdi mdi-pencil" /> Edit All
+                                    </Button>
+                                    {/* <Button
                                       color="primary"
                                       className="w-100 font-16 btn-block btn btn-primary"
                                       onClick={this.handleb2bLabShareClicks}
@@ -358,7 +365,7 @@ class B2bLabSharesList extends Component {
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
                                       Add New Lab
-                                    </Button>
+                                    </Button> */}
                                   </div>
                                 </Col>
                               </Row>

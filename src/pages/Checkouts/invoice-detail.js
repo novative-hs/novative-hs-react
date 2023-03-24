@@ -167,7 +167,7 @@ class InvoiceDetail extends Component {
                                   <td className="text-end">{(item.discount_by_labhazir+item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td>
                                    {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
                                    <td className="text-end">
-                                  {item.total_test_cost.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   //  -
                                   //   this.props.invoiceDetail[0]
                                   //     .home_sampling_charges

@@ -255,10 +255,10 @@ class AdvertisementsList extends Component {
         poster: process.env.REACT_APP_BACKENDURL + advertisement.poster,
         posted_at: advertisement.posted_at,
         posted_till: advertisement.posted_till,
-        region_type: advertisement.region_type,
-        province: advertisement.province,
+        // region_type: advertisement.region_type,
+        // province: advertisement.province,
         city_id: advertisement.city_id,
-        district: advertisement.district,
+        // district: advertisement.district,
       },
       advertisementImg: "",
       isEdit: true,
@@ -421,22 +421,22 @@ class AdvertisementsList extends Component {
                                               (this.state &&
                                                 this.state.posted_till) ||
                                               "",
-                                            region_type:
-                                              (this.state.advertisement &&
-                                                this.state.advertisement
-                                                  .region_type) ||
-                                              "",
-                                            province:
-                                              (this.state &&
-                                                this.state.province) ||
-                                              "",
+                                            // region_type:
+                                            //   (this.state.advertisement &&
+                                            //     this.state.advertisement
+                                            //       .region_type) ||
+                                            //   "",
+                                            // province:
+                                            //   (this.state &&
+                                            //     this.state.province) ||
+                                            //   "",
                                             city_id:
                                               (this.state && this.state.city_id) ||
                                               "",
-                                            district:
-                                              (this.state &&
-                                                this.state.district) ||
-                                              "",
+                                            // district:
+                                            //   (this.state &&
+                                            //     this.state.district) ||
+                                            //   "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -512,11 +512,11 @@ class AdvertisementsList extends Component {
                                                     posted_at: values.posted_at,
                                                     posted_till:
                                                       values.posted_till,
-                                                    region_type:
-                                                      values.region_type,
-                                                    province: values.province,
+                                                    // region_type:
+                                                    //   values.region_type,
+                                                    // province: values.province,
                                                     city_id: values.city_id,
-                                                    district: values.district,
+                                                    // district: values.district,
                                                   };
 
                                                   // update Advertisement
@@ -542,11 +542,11 @@ class AdvertisementsList extends Component {
                                                   posted_at: values.posted_at,
                                                   posted_till:
                                                     values.posted_till,
-                                                  region_type:
-                                                    values.region_type,
-                                                  province: values.province,
+                                                  // region_type:
+                                                  //   values.region_type,
+                                                  // province: values.province,
                                                   city_id: values.city_id,
-                                                  district: values.district,
+                                                  // district: values.district,
                                                 };
 
                                                 // update Advertisement
@@ -573,10 +573,10 @@ class AdvertisementsList extends Component {
 
                                                 posted_at: values.posted_at,
                                                 posted_till: values.posted_till,
-                                                region_type: values.region_type,
-                                                province: values.province,
+                                                // region_type: values.region_type,
+                                                // province: values.province,
                                                 city_id: values.city_id,
-                                                district: values.district,
+                                                // district: values.district,
                                               };
 
                                               // save new Advertisement
@@ -678,18 +678,18 @@ class AdvertisementsList extends Component {
                                                               advertisement.posted_at,
                                                             posted_till:
                                                               advertisement.posted_till,
-                                                            region_type:
-                                                              advertisement.region_type,
-                                                            province:
-                                                              advertisement.province,
+                                                            // region_type:
+                                                            //   advertisement.region_type,
+                                                            // province:
+                                                            //   advertisement.province,
                                                             city_id: advertisement.city_id,
-                                                            district:
-                                                              advertisement.district,
+                                                            // district:
+                                                            //   advertisement.district,
                                                           },
                                                         });
                                                       }}
                                                       multiple={false}
-                                                      value={this.state.title}
+                                                      value={this.state.advertisement.title}
                                                     ></Field>
                                                   </div>
 
@@ -717,18 +717,18 @@ class AdvertisementsList extends Component {
                                                               advertisement.posted_at,
                                                             posted_till:
                                                               advertisement.posted_till,
-                                                            region_type:
-                                                              advertisement.region_type,
-                                                            province:
-                                                              advertisement.province,
+                                                            // region_type:
+                                                            //   advertisement.region_type,
+                                                            // province:
+                                                            //   advertisement.province,
                                                             city_id: advertisement.city_id,
-                                                            district:
-                                                              advertisement.district,
+                                                            // district:
+                                                            //   advertisement.district,
                                                           },
                                                         });
                                                       }}
                                                       multiple={false}
-                                                      value={this.state.description}
+                                                      value={this.state.advertisement.description}
                                                     ></Field>
                                                   </div>
 
@@ -827,133 +827,6 @@ class AdvertisementsList extends Component {
                                                       }
                                                     />
                                                   </div>
-
-                                                  {/* Region Type field */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Region Type
-                                                    </Label>
-                                                    <Field
-                                                      name="region_type"
-                                                      as="select"
-                                                      className="form-control"
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          qualityAdvertisement:
-                                                            {
-                                                              id: advertisement.id,
-
-                                                              title:
-                                                                advertisement.title,
-                                                              poster:
-                                                                advertisement.poster,
-                                                              description:
-                                                                advertisement.description,
-                                                              posted_at:
-                                                                advertisement.posted_at,
-                                                              posted_till:
-                                                                advertisement.posted_till,
-                                                              region_type:
-                                                                e.target.value,
-                                                              province:
-                                                                advertisement.province,
-                                                              city_id: advertisement.city_id,
-                                                              district:
-                                                                advertisement.district,
-                                                            },
-                                                        });
-                                                      }}
-                                                      multiple={false}
-                                                      value={
-                                                        this.state.region_type
-                                                      }
-                                                    >
-                                                      <option value="All">
-                                                        All
-                                                      </option>
-                                                      <option value="Province">
-                                                        Province
-                                                      </option>
-                                                      <option value="City">
-                                                        City
-                                                      </option>
-                                                      <option value="District">
-                                                        District
-                                                      </option>
-                                                    </Field>
-                                                  </div>
-
-                                                 {/* Province field */}
-                                                 <div className="mb-3">
-                                  <Label for="type" className="form-label">
-                                    Province
-                                  </Label>
-                                  <Field
-                                    name="province"
-                                    component="select"
-                                    onChange={e =>
-                                      this.setState({
-                                        province: e.target.value,
-                                      })
-                                    }
-                                    value={this.state.province}
-                                    className="form-select"
-                                  >
-                                    <option value="Punjab">Punjab</option>
-                                    <option value="Sindh">Sindh</option>
-                                    <option value="Balochistan">
-                                      Balochistan
-                                    </option>
-                                    <option value="Khyber Pakhtunkhawa">
-                                      Khyber Pakhtunkhawa
-                                    </option>
-                                    <option value="Islamabad Capital Territory">
-                                      Islamabad Capital Territory
-                                    </option>
-                                  </Field>
-                                </div>
-
-
-                                {/* District field */}
-                                <div className="mb-3">
-                          <Label for="district" className="form-label">
-                            District
-                          </Label>
-                          <Select
-                            name="district"
-                            component="Select"
-                            onChange={selectedGroup =>
-                              this.setState({
-                                district: selectedGroup.value,
-                              })
-                            }
-                            styles={{
-                              control: (base, state) => ({
-                                ...base,
-                                borderColor:
-                                  errors.district && touched.district
-                                    ? "#f46a6a"
-                                    : "#ced4da",
-                              }),
-                            }}
-                            className={
-                              "defautSelectParent" +
-                              (errors.district && touched.district
-                                ? " is-invalid"
-                                : "")
-                            }
-                            options={DISTRICTS}
-                            placeholder="Select District..."
-                          />
-
-                          <ErrorMessage
-                            name="district"
-                            component="div"
-                            className="invalid-feedback"
-                          />
-                        </div>
-
-
                                 {/* city field */}
                         <div className="mb-3">
 

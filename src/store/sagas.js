@@ -78,6 +78,8 @@ import testDescriptionsSaga from "./test-descriptions/saga";
 import AccountStatementsSaga from "./account-statements/saga";
 import DonorAccountStatementsSaga from "./donor-account-statements/saga";
 import B2bAccountStatementsSaga from "./b2b-account-statements/saga";
+import BankAccountStatementsSaga from "./bank-account-statements/saga";
+
 import StaffSaga from "./staff/saga";
 import AuditsSaga from "./auditor/saga";
 import RegistrationAdminSaga from "./registration-admin/saga";
@@ -150,6 +152,7 @@ export default function* rootSaga() {
     fork(DonorSettingsSaga),
     fork(paymentStatussSaga),
     fork(B2bAccountStatementsSaga),
+    fork(BankAccountStatementsSaga),
     fork(testDescriptionsSaga),
     fork(testAppointmentsSaga),
     fork(patientTestAppointmentsSaga),

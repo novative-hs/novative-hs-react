@@ -1202,6 +1202,12 @@ export const updateB2bProfile = (b2bProfile, id) => {
   });
 };
 
+// ------------- Bank STATEMENTS -------------
+export const getBankStatements = id =>
+  get(`${url.GET_BANK_STATEMENTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 // ------------- ACCOUNT STATEMENTS -------------
 export const getB2bAccountStatements = id =>
   get(`${url.GET_B2B_ACCOUNT_STATEMENTS}/${id}`, {
@@ -1709,10 +1715,10 @@ export const addNewAdvertisement = (advertisement, id) => {
   formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
-  formData.append("region_type", advertisement.region_type);
-  formData.append("province", advertisement.province);
+  // formData.append("region_type", advertisement.region_type);
+  // formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
-  formData.append("district", advertisement.district);
+  // formData.append("district", advertisement.district);
 
   console.log("advertisement", advertisement, id)
 
@@ -1729,10 +1735,10 @@ export const updateAdvertisement = advertisement => {
   formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
-  formData.append("region_type", advertisement.region_type);
-  formData.append("province", advertisement.province);
+  // formData.append("region_type", advertisement.region_type);
+  // formData.append("province", advertisement.province);
   formData.append("city_id", advertisement.city_id);
-  formData.append("district", advertisement.district);
+  // formData.append("district", advertisement.district);
 
   return axios.put(
     `${url.UPDATE_ADVERTISEMENT}/${advertisement.id}`,
@@ -1951,13 +1957,11 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   // formData.append("region_type", advertisement.region_type);
   // formData.append("province", advertisement.province);
   // formData.append("city_id", advertisement.city_id);
-  formData.append("price_id", advertisement.price_id);
 
   formData.append("km", advertisement.km);
 
   console.log("advertisement",advertisement, id)
   // formData.append("amount", advertisement.amount);
-  // formData.append("number_of_days", advertisement.number_of_days);
 
 
   return axios.post(`${url.ADD_NEW_LAB_ADVERTISEMENT}/${id}`, formData, {
@@ -1971,13 +1975,13 @@ export const updateLabAdvertisement = advertisement => {
   formData.append("title", advertisement.title);
   formData.append("poster", advertisement.poster);
   formData.append("description", advertisement.description);
-  formData.append("posted_at", advertisement.posted_at);
+  formData.append("km", advertisement.km);
   formData.append("posted_till", advertisement.posted_till);
-  formData.append("region_type", advertisement.region_type);
-  formData.append("province", advertisement.province);
-  formData.append("city_id", advertisement.city_id);
-  formData.append("price_id", advertisement.price_id);
-  formData.append("district", advertisement.district);
+  formData.append("posted_at", advertisement.posted_at);
+  formData.append("number_of_days", advertisement.number_of_days);
+  formData.append("amount", advertisement.amount);
+
+console.log("api helper",advertisement )
 
 
   return axios.put(`${url.UPDATE_LAB_ADVERTISEMENT}/${advertisement.id}`,
@@ -2051,6 +2055,8 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
   formData.append("bankaccount_id", paymentInBouncedStatus.bankaccount_id);
   formData.append("deposit_slip", paymentInBouncedStatus.deposit_slip);
   formData.append("payment_status", paymentInBouncedStatus.payment_status);
+
+  console.log("payment in django api helper",paymentInBouncedStatus)
   return axios.put(
     `${url.UPDATE_PAYMENTINBOUNCED_STATUS}/${paymentInBouncedStatus.id}`,
     formData,
@@ -2316,7 +2322,9 @@ export const getAdvLive=() =>
 export const getAdvInvoiceDetail = id =>
   get(`${url.GET_ADV_INVOICE_DETAIL}/${id}`, {
     headers: getHeader(authHeader()),
-  });
+  },
+  console.log(id)
+);
 
 //------------ Get Territories List-------------
   export const getTerritoriesList = ()=>

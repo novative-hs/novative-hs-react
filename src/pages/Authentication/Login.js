@@ -121,7 +121,7 @@ class Login extends Component {
                                 } else if (success.account_type == "CSR") {
                                   this.props.history.push("/dashboard-csr");
                                 } else if (success.account_type == "finance-officer") {
-                                  this.props.history.push("/in-payment");
+                                  this.props.history.push("/dashboard-finance");
                                 }
                                 else if (success.account_type == "finance-admin") {
                                   this.props.history.push("/dashboard-financeadmin");

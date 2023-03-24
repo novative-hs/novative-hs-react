@@ -68,6 +68,12 @@ class BanksList extends Component {
           dataField: "account_no",
           text: "Account No",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            <Link to={`/bank-account-statements/${bankaccount.id}`}>
+                                    {bankaccount.account_no}
+                                  </Link>
+          ),
+          
         },
         {
           dataField: "categorey",
