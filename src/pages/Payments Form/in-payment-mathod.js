@@ -315,7 +315,6 @@ class InPaymentsForm extends Component {
       }
     }
 
-
     const advertisementList = [];
     for (let i = 0; i < advertisements.length; i++) {
       let flag = 0;
@@ -325,15 +324,14 @@ class InPaymentsForm extends Component {
       //   }
       // }
       if (!flag) {
+        const optionValue = `${advertisements[i].id}-${advertisements[i].lab_id}`;
         advertisementList.push({
-          label: advertisements[i].title,
-          value: advertisements[i].id,
-        },{
-          label: advertisements[i].lab_id,
-          value: advertisements[i].lab_id,
+          label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name})`,
+          value: optionValue,
         });
       }
     }
+    
 
     const donorList = [];
     for (let i = 0; i < donors.length; i++) {
