@@ -1611,35 +1611,65 @@ class NearbyLabs extends Component {
                  {regionWiseAdvertisement.nearby_adv_list.map(
                                        (nearby_adv_list, key) => (
                  <Col key={"col" + key}>  
-                 {nearby_adv_list.advertisement_type == "Lab" &&                 
-                 <Card>
-                 <CardBody>
-                   <Link
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
-                         : `/nearby-lab-detail/${nearby_adv_list.account_id}`
-                     }
-                   >
-                     <div className="product-img position-relative">
-                       <img
-                         src={
-                           process.env.REACT_APP_BACKENDURL +
-                           nearby_adv_list.poster
-                         }
-                         alt="Advertisement"
-                         style={{
-                           width: "250px",
-                           height: "250px",
-                           objectFit: "cover",
-                         }}
-                         className="img-fluid mx-auto d-block"                            />
-                     </div>
-                   </Link>
-                 </CardBody>
-               </Card>
-  }
-              </Col>   
+                    {nearby_adv_list.advertisement_type == "Lab" &&                 
+                    <Card>
+                    <CardBody>
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearby_adv_list.account_id}`
+                        }
+                      >
+                        <div className="product-img position-relative">
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              nearby_adv_list.poster
+                            }
+                            alt="Advertisement"
+                            style={{
+                              width: "250px",
+                              height: "250px",
+                              objectFit: "cover",
+                            }}
+                            className="img-fluid mx-auto d-block"                            />
+                        </div>
+                      </Link>
+                    </CardBody>
+                    </Card>
+                    }
+                     {nearby_adv_list.advertisement_type == "Labhazir" &&                 
+                    <Card>
+                    <CardBody>
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearby_adv_list.account_id}`
+                        }
+                      >
+                        <div className="product-img position-relative">
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              nearby_adv_list.poster
+                            }
+                            alt="Advertisement"
+                            style={{
+                              width: "250px",
+                              height: "250px",
+                              objectFit: "cover",
+                            }}
+                            className="img-fluid mx-auto d-block"                            />
+                        </div>
+                      </Link>
+                    </CardBody>
+                    </Card>
+                    }
+  
+  
+                  </Col>   
                                        )                
              )}
              </>
