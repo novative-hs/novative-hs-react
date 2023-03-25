@@ -161,10 +161,10 @@ class InPaymentsForm extends Component {
         onAddInPaymentData(this.state.inPayment, this.state.user_id)
       );
     }, 2000);
-    setTimeout(() => {
-      // this.props.history.push("/payment-status");
-      // window.location.reload()
-  }, 2000)
+  //   setTimeout(() => {
+  //     // this.props.history.push("/payment-status");
+  //     // window.location.reload()
+  // }, 2000)
 
     // setTimeout(() => {
     // this.setState({ inPayment: this.props.inPayment });
