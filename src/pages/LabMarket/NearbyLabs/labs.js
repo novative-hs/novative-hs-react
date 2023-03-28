@@ -982,61 +982,7 @@ class NearbyLabs extends Component {
 
               {/* ROW FOR ADVERTISEMENT */}
               {/* <Row> */}
-              {
-                this.props.advLives.map((advLive) => (
-                  <Col lg="3" key={1}>
-                    {advLive.advertisement_type == "Lab" &&
-                      <Card>
-                        <CardBody>
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/nearby-lab-detail/${advLive.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/nearby-lab-detail/${advLive.account_id}/${this.props.match.params.guest_id}`
-                            }
-                          >
-                            <div className="mt-4 text-center">
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  advLive.poster
-                                }
-                                alt="Lab Logo"
-                                style={{
-                                  width: "200px",
-                                  height: "300px",
-                                  objectFit: "cover",
-                                }}
-                                className="img-fluid mx-right d-block"
-                              />
-                            </div>
-                          </Link>
-                        </CardBody>
-                      </Card>
-                    }
-                    {advLive.advertisement_type == "Labhazir" &&
-                      <Card>
-                        <CardBody>
-                          <div className="mt-4 text-center">
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                advLive.poster
-                              }
-                              alt="Lab Logo"
-                              style={{
-                                width: "200px",
-                                height: "300px",
-                                objectFit: "cover",
-                              }}
-                              className="img-fluid mx-right d-block"
-                            />
-                          </div>
-                        </CardBody>
-                      </Card>
-                    }
-                  </Col>
-                ))}
+            
               {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
                 nearbyLabs.map((nearbyLab, key) => (
                   <Col xl="4" sm="6" key={"_col_" + key}>

@@ -1602,71 +1602,71 @@ class NearbyLabs extends Component {
                 </Row>
               )}
             </Col>
-            <Col lg="3">
-              {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
-                  <>
-                    {regionWiseAdvertisement.nearby_adv_list.map(
-                      (nearby_adv_list, key) => (
-                        <Col key={"col" + key}>
-                          <Card>
-                            <CardBody>
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearby_adv_list.account_id}`
-                                }
-                              >
-                                <div className="product-img position-relative">
-                                  <img
-                                    src={
-                                      process.env.REACT_APP_BACKENDURL +
-                                      nearby_adv_list.poster
-                                    }
-                                    alt="Advertisement"
-                                    style={{
-                                      width: "250px",
-                                      height: "250px",
-                                      objectFit: "cover",
-                                    }}
-                                    className="img-fluid mx-auto d-block" />
-                                </div>
-                              </Link>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      )
-                    )}
-                  </>
-                )
-                )}
+            {!isEmpty(regionWiseAdvertisement) && (
+              <Col lg="3">
+                {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
+                    <>
+                      {regionWiseAdvertisement.nearby_adv_list.map(
+                        (nearby_adv_list, key) => (
+                          <Col key={"col" + key}>
+                            <Card>
+                              <CardBody>
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                                      : `/nearby-lab-detail/${nearby_adv_list.account_id}`
+                                  }
+                                >
+                                  <div className="product-img position-relative">
+                                    <img
+                                      src={
+                                        process.env.REACT_APP_BACKENDURL +
+                                        nearby_adv_list.poster
+                                      }
+                                      alt="Advertisement"
+                                      style={{
+                                        width: "250px",
+                                        height: "250px",
+                                        objectFit: "cover",
+                                      }}
+                                      className="img-fluid mx-auto d-block" />
+                                  </div>
+                                </Link>
+                              </CardBody>
+                            </Card>
+                          </Col>
+                        )
+                      )}
+                    </>
+                  ))}
 
-              {
-                this.props.advLives.map((advLive) => (
-                  <Col lg="9" key={1}>
-                    {advLive.advertisement_type == "Labhazir" &&
-                      <Card>
-                        <CardBody>
-                          <div className="product-img position-relative">
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                advLive.poster
-                              }
-                              alt="Advertisement"
-                              style={{
-                                width: "250px",
-                                height: "250px",
-                                objectFit: "cover",
-                              }}
-                              className="img-fluid mx-auto d-block" />
-                          </div>
-                        </CardBody>
-                      </Card>
-                    }
-                  </Col>
-                ))}
-            </Col>
+                {this.props.advLives.map((advLive) => (
+                    <Col lg="9" key={1}>
+                      {advLive.advertisement_type == "Labhazir" &&
+                        <Card>
+                          <CardBody>
+                            <div className="product-img position-relative">
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  advLive.poster
+                                }
+                                alt="Advertisement"
+                                style={{
+                                  width: "250px",
+                                  height: "250px",
+                                  objectFit: "cover",
+                                }}
+                                className="img-fluid mx-auto d-block" />
+                            </div>
+                          </CardBody>
+                        </Card>
+                      }
+                    </Col>
+                  ))}
+              </Col>
+            )}
           </Row>
         </div>
       </React.Fragment>
