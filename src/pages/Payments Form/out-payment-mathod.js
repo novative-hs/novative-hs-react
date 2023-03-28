@@ -91,6 +91,18 @@ class OutPaymentsForm extends Component {
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
   }
 
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   handleSubmitClicks = () => {
     this.setState({
       outPayment: {
@@ -151,12 +163,12 @@ class OutPaymentsForm extends Component {
         
       );
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-
     }, 2000);
 
     setTimeout(() => {
-      // window.location.reload()>
-      // this.props.history.push("/payment-out-created-status");
+      this.props.history.push("/payment-out-created-status");
+      window.location.reload()
+
   }, 2000)
   };
 

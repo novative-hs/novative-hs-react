@@ -65,9 +65,19 @@ class PaymentStatussList extends Component {
           ),
         },
         {
+          text: "MIF ID",
+          dataField: "id",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, paymentStatus) => (
+              <>{paymentStatus.id}</>
+          ),
+      },
+        {
           dataField: "invoice_id",
           text: "invoice ID",
           sort: true,
+          hidden: true,
           formatter: (cellContent, paymentStatus) => (
             <>
               <strong>{paymentStatus.invoice_id}</strong>
@@ -94,6 +104,8 @@ class PaymentStatussList extends Component {
               <span>
                 {paymentStatus.lab_name}{" "}
                 {paymentStatus.donor_name}
+                {paymentStatus.advertisement_title}
+
               </span>
             </span>
           </>
@@ -126,16 +138,16 @@ class PaymentStatussList extends Component {
           ),
         },
         {
-          dataField: "cheque_image",
-          text: "Deposite Copy",
+          dataField: "deposit_slip",
+          text: "Slip",
           sort: true,
-          formatter: (cellContent, paymentStatus) => (
+          formatter: (cellContent, approvedInPayment) => (
             <>
               <Link
                 to={{
                   pathname:
                     process.env.REACT_APP_BACKENDURL +
-                    paymentStatus.cheque_image,
+                    approvedInPayment.deposit_slip,
                 }}
                 target="_blank"
               >
@@ -158,6 +170,10 @@ class PaymentStatussList extends Component {
           dataField: "cleared_at",
           text: "Cleared Date",
           sort: true,
+          formatter: (cellContent, paymentStatuss) => (
+            <p className="text-muted mb-0">
+            {new Date(paymentStatuss.cleared_at).toLocaleString("en-US")}
+          </p>                    ),
         },
         {
           dataField: "payment_status",

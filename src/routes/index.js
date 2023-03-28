@@ -73,6 +73,7 @@ import bouncedStatussList from "../pages/PaymentStatuss/payment-bounced-statuss-
 import OutPayments from "pages/Payments Form/out-payment-mathod";
 import PaymentOutStatussList from "pages/PaymentStatuss/paymentout-pending-clearence-statuss-list"
 import PaymentOutCreatedStatussList from "pages/PaymentStatuss/paymentout-created-statuss-list"
+import PaymentOutclearStatussList from "pages/PaymentStatuss/paymentoutclear-statuss-list"
 import PaymentOutBouncedStatussList from "pages/PaymentStatuss/paymentout-bounced-statuss-list"
 
 // sample collector components
@@ -417,7 +418,10 @@ const financeOfficerAuthProtectedRoutes = [
     path: "/payment-out-created-status",
     component: PaymentOutCreatedStatussList,
   },
-
+  {
+    path: "/payment-out-clear-status",
+    component: PaymentOutclearStatussList,
+  },
 
 
 ];

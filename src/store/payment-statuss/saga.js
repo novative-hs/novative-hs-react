@@ -7,6 +7,7 @@ import {
   GET_DEPOSIT_STATUSS,
   GET_CREATEDOUT_STATUSS,
   GET_CLEAR_STATUSS,
+  GET_PAYMENTOUT_CLEAR_STATUSS,
   GET_BOUNCED_STATUSS,
   GET_BOUNCEDIN_STATUSS,
   GET_LABS,
@@ -42,6 +43,8 @@ import {
   getCreatedOutStatussFail,
   getClearStatussSuccess,
   getClearStatussFail,
+  getPaymentOutClearStatussSuccess,
+  getPaymentOutClearStatussFail,
   getBouncedStatussSuccess,
   getBouncedInStatussSuccess,
   getBouncedStatussFail,
@@ -69,6 +72,7 @@ import {
   getDepositStatuss,
   getCreatedOutStatuss,
   getClearStatuss,
+  getPaymentOutClearStatuss,
   getBouncedStatuss,
   getBouncedInStatuss,
   updatePaymentStatus,
@@ -143,6 +147,14 @@ function* fetchCreatedOutStatuss(object) {
     yield put(getCreatedOutStatussSuccess(response));
   } catch (error) {
     yield put(getCreatedOutStatussFail(error));
+  }
+}
+function* fetchPaymentOutClearStatuss(object) {
+  try {
+    const response = yield call(getPaymentOutClearStatuss, object.payload);
+    yield put(getPaymentOutClearStatussSuccess(response));
+  } catch (error) {
+    yield put(getPaymentOutClearStatussFail(error));
   }
 }
 function* fetchClearStatuss(object) {
@@ -245,6 +257,7 @@ function* onDeletePaymentout({ payload: paymentout }) {
 function* paymentStatussSaga() {
   yield takeEvery(GET_DEPOSIT_STATUSS, fetchDepositStatuss);
   yield takeEvery(GET_CREATEDOUT_STATUSS, fetchCreatedOutStatuss);
+  yield takeEvery(GET_PAYMENTOUT_CLEAR_STATUSS, fetchPaymentOutClearStatuss);
   yield takeEvery(GET_CLEAR_STATUSS, fetchClearStatuss);
   yield takeEvery(GET_BOUNCED_STATUSS, fetchBouncedStatuss);
   yield takeEvery(GET_BOUNCEDIN_STATUSS, fetchBouncedInStatuss);

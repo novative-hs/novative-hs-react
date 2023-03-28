@@ -67,9 +67,19 @@ class PaymentStatussList extends Component {
           ),
         },
         {
+          text: "MIF ID",
+          dataField: "id",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, paymentStatus) => (
+              <>{paymentStatus.id}</>
+          ),
+      },
+        {
           dataField: "invoice_id",
           text: "invoice ID",
           sort: true,
+          hidden: true,
           formatter: (cellContent, paymentStatus) => (
             <>
               <strong>{paymentStatus.invoice_id}</strong>
@@ -96,6 +106,7 @@ class PaymentStatussList extends Component {
               <span>
                 {paymentStatus.lab_name}{" "}
                 {paymentStatus.donor_name}
+                {paymentStatus.advertisement_title}
               </span>
             </span>
           </>
@@ -126,25 +137,21 @@ class PaymentStatussList extends Component {
           text: "Deposited Date",
           sort: true,
         },
-        // {
-        //   dataField: "deposit_bank",
-        //   text: "Deposit Bank",
-        //   sort: true,
-        // },
         {
-          dataField: "cheque_image",
-          text: "Deposite Copy",
+          dataField: "deposit_slip",
+          text: "Slip",
           sort: true,
-          formatter: (cellContent, paymentStatus) => (
+          formatter: (cellContent, approvedInPayment) => (
             <>
               <Link
                 to={{
                   pathname:
-                    process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                    process.env.REACT_APP_BACKENDURL +
+                    approvedInPayment.deposit_slip,
                 }}
                 target="_blank"
               >
-                View
+                View Slip
               </Link>
             </>
           ),

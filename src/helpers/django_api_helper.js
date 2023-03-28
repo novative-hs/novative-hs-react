@@ -2085,6 +2085,11 @@ export const getClearStatuss = id =>
   get(`${url.GET_CLEAR_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
 });
+export const getPaymentOutClearStatuss = id =>
+  get(`${url.GET_PAYMENTOUT_CLEAR_STATUSS}/${id}`, {
+    headers: getHeader(authHeader()),
+});
+
 
 
 // ------------- Registration Admin requests START -------------
@@ -2280,10 +2285,11 @@ export const updateLabAdvertisementRequest = advertisement => {
   formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
-
   formData.append("request_status", advertisement.request_status);
   formData.append("declined_reason", advertisement.declined_reason);
   formData.append("responded_at", advertisement.responded_at);
+
+  console.log("django api helper", advertisement)
 
   return axios.put(
     `${url.UPDATE_LAB_ADVERTISEMENT_REQUEST}/${advertisement.id}`,

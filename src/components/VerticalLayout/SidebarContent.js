@@ -311,6 +311,11 @@ class SidebarContent extends Component {
                         </Link>
                       </li>
                       <li>
+                        <Link to={"/payment-out-clear-status"}>
+                          {this.props.t("MOF Cleared")}
+                        </Link>
+                      </li>
+                      <li>
                         <Link to={"/payment-out-bounced-status"}>
                           {this.props.t("MOF Bounced")}
                         </Link>

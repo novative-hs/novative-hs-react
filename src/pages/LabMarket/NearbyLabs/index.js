@@ -1601,12 +1601,9 @@ class NearbyLabs extends Component {
                   </Col>
                 </Row>
               )}
-              {/* <ScrollButton /> */}
             </Col>
             <Col lg="3">
-              {
-                this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
-
+              {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
                   <>
                     {regionWiseAdvertisement.nearby_adv_list.map(
                       (nearby_adv_list, key) => (
@@ -1642,8 +1639,6 @@ class NearbyLabs extends Component {
                     )}
                   </>
                 )
-
-
                 )}
 
               {
@@ -1673,39 +1668,6 @@ class NearbyLabs extends Component {
                 ))}
             </Col>
           </Row>
-
-          {/* <Row>
-             <Col lg="12">
-               <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                 <PaginationItem disabled={page === 1}>
-                   <PaginationLink
-                     previous
-                     href="#"
-                     onClick={() => this.handlePageClick(page - 1)}
-                   />
-                 </PaginationItem>
-                 {map(Array(totalPage), (item, i) => (
-                   <PaginationItem active={i + 1 === page} key={i}>
-                     <PaginationLink
-                       onClick={() => this.handlePageClick(i + 1)}
-                       href="#"
-                     >
-                       {i + 1}
-                     </PaginationLink>
-                   </PaginationItem>
-                 ))}
-                 <PaginationItem disabled={page === totalPage}>
-                   <PaginationLink
-                     next
-                     href="#"
-                     onClick={() => this.handlePageClick(page + 1)}
-                   />
-                 </PaginationItem>
-               </Pagination>
-             </Col>
-           </Row> */}
-          {/* </Col> */}
-          {/* </Container> */}
         </div>
       </React.Fragment>
     );

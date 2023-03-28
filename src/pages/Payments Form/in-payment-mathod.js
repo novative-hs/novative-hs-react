@@ -133,6 +133,18 @@ class InPaymentsForm extends Component {
   //   // }
   // };
 
+  dataURLtoFile = (dataurl, filename) => {
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
+
   handleProceedClick = () => {
     this.setState({
       inPayment: {
@@ -160,11 +172,12 @@ class InPaymentsForm extends Component {
       console.log(
         onAddInPaymentData(this.state.inPayment, this.state.user_id)
       );
+      // window.location.reload()
     }, 2000);
-  //   setTimeout(() => {
-  //     // this.props.history.push("/payment-status");
-  //     // window.location.reload()
-  // }, 2000)
+    setTimeout(() => {
+      this.props.history.push("/payment-status");
+      window.location.reload()
+  }, 2000)
 
     // setTimeout(() => {
     // this.setState({ inPayment: this.props.inPayment });
@@ -324,10 +337,10 @@ class InPaymentsForm extends Component {
       //   }
       // }
       if (!flag) {
-        const optionValue = `${advertisements[i].id}-${advertisements[i].lab_id}`;
+        // const optionValue = `${advertisements[i].id}-${advertisements[i].lab_id}`;
         advertisementList.push({
           label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name})`,
-          value: optionValue,
+          value: `${advertisements[i].id}`,
         });
       }
     }
@@ -550,75 +563,7 @@ class InPaymentsForm extends Component {
                             )
 
                           ) : null}
-                          {this.state.payment_for == "Advertisement" ? (
-                             inPayment.lab_id ? (
-                              <div className="mb-3">
-                                <Label className="form-label">
-                                  Lab name
-                                </Label>
-                                <Field
-                                  name="lab_id"
-                                  as="select"
-                                  defaultValue={
-                                    inPayment.lab_id
-                                  }
-                                  className="form-control"
-                                  readOnly={true}
-                                  multiple={false}
-                                >
-                                  <option
-                                    key={
-                                      inPayment.lab_id
-                                    }
-                                    value={
-                                      inPayment.lab_id
-                                    }
-                                  >
-                                    {
-                                      inPayment.lab_name
-                                    }
-                                  </option>
-                                </Field>
-                              </div>
-                            ) : (
-                              <div className="mb-3 select2-container">
-                                <Label>Lab Name</Label>
-                                <Select
-                                  name="lab_id"
-                                  component="Select"
-                                  onChange={selectedGroup =>
-                                    this.setState({
-                                      lab_id:
-                                        selectedGroup.value,
-                                    })
-                                  }
-                                  className={
-                                    "defautSelectParent" +
-                                    (!this.state.lab_id
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  styles={{
-                                    control: (
-                                      base,
-                                      state
-                                    ) => ({
-                                      ...base,
-                                      borderColor: !this
-                                        .state.lab_id
-                                        ? "#f46a6a"
-                                        : "#ced4da",
-                                    }),
-                                  }}
-                                  options={labList}
-                                  placeholder="Select Lab..."
-                                />
-
-                                <div className="invalid-feedback">
-                                  Please select your Lab
-                                </div>
-                              </div>)
-                          ) : null}
+                          
                            {this.state.payment_for == "Advertisement" ? (
                             inPayment.advertisement_id ? (
                               <div className="mb-3">
@@ -813,7 +758,7 @@ class InPaymentsForm extends Component {
                                       <input
                                         name="paid_at"
                                         type="datetime-local"
-                                        min={new Date(
+                                        max={new Date(
                                           new Date().toString().split("GMT")[0] +
                                           " UTC"
                                         )
@@ -901,7 +846,7 @@ class InPaymentsForm extends Component {
                                       <input
                                         name="paid_at"
                                         type="datetime-local"
-                                        min={new Date(
+                                        max={new Date(
                                           new Date().toString().split("GMT")[0] +
                                           " UTC"
                                         )
@@ -930,12 +875,12 @@ class InPaymentsForm extends Component {
                                       <input
                                         name="cheque_payment_date"
                                         type="datetime-local"
-                                        min={new Date(
-                                          new Date().toString().split("GMT")[0] +
-                                          " UTC"
-                                        )
-                                          .toISOString()
-                                          .slice(0, -8)}
+                                        // min={new Date(
+                                        //   new Date().toString().split("GMT")[0] +
+                                        //   " UTC"
+                                        // )
+                                        //   .toISOString()
+                                        //   .slice(0, -8)}
                                          className="form-control"
                                          onChange={e =>
                                           this.setState({
@@ -1032,7 +977,7 @@ class InPaymentsForm extends Component {
                                       <input
                                         name="paid_at"
                                         type="datetime-local"
-                                        min={new Date(
+                                        max={new Date(
                                           new Date().toString().split("GMT")[0] +
                                           " UTC"
                                         )

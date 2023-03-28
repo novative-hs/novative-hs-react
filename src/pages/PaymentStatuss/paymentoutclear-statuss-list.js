@@ -36,8 +36,8 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getApprovedInPayments,
-} from "store/finance-admin/actions";
+  getPaymentOutClearStatuss,
+} from "store/payment-statuss/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -47,8 +47,8 @@ class PaymentStatussList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      approvedInPayments: [],
-      approvedInPayment: "",
+      paymentStatuss: [],
+      paymentStatus: "",
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -60,17 +60,17 @@ class PaymentStatussList extends Component {
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, approvedInPayment) => (
-            <>{approvedInPayment.id}</>
+          formatter: (cellContent, paymentStatus) => (
+            <>{paymentStatus.id}</>
           ),
         },
         {
-          text: "MIF ID",
+          text: "MOF ID",
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, approvedInPayment) => (
-              <>{approvedInPayment.id}</>
+          formatter: (cellContent, paymentStatus) => (
+              <>{paymentStatus.id}</>
           ),
       },
         {
@@ -78,9 +78,9 @@ class PaymentStatussList extends Component {
           text: "invoice ID",
           sort: true,
           hidden: true,
-          formatter: (cellContent, approvedInPayment) => (
+          formatter: (cellContent, paymentStatus) => (
             <>
-              <strong>{approvedInPayment.invoice_id}</strong>
+              <strong>{paymentStatus.invoice_id}</strong>
             </>
           ),
         },
@@ -91,7 +91,7 @@ class PaymentStatussList extends Component {
         },
         {
           dataField: "payment_for",
-          text: "Payment For",
+          text: "Payment To",
           sort: true,
         },
         {
@@ -116,33 +116,27 @@ class PaymentStatussList extends Component {
           text: "Amount",
           sort: true,
         },
-        {
-          dataField: "deposited_at",
-          text: "Deposit at",
-          sort: true,
-          // formatter: (cellContent, approvedInPayment) => (
-          //   <>
-          //     <span>
-          //       {new Date(approvedInPayment.deposit_at).toLocaleString("en-US")}
-          //     </span>
-          //   </>
-          // ),
-        },
+        // {
+        //   dataField: "deposited_at",
+        //   text: "Deposited Date",
+        //   sort: true,
+        // },
+        
         {
           dataField: "bank",
-          text: "Deposit Bank",
+          text: "Bank/Account#",
           sort: true,
-          formatter: (cellContent, approvedInPayment) => (
+          formatter: (cellContent, paymentStatus) => (
             <>
               <span>
                 <span>
-                  {approvedInPayment.bank_name},{" "}
-                  {approvedInPayment.account_no}
+                  {paymentStatus.bank_name},{" "}
+                  {paymentStatus.account_no}
                 </span>
               </span>
             </>
           ),
-        },    
+        },
         {
           dataField: "deposit_slip",
           text: "Slip",
@@ -163,36 +157,40 @@ class PaymentStatussList extends Component {
           ),
         },
         // {
+        //   dataField: "is_settled",
+        //   text: "Is Settled",
+        //   sort: true,
+        // },
+        // {
         //   dataField: "verified_by",
         //   text: "Verified By",
         //   sort: true,
         // },
         {
           dataField: "cleared_at",
-          text: "Clear at",
+          text: "Cleared Date",
           sort: true,
-          // formatter: (cellContent, approvedInPayment) => (
-          //   <>
-          //     <span>
-          //       {new Date(approvedInPayment.deposit_at).toLocaleString("en-US")}
-          //     </span>
-          //   </>
-          // ),
+          formatter: (cellContent, paymentStatuss) => (
+            <p className="text-muted mb-0">
+            {new Date(paymentStatuss.cleared_at).toLocaleString("en-US")}
+          </p>                    ),
         },
         {
-          dataField: "payment_status",
+          dataField: "status",
           text: "Status",
           sort: true,
         },
       ],
     };
     this.toggle = this.toggle.bind(this);
+    // this.handlePaymentStatusClicks =
+    //   this.handlePaymentStatusClicks.bind(this);
   }
 
   componentDidMount() {
-    const { approvedInPayments, onGetApprovedInPayments } = this.props;
-    onGetApprovedInPayments(this.state.user_id);
-    this.setState({ approvedInPayments });
+    const { paymentStatuss, onGetPaymentOutClearStatuss } = this.props;
+    onGetPaymentOutClearStatuss(this.state.user_id);
+    this.setState({ paymentStatuss });
   }
 
   toggle() {
@@ -200,15 +198,13 @@ class PaymentStatussList extends Component {
       modal: !prevState.modal,
     }));
   }
-
-  // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { approvedInPayments } = this.props;
+    const { paymentStatuss } = this.props;
     if (
-      !isEmpty(approvedInPayments) &&
-      size(prevProps.approvedInPayments) !== size(approvedInPayments)
+      !isEmpty(paymentStatuss) &&
+      size(prevProps.paymentStatuss) !== size(paymentStatuss)
     ) {
-      this.setState({ approvedInPayments: {}, isEdit: false });
+      this.setState({ paymentStatuss: {}, isEdit: false });
     }
   }
 
@@ -231,21 +227,22 @@ class PaymentStatussList extends Component {
       deleteModal: !prevState.deleteModal,
     }));
   };
+
   render() {
     const { SearchBar } = Search;
 
-    const { approvedInPayments } = this.props;
+    const { paymentStatuss } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
     const {
-      onGetApprovedInPayments,
+      onGetPaymentOutClearStatuss,
     } = this.props;
-    const approvedInPayment = this.state.approvedInPayment;
+    const paymentStatus = this.state.paymentStatus;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: approvedInPayments.length, // replace later with size(approvedInPayments),
+      totalSize: paymentStatuss.length, // replace later with size(paymentStatuss),
       custom: true,
     };
 
@@ -259,14 +256,14 @@ class PaymentStatussList extends Component {
     return (
       <React.Fragment>
         <div className="page-content">
-          <MetaTags>
-            <title>Payments In with Approvel Status | Lab Hazir</title>
+        <MetaTags>
+            <title>MIF List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Payments In"
-              breadcrumbItem="Approvel Status List"
+              title="List"
+              breadcrumbItem="MIF Cleared"
             />
             <Row>
               <Col lg="12">
@@ -276,13 +273,13 @@ class PaymentStatussList extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.paymentStatusListColumns}
-                      data={approvedInPayments}
+                      data={paymentStatuss}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.paymentStatusListColumns}
-                          data={approvedInPayments}
+                          data={paymentStatuss}
                           search
                         >
                           {toolkitprops => (
@@ -341,17 +338,17 @@ class PaymentStatussList extends Component {
 
 PaymentStatussList.propTypes = {
   match: PropTypes.object,
-  approvedInPayments: PropTypes.array,
+  paymentStatuss: PropTypes.array,
   className: PropTypes.any,
-  onGetApprovedInPayments: PropTypes.func,
+  onGetPaymentOutClearStatuss: PropTypes.func,
 };
 
-const mapStateToProps = ({ financeAdmin }) => ({
-  approvedInPayments: financeAdmin.approvedInPayments,
+const mapStateToProps = ({ paymentStatuss }) => ({
+  paymentStatuss: paymentStatuss.paymentStatuss,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetApprovedInPayments: id => dispatch(getApprovedInPayments(id)),
+  onGetPaymentOutClearStatuss: id => dispatch(getPaymentOutClearStatuss(id)),
 
 });
 

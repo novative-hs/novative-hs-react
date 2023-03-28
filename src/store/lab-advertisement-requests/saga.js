@@ -30,9 +30,7 @@ import {
 
 function* fetchLabAdvertisementRequests(object) {
   try {
-    const response = yield call(getLabAdvertisementRequests, object.payload);
-    console.log ("labAdvertisementRequest saga: ", response);
-    
+    const response = yield call(getLabAdvertisementRequests, object.payload);    
     yield put(getLabAdvertisementRequestsSuccess(response));
   } catch (error) {
     yield put(getLabAdvertisementRequestsFail(error));
@@ -53,6 +51,7 @@ function* fetchLabAdvertisementRequestsAccepted(object) {
 function* onUpdateLabAdvertisementRequest({ payload: labAdvertisementRequest }) {
   try {
     const response = yield call(updateLabAdvertisementRequest, labAdvertisementRequest);
+    console.log ("labAdvertisementRequest Accepted update saga: ", response);
     yield put(updateLabAdvertisementRequestSuccess(response));
   } catch (error) {
     yield put(updateLabAdvertisementRequestFail(error));

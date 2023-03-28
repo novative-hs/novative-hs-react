@@ -102,34 +102,8 @@ class LabAdvertisementRequestsList extends Component {
           text: "Status",
           sort: true,
         },
-        // {
-        //   dataField: "payment_status",
-        //   text: "Payment Status",
-        //   sort: true,
-        // },
-        // {
-        //   dataField: "menu",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Action",
-        //   formatter: (cellContent, labAdvertisementRequest) => (
-        //     <div className="d-flex gap-3">
-        //       <Link className="text-success" to="#">
-        //         <i
-        //           className="mdi mdi-pencil font-size-18"
-        //           id="edittooltip"
-        //           onClick={e =>
-        //             this.handleLabAdvertisementRequestClick(e, labAdvertisementRequest)
-        //           }
-        //         ></i>
-        //       </Link>
-        //     </div>
-        //   ),
-        // },
       ],
     };
-    // this.handleLabAdvertisementRequestClick =
-    //   this.handleLabAdvertisementRequestClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleLabAdvertisementRequestClicks =
       this.handleLabAdvertisementRequestClicks.bind(this);
@@ -191,6 +165,7 @@ class LabAdvertisementRequestsList extends Component {
       size(prevProps.labAdvertisementRequests) !== size(labAdvertisementRequests)
     ) {
       this.setState({ labAdvertisementRequests: {}, isEdit: false });
+
     }
   }
 
@@ -205,46 +180,6 @@ class LabAdvertisementRequestsList extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-
-  /* Insert,Update Delete data */
-
-  // toggleDeleteModal = () => {
-  //   this.setState(prevState => ({
-  //     deleteModal: !prevState.deleteModal,
-  //   }));
-  // };
-
-  // onClickDelete = labAdvertisementRequests => {
-  //   this.setState({ labAdvertisementRequests: labAdvertisementRequests });
-  //   this.setState({ deleteModal: true });
-  // };
-
-  // handleDeleteLabAdvertisementRequest = () => {
-  //   const { onDeleteLabAdvertisementRequest, onGetLabAdvertisementRequestsAccepted } = this.props;
-  //   const { labAdvertisementRequests } = this.state;
-  //   if (labAdvertisementRequests.id !== undefined) {
-  //     onDeleteLabAdvertisementRequest(labAdvertisementRequests);
-  //     setTimeout(() => {
-  //       onGetLabAdvertisementRequestsAccepted(this.state.user_id);
-  //     }, 1000);
-  //     this.setState({ deleteModal: false });
-  //   }
-  // };
-
-  // handleLabAdvertisementRequestClick = (e, arg) => {
-  //   this.setState({
-  //     labAdvertisementRequest: {
-  //       id: arg.id,
-  //       request_status:arg.request_status,
-  //       declined_reason: arg.declined_reason,
-  //       // responded_at: arg.responded_at,
-  //     },
-  //     isEdit: true,
-  //   });
-
-  //   this.toggle();
-  // };
-
   render() {
     const { SearchBar } = Search;
 
@@ -356,105 +291,12 @@ class LabAdvertisementRequestsList extends Component {
                                                 this.state.labAdvertisementRequest
                                                   .declined_reason) ||
                                               "",
-                                          
-                                            // responded_at:
-                                            //   (this.state &&
-                                            //     this.state.labAdvertisementRequest
-                                            //       .responded_at) ||
-                                            //   "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            // name: Yup.string().when(
-                                            //   "certificate_type",
-                                            //   {
-                                            //     is: val => val === "Others",
-                                            //     then: Yup.string()
-                                            //       .trim()
-                                            //       .required(
-                                            //         "Please enter test name"
-                                            //       )
-                                            //       .min(
-                                            //         3,
-                                            //         "Please enter at least 3 characters"
-                                            //       )
-                                            //       .max(
-                                            //         255,
-                                            //         "Please enter maximum 255 characters"
-                                            //       )
-                                            //       .matches(
-                                            //         /^[a-zA-Z][a-zA-Z ]+$/,
-                                            //         "Please enter only alphabets and spaces"
-                                            //       ),
-                                            //   }
-                                            // ),
-
-                                            // certificate: Yup.string().when(
-                                            //   "hiddenEditFlag",
-                                            //   {
-                                            //     is: hiddenEditFlag =>
-                                            //       hiddenEditFlag == false, //just an e.g. you can return a function
-                                            //     then: Yup.string().required(
-                                            //       "Please upload certificate"
-                                            //     ),
-                                            //   }
-                                            // ),
-
-                                          
-
-                                            // responded_at: Yup.string().required(
-                                            //   "Please enter respond date"
-                                            // ),
                                           })}
                                           onSubmit={values => {
-                                            // if (
-                                            //   values.certificate_type !=
-                                            //   "Others"
-                                            // ) {
-                                            //   values.name =
-                                            //     values.certificate_type;
-                                            // }
-
                                             if (isEdit) {
-                                              // if (!this.state.certificateImg) {
-                                              //   this.toDataURL(
-                                              //     labAdvertisementRequest.certificate
-                                              //   ).then(dataUrl => {
-                                              //     var fileData =
-                                              //       this.dataURLtoFile(
-                                              //         dataUrl,
-                                              //         labAdvertisementRequest.certificate
-                                              //           .split("/")
-                                              //           .at(-1)
-                                              //       );
-                                              //     this.setState({
-                                              //       certificateImg: fileData,
-                                              //     });
-
-                                              //     const updateLabAdvertisementRequest =
-                                              //       {
-                                              //         id: labAdvertisementRequest.id,
-                                              //         certificate_type:
-                                              //           values.certificate_type,
-                                              //         name: values.name,
-                                              //         type: values.type,
-                                              //         certificate:
-                                              //           this.state
-                                              //             .certificateImg,
-                                              //         expiry_date:
-                                              //           values.expiry_date,
-                                              //       };
-
-                                              //     // update LabAdvertisementRequest
-                                              //     onUpdateLabAdvertisementRequest(
-                                              //       updateLabAdvertisementRequest
-                                              //     );
-                                              //     setTimeout(() => {
-                                              //       onGetLabAdvertisementRequestsAccepted(
-                                              //         this.state.user_id
-                                              //       );
-                                              //     }, 1000);
-                                              //   });
                                                
                                                 const updateLabAdvertisementRequest =
                                                   {
@@ -470,42 +312,14 @@ class LabAdvertisementRequestsList extends Component {
                                                 onUpdateLabAdvertisementRequest(
                                                   updateLabAdvertisementRequest
                                                 );
+                                                
                                                 setTimeout(() => {
                                                   onGetLabAdvertisementRequestsAccepted(
                                                     this.state.user_id
                                                   );
-                                                }, 1000);
+                                                }, 
+                                                1000);
                                               }
-                                            // else {
-                                            //   // if (
-                                            //   //   values.certificate_type !=
-                                            //   //   "Others"
-                                            //   // ) {
-                                            //   //   values.name =
-                                            //   //     values.certificate_type;
-                                            //   // }
-
-                                            //   const newLabAdvertisementRequest = {
-                                            //     certificate_type:
-                                            //       values.certificate_type,
-                                            //     name: values.name,
-                                            //     type: values.type,
-                                            //     certificate:
-                                            //       this.state.certificateImg,
-                                            //     expiry_date: values.expiry_date,
-                                            //   };
-
-                                            //   // save new LabAdvertisementRequest
-                                            //   onAddNewLabAdvertisementRequest(
-                                            //     newLabAdvertisementRequest,
-                                            //     this.state.user_id
-                                            //   );
-                                            //   setTimeout(() => {
-                                            //     onGetLabAdvertisementRequestsAccepted(
-                                            //       this.state.user_id
-                                            //     );
-                                            //   }, 1000);
-                                            // }
                                             this.toggle();
                                           }}
                                         >
@@ -577,108 +391,6 @@ class LabAdvertisementRequestsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
-                                                  {/* Certificate Title field */}
-                                                  {this.state.labAdvertisementRequest
-                                                    .request_status ===
-                                                    "Declined" && (
-                                                    <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        Declined Reason
-                                                        <span className="text-danger font-size-12">
-                                                          *
-                                                        </span>
-                                                      </Label>
-                                                      <Field
-                                                        name="declined_reason"
-                                                        type="text"
-                                                        value={
-                                                          this.state
-                                                            .labAdvertisementRequest
-                                                            .declined_reason
-                                                        }
-                                                        onChange={e => {
-                                                          this.setState({
-                                                            labAdvertisementRequest:
-                                                              {
-                                                                id: labAdvertisementRequest.id,
-                                                                request_status:
-                                                                  labAdvertisementRequest.request_status,
-                                                                  declined_reason: e.target
-                                                                  .value,
-                                                                // responded_at:
-                                                                //   labAdvertisementRequest.responded_at,
-                                                                 
-                                                              },
-                                                          });
-                                                        }}
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.declined_reason &&
-                                                          touched.declined_reason
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                      />
-                                                      <ErrorMessage
-                                                        name="declined_reason"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  )}
-
-                                                  {/* Certificate Expiry date field */}
-{/* 
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Responded At
-                                                      <span className="text-danger font-size-12">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="responded_at"
-                                                      type="date"
-                                                      min={new Date(
-                                                        new Date()
-                                                          .toString()
-                                                          .split("GMT")[0] +
-                                                          " UTC"
-                                                      )
-                                                        .toISOString()
-                                                        .slice(0, -14)}
-                                                      value={
-                                                        this.state
-                                                          .labAdvertisementRequest
-                                                          .responded_at
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          labAdvertisementRequest: {
-                                                            id: labAdvertisementRequest.id,
-                                                            request_status:
-                                                              labAdvertisementRequest.request_status,
-                                                            declined_reason: labAdvertisementRequest.declined_reason,
-                                                            responded_at:
-                                                              e.target.value,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.responded_at &&
-                                                        touched.responded_at
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    /> */}
-                                                    {/* <ErrorMessage
-                                                      name="responded_at"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div> */}
                                                 </Col>
                                               </Row>
                                               <Row>

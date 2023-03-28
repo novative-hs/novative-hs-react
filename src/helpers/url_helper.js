@@ -18,7 +18,7 @@ export const POST_LAB_INFORMATION = `${API_ENDPOINT}/api/lab/lab-information`;
 export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corporate-information`;
 
 // LAB LIST
-export const GET_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
+export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 
 // TEST
 export const GET_TESTS = `${API_ENDPOINT}/api/medicaltest/test-list`;
@@ -230,6 +230,8 @@ export const UPDATE_PAYMENT_STATUS = `${API_ENDPOINT}/api/finance-officer/paymen
 export const UPDATE_PAYMENTIN_STATUS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-deposited`;
 export const GET_BOUNCEDIN_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-bounced`;
 export const UPDATE_PAYMENTINBOUNCED_STATUS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-bounced`;
+export const GET_PAYMENTOUT_CLEAR_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-out-cleared`;
+
 
 
 

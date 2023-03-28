@@ -100,6 +100,7 @@ class PaymentStatussList extends Component {
                 <span>
                   {paymentBouncedInStatus.lab_name}{" "}
                   {paymentBouncedInStatus.donor_name}
+                  {paymentBouncedInStatus.advertisement_title}
                 </span>
               </span>
             </>

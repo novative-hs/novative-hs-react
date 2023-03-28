@@ -440,10 +440,6 @@ class LabAdvertisementRequestsList extends Component {
                                                             id: labAdvertisementRequest.id,
                                                             request_status:
                                                               e.target.value,
-                                                            declined_reason: labAdvertisementRequest.declined_reason,
-                                                            posted_at: labAdvertisementRequest.posted_at,
-                                                            posted_till: labAdvertisementRequest.posted_till,
-                                                            description: labAdvertisementRequest.description,
                                                       
                                                           },
                                                         });
@@ -503,9 +499,6 @@ class LabAdvertisementRequestsList extends Component {
                                                                 id: labAdvertisementRequest.id,
                                                                 request_status:
                                                                 labAdvertisementRequest.request_status,
-                                                                posted_at: labAdvertisementRequest.posted_at,
-                                                                posted_till: labAdvertisementRequest.posted_till,
-                                                                description: labAdvertisementRequest.description,
                                                                   declined_reason: e.target
                                                                   .value,
                                                                 // responded_at:

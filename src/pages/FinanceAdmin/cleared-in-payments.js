@@ -60,9 +60,19 @@ class PendingB2BClients extends Component {
             ),
           },
           {
+            text: "MIF ID",
+            dataField: "id",
+            sort: true,
+            hidden: false,
+            formatter: (cellContent, clearedInPayment) => (
+                <>{clearedInPayment.id}</>
+            ),
+        },
+          {
             dataField: "invoice_id",
             text: "invoice ID",
             sort: true,
+            hidden: true,
             formatter: (cellContent, clearedInPayment) => (
               <>
                 <strong>{clearedInPayment.invoice_id}</strong>
@@ -78,6 +88,23 @@ class PendingB2BClients extends Component {
             dataField: "payment_for",
             text: "Payment For",
             sort: true,
+          },
+          {
+            dataField: "lab_name",
+            text: "Client Name",
+            sort: true,
+          formatter: (cellContent, paymentStatus) => (
+            <>
+              <span>
+                <span>
+                  {paymentStatus.lab_name}{" "}
+                  {paymentStatus.donor_name}
+                  {paymentStatus.advertisement_title}
+  
+                </span>
+              </span>
+            </>
+          ),
           },
           {
             dataField: "amount",
@@ -96,22 +123,37 @@ class PendingB2BClients extends Component {
             //   </>
             // ),
           },
+          // {
+          //   dataField: "deposit_bank",
+          //   text: "Deposit Bank",
+          //   sort: true,
+          // },
           {
-            dataField: "deposit_bank",
+            dataField: "bank",
             text: "Deposit Bank",
             sort: true,
-          },
+            formatter: (cellContent, clearedInPayment) => (
+              <>
+                <span>
+                  <span>
+                    {clearedInPayment.bank_name},{" "}
+                    {clearedInPayment.account_no}
+                  </span>
+                </span>
+              </>
+            ),
+          },    
           {
             dataField: "deposit_slip",
             text: "Slip",
             sort: true,
-            formatter: (cellContent, clearedInPayment) => (
+            formatter: (cellContent, approvedInPayment) => (
               <>
                 <Link
                   to={{
                     pathname:
                       process.env.REACT_APP_BACKENDURL +
-                      clearedInPayment.deposit_slip,
+                      approvedInPayment.deposit_slip,
                   }}
                   target="_blank"
                 >
@@ -120,11 +162,30 @@ class PendingB2BClients extends Component {
               </>
             ),
           },
-          {
-            dataField: "verified_by",
-            text: "Verified By",
-            sort: true,
-          },
+          //      {
+          //   dataField: "deposit_slip",
+          //   text: "Slip",
+          //   sort: true,
+          //   formatter: (cellContent, clearedInPayment) => (
+          //     <>
+          //       <Link
+          //         to={{
+          //           pathname:
+          //             process.env.REACT_APP_BACKENDURL +
+          //             clearedInPayment.deposit_slip,
+          //         }}
+          //         target="_blank"
+          //       >
+          //         View Slip
+          //       </Link>
+          //     </>
+          //   ),
+          // },
+          // {
+          //   dataField: "verified_by",
+          //   text: "Verified By",
+          //   sort: true,
+          // },
           {
             dataField: "cleared_at",
             text: "Clear at",

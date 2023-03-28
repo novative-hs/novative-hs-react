@@ -65,9 +65,19 @@ class PaymentStatussList extends Component {
           ),
         },
         {
+          text: "MIF ID",
+          dataField: "id",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, unapprovedInPayment) => (
+              <>{unapprovedInPayment.id}</>
+          ),
+      },
+        {
           dataField: "invoice_id",
           text: "invoice ID",
           sort: true,
+          hidden: true,
           formatter: (cellContent, unapprovedInPayment) => (
             <>
               <strong>{unapprovedInPayment.invoice_id}</strong>
@@ -83,6 +93,23 @@ class PaymentStatussList extends Component {
           dataField: "payment_for",
           text: "Payment For",
           sort: true,
+        },
+        {
+          dataField: "lab_name",
+          text: "Client Name",
+          sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>
+            <span>
+              <span>
+                {paymentStatus.lab_name}{" "}
+                {paymentStatus.donor_name}
+                {paymentStatus.advertisement_title}
+
+              </span>
+            </span>
+          </>
+        ),
         },
         {
           dataField: "amount",
@@ -102,10 +129,20 @@ class PaymentStatussList extends Component {
           // ),
         },
         {
-          dataField: "deposit_bank",
+          dataField: "bank",
           text: "Deposit Bank",
           sort: true,
-        },
+          formatter: (cellContent, unapprovedInPayment) => (
+            <>
+              <span>
+                <span>
+                  {unapprovedInPayment.bank_name},{" "}
+                  {unapprovedInPayment.account_no}
+                </span>
+              </span>
+            </>
+          ),
+        },  
         {
           dataField: "deposit_slip",
           text: "Slip",
@@ -125,11 +162,11 @@ class PaymentStatussList extends Component {
             </>
           ),
         },
-        {
-          dataField: "verified_by",
-          text: "Verified By",
-          sort: true,
-        },
+        // {
+        //   dataField: "verified_by",
+        //   text: "Verified By",
+        //   sort: true,
+        // },
         {
           dataField: "cleared_at",
           text: "Clear at",

@@ -23,6 +23,9 @@ import {
   GET_CLEAR_STATUSS,
   GET_CLEAR_STATUSS_FAIL,
   GET_CLEAR_STATUSS_SUCCESS,
+  GET_PAYMENTOUT_CLEAR_STATUSS,
+  GET_PAYMENTOUT_CLEAR_STATUSS_FAIL,
+  GET_PAYMENTOUT_CLEAR_STATUSS_SUCCESS,
   UPDATE_PAYMENT_STATUS,
   UPDATE_PAYMENT_STATUS_SUCCESS,
   UPDATE_PAYMENT_STATUS_FAIL,
@@ -173,7 +176,20 @@ export const getCreatedOutStatuss = id => ({
   type: GET_CREATEDOUT_STATUSS,
   payload: id,
 });
+export const getPaymentOutClearStatuss = id => ({
+  type: GET_PAYMENTOUT_CLEAR_STATUSS,
+  payload: id,
+});
 
+export const getPaymentOutClearStatussSuccess = paymentStatuss => ({
+  type: GET_PAYMENTOUT_CLEAR_STATUSS_SUCCESS,
+  payload: paymentStatuss,
+});
+
+export const getPaymentOutClearStatussFail = error => ({
+  type: GET_PAYMENTOUT_CLEAR_STATUSS_FAIL,
+  payload: error,
+});
 export const getDepositStatussSuccess = paymentStatuss => ({
   type: GET_DEPOSIT_STATUSS_SUCCESS,
   payload: paymentStatuss,

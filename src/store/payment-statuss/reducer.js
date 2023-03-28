@@ -9,6 +9,8 @@ import {
   GET_CREATEDOUT_STATUSS_FAIL,
   GET_CLEAR_STATUSS_SUCCESS,
   GET_CLEAR_STATUSS_FAIL,
+  GET_PAYMENTOUT_CLEAR_STATUSS_SUCCESS,
+  GET_PAYMENTOUT_CLEAR_STATUSS_FAIL,
   GET_BOUNCEDIN_STATUSS_SUCCESS,
   GET_BOUNCEDIN_STATUSS_FAIL,
   GET_BOUNCED_STATUSS_SUCCESS,
@@ -144,6 +146,17 @@ const paymentStatuss = (state = INIT_STATE, action) => {
         };
     
     case GET_CREATEDOUT_STATUSS_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
+    case GET_PAYMENTOUT_CLEAR_STATUSS_SUCCESS:
+        return {
+          ...state,
+          paymentStatuss: action.payload.data,
+        };
+  
+    case GET_PAYMENTOUT_CLEAR_STATUSS_FAIL:
         return {
           ...state,
           error: action.payload,

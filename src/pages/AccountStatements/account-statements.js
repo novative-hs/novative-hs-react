@@ -610,6 +610,20 @@ class AccountStatements extends Component {
                                         ) : (
                                           null
                                         )}
+                                         {accountStatement.payment_method == "Cheque" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                         {accountStatement.payment_method == "Card" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
                                       </p>
                                     </td>
                                     <td>
@@ -912,7 +926,14 @@ class AccountStatements extends Component {
                                         ) : (
                                           null
                                         )}
-                                        {accountStatement.payment_method == "Donation" ? (
+                                         {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Cheque" ? (
                                           <span>
                                             {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
