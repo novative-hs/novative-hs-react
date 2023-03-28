@@ -1602,13 +1602,14 @@ class NearbyLabs extends Component {
                 </Row>
               )}
             </Col>
-            {!isEmpty(regionWiseAdvertisement) && (
+            
               <Col lg="3">
                 {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
                     <>
                       {regionWiseAdvertisement.nearby_adv_list.map(
                         (nearby_adv_list, key) => (
                           <Col key={"col" + key}>
+                          {!isEmpty(regionWiseAdvertisement) && (
                             <Card>
                               <CardBody>
                                 <Link
@@ -1635,6 +1636,7 @@ class NearbyLabs extends Component {
                                 </Link>
                               </CardBody>
                             </Card>
+                          )}
                           </Col>
                         )
                       )}
@@ -1643,7 +1645,7 @@ class NearbyLabs extends Component {
 
                 {this.props.advLives.map((advLive) => (
                     <Col lg="9" key={1}>
-                      {advLive.advertisement_type == "Labhazir" &&
+                      {!isEmpty(advLive) && (
                         <Card>
                           <CardBody>
                             <div className="product-img position-relative">
@@ -1662,11 +1664,10 @@ class NearbyLabs extends Component {
                             </div>
                           </CardBody>
                         </Card>
-                      }
+                      )}
                     </Col>
                   ))}
               </Col>
-            )}
           </Row>
         </div>
       </React.Fragment>
