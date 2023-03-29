@@ -1120,34 +1120,6 @@ class NearbyTests extends Component {
                     </Col>
                   </Row>
                 )}
-
-                {/* ROW FOR ADVERTISEMENT */}
-                {!isEmpty(this.props.advertisementLives) &&
-                  this.props.advertisementLives.map(
-                    (advertisementLive, key) => (
-                      <Col xl="3" sm="12" key={"_col_" + key}>
-                        <Card>
-                          <CardBody>
-                            <div className="mb-3 mt-3">
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  advertisementLive.poster
-                                }
-                                alt="Lab Logo"
-                                style={{
-                                  width: "200px",
-                                  height: "300px",
-                                  objectFit: "cover",
-                                }}
-                                className="img-fluid mx-right d-block"
-                              />
-                            </div>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    )
-                  )}
               </Row>
 
               {/* <Row>
