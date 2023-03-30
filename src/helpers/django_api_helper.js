@@ -2055,6 +2055,8 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
   formData.append("bankaccount_id", paymentInBouncedStatus.bankaccount_id);
   formData.append("deposit_slip", paymentInBouncedStatus.deposit_slip);
   formData.append("payment_status", paymentInBouncedStatus.payment_status);
+  formData.append("verified_by", paymentInBouncedStatus.verified_by);
+
 
   console.log("payment in django api helper",paymentInBouncedStatus)
   return axios.put(
