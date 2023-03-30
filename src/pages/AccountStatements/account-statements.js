@@ -982,9 +982,11 @@ class AccountStatements extends Component {
                                       )}
                                     </td> */}
                                   </tr>
-                                ) : (
+                                ) : 
+                                  accountStatement.payment_status == "Paid"  ? (
+
                                   <tr key={i}>
-                                                                        <td>
+                                    <td>
                                       <p className="text-muted mb-0">
                                         {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
                                       </p>
@@ -1230,8 +1232,9 @@ class AccountStatements extends Component {
                                       </p>
                                     </td>
                                   </tr>
-                                )}
 
+                                ):(null)
+                                }
                               </>
                             )
                             )}
