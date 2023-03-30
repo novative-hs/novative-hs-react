@@ -60,8 +60,8 @@ class PaymentStatussList extends Component {
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, approvedInPayment) => (
-            <>{approvedInPayment.id}</>
+          formatter: (cellContent, paymentStatus) => (
+            <>{paymentStatus.id}</>
           ),
         },
         {
@@ -69,8 +69,8 @@ class PaymentStatussList extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, approvedInPayment) => (
-              <>{approvedInPayment.id}</>
+          formatter: (cellContent, paymentStatus) => (
+              <>{paymentStatus.id}</>
           ),
       },
         {
@@ -78,20 +78,15 @@ class PaymentStatussList extends Component {
           text: "invoice ID",
           sort: true,
           hidden: true,
-          formatter: (cellContent, approvedInPayment) => (
+          formatter: (cellContent, paymentStatus) => (
             <>
-              <strong>{approvedInPayment.invoice_id}</strong>
+              <strong>{paymentStatus.invoice_id}</strong>
             </>
           ),
         },
         {
-          dataField: "payment_method",
-          text: "Payment Method",
-          sort: true,
-        },
-        {
           dataField: "payment_for",
-          text: "Payment For",
+          text: "Payment From",
           sort: true,
         },
         {
@@ -112,40 +107,55 @@ class PaymentStatussList extends Component {
         ),
         },
         {
+          dataField: "payment_method",
+          text: "Payment Method",
+          sort: true,
+        },
+        {
+          dataField: "cheque_no",
+          text: "Cheque/Ref#",
+          sort: true,
+          formatter: (cellContent, paymentStatus) => (
+              <>
+                  {paymentStatus.cheque_no && (
+                      <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                          {paymentStatus.cheque_no}
+                      </span>
+                  )}
+
+                  {paymentStatus.cheque_no && (
+                      <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                          {paymentStatus.refered_no}
+                      </span>
+                  )}
+              </>
+          ),
+      },
+      
+        {
           dataField: "amount",
           text: "Amount",
           sort: true,
         },
-        {
-          dataField: "deposited_at",
-          text: "Deposit at",
-          sort: true,
-          // formatter: (cellContent, approvedInPayment) => (
-          //   <>
-          //     <span>
-          //       {new Date(approvedInPayment.deposit_at).toLocaleString("en-US")}
-          //     </span>
-          //   </>
-          // ),
-        },
+        
         {
           dataField: "bank",
-          text: "Deposit Bank",
+          text: "Bank/Account#",
           sort: true,
-          formatter: (cellContent, approvedInPayment) => (
+          formatter: (cellContent, paymentStatus) => (
             <>
               <span>
                 <span>
-                  {approvedInPayment.bank_name},{" "}
-                  {approvedInPayment.account_no}
+                  {paymentStatus.bank_name},{" "}
+                  {paymentStatus.account_no}
                 </span>
               </span>
             </>
           ),
-        },    
+        },
         {
           dataField: "deposit_slip",
-          text: "Slip",
+          text: "Deposit Slip",
           sort: true,
           formatter: (cellContent, approvedInPayment) => (
             <>
@@ -163,27 +173,51 @@ class PaymentStatussList extends Component {
           ),
         },
         // {
-        //   dataField: "verified_by",
-        //   text: "Verified By",
+        //   dataField: "is_settled",
+        //   text: "Is Settled",
         //   sort: true,
         // },
         {
-          dataField: "cleared_at",
-          text: "Clear at",
+          dataField: "verified_by",
+          text: "Deposited By",
           sort: true,
-          // formatter: (cellContent, approvedInPayment) => (
-          //   <>
-          //     <span>
-          //       {new Date(approvedInPayment.deposit_at).toLocaleString("en-US")}
-          //     </span>
-          //   </>
-          // ),
+        },
+        {
+          dataField: "cleared_at",
+          text: "Cleared Date",
+          sort: true,
+          formatter: (cellContent, paymentStatus) => (
+            <p className="text-muted mb-0">
+            {new Date(paymentStatus.cleared_at).toLocaleDateString("en-US", {
+                dateStyle: "short",
+                timeZone: "UTC",
+                }).replace(/\//g, " - ")}</p>),
         },
         {
           dataField: "payment_status",
           text: "Status",
           sort: true,
         },
+        // {
+        //   dataField: "menu",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Action",
+        //   formatter: (cellContent, paymentStatus) => (
+        //     <div className="d-flex gap-3">
+        //       <Link className="text-success" to="#">
+        //         <i
+        //           className="mdi mdi-pencil font-size-18"
+        //           id="edittooltip"
+        //           onClick={e =>
+        //             this.handlePaymentStatusClick(e, paymentStatus)
+        //           }
+        //         ></i>
+        //       </Link>
+              
+        //     </div>
+        //   ),
+        // },
       ],
     };
     this.toggle = this.toggle.bind(this);

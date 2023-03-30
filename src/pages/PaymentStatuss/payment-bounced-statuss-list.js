@@ -71,9 +71,19 @@ class PaymentStatussList extends Component {
           ),
         },
         {
+        text: "MIF ID",
+        dataField: "id",
+        sort: true,
+        hidden: false,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+            <>{paymentBouncedInStatus.id}</>
+        ),
+    },
+        {
           dataField: "invoice_id",
           text: "invoice ID",
           sort: true,
+          hidden: true,
           formatter: (cellContent, paymentBouncedInStatus) => (
             <>
               <strong>{paymentBouncedInStatus.invoice_id}</strong>
@@ -81,13 +91,8 @@ class PaymentStatussList extends Component {
           ),
         },
         {
-          dataField: "payment_method",
-          text: "Payment Method",
-          sort: true,
-        },
-        {
           dataField: "payment_for",
-          text: "Payment To",
+          text: "Payment From",
           sort: true,
         },
         {
@@ -107,6 +112,12 @@ class PaymentStatussList extends Component {
           ),
         },
         {
+          dataField: "payment_method",
+          text: "Payment Method",
+          sort: true,
+        },
+
+        {
           dataField: "amount",
           text: "Amount",
           sort: true,
@@ -115,8 +126,33 @@ class PaymentStatussList extends Component {
           dataField: "deposited_at",
           text: "Deposited Date",
           sort: true,
+          formatter: (cellContent, paymentBouncedInStatus) => (
+            <p className="text-muted mb-0">
+            {new Date(paymentBouncedInStatus.deposited_at).toLocaleDateString("en-US", {
+                dateStyle: "short",
+                timeZone: "UTC",
+                }).replace(/\//g, " - ")}</p>),
         },
+        {
+          dataField: "cheque_no",
+          text: "Cheque/Ref#",
+          sort: true,
+          formatter: (cellContent, paymentBouncedInStatus) => (
+              <>
+                  {paymentBouncedInStatus.cheque_no && (
+                      <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                          {paymentBouncedInStatus.cheque_no}
+                      </span>
+                  )}
 
+                  {paymentBouncedInStatus.cheque_no && (
+                      <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                          {paymentBouncedInStatus.refered_no}
+                      </span>
+                  )}
+              </>
+          ),
+      },
         {
           dataField: "bank",
           text: "Bank/Account#",
@@ -134,7 +170,7 @@ class PaymentStatussList extends Component {
         },
         {
           dataField: "deposit_slip",
-          text: "Slip",
+          text: "Deposite Slip",
           sort: true,
           formatter: (cellContent, paymentBouncedInStatus) => (
             <>
@@ -165,9 +201,15 @@ class PaymentStatussList extends Component {
           dataField: "cleared_at",
           text: "Cleared Date",
           sort: true,
+          formatter: (cellContent, paymentBouncedInStatus) => (
+            <p className="text-muted mb-0">
+            {new Date(paymentBouncedInStatus.cleared_at).toLocaleDateString("en-US", {
+                dateStyle: "short",
+                timeZone: "UTC",
+                }).replace(/\//g, " - ")}</p>),
         },
         {
-          dataField: "status",
+          dataField: "payment_status",
           text: "Status",
           sort: true,
         },
@@ -448,7 +490,7 @@ class PaymentStatussList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit MOF"
+                                          ? "Edit MIF"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>

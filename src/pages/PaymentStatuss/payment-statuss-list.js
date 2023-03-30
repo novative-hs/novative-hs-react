@@ -102,12 +102,7 @@ class PaymentStatussList extends Component {
                 },
                 {
                     dataField: "payment_method",
-                    text: "Payment Type",
-                    sort: true,
-                },
-                {
-                    dataField: "amount",
-                    text: "Amount",
+                    text: "Payment Method",
                     sort: true,
                 },
                 {
@@ -130,6 +125,12 @@ class PaymentStatussList extends Component {
                         </>
                     ),
                 },
+                {
+                    dataField: "amount",
+                    text: "Amount",
+                    sort: true,
+                },
+              
                 // {
                 // dataField: "bank",
                 // text: "Cheque/Reffer#",
@@ -151,8 +152,10 @@ class PaymentStatussList extends Component {
                     sort: true,
                     formatter: (cellContent, paymentStatus) => (
                         <p className="text-muted mb-0">
-                        {new Date(paymentStatus.paid_at).toLocaleString("en-US")}
-                      </p>                    ),
+                        {new Date(paymentStatus.paid_at).toLocaleDateString("en-US", {
+                            dateStyle: "short",
+                            timeZone: "UTC",
+                            }).replace(/\//g, " - ")}</p>),
                 },                                        
 
                 // {
@@ -181,7 +184,7 @@ class PaymentStatussList extends Component {
                 // },
                 {
                     dataField: "cheque_image",
-                    text: "Deposite Copy",
+                    text: "Cheque Copy",
                     sort: true,
                     formatter: (cellContent, paymentStatus) => (
                         <>
@@ -317,7 +320,7 @@ class PaymentStatussList extends Component {
         this.setState({
             paymentStatus: {
                 id: arg.id,
-                // deposited_at: arg.deposited_at,
+                verified_by: arg.verified_by,
                 bankaccount_id: arg.bankaccount_id,
                 deposit_slip: arg.deposit_slip,
                 payment_status: "Deposited",
@@ -456,11 +459,17 @@ class PaymentStatussList extends Component {
                                                                                                 this.state.paymentStatus
                                                                                                     .deposit_slip) ||
                                                                                             "",
+                                                                                        verified_by:
+                                                                                            (this.state.paymentStatus &&
+                                                                                                this.state.paymentStatus
+                                                                                                    .verified_by) ||
+                                                                                            "",
                                                                                         payment_status:
                                                                                             (this.state.paymentStatus &&
                                                                                                 this.state.paymentStatus
                                                                                                     .payment_status) ||
                                                                                             "",
+                                                                                       
                                                                                     }}
                                                                                     validationSchema={Yup.object().shape({
                                                                                         hiddentEditFlag: Yup.boolean(),
@@ -490,8 +499,8 @@ class PaymentStatussList extends Component {
                                                                                         const updatePaymentInBouncedStatus =
                                                                                         {
                                                                                             id: paymentStatus.id,
-                                                                                            // deposited_at:
-                                                                                            // values.deposited_at,
+                                                                                            verified_by:
+                                                                                            values.verified_by,
                                                                                             bankaccount_id: values.bankaccount_id,
                                                                                             deposit_slip: values.deposit_slip,
                                                                                             payment_status:
@@ -599,8 +608,14 @@ class PaymentStatussList extends Component {
 
                                                                                                     {/* Certificate field */}
                                                                                                     <div className="mb-3">
-                                                                                                        <Label for="name" className="form-label">
+                                                                                                        <Label htmlFor="expirydateInput">
                                                                                                             Deposit Slip
+                                                                                                            <span
+                                                                                                            style={{ color: "#f46a6a" }}
+                                                                                                            className="font-size-18"
+                                                                                                            >
+                                                                                                            *
+                                                                                                            </span>
                                                                                                         </Label>
                                                                                                         <Input
                                                                                                             id="formFile"
@@ -609,25 +624,63 @@ class PaymentStatussList extends Component {
                                                                                                             multiple={false}
                                                                                                             accept=".jpg,.jpeg,.png,.pdf"
                                                                                                             onChange={e => {
-                                                                                                                this.setState({
-                                                                                                                    deposit_slip:
-                                                                                                                        e.target.files[0],
-                                                                                                                });
+                                                                                                            this.setState({
+                                                                                                                deposit_slip:
+                                                                                                                e.target.files[0],
+                                                                                                            });
                                                                                                             }}
-                                                                                                        // className="form-control is-invalid"
-                                                                                                        // className={
-                                                                                                        // "form-control" +
-                                                                                                        // (this.state.deposit_slip.length >
-                                                                                                        // 0 && !this.state.deposit_slip
-                                                                                                        // ? " is-invalid"
-                                                                                                        // : "")
-                                                                                                        // }
+                                                                                                            // className="form-control is-invalid"
+                                                                                                            className={
+                                                                                                            "form-control" +
+                                                                                                            (this.state.deposit_slip.length >
+                                                                                                                0 && !this.state.cheque_image
+                                                                                                                ? " is-invalid"
+                                                                                                                : "")
+                                                                                                            }
                                                                                                         />
+                                                                                                    </div>
 
+                                                                                                    <div className="mb-3">
+                                                                                                        <Label className="form-label">
+                                                                                                        Varified By
+                                                                                                        <span className="text-danger font-size-12">
+                                                                                                            *
+                                                                                                        </span>
+                                                                                                        </Label>
+                                                                                                        <Field
+                                                                                                        name="verified_by"
+                                                                                                        type="text"
+                                                                                                        value={
+                                                                                                            this.state
+                                                                                                            .paymentStatus
+                                                                                                            .verified_by
+                                                                                                        }
+                                                                                                        onChange={e => {
+                                                                                                            this.setState({
+                                                                                                            paymentStatus: {
+                                                                                                                id: paymentStatus.id,
+                                                                                                                payment_status:
+                                                                                                                paymentStatus.payment_status,
+                                                                                                                deposit_at: paymentStatus.deposit_at,
+                                                                                                                deposit_slip: paymentStatus.deposit_slip,
+
+                                                                                                                verified_by:
+                                                                                                                e.target.value,
+                                                                                                            },
+                                                                                                            });
+                                                                                                        }}
+                                                                                                        className={
+                                                                                                            "form-control" +
+                                                                                                            (errors.verified_by &&
+                                                                                                            touched.verified_by
+                                                                                                            ? " is-invalid"
+                                                                                                            : "")
+                                                                                                        }
+                                                                                                        />
                                                                                                         <ErrorMessage
-                                                                                                            name="deposit_slip"
-                                                                                                            component="div"
-                                                                                                            className="invalid-feedback"
+                                                                                                        name="verified_by"
+                                                                                                        component="div"
+                                                                                                        className="invalid-feedback"
                                                                                                         />
                                                                                                     </div>
 

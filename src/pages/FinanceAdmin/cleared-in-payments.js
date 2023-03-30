@@ -55,8 +55,8 @@ class PendingB2BClients extends Component {
             dataField: "id",
             sort: true,
             hidden: true,
-            formatter: (cellContent, clearedInPayment) => (
-              <>{clearedInPayment.id}</>
+            formatter: (cellContent, paymentStatus) => (
+              <>{paymentStatus.id}</>
             ),
           },
           {
@@ -64,8 +64,8 @@ class PendingB2BClients extends Component {
             dataField: "id",
             sort: true,
             hidden: false,
-            formatter: (cellContent, clearedInPayment) => (
-                <>{clearedInPayment.id}</>
+            formatter: (cellContent, paymentStatus) => (
+                <>{paymentStatus.id}</>
             ),
         },
           {
@@ -73,20 +73,15 @@ class PendingB2BClients extends Component {
             text: "invoice ID",
             sort: true,
             hidden: true,
-            formatter: (cellContent, clearedInPayment) => (
+            formatter: (cellContent, paymentStatus) => (
               <>
-                <strong>{clearedInPayment.invoice_id}</strong>
+                <strong>{paymentStatus.invoice_id}</strong>
               </>
             ),
           },
           {
-            dataField: "payment_method",
-            text: "Payment Method",
-            sort: true,
-          },
-          {
             dataField: "payment_for",
-            text: "Payment For",
+            text: "Payment From",
             sort: true,
           },
           {
@@ -107,45 +102,55 @@ class PendingB2BClients extends Component {
           ),
           },
           {
+            dataField: "payment_method",
+            text: "Payment Method",
+            sort: true,
+          },
+          {
+            dataField: "cheque_no",
+            text: "Cheque/Ref#",
+            sort: true,
+            formatter: (cellContent, paymentStatus) => (
+                <>
+                    {paymentStatus.cheque_no && (
+                        <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                            {paymentStatus.cheque_no}
+                        </span>
+                    )}
+  
+                    {paymentStatus.cheque_no && (
+                        <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                            {paymentStatus.refered_no}
+                        </span>
+                    )}
+                </>
+            ),
+        },
+        
+          {
             dataField: "amount",
             text: "Amount",
             sort: true,
           },
-          {
-            dataField: "deposited_at",
-            text: "Deposit at",
-            sort: true,
-            // formatter: (cellContent, clearedInPayment) => (
-            //   <>
-            //     <span>
-            //       {new Date(clearedInPayment.deposit_at).toLocaleString("en-US")}
-            //     </span>
-            //   </>
-            // ),
-          },
-          // {
-          //   dataField: "deposit_bank",
-          //   text: "Deposit Bank",
-          //   sort: true,
-          // },
+          
           {
             dataField: "bank",
-            text: "Deposit Bank",
+            text: "Bank/Account#",
             sort: true,
-            formatter: (cellContent, clearedInPayment) => (
+            formatter: (cellContent, paymentStatus) => (
               <>
                 <span>
                   <span>
-                    {clearedInPayment.bank_name},{" "}
-                    {clearedInPayment.account_no}
+                    {paymentStatus.bank_name},{" "}
+                    {paymentStatus.account_no}
                   </span>
                 </span>
               </>
             ),
-          },    
+          },
           {
             dataField: "deposit_slip",
-            text: "Slip",
+            text: "Deposit Slip",
             sort: true,
             formatter: (cellContent, approvedInPayment) => (
               <>
@@ -162,47 +167,52 @@ class PendingB2BClients extends Component {
               </>
             ),
           },
-          //      {
-          //   dataField: "deposit_slip",
-          //   text: "Slip",
-          //   sort: true,
-          //   formatter: (cellContent, clearedInPayment) => (
-          //     <>
-          //       <Link
-          //         to={{
-          //           pathname:
-          //             process.env.REACT_APP_BACKENDURL +
-          //             clearedInPayment.deposit_slip,
-          //         }}
-          //         target="_blank"
-          //       >
-          //         View Slip
-          //       </Link>
-          //     </>
-          //   ),
-          // },
           // {
-          //   dataField: "verified_by",
-          //   text: "Verified By",
+          //   dataField: "is_settled",
+          //   text: "Is Settled",
           //   sort: true,
           // },
           {
-            dataField: "cleared_at",
-            text: "Clear at",
+            dataField: "verified_by",
+            text: "Deposited By",
             sort: true,
-            // formatter: (cellContent, clearedInPayment) => (
-            //   <>
-            //     <span>
-            //       {new Date(clearedInPayment.deposit_at).toLocaleString("en-US")}
-            //     </span>
-            //   </>
-            // ),
+          },
+          {
+            dataField: "cleared_at",
+            text: "Cleared Date",
+            sort: true,
+            formatter: (cellContent, paymentStatus) => (
+              <p className="text-muted mb-0">
+              {new Date(paymentStatus.cleared_at).toLocaleDateString("en-US", {
+                  dateStyle: "short",
+                  timeZone: "UTC",
+                  }).replace(/\//g, " - ")}</p>),
           },
           {
             dataField: "payment_status",
             text: "Status",
             sort: true,
           },
+          // {
+          //   dataField: "menu",
+          //   isDummyField: true,
+          //   editable: false,
+          //   text: "Action",
+          //   formatter: (cellContent, paymentStatus) => (
+          //     <div className="d-flex gap-3">
+          //       <Link className="text-success" to="#">
+          //         <i
+          //           className="mdi mdi-pencil font-size-18"
+          //           id="edittooltip"
+          //           onClick={e =>
+          //             this.handlePaymentStatusClick(e, paymentStatus)
+          //           }
+          //         ></i>
+          //       </Link>
+                
+          //     </div>
+          //   ),
+          // },
           {
             dataField: "menu",
             isDummyField: true,

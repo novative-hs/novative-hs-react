@@ -85,13 +85,8 @@ class PaymentStatussList extends Component {
           ),
         },
         {
-          dataField: "payment_method",
-          text: "Payment Method",
-          sort: true,
-        },
-        {
           dataField: "payment_for",
-          text: "Payment To",
+          text: "Payment From",
           sort: true,
         },
         {
@@ -112,15 +107,36 @@ class PaymentStatussList extends Component {
         ),
         },
         {
+          dataField: "payment_method",
+          text: "Payment Method",
+          sort: true,
+        },
+        {
+          dataField: "cheque_no",
+          text: "Cheque/Ref#",
+          sort: true,
+          formatter: (cellContent, paymentStatus) => (
+              <>
+                  {paymentStatus.cheque_no && (
+                      <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                          {paymentStatus.cheque_no}
+                      </span>
+                  )}
+
+                  {paymentStatus.cheque_no && (
+                      <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                          {paymentStatus.refered_no}
+                      </span>
+                  )}
+              </>
+          ),
+      },
+      
+        {
           dataField: "amount",
           text: "Amount",
           sort: true,
         },
-        // {
-        //   dataField: "deposited_at",
-        //   text: "Deposited Date",
-        //   sort: true,
-        // },
         
         {
           dataField: "bank",
@@ -139,7 +155,7 @@ class PaymentStatussList extends Component {
         },
         {
           dataField: "deposit_slip",
-          text: "Slip",
+          text: "Deposit Slip",
           sort: true,
           formatter: (cellContent, approvedInPayment) => (
             <>
@@ -170,10 +186,12 @@ class PaymentStatussList extends Component {
           dataField: "cleared_at",
           text: "Cleared Date",
           sort: true,
-          formatter: (cellContent, paymentStatuss) => (
+          formatter: (cellContent, paymentStatus) => (
             <p className="text-muted mb-0">
-            {new Date(paymentStatuss.cleared_at).toLocaleString("en-US")}
-          </p>                    ),
+            {new Date(paymentStatus.cleared_at).toLocaleDateString("en-US", {
+                dateStyle: "short",
+                timeZone: "UTC",
+                }).replace(/\//g, " - ")}</p>),
         },
         {
           dataField: "payment_status",
