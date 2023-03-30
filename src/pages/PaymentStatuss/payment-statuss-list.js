@@ -630,13 +630,13 @@ class PaymentStatussList extends Component {
                                                                                                             });
                                                                                                             }}
                                                                                                             // className="form-control is-invalid"
-                                                                                                            className={
-                                                                                                            "form-control" +
-                                                                                                            (this.state.deposit_slip.length >
-                                                                                                                0 && !this.state.cheque_image
-                                                                                                                ? " is-invalid"
-                                                                                                                : "")
-                                                                                                            }
+                                                                                                            // className={
+                                                                                                            // "form-control" +
+                                                                                                            // (this.state.deposit_slip.length >
+                                                                                                            //     0 && !this.state.deposit_slip
+                                                                                                            //     ? " is-invalid"
+                                                                                                            //     : "")
+                                                                                                            // }
                                                                                                         />
                                                                                                     </div>
 
