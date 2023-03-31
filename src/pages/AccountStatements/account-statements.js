@@ -356,6 +356,18 @@ class AccountStatements extends Component {
                     Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
                   </strong>
                 </span>
+                <div>
+                  <strong>
+                    Credit: Lab need to Pay LabHazir. <br></br>
+                    Debit: LabHazir need to Pay Lab.
+                  </strong>
+                  </div>
+                <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
+                  </strong>
+                </span>
+                </div>
                 </div>
                 <Col lg="12">
                   <Card>
