@@ -55,10 +55,10 @@ class TestsList extends Component {
         : "",
       testsListListColumns: [
         {
-          text: "id",
+          text: "Test ID",
           dataField: "id",
           sort: true,
-          hidden: true,
+          hidden: false,
           formatter: (cellContent, testsList) => <>{testsList.id}</>,
         },
         {
@@ -67,27 +67,29 @@ class TestsList extends Component {
           sort: true,
           headerStyle: {
             width: "330px",
-            // textAlign: "left",
+            textAlign: "left",
           },
           formatter: (cellContent, testsList) => (
             <>
               {testsList.type == "Test" ? (
                 <span>
+                <p className="float-start">
                   <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, testsList)}
                   >
                     {testsList.name}
-                  </Link>
+                  </Link></p>
                 </span>
               ) : (
                 <span>
+                <p className="float-start">
                   <Link
                     to="#"
                     onClick={e => this.openOtherModal(e, testsList)}
                   >
                     {testsList.name}
-                  </Link>
+                  </Link></p>
                 </span>
               )}
             </>
