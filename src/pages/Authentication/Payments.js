@@ -72,7 +72,7 @@ class Payments extends Component {
             <Breadcrumb title="Donor" breadcrumbItem="Payment Update" />
            {
              this.state.isPaymentUpdated && this.state.isPaymentUpdated ? (
-              <Alert color="success">Payment Status Update.</Alert>
+              <Alert color="success">Payment Status Updated.</Alert>
             ) : null}
 
             {/* <h4 className="card-title mb-4">Update B2BClient Profile</h4> */}
@@ -139,14 +139,14 @@ class Payments extends Component {
                   onSubmit={values => {
                      // If no error messages then show wait message
                     //  setTimeout(() => {
-                     if ((this.state.counter_discount + this.state.amount_received)==this.state.amount ) {
+                     if ((Number(this.state.counter_discount) + Number(this.state.amount_received))==Number(this.state.amount)) {
                       console.log("Amount:",this.state.amount);
                       console.log("Smount:",this.state.counter_discount);
                       console.log("Rmount:",this.state.amount_received);
                       this.setState({ isPaymentUpdated: true }
                         );
                       setTimeout(() => {
-                        this.props.history.push("/in-process-test-appointments");}, 5000);
+                        this.props.history.push("/in-process-test-appointments");}, 3000);
                       
                      }
                      
@@ -334,7 +334,7 @@ class Payments extends Component {
                         <Button type="submit" color="danger"
                          disabled={this.state.isPaymentUpdated}
                         >
-                          Update Profile
+                          Update
                         </Button>
                       </div>
                     </Form>

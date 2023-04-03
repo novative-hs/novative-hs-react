@@ -723,25 +723,6 @@ class TestsList extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Are you active for performing this test?
-                                                    </Label>
-                                                    <Field
-                                                      name="is_active"
-                                                      as="select"
-                                                      defaultValue="Yes"
-                                                      className="form-control"
-                                                      multiple={false}
-                                                    >
-                                                      <option value="Yes">
-                                                        Yes
-                                                      </option>
-                                                      <option value="No">
-                                                        No
-                                                      </option>
-                                                    </Field>
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
                                                       Is EQA participating
                                                       <span className="text-danger font-size-12">
                                                         (optional)
@@ -794,6 +775,26 @@ class TestsList extends Component {
                                                       </option>
                                                       <option value="Outsource">
                                                         Outsource
+                                                      </option>
+                                                    </Field>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Are you active for performing this test?
+                                                    </Label>
+                                                    <Field
+                                                      name="is_active"
+                                                      as="select"
+                                                      defaultValue="Yes"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Yes">
+                                                        Active
+                                                      </option>
+                                                      <option value="No">
+                                                        In Active
                                                       </option>
                                                     </Field>
                                                   </div>
