@@ -68,15 +68,15 @@ class AdvertisementsList extends Component {
         : "",
       advertisementListColumns: [
         {
-          text: "id",
+          text: "Advertisement ID",
           dataField: "id",
           sort: true,
-          hidden: true,
+          hidden: false,
           formatter: (cellContent, advertisement) => <>{advertisement.id}</>,
         },
         {
           dataField: "poster",
-          text: "#",
+          text: "Advertisement Image",
           formatter: (cellContent, advertisement) => (
             <>
               {!advertisement.poster ? (
@@ -102,11 +102,6 @@ class AdvertisementsList extends Component {
         {
           dataField: "title",
           text: "Title",
-          sort: true,
-        },
-        {
-          dataField: "description",
-          text: "Description",
           sort: true,
         },
         {
@@ -251,7 +246,6 @@ class AdvertisementsList extends Component {
       advertisement: {
         id: advertisement.id,
         title: advertisement.title,
-        description: advertisement.description,
         poster: process.env.REACT_APP_BACKENDURL + advertisement.poster,
         posted_at: advertisement.posted_at,
         posted_till: advertisement.posted_till,
@@ -390,8 +384,8 @@ class AdvertisementsList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Advertisement"
-                                          : "Add New Advertisement"}
+                                          ? "Edit Quality Advertisement"
+                                          : "Add Quality Advertisement"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -403,11 +397,6 @@ class AdvertisementsList extends Component {
                                               (this.state.advertisement &&
                                                 this.state.advertisement
                                                   .title) ||
-                                              "",
-                                            description:
-                                              (this.state.advertisement &&
-                                                this.state.advertisement
-                                                  .description) ||
                                               "",
                                             poster:
                                               (this.state &&
@@ -503,8 +492,6 @@ class AdvertisementsList extends Component {
                                                     id: advertisement.id,
 
                                                     title: values.title,
-                                                    description:
-                                                      values.description,
                                                     poster:
                                                       this.state
                                                         .advertisementImg,
@@ -534,8 +521,6 @@ class AdvertisementsList extends Component {
                                                   id: advertisement.id,
 
                                                   title: values.title,
-                                                  description:
-                                                    values.description,
                                                   poster:
                                                     this.state.advertisementImg,
 
@@ -567,7 +552,6 @@ class AdvertisementsList extends Component {
                                                   ) + 20,
 
                                                 title: values.title,
-                                                description: values.description,
                                                 poster:
                                                   this.state.advertisementImg,
 
@@ -672,8 +656,6 @@ class AdvertisementsList extends Component {
                                                               e.target.value,
                                                             poster:
                                                               advertisement.poster,
-                                                            description:
-                                                              advertisement.description,
                                                             posted_at:
                                                               advertisement.posted_at,
                                                             posted_till:
@@ -690,45 +672,6 @@ class AdvertisementsList extends Component {
                                                       }}
                                                       multiple={false}
                                                       value={this.state.advertisement.title}
-                                                    ></Field>
-                                                  </div>
-
-                                                   {/* Description field */}
-                                                   <div className="mb-3">
-                                                    <Label className="form-label">
-                                                    Description
-                                                    </Label>
-                                                    <Field
-                                                      name="description"
-                                                      type="text"
-                                                      className="form-control"
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          advertisement: {
-                                                            id: advertisement.id,
-
-                                                            description:
-                                                              e.target.value,
-                                                            poster:
-                                                              advertisement.poster,
-                                                            title:
-                                                              advertisement.title,
-                                                            posted_at:
-                                                              advertisement.posted_at,
-                                                            posted_till:
-                                                              advertisement.posted_till,
-                                                            // region_type:
-                                                            //   advertisement.region_type,
-                                                            // province:
-                                                            //   advertisement.province,
-                                                            city_id: advertisement.city_id,
-                                                            // district:
-                                                            //   advertisement.district,
-                                                          },
-                                                        });
-                                                      }}
-                                                      multiple={false}
-                                                      value={this.state.advertisement.description}
                                                     ></Field>
                                                   </div>
 

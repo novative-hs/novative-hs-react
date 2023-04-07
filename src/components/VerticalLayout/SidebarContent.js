@@ -278,8 +278,8 @@ class SidebarContent extends Component {
                         </Link>
                       </li>
                       <li>
-                        <Link to={"/deposit-status"}>
-                          {this.props.t("MIF Deposited")}
+                        <Link to={"/payment-in-pending-clearence-status"}>
+                          {this.props.t("MIF Pending Clearence")}
                         </Link>
                       </li>
                       <li>
@@ -405,6 +405,18 @@ class SidebarContent extends Component {
                     <span>{this.props.t("B2B Clients List")}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to="/bank-transfer">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Bank Transfer Details")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/inter-bank-details-list">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Bank Transfer Details List")}</span>
+                  </Link>
+                </li>
               </ul>
             </div>
           </SimpleBar>
@@ -437,6 +449,18 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Handled Complaints")}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to={"/csr-pending-appointments"}>
+                    <i className="mdi mdi-chat-remove" />
+                    <span>{this.props.t("Pending Appointments")}</span>
+                  </Link>
+                </li>
+                {/* <li>
+                  <Link to={"/csr-notes-list"}>
+                    <i className="mdi mdi-chat-remove" />
+                    <span>{this.props.t("Notes")}</span>
+                  </Link>
+                </li> */}
               </ul>
             </div>
           </SimpleBar>
@@ -768,6 +792,12 @@ class SidebarContent extends Component {
                   <Link to="/csrs-list">
                     <i className="mdi mdi-account-tie-voice" />
                     <span>{this.props.t("CSR")}</span>
+                  </Link>
+                </li> 
+                <li>
+                  <Link to="/pending-csr-appointments">
+                    <i className="mdi mdi-account-tie-voice" />
+                    <span>{this.props.t("Appointment Cancellation")}</span>
                   </Link>
                 </li>
               </ul>

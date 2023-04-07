@@ -1016,12 +1016,14 @@ class NearbyTests extends Component {
                                 <span>Test Description</span>
                               </Link>
                             {/* </div> */}
-                            <div className="my-0">
+                            {isEmpty(nearbyTest.discount) && (
+                              <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-money-bill"></i>{" "}
                                 Rs {nearbyTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
                               </span>
                             </div>
+                            )}
                             {nearbyTest.discount>=0.01 && (
                               <div className="my-0">
                               <span className="text-danger" >

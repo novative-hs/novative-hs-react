@@ -129,7 +129,9 @@ import b2bAllClients from "./b2b-all-clients/reducer";
 import patientFeedback from "./patient-feedback/reducer";
 
 import complaints from "./complaints/reducer";
-
+import csrcomplaints from "./csr-complaints/reducer";
+import csrappointments from "./csr-admin-appointments/reducer";
+import notes from "./csr-comments/reducer";
 import testDescriptions from "./test-descriptions/reducer";
 
 import checkout from "./checkout/reducer";
@@ -160,6 +162,8 @@ import csrAdmin from "./csr-admin/reducer";
 import auditorAdmin from "./auditor-admin/reducer";
 import inPayments from "./inpayments/reducer";
 import outPayments from "./outpayments/reducer";
+import bankTransfers from "./banktransferdetails/reducer";
+
 
 
 import createBank from "./createbank/reducer";
@@ -176,6 +180,7 @@ const rootReducer = combineReducers({
   Login,
   Account,
   outPayments,
+  bankTransfers,
   bankAccount,
   PatientInformation,
   B2bClientInformation,
@@ -204,6 +209,9 @@ const rootReducer = combineReducers({
   donorReferredAppointments,
   LabMarket,
   complaints,
+  csrcomplaints,
+  csrappointments,
+  notes,
   testDescriptions,
   TestMarket,
   ProfileMarket,

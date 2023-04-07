@@ -982,7 +982,6 @@ class NearbyLabs extends Component {
 
               {/* ROW FOR ADVERTISEMENT */}
               {/* <Row> */}
-            
               {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
                 nearbyLabs.map((nearbyLab, key) => (
                   <Col xl="4" sm="6" key={"_col_" + key}>

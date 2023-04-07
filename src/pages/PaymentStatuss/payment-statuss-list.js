@@ -323,7 +323,7 @@ class PaymentStatussList extends Component {
                 verified_by: arg.verified_by,
                 bankaccount_id: arg.bankaccount_id,
                 deposit_slip: arg.deposit_slip,
-                payment_status: "Deposited",
+                payment_status: "Pending Clearance",
             },
             isEdit: true,
         });
@@ -633,7 +633,7 @@ class PaymentStatussList extends Component {
                                                                                                             // className={
                                                                                                             // "form-control" +
                                                                                                             // (this.state.deposit_slip.length >
-                                                                                                            //     0 && !this.state.deposit_slip
+                                                                                                            //     0 && !this.state.cheque_image
                                                                                                             //     ? " is-invalid"
                                                                                                             //     : "")
                                                                                                             // }

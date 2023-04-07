@@ -1608,7 +1608,7 @@ class NearbyLabs extends Component {
                     <>
                       {regionWiseAdvertisement.nearby_adv_list.map(
                         (nearby_adv_list, key) => (
-                          <Col key={"col" + key}>
+                          <Col  lg="9" key={"col" + key}>
                           {!isEmpty(regionWiseAdvertisement) && (
                             <Card>
                               <CardBody>

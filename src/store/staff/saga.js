@@ -3,6 +3,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 // Crypto Redux States
 import {
   GET_CSR_LIST,
+  GET_TERRITORIES_LIST,
   GET_AUDITOR_LIST,
   GET_FINANCE_OFFICER_LIST,
   ADD_STAFF,
@@ -19,6 +20,8 @@ import {
   getFinanceOfficerListFail,
   addStaffSuccess,
   addStaffFail,
+  getTerritoriesListSuccess,
+  getTerritoriesListFail,
   updateStaffSuccess,
   updateStaffFail,
   deleteStaffSuccess,
@@ -33,6 +36,7 @@ import {
   addStaff,
   updateStaff,
   deleteStaff,
+  getTerritoriesList,
 } from "../../helpers/django_api_helper";
 
 function* fetchCSRList() {
@@ -44,6 +48,14 @@ function* fetchCSRList() {
   }
 }
 
+function* fetchTerritoriesList(object) {
+  try {
+    const response = yield call(getTerritoriesList, object.payload);
+    yield put(getTerritoriesListSuccess(response));
+  } catch (error) {
+    yield put(getTerritoriesListFail(error));
+  }
+}
 function* fetchAuditorList() {
   try {
     const response = yield call(getAuditorList);
@@ -100,6 +112,7 @@ function* staffSaga() {
   yield takeEvery(ADD_STAFF, onAddStaff);
   yield takeEvery(UPDATE_STAFF, onUpdateStaff);
   yield takeEvery(DELETE_STAFF, onDeleteStaff);
+  yield takeEvery(GET_TERRITORIES_LIST,fetchTerritoriesList);
 }
 
 export default staffSaga;

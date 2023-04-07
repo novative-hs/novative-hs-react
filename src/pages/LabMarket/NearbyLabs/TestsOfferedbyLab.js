@@ -648,7 +648,7 @@ class TestsOffered extends Component {
                           <div className="mb-3 row">
                             <div className="col-md-3">
                               <Label className="form-label">
-                                Included Tests
+                                Test Description
                               </Label>
                             </div>
                             <textarea
@@ -812,7 +812,7 @@ class TestsOffered extends Component {
                                     this.openPatientModal(e, offeredTest)
                                   }
                                 >
-                                  <span>Included Tests</span>
+                                  <span>Test Description</span>
                                 </Link>
                               // </div>
                             )}
@@ -844,6 +844,27 @@ class TestsOffered extends Component {
                               </span>
                             </div>
                             )}
+                            
+                            {/* <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-money-bill"></i>{" "}
+                                {offeredTest.discount_by_labhazir} % Discount By Labhazir
+                              </span>
+                            </div> */}
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-stopwatch"></i> Reporting
+                                Time: {offeredTest.duration_required}{" "}
+                                {offeredTest.duration_type}
+                              </span>
+                            </div>
+
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-home"></i> Home Sampling:{" "}
+                                {offeredTest.is_home_sampling_available}
+                              </span>
+                            </div>
                             <div className="my-0">
                               {" "}
                               {!this.state.user_id ? (
@@ -877,31 +898,21 @@ class TestsOffered extends Component {
                                 </span>
                               </Link>
                               ):null}
-                          
+                           <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={offeredTest.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
                               {/* <span className="text-muted me-2">
                                 <i className="fas fa-vial"></i> Lab:{" "}
                                 {offeredTest.lab_name}
                               </span> */}
-                            </div>
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {offeredTest.discount_by_labhazir} % Discount By Labhazir
-                              </span>
-                            </div> */}
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-stopwatch"></i> Reporting
-                                Time: {offeredTest.duration_required}{" "}
-                                {offeredTest.duration_type}
-                              </span>
-                            </div>
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-home"></i> Home Sampling:{" "}
-                                {offeredTest.is_home_sampling_available}
-                              </span>
                             </div>
                             <Button
                               type="button"

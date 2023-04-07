@@ -57,58 +57,64 @@ class DiscountLabHazirList extends Component {
         : "",
       discountLabHazirListColumns: [
         {
-            text: "id",
-            dataField: "id",
-            sort: true,
-            hidden: true,
-            formatter: (cellContent, discountLabHazirToLabs) => <>{discountLabHazirToLabs.id}</>,
+          dataField: "id",
+          text: "Test ID",
+          sort: true,
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+              <strong>{discountLabHazirToLab.id}</strong>
+            </>
+          ),
+        },
+        {
+          dataField: "test_name",
+          text: "Test Name",
+          sort: true,
+          headerStyle: {
+            // width: "330px",
+            textAlign: "left",
           },
-          {
-            dataField: "test_name",
-            text: "Test Name",
-            sort: true,
-            headerStyle: () => {
-              return { width: "30%" };
-            } 
-          },
-          // {
-          //   dataField: "duration_required",
-          //   text: "Turn Around Time",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "duration_type",
-          //   text: "Duration type",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "sample_type",
-          //   text: "Sample Type",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "price",
-          //   text: "Price",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "is_eqa_participation",
-          //   text: "EQA participation",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "is_home_sampling_available",
-          //   text: "Home sampling",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "is_test_performed",
-          //   text: "Test Performed",
-          //   sort: true,
-          // },
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+                <span>
+                <p className="float-start">
+                 
+                    {discountLabHazirToLab.test_name}</p>
+                </span>
+              
+            </>
+          ),
+        },
+        {
+          dataField: "price",
+          text: "Test Price",
+          sort: true,
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+                <span>
+                <p className="float-end">
+                 
+                    {discountLabHazirToLab.price}</p>
+                </span>
+              
+            </>
+          ),
+        },
+        {
+          dataField: "discount",
+          text: "Lab Discount",
+          sort: true,
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+              {(
+                <span>{(discountLabHazirToLab.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
         {
           dataField: "discount_by_labhazir",
-          text: "Discount",
+          text: "LabHazir Discount",
           sort: true,
           formatter: (cellContent, test) => (
             <>

@@ -464,6 +464,22 @@ export const deleteSampleCollector = sampleCollector =>
     headers: getHeader(authHeader()),
   });
 
+  // ------------- Test Certificate Requests START -------------
+export const getNotes = id =>
+get(`${url.GET_NOTES}/${id}`, {
+  headers: getHeader(authHeader()),
+});
+
+export const addNewNote = (note, id) => {
+let formData = new FormData();
+formData.append("note", note.note);
+formData.append("appointment_id", note.appointment_id);
+
+console.log("heeeeeee",note, id)
+return axios.post(`${url.ADD_NEW_NOTE}/${id}`, formData, {
+  headers: getHeader(authHeader()),
+});
+};
 // ------------- Test Certificate Requests START -------------
 export const getQualityCertificates = id =>
   get(`${url.GET_QUALITY_CERTIFICATES}/${id}`, {
@@ -735,6 +751,7 @@ export const updateLabSettings = (labSettings, id) => {
     labSettings.health_dept_certificate
   );
   formData.append("phone", labSettings.phone);
+  formData.append("type", labSettings.type);
   formData.append(
     "complaint_handling_email",
     labSettings.complaint_handling_email
@@ -753,6 +770,7 @@ export const updateLabSettings = (labSettings, id) => {
   formData.append("bank", labSettings.bank);
   formData.append("account_number", labSettings.account_number);
   formData.append("branch_code", labSettings.branch_code);
+  console.log("labsettings",labSettings)
 
   return axios.put(`${url.UPDATE_LAB_SETTINGS}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1003,6 +1021,44 @@ export const getHandledComplaints = id =>
   get(`${url.GET_HANDLED_COMPLAINTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+  export const getCsrAppointments = id =>
+  get(`${url.GET_CSR_APPOINTMENTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+  export const updateCsrAppointments = csrAppointment => {
+    let formData = new FormData();
+    // formData.append("comment", data.comment);
+    formData.append("status", csrAppointment.status);
+    // formData.append("appointment_option", csrAppointment.appointment_option);
+    // formData.append("staff", csrAppointment.staff);
+    // formData.append("comments", csrAppointment.comments);
+    console.log("Form data: ", csrAppointment);
+  
+    return axios.put(`${url.UPDATE_CSR_APPOINTMENTS}/${csrAppointment.id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+
+export const getCsrComplaints = id =>
+  get(`${url.GET_CSR_COMPLAINTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+  export const updateCsrComplaints = csrcomplaint => {
+    let formData = new FormData();
+    // formData.append("comment", data.comment);
+    formData.append("appointment_requested_at", csrcomplaint.appointment_requested_at);
+    formData.append("appointment_option", csrcomplaint.appointment_option);
+    formData.append("staff", csrcomplaint.staff);
+    formData.append("comments", csrcomplaint.comments);
+    console.log("Form data: ", csrcomplaint);
+  
+    return axios.put(`${url.UPDATE_CSR_COMPLAINTS}/${csrcomplaint.id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
 
 // ------------- Cart START -------------
 export const getCarts = id =>
@@ -1418,9 +1474,8 @@ export const addStaff = (staff, id) => {
   formData.append("cnic", staff.cnic);
   formData.append("phone", staff.phone);
   formData.append("roles", staff.roles);
-  formData.append("city", staff.city);
+  formData.append("city_id", staff.city_id);
   formData.append("photo", staff.photo);
-  formData.append("territory_office", staff.territory_office);
   console.log("data",staff, id);
   return axios.post(`${url.ADD_STAFF}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -1712,7 +1767,6 @@ export const addNewAdvertisement = (advertisement, id) => {
   let formData = new FormData();
   formData.append("title", advertisement.title);
   formData.append("poster", advertisement.poster);
-  formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
   // formData.append("region_type", advertisement.region_type);
@@ -1732,7 +1786,6 @@ export const updateAdvertisement = advertisement => {
   formData.append("id", advertisement.id);
   formData.append("title", advertisement.title);
   formData.append("poster", advertisement.poster);
-  formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
   // formData.append("region_type", advertisement.region_type);
@@ -1951,7 +2004,6 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   let formData = new FormData();
   formData.append("title", advertisement.title);
   formData.append("poster", advertisement.poster);
-  formData.append("description", advertisement.description);
   formData.append("posted_at", advertisement.posted_at);
   formData.append("posted_till", advertisement.posted_till);
   // formData.append("region_type", advertisement.region_type);
@@ -1974,7 +2026,6 @@ export const updateLabAdvertisement = advertisement => {
   formData.append("id", advertisement.id);
   formData.append("title", advertisement.title);
   formData.append("poster", advertisement.poster);
-  formData.append("description", advertisement.description);
   formData.append("km", advertisement.km);
   formData.append("posted_till", advertisement.posted_till);
   formData.append("posted_at", advertisement.posted_at);
@@ -2056,7 +2107,6 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
   formData.append("deposit_slip", paymentInBouncedStatus.deposit_slip);
   formData.append("payment_status", paymentInBouncedStatus.payment_status);
   formData.append("verified_by", paymentInBouncedStatus.verified_by);
-
 
   console.log("payment in django api helper",paymentInBouncedStatus)
   return axios.put(
@@ -2196,6 +2246,50 @@ export const addNewOutPayment = ( outPayment, id) => {
     headers: getHeader(authHeader()),
   });
 };
+
+// ------------- Bank Transfer Payments Settings Requests START -------------
+export const addNewBankTransfer = ( bankTransfer, id) => {
+  let formData = new FormData();
+  formData.append("transfer_type",  bankTransfer.transfer_type);
+  formData.append("mode",   bankTransfer.mode);
+  formData.append("deposit_type",   bankTransfer.deposit_type);
+  formData.append("amount",   bankTransfer.amount);
+  formData.append("bankaccount_id",   bankTransfer.bankaccount_id);
+  formData.append("from_bankaccount_id",   bankTransfer.from_bankaccount_id);
+  formData.append("deposit_copy",   bankTransfer.deposit_copy);
+  formData.append("payment_copy",  bankTransfer.payment_copy);
+  formData.append("cheque_no",  bankTransfer.cheque_no);
+  formData.append("clearence_datetime",   bankTransfer.clearence_datetime);
+  formData.append("deposit_datetime",   bankTransfer.deposit_datetime);
+  formData.append("payment_datetime",   bankTransfer.payment_datetime);
+  formData.append("status",  bankTransfer.status);
+  formData.append("comments",  bankTransfer.comments);
+
+  console.log("django api helper", bankTransfer, id)
+
+
+  return axios.post(`${url.ADD_NEW_BANK_TRANSFER}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const getBankTransfer = id =>
+get(`${url.GET_BANK_TRANSFER}/${id}`, {
+  headers: getHeader(authHeader()),
+});
+
+export const updateBankTransfer = bankTransfer => {
+  let formData = new FormData();
+  formData.append("clearence_datetime",  bankTransfer.clearence_datetime);
+  return axios.put(
+    `${url.UPDATE_BANK_TRANSFER}/${bankTransfer.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
+
 
 export const getPaymentOutStatuss = id =>
   get(`${url.GET_PAYMENTOUT_STATUSS}/${id}`, {

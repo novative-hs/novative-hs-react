@@ -102,8 +102,29 @@ class LabAdvertisementRequestsList extends Component {
           text: "Status",
           sort: true,
         },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <div className="d-flex gap-3">
+              <Link className="text-success" to="#">
+                <i
+                  className="mdi mdi-pencil font-size-18"
+                  id="edittooltip"
+                  onClick={e =>
+                    this.handleLabAdvertisementRequestClick(e, labAdvertisementRequest)
+                  }
+                ></i>
+              </Link>
+            </div>
+          ),
+        },
       ],
     };
+    this.handleLabAdvertisementRequestClick =
+    this.handleLabAdvertisementRequestClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleLabAdvertisementRequestClicks =
       this.handleLabAdvertisementRequestClicks.bind(this);
@@ -168,6 +189,23 @@ class LabAdvertisementRequestsList extends Component {
 
     }
   }
+
+  handleLabAdvertisementRequestClick = (e, arg) => {
+    this.setState({
+      labAdvertisementRequest: {
+        id: arg.id,
+        request_status:arg.request_status,
+        declined_reason: arg.declined_reason,
+        posted_at: arg.posted_at,
+        posted_till: arg.posted_till,
+        description: arg.description,
+
+      },
+      isEdit: true,
+    });
+
+    this.toggle();
+  };
 
   onPaginationPageChange = page => {
     if (
@@ -291,6 +329,22 @@ class LabAdvertisementRequestsList extends Component {
                                                 this.state.labAdvertisementRequest
                                                   .declined_reason) ||
                                               "",
+                                            posted_till:
+                                              (this.state &&
+                                                this.state.labAdvertisementRequest
+                                                  .posted_till) ||
+                                              "",
+                                            posted_at:
+                                              (this.state &&
+                                                this.state.labAdvertisementRequest
+                                                  .posted_at) ||
+                                              "",
+                                          
+                                            description:
+                                              (this.state &&
+                                                this.state.labAdvertisementRequest
+                                                  .description) ||
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -303,9 +357,10 @@ class LabAdvertisementRequestsList extends Component {
                                                     id: labAdvertisementRequest.id,
                                                     
                                                     request_status: values.request_status,
-                                                    declined_reason: values.declined_reason,                                                   
-                                                    // responded_at:
-                                                    //   values.responded_at,
+                                                    declined_reason: values.declined_reason,
+                                                    posted_at: values.posted_at,
+                                                    posted_till: values.posted_till, 
+                                                    description: values.description,
                                                   };
 
                                                 // update LabAdvertisementRequest
@@ -324,88 +379,248 @@ class LabAdvertisementRequestsList extends Component {
                                           }}
                                         >
                                           {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-                                                  {/* Certificate Type field */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Status
-                                                      <span className="text-danger font-size-12">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="request_status"
-                                                      as="select"
-                                                      // className="form-control"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.request_status &&
-                                                        touched.request_status
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          labAdvertisementRequest: {
-                                                            id: labAdvertisementRequest.id,
-                                                            request_status:
-                                                              e.target.value,
-                                                            declined_reason: labAdvertisementRequest.declined_reason,
-                                                          
-                                                            
-                                                            // responded_at:
-                                                            //   labAdvertisementRequest.responded_at,
-                                                          },
-                                                        });
-                                                      }}
-                                                      multiple={false}
-                                                      value={
-                                                        this.state
-                                                          .labAdvertisementRequest
-                                                          .request_status
-                                                      }
-                                                    >
-                                                      <option value="">
-                                                        --- Please select
-                                                        Status ---
-                                                      </option>
-                                                      <option value="Accepted">
-                                                      Accepted
-                                                      </option>
-                                                      <option value="Declined">
-                                                      Declined
-                                                      </option>
-                                                    
-                                                    </Field>
-                                                    <ErrorMessage
-                                                      name="request_status"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
+                                             <Form>
+                                             <Row>
+                                               <Col className="col-12">
+                                                 <Field
+                                                   type="hidden"
+                                                   className="form-control"
+                                                   name="hiddenEditFlag"
+                                                   value={isEdit}
+                                                 />
+                                                 {/* Certificate Type field */}
+                                                 <div className="mb-3">
+                                                   <Label className="form-label">
+                                                     Status
+                                                     <span className="text-danger font-size-12">
+                                                       *
+                                                     </span>
+                                                   </Label>
+                                                   <Field
+                                                     name="request_status"
+                                                     as="select"
+                                                     // className="form-control"
+                                                     className={
+                                                       "form-control" +
+                                                       (errors.request_status &&
+                                                       touched.request_status
+                                                         ? " is-invalid"
+                                                         : "")
+                                                     }
+                                                     onChange={e => {
+                                                       this.setState({
+                                                         labAdvertisementRequest: {
+                                                           id: labAdvertisementRequest.id,
+                                                           request_status:
+                                                             e.target.value,
+                                                     
+                                                         },
+                                                       });
+                                                     }}
+                                                     multiple={false}
+                                                     value={
+                                                       this.state
+                                                         .labAdvertisementRequest
+                                                         .request_status
+                                                     }
+                                                   >
+                                                     <option value="">
+                                                       --- Please select
+                                                       Status ---
+                                                     </option>
+                                                     <option value="Recreated">
+                                                     ReCreated
+                                                     </option>
+                                                   
+                                                   </Field>
+                                                   <ErrorMessage
+                                                     name="request_status"
+                                                     component="div"
+                                                     className="invalid-feedback"
+                                                   />
+                                                 </div>
+
+                                                 {/* Certificate Title field */}
+                                                 {/* {this.state.labAdvertisementRequest
+                                                   .request_status ===
+                                                   "Declined" && (
+                                                   <div className="mb-3">
+                                                     <Label className="form-label">
+                                                       Declined Reason
+                                                       <span className="text-danger font-size-12">
+                                                         *
+                                                       </span>
+                                                     </Label>
+                                                     <Field
+                                                       name="declined_reason"
+                                                       type="text"
+                                                       value={
+                                                         this.state
+                                                           .labAdvertisementRequest
+                                                           .declined_reason
+                                                       }
+                                                       onChange={e => {
+                                                         this.setState({
+                                                           labAdvertisementRequest:
+                                                             {
+                                                               id: labAdvertisementRequest.id,
+                                                               request_status:
+                                                               labAdvertisementRequest.request_status,
+                                                                 declined_reason: e.target
+                                                                 .value,
+                                                               // responded_at:
+                                                               //   labAdvertisementRequest.responded_at,
+                                                                
+                                                             },
+                                                         });
+                                                       }}
+                                                       className={
+                                                         "form-control" +
+                                                         (errors.declined_reason &&
+                                                         touched.declined_reason
+                                                           ? " is-invalid"
+                                                           : "")
+                                                       }
+                                                     />
+                                                     <ErrorMessage
+                                                       name="declined_reason"
+                                                       component="div"
+                                                       className="invalid-feedback"
+                                                     />
+                                                   </div>
+                                                 )} */}
+                                                  {this.state.labAdvertisementRequest
+                                                   .request_status ===
+                                                   "Recreated" && (
+                                                   <div className="mb-3">
+                                                     <Label className="form-label">
+                                                       Posted Date
+                                                     </Label>
+                                                     <input
+                                                       name="posted_at"
+                                                       type="datetime-local"
+                                                       min={new Date(
+                                                         new Date().toString().split("GMT")[0] +
+                                                           " UTC"
+                                                       )
+                                                         .toISOString()
+                                                         .slice(0, -8)}
+                                                       className="form-control"
+                                                       onChange={e =>
+                                                         this.setState({
+                                                           id: labAdvertisementRequest.id,
+                                                           request_status:
+                                                           labAdvertisementRequest.request_status,
+                                                           declined_reason: labAdvertisementRequest.declined_reason,
+                                                           posted_till: labAdvertisementRequest.posted_till,
+                                                           description: labAdvertisementRequest.description,
+                                                           posted_at:
+                                                             e.target.value,
+                                                         })
+                                                       }
+                                                     />
+                                                   </div>
+                                                 )}
+                                                  {this.state.labAdvertisementRequest
+                                                   .request_status ===
+                                                   "Recreated" && (
+                                                   <div className="mb-3">
+                                                     <Label className="form-label">
+                                                       Posted till
+                                                     </Label>
+                                                     <input
+                                                       name="posted_till"
+                                                       type="datetime-local"
+                                                       min={new Date(
+                                                         new Date().toString().split("GMT")[0] +
+                                                           " UTC"
+                                                       )
+                                                         .toISOString()
+                                                         .slice(0, -8)}
+                                                       className="form-control"
+                                                       onChange={e =>
+                                                         this.setState({
+                                                           id: labAdvertisementRequest.id,
+                                                           request_status:
+                                                           labAdvertisementRequest.request_status,
+                                                           declined_reason: labAdvertisementRequest.declined_reason,
+                                                           posted_at: labAdvertisementRequest.posted_at,
+                                                           description: labAdvertisementRequest.description,
+                                                           posted_till:
+                                                             e.target.value,
+                                                         })
+                                                       }
+                                                     />
+                                                   </div>
+
+                                                 )}
+                                                  {this.state.labAdvertisementRequest
+                                                   .request_status ===
+                                                   "Recreated" && (
+                                                     <div className="mb-3">
+                                                     <Label className="form-label">
+                                                       Reason of ReCreated
+                                                       <span className="text-danger font-size-12">
+                                                         *
+                                                       </span>
+                                                     </Label>
+                                                     <Field
+                                                       name="declined_reason"
+                                                       type="text"
+                                                       value={
+                                                         this.state
+                                                           .labAdvertisementRequest
+                                                           .description
+                                                       }
+                                                       onChange={e => {
+                                                         this.setState({
+                                                           labAdvertisementRequest:
+                                                             {
+                                                               id: labAdvertisementRequest.id,
+                                                               request_status:
+                                                               labAdvertisementRequest.request_status,
+                                                               declined_reason: labAdvertisementRequest.declined_reason,
+                                                               posted_at: labAdvertisementRequest.posted_at,
+                                                               posted_till: labAdvertisementRequest.posted_till,
+                                                               description:
+                                                               e.target.value,
+                                                                
+                                                             },
+                                                         });
+                                                       }}
+                                                       className={
+                                                         "form-control" +
+                                                         (errors.description &&
+                                                         touched.description
+                                                           ? " is-invalid"
+                                                           : "")
+                                                       }
+                                                     />
+                                                     <ErrorMessage
+                                                       name="description"
+                                                       component="div"
+                                                       className="invalid-feedback"
+                                                     />
+                                                   </div>
+
+                                                 )}
+
+                                                
+                                               </Col>
+                                             </Row>
+                                             <Row>
+                                               <Col>
+                                                 <div className="text-end">
+                                                   <button
+                                                     type="submit"
+                                                     className="btn btn-success save-user"
+                                                   >
+                                                     Save
+                                                   </button>
+                                                 </div>
+                                               </Col>
+                                             </Row>
+                                           </Form>
                                           )}
                                         </Formik>
                                       </ModalBody>

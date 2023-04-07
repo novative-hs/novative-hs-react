@@ -1096,6 +1096,12 @@ class NearbyPackage extends Component {
                               </span>
                             </div>
                             <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="fas fa-home"></i> Home Sampling:{" "}
+                                {nearbyPackage.is_home_sampling_available}
+                              </span>
+                            </div>
+                            <div className="my-0">
                               <Link
                                 to={
                                   this.props.match.params.uuid

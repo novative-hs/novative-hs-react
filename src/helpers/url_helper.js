@@ -182,6 +182,13 @@ export const GET_B2B_CLIENTS = `${API_ENDPOINT}/api/b2b-admin/b2b-clients-list`;
 export const GET_UNHANDLED_COMPLAINTS = `${API_ENDPOINT}/api/complaint/unhandled-complaints`;
 export const UPDATE_UNHANDLED_COMPLAINTS = `${API_ENDPOINT}/api/complaint/unhandled-complaints`;
 export const GET_HANDLED_COMPLAINTS = `${API_ENDPOINT}/api/complaint/handled-complaints`;
+export const GET_CSR_COMPLAINTS = `${API_ENDPOINT}/api/staff/csr-appointment`;
+export const UPDATE_CSR_COMPLAINTS = `${API_ENDPOINT}/api/staff/csr-appointment`;
+export const GET_CSR_APPOINTMENTS = `${API_ENDPOINT}/api/staff/csr-admin-appointment`;
+export const UPDATE_CSR_APPOINTMENTS = `${API_ENDPOINT}/api/staff/csr-admin-appointment`;
+
+export const ADD_NEW_NOTE =`${API_ENDPOINT}/api/staff/add-note`;
+export const GET_NOTES = `${API_ENDPOINT}/api/staff/add-note`;
 
 // TEST DESCRIPTION
 export const GET_TEST_DESCRIPTIONS = `${API_ENDPOINT}/api/medicaltest/test`;
@@ -222,6 +229,10 @@ export const ADD_NEW_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-
 export const GET_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const DELETE_PAYMENTOUT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 
+// Bank Transfer Details
+export const ADD_NEW_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-admin/bank-transfer-detail`;
+export const UPDATE_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-admin/bank-transfer-detail`;
+export const GET_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-admin/bank-transfer-detail`;
 
 export const GET_PAYMENT_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-created`;
 export const GET_DEPOSIT_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-deposited`;
@@ -300,7 +311,7 @@ export const GET_LAB_PAYMENTS = `${API_ENDPOINT}/api/patient/payment-info`;
 export const GET_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/lab-account-statements`;
 
 // Bank Statements
-export const GET_BANK_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/bank-account-statements-list`;
+export const GET_BANK_STATEMENTS = `${API_ENDPOINT}/api/finance-admin/bank-transfer-statement`;
 
 // DONOR STATEMENYTS
 export const GET_DONOR_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/donor-account-statements`;

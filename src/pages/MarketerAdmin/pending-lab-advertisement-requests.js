@@ -59,7 +59,7 @@ class LabAdvertisementRequestsList extends Component {
         : "",
       labAdvertisementRequestListColumns: [
         {
-          text: "id",
+          text: "Adv ID",
           dataField: "id",
           sort: true,
           hidden: false,
@@ -68,8 +68,17 @@ class LabAdvertisementRequestsList extends Component {
           ),
         },
         {
+          text: "Lab Name",
+          dataField: "lab_name",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.lab_name}</>
+          ),
+        },
+        {
           dataField: "poster",
-          text: "#",
+          text: "Adv Image",
           formatter: (cellContent, labAdvertisementRequest) => (
             <>
               {!labAdvertisementRequest.poster ? (
@@ -79,15 +88,22 @@ class LabAdvertisementRequestsList extends Component {
                   </span>
                 </div>
               ) : (
-                <div>
-                  <img
+                <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL +
+                    labAdvertisementRequest.poster,
+                }}
+                target="_blank"
+              >
+                <img
                     className="rounded-circle avatar-xs"
                     src={
                       process.env.REACT_APP_BACKENDURL + labAdvertisementRequest.poster
                     }
                     alt=""
                   />
-                </div>
+              </Link>
               )}
             </>
           ),
@@ -461,9 +477,6 @@ class LabAdvertisementRequestsList extends Component {
                                                       <option value="Recreated">
                                                       ReCreated
                                                       </option>
-                                                      <option value="Declined">
-                                                      Declined
-                                                      </option>
                                                     
                                                     </Field>
                                                     <ErrorMessage
@@ -474,7 +487,7 @@ class LabAdvertisementRequestsList extends Component {
                                                   </div>
 
                                                   {/* Certificate Title field */}
-                                                  {this.state.labAdvertisementRequest
+                                                  {/* {this.state.labAdvertisementRequest
                                                     .request_status ===
                                                     "Declined" && (
                                                     <div className="mb-3">
@@ -521,7 +534,7 @@ class LabAdvertisementRequestsList extends Component {
                                                         className="invalid-feedback"
                                                       />
                                                     </div>
-                                                  )}
+                                                  )} */}
                                                    {this.state.labAdvertisementRequest
                                                     .request_status ===
                                                     "Recreated" && (

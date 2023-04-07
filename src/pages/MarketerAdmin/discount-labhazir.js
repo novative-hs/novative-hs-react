@@ -70,19 +70,63 @@ class DiscountLabHazirList extends Component {
           dataField: "name",
           text: "Test Name",
           sort: true,
-        },
-        {
-          dataField: "discount",
-          text: "Discount",
-          sort: true,
+          headerStyle: {
+            // width: "330px",
+            textAlign: "left",
+          },
           formatter: (cellContent, discountLabHazir) => (
             <>
-              {(
-                <span>{(discountLabHazir.discount*100).toFixed()}%</span>
-              )}
+                <span>
+                <p className="float-start">
+                 
+                    {discountLabHazir.name}</p>
+                </span>
+              
             </>
           ),
         },
+        // {
+        //   dataField: "price",
+        //   text: "Test Price",
+        //   sort: true,
+        //   formatter: (cellContent, discountLabHazir) => (
+        //     <>
+        //         <span>
+        //         <p className="float-start">
+                 
+        //             {discountLabHazir.price}</p>
+        //         </span>
+              
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "price",
+        //   text: "Lab Discount",
+        //   sort: true,
+        //   formatter: (cellContent, discountLabHazir) => (
+        //     <>
+        //         <span>
+        //         <p className="float-start">
+                 
+        //             {discountLabHazir.price}</p>
+        //         </span>
+              
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "discount",
+        //   text: "Discount",
+        //   sort: true,
+        //   formatter: (cellContent, discountLabHazir) => (
+        //     <>
+        //       {(
+        //         <span>{(discountLabHazir.discount*100).toFixed()}%</span>
+        //       )}
+        //     </>
+        //   ),
+        // },
         {
           dataField: "start_date",
           text: "Start Date",

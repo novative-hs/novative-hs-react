@@ -66,15 +66,6 @@ function* fetchUnhandledComplaints(object) {
     yield put(getUnhandledComplaintsFail(error));
   }
 }
-
-// function* onUpdateUnhandledComplaints(object) {
-//   try {
-//     const response = yield call(updateUnhandledComplaints, object.payload);
-//     yield put(updateUnhandledComplaintsSuccess(response));
-//   } catch (error) {
-//     yield put(updateUnhandledComplaintsFail(error));
-//   }
-// }
 function* onUpdateUnhandledComplaints(object) {
   try {
     console.log(" object.payload: ", object.payload.unhandledComplaints);

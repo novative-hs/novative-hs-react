@@ -51,7 +51,7 @@ class PaymentStatussList extends Component {
       paymentStatuss: [],
       paymentStatus: "",
       modal: false,
-      payment_status:"Deposited",
+      payment_status:"Pending Clearance",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id

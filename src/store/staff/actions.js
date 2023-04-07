@@ -17,8 +17,29 @@ import {
   DELETE_STAFF,
   DELETE_STAFF_SUCCESS,
   DELETE_STAFF_FAIL,
+  GET_TERRITORIES_LIST,
+  GET_TERRITORIES_LIST_SUCCESS,
+  GET_TERRITORIES_LIST_FAIL,
 } from "./actionTypes";
 
+
+// Territories
+export const getTerritoriesList = () => ({
+  type: GET_TERRITORIES_LIST,
+  payload: {},
+});
+
+
+export const getTerritoriesListSuccess =
+  territories => ({
+    type: GET_TERRITORIES_LIST_SUCCESS,
+    payload: territories,
+  });
+
+export const getTerritoriesListFail = error => ({
+  type: GET_TERRITORIES_LIST_FAIL,
+  payload: error,
+});
 export const getCSRList = () => ({
   type: GET_CSR_LIST,
   payload: {},

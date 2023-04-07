@@ -110,7 +110,9 @@ export * from "./feedbacks/actions";
 
 // complaints
 export * from "./complaints/actions";
-
+export * from "./csr-complaints/actions";
+export * from "./csr-comments/actions";
+export * from "./csr-admin-appointments/actions";
 // test Descriptions
 export * from "./test-descriptions/actions";
 
@@ -149,6 +151,8 @@ export * from "./invoices/actions";
 export * from "./account-statements/actions";
 export * from "./inpayments/actions";
 export * from "./outpayments/actions";
+export * from "./banktransferdetails/actions";
+
 
 
 

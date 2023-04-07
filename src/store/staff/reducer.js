@@ -3,6 +3,8 @@ import {
   GET_CSR_LIST_FAIL,
   GET_AUDITOR_LIST_SUCCESS,
   GET_AUDITOR_LIST_FAIL,
+  GET_TERRITORIES_LIST_SUCCESS,
+  GET_TERRITORIES_LIST_FAIL,
   GET_FINANCE_OFFICER_LIST_SUCCESS,
   GET_FINANCE_OFFICER_LIST_FAIL,
   ADD_STAFF_SUCCESS,
@@ -17,12 +19,25 @@ const INIT_STATE = {
   staff: [],
   csrList: [],
   auditorList: [],
+  territoriesList: [],
   financeOfficerList: [],
   error: {},
 };
 
 const staff = (state = INIT_STATE, action) => {
   switch (action.type) {
+     // territories
+     case GET_TERRITORIES_LIST_SUCCESS:
+      return {
+        ...state,
+        territoriesList: action.payload.data,
+      };
+
+    case GET_TERRITORIES_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_CSR_LIST_SUCCESS:
       return {
         ...state,

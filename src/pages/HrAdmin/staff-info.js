@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row, Label, Input } from "reactstrap";
+import { Card, CardBody, Col, Container, Row, Label, Input, Alert } from "reactstrap";
 import Select from "react-select";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -11,9 +11,9 @@ import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-// import {
-//   getTerritoriesList
-//   } from "store/territories-list/actions";
+import {
+  getTerritoriesList
+  } from "store/territories-list/actions";
   
 import { addStaff } from "store/staff/actions";
 
@@ -25,7 +25,8 @@ class StaffInfo extends Component {
       staff: [],
       staff: "",
       collectorImg: "",
-      // territoriesList: [],
+      territoriesList: [],
+      complaintSuccess: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -34,14 +35,20 @@ class StaffInfo extends Component {
   }
 
   componentDidMount() {
-    // const { territoriesList, onGetTerritoriesList } = this.props;
-    // if (territoriesList && !territoriesList.length) {
-    //   console.log(onGetTerritoriesList(this.state.user_id));
-    // }
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
   }
 
   render() {
-
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
     const { onAddStaff } = this.props;
     const staff = this.state.staff;
 
@@ -54,6 +61,11 @@ class StaffInfo extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Staff" breadcrumbItem="Register - Step 2" />
+            {this.state.complaintSuccess && (
+              <Alert color="success" className="col-md-8">
+                {this.state.complaintSuccess}
+              </Alert>
+            )}
             <Row>
               <Col lg="12">
                 <Card>
@@ -65,9 +77,8 @@ class StaffInfo extends Component {
                         email: (staff && staff.email) || "",
                         cnic: (staff && staff.cnic) || "",
                         phone: (staff && staff.phone) || "",
-                        territory_office: (staff && staff.territory_office) || "",
                         roles: (staff && staff.roles) || "",
-                        city: (staff && staff.city) || "",
+                        city_id: (this.state && this.state.city_id) || "",
                         photo: (this.state && this.state.collectorImg) || "",
                       }}
                       validationSchema={Yup.object().shape({
@@ -98,9 +109,6 @@ class StaffInfo extends Component {
                         roles: Yup.string()
                           .trim()
                           .required("Please enter roles"),
-                        territory_office: Yup.string()
-                          .trim()
-                          .required("Please territory office"),
                       })}
                       onSubmit={values => {
                         const newStaff = {
@@ -109,9 +117,8 @@ class StaffInfo extends Component {
                           cnic: values.cnic,
                           phone: values.phone,
                           photo: this.state.collectorImg,
-                          territory_office: values.territory_office,
                           roles: values.roles,
-                          city: values.city,
+                          city_id: values.city_id,
                         };
 
                         // save new Staff
@@ -121,34 +128,19 @@ class StaffInfo extends Component {
                         //   this.props.history.push("/add-")
                         // }
 
-                        setTimeout(() => {
-                          console.log(this.props.staff);
-                          console.log(this.props.staff[0].staff_type);
-                          if (
-                            this.props.staff &&
-                            this.props.staff[0].staff_type == "CSR"
-                          ) {
-                            this.props.history.push("/csr-list");
-                          } else if (
-                            this.props.staff &&
-                            this.props.staff[0].staff_type == "auditor"
-                          ) {
-                            this.props.history.push("/auditor-list");
-                          } else if (
-                            this.props.staff &&
-                            this.props.staff[0].staff_type == "finance-officer"
-                            
-                          ) {
-                            this.props.history.push("/finance-officer-list");
-                          } else if (
-                            this.props.staff &&
-                            this.props.staff[0].staff_type == "marketer-admin"
-                            
-                          ) {
-                            this.props.history.push("/marketer-admin-list");
-                          }
-                        }, 1000);
-                      }}
+                          window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+
+                          // If no error messages then show wait message
+                          setTimeout(() => {
+                            if (this.props.staff) {
+                              this.setState({
+                                complaintSuccess:
+                                  "Staff Added Succesfully",
+                              });
+                            }
+                          }, 1000);
+                      }
+                    }
                     >
                       {({ errors, status, touched }) => (
                         <Form>
@@ -168,9 +160,8 @@ class StaffInfo extends Component {
                                         email: staff.email,
                                         cnic: staff.cnic,
                                         phone: staff.phone,
-                                        territory_office: staff.territory_office,
                                         roles: staff.roles,
-                                        city: staff.city,
+                                        city_id: staff.city_id,
                                         photo: staff.photo,
                                       },
                                     });
@@ -203,9 +194,8 @@ class StaffInfo extends Component {
                                         name: staff.name,
                                         cnic: staff.cnic,
                                         phone: staff.phone,
-                                        territory_office: staff.territory_office,
                                         roles: staff.roles,
-                                        city: staff.city,
+                                        city_id: staff.city_id,
                                         photo: staff.photo,
                                       },
                                     });
@@ -237,9 +227,8 @@ class StaffInfo extends Component {
                                         email: staff.email,
                                         cnic: e.target.value,
                                         phone: staff.phone,
-                                        territory_office: staff.territory_office,
                                         roles: staff.roles,
-                                        city: staff.city,
+                                        city_id: staff.city_id,
                                       },
                                     });
                                   }}
@@ -271,9 +260,8 @@ class StaffInfo extends Component {
                                         email: staff.email,
                                         cnic: staff.cnic,
                                         phone: e.target.value,
-                                        territory_office: staff.territory_office,
                                         roles: staff.roles,
-                                        city: staff.city,
+                                        city_id: staff.city_id,
                                       },
                                     });
                                   }}
@@ -321,51 +309,8 @@ class StaffInfo extends Component {
                                 />
                               </div>
 
-                                     {/* territory_office field */}
-                                                 
-                                     <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Territory Office
-                                                    </Label>
-                                                    <Field
-                                                      name="territory_office"
-                                                      as="select"
-                                                      className="form-control"
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          staff: {
-                                                            name: staff.name,
-                                                            email: staff.email,
-                                                            cnic: staff.cnic,
-                                                            phone: staff.phone,
-                                                            territory_office: e.target.value,
-                                                            roles: staff.roles,
-                                                            city: staff.city,
-                                                            photo:staff.photo,
-                                                          },
-                                                        });
-                                                      }}
-                                                      multiple={false}
-                                                      value={
-                                                        this.state.territory_office
-                                                      }
-                                                    >
-                                                    <option value="">
-                                                      ---Select Office---
-                                                      </option>
-                                                      <option value="Central Office">
-                                                      Central Office
-                                                      </option>
-                                                      <option value="South Office">
-                                                      South Office
-                                                      </option>
-                                                      <option value="North Office">
-                                                      North Office
-                                                      </option>
-                                                   
-                                                    </Field>
-                                                  </div>
-
+                                    
+                             
                               <div className="mb-3">
                                 <Label className="form-label">Role</Label>
                                 <Field
@@ -380,9 +325,8 @@ class StaffInfo extends Component {
                                         email: staff.email,
                                         cnic: staff.cnic,
                                         phone: staff.phone,
-                                        territory_office: staff.territory_office,
                                         roles: e.target.value,
-                                        city: staff.city,
+                                        city_id: staff.city_id,
                                         photo: staff.photo,
                                       },
                                     });
@@ -400,46 +344,56 @@ class StaffInfo extends Component {
                                   className="invalid-feedback"
                                 />
                               </div>
-                                {/* city field */}
-                                <div className="mb-3">
+                                {/* city_id field
+                              {/* city_id field */}
+                              <div className="mb-3">
 
 
-                                <Label for="city" className="form-label">
-                                  City
-                                </Label>
-                                    <Select
-                                      name="city"
-                                      component="Select"
-                                      onChange={selectedGroup =>
-                                        this.setState({
-                                          city: selectedGroup.value,
-                                        })
-                                      }
-                                      className={
-                                        "defautSelectParent" +
-                                        (errors.city && touched.city
-                                          ? " is-invalid"
-                                          : "")
-                                      }
-                                      styles={{
-                                        control: (base, state) => ({
-                                          ...base,
-                                          borderColor:
-                                            errors.city && touched.city
-                                              ? "#f46a6a"
-                                              : "#ced4da",
-                                        }),
-                                      }}
-                                      options={CITIES}
-                                      placeholder="Select City..."
-                                    />
+<Label for="city_id" className="form-label">
+  City
+</Label>
+<Select
+  name="city_id"
+  component="Select"
+  onChange={selectedGroup =>
+    this.setState({
+      city_id: selectedGroup.value,
+    })
+  }
+  className={
+    "defautSelectParent" +
+    (errors.city_id && touched.city_id
+      ? " is-invalid"
+      : "")
+  }
+  styles={{
+    control: (base, state) => ({
+      ...base,
+      borderColor:
+        errors.city_id && touched.city_id
+          ? "#f46a6a"
+          : "#ced4da",
+    }),
+  }}
+  options={
+    cityList
+  }
+  defaultValue={{
+    label:
+      this.state.city,
+    value:
+      this.state.id,
+  }}
 
-                                    <ErrorMessage
-                                      name="city"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
-                                </div>
+/>
+
+<ErrorMessage
+  name="city_id"
+  component="div"
+  className="invalid-feedback"
+/>
+</div>
+
 
                             </Col>
                           </Row>
@@ -475,18 +429,18 @@ StaffInfo.propTypes = {
   staff: PropTypes.any,
   className: PropTypes.any,
   onAddStaff: PropTypes.func,
-  // onGetTerritoriesList: PropTypes.func,
-  // territoriesList: PropTypes.array,
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
 const mapStateToProps = ({ staff , territoriesList}) => ({
   staff: staff.staff,
-  // territoriesList:territoriesList.territoriesList,
+  territoriesList:territoriesList.territoriesList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddStaff: (staff, id) => dispatch(addStaff(staff, id)),
-  // onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList()),
 });
 
 export default connect(

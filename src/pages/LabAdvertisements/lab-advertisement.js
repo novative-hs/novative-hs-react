@@ -107,12 +107,6 @@ class AdvertisementsList extends Component {
           text: "Title",
           sort: true,
         },
-        
-        {
-          dataField: "description",
-          text: "Description",
-          sort: true,
-        },
         {
           dataField: "request_status",
           text: "Status",
@@ -333,7 +327,6 @@ class AdvertisementsList extends Component {
       labAdvertisement: {
         id: labAdvertisement.id,
         title: labAdvertisement.title,
-        description: labAdvertisement.description,
         poster: process.env.REACT_APP_BACKENDURL + labAdvertisement.poster,
         posted_at: labAdvertisement.posted_at,
         posted_till: labAdvertisement.posted_till,
@@ -484,9 +477,7 @@ class AdvertisementsList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                        {!!isEdit
-                                          ? "Edit Advertisement"
-                                          : "Add New Advertisement"}
+                                      {!!isEdit ? "Edit Advertisement" : "Add New Advertisement"}${process.env.REACT_APP_BACKENDURL + labAdvertisement.amount}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -499,11 +490,6 @@ class AdvertisementsList extends Component {
                                                 this.state.labAdvertisement
                                                   .title) ||
                                               "",
-                                            description:
-                                              (this.state.labAdvertisement &&
-                                                this.state.labAdvertisement
-                                                  .description) ||
-                                              "Lab",
                                             poster:
                                               (this.state &&
                                                 this.state.advertisementImg) ||
@@ -594,8 +580,6 @@ class AdvertisementsList extends Component {
                                                     id: labAdvertisement.id,
 
                                                     title: values.title,
-                                                    description:
-                                                      values.description,
                                                     poster:
                                                       this.state
                                                         .advertisementImg,
@@ -626,8 +610,6 @@ class AdvertisementsList extends Component {
                                                   id: labAdvertisement.id,
 
                                                   title: values.title,
-                                                  description:
-                                                    values.description,
                                                   poster:
                                                     this.state.advertisementImg,
 
@@ -660,7 +642,6 @@ class AdvertisementsList extends Component {
                                                   ) + 20,
 
                                                 title: values.title,
-                                                description: values.description,
                                                 poster:
                                                   this.state.advertisementImg,
 
@@ -766,8 +747,6 @@ class AdvertisementsList extends Component {
                                                               e.target.value,
                                                             poster:
                                                               labAdvertisement.poster,
-                                                            description:
-                                                              labAdvertisement.description,
                                                             posted_at:
                                                               labAdvertisement.posted_at,
                                                             posted_till:
@@ -782,41 +761,6 @@ class AdvertisementsList extends Component {
                                                       }}
                                                       multiple={false}
                                                       value={this.state.labAdvertisement.title}
-                                                    ></Field>
-                                                  </div>
- {/* Region Type field */}
- <div className="mb-3">
-                                                    <Label className="form-label">
-                                                    Description
-                                                    </Label>
-                                                    <Field
-                                                      name="description"
-                                                      type="text"
-                                                      className="form-control"
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          labAdvertisement: {
-                                                            id: labAdvertisement.id,
-
-                                                            description:
-                                                              e.target.value,
-                                                            poster:
-                                                              labAdvertisement.poster,
-                                                            title:
-                                                              labAdvertisement.title,
-                                                            posted_at:
-                                                              labAdvertisement.posted_at,
-                                                            posted_till:
-                                                              labAdvertisement.posted_till,
-                                                            km: labAdvertisement.km,
-                                                            //   labAdvertisement.number_of_days,
-                                                            // amount: labAdvertisement.amount,
-                                                           
-                                                          },
-                                                        });
-                                                      }}
-                                                      multiple={false}
-                                                      value={this.state.labAdvertisement.description}
                                                     ></Field>
                                                   </div>
 

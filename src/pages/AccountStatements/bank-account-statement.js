@@ -106,7 +106,7 @@ class AccountStatements extends Component {
                         <Table>
                           <thead className="table-light">
                             <tr>
-                              <th scope="col">Date</th>
+                              <th scope="col">Clearenec DateTime</th>
                               <th scope="col">Description</th>
                               <th scope="col">Payment Status</th>
                               <th scope="col">Credit</th>
@@ -116,148 +116,81 @@ class AccountStatements extends Component {
                           </thead>
                           <tbody>
                             {bankStatements.map((bankStatement, i) => (
-                              <>
-                                {bankStatement.transaction_type == "In" ? (
+                            <tr key={i} className="badge-soft-primary">
+                            <td>
+                              <p className="text-muted mb-0">
+                                {new Date(bankStatement.clearence_datetime).toLocaleString("en-US")}
+                              </p>
+                            </td>
+                            <td>
+                              <p>
+                              {bankStatement.account_name}{", "}
+                                {bankStatement.account_no}
+                              </p>
+                            </td>
+                            {/* <td>
+                              {bankStatement.Lab_id == null &&
+                                bankStatement.mif_id == null ? (
+                                <p className="d-none">
+                                  {bankStatement.mif_id}
+                                  {bankStatement.Lab_id}
+                                </p>
 
-                                  <tr key={i} className="badge-soft-primary">
-                                    <td>
-                                      <p className="text-muted mb-0">
-                                        {new Date(bankStatement.Date).toLocaleString("en-US")}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      {bankStatement.Lab_id == null &&
-                                        bankStatement.mif_id == null ? (
-                                        <p className="d-none">
-                                          {bankStatement.mif_id}
-                                          {bankStatement.Lab_id}
-                                        </p>
+                              ) : bankStatement.Advertisement_id == null &&
+                              (
+                                <p>
+                                  {"MIF ID: "}{bankStatement.mif_id}{" For "}{"Lab ID: "}{bankStatement.Lab_id}
+                                </p>
+                              )}
+                              {bankStatement.Advertisement_id == null ||
+                                bankStatement.mif_id == null ? (
+                                <p className="d-none">
+                                  {bankStatement.mif_id}
+                                  {bankStatement.Advertisement_id}
+                                </p>
 
-                                      ) : bankStatement.Advertisement_id == null &&
-                                      (
-                                        <p>
-                                          {"MIF ID: "}{bankStatement.mif_id}{" For "}{"Lab ID: "}{bankStatement.Lab_id}
-                                        </p>
-                                      )}
-                                      {bankStatement.Advertisement_id == null ||
-                                        bankStatement.mif_id == null ? (
-                                        <p className="d-none">
-                                          {bankStatement.mif_id}
-                                          {bankStatement.Advertisement_id}
-                                        </p>
+                              ) : bankStatement.Lab_id == null && (
+                                <p>
+                                  {"MIF ID: "}{bankStatement.mif_id}{" For "}{"Lab Advertisement ID: "}{bankStatement.Advertisement_id}
+                                </p>
+                              )}
+                            </td> */}
+                            <td>
+                              <p>
+                                {bankStatement.Status}
+                              </p>
+                            </td>
+                            <td>
+                              {bankStatement.credit == 0 ? (
+                                <p className="d-none">
+                                  {bankStatement.credit}
+                                </p>
 
-                                      ) : bankStatement.Lab_id == null && (
-                                        <p>
-                                          {"MIF ID: "}{bankStatement.mif_id}{" For "}{"Lab Advertisement ID: "}{bankStatement.Advertisement_id}
-                                        </p>
-                                      )}
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {bankStatement.Status}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      {bankStatement.Credit == 0 ? (
-                                        <p className="d-none">
-                                          {bankStatement.Credit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
+                              ) : (
+                                <p className="float-end">
+                                  {bankStatement.credit}
+                                </p>
+                              )}
+                            </td>
+                            <td>
+                              {bankStatement.Debit == 0 ? (
+                                <p className="d-none">
+                                  {bankStatement.Debit}
+                                </p>
 
-                                      ) : (
-                                        <p className="float-end">
-                                          {bankStatement.Credit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-                                    </td>
-                                    <td>
-                                      {bankStatement.Debit == 0 ? (
-                                        <p className="d-none">
-                                          {bankStatement.Debit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
+                              ) : (
+                                <p className="float-end">
+                                  {bankStatement.Debit}
+                                </p>
+                              )}
+                            </td>
+                            <td>
+                              <p className="float-end">
+                                {bankStatement.account_balance}
+                              </p>
+                            </td>
+                          </tr>
 
-                                      ) : (
-                                        <p className="float-end">
-                                          {bankStatement.Debit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-                                    </td>
-                                    <td>
-                                      <p className="float-end">
-                                        {bankStatement.total_test_cost.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td>
-                                  </tr>
-                                ) : bankStatement.transaction_type == "Out" ? (
-                                  <tr key={i} className="badge-soft-danger">
-                                    <td>
-                                      <p className="text-muted mb-0">
-                                        {new Date(bankStatement.Date).toLocaleString("en-US")}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      {bankStatement.Lab_id == null ||
-                                        bankStatement.mof_id == null ? (
-                                        <p className="d-none">
-                                          {bankStatement.mof_id}
-                                          {bankStatement.Lab_id}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {"MOF ID: "}{bankStatement.mof_id}{" For "}{"Lab ID: "}{bankStatement.Lab_id}
-                                        </p>
-                                      )}
-                                      {bankStatement.B2b_id == null ||
-                                        bankStatement.mof_id == null ? (
-                                        <p className="d-none">
-                                          {bankStatement.mof_id}
-                                          {bankStatement.B2b_id}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {"MOF ID: "}{bankStatement.mof_id}{" For "}{"B2b Client ID: "}{bankStatement.B2b_id}
-                                        </p>
-                                      )}
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {bankStatement.Status}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      {bankStatement.Credit == 0 ? (
-                                        <p className="d-none">
-                                          {bankStatement.Credit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {bankStatement.Credit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-                                    </td>
-                                    <td>
-                                      {bankStatement.Debit == 0 ? (
-                                        <p className="d-none">
-                                          {bankStatement.Debit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {bankStatement.Debit.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-                                    </td>
-                                    <td>
-                                      <p className="float-end">
-                                        {bankStatement.total_test_cost.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td>
-                                  </tr>
-                                ) : null}
-
-                              </>
                             )
                             )}
                             <tr className="bg-success bg-soft">
@@ -267,21 +200,21 @@ class AccountStatements extends Component {
                               <td className="border-10">
                                 <p className="float-end">
                                   {
-                                    this.props.bankStatements.slice(-1).pop().total_Credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    this.props.bankStatements.slice(-1).pop().total_Credit
                                   }
                                 </p>
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
                                   {
-                                    this.props.bankStatements.slice(-1).pop().total_Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    this.props.bankStatements.slice(-1).pop().total_Debit
                                   }
                                 </p>
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
                                   {
-                                    this.props.bankStatements.slice(-1).pop().total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    this.props.bankStatements.slice(-1).pop().account_balance
                                   }
                                 </p>
                               </td>

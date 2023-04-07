@@ -58,23 +58,27 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 import FeedbacksList from "../pages/Feedbacks/feedbacks-list";
 import LabInvoiceDetail from "pages/Checkouts/invoice-detail";
+import CsrInvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabAdvertisements from "../pages/LabAdvertisements/lab-advertisement";
 
 
 // Payment In Status
 import InPayments from "pages/Payments Form/in-payment-mathod";
 import PaymentStatussList from "../pages/PaymentStatuss/payment-statuss-list";
-import depositStatussList from "../pages/PaymentStatuss/deposit-statuss-list";
+import PendintClearenceStatussList from "../pages/PaymentStatuss/paymentin-pending-clearence-statuss-list";
 import clearStatussList from "../pages/PaymentStatuss/clear-statuss-list";
 import bouncedStatussList from "../pages/PaymentStatuss/payment-bounced-statuss-list"
 
 // Payment Out
-
 import OutPayments from "pages/Payments Form/out-payment-mathod";
 import PaymentOutStatussList from "pages/PaymentStatuss/paymentout-pending-clearence-statuss-list"
 import PaymentOutCreatedStatussList from "pages/PaymentStatuss/paymentout-created-statuss-list"
 import PaymentOutclearStatussList from "pages/PaymentStatuss/paymentoutclear-statuss-list"
 import PaymentOutBouncedStatussList from "pages/PaymentStatuss/paymentout-bounced-statuss-list"
+
+// Bank Transfer
+import BankTransfers from "pages/Payments Form/bank-transfer-detail";
+import BankTransfersList from "pages/PaymentStatuss/inter-bank-details-list"
 
 // sample collector components
 import SampleCollectorTestAppointmentsInProcessList from "../pages/SampleCollectorTestAppointments/test-appointments-in-process-list";
@@ -184,6 +188,7 @@ import LabAdvertisementRequestsAccepted from "pages/MarketerAdmin/accepted-lab-a
 
 // Registration of Marketer Admin
 import PendingComplaints from "pages/CSRAdmin/pending-complaints";
+import csrApointments from "pages/CSRAdmin/csr-apointments";
 import InProcessComplaints from "pages/CSRAdmin/inprocess-complaints";
 import inprocessComplaintslabhazir from "pages/CSRAdmin/inprocess-complaintslabhazir";
 import ResolvedComplaints from "pages/CSRAdmin/resolved-complaints";
@@ -194,6 +199,10 @@ import CSRsList from "pages/CSRAdmin/csrs-list";
 import DashboardCsr from "pages/Dashboard-Csr";
 import UnhandledComplaints from "pages/Complaints/unhandled-complaints";
 import HandledComplaints from "pages/Complaints/handled-complaints";
+import csrComplaints from "pages/Complaints/csr-complaints";
+import NotesList from "pages/Complaints/notes-list";
+import NotesLists from "pages/Complaints/notes-list";
+
 
 
 import AssignedAudits from "pages/Auditor/assigned-audits";
@@ -221,7 +230,7 @@ import FinanceOfficerList from "pages/HrAdmin/finance-officer-list";
 import DiscountLab from "pages/MarketerAdmin/discounttolab";
 import BanksList from "pages/CreateBanks/banks-list";
 import BankAccountsList from "pages/BankAccounts/bankaccounts-list";
-import Payments from "pages/Authentication/Payments";
+import Payments from "pages/Authentication/Payments"
 
 
 import csrsList from "pages/CSRAdmin/csrs-list";
@@ -395,8 +404,8 @@ const financeOfficerAuthProtectedRoutes = [
     component: PaymentStatussList,
   },
   {
-    path: "/deposit-status",
-    component: depositStatussList,
+    path: "/payment-in-pending-clearence-status",
+    component: PendintClearenceStatussList,
   },
   {
     path: "/clear-status",
@@ -439,7 +448,9 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/lab-details", component: labList},
   { path: "/donor-details", component: donorList},
   { path: "/b2bclients-details", component: b2bList},
-  {path: "/bank-account-statements/:id", component: BankAccountStatements}
+  {path: "/bank-account-statements/:id", component: BankAccountStatements},
+  { path: "/bank-transfer", component: BankTransfers },
+  { path: "/inter-bank-details-list", component: BankTransfersList },
 
 
   // { path: "/financeadmin-profile", component: FinanceAdminProfile },
@@ -543,10 +554,20 @@ const csrAuthProtectedRoutes = [
   { path: "/staff-profile", component: StaffProfile},
   { path: "/handled-complaints", component: HandledComplaints },
   { path: "/unhandled-complaints", component: UnhandledComplaints },
+  { path: "/csr-pending-appointments", component: csrComplaints },
+  { path: "/csr-notes-list/:id", component: NotesList },
+  {
+    path: "/csr-invoice-detail/:id",
+    component: CsrInvoiceDetail,
+  },
+
+
 ];
 
 const csrAdminAuthProtectedRoutes = [
   { path: "/pending-complaints-lab", component: PendingComplaints },
+  { path: "/pending-csr-appointments", component: csrApointments },
+  { path: "/csr-notes-lists/:id", component: NotesLists },
   { path: "/pending-complaints-labhazir", component: pendingComplaintslabhazir },
   { path: "/inprocess-complaints-lab", component: InProcessComplaints },
   { path: "/inprocess-complaints-labhazir", component: inprocessComplaintslabhazir },
