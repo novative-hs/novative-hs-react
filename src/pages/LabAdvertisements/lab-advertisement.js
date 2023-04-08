@@ -79,25 +79,32 @@ class AdvertisementsList extends Component {
         },
         {
           dataField: "poster",
-          text: "#",
+          text: "Adv Image",
           formatter: (cellContent, labAdvertisement) => (
             <>
               {!labAdvertisement.poster ? (
                 <div className="avatar-xs">
                   <span className="avatar-title rounded-circle">
-                    {labAdvertisement.name.charAt(0)}
+                    {/* {labAdvertisement.name.charAt(0)} */}
                   </span>
                 </div>
               ) : (
-                <div>
-                  <img
+                <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL +
+                    labAdvertisement.poster,
+                }}
+                target="_blank"
+              >
+                <img
                     className="rounded-circle avatar-xs"
                     src={
                       process.env.REACT_APP_BACKENDURL + labAdvertisement.poster
                     }
                     alt=""
                   />
-                </div>
+              </Link>
               )}
             </>
           ),
@@ -477,7 +484,7 @@ class AdvertisementsList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                      {!!isEdit ? "Edit Advertisement" : "Add New Advertisement"}${process.env.REACT_APP_BACKENDURL + labAdvertisement.amount}
+                                      {!!isEdit ? "Edit Advertisement" : "Add New Advertisement"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -775,6 +782,7 @@ class AdvertisementsList extends Component {
                                                   ) : null}
 
                                                   {/* Advertisement field */}
+                                                    
                                                   <div className="mb-3">
                                                     <Label
                                                       for="poster"

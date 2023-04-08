@@ -5,6 +5,8 @@ import MetaTags from "react-meta-tags";
 import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
+import MultiSelectCheckBox from 'react-multiselect-checkboxes';
+
 
 import {
   Card,
@@ -47,7 +49,7 @@ import {
 
 import {
   getTerritoriesList
-  } from "store/territories-list/actions";
+} from "store/territories-list/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -76,17 +78,24 @@ class AdvertisementsList extends Component {
         },
         {
           dataField: "poster",
-          text: "Advertisement Image",
+          text: "Adv Image",
           formatter: (cellContent, advertisement) => (
             <>
               {!advertisement.poster ? (
                 <div className="avatar-xs">
                   <span className="avatar-title rounded-circle">
-                    {advertisement.name.charAt(0)}
+                    {/* {advertisement.name.charAt(0)} */}
                   </span>
                 </div>
               ) : (
-                <div>
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL +
+                      advertisement.poster,
+                  }}
+                  target="_blank"
+                >
                   <img
                     className="rounded-circle avatar-xs"
                     src={
@@ -94,7 +103,7 @@ class AdvertisementsList extends Component {
                     }
                     alt=""
                   />
-                </div>
+                </Link>
               )}
             </>
           ),
@@ -677,7 +686,7 @@ class AdvertisementsList extends Component {
 
                                                   {/* Display current image in edit form only */}
                                                   {advertisement.poster &&
-                                                  advertisement.poster ? (
+                                                    advertisement.poster ? (
                                                     <CardImg
                                                       className="img-fluid"
                                                       src={advertisement.poster}
@@ -709,7 +718,7 @@ class AdvertisementsList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.poster &&
-                                                        touched.poster
+                                                          touched.poster
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -733,7 +742,7 @@ class AdvertisementsList extends Component {
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
-                                                          " UTC"
+                                                        " UTC"
                                                       )
                                                         .toISOString()
                                                         .slice(0, -8)}
@@ -757,7 +766,7 @@ class AdvertisementsList extends Component {
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
-                                                          " UTC"
+                                                        " UTC"
                                                       )
                                                         .toISOString()
                                                         .slice(0, -8)}
@@ -770,55 +779,46 @@ class AdvertisementsList extends Component {
                                                       }
                                                     />
                                                   </div>
-                                {/* city field */}
-                        <div className="mb-3">
+                                                  {/* city field */}
+                                                  <div className="mb-3">
+                                                    <label htmlFor="city_id" className="form-label">
+                                                      City
+                                                    </label>
+                                                    <MultiSelectCheckBox
+                                                      id="city_id"
+                                                      name="city_id"
+                                                      options={cityList}
+                                                      onSelect={(selectedValues) => {
+                                                        const selectedCities = selectedValues.map((value) =>
+                                                          cityList.find((city) => city.value === value)
+                                                        );
+                                                        this.setState({
+                                                          city_id: selectedValues,
+                                                          selectedCities,
+                                                        });
+                                                        console.log("Selected city IDs:", selectedValues);
+                                                      }}
+                                                      onRemove={(removedValue) => {
+                                                        const remainingValues = this.state.city_id.filter(
+                                                          (value) => value !== removedValue
+                                                        );
+                                                        const remainingCities = remainingValues.map((value) =>
+                                                          cityList.find((city) => city.value === value)
+                                                        );
+                                                        this.setState({
+                                                          city_id: remainingValues,
+                                                          selectedCities: remainingCities,
+                                                        });
+                                                      }}
+                                                      placeholderButtonLabel="Select Cities"
+                                                      allSelectedButtonLabel="All Cities Selected"
+                                                      selectedOptions={this.state.selectedCities}
+                                                    />
+                                                    {errors.city_id && touched.city_id && (
+                                                      <div className="invalid-feedback">{errors.city_id}</div>
+                                                    )}
+                                                  </div>
 
-
-                          <Label for="city_id" className="form-label">
-                            City
-                          </Label>
-                              <Select
-                                name="city_id"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    city_id: selectedGroup.value,
-                                  })
-                                }
-                                className={
-                                  "defautSelectParent" +
-                                  (errors.city_id && touched.city_id
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                                styles={{
-                                  control: (base, state) => ({
-                                    ...base,
-                                    borderColor:
-                                      errors.city_id && touched.city_id
-                                        ? "#f46a6a"
-                                        : "#ced4da",
-                                  }),
-                                }}
-                                options={
-                                  cityList
-                                }
-                                defaultValue={{
-                                  label:
-                                  this.state.city,
-                                  value:
-                                  this.state.id,                                       
-                                }}
-                                placeholder="Select City..."
-                              />
-
-                              <ErrorMessage
-                                name="city_id"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                        </div>
-                                                 
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -876,9 +876,9 @@ AdvertisementsList.propTypes = {
   territoriesList: PropTypes.array,
 };
 
-const mapStateToProps = ({ advertisements , territoriesList}) => ({
+const mapStateToProps = ({ advertisements, territoriesList }) => ({
   advertisements: advertisements.advertisements,
-  territoriesList:territoriesList.territoriesList,
+  territoriesList: territoriesList.territoriesList,
 
 });
 

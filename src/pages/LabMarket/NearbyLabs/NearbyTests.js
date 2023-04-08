@@ -144,7 +144,7 @@ class NearbyTests extends Component {
       DescriptionModal: true,
       description_in_english: arg.description_in_english,
       description_in_urdu: arg.description_in_urdu,
-      test_name:arg.test_name,
+      test_name: arg.test_name,
     });
   };
 
@@ -424,16 +424,16 @@ class NearbyTests extends Component {
     if (!this.state.user_id) {
       // this.props.history.push("/login");
       this.setState({ guest_id: this.props.match.params.guest_id });
-      cart.guest_id= this.props.match.params.guest_id
+      cart.guest_id = this.props.match.params.guest_id
       onAddToCart(cart, cart.guest_id);
 
-     console.log("uuid:", cart.guest_id, this.props.match.params.guest_id   ) 
+      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id)
     } else {
       onAddToCart(cart, this.state.user_id);
     }
 
     setTimeout(() => {
-      this.setState({ success: "Item added to the cart successfully.",});
+      this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
     }, 2000);
   };
@@ -463,7 +463,7 @@ class NearbyTests extends Component {
   //   }
   //   return false;
   // };
-    handlePageClick = page => {
+  handlePageClick = page => {
     this.setState({ page });
   };
   toggleFullscreen() {
@@ -497,92 +497,92 @@ class NearbyTests extends Component {
     const { page, totalPage } = this.state;
 
     return (
-      
+
       <React.Fragment>
-          <div className="topnav">
+        <div className="topnav">
           <div className="container-fluid left-space">
             <nav
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
               {!this.state.user_id
-              ? (
-                 <Collapse
-                 isOpen={this.props.menuOpen}
-                 className="navbar-collapse"
-                 id="topnav-menu-content"
-               >
-                 <ul className="navbar-nav">
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/labs/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                    <span className="pt-4 font-size-12">Labs</span>
-                     </Link>
-                   </li>
- 
-                   <li className="nav-item">
+                ? (
+                  <Collapse
+                    isOpen={this.props.menuOpen}
+                    className="navbar-collapse"
+                    id="topnav-menu-content"
+                  >
+                    <ul className="navbar-nav">
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/labs/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                        </Link>
+                      </li>
 
-                     {/* <Link to="/nearby-tests" className="dropdown-item">
+                      <li className="nav-item">
+
+                        {/* <Link to="/nearby-tests" className="dropdown-item">
                        {this.props.t("Search by Tests")}
                      </Link> */}
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-tests/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                       <span className="pt-4 font-size-12">Tests</span>
-                       {/* {this.props.t("Tests")} */}
-                     </Link>
-                   </li>
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-profiles/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                      <span className="pt-4 font-size-12">Profiles</span>
-                       {/* {this.props.t("Profiles")} */}
-                     </Link>
-                   </li>
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-packages/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                      <span className="pt-4 font-size-12">Packages</span>
-                       {/* {this.props.t("Packages")} */}
-                     </Link>
-                   </li>
-                   <li className="nav-item">
-                     <Link 
-                     to={
-                       this.props.match.params.uuid
-                         ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                         : `/nearby-radiology/${this.props.match.params.guest_id}`
-                     }
-                     className="dropdown-item"
-                     >
-                      <span className="pt-4 font-size-12">Radiology</span>
-                       {/* {this.props.t("Packages")} */}
-                     </Link>
-                   </li>
-                   {/* <li className="nav-item dropdown">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-tests/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Tests</span>
+                          {/* {this.props.t("Tests")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-profiles/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Profiles</span>
+                          {/* {this.props.t("Profiles")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-packages/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Packages</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-radiology/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Radiology</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
                        onClick={e => {
@@ -608,122 +608,122 @@ class NearbyTests extends Component {
                        </Link>
                      </div>
                    </li> */}
- 
-                   {this.state.user_id && this.state.user_type == "patient" && (
-                     <li className="nav-item">
-                       <Link to={"/test-appointments"} className="dropdown-item">
-                         {/* {this.props.t("My Appointments")} */}
-                         <span className="pt-4 font-size-12">My Appointments</span>
 
-                       </Link>
-                     </li>
-                     /* <li className="nav-item dropdown">
+                      {this.state.user_id && this.state.user_type == "patient" && (
+                        <li className="nav-item">
+                          <Link to={"/test-appointments"} className="dropdown-item">
+                            {/* {this.props.t("My Appointments")} */}
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
+                          </Link>
+                        </li>
+                        /* <li className="nav-item dropdown">
+                           <Link
+                            to="/#"
+                            onClick={e => {
+                              e.preventDefault();
+                              this.setState({ appState: !this.state.appState });
+                            }}
+                            className="nav-link dropdown-toggle arrow-none"
+                          >
+                            <i className="bx bx-test-tube me-2" />
+                            {this.props.t("Appointments")}{" "}
+                            <div className="arrow-down" />
+                          </Link>
+                          <div
+                            className={classname("dropdown-menu", {
+                              show: this.state.appState,
+                            })}
+                          >
+                            <Link
+                              to={"/test-appointments"}
+                              className="dropdown-item"
+                            >
+                              {this.props.t("Test Appointments")}
+                            </Link>
+                          </div>
+                          </li> */
+                      )}
+                    </ul>
+                  </Collapse>
+
+                ) : this.state.user_id ? (
+                  <Collapse
+                    isOpen={this.props.menuOpen}
+                    className="navbar-collapse"
+                    id="topnav-menu-content"
+                  >
+                    <ul className="navbar-nav">
+                      <li className="nav-item">
                         <Link
-                         to="/#"
-                         onClick={e => {
-                           e.preventDefault();
-                           this.setState({ appState: !this.state.appState });
-                         }}
-                         className="nav-link dropdown-toggle arrow-none"
-                       >
-                         <i className="bx bx-test-tube me-2" />
-                         {this.props.t("Appointments")}{" "}
-                         <div className="arrow-down" />
-                       </Link>
-                       <div
-                         className={classname("dropdown-menu", {
-                           show: this.state.appState,
-                         })}
-                       >
-                         <Link
-                           to={"/test-appointments"}
-                           className="dropdown-item"
-                         >
-                           {this.props.t("Test Appointments")}
-                         </Link>
-                       </div>
-                       </li> */
-                   )}
-                 </ul>
-               </Collapse>
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-labs/${this.props.match.params.uuid}`
+                              : `/nearby-labs/`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                          {/* {this.props.t("Labs")} */}
+                        </Link>
+                      </li>
 
-              ): this.state.user_id ? (
-                <Collapse
-                isOpen={this.props.menuOpen}
-                className="navbar-collapse"
-                id="topnav-menu-content"
-              >
-                <ul className="navbar-nav">
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                        : `/nearby-labs/`
-                    }
-                    className="dropdown-item"
-                    >
-                      <span className="pt-4 font-size-12">Labs</span>
-                      {/* {this.props.t("Labs")} */}
-                    </Link>
-                  </li>
-
-                  <li className="nav-item">
-                    {/* <Link to="/nearby-tests" className="dropdown-item">
+                      <li className="nav-item">
+                        {/* <Link to="/nearby-tests" className="dropdown-item">
                       {this.props.t("Search by Tests")}
                     </Link> */}
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-tests/${this.props.match.params.uuid}`
-                        : `/nearby-tests/`
-                    }
-                    className="dropdown-item"
-                    >
-                      {/* {this.props.t("Tests")} */}
-                      <span className="pt-4 font-size-12">Tests</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-profiles/${this.props.match.params.uuid}`
-                        : `/nearby-profiles/`
-                    }
-                    className="dropdown-item"
-                    >
-                      {/* {this.props.t("Profiles")} */}
-                      <span className="pt-4 font-size-12">Profiles</span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-packages/${this.props.match.params.uuid}`
-                        : `/nearby-packages/`
-                    }
-                    className="dropdown-item"
-                    >
-                      <span className="pt-4 font-size-12">Packages</span>
-                      {/* {this.props.t("Packages")} */}
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link 
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-radiology/${this.props.match.params.uuid}`
-                        : `/nearby-radiology/`
-                    }
-                    className="dropdown-item"
-                    >
-                      <span className="pt-4 font-size-12">Radiology</span>
-                      {/* {this.props.t("Packages")} */}
-                    </Link>
-                  </li>
-                  {/* <li className="nav-item dropdown">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-tests/${this.props.match.params.uuid}`
+                              : `/nearby-tests/`
+                          }
+                          className="dropdown-item"
+                        >
+                          {/* {this.props.t("Tests")} */}
+                          <span className="pt-4 font-size-12">Tests</span>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-profiles/${this.props.match.params.uuid}`
+                              : `/nearby-profiles/`
+                          }
+                          className="dropdown-item"
+                        >
+                          {/* {this.props.t("Profiles")} */}
+                          <span className="pt-4 font-size-12">Profiles</span>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-packages/${this.props.match.params.uuid}`
+                              : `/nearby-packages/`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Packages</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-radiology/${this.props.match.params.uuid}`
+                              : `/nearby-radiology/`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Radiology</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      {/* <li className="nav-item dropdown">
                     <Link
                       to="/#"
                       onClick={e => {
@@ -750,46 +750,46 @@ class NearbyTests extends Component {
                     </div>
                   </li> */}
 
-                  {this.state.user_id && this.state.user_type == "patient" && (
-                    <li className="nav-item">
-                      <Link to={"/test-appointments"} className="dropdown-item">
-                        {/* {this.props.t("My Appointments")} */}
-                        <span className="pt-4 font-size-12">My Appointments</span>
+                      {this.state.user_id && this.state.user_type == "patient" && (
+                        <li className="nav-item">
+                          <Link to={"/test-appointments"} className="dropdown-item">
+                            {/* {this.props.t("My Appointments")} */}
+                            <span className="pt-4 font-size-12">My Appointments</span>
 
-                      </Link>
-                    </li>
-                    /* <li className="nav-item dropdown">
-                       <Link
-                        to="/#"
-                        onClick={e => {
-                          e.preventDefault();
-                          this.setState({ appState: !this.state.appState });
-                        }}
-                        className="nav-link dropdown-toggle arrow-none"
-                      >
-                        <i className="bx bx-test-tube me-2" />
-                        {this.props.t("Appointments")}{" "}
-                        <div className="arrow-down" />
-                      </Link>
-                      <div
-                        className={classname("dropdown-menu", {
-                          show: this.state.appState,
-                        })}
-                      >
-                        <Link
-                          to={"/test-appointments"}
-                          className="dropdown-item"
-                        >
-                          {this.props.t("Test Appointments")}
-                        </Link>
-                      </div>
-                      </li> */
-                  )}
-                  
-                </ul>
-              </Collapse>
-              ):null}
-             
+                          </Link>
+                        </li>
+                        /* <li className="nav-item dropdown">
+                           <Link
+                            to="/#"
+                            onClick={e => {
+                              e.preventDefault();
+                              this.setState({ appState: !this.state.appState });
+                            }}
+                            className="nav-link dropdown-toggle arrow-none"
+                          >
+                            <i className="bx bx-test-tube me-2" />
+                            {this.props.t("Appointments")}{" "}
+                            <div className="arrow-down" />
+                          </Link>
+                          <div
+                            className={classname("dropdown-menu", {
+                              show: this.state.appState,
+                            })}
+                          >
+                            <Link
+                              to={"/test-appointments"}
+                              className="dropdown-item"
+                            >
+                              {this.props.t("Test Appointments")}
+                            </Link>
+                          </div>
+                          </li> */
+                      )}
+
+                    </ul>
+                  </Collapse>
+                ) : null}
+
             </nav>
           </div>
         </div>
@@ -803,7 +803,7 @@ class NearbyTests extends Component {
               breadcrumbItem="Search by Tests"
             />
             <Row>
-            <Modal
+              <Modal
                 isOpen={this.state.DescriptionModal}
                 className={this.props.className}
               >
@@ -817,8 +817,8 @@ class NearbyTests extends Component {
                         <Col className="col-12">
                           <div className="mb-3 row">
                             <div className="col-md-6">
-                            <Label className="form-label">{this.state.test_name}</Label>
-                            <br></br>
+                              <Label className="form-label">{this.state.test_name}</Label>
+                              <br></br>
                               <Label className="form-label">English</Label>
                             </div>
                             <div>
@@ -969,7 +969,7 @@ class NearbyTests extends Component {
 
               {/* Alerts to show success and error messages when item is added to the cart */}
               {this.state.success ? (
-               window.location.reload()>
+                window.location.reload() >
                 <Alert color="success" className="col-md-5">
                   {this.state.success}
                 </Alert>
@@ -1007,42 +1007,55 @@ class NearbyTests extends Component {
                               {nearbyTest.test_name}
                             </h5>
                             {/* <div className="mt-3 text-center"> */}
-                              <Link
-                                to="#"
-                                onClick={e =>
-                                  this.openDescriptionModal(e, nearbyTest)
-                                }
-                              >
-                                <span>Test Description</span>
-                              </Link>
+                            <Link
+                              to="#"
+                              onClick={e =>
+                                this.openDescriptionModal(e, nearbyTest)
+                              }
+                            >
+                              <span>Test Description</span>
+                            </Link>
                             {/* </div> */}
-                            {isEmpty(nearbyTest.discount) && (
+                            {(nearbyTest.discount <= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) <= 0.01) && (
                               <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Rs {nearbyTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                              </span>
-                            </div>
+                                <span className="text-muted me-2">
+                                  <i className="fas fa-money-bill"></i>{" "}
+                                  Rs {nearbyTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
                             )}
-                            {nearbyTest.discount>=0.01 && (
+
+                            {(nearbyTest.discount >= 0.01) || (nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir >= 0.01) && (
                               <div className="my-0">
-                              <span className="text-danger" >
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Discount Lab: {(nearbyTest.discount*100).toFixed()} % 
-                              </span>
-                              
-                            </div>
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-danger">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyTest.price - ((nearbyTest.discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) / 100) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}                                </span>
+                              </div>
                             )}
-                            {nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir >=0.01 && (
+
+                            {nearbyTest.discount >= 0.01 && (
                               <div className="my-0">
-                              <span className="text-success" >
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Discount LabHazir: {((nearbyTest.all_discount_by_labhazir*100)+(nearbyTest.discount_by_labhazir*100)).toFixed()} % 
-                              </span>
-                              
-                            </div>
+                                <span className="text-danger" >
+                                  <i className="fas fa-money-bill"></i>{" "}
+                                  Discount Lab: {(nearbyTest.discount * 100).toFixed()} %
+                                </span>
+
+                              </div>
                             )}
-                               {/* {nearbyTest.discount_by_labhazir>=0.01 && (
+                            {nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir >= 0.01 && (
+                              <div className="my-0">
+                                <span className="text-success" >
+                                  <i className="fas fa-money-bill"></i>{" "}
+                                  Discount LabHazir: {((nearbyTest.all_discount_by_labhazir * 100) + (nearbyTest.discount_by_labhazir * 100)).toFixed()} %
+                                </span>
+
+                              </div>
+                            )}
+                            {/* {nearbyTest.discount_by_labhazir>=0.01 && (
                               <div className="my-0">
                               <span className="text-success" >
                                 <i className="fas fa-money-bill"></i>{" "}
@@ -1079,26 +1092,26 @@ class NearbyTests extends Component {
                                     ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.uuid}`
                                     : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
                                 }
-                                
+
                                 className="text-dark"
                               >
                                 <span className="text-primary">
                                   {nearbyTest.lab_name}{" "}
-                                  
+
                                 </span>
                               </Link>
                             </div>
-                             <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyTest.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
+                            <div className="my-0 mt-2">
+                              <StarRatings
+                                rating={nearbyTest.rating}
+                                starRatedColor="#F1B44C"
+                                starEmptyColor="#2D363F"
+                                numberOfStars={5}
+                                name="rating"
+                                starDimension="14px"
+                                starSpacing="3px"
+                              />
+                            </div>
                             <Button
                               type="button"
                               color="primary"

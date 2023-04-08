@@ -69,7 +69,7 @@ class LabAdvertisementRequestsList extends Component {
         },
         {
           dataField: "poster",
-          text: "#",
+          text: "Adv Image",
           formatter: (cellContent, labAdvertisementRequest) => (
             <>
               {!labAdvertisementRequest.poster ? (
@@ -79,15 +79,22 @@ class LabAdvertisementRequestsList extends Component {
                   </span>
                 </div>
               ) : (
-                <div>
-                  <img
+                <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL +
+                    labAdvertisementRequest.poster,
+                }}
+                target="_blank"
+              >
+                <img
                     className="rounded-circle avatar-xs"
                     src={
                       process.env.REACT_APP_BACKENDURL + labAdvertisementRequest.poster
                     }
                     alt=""
                   />
-                </div>
+              </Link>
               )}
             </>
           ),
