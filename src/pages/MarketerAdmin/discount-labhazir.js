@@ -86,6 +86,18 @@ class DiscountLabHazirList extends Component {
           ),
         },
         {
+          dataField: "discount",
+          text: "Discount",
+          sort: true,
+          formatter: (cellContent, discountLabHazir) => (
+            <>
+              {(
+                <span>{(discountLabHazir.discount*100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
+        {
           dataField: "start_date",
           text: "Start Date",
           sort: true,
