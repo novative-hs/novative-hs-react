@@ -78,17 +78,29 @@ class AdvertisementsList extends Component {
         },
         {
           dataField: "poster",
-          text: "Adv Image",
+          text: "Adv Media",
           formatter: (cellContent, advertisement) => (
             <>
-              {!advertisement.poster ? (
-                <div className="avatar-xs">
-                  <span className="avatar-title rounded-circle">
-                    {/* {advertisement.name.charAt(0)} */}
-                  </span>
-                </div>
-              ) : (
-                <Link
+              {advertisement.poster ? (
+                advertisement.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                  <Link
+                    to={{
+                      pathname:
+                        process.env.REACT_APP_BACKENDURL +
+                        advertisement.poster,
+                    }}
+                    target="_blank"
+                  >
+                    <img
+                      className="rounded-circle avatar-xs"
+                      src={
+                        process.env.REACT_APP_BACKENDURL + advertisement.poster
+                      }
+                      alt=""
+                  />
+                </Link>
+                ) : (
+                  <Link
                   to={{
                     pathname:
                       process.env.REACT_APP_BACKENDURL +
@@ -96,14 +108,21 @@ class AdvertisementsList extends Component {
                   }}
                   target="_blank"
                 >
-                  <img
-                    className="rounded-circle avatar-xs"
-                    src={
-                      process.env.REACT_APP_BACKENDURL + advertisement.poster
-                    }
-                    alt=""
-                  />
+                  <video width="100" height="100" controls>
+                    <source
+                      src={process.env.REACT_APP_BACKENDURL + advertisement.poster}
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
                 </Link>
+                )
+              ) : (
+                <div className="avatar-xs">
+                  <span className="avatar-title rounded-circle">
+                    {/* {advertisement.name.charAt(0)} */}
+                  </span>
+                </div>
               )}
             </>
           ),
@@ -706,10 +725,10 @@ class AdvertisementsList extends Component {
                                                     <Input
                                                       id="formFile"
                                                       name="poster"
-                                                      placeholder="Choose image"
+                                                      placeholder="Choose File"
                                                       type="file"
                                                       multiple={false}
-                                                      accept=".jpg,.jpeg,.png,.pdf"
+                                                      accept=".jpg,.jpeg,.png,.pdf,.mp4,.avi,.mov"
                                                       onChange={e =>
                                                         this.setState({
                                                           advertisementImg:

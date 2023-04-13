@@ -184,8 +184,8 @@ class FeedbacksList extends Component {
                                   <div className="text-sm-end">
                                   
                             <StarRatings
-                              // rating={feedback.rating_values}
-                              rating={5}
+                              rating={feedback.rating_values}
+                              // rating={5}
                               starRatedColor="#F1B44C"
                               starEmptyColor="#2D363F"
                               numberOfStars={5}

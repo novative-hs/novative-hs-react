@@ -83,6 +83,7 @@ class NearbyLabs extends Component {
       location: "",
       currentLatitude: "",
       currentLongitude: "",
+      autoplay: true,
       discountData: [],
       filters: {
         discount: [],
@@ -419,7 +420,7 @@ class NearbyLabs extends Component {
 
 
       setTimeout(() => {
-        this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement  });
+        this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement });
       }, 1000);
     });
   };
@@ -450,7 +451,7 @@ class NearbyLabs extends Component {
 
 
       setTimeout(() => {
-        this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement  });
+        this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement });
       }, 1000);
     }
   };
@@ -476,7 +477,7 @@ class NearbyLabs extends Component {
 
 
     setTimeout(() => {
-      this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement  });
+      this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement });
     }, 1000);
 
     var latitude = "";
@@ -503,6 +504,10 @@ class NearbyLabs extends Component {
         this.setState({ longitude: longitude });
       }, 1000);
     }, 1000);
+  };
+
+  resetVideo = (event) => {
+    event.target.currentTime = 0;
   };
 
   render() {
@@ -1326,28 +1331,60 @@ class NearbyLabs extends Component {
             </Col>
 
             <Col lg="3">
-              {!isEmpty(this.props.advLives) && 
-                  this.props.advLives.map((advLive, key) => (
-                    <Col lg="9" key={"col" + key}>
+              {!isEmpty(this.props.advLives) &&
+                this.props.advLives.map((advLive, key) => (
+                  <Col lg="9" key={"col" + key}>
                     <Card>
                       <CardBody>
                         <div>
-                          <img
-                            src={
-                              process.env.REACT_APP_BACKENDURL +
-                              advLive.poster
-                            }
-                            alt="Advertisement"
-                            style={{
-                              maxWidth: '100%', maxHeight: '100%',
-                              objectFit: "cover",nearbyLabs
-                            }}
-                            className="img-fluid mx-auto d-block" />
+                          {advLive.poster ? (
+                            advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL + advLive.poster
+                                }
+                                alt="Advertisement"
+                                style={{
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
+                                  objectFit: "cover",
+                                }}
+                                className="img-fluid mx-auto d-block"
+                              />
+                            ) : (
+                              <video
+                                width="100%"
+                                height="100%"
+                                controls
+                                autoPlay={this.state.autoplay}
+                                loop
+                                >
+                                <source
+                                  src={process.env.REACT_APP_BACKENDURL + advLive.poster}
+                                  type="video/mp4"
+                                />
+                                Your browser does not support the video tag.
+                              </video>
+
+                              // <video width="100%" height="100%" controls autoPlay>
+                              //   <source
+                              //     src={
+                              //       process.env.REACT_APP_BACKENDURL + advLive.poster
+                              //     }
+                              //     type="video/mp4"
+                              //   />
+                              //   Your browser does not support the video tag.
+                              // </video>
+                            )
+                          ) : (
+                            <div>No media found.</div>
+                          )}
                         </div>
                       </CardBody>
                     </Card>
-                    </Col>
-                  ))}
+                  </Col>
+                ))}
+
               {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
                 <>
                   {regionWiseAdvertisement.nearby_adv_list.map(
@@ -1383,7 +1420,7 @@ class NearbyLabs extends Component {
                                       nearby_adv_list.poster}
                                     alt="Lab Advertisement"
                                     // className=" text-end"
-                                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: "cover"}}
+                                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: "cover" }}
                                   />
                                 </div>
                               </Link>
@@ -1395,6 +1432,8 @@ class NearbyLabs extends Component {
                   )}
                 </>
               ))}
+
+
 
             </Col>
           </Row>
