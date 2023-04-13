@@ -1326,6 +1326,28 @@ class NearbyLabs extends Component {
             </Col>
 
             <Col lg="3">
+              {!isEmpty(this.props.advLives) && 
+                  this.props.advLives.map((advLive, key) => (
+                    <Col lg="9" key={"col" + key}>
+                    <Card>
+                      <CardBody>
+                        <div>
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              advLive.poster
+                            }
+                            alt="Advertisement"
+                            style={{
+                              maxWidth: '100%', maxHeight: '100%',
+                              objectFit: "cover",nearbyLabs
+                            }}
+                            className="img-fluid mx-auto d-block" />
+                        </div>
+                      </CardBody>
+                    </Card>
+                    </Col>
+                  ))}
               {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
                 <>
                   {regionWiseAdvertisement.nearby_adv_list.map(
@@ -1373,29 +1395,6 @@ class NearbyLabs extends Component {
                   )}
                 </>
               ))}
-
-                {!isEmpty(this.props.advLives) && 
-                  this.props.advLives.map((advLive, key) => (
-                    <Col lg="9" key={"col" + key}>
-                    <Card>
-                      <CardBody>
-                        <div>
-                          <img
-                            src={
-                              process.env.REACT_APP_BACKENDURL +
-                              advLive.poster
-                            }
-                            alt="Advertisement"
-                            style={{
-                              maxWidth: '100%', maxHeight: '100%',
-                              objectFit: "cover",nearbyLabs
-                            }}
-                            className="img-fluid mx-auto d-block" />
-                        </div>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                  ))}
 
             </Col>
           </Row>
