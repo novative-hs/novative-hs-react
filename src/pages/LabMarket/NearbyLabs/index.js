@@ -1341,7 +1341,7 @@ class NearbyLabs extends Component {
                                     : `/nearby-lab-detail/${nearby_adv_list.account_id}`
                                 }
                               >
-                                <div className="product-img position-relative">
+                                {/* <div className="product-img position-relative">
                                   <img
                                     src={
                                       process.env.REACT_APP_BACKENDURL +
@@ -1354,6 +1354,15 @@ class NearbyLabs extends Component {
                                       objectFit: "cover",
                                     }}
                                     className="img-fluid mx-auto d-block" />
+                                </div> */}
+                                <div>
+                                  <img
+                                    src={process.env.REACT_APP_BACKENDURL +
+                                      nearby_adv_list.poster}
+                                    alt="Lab Advertisement"
+                                    // className=" text-end"
+                                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: "cover"}}
+                                  />
                                 </div>
                               </Link>
                             </CardBody>
@@ -1370,7 +1379,7 @@ class NearbyLabs extends Component {
                     <Col lg="9" key={"col" + key}>
                     <Card>
                       <CardBody>
-                        <div className="product-img position-relative">
+                        <div>
                           <img
                             src={
                               process.env.REACT_APP_BACKENDURL +
@@ -1378,8 +1387,7 @@ class NearbyLabs extends Component {
                             }
                             alt="Advertisement"
                             style={{
-                              width: "250px",
-                              height: "250px",
+                              maxWidth: '100%', maxHeight: '100%',
                               objectFit: "cover",nearbyLabs
                             }}
                             className="img-fluid mx-auto d-block" />
