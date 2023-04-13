@@ -30,8 +30,8 @@ function* fetchRegionWiseAdvertisement(object) {
 
 function* fetchAdvLive(object) {
   try {
-    const response = yield call(getAdvLive, object.payload);
-    yield put(getAdvLiveSuccess(response));
+    const response = yield call(getAdvLive, object.payload.locationDetails);
+    yield put(getAdvLiveSuccess(response.data));
   } catch (error) {
     yield put(getAdvLiveFail(error));
   }

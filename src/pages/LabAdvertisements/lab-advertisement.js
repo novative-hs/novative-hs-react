@@ -48,7 +48,7 @@ import {
 } from "store/lab-advertisements/actions";
 
 import {
-getTerritoriesList
+  getTerritoriesList
 } from "store/territories-list/actions";
 
 import { isEmpty, size } from "lodash";
@@ -90,21 +90,21 @@ class AdvertisementsList extends Component {
                 </div>
               ) : (
                 <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL +
-                    labAdvertisement.poster,
-                }}
-                target="_blank"
-              >
-                <img
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL +
+                      labAdvertisement.poster,
+                  }}
+                  target="_blank"
+                >
+                  <img
                     className="rounded-circle avatar-xs"
                     src={
                       process.env.REACT_APP_BACKENDURL + labAdvertisement.poster
                     }
                     alt=""
                   />
-              </Link>
+                </Link>
               )}
             </>
           ),
@@ -125,7 +125,7 @@ class AdvertisementsList extends Component {
                   {labAdvertisement.request_status}
                 </span>
               )}
-              
+
 
               {labAdvertisement.request_status == "Accepted" && (
                 <span className="badge rounded-pill badge-soft-success font-size-14 badge-soft-success">
@@ -142,12 +142,12 @@ class AdvertisementsList extends Component {
           ),
         },
         {
-          dataField: "number_of_days", 
+          dataField: "number_of_days",
           text: "number of days",
           sort: true,
         },
         {
-          dataField: "amount", 
+          dataField: "amount",
           text: "Price",
           sort: true,
         },
@@ -260,7 +260,7 @@ class AdvertisementsList extends Component {
     if (advertisementPriceLists && !advertisementPriceLists.length) {
       console.log(onGetAdvertisementPriceLists(this.state.user_id));
     }
-    
+
     // this.setState({ labAdvertisements });
   }
 
@@ -338,6 +338,8 @@ class AdvertisementsList extends Component {
         posted_at: labAdvertisement.posted_at,
         posted_till: labAdvertisement.posted_till,
         km: labAdvertisement.km,
+        request_status: labAdvertisement.request_status,
+        payment_status: labAdvertisement.payment_status
         // number_of_days: labAdvertisement.number_of_days,
       },
       advertisementImg: "",
@@ -390,14 +392,14 @@ class AdvertisementsList extends Component {
         order: "desc", // desc or asc
       },
     ];
-// const advertisementNumberOfDaysList = [];
-//     for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
-//       advertisementNumberOfDaysList.push({
-//         label: this.props.advertisementPriceLists[i].number_of_days,
-//         value: this.props.advertisementPriceLists[i].number_of_days,
+    // const advertisementNumberOfDaysList = [];
+    //     for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
+    //       advertisementNumberOfDaysList.push({
+    //         label: this.props.advertisementPriceLists[i].number_of_days,
+    //         value: this.props.advertisementPriceLists[i].number_of_days,
 
-//       });
-//     }
+    //       });
+    //     }
 
     return (
       <React.Fragment>
@@ -484,7 +486,7 @@ class AdvertisementsList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                      {!!isEdit ? "Edit Advertisement" : "Add New Advertisement"}
+                                        {!!isEdit ? "Edit Advertisement" : "Add New Advertisement"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -520,7 +522,7 @@ class AdvertisementsList extends Component {
                                             //   (this.state &&
                                             //     this.state.amount) ||
                                             //   "",
-                                         
+
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -598,7 +600,7 @@ class AdvertisementsList extends Component {
                                                     // number_of_days: values.number_of_days,
                                                     // amount: values.amount,
 
-                                                  
+
 
                                                   };
 
@@ -627,7 +629,7 @@ class AdvertisementsList extends Component {
                                                   // number_of_days: values.number_of_days,
                                                   // amount: values.amount,
 
-                                                  
+
 
                                                 };
 
@@ -658,7 +660,7 @@ class AdvertisementsList extends Component {
                                                 // number_of_days: values.number_of_days,
                                                 // amount: values.amount,
 
-                                             
+
                                               };
 
                                               // save new Advertisement
@@ -762,7 +764,7 @@ class AdvertisementsList extends Component {
                                                             // number_of_days:
                                                             //   labAdvertisement.number_of_days,
                                                             // amount: labAdvertisement.amount,
-                                                           
+
                                                           },
                                                         });
                                                       }}
@@ -772,8 +774,9 @@ class AdvertisementsList extends Component {
                                                   </div>
 
                                                   {/* Display current image in edit form only */}
+
                                                   {labAdvertisement.poster &&
-                                                  labAdvertisement.poster ? (
+                                                    labAdvertisement.poster ? (
                                                     <CardImg
                                                       className="img-fluid"
                                                       src={labAdvertisement.poster}
@@ -781,43 +784,49 @@ class AdvertisementsList extends Component {
                                                     />
                                                   ) : null}
 
-                                                  {/* Advertisement field */}
-                                                    
-                                                  <div className="mb-3">
-                                                    <Label
-                                                      for="poster"
-                                                      className="form-label"
-                                                    >
-                                                      Advertisement
-                                                    </Label>
-                                                    <Input
-                                                      id="formFile"
-                                                      name="poster"
-                                                      placeholder="Choose image"
-                                                      type="file"
-                                                      multiple={false}
-                                                      accept=".jpg,.jpeg,.png,.pdf"
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          advertisementImg:
-                                                            e.target.files[0],
-                                                        })
-                                                      }
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.poster &&
-                                                        touched.poster
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
 
-                                                    <ErrorMessage
-                                                      name="poster"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
+                                                  {/* Advertisement field */}
+                                                  {(labAdvertisement.request_status === "Accepted" && labAdvertisement.payment_status !== "Approved") ||
+                                                    (labAdvertisement.request_status !== "Accepted" && labAdvertisement.payment_status === "Approved") ||
+                                                    (labAdvertisement.request_status !== "Accepted" && labAdvertisement.payment_status !== "Approved") ? (
+                                                    <div className="mb-3">
+                                                      <Label for="poster" className="form-label">
+                                                        Advertisement Image
+                                                      </Label>
+                                                      <Input
+                                                        id="formFile"
+                                                        name="poster"
+                                                        placeholder="Choose image"
+                                                        type="file"
+                                                        multiple={false}
+                                                        accept=".jpg,.jpeg,.png,.pdf"
+                                                        onChange={(e) =>
+                                                          this.setState({
+                                                            advertisementImg: e.target.files[0],
+                                                          })
+                                                        }
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.poster && touched.poster ? " is-invalid" : "")
+                                                        }
+                                                      />
+
+                                                      <ErrorMessage
+                                                        name="poster"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  ) : null}
+
+
+
+                                                  {/* {labAdvertisement.request_status != "Accepted" && 
+                                                    labAdvertisement.payment_status != "Approved" ? (
+                                                     
+                                                  ) : null} */}
+
+
                                                   {/* Advertisement posted date field */}
 
                                                   <div className="mb-3">
@@ -829,7 +838,7 @@ class AdvertisementsList extends Component {
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
-                                                          " UTC"
+                                                        " UTC"
                                                       )
                                                         .toISOString()
                                                         .slice(0, -8)}
@@ -853,7 +862,7 @@ class AdvertisementsList extends Component {
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
-                                                          " UTC"
+                                                        " UTC"
                                                       )
                                                         .toISOString()
                                                         .slice(0, -8)}
@@ -866,11 +875,11 @@ class AdvertisementsList extends Component {
                                                       }
                                                     />
                                                   </div>
-                                                
-                       
-                                                 {/* Advertisement number of days field */}
 
-                                                 <div className="mb-3">
+
+                                                  {/* Advertisement number of days field */}
+
+                                                  <div className="mb-3">
                                                     <Label className="form-label">
                                                       Km
                                                     </Label>
@@ -900,7 +909,7 @@ class AdvertisementsList extends Component {
                                                             description: labAdvertisement.description,
                                                             //   labAdvertisement.number_of_days,
                                                             // amount: labAdvertisement.amount,
-                                                           
+
                                                           },
                                                         });
                                                       }}
@@ -977,10 +986,10 @@ AdvertisementsList.propTypes = {
   onUpdateLabAdvertisement: PropTypes.func,
 };
 
-const mapStateToProps = ({ advertisementPriceLists,labAdvertisements, territoriesList }) => ({
+const mapStateToProps = ({ advertisementPriceLists, labAdvertisements, territoriesList }) => ({
   labAdvertisements: labAdvertisements.labAdvertisements,
   advertisementPriceLists: advertisementPriceLists.advertisementPriceLists,
-  territoriesList:territoriesList.territoriesList,
+  territoriesList: territoriesList.territoriesList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

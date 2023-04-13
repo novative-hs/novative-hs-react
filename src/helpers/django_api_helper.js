@@ -844,8 +844,6 @@ export const getNearbyLabs = locationDetails => {
   formData.append("guest_id", locationDetails.guest_id);
 
 
-  console.log("locationDetails: ", locationDetails)
-
   return axios.post(`${url.GET_NEARBY_LABS}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -2415,10 +2413,26 @@ export const getAdvertisementLives=() =>
   });
 
 // ------------- Advertisements Live START -------------
-export const getAdvLive=() =>
-  get(`${url.GET_ADV_LIVE}`, {
+// export const getAdvLive=() =>
+//   get(`${url.GET_ADV_LIVE}`, {
+//     headers: getHeader(authHeader()),
+//   });
+// Get Region Wise Advertisement
+export const getAdvLive = locationDetails => {
+  let formData = new FormData();
+  formData.append("latitude", locationDetails.latitude);
+  formData.append("longitude", locationDetails.longitude);
+  formData.append("search_type", locationDetails.search_type);
+  formData.append("address", locationDetails.address);
+  formData.append("city", locationDetails.city);
+
+  console.log("labhaziradvLives: ", locationDetails)
+
+
+  return axios.post(`${url.GET_ADV_LIVE}`, formData, {
     headers: getHeader(authHeader()),
   });
+};
 
 //------------ Get Advertisement Invoice Detail-------------
 export const getAdvInvoiceDetail = id =>

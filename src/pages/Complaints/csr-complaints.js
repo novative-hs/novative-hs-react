@@ -134,6 +134,11 @@ class csrComplaints extends Component {
           ),
         },
         {
+          dataField: "status",
+          text: "Status",
+          sort: true,
+        },
+        {
           dataField: "appointment_requested_at",
           text: "Appointment Requested at",
           sort: true,
@@ -141,6 +146,20 @@ class csrComplaints extends Component {
             <>
               <span>
                 {new Date(complaint.appointment_requested_at).toLocaleString(
+                  "en-US"
+                )}
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "estimated_sample_collection_at",
+          text: "Schedule time by lab",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {new Date(complaint.estimated_sample_collection_at).toLocaleString(
                   "en-US"
                 )}
               </span>

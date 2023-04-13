@@ -479,6 +479,7 @@ class AdvertisementsList extends Component {
                                             ),
                                           })}
                                           onSubmit={values => {
+                                            console.log("onsubmit", values)
                                             if (isEdit) {
                                               if (
                                                 !this.state.advertisementImg
@@ -568,7 +569,7 @@ class AdvertisementsList extends Component {
                                                 posted_till: values.posted_till,
                                                 // region_type: values.region_type,
                                                 // province: values.province,
-                                                city_id: values.city_id,
+                                                city_id: Array.isArray(values.city_id) ? values.city_id : [values.city_id],
                                                 // district: values.district,
                                               };
 
@@ -780,44 +781,55 @@ class AdvertisementsList extends Component {
                                                     />
                                                   </div>
                                                   {/* city field */}
+
                                                   <div className="mb-3">
-                                                    <label htmlFor="city_id" className="form-label">
-                                                      City
-                                                    </label>
-                                                    <MultiSelectCheckBox
-                                                      id="city_id"
-                                                      name="city_id"
-                                                      options={cityList}
-                                                      onSelect={(selectedValues) => {
-                                                        const selectedCities = selectedValues.map((value) =>
-                                                          cityList.find((city) => city.value === value)
-                                                        );
-                                                        this.setState({
-                                                          city_id: selectedValues,
-                                                          selectedCities,
-                                                        });
-                                                        console.log("Selected city IDs:", selectedValues);
-                                                      }}
-                                                      onRemove={(removedValue) => {
-                                                        const remainingValues = this.state.city_id.filter(
-                                                          (value) => value !== removedValue
-                                                        );
-                                                        const remainingCities = remainingValues.map((value) =>
-                                                          cityList.find((city) => city.value === value)
-                                                        );
-                                                        this.setState({
-                                                          city_id: remainingValues,
-                                                          selectedCities: remainingCities,
-                                                        });
-                                                      }}
-                                                      placeholderButtonLabel="Select Cities"
-                                                      allSelectedButtonLabel="All Cities Selected"
-                                                      selectedOptions={this.state.selectedCities}
-                                                    />
-                                                    {errors.city_id && touched.city_id && (
-                                                      <div className="invalid-feedback">{errors.city_id}</div>
-                                                    )}
-                                                  </div>
+
+
+                          <Label for="city_id" className="form-label">
+                            City
+                          </Label>
+                              <Select
+                                name="city_id"
+                                component="Select"
+                                isMulti={true}
+                                onChange={selectedGroups =>
+                                  this.setState({
+                                    city_id: selectedGroups.map(group => group.value),
+                                  })
+                                }                                
+                                className={
+                                  "defautSelectParent" +
+                                  (errors.city_id && touched.city_id
+                                    ? " is-invalid"
+                                    : "")
+                                }
+                                styles={{
+                                  control: (base, state) => ({
+                                    ...base,
+                                    borderColor:
+                                      errors.city_id && touched.city_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                  }),
+                                }}
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                  this.state.city,
+                                  value:
+                                  this.state.id,                                       
+                                }}
+                                placeholder="Select City..."
+                              />
+
+                              <ErrorMessage
+                                name="city_id"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+                        </div>
 
                                                 </Col>
                                               </Row>

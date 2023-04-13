@@ -134,13 +134,32 @@ class csrAppointments extends Component {
           ),
         },
         {
+          dataField: "status",
+          text: "Status",
+          sort: true,
+        },
+        {
           dataField: "appointment_requested_at",
           text: "Appointment Requested at",
           sort: true,
-          formatter: (cellContent, complaint) => (
+          formatter: (cellContent, csrAppointment) => (
             <>
               <span>
-                {new Date(complaint.appointment_requested_at).toLocaleString(
+                {new Date(csrAppointment.appointment_requested_at).toLocaleString(
+                  "en-US"
+                )}
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "estimated_sample_collection_at",
+          text: "Schedule time by lab",
+          sort: true,
+          formatter: (cellContent, csrAppointment) => (
+            <>
+              <span>
+                {new Date(csrAppointment.estimated_sample_collection_at).toLocaleString(
                   "en-US"
                 )}
               </span>

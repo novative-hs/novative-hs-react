@@ -41,9 +41,9 @@ export const getRegionWiseAdvertisementFail = error => ({
 });
 
 
-export const getAdvLive = id => ({
+export const getAdvLive = locationDetails => ({
   type: GET_ADV_LIVE,
-  payload: id,
+  payload: { locationDetails },
 });
 
 export const getAdvLiveSuccess = advLives => ({

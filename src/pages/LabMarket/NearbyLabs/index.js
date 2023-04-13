@@ -102,22 +102,9 @@ class NearbyLabs extends Component {
   };
 
   componentDidMount() {
-    // let matchingMenuItem = null;
-    // const ul = document.getElementById("navigation");
-    // const items = ul.getElementsByTagName("a");
-    // for (let i = 0; i < items.length; ++i) {
-    //   if (this.props.location.pathname === items[i].pathname) {
-    //     matchingMenuItem = items[i];
-    //     break;
-    //   }
-    // }
-    // if (matchingMenuItem) {
-    //   this.activateParentDropdown(matchingMenuItem);
-    // }
-
-    const { advLives, onGetAdvLive } = this.props;
-    onGetAdvLive(this.state.user_id);
-    this.setState({ advLives });
+    // const { onGetAdvLive } = this.props;
+    // onGetAdvLive(this.state.user_id);
+    // this.setState({ advLives: this.props.advLives });
 
 
     let latitude;
@@ -147,10 +134,33 @@ class NearbyLabs extends Component {
 
     });
 
-    const { onGetNearbyLabs } = this.props;
-    // const guest_id = uuidv4();
-    // console.log("uuid in nearby lab:",this.state.user_id)
+    // region Wise Advertisement 
+    const { onGetAdvLive } = this.props;
 
+    setTimeout(() => {
+
+      this.setState({ currentLatitude: latitude });
+      this.setState({ currentLongitude: longitude });
+
+
+      var locationDetails = {
+        latitude: this.state.currentLatitude,
+        longitude: this.state.currentLongitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+      };
+
+      if (this.state.currentLatitude && this.state.currentLongitude) {
+        onGetAdvLive(locationDetails);
+        setTimeout(() => {
+          this.setState({ advLives: this.props.advLives });
+        }, 2000);
+      }
+    }, 1000);
+
+    const { onGetNearbyLabs } = this.props;
+    // near by labs
 
     setTimeout(() => {
 
@@ -389,6 +399,10 @@ class NearbyLabs extends Component {
 
     searchBox.addListener("places_changed", () => {
       const { onGetNearbyLabs } = this.props;
+      const { onGetAdvLive } = this.props;
+      const { onGetRegionWiseAdvertisement } = this.props;
+
+
 
       var locationDetails = {
         latitude: "",
@@ -399,25 +413,13 @@ class NearbyLabs extends Component {
       };
 
       onGetNearbyLabs(locationDetails);
-
-      setTimeout(() => {
-        this.setState({ nearbyLabs: this.props.nearbyLabs });
-      }, 1000);
-      // region wise advertisement
-      const { onGetRegionWiseAdvertisement } = this.props;
-
-      var locationDetails = {
-        latitude: "",
-        longitude: "",
-        search_type: this.state.search_type,
-        address: e.target.value,
-        city: this.state.city,
-      };
-
+      onGetAdvLive(locationDetails);
       onGetRegionWiseAdvertisement(locationDetails);
 
+
+
       setTimeout(() => {
-        this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
+        this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement  });
       }, 1000);
     });
   };
@@ -431,6 +433,8 @@ class NearbyLabs extends Component {
       this.setState({ address: "" });
 
       const { onGetNearbyLabs } = this.props;
+      const { onGetAdvLive } = this.props;
+      const { onGetRegionWiseAdvertisement } = this.props;
 
       var locationDetails = {
         latitude: this.state.currentLatitude,
@@ -441,26 +445,13 @@ class NearbyLabs extends Component {
       };
       // region wise advertisement
       onGetNearbyLabs(locationDetails);
-
-      setTimeout(() => {
-        this.setState({ nearbyLabs: this.props.nearbyLabs });
-      }, 1000);
-
-      const { onGetRegionWiseAdvertisement } = this.props;
-
-      var locationDetails = {
-        latitude: this.state.currentLatitude,
-        longitude: this.state.currentLongitude,
-        search_type: e.target.value,
-        address: this.state.address,
-        city: this.state.city,
-      };
-
+      onGetAdvLive(locationDetails);
       onGetRegionWiseAdvertisement(locationDetails);
 
+
       setTimeout(() => {
-        this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-      }, 2000);
+        this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement  });
+      }, 1000);
     }
   };
 
@@ -468,21 +459,7 @@ class NearbyLabs extends Component {
     this.setState({ city: selectedGroup.value });
 
     const { onGetNearbyLabs } = this.props;
-
-    var locationDetails = {
-      latitude: "",
-      longitude: "",
-      search_type: this.state.search_type,
-      address: this.state.address,
-      city: selectedGroup.value,
-    };
-
-    onGetNearbyLabs(locationDetails);
-
-    setTimeout(() => {
-      this.setState({ nearbyLabs: this.props.nearbyLabs });
-    }, 1000);
-    // region wise advertisement
+    const { onGetAdvLive } = this.props;
     const { onGetRegionWiseAdvertisement } = this.props;
 
     var locationDetails = {
@@ -493,11 +470,14 @@ class NearbyLabs extends Component {
       city: selectedGroup.value,
     };
 
+    onGetNearbyLabs(locationDetails);
+    onGetAdvLive(locationDetails);
     onGetRegionWiseAdvertisement(locationDetails);
 
+
     setTimeout(() => {
-      this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-    }, 2000);
+      this.setState({ nearbyLabs: this.props.nearbyLabs, advLives: this.props.advLives, regionWiseAdvertisement: this.props.regionWiseAdvertisement  });
+    }, 1000);
 
     var latitude = "";
     var longitude = "";
@@ -525,36 +505,9 @@ class NearbyLabs extends Component {
     }, 1000);
   };
 
-  // activateParentDropdown = item => {
-  //   item.classList.add("active");
-  //   const parent = item.parentElement;
-  //   if (parent) {
-  //     parent.classList.add("active"); // li
-  //     const parent2 = parent.parentElement;
-  //     parent2.classList.add("active"); // li
-  //     const parent3 = parent2.parentElement;
-  //     if (parent3) {
-  //       parent3.classList.add("active"); // li
-  //       const parent4 = parent3.parentElement;
-  //       if (parent4) {
-  //         parent4.classList.add("active"); // li
-  //         const parent5 = parent4.parentElement;
-  //         if (parent5) {
-  //           parent5.classList.add("active"); // li
-  //           const parent6 = parent5.parentElement;
-  //           if (parent6) {
-  //             parent6.classList.add("active"); // li
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return false;
-  // };
-
   render() {
     const { history } = this.props;
-    const { discountData, nearbyLabs, page, totalPage, regionWiseAdvertisement } = this.state;
+    const { discountData, nearbyLabs, page, totalPage, regionWiseAdvertisement, } = this.state;
 
     return (
       <React.Fragment>
@@ -641,32 +594,6 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      {/* <li className="nav-item dropdown">
-                     <Link
-                       to="/#"
-                       onClick={e => {
-                         e.preventDefault();
-                         this.setState({ appState: !this.state.appState });
-                       }}
-                       className="nav-link dropdown-toggle arrow-none"
-                     >
-                       <i className="bx bx-store me-2" />
-                       {this.props.t("Lab Marketplace")}{" "}
-                       <div className="arrow-down" />
-                     </Link>
-                     <div
-                       className={classname("dropdown-menu", {
-                         show: this.state.appState,
-                       })}
-                     >
-                       <Link to="/nearby-labs" className="dropdown-item">
-                         {this.props.t("Nearby Labs")}
-                       </Link>
-                       <Link to="/nearby-tests" className="dropdown-item">
-                         {this.props.t("Nearby Tests")}
-                       </Link>
-                     </div>
-                   </li> */}
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
@@ -676,32 +603,6 @@ class NearbyLabs extends Component {
 
                           </Link>
                         </li>
-                        /* <li className="nav-item dropdown">
-                           <Link
-                            to="/#"
-                            onClick={e => {
-                              e.preventDefault();
-                              this.setState({ appState: !this.state.appState });
-                            }}
-                            className="nav-link dropdown-toggle arrow-none"
-                          >
-                            <i className="bx bx-test-tube me-2" />
-                            {this.props.t("Appointments")}{" "}
-                            <div className="arrow-down" />
-                          </Link>
-                          <div
-                            className={classname("dropdown-menu", {
-                              show: this.state.appState,
-                            })}
-                          >
-                            <Link
-                              to={"/test-appointments"}
-                              className="dropdown-item"
-                            >
-                              {this.props.t("Test Appointments")}
-                            </Link>
-                          </div>
-                          </li> */
                       )}
                     </ul>
                   </Collapse>
@@ -782,32 +683,6 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      {/* <li className="nav-item dropdown">
-                    <Link
-                      to="/#"
-                      onClick={e => {
-                        e.preventDefault();
-                        this.setState({ appState: !this.state.appState });
-                      }}
-                      className="nav-link dropdown-toggle arrow-none"
-                    >
-                      <i className="bx bx-store me-2" />
-                      {this.props.t("Lab Marketplace")}{" "}
-                      <div className="arrow-down" />
-                    </Link>
-                    <div
-                      className={classname("dropdown-menu", {
-                        show: this.state.appState,
-                      })}
-                    >
-                      <Link to="/nearby-labs" className="dropdown-item">
-                        {this.props.t("Nearby Labs")}
-                      </Link>
-                      <Link to="/nearby-tests" className="dropdown-item">
-                        {this.props.t("Nearby Tests")}
-                      </Link>
-                    </div>
-                  </li> */}
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
@@ -817,32 +692,6 @@ class NearbyLabs extends Component {
 
                           </Link>
                         </li>
-                        /* <li className="nav-item dropdown">
-                           <Link
-                            to="/#"
-                            onClick={e => {
-                              e.preventDefault();
-                              this.setState({ appState: !this.state.appState });
-                            }}
-                            className="nav-link dropdown-toggle arrow-none"
-                          >
-                            <i className="bx bx-test-tube me-2" />
-                            {this.props.t("Appointments")}{" "}
-                            <div className="arrow-down" />
-                          </Link>
-                          <div
-                            className={classname("dropdown-menu", {
-                              show: this.state.appState,
-                            })}
-                          >
-                            <Link
-                              to={"/test-appointments"}
-                              className="dropdown-item"
-                            >
-                              {this.props.t("Test Appointments")}
-                            </Link>
-                          </div>
-                          </li> */
                       )}
                     </ul>
                   </Collapse>
@@ -1110,131 +959,6 @@ class NearbyLabs extends Component {
 
             <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Nearby Labs" />
             <Col lg="9">
-              {/* <Col lg="3">
-           <Card>
-             <CardBody>
-               <CardTitle className="mb-4">Filter</CardTitle>
-               <div className="mt-4 pt-3">
-                 <h5 className="font-size-14 mb-4">Price</h5>
-                 <br />
-
-                 <Nouislider
-                   range={{ min: 0, max: 600 }}
-                   tooltips={true}
-                   start={[100, 500]}
-                   connect
-                   onSlide={this.onUpdate}
-                 />
-               </div>
-
-               <div className="mt-4 pt-3">
-                 <h5 className="font-size-14 mb-3">Discount</h5>
-                 {discountData.map((discount, i) => (
-                   <div className="form-check mt-2" key={i}>
-                     <Input
-                       type="checkbox"
-                       value={discount.value}
-                       className="form-check-input"
-                       id={i}
-                       onChange={this.onSelectDiscount}
-                     />{" "}
-                     <Label className="form-check-label" htmlFor={i}>
-                       {discount.label}
-                     </Label>
-                   </div>
-                 ))}
-               </div>
-
-               <div className="pt-3">
-                 <h5 className="font-size-14 mb-3">Customer Rating</h5>
-                 <div>
-                   <div className="form-check mt-2">
-                     <Input
-                       type="checkbox"
-                       className="form-check-input"
-                       id="productratingCheck1"
-                       onChange={e => {
-                         if (e.target.checked) {
-                           this.onChangeRating(4);
-                         } else {
-                           this.onUncheckMark(4);
-                         }
-                       }}
-                     />{" "}
-                     <Label
-                       className="form-check-label"
-                       htmlFor="productratingCheck1"
-                     >
-                       4 <i className="bx bxs-star text-warning" /> & Above
-                     </Label>
-                   </div>
-                   <div className="form-check mt-2">
-                     <Input
-                       type="checkbox"
-                       className="form-check-input"
-                       id="productratingCheck2"
-                       onChange={e => {
-                         if (e.target.checked) {
-                           this.onChangeRating(3);
-                         } else {
-                           this.onUncheckMark(3);
-                         }
-                       }}
-                     />{" "}
-                     <Label
-                       className="form-check-label"
-                       htmlFor="productratingCheck2"
-                     >
-                       3 <i className="bx bxs-star text-warning" /> & Above
-                     </Label>
-                   </div>
-                   <div className="form-check mt-2">
-                     <Input
-                       type="checkbox"
-                       className="form-check-input"
-                       id="productratingCheck3"
-                       onChange={e => {
-                         if (e.target.checked) {
-                           this.onChangeRating(2);
-                         } else {
-                           this.onUncheckMark(2);
-                         }
-                       }}
-                     />{" "}
-                     <Label
-                       className="form-check-label"
-                       htmlFor="productratingCheck3"
-                     >
-                       2 <i className="bx bxs-star text-warning" /> & Above
-                     </Label>
-                   </div>
-                   <div className="form-check mt-2">
-                     <Input
-                       type="checkbox"
-                       className="form-check-input"
-                       id="productratingCheck4"
-                       onChange={e => {
-                         if (e.target.checked) {
-                           this.onSelectRating(1);
-                         } else {
-                           this.onUncheckMark(1);
-                         }
-                       }}
-                     />{" "}
-                     <Label
-                       className="form-check-label"
-                       htmlFor="productratingCheck4"
-                     >
-                       1 <i className="bx bxs-star text-warning" />
-                     </Label>
-                   </div>
-                 </div>
-               </div>
-             </CardBody>
-           </Card>
-         </Col>  */}
-
-              {/* <Col lg="9"> */}
               <Row className="mb-3">
                 <Formik
                   enableReinitialize={true}
@@ -1587,8 +1311,6 @@ class NearbyLabs extends Component {
                     </Col>
                   ))}
               </Row>
-
-
               {isEmpty(nearbyLabs) && (
                 <Row>
                   <Col lg="12">
@@ -1602,72 +1324,72 @@ class NearbyLabs extends Component {
                 </Row>
               )}
             </Col>
-            
-              <Col lg="3">
-                {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
-                    <>
-                      {regionWiseAdvertisement.nearby_adv_list.map(
-                        (nearby_adv_list, key) => (
-                          <Col  lg="9" key={"col" + key}>
-                          {!isEmpty(regionWiseAdvertisement) && (
-                            <Card>
-                              <CardBody>
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
-                                      : `/nearby-lab-detail/${nearby_adv_list.account_id}`
-                                  }
-                                >
-                                  <div className="product-img position-relative">
-                                    <img
-                                      src={
-                                        process.env.REACT_APP_BACKENDURL +
-                                        nearby_adv_list.poster
-                                      }
-                                      alt="Advertisement"
-                                      style={{
-                                        width: "250px",
-                                        height: "250px",
-                                        objectFit: "cover",
-                                      }}
-                                      className="img-fluid mx-auto d-block" />
-                                  </div>
-                                </Link>
-                              </CardBody>
-                            </Card>
-                          )}
-                          </Col>
-                        )
-                      )}
-                    </>
-                  ))}
 
-                {this.props.advLives.map((advLive) => (
-                    <Col lg="9" key={1}>
-                      {!isEmpty(advLive) && (
-                        <Card>
-                          <CardBody>
-                            <div className="product-img position-relative">
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  advLive.poster
+            <Col lg="3">
+              {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
+                <>
+                  {regionWiseAdvertisement.nearby_adv_list.map(
+                    (nearby_adv_list, key) => (
+                      <Col lg="9" key={"col" + key}>
+                        {!isEmpty(regionWiseAdvertisement) && (
+                          <Card>
+                            <CardBody>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearby_adv_list.account_id}`
                                 }
-                                alt="Advertisement"
-                                style={{
-                                  width: "250px",
-                                  height: "250px",
-                                  objectFit: "cover",
-                                }}
-                                className="img-fluid mx-auto d-block" />
-                            </div>
-                          </CardBody>
-                        </Card>
-                      )}
+                              >
+                                <div className="product-img position-relative">
+                                  <img
+                                    src={
+                                      process.env.REACT_APP_BACKENDURL +
+                                      nearby_adv_list.poster
+                                    }
+                                    alt="Advertisement"
+                                    style={{
+                                      width: "250px",
+                                      height: "250px",
+                                      objectFit: "cover",
+                                    }}
+                                    className="img-fluid mx-auto d-block" />
+                                </div>
+                              </Link>
+                            </CardBody>
+                          </Card>
+                        )}
+                      </Col>
+                    )
+                  )}
+                </>
+              ))}
+
+                {!isEmpty(this.props.advLives) && 
+                  this.props.advLives.map((advLive, key) => (
+                    <Col lg="9" key={"col" + key}>
+                    <Card>
+                      <CardBody>
+                        <div className="product-img position-relative">
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              advLive.poster
+                            }
+                            alt="Advertisement"
+                            style={{
+                              width: "250px",
+                              height: "250px",
+                              objectFit: "cover",nearbyLabs
+                            }}
+                            className="img-fluid mx-auto d-block" />
+                        </div>
+                      </CardBody>
+                    </Card>
                     </Col>
                   ))}
-              </Col>
+
+            </Col>
           </Row>
         </div>
       </React.Fragment>
@@ -1699,7 +1421,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyLabs: locationDetails => dispatch(getNearbyLabs(locationDetails)),
   onGetRegionWiseAdvertisement: locationDetails => dispatch(getRegionWiseAdvertisement(locationDetails)),
-  onGetAdvLive: id => dispatch(getAdvLive(id)),
+  onGetAdvLive: locationDetails => dispatch(getAdvLive(locationDetails)),
   offeredTestsList: guest_id => dispatch(offeredTestsList(guest_id)),
 });
 export default connect(

@@ -829,26 +829,74 @@ class TestsOffered extends Component {
                               // </div>
                             )}
                            
-                            {/* </div> */}
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                              </span>
-                            </div>
+                           {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
+                            {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+                            {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
+                            {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
                             {offeredTest.discount>=0.01 && (
                               <div className="my-0">
                               <span className="text-danger" >
                                 <i className="fas fa-money-bill"></i>{" "}
-                                Discount: {(offeredTest.discount*100).toFixed()} % 
+                                Discount Lab: {(offeredTest.discount*100).toFixed()} % 
                               </span>
                             </div>
+                            )}
+                            {(offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01 && (
+                              <div className="my-0">
+                                <span className="text-success" >
+                                  <i className="fas fa-money-bill"></i>{" "}
+                                  Discount LabHazir: {((offeredTest.all_discount_by_labhazir * 100) + (offeredTest.discount_by_labhazir * 100)).toFixed()} %
+                                </span>
+
+                              </div>
                             )}
                             
                             {/* <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-money-bill"></i>{" "}
-                                {offeredTest.discount_by_labhazir} % Discount By Labhazir
+                                Discount Labhazir: {offeredTest.discount_by_labhazir} %
                               </span>
                             </div> */}
                             <div className="my-0">

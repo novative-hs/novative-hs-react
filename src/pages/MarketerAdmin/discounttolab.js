@@ -57,6 +57,16 @@ class DiscountLabHazirList extends Component {
         : "",
       discountLabHazirListColumns: [
         {
+          dataField: "lab_name",
+          text: "Lab Name",
+          sort: true,
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+              <strong>{discountLabHazirToLab.lab_name}</strong>
+            </>
+          ),
+        },
+        {
           dataField: "id",
           text: "Test ID",
           sort: true,
@@ -116,10 +126,23 @@ class DiscountLabHazirList extends Component {
           dataField: "discount_by_labhazir",
           text: "LabHazir Discount",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLabHazirToLab) => (
             <>
               {(
-                <span>{(test.discount_by_labhazir*100).toFixed()}%</span>
+                <span>{(discountLabHazirToLab.discount_by_labhazir*100).toFixed()}%</span>
+              )}
+            </>
+          ),
+        },
+        {
+          dataField: "discounted_price",
+          text: "Price After Discount",
+          sort: true,
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+              {(
+                <span>{(discountLabHazirToLab.price-((discountLabHazirToLab.price*(discountLabHazirToLab.discount_by_labhazir + discountLabHazirToLab.discount)*100)/100)).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                // (discountLab.price-((discountLab.price*(discountLab.discount*100))/100))
               )}
             </>
           ),
@@ -128,14 +151,14 @@ class DiscountLabHazirList extends Component {
           dataField: "start_date_by_labhazir",
           text: "Start Date",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLabHazirToLab) => (
             <>
-              {!test.start_date_by_labhazir ? (
+              {!discountLabHazirToLab.start_date_by_labhazir ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                   Date not set
                 </span>
               ) : (
-                <span>{test.start_date_by_labhazir}</span>
+                <span>{discountLabHazirToLab.start_date_by_labhazir}</span>
               )}
             </>
           ),
@@ -144,14 +167,14 @@ class DiscountLabHazirList extends Component {
           dataField: "end_date_by_labhazir",
           text: "End Date",
           sort: true,
-          formatter: (cellContent, test) => (
+          formatter: (cellContent, discountLabHazirToLab) => (
             <>
-              {!test.end_date_by_labhazir ? (
+              {!discountLabHazirToLab.end_date_by_labhazir ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                   Date not set
                 </span>
               ) : (
-                <span>{test.end_date_by_labhazir}</span>
+                <span>{discountLabHazirToLab.end_date_by_labhazir}</span>
               )}
             </>
           ),
@@ -277,7 +300,7 @@ class DiscountLabHazirList extends Component {
     this.setState({
       isEditAll: false,
       discountLabHazirToLab: discountLabHazirToLab,
-      // id: discountLabHazirToLab.id,
+      lab_name: discountLabHazirToLab.lab_name,
     });
 
     this.toggle();
@@ -331,13 +354,13 @@ class DiscountLabHazirList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.discountLabHazirListColumns}
+                      columns={this.state.discountLabHazirListColumns || this.state.LabHazirListColumns}
                       data={discountLabHazirToLabs}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.discountLabHazirListColumns}
+                          columns={this.state.discountLabHazirListColumns || this.state.LabHazirListColumns}
                           data={discountLabHazirToLabs}
                           search
                         >
@@ -393,7 +416,7 @@ class DiscountLabHazirList extends Component {
                                         tag="h4"
                                       >
                                         {!this.state.isEditAll
-                                          ? "Discount on one test"
+                                          ? "Discount on one discountLabHazirToLab"
                                           : "Discount on all tests"}
                                       </ModalHeader>
                                       <ModalBody>
