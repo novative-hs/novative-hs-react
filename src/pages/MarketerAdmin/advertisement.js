@@ -834,12 +834,6 @@ class AdvertisementsList extends Component {
                                 options={
                                   cityList
                                 }
-                                defaultValue={{
-                                  label:
-                                  this.state.city,
-                                  value:
-                                  this.state.id,                                       
-                                }}
                                 placeholder="Select City..."
                               />
 
