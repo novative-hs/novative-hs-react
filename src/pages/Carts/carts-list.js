@@ -40,6 +40,9 @@ class CartList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      user_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
       modal: false,
       deleteModal: false,
       isDisabled: true,
@@ -148,6 +151,8 @@ class CartList extends Component {
     this.handleCartClick = this.handleCartClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    console.log("uuid", this.props.match.params.uuid);
+    console.log("guest_id", this.props.match.params.guest_id);
   }
 
   componentDidMount() {
@@ -158,14 +163,22 @@ class CartList extends Component {
     if ((!this.state.user_id)) {
       console.log(onGetCarts(this.props.match.params.guest_id));
       this.setState({ carts: this.props.carts });
-      console.log("carts:", this.props.match.params.uuid)
+      console.log("carts:", this.props.match.params.guest_id)
+      console.log("userr", this.state.user_id)
     }
-    else {
+    if ((this.state.user_id && this.state.user_type !== "CSR"))
+    {
       onGetCarts(this.state.user_id);
       this.setState({ carts: this.props.carts });
-      console.log("carts:", this.state.user_id)
-      console.log("carts:", carts)
-
+      console.log("carts:", this.props.match.params.guest_id)
+      console.log("userr", this.state.user_id)
+    }
+    if((this.state.user_id && this.state.user_type === "CSR"))
+    {
+      onGetCarts(this.props.match.params.guest_id);
+      this.setState({ carts: this.props.carts });
+      console.log("carts:", this.props.match.params.guest_id)
+      console.log("userr", this.state.user_id)
     }
   }
 
@@ -215,7 +228,25 @@ class CartList extends Component {
       onDeleteCart(carts);
       // onDeleteAllCart(id);
       setTimeout(() => {
-        onGetCarts(this.state.user_id);
+        if ((!this.state.user_id)) {
+      console.log(onGetCarts(this.props.match.params.guest_id));
+      this.setState({ carts: this.props.carts });
+      console.log("carts:", this.props.match.params.uuid)
+    }
+    if ((this.state.user_id && this.state.user_type !== "CSR"))
+    {
+      onGetCarts(this.state.user_id);
+      this.setState({ carts: this.props.carts });
+      console.log("carts:", this.state.user_id)
+      console.log("carts:", carts)
+    }
+    if((this.state.user_id && this.state.user_type === "CSR"))
+    {
+      onGetCarts(this.props.match.params.guest_id);
+      this.setState({ carts: this.props.carts });
+      console.log("carts:", this.props.match.params.guest_id)
+      console.log("carts:", carts)
+    }
       }, 1000);
       this.setState({ deleteModal: false });
     }
@@ -223,13 +254,25 @@ class CartList extends Component {
 
   handleCart = () => {
 
-    if (this.state.user_id) {
+    if (this.state.user_id && this.state.user_type !=="CSR") {
       this.props.match.params.uuid = this.props.match.params.guest_id
       console.log(this.props.match.params.uuid)
       this.props.history.push(
         this.props.match.params.uuid
           ? `/checkout/${this.props.match.params.uuid}`
           : `/checkout`
+      );
+    }
+    if (this.state.user_id && this.state.user_type ==="CSR") {
+      console.log(this.state.user_id)
+      console.log(this.state.user_type)
+      console.log(this.props.match.params.guest_id)
+      console.log(this.props.match.params.guest_id)
+      console.log(this.props.match.params.uuid)
+      this.props.history.push(
+        this.props.match.params.guest_id
+          ? `/checkout-csr/${this.props.match.params.guest_id}`
+          : `/checkout-csr`
       );
     }
     if (!this.state.user_id) {
@@ -249,7 +292,25 @@ class CartList extends Component {
     onEmptyCart(this.state.user_id);
 
     setTimeout(() => {
-      onGetCarts(this.state.user_id);
+      if ((!this.state.user_id)) {
+        console.log(onGetCarts(this.props.match.params.guest_id));
+        this.setState({ carts: this.props.carts });
+        console.log("carts:", this.props.match.params.uuid)
+      }
+      if ((this.state.user_id && this.state.user_type !== "CSR"))
+      {
+        onGetCarts(this.state.user_id);
+        this.setState({ carts: this.props.carts });
+        console.log("carts:", this.state.user_id)
+        console.log("carts:", carts)
+      }
+      if((this.state.user_id && this.state.user_type === "CSR"))
+      {
+        onGetCarts(this.props.match.params.guest_id);
+        this.setState({ carts: this.props.carts });
+        console.log("carts:", this.props.match.params.guest_id)
+        console.log("carts:", carts)
+      }
     }, 1000);
 
     this.setState({ carts });
@@ -695,7 +756,8 @@ class CartList extends Component {
                   >
                     <i className="mdi mdi-account-box align-middle me-1 font-size-20" />{" "}
                     <span className="pt-4 font-size-12">
-                      {this.state.patient_name.split(" ")[0]}
+                      {this.state.patient_name}
+                      {/* .split(" ")[0]} */}
                     </span>
                   </Link>
 
@@ -909,7 +971,7 @@ class CartList extends Component {
                         <div className="text-sm-end mt-2 mt-sm-0">
                           <button
                             // component={Link}
-                            to="/checkout"
+                            // to="/checkout"
                             className="btn btn-success"
 
                             onClick={

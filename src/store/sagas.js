@@ -78,6 +78,7 @@ import complaintsSaga from "./complaints/saga";
 import csrcomplaintsSaga from "./csr-complaints/saga";
 import csrappointmentsSaga from "./csr-admin-appointments/saga";
 import notesSaga from "./csr-comments/saga";
+import PatientsSaga from "./patients-list/saga";
 import testDescriptionsSaga from "./test-descriptions/saga";
 import AccountStatementsSaga from "./account-statements/saga";
 import DonorAccountStatementsSaga from "./donor-account-statements/saga";
@@ -156,6 +157,7 @@ export default function* rootSaga() {
     fork(csrcomplaintsSaga),
     fork(csrappointmentsSaga),
     fork(notesSaga),
+    fork(PatientsSaga),
     fork(donorPaymentSaga),
     fork(DonorSettingsSaga),
     fork(paymentStatussSaga),

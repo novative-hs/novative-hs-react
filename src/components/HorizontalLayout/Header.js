@@ -47,6 +47,9 @@ class Header extends Component {
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
+    console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
+    console.log("yaha ani chahi hai guid", this.props.match.params.guest_id)
+    console.log(this.state.user_type)
   }
 
   componentDidMount() {
@@ -342,12 +345,65 @@ class Header extends Component {
                   )}
 
                   {this.state.user_type == "CSR" && (
+                                        <div className="dropdown d-lg-inline-block ms-4 mt-4">
+
                     <Link
                       to={"/dashboard-csr"}
                       className="btn header-items noti-icon right-bar-toggle"
                     >
                       <i className="mdi mdi-home me-1 font-size-24" />{" "}
                     </Link>
+                    <Link
+                        to={
+                          this.props.match.params.guest_id
+                          ? `/cart/${this.props.match.params.guest_id}`
+                          : `/cart`
+                        }
+                        className="btn header-items noti-icon right-bar-toggle"
+                    >
+                        <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+  
+                          {!isEmpty(this.props.carts) &&
+                          
+                            this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                            }
+                    </Link>
+                    {/* <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                          : `/login/${this.props.match.params.guest_id}`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
+                      <span className="pt-4 font-size-12">Login</span>
+                    </Link>
+   */}
+                    {/* <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/register/${this.props.match.params.uuid}`
+                          : `/register`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
+                      <span className="pt-4 font-size-12">Sign up</span>
+                    </Link> */}
+  
+                    {/* <Link
+                      // to="/contact-us"
+                      to={
+                        this.props.match.params.uuid
+                          ? `/contact-us/${this.props.match.params.uuid}`
+                          : `/contact-us`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                    </Link> */}
+                  </div>
                   )}
 
                   {this.state.user_type == "registration-admin" && (

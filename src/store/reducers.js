@@ -132,6 +132,7 @@ import complaints from "./complaints/reducer";
 import csrcomplaints from "./csr-complaints/reducer";
 import csrappointments from "./csr-admin-appointments/reducer";
 import notes from "./csr-comments/reducer";
+import patients from "./patients-list/reducer";
 import testDescriptions from "./test-descriptions/reducer";
 
 import checkout from "./checkout/reducer";
@@ -212,6 +213,7 @@ const rootReducer = combineReducers({
   csrcomplaints,
   csrappointments,
   notes,
+  patients,
   testDescriptions,
   TestMarket,
   ProfileMarket,

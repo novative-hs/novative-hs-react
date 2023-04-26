@@ -26,12 +26,21 @@ class PatientInformation extends Component {
       name: "",
       phone: "",
       city_id: "",
+      guest_id:"",
+      user_id: localStorage.getItem("authUser")
+      ? JSON.parse(localStorage.getItem("authUser")).user_id
+      : "",
+      user_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
     };
   }
 
   componentDidMount() {
     this.props.addPatientInformationFailed("");
     this.props.getTerritoriesList();
+    console.log(this.state.user_id)
+    console.log(this.props.match.params.uuid)
   }
 
   render() {

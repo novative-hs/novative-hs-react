@@ -58,6 +58,9 @@ class NearbyProfiles extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      user_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
       ratingvalues: [],
       Profiles: [],
       nearbyProfiles: [],
@@ -82,9 +85,11 @@ class NearbyProfiles extends Component {
       page: 1,
       totalPage: 5, //replace this with total pages of data
     };
-    console.log("guest..",this.props.match.params.guest_id),
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
+    console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
+    console.log("yaha ani chahi hai guid", this.props.match.params.guest_id)
+    console.log(this.state.user_type)
   }
 
   componentDidMount() {
@@ -459,19 +464,22 @@ class NearbyProfiles extends Component {
     if (!this.state.user_id) {
       // this.props.history.push("/login");
       this.setState({ guest_id: this.props.match.params.guest_id });
-      cart.guest_id= this.props.match.params.guest_id
+      cart.guest_id = this.props.match.params.guest_id
       onAddToCart(cart, cart.guest_id);
 
-     console.log("uuid:", cart.guest_id, this.props.match.params.guest_id   ) 
-    } else {
+      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id)
+    } 
+    if(this.state.user_id && this.state.user_type !== "CSR") {
       onAddToCart(cart, this.state.user_id);
+    }
+    if(this.state.user_id && this.state.user_type === "CSR") {
+      onAddToCart(cart, this.props.match.params.guest_id);
     }
 
     setTimeout(() => {
-      this.setState({ success: "Item added to the cart successfully.",});
+      this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
     }, 2000);
-
   };
  
   render() {
@@ -493,6 +501,91 @@ class NearbyProfiles extends Component {
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
+               {this.state.user_id && this.state.user_type ==="CSR"
+                ? (
+                  <Collapse
+                    isOpen={this.state.isMenuOpened}
+                    className="navbar-collapse"
+                    id="topnav-menu-content"
+                  >
+                    <ul className="navbar-nav">
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/labs/${this.props.match.params.guest_id}`
+                              : `/labs`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                        </Link>
+                      </li>
+
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/nearby-tests/${this.props.match.params.guest_id}`
+                              : `/nearby-tests`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Tests</span>
+                          {/* {this.props.t("Tests")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/nearby-profiles/${this.props.match.params.guest_id}`
+                              : `/nearby-profiles`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Profiles</span>
+                          {/* {this.props.t("Profiles")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/nearby-packages/${this.props.match.params.guest_id}`
+                              : `/nearby-packages`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Packages</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/nearby-radiology/${this.props.match.params.guest_id}`
+                              : `/nearby-radiology`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Radiology</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      {this.state.user_id && this.state.user_type == "patient" && (
+                        <li className="nav-item">
+                          <Link to={"/test-appointments"} className="dropdown-item">
+                            {/* {this.props.t("My Appointments")} */}
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
+                          </Link>
+                        </li>
+                      )}
+                    </ul>
+                  </Collapse>
+                ): null}
               {!this.state.user_id
               ? (
                  <Collapse
@@ -635,7 +728,7 @@ class NearbyProfiles extends Component {
                  </ul>
                </Collapse>
 
-              ): this.state.user_id ? (
+              ): this.state.user_id && this.state.user_type !== "CSR"  ? (
                 <Collapse
                 isOpen={this.props.menuOpen}
                 className="navbar-collapse"
@@ -1122,18 +1215,38 @@ class NearbyProfiles extends Component {
                             </div>
                              
                             <div className="my-0">
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearbyProfile.lab_account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyProfile.lab_account_id}/${this.state.guest_id}`
-                                }
-                                className="text-dark"
-                              >
-                                <span className="text-primary">
-                                  {nearbyProfile.lab_name}{" "}
-                                </span>
-                              </Link>
+                            {(this.state.user_id) && (this.state.user_type ==="CSR") && (
+                       <Link
+                       to={
+                         this.props.match.params.guest_id
+                           ? `/nearby-lab-detail/${nearbyProfile.lab_account_id}/${this.props.match.params.guest_id}`
+                           : `/nearby-lab-detail/${nearbyProfile.lab_account_id}`
+                       }
+
+                       className="text-dark"
+                     >
+                       <span className="text-primary">
+                         {nearbyProfile.lab_name}{" "}
+
+                       </span>
+                     </Link>
+                      )}
+                            {(this.state.user_id) && (this.state.user_type !=="CSR") && (
+                       <Link
+                       to={
+                         this.props.match.params.uuid
+                           ? `/nearby-lab-detail/${nearbyProfile.lab_account_id}/${this.props.match.params.uuid}`
+                           : `/nearby-lab-detail/${nearbyProfile.lab_account_id}`
+                       }
+
+                       className="text-dark"
+                     >
+                       <span className="text-primary">
+                         {nearbyProfile.lab_name}{" "}
+
+                       </span>
+                     </Link>
+                      )}
                               {/* <span className="text-muted me-2">
                                 <i className="fas fa-vial"></i> Lab:{" "}
                                 {nearbyProfile.lab_name}

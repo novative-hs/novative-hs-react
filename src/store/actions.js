@@ -113,6 +113,7 @@ export * from "./complaints/actions";
 export * from "./csr-complaints/actions";
 export * from "./csr-comments/actions";
 export * from "./csr-admin-appointments/actions";
+export * from "./patients-list/actions";
 // test Descriptions
 export * from "./test-descriptions/actions";
 

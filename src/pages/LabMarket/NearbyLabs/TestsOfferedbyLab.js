@@ -158,19 +158,22 @@ class TestsOffered extends Component {
     if (!this.state.user_id) {
       // this.props.history.push("/login");
       this.setState({ guest_id: this.props.match.params.guest_id });
-      cart.guest_id= this.props.match.params.guest_id
+      cart.guest_id = this.props.match.params.guest_id
       onAddToCart(cart, cart.guest_id);
 
-     console.log("uuid:", cart.guest_id, this.props.match.params.guest_id   ) 
+      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id)
     } 
-    else {
+    if(this.state.user_id && this.state.user_type !== "CSR") {
       onAddToCart(cart, this.state.user_id);
     }
+    if(this.state.user_id && this.state.user_type === "CSR") {
+      onAddToCart(cart, this.props.match.params.guest_id);
+    }
+
     setTimeout(() => {
       this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
-    }, 1000);
-
+    }, 2000);
   };
   activateParentDropdown = item => {
     item.classList.add("active");

@@ -56,10 +56,15 @@ class Checkout extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      user_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
       patient_name: "",
       patient_age: "",
       patient_gender: "Male",
       patient_phone: "",
+      booked_by:"",
+      csr_id:"",
 
       // relationsip_with_patient: "Self",
       patient_address: "",
@@ -83,6 +88,10 @@ class Checkout extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
+    console.log("guest_id",this.props.match.params.guest_id);
+    console.log("uuid",this.props.match.params.uuid);
+    console.log("id",this.props.match.params.id);
+
   }
 
   toggleTab(tab) {
@@ -106,10 +115,16 @@ class Checkout extends Component {
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
+    if (this.state.user_id && this.state.user_type !== "CSR"){
     setTimeout(() => {
       onGetCheckoutItems(this.state.user_id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed);
     }, 1000);
-
+  } else if (this.state.user_id && this.state.user_type === "CSR")
+  {
+    setTimeout(() => {
+      onGetCheckoutItems(this.props.match.params.id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed);
+    }, 1000);
+  }
     setTimeout(() => {
       this.setState({ checkoutItems: this.props.checkoutItems });
     }, 2000);
@@ -122,9 +137,16 @@ class Checkout extends Component {
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
-    setTimeout(() => {
-      onGetCheckoutItems(this.state.user_id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed );
-    }, 1000);
+    if (this.state.user_id && this.state.user_type !== "CSR"){
+      setTimeout(() => {
+        onGetCheckoutItems(this.state.user_id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed);
+      }, 1000);
+    } else if (this.state.user_id && this.state.user_type === "CSR")
+    {
+      setTimeout(() => {
+        onGetCheckoutItems(this.props.match.params.id,this.state.is_home_sampling_availed, this.state.is_state_sampling_availed);
+      }, 1000);
+    }
 
     setTimeout(() => {
       this.setState({ checkoutItems: this.props.checkoutItems });
@@ -134,6 +156,7 @@ class Checkout extends Component {
   handleFullProceedClick = () => {
     const canProceed = this.checkForFullValidations();
     if (canProceed) {
+      if (this.state.user_id && this.state.user_type !== "CSR"){
       this.setState({
         checkoutData: {
           uuid: this.props.match.params.uuid
@@ -143,7 +166,6 @@ class Checkout extends Component {
           patient_age: this.state.patient_age,
           patient_gender: this.state.patient_gender,
           patient_phone: this.state.patient_phone,
-
           // relationsip_with_patient: this.state.relationsip_with_patient,
           // patient_address: this.state.patient_address,
           city_id: this.state.city_id,
@@ -158,12 +180,47 @@ class Checkout extends Component {
           cvv_code: this.state.cvv_code,
         },
       });
+    } else if (this.state.user_id && this.state.user_type === "CSR"){
+      this.setState({
+        checkoutData: {
+          uuid: this.props.match.params.uuid
+            ? this.props.match.params.uuid
+            : "",
+          csr_id: this.state.user_id,
+          booked_by:'CSR',
+          patient_name: this.state.patient_name,
+          patient_age: this.state.patient_age,
+          patient_gender: this.state.patient_gender,
+          patient_phone: this.state.patient_phone,
+          // relationsip_with_patient: this.state.relationsip_with_patient,
+          // patient_address: this.state.patient_address,
+          city_id: this.state.city_id,
+          // patient_district: this.state.patient_district,
+          appointment_requested_at: this.state.appointment_requested_at,
+          is_home_sampling_availed: this.state.is_home_sampling_availed,
+          is_state_sampling_availed: this.state.is_state_sampling_availed,
+          payment_method: this.state.payment_method,
+          card_number: this.state.card_number,
+          name_on_card: this.state.name_on_card,
+          expiry_date: this.state.expiry_date,
+          cvv_code: this.state.cvv_code,
+        },
+      });
+    }
 
       // API call to get the checkout items
       const { onAddCheckoutData } = this.props;
-      setTimeout(() => {
-        onAddCheckoutData(this.state.checkoutData, this.state.user_id);
-      }, 2000);
+      if (this.state.user_id && this.state.user_type !== "CSR"){
+        setTimeout(() => {
+          onAddCheckoutData(this.state.checkoutData, this.state.user_id);
+        }, 2000);
+      } else if (this.state.user_id && this.state.user_type === "CSR")
+      {
+        setTimeout(() => {
+          onAddCheckoutData(this.state.checkoutData, this.props.match.params.id);
+        }, 2000);
+      }
+      
       window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
       setTimeout(() => {
         if (this.props.checkedoutData) {
@@ -173,15 +230,9 @@ class Checkout extends Component {
           });
         }
       }, 1000);
-
-      // setTimeout(() => {
-      //   this.setState({ checkedoutData: this.props.checkedoutData });
-
-      //   // If checkout operation is successful.
-      //   if (this.props.checkedoutData) {
-      //     this.props.history.push("/nearby-labs");
-      //   }
-      // }, 4000);
+    
+    
+    
     }
   };
 
@@ -305,12 +356,30 @@ class Checkout extends Component {
   componentDidMount() {
     // API call to get the home sampled tests
     const { onGetHomeSampledTests } = this.props;
-    onGetHomeSampledTests(this.state.user_id);
+    if (this.state.user_id && this.state.user_type !== "CSR"){
+      setTimeout(() => {
+        onGetHomeSampledTests(this.state.user_id);
+      }, 1000);
+    } else if (this.state.user_id && this.state.user_type === "CSR")
+    {
+      setTimeout(() => {
+        onGetHomeSampledTests(this.props.match.params.id);
+      }, 1000);
+    }
     this.setState({ homeSampledTests: this.props.homeSampledTests });
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
-    onGetCheckoutItems(this.state.user_id);
+    if (this.state.user_id && this.state.user_type !== "CSR"){
+      setTimeout(() => {
+        onGetCheckoutItems(this.state.user_id);
+      }, 1000);
+    } else if (this.state.user_id && this.state.user_type === "CSR")
+    {
+      setTimeout(() => {
+        onGetCheckoutItems(this.props.match.params.id);
+      }, 1000);
+    }
     this.setState({ checkoutItems: this.props.checkoutItems });
 
     const { territoriesList, onGetTerritoriesList } = this.props;

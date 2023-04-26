@@ -5,7 +5,7 @@ import MetaTags from "react-meta-tags";
 import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
-import MultiSelectCheckBox from 'react-multiselect-checkboxes';
+// import MultiSelectCheckBox from 'react-multiselect-checkboxes';
 
 
 import {
@@ -834,6 +834,12 @@ class AdvertisementsList extends Component {
                                 options={
                                   cityList
                                 }
+                                // defaultValue={{
+                                //   label:
+                                //   this.state.city,
+                                //   value:
+                                //   this.state.id,                                       
+                                // }}
                                 placeholder="Select City..."
                               />
 

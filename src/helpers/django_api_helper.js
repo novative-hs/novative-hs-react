@@ -1120,6 +1120,8 @@ export const getCheckoutItems = (id, is_home_sampling_availed, is_state_sampling
 export const addCheckoutData = (checkoutData, id) => {
   let formData = new FormData();
   formData.append("uuid", checkoutData.uuid);
+  formData.append("csr_id", checkoutData.csr_id);
+  formData.append("booked_by", checkoutData.booked_by);
   formData.append("patient_name", checkoutData.patient_name);
   formData.append("patient_age", checkoutData.patient_age);
   formData.append("patient_phone", checkoutData.patient_phone);
@@ -1236,6 +1238,11 @@ export const getB2bAllClientsList = () =>
     headers: getHeader(authHeader()),
   });
 
+
+  export const getPatientsList = () =>
+  get(`${url.GET_PATIENTS_LIST}`, {
+    headers: getHeader(authHeader()),
+  });
 // ------------- Lab Profile Requests START -------------
 export const getB2bProfile = id =>
   get(`${url.GET_B2B_PROFILE}/${id}`, {

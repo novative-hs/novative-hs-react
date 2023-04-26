@@ -95,6 +95,7 @@ class NearbyLabs extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
+    console.log("yaha ani chahi hai uuid", this.props.match.params.guest_id)
     console.log(this.state.user_type)
   }
   openMenu = () => {
@@ -178,11 +179,10 @@ class NearbyLabs extends Component {
         address: this.state.address,
         city: this.state.city,
       };
-      if (!this.state.user_id && !this.props.match.params.guest_id) {
-
+      if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
         locationDetails.guest_id = guest_id
-        console.log("uuid in nearby lab:", guest_id, locationDetails.guest_id)
+        console.log("guestid in nearby lab:", guest_id, locationDetails.guest_id)
         // guest_id = locationDetails.guest_id
         console.log("differ:", guest_id)
         this.setState({ guest_id: guest_id });
@@ -522,6 +522,91 @@ class NearbyLabs extends Component {
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
+               {this.state.user_id && this.state.user_type ==="CSR"
+                ? (
+                  <Collapse
+                    isOpen={this.state.isMenuOpened}
+                    className="navbar-collapse"
+                    id="topnav-menu-content"
+                  >
+                    <ul className="navbar-nav">
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/labs/${this.props.match.params.uuid}`
+                              : `/labs`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                        </Link>
+                      </li>
+
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-tests/${this.props.match.params.uuid}`
+                              : `/nearby-tests`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Tests</span>
+                          {/* {this.props.t("Tests")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-profiles/${this.props.match.params.uuid}`
+                              : `/nearby-profiles`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Profiles</span>
+                          {/* {this.props.t("Profiles")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-packages/${this.props.match.params.uuid}`
+                              : `/nearby-packages`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Packages</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-radiology/${this.props.match.params.uuid}`
+                              : `/nearby-radiology`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Radiology</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      {this.state.user_id && this.state.user_type == "patient" && (
+                        <li className="nav-item">
+                          <Link to={"/test-appointments"} className="dropdown-item">
+                            {/* {this.props.t("My Appointments")} */}
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
+                          </Link>
+                        </li>
+                      )}
+                    </ul>
+                  </Collapse>
+                ): null}
               {!this.state.user_id
                 ? (
                   <Collapse
@@ -612,7 +697,7 @@ class NearbyLabs extends Component {
                     </ul>
                   </Collapse>
 
-                ) : this.state.user_id ? (
+                ) : this.state.user_id && this.state.user_type !== "CSR"  ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
@@ -897,12 +982,65 @@ class NearbyLabs extends Component {
                     )}
 
                     {this.state.user_type == "CSR" && (
+                                                              <div className="dropdown d-lg-inline-block ms-4 mt-4">
+
                       <Link
                         to={"/dashboard-csr"}
                         className="btn header-items noti-icon right-bar-toggle"
                       >
                         <i className="mdi mdi-home me-1 font-size-24" />{" "}
                       </Link>
+                       <Link
+                       to={
+                         this.props.match.params.uuid
+                         ? `/cart/${this.props.match.params.uuid}`
+                         : `/cart`
+                       }
+                       className="btn header-items noti-icon right-bar-toggle"
+                   >
+                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+ 
+                         {!isEmpty(this.props.carts) &&
+                         
+                           this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                           }
+                   </Link>
+                   {/* <Link
+                     to={
+                       this.props.match.params.uuid
+                         ? `/login/${this.props.match.params.uuid}`
+                         : `/login`
+                     }
+                     className="btn header-items noti-icon right-bar-toggle"
+                   >
+                     <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
+                     <span className="pt-4 font-size-12">Login</span>
+                   </Link>
+ 
+                   <Link
+                     to={
+                       this.props.match.params.uuid
+                         ? `/register/${this.props.match.params.uuid}`
+                         : `/register`
+                     }
+                     className="btn header-items noti-icon right-bar-toggle"
+                   >
+                     <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
+                     <span className="pt-4 font-size-12">Sign up</span>
+                   </Link>
+ 
+                   <Link
+                     // to="/contact-us"
+                     to={
+                       this.props.match.params.uuid
+                         ? `/contact-us/${this.props.match.params.uuid}`
+                         : `/contact-us`
+                     }
+                     className="btn header-items noti-icon right-bar-toggle"
+                   >
+                     <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                   </Link> */}
+                 </div>
                     )}
 
                     {this.state.user_type == "registration-admin" && (
@@ -1143,20 +1281,6 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                            {/* <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-email"></i>{" "}
-                                  {nearbyLab.email}
-                                </span>
-                              </div> */}
-
-                            {/* <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="bx bx-mobile"></i>{" "}
-                                  {nearbyLab.phone}
-                                </span>
-                              </div> */}
-
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
@@ -1188,7 +1312,7 @@ class NearbyLabs extends Component {
                     </Col>
                   ))}
 
-                {!isEmpty(nearbyLabs) && (this.state.user_id) &&
+                {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !=="CSR")  && 
                   nearbyLabs.map((nearbyLab, key) => (
                     <Col xl="4" sm="9" key={"col" + key}>
                       <Card
@@ -1284,6 +1408,133 @@ class NearbyLabs extends Component {
                                 {nearbyLab.phone}
                               </span>
                             </div>
+
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>
+                            {nearbyLab.female_collectors == "Yes" && (
+                              <div className="my-0">
+                                <span className="text-danger" >
+                                  <i className="mdi mdi-account-question"></i>{" "}
+                                  Lab has female sample collectors
+                                </span>
+                              </div>
+                            )}
+                            <div className="my-0 mt-2">
+                              <StarRatings
+                                rating={nearbyLab.rating}
+                                starRatedColor="#F1B44C"
+                                starEmptyColor="#2D363F"
+                                numberOfStars={5}
+                                name="rating"
+                                starDimension="14px"
+                                starSpacing="3px"
+                              />
+                            </div>
+                          </div>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  ))}
+                 {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type ==="CSR")  &&
+                  nearbyLabs.map((nearbyLab, key) => (
+                    <Col xl="4" sm="6" key={"_col_" + key}>
+                      <Card
+                        onClick={() =>
+                          history.push(
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          )
+                        }
+                      >
+                        <CardBody>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}`
+                            }
+                          >
+                            {/* <div className="product-img position-relative">
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                           
+                              className="img-thumbnail mx-auto d-block rounded"
+                              />
+                          </div> */}
+                            <div style={{
+                              width: '200px',
+                              height: '100px',
+                            }}>
+                              <img
+                                src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                                alt="Lab Logo"
+                                className=" text-end"
+                                style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                              />
+                            </div>
+
+
+
+                          </Link>
+
+                          <div className="mt-4 text-center">
+                            <h5 className="mb-3 text-truncate">
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}`
+                                }
+                                className="text-dark"
+                              >
+                                {nearbyLab.name}{" "}
+                              </Link>
+                            </h5>
+
+                            {nearbyLab.opening_time &&
+                              nearbyLab.closing_time &&
+                              nearbyLab.is_247_opened && (
+                                <div className="my-0">
+                                  <span className=" text-success me-2">
+                                    <i className="mdi mdi-timer text-success"></i>{" "}
+                                    <strong>Open for 24 Hours</strong>
+                                  </span>
+                                </div>
+                              )}
+
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </div>
+
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_time}
+                                </span>
+                              </div>
+                            )}
+
+                            {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_time}
+                                </span>
+                              </div>
+                            )}
 
                             <div className="my-0">
                               <span className="text-muted me-2">

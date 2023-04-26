@@ -65,20 +65,18 @@ import LabAdvertisements from "../pages/LabAdvertisements/lab-advertisement";
 // Payment In Status
 import InPayments from "pages/Payments Form/in-payment-mathod";
 import PaymentStatussList from "../pages/PaymentStatuss/payment-statuss-list";
+// import depositStatussList from "../pages/PaymentStatuss/deposit-statuss-list";
 import PendintClearenceStatussList from "../pages/PaymentStatuss/paymentin-pending-clearence-statuss-list";
 import clearStatussList from "../pages/PaymentStatuss/clear-statuss-list";
 import bouncedStatussList from "../pages/PaymentStatuss/payment-bounced-statuss-list"
 
 // Payment Out
+
 import OutPayments from "pages/Payments Form/out-payment-mathod";
 import PaymentOutStatussList from "pages/PaymentStatuss/paymentout-pending-clearence-statuss-list"
 import PaymentOutCreatedStatussList from "pages/PaymentStatuss/paymentout-created-statuss-list"
 import PaymentOutclearStatussList from "pages/PaymentStatuss/paymentoutclear-statuss-list"
 import PaymentOutBouncedStatussList from "pages/PaymentStatuss/paymentout-bounced-statuss-list"
-
-// Bank Transfer
-import BankTransfers from "pages/Payments Form/bank-transfer-detail";
-import BankTransfersList from "pages/PaymentStatuss/inter-bank-details-list"
 
 // sample collector components
 import SampleCollectorTestAppointmentsInProcessList from "../pages/SampleCollectorTestAppointments/test-appointments-in-process-list";
@@ -96,6 +94,7 @@ import TestsOfferedbyLab from "pages/LabMarket/NearbyLabs/TestsOfferedbyLab";
 import CartsList from "../pages/Carts/carts-list";
 // import checkout from "pages/Checkouts/checkout-list";
 import Checkout from "pages/Checkouts/checkout";
+import checkoutcsr from "pages/Checkouts/checkout";
 import InvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabSettings from "pages/Authentication/LabSettings";
 import FeedbackDetail from "pages/Feedbacks-List/FeedbackDetail";
@@ -138,6 +137,8 @@ import B2bPayments from "pages/B2bPaymentMathods/payment-mathod";
 // import B2bReferredPatient from "pages/B2bReferredPatients/referred-patients-list";
 import AccountStatements from "pages/AccountStatements/account-statements";
 import MedicalTestSheet from "pages/OfferedTests/medical-test-sheet";
+import csrCheckout from "pages/Complaints/csr-checkout";
+import Patientslist from "pages/Dashboard-Csr/patients-list";
 import Disclaimer from "pages/Public/disclaimer";
 import AboutUs from "pages/Public/about-us";
 // import ChatBox from "pages/Public/chat";
@@ -259,6 +260,7 @@ const publicRoutes = [
     path: "/cart/:guest_id?/:uuid?",
     component: CartsList,
   },
+  
   // {
   //   path: "/labs/:uuid?",
   //   component: labs,
@@ -448,9 +450,7 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/lab-details", component: labList},
   { path: "/donor-details", component: donorList},
   { path: "/b2bclients-details", component: b2bList},
-  {path: "/bank-account-statements/:id", component: BankAccountStatements},
-  { path: "/bank-transfer", component: BankTransfers },
-  { path: "/inter-bank-details-list", component: BankTransfersList },
+  {path: "/bank-account-statements/:id", component: BankAccountStatements}
 
 
   // { path: "/financeadmin-profile", component: FinanceAdminProfile },
@@ -560,8 +560,18 @@ const csrAuthProtectedRoutes = [
     path: "/csr-invoice-detail/:id",
     component: CsrInvoiceDetail,
   },
-
-
+  {
+    path: "/csr-checkout",
+    component: csrCheckout,
+  },
+  {
+    path: "/patients-list",
+    component: Patientslist,
+  },
+  {
+    path: "/checkout-csr/:id",
+    component: checkoutcsr,
+  },
 ];
 
 const csrAdminAuthProtectedRoutes = [

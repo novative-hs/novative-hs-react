@@ -1,25 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import StarRatings from "react-star-ratings";
-
 import {
   Card,
   CardBody,
-  CardImg,
   Col,
   Container,
   Row,
-  Modal,
-  Button,
-  ModalHeader,
-  ModalBody,
   Label,
-  Input,
+  Modal,
+  ModalBody,
 } from "reactstrap";
-
 
 import paginationFactory, {
   PaginationProvider,
@@ -31,41 +24,48 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-
-import { getFeedbacks } from "store/feedbacks/actions";
-
-import { isEmpty, size } from "lodash";
-
+import { getPatientsList } from "store/patients-list/actions";
 import "assets/scss/table.scss";
 
-class FeedbacksList extends Component {
+class PatientsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      feedbacks: [],
-      feedback: "",
-      rating_values:"",
-      modal: false,
+      patients: [],
+      // id: "",
+      patient: "",
+      guest_id:"",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      feedbackListColumns: [
+      b2bAllClientListColumns: [
         {
-          text: "id",
-          dataField: "id",
+          dataField: "account_id",
+          text: "Patient ID",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, feedback) => <>{feedback.id}</>,
+          formatter: (cellContent, patient) => (
+            <>
+              <strong>{patient.account_id}</strong>
+            </>
+          ),
         },
         {
-          dataField: "order_id",
-          text: "Order id",
-          sort: true,
-        },
-        {
-          dataField: "patient_name",
+          dataField: "name",
           text: "Name",
+          sort: true,
+          formatter: (cellContent, patient) => (
+            <>
+              {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
+              <Link to={`/nearby-labs/${patient.account_id}`}>
+                {patient.name}
+              </Link>
+            </>
+          ),
+        },
+        {
+          dataField: "phone",
+          text: "Phone",
           sort: true,
         },
         {
@@ -73,39 +73,40 @@ class FeedbacksList extends Component {
           text: "City",
           sort: true,
         },
-        {
-          dataField: "rating",
-          text: "Rating",
-          sort: true,
-        },
-        {
-          dataField: "review",
-          text: "Review",
-          sort: true,
-        },
+        // {
+        //   dataField: "website_url",
+        //   text: "Website",
+        //   sort: true,
+        //   formatter: (cellContent, patient) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname: patient.website_url,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         {patient.website_url}
+        //       </Link>
+        //     </>
+        //   ),
+        // },
+      
       ],
     };
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    const { feedbacks, onGetFeedbacks } = this.props;
-    onGetFeedbacks(this.state.user_id);
-    this.setState({ feedbacks });
+    const { patients, onGetPatientsList } = this.props;
+    onGetPatientsList(this.state.user_id);
+    this.setState({ patients });
+    console.log("guest", this.props.match.params.guest_id)
   }
 
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
     }));
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { feedbacks } = this.props;
-    if (!isEmpty(feedbacks) && size(prevProps.feedbacks) !== size(feedbacks)) {
-      this.setState({ feedbacks: {}, isEdit: false });
-    }
   }
 
   onPaginationPageChange = page => {
@@ -123,14 +124,12 @@ class FeedbacksList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { feedbacks } = this.props;
-
-    const { onGetFeedbacks } = this.props;
-    const feedback = this.state.feedback;
+    const { patients } = this.props;
+    const { onGetPatientsList } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: feedbacks.length, // replace later with size(feedbacks),
+      totalSize: patients.length, // replace later with size(patients),
       custom: true,
     };
 
@@ -145,11 +144,11 @@ class FeedbacksList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Feedbacks List | Lab Hazir</title>
+            <title>B2B Clients List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Feedbacks" breadcrumbItem="List" />
+            <Breadcrumbs title="B2B Client" breadcrumbItem=" List" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -157,14 +156,14 @@ class FeedbacksList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.feedbackListColumns}
-                      data={feedbacks}
+                      columns={this.state.b2bAllClientListColumns}
+                      data={patients}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.feedbackListColumns}
-                          data={feedbacks}
+                          columns={this.state.b2bAllClientListColumns}
+                          data={patients}
                           search
                         >
                           {toolkitprops => (
@@ -178,22 +177,6 @@ class FeedbacksList extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
-                                  </div>
-                                </Col>
-                                <Col sm="2" lg="2">
-                                  <div className="text-sm-end">
-                                  
-                            <StarRatings
-                              // rating={feedback.rating_values}
-                              rating={5}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="20px"
-                              starSpacing="3px"
-                            />
-                       
                                   </div>
                                 </Col>
                               </Row>
@@ -211,16 +194,20 @@ class FeedbacksList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    <Modal
+                                      isOpen={this.state.modal}
+                                      className={this.props.className}
+                                    ></Modal>
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>
@@ -237,22 +224,21 @@ class FeedbacksList extends Component {
   }
 }
 
-FeedbacksList.propTypes = {
+PatientsList.propTypes = {
   match: PropTypes.object,
-  feedbacks: PropTypes.array,
+  patients: PropTypes.array,
   className: PropTypes.any,
-  onGetFeedbacks: PropTypes.func,
+  onGetPatientsList: PropTypes.func,
 };
-
-const mapStateToProps = ({ feedbacks }) => ({
-  feedbacks: feedbacks.feedbacks,
+const mapStateToProps = ({ patients }) => ({
+  patients: patients.patientsList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetFeedbacks: id => dispatch(getFeedbacks(id)),
+  onGetPatientsList: id => dispatch(getPatientsList(id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(FeedbacksList));
+)(withRouter(PatientsList));

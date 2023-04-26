@@ -174,6 +174,9 @@ export const GET_DONOR_REFERRED_APPOINTMENTS_LIST = `${API_ENDPOINT}/api/donor/a
 
 // B2B List
 export const GET_B2B_ALL_CLIENTS_LIST = `${API_ENDPOINT}/api/b2b-admin/b2b-clients-list`;
+export const GET_PATIENTS_LIST = `${API_ENDPOINT}/api/patient/patient-list`;
+
+
 export const ADD_NEW_LAB_SHARE = `${API_ENDPOINT}/api/b2bclient/list-b2bShare`;
 
 export const GET_B2B_CLIENTS = `${API_ENDPOINT}/api/b2b-admin/b2b-clients-list`;
