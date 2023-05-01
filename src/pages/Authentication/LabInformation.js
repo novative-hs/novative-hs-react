@@ -89,7 +89,7 @@ class LabInformation extends Component {
     // Wait for sometime so that response is loaded from database
     setTimeout(() => {
       if (this.props.labs.length) {
-        const labs = this.props.labs;
+        const labs = this.props.labs.filter(lab => lab.type === "Main Lab");
         for (let i = 0; i < labs.length; i++) {
           mainLabOptionGroup[0]["options"].push({
             label: labs[i].name,
