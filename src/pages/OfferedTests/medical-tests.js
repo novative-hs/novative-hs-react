@@ -435,22 +435,22 @@ class TestsList extends Component {
                                               "Yes",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            duration_required: Yup.number(
-                                              "Please enter number only"
-                                            )
-                                              .required(
-                                                "Please enter turn around time required"
-                                              )
-                                              .positive()
-                                              .integer()
-                                              .min(
-                                                0,
-                                                "Please enter a number greater than or equal to 0"
-                                              )
-                                              .max(
-                                                100,
-                                                "Please enter a number less than or equal to 150"
-                                              ),
+                                            // duration_required: Yup.number(
+                                            //   "Please enter number only"
+                                            // )
+                                            //   .required(
+                                            //     "Please enter turn around time required"
+                                            //   )
+                                            //   .positive()
+                                            //   .integer()
+                                            //   .min(
+                                            //     0,
+                                            //     "Please enter a number greater than or equal to 0"
+                                            //   )
+                                            //   .max(
+                                            //     100,
+                                            //     "Please enter a number less than or equal to 150"
+                                            //   ),
                                             price: Yup.number(
                                               "Please enter number only"
                                             )
@@ -467,22 +467,22 @@ class TestsList extends Component {
                                                 50000,
                                                 "Please enter a number less than or equal to 50000"
                                               ),
-                                            duration_type: Yup.string()
-                                              .trim()
-                                              .required(
-                                                "Please select duration type"
-                                              ),
+                                            // duration_type: Yup.string()
+                                            //   .trim()
+                                            //   .required(
+                                            //     "Please select duration type"
+                                            //   ),
                                             // is_eqa_participation: Yup.string()
                                             //   .trim()
                                             //   .required(
                                             //     "Please select one option from dropdown"
                                             //   ),
-                                            is_home_sampling_available:
-                                              Yup.string()
-                                                .trim()
-                                                .required(
-                                                  "Please select one option from dropdown"
-                                                ),
+                                            // is_home_sampling_available:
+                                            //   Yup.string()
+                                            //     .trim()
+                                            //     .required(
+                                            //       "Please select one option from dropdown"
+                                            //     ),
                                             // is_active:
                                             //     Yup.string()
                                             //       .trim()
