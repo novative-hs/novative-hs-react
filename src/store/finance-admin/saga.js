@@ -10,6 +10,8 @@ import {
   GET_APPROVED_IN_PAYMENTS,
   GET_UNAPPROVED_IN_PAYMENTS,
   UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT,
+  GET_ALL_LABS_LIST,
+
   // GET_CLEARED_DONORS,
   // GET_APPROVED_DONORS,
   // GET_UNAPPROVED_DONORS,
@@ -25,6 +27,8 @@ import {
   // getUnapprovedLabsFail,
   // approveUnapproveLabSuccess,
   // approveUnapproveLabFail,
+  getAllLabsListSuccess,
+  getAllLabsListFail,
   getClearedInPaymentsSuccess,
   getClearedInPaymentsFail,
   getApprovedInPaymentsSuccess,
@@ -53,6 +57,7 @@ import {
   updateApproveUnapproveInPayment,
   getApprovedInPayments,
   getUnapprovedInPayments,
+  getAllLabsList,
   // getClearedDonors,
   // approveUnapproveDonor,
   // getApprovedDonors,
@@ -94,6 +99,15 @@ import {
 //     yield put(approveUnapproveLabFail(error));
 //   }
 // }
+
+function* fetchAllLabsList() {
+  try {
+    const response = yield call(getAllLabsList);
+    yield put(getAllLabsListSuccess(response));
+  } catch (error) {
+    yield put(getAllLabsListFail(error));
+  }
+}
 
 function* fetchClearedInPayments(object) {
   try {
@@ -181,6 +195,7 @@ function* financeAdminSaga() {
   // yield takeEvery(GET_APPROVED_LABS, fetchApprovedLabs);
   // yield takeEvery(GET_UNAPPROVED_LABS, fetchUnapprovedLabs);
   // yield takeEvery(APPROVE_UNAPPROVE_LAB, onApproveUnapproveLab);
+  yield takeEvery(GET_ALL_LABS_LIST, fetchAllLabsList);
   yield takeEvery(GET_CLEARED_IN_PAYMENTS, fetchClearedInPayments);
   yield takeEvery(GET_APPROVED_IN_PAYMENTS, fetchApprovedInPayments);
   yield takeEvery(GET_UNAPPROVED_IN_PAYMENTS, fetchUnapprovedInPayments);

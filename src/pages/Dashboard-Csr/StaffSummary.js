@@ -90,7 +90,7 @@ class StaffSummary extends Component {
                           </Link>
                         </div>
                       </Col> 
-                      <Col xs="6">
+                      {/* <Col xs="6">
                         <div className="mt-2">
                           <Link
                             to={"/csr-checkout"}
@@ -100,7 +100,7 @@ class StaffSummary extends Component {
                             <i className="mdi mdi-arrow-right ms-1" />
                           </Link>
                         </div>
-                      </Col>
+                      </Col> */}
 
                     </Row>
                   </div>

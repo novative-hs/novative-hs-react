@@ -137,8 +137,12 @@ class StaffInfo extends Component {
                                 complaintSuccess:
                                   "Staff Added Succesfully",
                               });
+                              setTimeout(() => {
+                                this.props.history.push("/csr-list");
+                            }, 2000)
                             }
                           }, 1000);
+                          
                       }
                     }
                     >

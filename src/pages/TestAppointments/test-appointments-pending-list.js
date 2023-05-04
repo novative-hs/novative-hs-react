@@ -35,6 +35,8 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getTestAppointmentsPendingList,
   updateTestAppointment,
+  addNewCollectionPointTestAppointment,
+  getLabProfile
 } from "store/test-appointments/actions";
 
 import { updatePaymentInfo } from "store/invoices/actions";
@@ -50,12 +52,15 @@ class TestAppointmentsPendingList extends Component {
     this.node = React.createRef();
     this.state = {
       testAppointments: [],
+      labProfiles: [],
       testAppointment: "",
       modal: false,
       btnText: "Copy",
       confirmModal: false,
       appointmentmodal: false,
       appointmentId: "",
+      main_lab_appointments: "",
+      type: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -190,14 +195,21 @@ class TestAppointmentsPendingList extends Component {
   }
 
   componentDidMount() {
-    const { onGetTestAppointmentsPendingList } = this.props;
+    const { testAppointments, onGetTestAppointmentsPendingList } = this.props;
     onGetTestAppointmentsPendingList(this.state.user_id);
 
     this.setState({
-      testAppointments: this.props.testAppointments,
+      testAppointments
       // appointmentmodal: true,
     });
+    console.log("state lab appointments", testAppointments)
 
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({
+      labProfiles
+    });
+    console.log("state lab profile", labProfiles)
     // try {
     //   setInterval(async () => {
     //     const prev=this.props.testAppointments.length;
@@ -332,10 +344,12 @@ class TestAppointmentsPendingList extends Component {
     const { SearchBar } = Search;
 
     const { testAppointments } = this.props;
+    const { labProfiles } = this.props;
+
 
     const { confirmModal } = this.state;
 
-    const { onUpdateTestAppointment, onGetTestAppointmentsPendingList } =
+    const { onGetLabProfile, onAddNewCollectionPointTestAppointment, onUpdateTestAppointment, onGetTestAppointmentsPendingList } =
       this.props;
     const testAppointment = this.state.testAppointment;
 
@@ -389,7 +403,7 @@ class TestAppointmentsPendingList extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="4">
+                                <Col sm="3" lg="3">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
@@ -397,6 +411,43 @@ class TestAppointmentsPendingList extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
+                                  </div>
+                                </Col>
+                                <Col sm="7" lg="7">
+                                  <div>
+                                    <p className="text-danger font-size-12" style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+                                      <strong>Note: </strong>&nbsp;&nbsp; If you want to handle test appointments of all your collection points on your portal, then click on&nbsp;&nbsp;<strong>Yes</strong>.
+                                      <i className="bx bx-right-arrow-alt" style={{ marginLeft: '8px', fontSize: '24px', fontWeight: 'bold' }}></i>
+                                    </p>
+                                  </div>
+                                </Col>
+                                <Col sm="2" lg="2">
+                                  <div>
+                                    {this.props.labProfiles.type == "Main Lab" && (
+                                      <Button
+                                        color="primary"
+                                        onClick={() => {
+                                          // add your button click logic here
+                                          this.setState({
+                                            testAppointments: {
+                                              main_lab_appointments: "Yes",
+                                            },
+                                          });
+
+                                          const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
+                                          setTimeout(() => {
+                                            console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
+                                          });
+                                          setTimeout(() => {
+                                            onGetTestAppointmentsPendingList(this.state.user_id);
+                                          }, 1000);
+                                        }}
+                                      >
+                                        Yes
+                                      </Button>
+                                    )}
+
+
                                   </div>
                                 </Col>
                               </Row>
@@ -945,21 +996,30 @@ class TestAppointmentsPendingList extends Component {
 TestAppointmentsPendingList.propTypes = {
   match: PropTypes.object,
   testAppointments: PropTypes.array,
+  labProfiles: PropTypes.array,
   className: PropTypes.any,
   onGetTestAppointmentsPendingList: PropTypes.func,
   onUpdateTestAppointment: PropTypes.func,
   onUpdatePaymentInfo: PropTypes.func,
+  onAddNewCollectionPointTestAppointment: PropTypes.func,
+  onGetLabProfile: PropTypes.func,
+
 };
 
 const mapStateToProps = ({ testAppointments }) => ({
   testAppointments: testAppointments.testAppointmentsPendingList,
+  labProfiles: testAppointments.labProfiles,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTestAppointmentsPendingList: id =>
     dispatch(getTestAppointmentsPendingList(id)),
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
   onUpdateTestAppointment: testAppointment =>
     dispatch(updateTestAppointment(testAppointment)),
+  onAddNewCollectionPointTestAppointment: (testAppointment, id) =>
+    dispatch(addNewCollectionPointTestAppointment(testAppointment, id)),
   onUpdatePaymentInfo: id => dispatch(updatePaymentInfo(id)),
 });
 

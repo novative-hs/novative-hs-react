@@ -626,6 +626,16 @@ export const postChangePwd = user => {
 };
 
 // ------------- Test Appointment Requests START -------------
+export const addNewCollectionPointTestAppointment = (testAppointment, id) => {
+  let formData = new FormData();
+  formData.append("main_lab_appointments", testAppointment.main_lab_appointments);
+  // formData.append("unit_id", testAppointment.unit_id);
+ console.log("dataaaa",testAppointment )
+  return axios.post(`${url.ADD_NEW_COLLECTIONPOINT_TESTAPPOINTMENT}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 export const getTestAppointmentsPendingList = id =>
   get(`${url.GET_TEST_APPOINTMENTS_PENDING_LIST}/${id}`, {
     headers: getHeader(authHeader()),
@@ -2054,6 +2064,12 @@ console.log("api helper",advertisement )
   });
 
   // ------------- inPayments Settings Requests START -------------
+
+  export const getAllLabsList = () =>
+  get(`${url.GET_ALL_LABS_LIST}`, {
+    headers: getHeader(authHeader()),
+  });
+
   export const addNewInPayment = (inPayment, id) => {
     let formData = new FormData();
     formData.append("payment_for", inPayment.payment_for);

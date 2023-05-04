@@ -6,9 +6,13 @@ import {
   GET_TEST_APPOINTMENTS_IN_PROCESS_LIST,
   GET_TEST_APPOINTMENTS_COMPLETED_LIST,
   UPDATE_TEST_APPOINTMENT,
+  GET_LAB_PROFILE,
+  ADD_NEW_COLLECTIONPOINT_TESTAPPOINTMENT,
 } from "./actionTypes";
 
 import {
+  getLabProfileSuccess,
+  getLabProfileFail,
   getTestAppointmentsPendingListSuccess,
   getTestAppointmentsPendingListFail,
   getTestAppointmentsInProcessListSuccess,
@@ -17,15 +21,43 @@ import {
   getTestAppointmentsCompletedListFail,
   updateTestAppointmentSuccess,
   updateTestAppointmentFail,
+  addCollectionPointTestAppointmentFail,
+  addCollectionPointTestAppointmentSuccess,
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import {
+  getLabProfile,
   getTestAppointmentsPendingList,
   getTestAppointmentsInProcessList,
   getTestAppointmentsCompletedList,
   updateTestAppointment,
+  addNewCollectionPointTestAppointment,
+
 } from "../../helpers/django_api_helper";
+
+function* fetchLabProfile(object) {
+  try {
+    const response = yield call(getLabProfile, object.payload);
+    yield put(getLabProfileSuccess(response));
+
+  } catch (error) {
+    yield put(getLabProfileFail(error));
+  }
+}
+
+function* onAddNewCollectionPointTestAppointment(object) {
+  try {
+    const response = yield call(
+      addNewCollectionPointTestAppointment,
+      object.payload.testAppointment,
+      object.payload.id
+    );
+    yield put(addCollectionPointTestAppointmentSuccess(response));
+  } catch (error) {
+    yield put(addCollectionPointTestAppointmentFail(error));
+  }
+}
 
 function* fetchTestAppointmentsPendingList(object) {
   try {
@@ -73,6 +105,11 @@ function* onUpdateTestAppointment({ payload: testAppointment }) {
 }
 
 function* TestAppointmentsSaga() {
+  yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);
+  yield takeEvery(
+    ADD_NEW_COLLECTIONPOINT_TESTAPPOINTMENT,
+    onAddNewCollectionPointTestAppointment
+  );
   yield takeEvery(
     GET_TEST_APPOINTMENTS_PENDING_LIST,
     fetchTestAppointmentsPendingList

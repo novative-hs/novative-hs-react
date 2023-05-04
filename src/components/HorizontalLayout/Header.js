@@ -56,18 +56,23 @@ class Header extends Component {
 
     const { getCarts } = this.props;
     if (!this.state.user_id) {
+      console.log("hellll")
       // this.props.history.push("/login");
         getCarts(this.props.match.params.guest_id );
         this.setState({ carts: this.state.carts });
-
-     console.log("uuid:", carts, this.props.match.params.guest_id   ) 
+     console.log("uuid:", carts, this.props.match.params.guest_id) 
     //  window.location.reload()
-    } else {
+    }
+    if (this.state.user_id && this.state.user_type !="CSR"){
         getCarts(this.state.user_id);
         this.setState({ carts: this.state.carts });
         console.log("uuid:", carts, this.state.user_id) 
 
           // window.location.reload()
+    }
+    if (this.state.user_id && this.state.user_type =="CSR"){
+      getCarts(this.props.match.params.guest_id);
+      console.log("heeelllll:", carts, this.props.match.params.guest_id) 
     }
     // getCarts(this.state.user_id);
     // this.setState({ carts: this.state.carts });

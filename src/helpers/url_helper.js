@@ -140,6 +140,7 @@ export const GET_AUDITOR_NORTH_TERRITORY_LIST = `${API_ENDPOINT}/api/staff/audit
 
 
 // TEST APPOINTMENT
+export const ADD_NEW_COLLECTIONPOINT_TESTAPPOINTMENT = `${API_ENDPOINT}/api/lab/test-appointment-collectionpoint-list`;
 export const GET_TEST_APPOINTMENTS_PENDING_LIST = `${API_ENDPOINT}/api/lab/test-appointment-pending-list`;
 export const GET_TEST_APPOINTMENTS_IN_PROCESS_LIST = `${API_ENDPOINT}/api/lab/test-appointment-in-process-list`;
 export const GET_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api/lab/test-appointment-completed-list`;
@@ -358,6 +359,8 @@ export const GET_CLEARED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/cleare
 export const GET_APPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/approved-in-payments`;
 export const GET_UNAPPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/unapproved-in-payments`;
 export const UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT = `${API_ENDPOINT}/api/finance-admin/approve-unapprove-in-payment`;
+export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-admin/labs-list`;
+
 
 
 

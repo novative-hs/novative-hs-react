@@ -23,6 +23,9 @@ import {
   UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT,
   UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT_SUCCESS,
   UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT_FAIL,
+  GET_ALL_LABS_LIST,
+  GET_ALL_LABS_LIST_SUCCESS,
+  GET_ALL_LABS_LIST_FAIL,
   // GET_CLEARED_DONORS,
   // GET_CLEARED_DONORS_SUCCESS,
   // GET_CLEARED_DONORS_FAIL,
@@ -97,6 +100,21 @@ import {
 //   type: APPROVE_UNAPPROVE_LAB_FAIL,
 //   payload: error,
 // });
+// -------------------- LABS LIST ACTIONS --------------------
+export const getAllLabsList = () => ({
+  type: GET_ALL_LABS_LIST,
+  payload: {},
+});
+
+export const getAllLabsListSuccess = allLabsList => ({
+  type: GET_ALL_LABS_LIST_SUCCESS,
+  payload: allLabsList,
+});
+
+export const getAllLabsListFail = error => ({
+  type: GET_ALL_LABS_LIST_FAIL,
+  payload: error,
+});
 
 // -------------------- B2B ACTIONS --------------------
 export const getClearedInPayments = id => ({

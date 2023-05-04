@@ -1064,7 +1064,7 @@ class NearbyTests extends Component {
 
               {/* Alerts to show success and error messages when item is added to the cart */}
               {this.state.success ? (
-                // window.location.reload() >
+                 window.location.reload() >
                 <Alert color="success" className="col-md-5">
                   {this.state.success}
                 </Alert>

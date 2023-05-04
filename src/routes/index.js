@@ -121,7 +121,7 @@ import DonorAccountStatements from "pages/AccountStatements/donor-account-statem
 import B2bAccountStatements from "pages/AccountStatements/b2b-account-statements";
 import BankAccountStatements from "pages/AccountStatements/bank-account-statement";
 import Invoiceb2b from "pages/Checkouts/invoice-detail"
-
+import AllLabsList from "pages/FinanceAdmin/lab-labs-list"
 import CreateBanks from "pages/CreateBanks/create-bank";
 import BankAccounts from "pages/BankAccounts/bank-account"
 
@@ -170,6 +170,8 @@ import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import ClearedInPayments from "pages/FinanceAdmin/cleared-in-payments";
 import ApprovedInPayments from "pages/FinanceAdmin/approved-in-payments";
 import UnapprovedInPayments from "pages/FinanceAdmin/unapproved-in-payments";
+import bankTransferDetail from "pages/Payments Form/bank-transfer-detail";
+import interBankDetailsList from "pages/PaymentStatuss/inter-bank-details-list";
 
 // Maeketer Admin routes
 import Advertisements from "pages/MarketerAdmin/advertisement";
@@ -238,6 +240,7 @@ import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
 import { invoiceList } from "common/data";
 import labsListPendingFee from "store/labs-list-pending/reducer";
+
 
 // All general public routes will be listed here
 const publicRoutes = [
@@ -363,7 +366,7 @@ const labAuthProtectedRoutes = [
   },
   { path: "/account-statements", component: AccountStatements },
   { path: "/lab-advertisement", component: LabAdvertisements },
-  { path: "/lab-advertisement", component: LabAdvertisements },
+  // { path: "/lab-advertisement", component: LabAdvertisements },
   {
     path: "/adv-invoice-detail/:id",
     component: AdvInvoiceDetail,
@@ -450,7 +453,12 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/lab-details", component: labList},
   { path: "/donor-details", component: donorList},
   { path: "/b2bclients-details", component: b2bList},
-  {path: "/bank-account-statements/:id", component: BankAccountStatements}
+  {path: "/bank-account-statements/:id", component: BankAccountStatements},
+  { path: "/all-labs-list", component: AllLabsList },
+  { path: "/bank-transfer", component: bankTransferDetail },
+  {path : "/inter-bank-details-list", component: interBankDetailsList}
+
+
 
 
   // { path: "/financeadmin-profile", component: FinanceAdminProfile },

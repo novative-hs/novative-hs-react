@@ -11,7 +11,45 @@ import {
   UPDATE_TEST_APPOINTMENT,
   UPDATE_TEST_APPOINTMENT_SUCCESS,
   UPDATE_TEST_APPOINTMENT_FAIL,
+  ADD_NEW_COLLECTIONPOINT_TESTAPPOINTMENT,
+  ADD_COLLECTIONPOINT_TESTAPPOINTMENT_SUCCESS,
+  ADD_COLLECTIONPOINT_TESTAPPOINTMENT_FAIL,
+  GET_LAB_PROFILE,
+  GET_LAB_PROFILE_FAIL,
+  GET_LAB_PROFILE_SUCCESS,
 } from "./actionTypes";
+
+export const getLabProfile = id => ({
+  type: GET_LAB_PROFILE,
+  payload: id,
+});
+
+export const getLabProfileSuccess = labProfiles => (
+  console.log("actions lab profile",labProfiles),
+  {
+  type: GET_LAB_PROFILE_SUCCESS,
+  payload: labProfiles,
+});
+
+export const getLabProfileFail = error => ({
+  type: GET_LAB_PROFILE_FAIL,
+  payload: error,
+});
+
+export const addNewCollectionPointTestAppointment = (testAppointment, id) => ({
+  type: ADD_NEW_COLLECTIONPOINT_TESTAPPOINTMENT,
+  payload: { testAppointment, id },
+});
+
+export const addCollectionPointTestAppointmentSuccess = testAppointment => ({
+  type: ADD_COLLECTIONPOINT_TESTAPPOINTMENT_SUCCESS,
+  payload: testAppointment,
+});
+
+export const addCollectionPointTestAppointmentFail = error => ({
+  type: ADD_COLLECTIONPOINT_TESTAPPOINTMENT_FAIL,
+  payload: error,
+});
 
 export const getTestAppointmentsPendingList = id => ({
   type: GET_TEST_APPOINTMENTS_PENDING_LIST,

@@ -15,6 +15,12 @@
 // export const APPROVE_UNAPPROVE_LAB_SUCCESS = "APPROVE_UNAPPROVE_LAB_SUCCESS";
 // export const APPROVE_UNAPPROVE_LAB_FAIL = "APPROVE_UNAPPROVE_LAB_FAIL";
 
+// -------------------- Lab List ACTION TYPES --------------------
+export const GET_ALL_LABS_LIST = "GET_ALL_LABS_LIST";
+export const GET_ALL_LABS_LIST_SUCCESS =
+  "GET_ALL_LABS_LIST_SUCCESS";
+export const GET_ALL_LABS_LIST_FAIL = "GET_ALL_LABS_LIST_FAIL";
+
 // -------------------- B2B ACTION TYPES --------------------
 export const GET_CLEARED_IN_PAYMENTS = "GET_CLEARED_IN_PAYMENTS";
 export const GET_CLEARED_IN_PAYMENTS_SUCCESS =

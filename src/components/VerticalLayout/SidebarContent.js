@@ -417,6 +417,12 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Bank Transfer Details List")}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to="/all-labs-list">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("All Labs List")}</span>
+                  </Link>
+                </li>
               </ul>
             </div>
           </SimpleBar>
@@ -430,6 +436,12 @@ class SidebarContent extends Component {
                   <Link to="/dashboard-csr">
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("Dashboard")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/csr-checkout"}>
+                    <i className="mdi mdi-phone" />
+                    <span>{this.props.t("Online Booking")}</span>
                   </Link>
                 </li>
 

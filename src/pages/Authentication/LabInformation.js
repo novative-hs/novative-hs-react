@@ -90,6 +90,8 @@ class LabInformation extends Component {
     setTimeout(() => {
       if (this.props.labs.length) {
         const labs = this.props.labs.filter(lab => lab.type === "Main Lab");
+        // const mainLabs = this.props.labs.filter(lab => lab.type === "main lab");
+
         for (let i = 0; i < labs.length; i++) {
           mainLabOptionGroup[0]["options"].push({
             label: labs[i].name,
