@@ -1,3 +1,4 @@
+import allDonationAppointments from "pages/FinanceAdmin/all-donation-appointments";
 import {
   // GET_CLEARED_LABS,
   // GET_CLEARED_LABS_SUCCESS,
@@ -26,6 +27,9 @@ import {
   GET_ALL_LABS_LIST,
   GET_ALL_LABS_LIST_SUCCESS,
   GET_ALL_LABS_LIST_FAIL,
+  GET_ALL_DONATION_APPOINTMENTS,
+  GET_ALL_DONATION_APPOINTMENTS_SUCCESS,
+  GET_ALL_DONATION_APPOINTMENTS_FAIL,
   // GET_CLEARED_DONORS,
   // GET_CLEARED_DONORS_SUCCESS,
   // GET_CLEARED_DONORS_FAIL,
@@ -113,6 +117,22 @@ export const getAllLabsListSuccess = allLabsList => ({
 
 export const getAllLabsListFail = error => ({
   type: GET_ALL_LABS_LIST_FAIL,
+  payload: error,
+});
+
+//.................... Donation Appointment List .............
+export const getAllDonationAppointments = id => ({
+  type: GET_ALL_DONATION_APPOINTMENTS,
+  payload: id,
+});
+
+export const getAllDonationAppointmentsSuccess = allDonationAppointment => ({
+  type: GET_ALL_DONATION_APPOINTMENTS_SUCCESS,
+  payload: allDonationAppointment,
+});
+
+export const getAllDonationAppointmentsFail = error => ({
+  type: GET_ALL_DONATION_APPOINTMENTS_FAIL,
   payload: error,
 });
 

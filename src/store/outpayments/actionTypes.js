@@ -2,6 +2,10 @@ export const GET_LABS_MOF = "GET_LABS_MOF";
 export const GET_LABS_MOF_SUCCESS = "GET_LABS_MOF_success";
 export const GET_LABS_MOF_FAIL = "GET_LABS_MOF_fail";
 
+export const GET_LIST_DONATIONAPPOINTMENT = "GET_LIST_DONATIONAPPOINTMENT";
+export const GET_LIST_DONATIONAPPOINTMENT_SUCCESS = "GET_LIST_DONATIONAPPOINTMENT_success";
+export const GET_LIST_DONATIONAPPOINTMENT_FAIL = "GET_LIST_DONATIONAPPOINTMENT_fail";
+
 export const GET_BANKS = "get_banks";
 export const GET_BANKS_SUCCESS = "get_banks_success";
 export const GET_BANKS_FAIL = "get_banks_fail";

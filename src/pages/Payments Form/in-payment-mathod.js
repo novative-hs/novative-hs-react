@@ -41,7 +41,7 @@ import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import {
-  getAdvertisements,
+  getAcceptedLabAdvertisements,
   getLabs,
   getDonors,
   addNewInPayment,
@@ -197,9 +197,9 @@ class InPaymentsForm extends Component {
     }
     this.setState({ labs });
 
-    const { advertisements, onGetAdvertisements } = this.props;
+    const { advertisements, onGetAcceptedLabAdvertisements } = this.props;
     if (advertisements && !advertisements.length) {
-      onGetAdvertisements(this.props.match.params.id);
+      onGetAcceptedLabAdvertisements(this.props.match.params.id);
     }
     this.setState({ advertisements });
 
@@ -1139,7 +1139,7 @@ InPaymentsForm.propTypes = {
   onGetInPayment: PropTypes.func,
   // onGetUnits: PropTypes.func,
   onAddInPaymentData: PropTypes.func,
-  onGetAdvertisements: PropTypes.func,
+  onGetAcceptedLabAdvertisements: PropTypes.func,
 
 };
 
@@ -1154,7 +1154,7 @@ const mapStateToProps = ({ inPayments }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   
   onGetlabs: () => dispatch(getLabs()),
-  onGetAdvertisements: () => dispatch(getAdvertisements()),
+  onGetAcceptedLabAdvertisements: () => dispatch(getAcceptedLabAdvertisements()),
   onGetdonors: () => dispatch(getDonors()),
   onGetInPayment: id => dispatch(getInPayment(id)),
   onAddInPaymentData: (inPayment, id) =>

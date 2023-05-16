@@ -2,7 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
 import {
-  GET_ADVERTISEMENTS,
+  GET_ACCEPTED_LAB_ADVERTISEMENTS,
   GET_IN_PAYMENT, 
   GET_LABS,
   GET_DONORS,
@@ -10,8 +10,8 @@ import {
 } from "./actionTypes";
 
 import {
-  getAdvertisementsSuccess,
-  getAdvertisementsFail,
+  getAcceptedLabAdvertisementsSuccess,
+  getAcceptedLabAdvertisementsFail,
   getLabsSuccess,
   getLabsFail,
   getDonorsSuccess,
@@ -23,7 +23,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getInPayment,   getLabs, getDonors,   getAdvertisements,
+import { getInPayment,   getLabs, getDonors,   getAcceptedLabAdvertisements,
   addNewInPayment,
  } from "../../helpers/django_api_helper";
 
@@ -41,13 +41,13 @@ import { getInPayment,   getLabs, getDonors,   getAdvertisements,
 //     yield put(getInPaymentFail(error));
 //   }
 // }
-function* fetchAdvertisements() {
+function* fetchLabAdvertisements() {
   try {
-    const response = yield call(getAdvertisements);
+    const response = yield call(getAcceptedLabAdvertisements);
     console.log ("advertisement saga: ", response);
-    yield put(getAdvertisementsSuccess(response));
+    yield put(getAcceptedLabAdvertisementsSuccess(response));
   } catch (error) {
-    yield put(getAdvertisementsFail(error));
+    yield put(getAcceptedLabAdvertisementsFail(error));
   }
 }
 function* fetchLabs() {
@@ -89,7 +89,7 @@ function* onAddNewInPayment(object) {
 }
 
 function* inPaymentSaga() {
-  yield takeEvery(GET_ADVERTISEMENTS, fetchAdvertisements);
+  yield takeEvery(GET_ACCEPTED_LAB_ADVERTISEMENTS, fetchLabAdvertisements);
   yield takeEvery(GET_IN_PAYMENT,fetchInPayments);
   yield takeEvery(GET_LABS, fetchLabs);
   yield takeEvery(GET_DONORS, fetchDonors);

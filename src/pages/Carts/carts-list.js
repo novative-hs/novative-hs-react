@@ -43,6 +43,9 @@ class CartList extends Component {
       user_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
+      patient_name: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).patient_name
+        : "",
       modal: false,
       deleteModal: false,
       isDisabled: true,
@@ -782,7 +785,7 @@ class CartList extends Component {
                         ? `/cart/${this.props.match.params.uuid}`
                         : `/cart`
                       }
-                      className="btn header-items noti-icon right-bar-toggle"
+                      className="btn header-items noti-icon right-bar-toggle d-none"
                   >
                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 

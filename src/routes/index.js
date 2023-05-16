@@ -240,6 +240,7 @@ import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
 import { invoiceList } from "common/data";
 import labsListPendingFee from "store/labs-list-pending/reducer";
+import allDonationAppointments from "pages/FinanceAdmin/all-donation-appointments";
 
 
 // All general public routes will be listed here
@@ -436,6 +437,10 @@ const financeOfficerAuthProtectedRoutes = [
     path: "/payment-out-clear-status",
     component: PaymentOutclearStatussList,
   },
+  { path: "/all-labs-list", component: AllLabsList },
+  { path: "/bank-transfer", component: bankTransferDetail },
+  {path : "/inter-bank-details-list", component: interBankDetailsList},
+  { path: "/All-Donation-Appointments/:id", component: allDonationAppointments }
 
 
 ];
@@ -454,9 +459,8 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/donor-details", component: donorList},
   { path: "/b2bclients-details", component: b2bList},
   {path: "/bank-account-statements/:id", component: BankAccountStatements},
-  { path: "/all-labs-list", component: AllLabsList },
-  { path: "/bank-transfer", component: bankTransferDetail },
-  {path : "/inter-bank-details-list", component: interBankDetailsList}
+
+
 
 
 

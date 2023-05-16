@@ -263,6 +263,10 @@ class SidebarContent extends Component {
                       <li>
                         <Link to={"/out-payment"}>{this.props.t("MOF")}</Link>
                       </li>
+                      <li>
+                  <Link to="/bank-transfer">{this.props.t("Bank Transfer Details")}
+                  </Link>
+                </li>
                     </ul>
                   </li>
                   {/* Payments Status Links */}
@@ -322,6 +326,22 @@ class SidebarContent extends Component {
                       </li>
                     </ul>
                   </li>
+                  <li>
+                    <Link to="/#" className="has-arrow">
+                      <i className="bx bx-test-tube" />
+                      <span>{this.props.t("BTD Statuses")}</span>
+                    </Link>
+                    <ul className="sub-menu" aria-expanded="false">
+                    <li><Link to="/inter-bank-details-list">{this.props.t("Bank Transfer Details List")}
+                  </Link></li>
+                  </ul>
+                </li>
+                <li>
+                  <Link to="/all-labs-list">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("All Labs List")}</span>
+                  </Link>
+                </li>
                 </ul>
               </div>
             </SimpleBar>
@@ -405,24 +425,7 @@ class SidebarContent extends Component {
                     <span>{this.props.t("B2B Clients List")}</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/bank-transfer">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Bank Transfer Details")}</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/inter-bank-details-list">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Bank Transfer Details List")}</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/all-labs-list">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("All Labs List")}</span>
-                  </Link>
-                </li>
+                
               </ul>
             </div>
           </SimpleBar>

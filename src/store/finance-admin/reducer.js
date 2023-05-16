@@ -17,6 +17,8 @@ import {
   UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT_FAIL,
   GET_ALL_LABS_LIST_SUCCESS,
   GET_ALL_LABS_LIST_FAIL,
+  GET_ALL_DONATION_APPOINTMENTS_SUCCESS,
+  GET_ALL_DONATION_APPOINTMENTS_FAIL,
   // GET_CLEARED_DONORS_SUCCESS,
   // GET_CLEARED_DONORS_FAIL,
   // GET_APPROVED_DONORS_SUCCESS,
@@ -35,6 +37,7 @@ const INIT_STATE = {
   approvedInPayments: [],
   unapprovedInPayments: [],
   allLabsList: [],
+  allDonationAppointment: [],
   // clearedDonors: [],
   // approvedDonors: [],
   // unapprovedDonors: [],
@@ -91,6 +94,18 @@ const financeAdmin = (state = INIT_STATE, action) => {
     //     ...state,
     //     error: action.payload,
     //   };
+
+    case GET_ALL_DONATION_APPOINTMENTS_SUCCESS:
+      return {
+        ...state,
+        allDonationAppointment: action.payload.data,
+      };
+
+    case GET_ALL_DONATION_APPOINTMENTS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     case GET_ALL_LABS_LIST_SUCCESS:
       return {

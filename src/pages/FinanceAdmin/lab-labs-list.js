@@ -70,7 +70,7 @@ class PendingB2BClients extends Component {
           formatter: (cellContent, pendingB2BClient) => (
             <>
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-              <Link to={`/b2b-clients-shares/${pendingB2BClient.id}`}>
+              <Link to={`/All-Donation-Appointments/${pendingB2BClient.id}`}>
                 {pendingB2BClient.name}
               </Link>
             </>
@@ -148,9 +148,14 @@ class PendingB2BClients extends Component {
     this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
   }
 
+  // componentDidMount() {
+  //   const { allLabsList, onGetAllLabsList } = this.props;
+  //   onGetAllLabsList();
+  //   this.setState({ allLabsList });
+  // }
   componentDidMount() {
     const { allLabsList, onGetAllLabsList } = this.props;
-    onGetAllLabsList();
+    onGetAllLabsList(this.state.user_id);
     this.setState({ allLabsList });
   }
 

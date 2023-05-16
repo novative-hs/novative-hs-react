@@ -47,6 +47,7 @@ export const getB2bLabSharesListFail = error => ({
   type: GET_B2B_LAB_SHARES_LIST_FAIL,
   payload: error,
 });
+
 export const getB2bSharesLabList = id => ({
   type: GET_B2B_SHARES_LAB_LIST,
   payload: id,

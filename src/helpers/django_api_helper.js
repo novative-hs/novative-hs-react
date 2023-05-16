@@ -1778,6 +1778,11 @@ export const getAdvertisements = () =>
     headers: getHeader(authHeader()),
   });
 
+export const getAcceptedLabAdvertisements = () =>
+  get(`${url.GET_ACCEPTED_LAB_ADVERTISEMENTS}`, {
+    headers: getHeader(authHeader()),
+  });
+
 export const addNewAdvertisement = (advertisement, id) => {
   let formData = new FormData();
   formData.append("title", advertisement.title);
@@ -2210,6 +2215,12 @@ export const addNewAdvertisementPriceList = (advertisementPriceList, id) => {
   });
 };
 
+// Donation Appointments
+export const getAllDonationAppointments = id =>
+  get(`${url.GET_ALL_DONATION_APPOINTMENTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 // BANK ACCOUNTS
 export const getBankaccounts = id =>
   get(`${url.GET_BANKACCOUNTS}/${id}`, {
@@ -2241,11 +2252,18 @@ get(`${url.GET_LABS_MOF}`, {
   headers: getHeader(authHeader()),
 });
 
+export const getListDonationAppointment = ()=>
+get(`${url.GET_LIST_DONATIONAPPOINTMENT}`, {
+  headers: getHeader(authHeader()),
+});
+
 // ------------- inPayments Settings Requests START -------------
 export const addNewOutPayment = ( outPayment, id) => {
   let formData = new FormData();
   formData.append("payment_for",  outPayment.payment_for);
+  formData.append("transection_type", outPayment.transection_type);
   formData.append("lab_id",   outPayment.lab_id);
+  formData.append("test_appointment_id",   outPayment.test_appointment_id);
   formData.append("b2b_id",   outPayment.b2b_id);
   formData.append("payment_method",   outPayment.payment_method);
   formData.append("bankaccount_id",   outPayment.bankaccount_id);

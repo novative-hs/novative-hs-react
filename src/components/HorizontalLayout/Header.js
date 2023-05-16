@@ -264,7 +264,7 @@ class Header extends Component {
                 </div>
               ) : this.state.user_type == "patient" ? (
                 <div className="dropdown">
-                  <Link
+                 <Link
                     // to={"/profile"}
                     to={
                       this.props.match.params.uuid
@@ -275,7 +275,7 @@ class Header extends Component {
                   >
                     <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
                     <span className="pt-4 font-size-12">
-                      {this.state.patient_name.split(" ")[0]}
+                      {console.log("patient name",this.state.patient_name)}
                     </span>
                   </Link>{" "}
 

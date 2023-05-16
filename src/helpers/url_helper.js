@@ -19,6 +19,8 @@ export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corpora
 
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
+export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
+
 
 // TEST
 export const GET_TESTS = `${API_ENDPOINT}/api/medicaltest/test-list`;
@@ -147,6 +149,7 @@ export const GET_TEST_APPOINTMENTS_COMPLETED_LIST = `${API_ENDPOINT}/api/lab/tes
 export const UPDATE_TEST_APPOINTMENT = `${API_ENDPOINT}/api/lab/test-appointment-update`;
 
 // PAYMENT IN STATUS
+export const GET_ACCEPTED_LAB_ADVERTISEMENTS = `${API_ENDPOINT}/api/marketer-admin/lab-advertisement-accepted-list`;
 export const GET_PAYMENT_IN_STATUS_CREATED_LIST = `${API_ENDPOINT}/api/finance-officer/get-payment-in-created`;
 export const GET_PAYMENT_IN_STATUS_DEPOSITED_LIST = `${API_ENDPOINT}/api/finance-officer/get-payment-in-deposited`;
 export const GET_LABS_MOF = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
@@ -216,7 +219,6 @@ export const UPDATE_DONOR_SETTINGS = `${API_ENDPOINT}/api/lab/lab-settings`;
 // Donor SETTINGS
 export const ADD_NEW_DONOR_PAYMENT = `${API_ENDPOINT}/api/donor/donor-payment`;
 
-// ADD BANK
 // ADD ACCOUNT
 export const ADD_NEW_CREATE_BANK = `${API_ENDPOINT}/api/finance-admin/bank`;
 export const ADD_NEW_BANK_ACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-account`;
@@ -232,11 +234,16 @@ export const GET_IN_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-in`;
 export const ADD_NEW_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const GET_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const DELETE_PAYMENTOUT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
+export const GET_LIST_DONATIONAPPOINTMENT = `${API_ENDPOINT}/api/finance-officer/alldonation-Appointments`;
+
+
+// Get DONATION Appointments
+export const GET_ALL_DONATION_APPOINTMENTS = `${API_ENDPOINT}/api/finance-officer/donation-Appointments`;
 
 // Bank Transfer Details
-export const ADD_NEW_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-admin/bank-transfer-detail`;
-export const UPDATE_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-admin/bank-transfer-detail`;
-export const GET_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-admin/bank-transfer-detail`;
+export const ADD_NEW_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-officer/bank-transfer-detail`;
+export const UPDATE_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-officer/bank-transfer-detail`;
+export const GET_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-officer/bank-transfer-detail`;
 
 export const GET_PAYMENT_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-created`;
 export const GET_DEPOSIT_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-deposited`;
@@ -315,7 +322,7 @@ export const GET_LAB_PAYMENTS = `${API_ENDPOINT}/api/patient/payment-info`;
 export const GET_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/lab-account-statements`;
 
 // Bank Statements
-export const GET_BANK_STATEMENTS = `${API_ENDPOINT}/api/finance-admin/bank-transfer-statement`;
+export const GET_BANK_STATEMENTS = `${API_ENDPOINT}/api/finance-officer/bank-transfer-statement`;
 
 // DONOR STATEMENYTS
 export const GET_DONOR_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/donor-account-statements`;
@@ -359,7 +366,6 @@ export const GET_CLEARED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/cleare
 export const GET_APPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/approved-in-payments`;
 export const GET_UNAPPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/unapproved-in-payments`;
 export const UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT = `${API_ENDPOINT}/api/finance-admin/approve-unapprove-in-payment`;
-export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-admin/labs-list`;
 
 
 

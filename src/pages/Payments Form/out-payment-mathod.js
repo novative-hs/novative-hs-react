@@ -43,6 +43,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getBanks,
   getLabsMof,
+  getListDonationAppointment,
   getBankAccounts,
   getB2bClients,
   addNewOutPayment,
@@ -69,6 +70,7 @@ class OutPaymentsForm extends Component {
         : "",
       payment_for: "",
       lab_id: "",
+      test_appointment_id: "",
       b2b_id: "",
       current_amount: "",
       invoice_id: "",
@@ -85,6 +87,7 @@ class OutPaymentsForm extends Component {
       comments: "",
       checkedoutData: "",
       successMessage: "",
+      transection_type : "Other",
     };
     // this.toggleTab = this.toggleTab.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -107,7 +110,9 @@ class OutPaymentsForm extends Component {
     this.setState({
       outPayment: {
         payment_for: this.state.payment_for,
+        transection_type: this.state.transection_type,
         lab_id: this.state.lab_id,
+        test_appointment_id: this.state.test_appointment_id,
         b2b_id: this.state.b2b_id,
         // bank_id: this.state.bank_id,
         bankaccount_id: this.state.bankaccount_id,
@@ -140,7 +145,9 @@ class OutPaymentsForm extends Component {
     this.setState({
       outPayment: {
         payment_for: this.state.payment_for,
+        transection_type: this.state.transection_type,
         lab_id: this.state.lab_id,
+        test_appointment_id: this.state.test_appointment_id,
         b2b_id: this.state.b2b_id,
         bank_id: this.state.bank_id,
         bankaccount_id: this.state.bankaccount_id,
@@ -178,6 +185,12 @@ class OutPaymentsForm extends Component {
       onGetlabsMof();
     }
     this.setState({ labsMof });
+
+    const { listDonation, onGetListDonationAppointment } = this.props;
+    if (listDonation && !listDonation.length) {
+      onGetListDonationAppointment();
+    }
+    this.setState({ listDonation });
 
     const { banks, onGetbanks } = this.props;
     if (banks && !banks.length) {
@@ -251,6 +264,7 @@ class OutPaymentsForm extends Component {
 
     const { outPayments } = this.props;
     const { labsMof } = this.props;
+    const {listDonation} = this.props;
     const { b2bClients } = this.props;
 
 
@@ -285,6 +299,22 @@ class OutPaymentsForm extends Component {
         labList.push({
           label: labsMof[i].name,
           value: labsMof[i].id,
+        });
+      }
+    }
+
+    const DonationAppointmentList = [];
+    for (let i = 0; i < listDonation.length; i++) {
+      let flag = 0;
+      // for (let j = 0; j < outPayments.length; j++) {
+      //   if (listDonation[i].id == outPayments[j].lab_id) {
+      //     flag = 1;
+      //   }
+      // }
+      if (!flag) {
+        DonationAppointmentList.push({
+          label: listDonation[i].test_appointment_id,
+          value: listDonation[i].test_appointment_id,
         });
       }
     }
@@ -400,6 +430,35 @@ class OutPaymentsForm extends Component {
                           </FormGroup>
 
                           {this.state.payment_for == "Lab" ? (
+                            <FormGroup className="mb-0">
+                            <Label htmlFor="cardnumberInput">
+                              What type of Transection?
+                              <span
+                                style={{ color: "#f46a6a" }}
+                                className="font-size-18"
+                              >
+                                *
+                              </span>
+                            </Label>
+                            <select
+                              name="transection_type"
+                              component="select"
+                              onChange={e =>
+                                this.setState({
+                                  transection_type: e.target.value,
+                                })
+                              }
+                              defaultValue={this.state.transection_type}
+                              className="form-select"
+                            >
+                              <option value="Other">Other</option>
+                              <option value="Donation">Donation</option>
+                            </select>
+
+                          </FormGroup>
+                          ) : null}
+
+                          {this.state.payment_for == "Lab" ? (
                             outPayment.lab_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">
@@ -467,6 +526,77 @@ class OutPaymentsForm extends Component {
                                   Please select your Lab
                                 </div>
                               </div>)
+                          ) : null}
+
+{this.state.transection_type == "Donation" ? (
+   outPayment.test_appointment_id ? (
+    <div className="mb-3">
+      <Label className="form-label">
+        Test Appointments
+      </Label>
+      <Field
+        name="test_appointment_id"
+        as="select"
+        defaultValue={
+          outPayment.test_appointment_id
+        }
+        className="form-control"
+        readOnly={true}
+        isMulti={true}
+      >
+        <option
+          key={
+            outPayment.test_appointment_id
+          }
+          value={
+            outPayment.test_appointment_id
+          }
+        >
+          {
+            outPayment.test_appointment_id
+          }
+        </option>
+      </Field>
+    </div>
+  ) : (
+    <div className="mb-3 select2-container">
+      <Label>Test Appointments</Label>
+      <Select
+        name="test_appointment_id"
+        component="Select"
+        isMulti={true}
+        onChange={selectedGroup =>
+          this.setState({
+            test_appointment_id:
+              selectedGroup.value,
+          })
+        }
+        className={
+          "defautSelectParent" +
+          (!this.state.test_appointment_id
+            ? " is-invalid"
+            : "")
+        }
+        styles={{
+          control: (
+            base,
+            state
+          ) => ({
+            ...base,
+            borderColor: !this
+              .state.test_appointment_id
+              ? "#f46a6a"
+              : "#ced4da",
+          }),
+        }}
+        options={DonationAppointmentList}
+        placeholder="Select Appointment..."
+      />
+
+      <div className="invalid-feedback">
+        Please select Appointment
+      </div>
+    </div>)
                           ) : null}
 
                           {this.state.payment_for == "B2BClient" ? (
@@ -960,6 +1090,7 @@ class OutPaymentsForm extends Component {
 OutPaymentsForm.propTypes = {
   match: PropTypes.object,
   labsMof: PropTypes.array,
+  listDonation: PropTypes.array,
   banks: PropTypes.array,
   bankAccounts: PropTypes.array,
   history: PropTypes.object,
@@ -968,6 +1099,7 @@ OutPaymentsForm.propTypes = {
   outPayments: PropTypes.array,
   className: PropTypes.any,
   onGetlabsMof: PropTypes.func,
+  onGetListDonationAppointment: PropTypes.func,
   onGetB2bClients: PropTypes.func,
   onGetOutPayment: PropTypes.func,
   // onGetUnits: PropTypes.func,
@@ -979,6 +1111,7 @@ OutPaymentsForm.propTypes = {
 const mapStateToProps = ({ outPayments }) => ({
   outPayments: outPayments.outPayments,
   labsMof: outPayments.labsMof,
+  listDonation: outPayments.listDonation,
   b2bClients: outPayments.b2bClients,
   banks: outPayments.banks,
   bankAccounts: outPayments.bankAccounts,
@@ -991,6 +1124,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetbanks: () => dispatch(getBanks()),
   onGetbankAccounts: () => dispatch(getBankAccounts()),
   onGetlabsMof: () => dispatch(getLabsMof()),
+  onGetListDonationAppointment: () => dispatch(getListDonationAppointment()),
   onGetB2bClients: () => dispatch(getB2bClients()),
   onGetOutPayment: id => dispatch(getOutPayment(id)),
   onAddNewOutPayment: (outPayment, id) =>

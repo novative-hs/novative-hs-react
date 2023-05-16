@@ -2,6 +2,9 @@ import {
   GET_LABS_MOF,
   GET_LABS_MOF_SUCCESS,
   GET_LABS_MOF_FAIL,
+  GET_LIST_DONATIONAPPOINTMENT,
+  GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
+  GET_LIST_DONATIONAPPOINTMENT_FAIL,
   GET_B2B_CLIENTS,
   GET_B2B_CLIENTS_SUCCESS,
   GET_B2B_CLIENTS_FAIL,
@@ -71,6 +74,19 @@ export const getLabsMofSuccess = labsMof => ({
 
 export const getLabsMofFail = error => ({
   type: GET_LABS_MOF_FAIL,
+  payload: error,
+});
+export const getListDonationAppointment = () => ({
+  type: GET_LIST_DONATIONAPPOINTMENT,
+});
+
+export const getListDonationAppointmentSuccess = listDonation => ({
+  type: GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
+  payload: listDonation,
+});
+
+export const getListDonationAppointmentFail = error => ({
+  type: GET_LIST_DONATIONAPPOINTMENT_FAIL,
   payload: error,
 });
 export const getOutPayment = id => ({

@@ -1,6 +1,6 @@
 import {
-  GET_ADVERTISEMENTS_SUCCESS,
-  GET_ADVERTISEMENTS_FAIL,
+  GET_ACCEPTED_LAB_ADVERTISEMENTS_SUCCESS,
+  GET_ACCEPTED_LAB_ADVERTISEMENTS_FAIL,
   GET_LABS_SUCCESS,
   GET_LABS_FAIL,
   GET_DONORS_SUCCESS,
@@ -22,13 +22,13 @@ const INIT_STATE = {
 
 const inPayments = (state = INIT_STATE, action) => {
   switch (action.type) {
-    case GET_ADVERTISEMENTS_SUCCESS:
+    case GET_ACCEPTED_LAB_ADVERTISEMENTS_SUCCESS:
       return {
         ...state,
         advertisements: action.payload.data,
       };
 
-    case GET_ADVERTISEMENTS_FAIL:
+    case GET_ACCEPTED_LAB_ADVERTISEMENTS_FAIL:
       return {
         ...state,
         error: action.payload,

@@ -1,7 +1,7 @@
 import {
-  GET_ADVERTISEMENTS,
-  GET_ADVERTISEMENTS_FAIL,
-  GET_ADVERTISEMENTS_SUCCESS,
+  GET_ACCEPTED_LAB_ADVERTISEMENTS,
+  GET_ACCEPTED_LAB_ADVERTISEMENTS_FAIL,
+  GET_ACCEPTED_LAB_ADVERTISEMENTS_SUCCESS,
   GET_LABS,
   GET_LABS_SUCCESS,
   GET_LABS_FAIL,
@@ -15,18 +15,18 @@ import {
   ADD_IN_PAYMENT_SUCCESS,
   ADD_IN_PAYMENT_FAIL,
 } from "./actionTypes";
-export const getAdvertisements = () => ({
-  type: GET_ADVERTISEMENTS,
+export const getAcceptedLabAdvertisements = () => ({
+  type: GET_ACCEPTED_LAB_ADVERTISEMENTS,
   payload: {},
 });
 
-export const getAdvertisementsSuccess = advertisements => ({
-  type: GET_ADVERTISEMENTS_SUCCESS,
+export const getAcceptedLabAdvertisementsSuccess = advertisements => ({
+  type: GET_ACCEPTED_LAB_ADVERTISEMENTS_SUCCESS,
   payload: advertisements,
 });
 
-export const getAdvertisementsFail = error => ({
-  type: GET_ADVERTISEMENTS_FAIL,
+export const getAcceptedLabAdvertisementsFail = error => ({
+  type: GET_ACCEPTED_LAB_ADVERTISEMENTS_FAIL,
   payload: error,
 });
 export const getLabs = () => ({

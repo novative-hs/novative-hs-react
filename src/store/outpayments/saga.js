@@ -4,6 +4,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import {
   GET_OUT_PAYMENT, 
   GET_LABS_MOF,
+  GET_LIST_DONATIONAPPOINTMENT,
   GET_BANKS,
   GET_BANK_ACCOUNTS,
   GET_B2B_CLIENTS,
@@ -13,6 +14,8 @@ import {
 import {
   getLabsMofSuccess,
   getLabsMofFail,
+  getListDonationAppointmentSuccess,
+  getListDonationAppointmentFail,
   getBankAccountsSuccess,
   getBankAccountsFail,
   getBanksSuccess,
@@ -26,7 +29,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getOutPayment, getLabsMof ,   getBanks,   getBankAccounts,
+import { getOutPayment, getLabsMof ,getListDonationAppointment,   getBanks,   getBankAccounts,
 
   addNewOutPayment,
   getB2bClients, 
@@ -71,6 +74,14 @@ function* fetchLabsMof() {
     yield put(getLabsMofFail(error));
   }
 }
+function* fetchListDonationAppointment() {
+  try {
+    const response = yield call(getListDonationAppointment);
+    yield put(getListDonationAppointmentSuccess(response));
+  } catch (error) {
+    yield put(getListDonationAppointmentFail(error));
+  }
+}
 
 function* fetchB2bAllClientsList(object) {
   try {
@@ -107,6 +118,7 @@ function* outPaymentSaga() {
   yield takeEvery(GET_BANK_ACCOUNTS, fetchBankAccounts);
   yield takeEvery(GET_OUT_PAYMENT,fetchOutPayments);
   yield takeEvery(GET_LABS_MOF, fetchLabsMof);
+  yield takeEvery(GET_LIST_DONATIONAPPOINTMENT, fetchListDonationAppointment);
   yield takeEvery(
     GET_B2B_CLIENTS,
     fetchB2bAllClientsList
