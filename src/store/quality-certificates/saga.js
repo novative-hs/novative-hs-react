@@ -6,9 +6,13 @@ import {
   ADD_NEW_QUALITY_CERTIFICATE,
   DELETE_QUALITY_CERTIFICATE,
   UPDATE_QUALITY_CERTIFICATE,
+  ADD_NEW_COLLECTIONPOINT_QUALITY,
+  GET_LAB_PROFILE,
 } from "./actionTypes";
 
 import {
+  getLabProfileSuccess,
+  getLabProfileFail,
   getQualityCertificatesSuccess,
   getQualityCertificatesFail,
   addQualityCertificateFail,
@@ -17,15 +21,43 @@ import {
   updateQualityCertificateFail,
   deleteQualityCertificateSuccess,
   deleteQualityCertificateFail,
+  addCollectionPointQualityFail,
+  addCollectionPointQualitySuccess,
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import {
+  getLabProfile,
   getQualityCertificates,
   addNewQualityCertificate,
   updateQualityCertificate,
   deleteQualityCertificate,
+  addNewCollectionPointQuality,
+
 } from "../../helpers/django_api_helper";
+
+function* fetchLabProfile(object) {
+  try {
+    const response = yield call(getLabProfile, object.payload);
+    yield put(getLabProfileSuccess(response));
+
+  } catch (error) {
+    yield put(getLabProfileFail(error));
+  }
+}
+
+function* onAddNewCollectionPointQuality(object) {
+  try {
+    const response = yield call(
+      addNewCollectionPointQuality,
+      object.payload.qualityCertificate,
+      object.payload.id
+    );
+    yield put(addCollectionPointQualitySuccess(response));
+  } catch (error) {
+    yield put(addCollectionPointQualityFail(error));
+  }
+}
 
 function* fetchQualityCertificates(object) {
   try {
@@ -68,10 +100,16 @@ function* onDeleteQualityCertificate({ payload: qualityCertificate }) {
 }
 
 function* qualityCertificatesSaga() {
+  yield takeEvery(
+    ADD_NEW_COLLECTIONPOINT_QUALITY,
+    onAddNewCollectionPointQuality
+  );
   yield takeEvery(GET_QUALITY_CERTIFICATES, fetchQualityCertificates);
   yield takeEvery(ADD_NEW_QUALITY_CERTIFICATE, onAddNewQualityCertificate);
   yield takeEvery(UPDATE_QUALITY_CERTIFICATE, onUpdateQualityCertificate);
   yield takeEvery(DELETE_QUALITY_CERTIFICATE, onDeleteQualityCertificate);
+  yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);
+
 }
 
 export default qualityCertificatesSaga;

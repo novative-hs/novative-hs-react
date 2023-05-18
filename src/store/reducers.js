@@ -44,6 +44,7 @@ import offeredTests from "./offered-tests/reducer";
 //pathologists
 import pathologists from "./pathologists/reducer";
 import activitylog from "./activtylog/reducer";
+import activitylogfinance from "./activtylogfinance/reducer";
 
 //pathologists
 import bankaccounts from "./bankaccounts/reducer";
@@ -223,6 +224,7 @@ const rootReducer = combineReducers({
   offeredTests,
   pathologists,
   activitylog,
+  activitylogfinance,
   donorPayments,
   inPayments,
   paymentStatuss,

@@ -36,6 +36,7 @@ export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 
 // PATHOLOGIST
 export const GET_ACTIVITY_LOG = `${API_ENDPOINT}/api/lab/activity-log`;
+export const GET_ACTIVITY_LOG_FINANCE = `${API_ENDPOINT}/api/finance-officer/activity-log-finance`;
 export const GET_PATHOLOGISTS = `${API_ENDPOINT}/api/lab/pathologist-list`;
 export const ADD_NEW_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 export const UPDATE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
@@ -59,6 +60,7 @@ export const UPDATE_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector
 export const DELETE_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
 
 // QUALITY CERTIFICATES
+export const ADD_NEW_COLLECTIONPOINT_QUALITY = `${API_ENDPOINT}/api/lab/quality-certificate-collectionpoint-list`;
 export const GET_QUALITY_CERTIFICATES = `${API_ENDPOINT}/api/lab/quality-certificate-list`;
 export const ADD_NEW_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
 export const UPDATE_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;

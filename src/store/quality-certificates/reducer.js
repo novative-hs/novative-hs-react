@@ -7,10 +7,15 @@ import {
   UPDATE_QUALITY_CERTIFICATE_FAIL,
   DELETE_QUALITY_CERTIFICATE_SUCCESS,
   DELETE_QUALITY_CERTIFICATE_FAIL,
+  ADD_COLLECTIONPOINT_QUALITY_SUCCESS,
+  ADD_COLLECTIONPOINT_QUALITY_FAIL,
+  GET_LAB_PROFILE_SUCCESS,
+  GET_LAB_PROFILE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   qualityCertificates: [],
+  labProfiles: [],
   error: {},
 };
 
@@ -23,6 +28,28 @@ const qualityCertificates = (state = INIT_STATE, action) => {
       };
 
     case GET_QUALITY_CERTIFICATES_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_LAB_PROFILE_SUCCESS:
+      return {
+        ...state,
+        qualityCertificates: action.payload.data,
+      };
+
+    case GET_LAB_PROFILE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ADD_COLLECTIONPOINT_QUALITY_SUCCESS:
+      return {
+        ...state,
+        qualityCertificates: [...state.qualityCertificates, action.payload],
+      };
+
+    case ADD_COLLECTIONPOINT_QUALITY_FAIL:
       return {
         ...state,
         error: action.payload,

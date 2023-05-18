@@ -11,7 +11,46 @@ import {
   DELETE_QUALITY_CERTIFICATE,
   DELETE_QUALITY_CERTIFICATE_SUCCESS,
   DELETE_QUALITY_CERTIFICATE_FAIL,
+  ADD_NEW_COLLECTIONPOINT_QUALITY,
+  ADD_COLLECTIONPOINT_QUALITY_SUCCESS,
+  ADD_COLLECTIONPOINT_QUALITY_FAIL,
+  GET_LAB_PROFILE,
+  GET_LAB_PROFILE_FAIL,
+  GET_LAB_PROFILE_SUCCESS,
 } from "./actionTypes";
+
+export const getLabProfile = id => ({
+  type: GET_LAB_PROFILE,
+  payload: id,
+});
+
+export const getLabProfileSuccess = labProfiles => (
+  console.log("actions",labProfiles),
+  {
+  type: GET_LAB_PROFILE_SUCCESS,
+  payload: labProfiles,
+});
+
+export const getLabProfileFail = error => ({
+  type: GET_LAB_PROFILE_FAIL,
+  payload: error,
+});
+
+export const addNewCollectionPointQuality = (quality, id) => ({
+  type: ADD_NEW_COLLECTIONPOINT_QUALITY,
+  payload: { quality, id },
+});
+
+export const addCollectionPointQualitySuccess = quality => ({
+  type: ADD_COLLECTIONPOINT_QUALITY_SUCCESS,
+  payload: quality,
+});
+
+export const addCollectionPointQualityFail = error => ({
+  type: ADD_COLLECTIONPOINT_QUALITY_FAIL,
+  payload: error,
+});
+
 
 export const getQualityCertificates = id => ({
   type: GET_QUALITY_CERTIFICATES,

@@ -77,6 +77,7 @@ class NearbyLabs extends Component {
       activeTab: "1",
       address: "",
       search_type: "Current Location",
+      km: "30",
       city: "",
       latitude: "",
       longitude: "",
@@ -178,6 +179,7 @@ class NearbyLabs extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
+        km: this.state.km,
       };
       if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
@@ -456,6 +458,33 @@ class NearbyLabs extends Component {
     }
   };
 
+  onChangeKm = e => {
+    this.setState({ km: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyLabs } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var locationDetails = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      km: e.target.value,
+      address: this.state.address,
+      city: this.state.city,
+    };
+    // region wise advertisement
+    onGetNearbyLabs(locationDetails);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyLabs: this.props.nearbyLabs });
+    }, 1000);
+  };
+
   onChangeCity = selectedGroup => {
     this.setState({ city: selectedGroup.value });
 
@@ -522,7 +551,7 @@ class NearbyLabs extends Component {
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
-               {this.state.user_id && this.state.user_type ==="CSR"
+              {this.state.user_id && this.state.user_type === "CSR"
                 ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
@@ -606,7 +635,7 @@ class NearbyLabs extends Component {
                       )}
                     </ul>
                   </Collapse>
-                ): null}
+                ) : null}
               {!this.state.user_id
                 ? (
                   <Collapse
@@ -697,7 +726,7 @@ class NearbyLabs extends Component {
                     </ul>
                   </Collapse>
 
-                ) : this.state.user_id && this.state.user_type !== "CSR"  ? (
+                ) : this.state.user_id && this.state.user_type !== "CSR" ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
@@ -982,30 +1011,30 @@ class NearbyLabs extends Component {
                     )}
 
                     {this.state.user_type == "CSR" && (
-                                                              <div className="dropdown d-lg-inline-block ms-4 mt-4">
+                      <div className="dropdown d-lg-inline-block ms-4 mt-4">
 
-                      <Link
-                        to={"/dashboard-csr"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                       <Link
-                       to={
-                         this.props.match.params.uuid
-                         ? `/cart/${this.props.match.params.uuid}`
-                         : `/cart`
-                       }
-                       className="btn header-items noti-icon right-bar-toggle"
-                   >
-                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
- 
-                         {!isEmpty(this.props.carts) &&
-                         
-                           this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                           }
-                   </Link>
-                   {/* <Link
+                        <Link
+                          to={"/dashboard-csr"}
+                          className="btn header-items noti-icon right-bar-toggle"
+                        >
+                          <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                        </Link>
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/cart/${this.props.match.params.uuid}`
+                              : `/cart`
+                          }
+                          className="btn header-items noti-icon right-bar-toggle"
+                        >
+                          <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                          {!isEmpty(this.props.carts) &&
+
+                            this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                          }
+                        </Link>
+                        {/* <Link
                      to={
                        this.props.match.params.uuid
                          ? `/login/${this.props.match.params.uuid}`
@@ -1040,7 +1069,7 @@ class NearbyLabs extends Component {
                    >
                      <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
                    </Link> */}
-                 </div>
+                      </div>
                     )}
 
                     {this.state.user_type == "registration-admin" && (
@@ -1128,6 +1157,24 @@ class NearbyLabs extends Component {
                       {/* Type field */}
                       <Row>
                         <Col lg="3">
+                          {/* <Col lg="3"> */}
+                          <div className="mb-3">
+                            <Label>Search By Kilo Meters</Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={e => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search By Km..."
+                              />
+                              <div className="input-group-append">
+                                <span className="input-group-text">Km</span>
+                              </div>
+                            </div>
+                          </div>
+                          {/* </Col> */}
                           <div className="mb-3">
                             <Field
                               name="search_type"
@@ -1152,7 +1199,7 @@ class NearbyLabs extends Component {
                             <div className="mb-3">
                               <Select
                                 name="city "
-                                component="Select"
+                                comp onent="Select"
                                 onChange={this.onChangeCity}
                                 className="defautSelectParent is-invalid"
                                 options={CITIES}
@@ -1177,6 +1224,7 @@ class NearbyLabs extends Component {
                             </div>
                           )}
                         </Col>
+
                       </Row>
                     </Form>
                   )}
@@ -1312,7 +1360,7 @@ class NearbyLabs extends Component {
                     </Col>
                   ))}
 
-                {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !=="CSR")  && 
+                {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !== "CSR") &&
                   nearbyLabs.map((nearbyLab, key) => (
                     <Col xl="4" sm="9" key={"col" + key}>
                       <Card
@@ -1439,7 +1487,7 @@ class NearbyLabs extends Component {
                       </Card>
                     </Col>
                   ))}
-                 {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type ==="CSR")  &&
+                {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type === "CSR") &&
                   nearbyLabs.map((nearbyLab, key) => (
                     <Col xl="4" sm="6" key={"_col_" + key}>
                       <Card
@@ -1609,7 +1657,7 @@ class NearbyLabs extends Component {
                                 controls
                                 autoPlay={this.state.autoplay}
                                 loop
-                                >
+                              >
                                 <source
                                   src={process.env.REACT_APP_BACKENDURL + advLive.poster}
                                   type="video/mp4"

@@ -42,7 +42,7 @@ export * from "./test-list/actions";
 // pathologists
 export * from "./pathologists/actions";
 export * from "./activtylog/actions";
-
+export * from "./activtylogfinance/actions";
 // pathologists
 export * from "./bankaccounts/actions";
 

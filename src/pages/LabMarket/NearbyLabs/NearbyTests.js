@@ -78,6 +78,7 @@ class NearbyTests extends Component {
       currentLatitude: "",
       currentLongitude: "",
       location: "",
+      km: "30",
       success: "",
       error: "",
       discountData: [],
@@ -133,6 +134,8 @@ class NearbyTests extends Component {
         address: this.state.address,
         city: this.state.city,
         test_name: this.state.test_name,
+        km: this.state.km,
+
       };
 
       if (this.state.currentLatitude && this.state.currentLongitude) {
@@ -345,6 +348,35 @@ class NearbyTests extends Component {
         }, 1000);
       }, 1000);
     });
+  };
+
+  onChangeKm = e => {
+    this.setState({ km: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyTests } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      km: e.target.value,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+
+    };
+    // region wise advertisement
+    onGetNearbyTests(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyTests: this.props.nearbyTests });
+    }, 1000);
   };
 
   onChangeSearchType = e => {
@@ -987,27 +1019,28 @@ class NearbyTests extends Component {
                     >
                       {/* Type field */}
                       <Row>
-                        <Col lg="3">
-                          <div className="mb-3">
-                            <Input
-                              type="text"
-                              className="form-control"
-                              name="test_name"
-                              placeholder="Search Test..."
-                              onChange={e =>
-                                this.setState({
-                                  test_name: e.target.value,
-                                })
-                              }
-                              onBlur={this.handleBlur}
-                              value={this.state.test_name}
-                            />
+                      <Col lg="3">
+                        <div className="mb-3">
+                            <Label>Search By Kilo Meters</Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={e => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search By Km..."
+                              />
+                              <div className="input-group-append">
+                                <span className="input-group-text">Km</span>
+                              </div>
+                            </div>
                           </div>
                         </Col>
 
                         <Col lg="3">
                           {/* {this.state.test_name && ( */}
-                          <div className="mb-3">
+                          <div className="mt-4">
                             <Field
                               name="search_type"
                               component="select"
@@ -1029,7 +1062,7 @@ class NearbyTests extends Component {
                         {/* City field */}
                         <Col lg="3">
                           {this.state.search_type === "Custom Address" && (
-                            <div className="mb-3">
+                            <div className="mt-4">
                               <Select
                                 name="city "
                                 component="Select"
@@ -1044,7 +1077,7 @@ class NearbyTests extends Component {
                         {/* Custom Address field */}
                         <Col lg="3">
                           {this.state.city != "" && (
-                            <div className="mb-3">
+                            <div className="mt-4">
                               <Input
                                 defaultValue={this.state.address}
                                 onChange={e => this.onChangeAddress(e)}
@@ -1055,6 +1088,25 @@ class NearbyTests extends Component {
                               />
                             </div>
                           )}
+                        </Col>
+                      </Row>
+                      <Row>
+                      <Col lg="3">
+                          <div className="mb-3">
+                            <Input
+                              type="text"
+                              className="form-control"
+                              name="test_name"
+                              placeholder="Search Test..."
+                              onChange={e =>
+                                this.setState({
+                                  test_name: e.target.value,
+                                })
+                              }
+                              onBlur={this.handleBlur}
+                              value={this.state.test_name}
+                            />
+                          </div>
                         </Col>
                       </Row>
                     </Form>

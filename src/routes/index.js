@@ -211,6 +211,9 @@ import NotesLists from "pages/Complaints/notes-list";
 import AssignedAudits from "pages/Auditor/assigned-audits";
 import LabAudits from "pages/Dashboard-Lab/lab-audits";
 import activityLog from "pages/Dashboard-Lab/activity-log";
+import activityLogFinance from "pages/PaymentStatuss/activity-log-finance";
+import activityLogFinanceAdmin from "pages/PaymentStatuss/activity-log-finance";
+
 import AuditorCompletedAudits from "pages/Auditor/completed-audits";
 import AuditorProfile from "../pages/Authentication/StaffProfile";
 
@@ -410,6 +413,10 @@ const financeOfficerAuthProtectedRoutes = [
     component: PaymentStatussList,
   },
   {
+    path: "/activity-log-finance",
+    component: activityLogFinance,
+  },
+  {
     path: "/payment-in-pending-clearence-status",
     component: PendintClearenceStatussList,
   },
@@ -450,6 +457,7 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/cleared-in-payments", component: ClearedInPayments },
   { path: "/approved-in-payments", component: ApprovedInPayments },
   { path: "/unapproved-in-payments", component: UnapprovedInPayments },
+  { path: "/activity-log-finance-admin", component: activityLogFinanceAdmin },
 
   {path: "/create-bank", component: CreateBanks},
   {path: "/bank-account", component: BankAccounts},

@@ -70,6 +70,17 @@ class FinanceAdminSummary extends Component {
                           {this.state.email}
                         </p>
                       </Col>
+                      <Col xs="6">
+                        <div className="mt-2">
+                          <Link
+                            to={"/activity-log-finance-admin"}
+                            className="btn btn-primary btn-sm"
+                          >
+                            Activity Log{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
+                        </div>
+                      </Col>
                       {/* <Col xs="6">
                         <div className="mt-2">
                           <Link

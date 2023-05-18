@@ -314,7 +314,7 @@ class OutPaymentsForm extends Component {
       if (!flag) {
         DonationAppointmentList.push({
           label: listDonation[i].test_appointment_id,
-          value: listDonation[i].test_appointment_id,
+          value: listDonation[i].id,
         });
       }
     }
@@ -537,25 +537,17 @@ class OutPaymentsForm extends Component {
       <Field
         name="test_appointment_id"
         as="select"
-        defaultValue={
-          outPayment.test_appointment_id
-        }
+        defaultValue={outPayment.test_appointment_id}
         className="form-control"
         readOnly={true}
-        isMulti={true}
+        multiple={true} // Set to true to allow multiple selections
       >
-        <option
-          key={
-            outPayment.test_appointment_id
-          }
-          value={
-            outPayment.test_appointment_id
-          }
-        >
-          {
-            outPayment.test_appointment_id
-          }
-        </option>
+        {/* Render options for each selected test_appointment_id */}
+        {outPayment.test_appointment_id.map(value => (
+          <option key={value} value={value}>
+            {value}
+          </option>
+        ))}
       </Field>
     </div>
   ) : (
@@ -564,11 +556,10 @@ class OutPaymentsForm extends Component {
       <Select
         name="test_appointment_id"
         component="Select"
-        isMulti={true}
+        isMulti={true} // Uncomment this line
         onChange={selectedGroup =>
           this.setState({
-            test_appointment_id:
-              selectedGroup.value,
+            test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
           })
         }
         className={
@@ -597,7 +588,7 @@ class OutPaymentsForm extends Component {
         Please select Appointment
       </div>
     </div>)
-                          ) : null}
+    ) : null}
 
                           {this.state.payment_for == "B2BClient" ? (
                             outPayment.b2b_id ? (

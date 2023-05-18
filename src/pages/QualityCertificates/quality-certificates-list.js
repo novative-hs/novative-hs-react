@@ -40,6 +40,8 @@ import {
   addNewQualityCertificate,
   updateQualityCertificate,
   deleteQualityCertificate,
+  addNewCollectionPointQuality,
+  // getLabProfile,
 } from "store/quality-certificates/actions";
 
 import { isEmpty, size } from "lodash";
@@ -51,8 +53,10 @@ class QualityCertificatesList extends Component {
     this.node = React.createRef();
     this.state = {
       qualityCertificates: [],
+      // labProfiles: [],
       qualityCertificate: "",
       certificateImg: "",
+      main_lab_quality: "",
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -164,6 +168,13 @@ class QualityCertificatesList extends Component {
     const { qualityCertificates, onGetQualityCertificates } = this.props;
     onGetQualityCertificates(this.state.user_id);
     this.setState({ qualityCertificates });
+
+    // const { labProfiles, onGetLabProfile } = this.props;
+    // onGetLabProfile(this.state.user_id);
+    // this.setState({ 
+    //   labProfiles
+    // });
+    // console.log("state",labProfiles)
   }
 
   toggle() {
@@ -248,10 +259,33 @@ class QualityCertificatesList extends Component {
     this.toggle();
   };
 
+  handleAPICall = () => {
+    // const { id } = useParams();
+    // console.log("id is",id);
+    this.setState({
+      qualityCertificates: {
+        main_lab_quality: "Yes",
+      },
+    });
+
+    // API call to get the checkout items
+    const { onAddNewCollectionPointQuality, onGetQualityCertificates } = this.props;
+    setTimeout(() => {
+      console.log(
+        onAddNewCollectionPointQuality(this.state.qualityCertificates, this.state.user_id)
+      );
+    },);
+    setTimeout(() => {
+      onGetQualityCertificates(this.state.user_id);
+    }, 3000);
+  };
+
   render() {
     const { SearchBar } = Search;
 
     const { qualityCertificates } = this.props;
+
+    // const {labProfiles} = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
@@ -259,6 +293,9 @@ class QualityCertificatesList extends Component {
       onAddNewQualityCertificate,
       onUpdateQualityCertificate,
       onGetQualityCertificates,
+      // onGetLabProfile,
+      onAddNewCollectionPointQuality
+      
     } = this.props;
     const qualityCertificate = this.state.qualityCertificate;
 
@@ -1019,6 +1056,39 @@ class QualityCertificatesList extends Component {
                     </PaginationProvider>
                   </CardBody>
                 </Card>
+                <Row>
+                <Col sm="2" lg="2">
+                </Col>
+                {
+                isEmpty(this.props.qualityCertificates)&&
+                // this.props.labProfiles.type == "Collection Point" &&
+                // console.log("desh desh",this.props.offeredTests)
+                 (
+                  <Col sm="2" lg="10">
+                  <Card className="col-md-9">
+                    <CardBody >
+                    <div>
+
+                    <input
+                      name="main_lab_quality"
+                      type="checkbox"
+                      required= {true}
+                    // checked={false}
+                      checked={this.state.isChecked}
+                      onChange={this.handleAPICall
+                    }
+                    />
+                      
+                        <b> Do you want to add your main labs tests as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the tests offered by your main lab with all the details will be added <br></br>this will not be undone, You can edit the test details only</b>
+                    
+                    </div>
+                    </CardBody>
+                  </Card>
+
+                  </Col>
+                )}
+               
+              </Row>
               </Col>
             </Row>
           </Container>
@@ -1036,10 +1106,17 @@ QualityCertificatesList.propTypes = {
   onAddNewQualityCertificate: PropTypes.func,
   onDeleteQualityCertificate: PropTypes.func,
   onUpdateQualityCertificate: PropTypes.func,
+  // onGetLabProfile: PropTypes.func,
+  // labProfiles: PropTypes.array,
+  onAddNewCollectionPointQuality: PropTypes.func,
+
+
 };
 
 const mapStateToProps = ({ qualityCertificates }) => ({
   qualityCertificates: qualityCertificates.qualityCertificates,
+  // labProfiles: qualityCertificates.labProfiles,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -1050,6 +1127,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(updateQualityCertificate(qualityCertificate)),
   onDeleteQualityCertificate: qualityCertificate =>
     dispatch(deleteQualityCertificate(qualityCertificate)),
+  // onGetLabProfile: id => dispatch(getLabProfile(id)),
+  onAddNewCollectionPointQuality: (qualityCertificate, id) =>
+  dispatch(addNewCollectionPointQuality(qualityCertificate, id)),
+
 });
 
 export default connect(

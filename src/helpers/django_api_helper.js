@@ -481,6 +481,17 @@ return axios.post(`${url.ADD_NEW_NOTE}/${id}`, formData, {
 });
 };
 // ------------- Test Certificate Requests START -------------
+
+export const addNewCollectionPointQuality = (qualityCertificate, id) => {
+  let formData = new FormData();
+  formData.append("main_lab_quality", qualityCertificate.main_lab_quality);
+  // formData.append("unit_id", qualityCertificate.unit_id);
+  console.log("dataaaa",qualityCertificate )
+  return axios.post(`${url.ADD_NEW_COLLECTIONPOINT_QUALITY}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 export const getQualityCertificates = id =>
   get(`${url.GET_QUALITY_CERTIFICATES}/${id}`, {
     headers: getHeader(authHeader()),
@@ -531,6 +542,10 @@ export const getActivityLog = id =>
     headers: getHeader(authHeader()),
   });
   
+  export const getActivityLogFinance = id =>
+  get(`${url.GET_ACTIVITY_LOG_FINANCE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 // ------------- Pathologists START -------------
 export const getPathologists = id =>
   get(`${url.GET_PATHOLOGISTS}/${id}`, {
@@ -849,9 +864,12 @@ export const getNearbyLabs = locationDetails => {
   formData.append("latitude", locationDetails.latitude);
   formData.append("longitude", locationDetails.longitude);
   formData.append("search_type", locationDetails.search_type);
+  formData.append("km", locationDetails.km);
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
   formData.append("guest_id", locationDetails.guest_id);
+
+  console.log("In near by lsbd: ", locationDetails)
 
 
   return axios.post(`${url.GET_NEARBY_LABS}`, formData, {
@@ -866,6 +884,7 @@ export const getNearbyTests = data => {
   formData.append("latitude", data.latitude);
   formData.append("longitude", data.longitude);
   formData.append("search_type", data.search_type);
+  formData.append("km", data.km);
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("test_name", data.test_name);
@@ -884,6 +903,7 @@ export const getNearbyProfiles = data => {
   formData.append("search_type", data.search_type);
   formData.append("address", data.address);
   formData.append("city", data.city);
+  formData.append("km", data.km);
   formData.append("test_name", data.test_name);
   console.log("donorSetting: ", data);
 
@@ -910,6 +930,7 @@ export const getNearbyPackages = data => {
   formData.append("search_type", data.search_type);
   formData.append("address", data.address);
   formData.append("city", data.city);
+  formData.append("km", data.km);
   formData.append("test_name", data.test_name);
 
   return axios.post(`${url.GET_NEARBY_PACKAGES}`, formData, {
@@ -939,6 +960,7 @@ export const getNearbyRadiology = data => {
   formData.append("search_type", data.search_type);
   formData.append("address", data.address);
   formData.append("city", data.city);
+  formData.append("km", data.km);
   formData.append("test_name", data.test_name);
 
   return axios.post(`${url.GET_NEARBY_RADIOLOGY}`, formData, {

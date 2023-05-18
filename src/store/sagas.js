@@ -33,6 +33,7 @@ import TestsSaga from "./test-list/saga";
 import offeredTestsSaga from "./offered-tests/saga";
 import pathologistsSaga from "./pathologists/saga";
 import activitylogSaga from "./activtylog/saga";
+import activitylogfinanceSaga from "./activtylogfinance/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
 import LabsListPendingFeeSaga from "./labs-list-pending/saga";
@@ -132,6 +133,7 @@ export default function* rootSaga() {
     fork(offeredTestsSaga),
     fork(pathologistsSaga),
     fork(activitylogSaga),
+    fork(activitylogfinanceSaga),
     fork(cartsSaga),
     fork(bankTransferSaga),
     fork(LabsListPendingFeeSaga),
