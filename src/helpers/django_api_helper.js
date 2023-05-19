@@ -865,6 +865,7 @@ export const getNearbyLabs = locationDetails => {
   formData.append("longitude", locationDetails.longitude);
   formData.append("search_type", locationDetails.search_type);
   formData.append("km", locationDetails.km);
+  formData.append("LabType", locationDetails.LabType);
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
   formData.append("guest_id", locationDetails.guest_id);

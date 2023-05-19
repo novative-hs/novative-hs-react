@@ -78,6 +78,7 @@ class NearbyLabs extends Component {
       address: "",
       search_type: "Current Location",
       km: "30",
+      LabType: "Main",
       city: "",
       latitude: "",
       longitude: "",
@@ -180,6 +181,7 @@ class NearbyLabs extends Component {
         address: this.state.address,
         city: this.state.city,
         km: this.state.km,
+        LabType: this.state.LabType
       };
       if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
@@ -472,6 +474,34 @@ class NearbyLabs extends Component {
       longitude: this.state.currentLongitude,
       search_type: this.state.search_type,
       km: e.target.value,
+      LabType: this.state.LabType,
+      address: this.state.address,
+      city: this.state.city,
+    };
+    // region wise advertisement
+    onGetNearbyLabs(locationDetails);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyLabs: this.props.nearbyLabs });
+    }, 1000);
+  };
+  onChangeType = e => {
+    this.setState({ LabType: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyLabs } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var locationDetails = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      LabType: e.target.value,
+      // km: this.state.km,
       address: this.state.address,
       city: this.state.city,
     };
@@ -1191,6 +1221,24 @@ class NearbyLabs extends Component {
                               </option>
                             </Field>
                           </div>
+                        </Col>
+                        <Col lg="3">
+                          <div className="mb-3">
+                                  <Label for="LabType" className="form-label">
+                                    Main Lab / Collection Point
+                                  </Label>
+                                  <Field
+                                    name="LabType"
+                                    component="select"
+                                    onChange={e => this.onChangeType(e)}
+                                    value={this.state.LabType}
+                                    className="form-select"
+                                  >
+                                    <option value="Main">Main</option>
+                                    <option value="Collection">Collection
+                                    </option>
+                                  </Field>
+                                </div>
                         </Col>
 
                         {/* City field */}
