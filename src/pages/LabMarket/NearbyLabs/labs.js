@@ -1058,7 +1058,7 @@ class NearbyLabs extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="mb-3">
+                          <div className="mt-4">
                             <Field
                               name="search_type"
                               component="select"
@@ -1080,7 +1080,7 @@ class NearbyLabs extends Component {
                         {/* City field */}
                         <Col lg="3">
                           {this.state.search_type === "Custom Address" && (
-                            <div className="mb-3">
+                            <div className="mt-4">
                               <Select
                                 name="city "
                                 component="Select"
@@ -1096,7 +1096,7 @@ class NearbyLabs extends Component {
                         {/* Custom Address field */}
                         <Col lg="3">
                           {this.state.city != "" && (
-                            <div className="mb-3">
+                            <div className="mt-4">
                               <Input
                                 defaultValue={this.state.address}
                                 onChange={e => this.onChangeAddress(e)}
