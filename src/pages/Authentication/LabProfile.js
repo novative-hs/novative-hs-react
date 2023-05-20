@@ -204,13 +204,19 @@ class LabProfile extends Component {
                       .required("Please enter your email")
                       .email("Please enter valid email")
                       .max(255, "Please enter maximum 255 characters"),
+                    // landline: Yup.string()
+                    //   .required("Please enter your landline no.")
+                    //   .max(255, "Please enter maximum 255 characters")
+                    //   .matches(
+                    //     /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{10}$|^\d{3}-\d{7}|^\d{11}$|^\d{3}-\d{8}$/,
+                    //     "Please enter a valid Pakistani landline number"
+                    //   ),
                     landline: Yup.string()
-                      .required("Please enter your landline no.")
-                      .max(255, "Please enter maximum 255 characters")
-                      .matches(
-                        /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{10}$|^\d{3}-\d{7}|^\d{11}$|^\d{3}-\d{8}$/,
-                        "Please enter a valid Pakistani landline number"
-                      ),
+                    .required("Please enter your landline no.")
+                    .max(
+                      255,
+                      "Please enter maximum 255 characters"
+                    ),
                     address: Yup.string()
                       .trim()
                       .required("Please enter your full address")
