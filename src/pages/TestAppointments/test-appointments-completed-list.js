@@ -101,6 +101,37 @@ class TestAppointmentsCompletedList extends Component {
           ),
         },
         {
+          dataField: "status",
+          text: "Appointment Status",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              {testAppointment.status == "Pending Cancel" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  Cancel
+                </span>
+              )}
+              {testAppointment.status == "Sample Collected" && (
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+                  {testAppointment.status}
+                </span>
+              )}
+
+              {testAppointment.status == "Cancel" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {testAppointment.status}
+                </span>
+              )}
+
+              {testAppointment.status == "Result Uploaded" && (
+                <span className="badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                  {testAppointment.status}
+                </span>
+              )}
+            </>
+          ),
+        },
+        {
           dataField: "estimated_sample_collection_at",
           text: "Sampling time by Lab",
           sort: true,

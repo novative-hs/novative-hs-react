@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 import {
   Card,
@@ -22,7 +23,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import Tooltip from "@material-ui/core/Tooltip";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
@@ -180,6 +181,12 @@ class TestAppointmentsPendingList extends Component {
                   }
                 ></i>
               </Link>
+              <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/lab-note-list/${testAppointment.id}`}
+                ></Link>
+              </Tooltip>
             </div>
           ),
         },
@@ -202,14 +209,12 @@ class TestAppointmentsPendingList extends Component {
       testAppointments
       // appointmentmodal: true,
     });
-    console.log("state lab appointments", testAppointments)
 
     const { labProfiles, onGetLabProfile } = this.props;
     onGetLabProfile(this.state.user_id);
     this.setState({
       labProfiles
     });
-    console.log("state lab profile", labProfiles)
     // try {
     //   setInterval(async () => {
     //     const prev=this.props.testAppointments.length;
@@ -303,12 +308,6 @@ class TestAppointmentsPendingList extends Component {
     ) {
       this.setState({ testAppointments: {} });
     }
-    // if ((testAppointments.length) >= size(prevProps.testAppointments.length)) {
-    //   this.setState({ testAppointments: {},appointmentmodal :true });
-    // }
-    console.log(size(testAppointments))
-    console.log(size(prevProps.testAppointments))
-
   }
 
   onPaginationPageChange = page => {

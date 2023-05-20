@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import {
   Card,
   CardBody,
@@ -59,6 +60,7 @@ class handledComplaintsList extends Component {
           formatter: (cellContent, handledComplaint) => (
             <>{handledComplaint.id}</>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "complaint_id",
@@ -69,11 +71,13 @@ class handledComplaintsList extends Component {
               <strong>{handledComplaint.complaint_id}</strong>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "name",
@@ -91,6 +95,7 @@ class handledComplaintsList extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -115,6 +120,7 @@ class handledComplaintsList extends Component {
                   }
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "message",
@@ -127,6 +133,7 @@ class handledComplaintsList extends Component {
               </Link>{" "}
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -139,6 +146,7 @@ class handledComplaintsList extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "handled_at",
@@ -151,6 +159,7 @@ class handledComplaintsList extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
       ],
     };
@@ -276,12 +285,12 @@ class handledComplaintsList extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
@@ -409,6 +418,7 @@ class handledComplaintsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
                                     />
 
                                     <Modal

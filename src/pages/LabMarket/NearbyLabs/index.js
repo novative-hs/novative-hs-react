@@ -415,6 +415,9 @@ class NearbyLabs extends Component {
         search_type: this.state.search_type,
         address: e.target.value,
         city: this.state.city,
+        LabType: this.state.LabType,
+        km: this.state.km,
+
       };
 
       onGetNearbyLabs(locationDetails);
@@ -447,6 +450,8 @@ class NearbyLabs extends Component {
         search_type: e.target.value,
         address: this.state.address,
         city: this.state.city,
+        LabType: this.state.LabType,
+        km: this.state.km,
       };
       // region wise advertisement
       onGetNearbyLabs(locationDetails);
@@ -501,7 +506,7 @@ class NearbyLabs extends Component {
       longitude: this.state.currentLongitude,
       search_type: this.state.search_type,
       LabType: e.target.value,
-      // km: this.state.km,
+      km: this.state.km,
       address: this.state.address,
       city: this.state.city,
     };
@@ -528,6 +533,8 @@ class NearbyLabs extends Component {
       search_type: this.state.search_type,
       address: this.state.address,
       city: selectedGroup.value,
+      LabType: this.state.LabType,
+      km: this.state.km,
     };
 
     onGetNearbyLabs(locationDetails);
@@ -1170,6 +1177,10 @@ class NearbyLabs extends Component {
                       "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
+                    LabType: (this.state && this.state.LabType) ||
+                    "Main",
+                    km: (this.state && this.state.km) ||
+                    "30",
                   }}
                   validationSchema={Yup.object().shape({
                     city: Yup.string().when("search_type", {
@@ -1205,9 +1216,10 @@ class NearbyLabs extends Component {
                             </div>
                           </div>
                           {/* </Col> */}
-                          <div className="mt-4">
+                          <div className="mt-4" style={{ display: 'none' }}>
                             <Field
                               name="search_type"
+                              
                               component="select"
                               onChange={e => this.onChangeSearchType(e)}
                               value={this.state.search_type}
@@ -1225,7 +1237,7 @@ class NearbyLabs extends Component {
                         <Col lg="3">
                           <div className="mb-3">
                                   <Label for="LabType" className="form-label">
-                                    Main Lab / Collection Point
+                                    Search By Labs Type
                                   </Label>
                                   <Field
                                     name="LabType"
@@ -1234,17 +1246,20 @@ class NearbyLabs extends Component {
                                     value={this.state.LabType}
                                     className="form-select"
                                   >
-                                    <option value="Main">Main</option>
-                                    <option value="Collection">Collection
+                                    <option value="Main">Main Labs</option>
+                                    <option value="Collection">Collection Points
                                     </option>
+                                    <option value="Others">Others</option>
                                   </Field>
                                 </div>
                         </Col>
 
                         {/* City field */}
                         <Col lg="3">
-                          {this.state.search_type === "Custom Address" && (
-                            <div className="mt-4">
+                            <div className="mb-3">
+                            <Label for="LabType" className="form-label">
+                                    Search By City
+                                  </Label>
                               <Select
                                 name="city "
                                 comp onent="Select"
@@ -1254,7 +1269,6 @@ class NearbyLabs extends Component {
                                 placeholder="Select City..."
                               />
                             </div>
-                          )}
                         </Col>
 
                         {/* Custom Address field */}

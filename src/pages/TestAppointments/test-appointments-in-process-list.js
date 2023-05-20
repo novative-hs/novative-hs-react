@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 
 import {
@@ -531,7 +532,7 @@ class TestAppointmentsInProcessList extends Component {
           formatter: (cellContent, testAppointment) => (
             
             
-            <div className="d-flex gap-3">
+            <div className="d-flex gap-2">
 {testAppointment.payment_status == "Not Paid"&& (
             <Tooltip title="Payment">
                <Link
@@ -540,6 +541,7 @@ class TestAppointmentsInProcessList extends Component {
               >
               </Link>
             </Tooltip>
+            
           )}
               <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
@@ -570,6 +572,12 @@ class TestAppointmentsInProcessList extends Component {
                 ></i>
               </Tooltip>
               </Link>
+              <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/lab-note-list/${testAppointment.id}`}
+                ></Link>
+              </Tooltip>
             </div>
           ),
         },

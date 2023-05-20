@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
 import {
   Card,
   CardBody,
@@ -58,6 +60,7 @@ class UnhandledComplaints extends Component {
           formatter: (cellContent, unhandledComplaint) => (
             <>{unhandledComplaint.id}</>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "complaint_id",
@@ -68,11 +71,13 @@ class UnhandledComplaints extends Component {
               <strong>{testAppointment.complaint_id}</strong>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "name",
@@ -90,6 +95,7 @@ class UnhandledComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -113,6 +119,7 @@ class UnhandledComplaints extends Component {
                   {unhandledComplaint.lab_name}
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "message",
@@ -125,6 +132,7 @@ class UnhandledComplaints extends Component {
               </Link>{" "}
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -137,6 +145,7 @@ class UnhandledComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -150,6 +159,7 @@ class UnhandledComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "data",
@@ -304,7 +314,7 @@ class UnhandledComplaints extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
+                              {/* <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
@@ -315,7 +325,7 @@ class UnhandledComplaints extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                              </Row>
+                              </Row> */}
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -329,7 +339,7 @@ class UnhandledComplaints extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-
+                                      filter={ filterFactory() }
                                     />
                                     <Modal
                                       isOpen={this.state.messageModal}

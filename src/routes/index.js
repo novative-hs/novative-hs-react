@@ -205,8 +205,7 @@ import HandledComplaints from "pages/Complaints/handled-complaints";
 import csrComplaints from "pages/Complaints/csr-complaints";
 import NotesList from "pages/Complaints/notes-list";
 import NotesLists from "pages/Complaints/notes-list";
-
-
+import labnotes from "pages/Complaints/notes-list";
 
 import AssignedAudits from "pages/Auditor/assigned-audits";
 import LabAudits from "pages/Dashboard-Lab/lab-audits";
@@ -316,6 +315,7 @@ const labAuthProtectedRoutes = [
     path: "/sample-collectors",
     component: SampleCollectorsList,
   },
+  { path: "/lab-note-list/:id", component: labnotes },
   {
     path: "/sample-collector-info/:id",
     component: SampleCollectorInfo,

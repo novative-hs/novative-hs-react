@@ -13,6 +13,7 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 import paginationFactory, {
   PaginationProvider,
@@ -49,6 +50,7 @@ class PatientsList extends Component {
               <strong>{patient.account_id}</strong>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "name",
@@ -62,35 +64,20 @@ class PatientsList extends Component {
               </Link>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "phone",
           text: "Phone",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "city",
           text: "City",
           sort: true,
+          filter: textFilter(),
         },
-        // {
-        //   dataField: "website_url",
-        //   text: "Website",
-        //   sort: true,
-        //   formatter: (cellContent, patient) => (
-        //     <>
-        //       <Link
-        //         to={{
-        //           pathname: patient.website_url,
-        //         }}
-        //         target="_blank"
-        //       >
-        //         {patient.website_url}
-        //       </Link>
-        //     </>
-        //   ),
-        // },
-      
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -144,11 +131,11 @@ class PatientsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>B2B Clients List | Lab Hazir</title>
+            <title>Patients List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B Client" breadcrumbItem=" List" />
+            <Breadcrumbs title="Patients" breadcrumbItem=" List" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -168,7 +155,7 @@ class PatientsList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
+                              {/* <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
@@ -179,7 +166,7 @@ class PatientsList extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                              </Row>
+                              </Row> */}
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -193,6 +180,7 @@ class PatientsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
                                     />
                                     <Modal
                                       isOpen={this.state.modal}

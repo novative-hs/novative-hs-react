@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 import {
   Card,
@@ -27,13 +29,12 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import BootstrapTable from "react-bootstrap-table-next";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import { getFeedbacks } from "store/feedbacks/actions";
-
+import { getLabProfile } from "../../store/actions";
 import { isEmpty, size } from "lodash";
 
 import "assets/scss/table.scss";
@@ -44,8 +45,9 @@ class FeedbacksList extends Component {
     this.node = React.createRef();
     this.state = {
       feedbacks: [],
+      labProfile:[],
       feedback: "",
-      rating_values:"",
+      rating:"",
       modal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -57,31 +59,49 @@ class FeedbacksList extends Component {
           sort: true,
           hidden: true,
           formatter: (cellContent, feedback) => <>{feedback.id}</>,
+          filter: textFilter(),
         },
         {
           dataField: "order_id",
           text: "Order id",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "patient_name",
           text: "Name",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "city",
           text: "City",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "rating",
           text: "Rating",
           sort: true,
+          formatter: (cellContent, feedback) => (
+            <StarRatings
+              rating={feedback.rating}
+              starRatedColor="#F1B44C"
+              starEmptyColor="#2D363F"
+              numberOfStars={5}
+              name="rating"
+              starDimension="20px"
+              starSpacing="3px"
+            />
+          ),
+          filter: textFilter(),
         },
+        
         {
           dataField: "review",
           text: "Review",
           sort: true,
+          filter: textFilter(),
         },
       ],
     };
@@ -92,7 +112,12 @@ class FeedbacksList extends Component {
     const { feedbacks, onGetFeedbacks } = this.props;
     onGetFeedbacks(this.state.user_id);
     this.setState({ feedbacks });
+    const { labProfile, onGetLabProfile } = this.props;
+    console.log(onGetLabProfile(this.state.user_id));
+    this.setState({ labProfile }); 
+    console.log("state",labProfile)
   }
+ 
 
   toggle() {
     this.setState(prevState => ({
@@ -123,10 +148,11 @@ class FeedbacksList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { feedbacks } = this.props;
+    const { feedbacks, labProfile } = this.props;
 
-    const { onGetFeedbacks } = this.props;
+    const { onGetFeedbacks, onGetLabProfile } = this.props;
     const feedback = this.state.feedback;
+    // const labprofile=this.state.labprofile;
 
     const pageOptions = {
       sizePerPage: 10,
@@ -142,6 +168,7 @@ class FeedbacksList extends Component {
     ];
 
     return (
+      console.log("hello",this.props.labProfile.type),
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
@@ -167,10 +194,11 @@ class FeedbacksList extends Component {
                           data={feedbacks}
                           search
                         >
+                          
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="4">
+                                {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
@@ -179,12 +207,11 @@ class FeedbacksList extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
-                                </Col>
-                                <Col sm="2" lg="2">
-                                  <div className="text-sm-end">
-                                  
+                                </Col> */}
+                                <Col sm="10" lg="10">
+                                  <div className="text-center">
                             <StarRatings
-                              rating={feedback.rating_values}
+                              rating={labProfile.rating}
                               // rating={5}
                               starRatedColor="#F1B44C"
                               starEmptyColor="#2D363F"
@@ -210,6 +237,7 @@ class FeedbacksList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
                                     />
                                   </div>
                                 </Col>
@@ -240,16 +268,24 @@ class FeedbacksList extends Component {
 FeedbacksList.propTypes = {
   match: PropTypes.object,
   feedbacks: PropTypes.array,
+  labProfile: PropTypes.array,
   className: PropTypes.any,
   onGetFeedbacks: PropTypes.func,
+  match: PropTypes.object,
+  onGetLabProfile: PropTypes.func,
+  location: PropTypes.object,
+  error: PropTypes.any,
+  success: PropTypes.any,
 };
 
-const mapStateToProps = ({ feedbacks }) => ({
+const mapStateToProps = ({ feedbacks}) => ({
   feedbacks: feedbacks.feedbacks,
+  labProfile:feedbacks.labProfile,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetFeedbacks: id => dispatch(getFeedbacks(id)),
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
 });
 
 export default connect(

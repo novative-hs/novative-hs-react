@@ -22,6 +22,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import Tooltip from "@material-ui/core/Tooltip";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -63,6 +64,7 @@ class csrComplaints extends Component {
           sort: true,
           hidden: true,
           formatter: (cellContent, csrComplaint) => <>{csrComplaint.id}</>,
+          filter: textFilter(),
         },
         {
           dataField: "order_id",
@@ -73,6 +75,7 @@ class csrComplaints extends Component {
               <strong>{csrComplaint.order_id}</strong>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "patient_name",
@@ -90,6 +93,7 @@ class csrComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "lab_name",
@@ -104,6 +108,7 @@ class csrComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "is_home_sampling_availed",
@@ -118,6 +123,7 @@ class csrComplaints extends Component {
               )}
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "is_state_sampling_availed",
@@ -132,11 +138,13 @@ class csrComplaints extends Component {
               )}
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "appointment_requested_at",
@@ -151,6 +159,7 @@ class csrComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "estimated_sample_collection_at",
@@ -165,6 +174,7 @@ class csrComplaints extends Component {
               </span>
             </>
           ),
+          filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -345,7 +355,7 @@ class csrComplaints extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
+                              {/* <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
@@ -356,7 +366,7 @@ class csrComplaints extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                              </Row>
+                              </Row> */}
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -370,6 +380,7 @@ class csrComplaints extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
                                     />
                                     <Modal
                                       isOpen={this.state.LabModal}

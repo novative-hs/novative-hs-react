@@ -65,7 +65,6 @@ class Checkout extends Component {
       patient_phone: "",
       booked_by:"",
       csr_id:"",
-
       // relationsip_with_patient: "Self",
       patient_address: "",
       city_id: "",
@@ -1281,7 +1280,7 @@ class Checkout extends Component {
                                                     <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
                                                     Sub Total{" "}
                                                     <span className="float-end">
-                                                      Rs.{" "}
+                                                      Rsss.{" "}
                                                       {
                                                         checkoutItem.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                                       }

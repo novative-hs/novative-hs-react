@@ -30,6 +30,7 @@ class DonorInformation extends Component {
       cnic:"",
       company_name:"",
       is_income_tax_payable:"",
+      national_taxation_no:"",
       is_blocked:"",
       city_id: "",
       // district: "",
@@ -136,6 +137,7 @@ class DonorInformation extends Component {
                               cnic: (this.state && this.state.cnic) || "",
                               company_name: (this.state && this.state.company_name) || "",
                               is_income_tax_payable: (this.state && this.state.is_income_tax_payable) || "",
+                              national_taxation_no: (this.state && this.state.national_taxation_no) || "",
                               is_blocked: (this.state && this.state.is_blocked) || "",
                               // province:
                               // (this.state && this.state.province) || "",
@@ -146,15 +148,15 @@ class DonorInformation extends Component {
 
                             }}
                             validationSchema={Yup.object().shape({
-                              name: Yup.string()
-                                .trim()
-                                .required("Please enter your name")
-                                .min(3, "Please enter at least 3 characters")
-                                .max(255, "Please enter maximum 255 characters")
-                                .matches(
-                                  /^[a-zA-Z][a-zA-Z ]+$/,
-                                  "Please enter only alphabets and spaces"
-                                ),
+                              // name: Yup.string()
+                              //   .trim()
+                              //   .required("Please enter your name")
+                              //   .min(3, "Please enter at least 3 characters")
+                              //   .max(255, "Please enter maximum 255 characters")
+                              //   .matches(
+                              //     /^[a-zA-Z][a-zA-Z ]+$/,
+                              //     "Please enter only alphabets and spaces"
+                              //   ),
                               email: Yup.string()
                                 .required("Please enter your email")
                                 .email("Please enter valid email"),
@@ -178,34 +180,6 @@ class DonorInformation extends Component {
                           >
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
-                                {/* Name field */}
-                                <div className="mb-3">
-                                  <Label for="name" className="form-label">
-                                    Name
-                                  </Label>
-                                  <Field
-                                    id="name"
-                                    name="name"
-                                    placeholder="Enter Name"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ name: e.target.value })
-                                    }
-                                    value={this.state.name}
-                                    className={
-                                      "form-control" +
-                                      (errors.name && touched.name
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="name"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-
                                 {/* Landline field */}
                                 <div className="mb-3">
                                   <Label for="phone" className="form-label">
@@ -291,6 +265,35 @@ class DonorInformation extends Component {
                                     </option>
                                   </Field>
                                 </div>
+                                  {/* Name field */}
+                                  {this.state.type === "Individual" && (
+                                  <div className="mb-3">
+                                  <Label for="name" className="form-label">
+                                    Name
+                                  </Label>
+                                  <Field
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter Name"
+                                    type="text"
+                                    onChange={e =>
+                                      this.setState({ name: e.target.value })
+                                    }
+                                    value={this.state.name}
+                                    className={
+                                      "form-control" +
+                                      (errors.name && touched.name
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="name"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                                )}
                                     {/* Branch name field */}
                                     {this.state.type === "Individual" && (
                                   <div className="mb-3">
@@ -461,7 +464,7 @@ class DonorInformation extends Component {
                                       for="is_income_tax_payable"
                                       className="form-label"
                                     >
-                                      Is Income Tex Payable?
+                                      Is Income Tax Payable?
                                     </Label>
                                     <Field
                                     name="is_income_tax_payable"
@@ -481,6 +484,37 @@ class DonorInformation extends Component {
                                     <option value="No">No</option>
                                   </Field>
                                   </div>
+                                )}
+                                {this.state.type === "Company" && (
+                                <div className="mb-3">
+                                  <Label for="national_taxation_no" className="form-label">
+                                    NTN No
+                                  </Label>
+                                  <Field
+                                    name="national_taxation_no"
+                                    placeholder="Enter national_taxation_no"
+                                    onChange={e =>
+                                      this.setState({
+                                        national_taxation_no: e.target.value,
+                                      })
+                                    }
+                                    type="text"
+                                    value={this.state.national_taxation_no}
+
+                                    className={
+                                      "form-control" +
+                                      (errors.national_taxation_no && touched.national_taxation_no
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+
+                                </div>
                                 )}
                                 <div className="mt-3 d-grid">
                                   <button

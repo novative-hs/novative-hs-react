@@ -78,6 +78,7 @@ class NearbyLabs extends Component {
       city: "",
       latitude: "",
       km: "30",
+      LabType: "Main",
       longitude: "",
       location: "",
       currentLatitude: "",
@@ -164,7 +165,7 @@ class NearbyLabs extends Component {
         address: this.state.address,
         city: this.state.city,
         km: this.state.km,
-
+        LabType: this.state.LabType
       };
       // if (!this.state.user_id && !this.props.match.params.guest_id) {
 
@@ -363,6 +364,8 @@ class NearbyLabs extends Component {
         search_type: this.state.search_type,
         address: e.target.value,
         city: this.state.city,
+        LabType: this.state.LabType,
+        km: this.state.km,
       };
 
       onGetNearbyLabs(locationDetails);
@@ -389,6 +392,8 @@ class NearbyLabs extends Component {
         search_type: e.target.value,
         address: this.state.address,
         city: this.state.city,
+        LabType: this.state.LabType,
+        km: this.state.km,
       };
 
       onGetNearbyLabs(locationDetails);
@@ -413,6 +418,34 @@ class NearbyLabs extends Component {
       longitude: this.state.currentLongitude,
       search_type: this.state.search_type,
       km: e.target.value,
+      LabType: this.state.LabType,
+      address: this.state.address,
+      city: this.state.city,
+    };
+    // region wise advertisement
+    onGetNearbyLabs(locationDetails);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyLabs: this.props.nearbyLabs });
+    }, 1000);
+  };
+  onChangeType = e => {
+    this.setState({ LabType: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyLabs } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var locationDetails = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      LabType: e.target.value,
+      km: this.state.km,
       address: this.state.address,
       city: this.state.city,
     };
@@ -438,6 +471,8 @@ class NearbyLabs extends Component {
       search_type: this.state.search_type,
       address: this.state.address,
       city: selectedGroup.value,
+      LabType: this.state.LabType,
+      km: this.state.km,
     };
 
     onGetNearbyLabs(locationDetails);
@@ -1041,7 +1076,8 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       <Row>
-                        <Col lg="3">
+                      <Col lg="3">
+                          {/* <Col lg="3"> */}
                           <div className="mb-3">
                             <Label>Search By Kilo Meters</Label>
                             <div className="input-group">
@@ -1058,9 +1094,11 @@ class NearbyLabs extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="mt-4">
+                          {/* </Col> */}
+                          <div className="mt-4" style={{ display: 'none' }}>
                             <Field
                               name="search_type"
+                              
                               component="select"
                               onChange={e => this.onChangeSearchType(e)}
                               value={this.state.search_type}
@@ -1075,23 +1113,43 @@ class NearbyLabs extends Component {
                             </Field>
                           </div>
                         </Col>
-
+                        <Col lg="3">
+                          <div className="mb-3">
+                                  <Label for="LabType" className="form-label">
+                                    Search By Labs Type
+                                  </Label>
+                                  <Field
+                                    name="LabType"
+                                    component="select"
+                                    onChange={e => this.onChangeType(e)}
+                                    value={this.state.LabType}
+                                    className="form-select"
+                                  >
+                                    <option value="Main">Main Labs</option>
+                                    <option value="Collection">Collection Points
+                                    </option>
+                                    <option value="Others">Others</option>
+                                  </Field>
+                                </div>
+                        </Col>
 
                         {/* City field */}
                         <Col lg="3">
-                          {this.state.search_type === "Custom Address" && (
-                            <div className="mt-4">
+                            <div className="mb-3">
+                            <Label for="LabType" className="form-label">
+                                    Search By City
+                                  </Label>
                               <Select
                                 name="city "
-                                component="Select"
+                                comp onent="Select"
                                 onChange={this.onChangeCity}
                                 className="defautSelectParent is-invalid"
                                 options={CITIES}
                                 placeholder="Select City..."
                               />
                             </div>
-                          )}
                         </Col>
+
 
                         {/* Custom Address field */}
                         <Col lg="3">

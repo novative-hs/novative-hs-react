@@ -165,6 +165,7 @@ export const postDonorInformation = (id, donor) => {
   // formData.append("district", donor.district);
   formData.append("company_name", donor.company_name);
   formData.append("is_income_tax_payable", donor.is_income_tax_payable);
+  formData.append("national_taxation_no", donor.national_taxation_no);
   formData.append("is_blocked", donor.is_blocked);
 
   return axios
