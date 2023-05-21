@@ -487,7 +487,7 @@ export const addNewCollectionPointQuality = (qualityCertificate, id) => {
   let formData = new FormData();
   formData.append("main_lab_quality", qualityCertificate.main_lab_quality);
   // formData.append("unit_id", qualityCertificate.unit_id);
-  console.log("dataaaa",qualityCertificate )
+  console.log("main_lab_quality",qualityCertificate )
   return axios.post(`${url.ADD_NEW_COLLECTIONPOINT_QUALITY}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });

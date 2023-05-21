@@ -36,14 +36,14 @@ export const getLabProfileFail = error => ({
   payload: error,
 });
 
-export const addNewCollectionPointQuality = (quality, id) => ({
+export const addNewCollectionPointQuality = (qualityCertificate, id) => ({
   type: ADD_NEW_COLLECTIONPOINT_QUALITY,
-  payload: { quality, id },
+  payload: { qualityCertificate, id },
 });
 
-export const addCollectionPointQualitySuccess = quality => ({
+export const addCollectionPointQualitySuccess = qualityCertificate => ({
   type: ADD_COLLECTIONPOINT_QUALITY_SUCCESS,
-  payload: quality,
+  payload: qualityCertificate,
 });
 
 export const addCollectionPointQualityFail = error => ({

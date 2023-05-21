@@ -251,6 +251,7 @@ class QualityCertificatesList extends Component {
         expiry_date: arg.expiry_date,
         start_date: arg.start_date,
         end_date: arg.end_date,
+        main_lab_quality: arg.main_lab_quality,
       },
       certificateImg: "",
       isEdit: true,
