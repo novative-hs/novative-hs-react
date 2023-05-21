@@ -685,6 +685,7 @@ export const updateTestAppointment = testAppointment => {
     // );
   } else if (testAppointment.process == "rescheduling") {
     formData.append("rescheduled_by", testAppointment.rescheduledBy);
+    formData.append("assigned_to", testAppointment.assigned_to);
 
     if (testAppointment.reschedule_reason == "Other") {
       formData.append("reschedule_reason", testAppointment.reason);
