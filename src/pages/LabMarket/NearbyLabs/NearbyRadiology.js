@@ -76,6 +76,7 @@ class NearbyPackage extends Component {
       currentLongitude: "",
       location: "",
       km: "30",
+      LabType: "Main",
       success: "",
       error: "",
       discountData: [],
@@ -131,6 +132,8 @@ class NearbyPackage extends Component {
         city: this.state.city,
         test_name: this.state.test_name,
         km: this.state.km,
+        LabType: this.state.LabType,
+
 
       };
 
@@ -338,6 +341,9 @@ class NearbyPackage extends Component {
         address: this.state.address,
         city: this.state.city,
         test_name: this.state.test_name,
+        LabType: this.state.LabType,
+        km: this.state.km,
+
       };
 
     onGetNearbyRadiology(data);
@@ -375,6 +381,9 @@ class NearbyPackage extends Component {
           address: e.target.value,
           city: this.state.city,
           test_name: this.state.test_name,
+          LabType: this.state.LabType,
+          km: this.state.km,
+
         };
 
         onGetNearbyRadiology(data);
@@ -384,35 +393,6 @@ class NearbyPackage extends Component {
         }, 1000);
       }, 1000);
     });
-  };
-
-  onChangeKm = e => {
-    this.setState({ km: e.target.value });
-
-    // Call nearby labs API only if the search type changes to current location
-
-    const { onGetNearbyRadiology } = this.props;
-    // const { onGetAdvLive } = this.props;
-    // const { onGetRegionWiseAdvertisement } = this.props;
-
-    var data = {
-      latitude: this.state.currentLatitude,
-      longitude: this.state.currentLongitude,
-      search_type: this.state.search_type,
-      km: e.target.value,
-      address: this.state.address,
-      city: this.state.city,
-      test_name: this.state.test_name,
-
-    };
-    // region wise advertisement
-    onGetNearbyRadiology(data);
-    // onGetAdvLive(locationDetails);
-    // onGetRegionWiseAdvertisement(locationDetails);
-
-    setTimeout(() => {
-      this.setState({ nearbyRadiology: this.props.nearbyRadiology });
-    }, 1000);
   };
 
   onChangeSearchType = e => {
@@ -432,6 +412,9 @@ class NearbyPackage extends Component {
         address: this.state.address,
         city: this.state.city,
         test_name: this.state.test_name,
+        LabType: this.state.LabType,
+        km: this.state.km,
+
       };
 
       onGetNearbyRadiology(data);
@@ -455,6 +438,9 @@ class NearbyPackage extends Component {
       address: this.state.address,
       city: selectedGroup.value,
       test_name: this.state.test_name,
+      LabType: this.state.LabType,
+      km: this.state.km,
+
     };
 
     onGetNearbyRadiology(data);
@@ -513,6 +499,66 @@ class NearbyPackage extends Component {
       this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
     }, 2000);
+  };
+
+  onChangeKm = e => {
+    this.setState({ km: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyRadiology } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      km: e.target.value,
+      LabType: this.state.LabType,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+
+    };
+    // region wise advertisement
+    onGetNearbyRadiology(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyRadiology: this.props.nearbyRadiology });
+    }, 1000);
+  };
+
+  onChangeType = e => {
+    this.setState({ LabType: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyRadiology } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      LabType: e.target.value,
+      km: this.state.km,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+
+    };
+    // region wise advertisement
+    onGetNearbyRadiology(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyRadiology: this.props.nearbyRadiology });
+    }, 1000);
   };
 
   render() {
@@ -1048,84 +1094,9 @@ class NearbyPackage extends Component {
                     >
                       {/* Type field */}
                       <Row>
-                      <Col lg="3">
-                        <div className="mb-3">
-                            <Label>Search By Kilo Meters</Label>
-                            <div className="input-group">
-                              <Input
-                                defaultValue={this.state.km}
-                                onChange={e => this.onChangeKm(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search By Km..."
-                              />
-                              <div className="input-group-append">
-                                <span className="input-group-text">Km</span>
-                              </div>
-                            </div>
-                          </div>
-                        
-                        </Col>
 
-                        <Col lg="3">
-                          {/* {this.state.test_name && ( */}
-                          <div className="mt-4">
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">
-                                Current Location
-                              </option>
-                              <option value="Custom Address">
-                                Custom Address
-                              </option>
-                            </Field>
-                          </div>
-                          {/* )} */}
-                        </Col>
-
-                        {/* City field */}
-                        <Col lg="3">
-                          {this.state.search_type === "Custom Address" && (
-                            <div className="mt-4">
-                              <Select
-                                name="city "
-                                component="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={CITIES}
-                                placeholder="Select City..."
-                              />
-                            </div>
-                          )}
-                        </Col>
-                        {/* Custom Address field */}
-                        <Col lg="3">
-                          {this.state.city != "" && (
-                            <div className="mt-4">
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          )}
-                        </Col>
-                      </Row>
-                    </Form>
-                  )}
-                </Formik>
-              </Row>
-              <Row>
               <Col lg="3">
+              <Label>Search By Radiology Name</Label>
                           <div className="mb-3">
                             <Select
                               name="profile"
@@ -1151,6 +1122,96 @@ class NearbyPackage extends Component {
                             />
                           </div>
                         </Col>
+                        <Col lg="3">
+                          <div className="mb-3">
+                            <Label>Search By Kilo Meters</Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={e => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search By Km..."
+                              />
+                              <div className="input-group-append">
+                                <span className="input-group-text">Km</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mt-4" style={{ display: 'none' }}>
+                            <Field
+                              name="search_type"
+
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={this.state.search_type}
+                              className="form-select"
+                            >
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="Custom Address">
+                                Custom Address
+                              </option>
+                            </Field>
+                          </div>
+                        </Col>
+                        <Col lg="3">
+                          <div className="mb-3">
+                            <Label for="LabType" className="form-label">
+                              Search By Labs Type
+                            </Label>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={e => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                            >
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points
+                              </option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
+                        </Col>
+
+                        {/* City field */}
+                        <Col lg="3">
+                          <div className="mb-3">
+                            <Label for="LabType" className="form-label">
+                              Search By City
+                            </Label>
+                            <Select
+                              name="city "
+                              comp onent="Select"
+                              onChange={this.onChangeCity}
+                              className="defautSelectParent is-invalid"
+                              options={CITIES}
+                              placeholder="Select City..."
+                            />
+                          </div>
+                        </Col>
+                        {/* Custom Address field */}
+                        {/* <Col lg="3">
+                          {this.state.city != "" && (
+                            <div className="mt-4">
+                              <Input
+                                defaultValue={this.state.address}
+                                onChange={e => this.onChangeAddress(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search Location..."
+                              />
+                            </div>
+                          )}
+                        </Col> */}
+                      </Row>
+                    </Form>
+                  )}
+                </Formik>
               </Row>
 
               {/* Alerts to show success and error messages when item is added to the cart */}

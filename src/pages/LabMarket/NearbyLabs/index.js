@@ -1249,7 +1249,7 @@ class NearbyLabs extends Component {
                                     <option value="Main">Main Labs</option>
                                     <option value="Collection">Collection Points
                                     </option>
-                                    <option value="Others">Others</option>
+                                    <option value="Others">Both</option>
                                   </Field>
                                 </div>
                         </Col>
@@ -1272,7 +1272,7 @@ class NearbyLabs extends Component {
                         </Col>
 
                         {/* Custom Address field */}
-                        <Col lg="3">
+                        {/* <Col lg="3">
                           {this.state.city != "" && (
                             <div className="mt-4">
                               <Input
@@ -1285,7 +1285,7 @@ class NearbyLabs extends Component {
                               />
                             </div>
                           )}
-                        </Col>
+                        </Col> */}
 
                       </Row>
                     </Form>
