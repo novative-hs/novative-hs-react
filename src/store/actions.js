@@ -62,8 +62,6 @@ export * from "./payment-statuss/actions";
 
 // Advertisements
 export * from "./advertisements/actions";
-
-// Advertisements Invoice
 export * from "./adv-invoice/actions";
 
 // Lab Advertisements

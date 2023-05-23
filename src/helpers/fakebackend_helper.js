@@ -178,9 +178,9 @@ export const getCryptoOrder = () => get(url.GET_CRYPTO_ORDERS)
 export const getInvoices = () => get(url.GET_INVOICES)
 
 
-// get invoice details
-export const getInvoiceDetail = id =>
-  get(`${url.GET_ADV_INVOICE_DETAIL}/${id}`, { params: { id } })
+// // get invoice details
+// export const getInvoiceDetail = id =>
+//   get(`${url.GET_ADV_INVOICE_DETAIL}/${id}`, { params: { id } })
 
 // get project
 export const getProjects = () => get(url.GET_PROJECTS)

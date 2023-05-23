@@ -1,117 +1,304 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import Select from "react-select";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { Link, withRouter } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row, Table } from "reactstrap";
-import { isEmpty, map } from "lodash";
-
-//Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb";
+import { any } from "prop-types";
+import { withRouter, Link } from "react-router-dom";
 import logo from "../../assets/images/logo-dark.png";
 
-import PropTypes from "prop-types";
-import { getAdvInvoiceDetail } from "store/adv-invoice/actions";
-import { connect } from "react-redux";
+import {
+  Alert,
+  Card,
+  CardBody,
+  Col,
+  Table,
+  Container,
+  Input,
+  Label,
+  Modal,
+  Row,
+  Button,
+  ModalBody,
+} from "reactstrap";
 
-class AdvInvoiceDetail extends Component {
+import paginationFactory, {
+  PaginationProvider,
+  PaginationListStandalone,
+} from "react-bootstrap-table2-paginator";
+import QRCode from "qrcode.react";
+
+import { isEmpty, map } from "lodash";
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from "react-bootstrap-table-next";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+//Import Breadcrumb
+import "assets/scss/table.scss";
+import Breadcrumbs from "components/Common/Breadcrumb";
+import { getAdvInvoice } from "store/adv-invoice/actions";
+
+class LabAudits extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      advInvoiceDetail: [],
-      
-    }
     this.node = React.createRef();
+    this.state = {
+      advinvoice: [],
+    //   id: "",
+    //   assignedTo: "",
+    //   LabAudits: "",
+    //   auditModal: false,
+    //   reason_of_reaudit:"",
+      advinvoice: "",
+    //   audit_status:"",
+      user_id: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : "",
+    //   AdvInvoiceListColumns: [
+    //     {
+    //       text: "id",
+    //       dataField: "id",
+    //       sort: true,
+    //       hidden: true,
+    //       formatter: (cellContent, advinvoice) => <>{advinvoice.id}</>,
+    //     },
+    //     {
+    //       dataField: "actions",
+    //       text: "Action Performed",
+    //       sort: true,
+    //     },
+    //     {
+    //       dataField: "lab_name",
+    //       text: "Done by",
+    //       sort: true,
+    //     },
+       
+    //     {
+    //       dataField: "created_at",
+    //       text: "Done at at",
+    //       sort: true,
+    //       formatter: (cellContent, advinvoice) => (
+    //         <>
+    //           <span>{new Date(advinvoice.created_at).toLocaleString("en-US")}</span>
+    //         </>
+    //       ),
+    //     },
+    //     {
+    //       dataField: "test_name",
+    //       text: "Test Name",
+    //       sort: true,
+    //     },
+    //     {
+    //       dataField: "field_name",
+    //       text: "Field",
+    //       sort: true,
+    //     },
+    //     {
+    //       dataField: "old_value",
+    //       text: "Previous Value",
+    //       sort: true,
+    //     },
+    //     {
+    //     dataField: "new_value",
+    //     text: "New Value",
+    //     sort: true,
+    //   },
+    //   ],
+    };
+    // this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    const { onGetAdvInvoiceDetail } = this.props;
-    console.log(onGetAdvInvoiceDetail(this.props.match.params.id));
+    const { advinvoice, onGetAdvInvoice } = this.props;
+    console.log(onGetAdvInvoice(this.props.match.params.id));
+    this.setState({ advinvoice });
+    console.log(advinvoice)
   }
-
-  //Print the Invoice
-  printInvoice = () => {
-    window.print();
+  onPaginationPageChange = page => {
+    if (
+      this.node &&
+      this.node.current &&
+      this.node.current.props &&
+      this.node.current.props.pagination &&
+      this.node.current.props.pagination.options
+    ) {
+      this.node.current.props.pagination.options.onPageChange(page);
+    }
   };
 
   render() {
+    const { SearchBar } = Search;
+
+    const { advinvoice, } = this.props;
+    const {  onGetAdvInvoice } = this.props;
+
+    const pageOptions = {
+      sizePerPage: 10,
+      totalSize: advinvoice.length, // replace later with size(advinvoice),
+      custom: true,
+    };
+
+    const defaultSorted = [
+      {
+        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+        order: "desc", // desc or asc
+      },
+    ];
+
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Invoice Detail | Lab Hazir - Dashboard</title>
+            <title>Invoice | Lab Hazir - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Invoices" breadcrumbItem="Invoice Detail" />
-            {!isEmpty(this.props.advInvoiceDetail) && (
-              console.log("advinvoice",this.props.advInvoiceDetail),
-              <Row>
-                <Col lg="6">
-                  <Card>
-                    <CardBody>
-                      <div className="invoice-title">
+            <Breadcrumbs title="Advertsement" breadcrumbItem="Invoice" />
+            
+                {!isEmpty(this.props.advinvoice) &&
+                  this.props.advinvoice.map((advinvoice, key) => (
+                     <Col  key={"_col_" + key}>
+                       <Card>
+            <CardBody>
+            <div className="invoice-title">
                         <h4 className="float-end font-size-16">
-                          Order ID: {this.props.advInvoiceDetail.advertisement_id}
+                          Order ID: {this.props.advinvoice[0].id}
                         </h4>
                         <div className="mb-4">
                           <img src={logo} alt="logo" height="20" />
                         </div>
                       </div>
-                      <hr/>
+                      <hr />
                       <Row>
-                        <Col sm="6" className="mt-3">
-                          <address>
-                            <strong>Advertisement Detail:</strong>
-                            <br />
-                            {this.props.advInvoiceDetail.invoice_type}
-                            <br />
-                            {this.props.advInvoiceDetail.lab_id}
-                            <br />
-                            {this.props.advInvoiceDetail.total_dues}
-                          </address>
-                        </Col>
-                        {/* <Col sm="6" className="mt-3 text-sm-end">
+                        <Col sm="4" className="mt-3">
                           <address>
                             <strong>Lab Detail:</strong>
                             <br />
-                            NTN # {this.props.advInvoiceDetail.lab_ntn}
+                            NTN # {this.props.advinvoice[0].lab_ntn}
                             <br />
-                            {this.props.advInvoiceDetail.lab_name}
+                            {this.props.advinvoice[0].lab_name}
                             <br />
-                            {this.props.advInvoiceDetail.lab_email}
+                            {this.props.advinvoice[0].lab_email}
                             <br />
-                            {this.props.advInvoiceDetail.lab_address}
+                            {this.props.advinvoice[0].lab_address}
                           </address>
-                        </Col> */}
-                      </Row>
-                      <Row>
-                        <Col sm="6" className="mt-3 text-sm-end">
+                        </Col>
+                         <Col sm="4" className="mt-3">
                           <address>
-                            <strong>Order Date:</strong>
+                            <strong>Advertisement Detail:</strong>
                             <br />
-                              {this.props.advInvoiceDetail.invoice_generated_at}
+                            Advertisement id: {this.props.advinvoice[0].advertisement_id}
+                            <br />
+                            Title: {this.props.advinvoice[0].title}
+                            <br />
+                            Posted for: {this.props.advinvoice[0].number_of_days} days
+                            <br />
+                            Kilometers: {this.props.advinvoice[0].km} km&lsquo;s
                             <br />
                           </address>
                         </Col>
-                      </Row>               
-                      <div className="d-print-none">
-                        <div className="float-end">
-                          <Link
-                            to="#"
-                            onClick={this.printInvoice}
-                            className="btn btn-success me-1"
-                          >
-                            <i className="fa fa-print" />
-                          </Link>{" "}
-                          <Link to="#" className="btn btn-primary w-md">
-                            Send
-                          </Link>
-                        </div>
+                        <Col sm="4" className="mt-3 text-sm-end">
+                        <div className="mt-3">
+                        <QRCode value="LabHazir Tax No: 9157548-3" size={100} fgColor="#000000" bgColor="#FFFFFF" />
                       </div>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-            )}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col sm="4" className="mt-3">
+                          <address>
+                            <strong>Payment Detail:</strong>
+                            <br />
+                            {this.props.advinvoice[0].payment_method}
+                            <br />
+                            {this.props.advinvoice[0].payment_status}
+                            <br />
+                            {this.props.advinvoice[0].payment_method ==
+                            "Card" ? (
+                              <>
+                                {new Date(
+                                  this.props.advinvoice[0].paid_at
+                                ).toLocaleString("en-US")}
+                              </>
+                            ) : null}
+                          </address>
+                        </Col>
+
+                        <Col sm="4" className="mt-3">
+                          <address>
+                            <strong>Order Detail:</strong>
+                            <br />
+                            {new Date(
+                              this.props.advinvoice[0].invoice_generated_at
+                            ).toLocaleString("en-US")}
+                            <br />
+                            <br />
+                          </address>
+                        </Col>
+                        <Col sm="4" className="mt-3 text-sm-end">
+                        </Col>
+                      </Row>
+                      <div className="py-2 mt-3">
+                        <h3 className="font-size-15 font-weight-bold">
+                          Order summary
+                        </h3>
+                      </div>
+                      <div className="table-responsive">
+                        <Table className="table-nowrap">
+                          <thead>
+                            <tr>
+                              <th style={{ width: "70px" }}>No.</th>
+                              <th className="text-start">Advertisement id</th>
+                              <th className="text-start">Advertisement name</th>
+                              <th className="text-end">Days</th>
+                              <th className="text-end">Kilometers</th>
+                              {/* <th className="text-end">Price</th> */}
+                              {/* <th className="text-end">Discount</th> */}
+                            
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {map(
+                              this.props.advinvoice,
+                              (item, key) => (
+                                <tr key={key}>
+                                  <td>{key + 1}</td>
+                                  <td className="text-start">{item.advertisement_id}</td>
+                                  <td className="text-start">{item.title}</td>
+                                  <td className="text-end">{item.number_of_days}</td>
+                                  <td className="text-end">{item.km}</td>
+                                  {/* <td className="text-end">{(item.discount_by_labhazir+item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td> */}
+                                   {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
+                                   {/* <td className="text-end">
+                                  {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  //  -
+                                  //   this.props.advinvoice[0]
+                                  //     .home_sampling_charges
+                                      }
+                              </td> */}
+                                </tr>
+                              )
+                            )}
+                           
+                            <tr>
+                              <td colSpan="6" className="border-10 text-end">
+                                <strong>Total</strong>
+                              </td>
+                              <td className="border-10 text-end">
+                                <h4 className="m-0">
+                                  {(this.props.advinvoice[0].price).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </h4>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
+                         </CardBody>
+                      </Card>
+                     </Col>
+                  ))}            
+                
+             
           </Container>
         </div>
       </React.Fragment>
@@ -119,21 +306,24 @@ class AdvInvoiceDetail extends Component {
   }
 }
 
-AdvInvoiceDetail.propTypes = {
+LabAudits.propTypes = {
   match: PropTypes.object,
-  advInvoiceDetail: PropTypes.object,
-  onGetAdvInvoiceDetail: PropTypes.func,
+  advinvoice: PropTypes.array,
+  className: PropTypes.any,
+  onGetAdvInvoice: PropTypes.func,
+  history: any,
+  success: PropTypes.any,
+  error: PropTypes.any,
 };
-
-const mapStateToProps = ({ advInvoiceDetail }) => ({
-  advInvoiceDetail: advInvoiceDetail.advInvoiceDetail,
+const mapStateToProps = ({ advinvoice }) => ({
+  advinvoice: advinvoice.advinvoice,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetAdvInvoiceDetail: id => dispatch(getAdvInvoiceDetail(id)),
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetAdvInvoice: id => dispatch(getAdvInvoice(id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(AdvInvoiceDetail));
+)(withRouter(LabAudits));

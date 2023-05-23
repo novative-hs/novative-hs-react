@@ -1,30 +1,29 @@
 import {
-  GET_ADV_INVOICE_DETAIL_SUCCESS,
-  GET_ADV_INVOICE_DETAIL_FAIL,
+  GET_ADV_INVOICE_SUCCESS,
+  GET_ADV_INVOICE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
-  advInvoiceDetail: {},
+  advinvoice: [],
   error: {},
 };
 
-const advInvoice = (state = INIT_STATE, action) => {
+const advinvoice = (state = INIT_STATE, action) => {
   switch (action.type) {
-    case GET_ADV_INVOICE_DETAIL_SUCCESS:
+    case GET_ADV_INVOICE_SUCCESS:
       return {
         ...state,
-        advInvoiceDetail: action.payload,
+        advinvoice: action.payload.data,
       };
 
-    case GET_ADV_INVOICE_DETAIL_FAIL:
+    case GET_ADV_INVOICE_FAIL:
       return {
         ...state,
         error: action.payload,
       };
-
     default:
       return state;
   }
 };
 
-export default advInvoice;
+export default advinvoice;

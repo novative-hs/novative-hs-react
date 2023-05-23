@@ -71,7 +71,7 @@ import checkoutSaga from "./checkout/saga";
 import createBankSaga from "./createbank/saga";
 import bankAccountSaga from "./bankaccount/saga";
 import invoiceSaga from "./invoices/saga";
-import advInvoiceDetailSaga from "./adv-invoice/saga";
+import advinvoiceSaga from "./adv-invoice/saga";
 import inPaymentSaga from "./inpayments/saga";
 import outPaymentSaga from "./outpayments/saga";
 import bankTransferSaga from "./banktransferdetails/saga";
@@ -177,7 +177,7 @@ export default function* rootSaga() {
     fork(checkoutSaga),
     fork(bankaccountsSaga),
     fork(invoiceSaga),
-    fork(advInvoiceDetailSaga),
+    fork(advinvoiceSaga),
     fork(AccountStatementsSaga),
     fork(DonorAccountStatementsSaga),
     fork(StaffSaga),

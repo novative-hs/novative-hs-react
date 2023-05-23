@@ -35,7 +35,7 @@ const qualityCertificates = (state = INIT_STATE, action) => {
     case GET_LAB_PROFILE_SUCCESS:
       return {
         ...state,
-        qualityCertificates: action.payload.data,
+        labProfiles: action.payload.data,
       };
 
     case GET_LAB_PROFILE_FAIL:

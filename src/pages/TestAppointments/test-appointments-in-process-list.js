@@ -91,6 +91,19 @@ class TestAppointmentsInProcessList extends Component {
           ),
         },
         {
+          dataField: "order_id",
+          text: "Lab Type / Address",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              <strong>
+                {testAppointment.type}{" ("}
+                {testAppointment.address}{")"}
+              </strong>
+            </>
+          ),
+        },
+        {
           dataField: "name",
           text: "Patient name",
           sort: true,
@@ -1362,8 +1375,6 @@ class TestAppointmentsInProcessList extends Component {
                                                 rescheduledBy: "Lab",
                                                 status: "Rescheduled",
                                                 process: "rescheduling",
-                                                assigned_to:
-                                                 values.assigned_to,
                                               };
 
                                               // update TestAppointment

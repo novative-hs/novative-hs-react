@@ -81,10 +81,27 @@ class TestAppointmentsPendingList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              <strong>{testAppointment.order_id}</strong>
+              <strong>{testAppointment.order_id}</strong><br></br>
+              <strong>
+                {testAppointment.type}{" ("}
+                {testAppointment.address}{")"}
+              </strong>
             </>
           ),
         },
+        // {
+        //   dataField: "order_id",
+        //   text: "Lab Type / Address",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <strong>
+        //         {testAppointment.type}{" ("}
+        //         {testAppointment.address}{")"}
+        //       </strong>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "name",
           text: "Patient name",

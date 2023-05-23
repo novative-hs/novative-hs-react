@@ -314,7 +314,7 @@ export const ADD_CHECKOUT_DATA = `${API_ENDPOINT}/api/patient/checkout`;
 export const GET_INVOICE_DETAIL = `${API_ENDPOINT}/api/patient/invoice-detail`;
 
 // ADVERTISEMENT INVOICES
-export const GET_ADV_INVOICE_DETAIL = `${API_ENDPOINT}/api/lab/lab-advertisement-invoice`;
+export const GET_ADV_INVOICE = `${API_ENDPOINT}/api/lab/lab-advertisement-invoice`;
 
 // PAYMENT
 export const UPDATE_LAB_PAYMENTS = `${API_ENDPOINT}/api/patient/payment-info`;

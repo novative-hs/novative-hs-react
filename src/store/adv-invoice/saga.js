@@ -1,27 +1,31 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_ADV_INVOICE_DETAIL } from "./actionTypes";
 import {
-  getAdvInvoiceDetailSuccess,
-  getAdvInvoiceDetailFail,
+  GET_ADV_INVOICE,
+} from "./actionTypes";
+
+import {
+  getAdvInvoiceSuccess,
+  getAdvInvoiceFail,
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getAdvInvoiceDetail } from "helpers/django_api_helper";
+import {
+  getAdvInvoice,
+} from "../../helpers/django_api_helper";
 
-function* fetchAdvInvoiceDetail(object) {
+function* fetchAdvInvoice(object) {
   try {
-    const response = yield call(getAdvInvoiceDetail, object.payload);
-    console.log("response", response)
-    yield put(getAdvInvoiceDetailSuccess(response));
+    const response = yield call(getAdvInvoice, object.payload);
+    yield put(getAdvInvoiceSuccess(response));
   } catch (error) {
-    yield put(getAdvInvoiceDetailFail(error));
+    yield put(getAdvInvoiceFail(error));
   }
 }
 
-function* advInvoiceDetailSaga() {
-  yield takeEvery(GET_ADV_INVOICE_DETAIL, fetchAdvInvoiceDetail);
+function* advinvoiceSaga() {
+  yield takeEvery(GET_ADV_INVOICE, fetchAdvInvoice);
 }
 
-export default advInvoiceDetailSaga;
+export default advinvoiceSaga;

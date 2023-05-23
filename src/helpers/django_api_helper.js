@@ -2513,8 +2513,8 @@ export const getAdvLive = locationDetails => {
 };
 
 //------------ Get Advertisement Invoice Detail-------------
-export const getAdvInvoiceDetail = id =>
-  get(`${url.GET_ADV_INVOICE_DETAIL}/${id}`, {
+export const getAdvInvoice = id =>
+  get(`${url.GET_ADV_INVOICE}/${id}`, {
     headers: getHeader(authHeader()),
   },
   console.log(id)

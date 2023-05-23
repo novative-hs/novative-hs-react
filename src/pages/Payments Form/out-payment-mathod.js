@@ -313,7 +313,7 @@ class OutPaymentsForm extends Component {
       // }
       if (!flag) {
         DonationAppointmentList.push({
-          label: listDonation[i].test_appointment_id,
+          label: listDonation[i].id,
           value: listDonation[i].id,
         });
       }

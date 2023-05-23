@@ -41,7 +41,7 @@ import {
   updateQualityCertificate,
   deleteQualityCertificate,
   addNewCollectionPointQuality,
-  // getLabProfile,
+  getLabProfile,
 } from "store/quality-certificates/actions";
 
 import { isEmpty, size } from "lodash";
@@ -53,7 +53,7 @@ class QualityCertificatesList extends Component {
     this.node = React.createRef();
     this.state = {
       qualityCertificates: [],
-      // labProfiles: [],
+      labProfiles: [],
       qualityCertificate: "",
       certificateImg: "",
       main_lab_quality: "",
@@ -169,12 +169,12 @@ class QualityCertificatesList extends Component {
     onGetQualityCertificates(this.state.user_id);
     this.setState({ qualityCertificates });
 
-    // const { labProfiles, onGetLabProfile } = this.props;
-    // onGetLabProfile(this.state.user_id);
-    // this.setState({ 
-    //   labProfiles
-    // });
-    // console.log("state",labProfiles)
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({ 
+      labProfiles
+    });
+    console.log("state",labProfiles)
   }
 
   toggle() {
@@ -286,7 +286,7 @@ class QualityCertificatesList extends Component {
 
     const { qualityCertificates } = this.props;
 
-    // const {labProfiles} = this.props;
+    const {labProfiles} = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
@@ -294,7 +294,7 @@ class QualityCertificatesList extends Component {
       onAddNewQualityCertificate,
       onUpdateQualityCertificate,
       onGetQualityCertificates,
-      // onGetLabProfile,
+      onGetLabProfile,
       onAddNewCollectionPointQuality
       
     } = this.props;
@@ -1062,7 +1062,7 @@ class QualityCertificatesList extends Component {
                 </Col>
                 {
                 isEmpty(this.props.qualityCertificates)&&
-                // this.props.labProfiles.type == "Collection Point" &&
+                this.props.labProfiles.type == "Collection Point" &&
                 // console.log("desh desh",this.props.offeredTests)
                  (
                   <Col sm="2" lg="10">
@@ -1080,7 +1080,7 @@ class QualityCertificatesList extends Component {
                     }
                     />
                       
-                        <b> Do you want to add your main labs tests as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the tests offered by your main lab with all the details will be added <br></br>this will not be undone, You can edit the test details only</b>
+                        <b> Do you want to add your main lab Quality Certificates as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the Quality Certificates by your main lab with all the details will be added</b>
                     
                     </div>
                     </CardBody>
@@ -1107,8 +1107,8 @@ QualityCertificatesList.propTypes = {
   onAddNewQualityCertificate: PropTypes.func,
   onDeleteQualityCertificate: PropTypes.func,
   onUpdateQualityCertificate: PropTypes.func,
-  // onGetLabProfile: PropTypes.func,
-  // labProfiles: PropTypes.array,
+  onGetLabProfile: PropTypes.func,
+  labProfiles: PropTypes.array,
   onAddNewCollectionPointQuality: PropTypes.func,
 
 
@@ -1116,7 +1116,7 @@ QualityCertificatesList.propTypes = {
 
 const mapStateToProps = ({ qualityCertificates }) => ({
   qualityCertificates: qualityCertificates.qualityCertificates,
-  // labProfiles: qualityCertificates.labProfiles,
+  labProfiles: qualityCertificates.labProfiles,
 
 });
 
@@ -1128,7 +1128,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(updateQualityCertificate(qualityCertificate)),
   onDeleteQualityCertificate: qualityCertificate =>
     dispatch(deleteQualityCertificate(qualityCertificate)),
-  // onGetLabProfile: id => dispatch(getLabProfile(id)),
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
   onAddNewCollectionPointQuality: (qualityCertificate, id) =>
   dispatch(addNewCollectionPointQuality(qualityCertificate, id)),
 

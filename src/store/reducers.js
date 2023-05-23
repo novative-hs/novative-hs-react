@@ -143,7 +143,7 @@ import invoices from "./invoices/reducer";
 
 
 // Advertisement invoices
-import advInvoiceDetail from "./adv-invoice/reducer";
+import advinvoice from "./adv-invoice/reducer";
 
 
 // account statements
@@ -258,7 +258,7 @@ const rootReducer = combineReducers({
   patientFeedback,
   checkout,
   invoices,
-  advInvoiceDetail,
+  advinvoice,
   accountStatements,
   donoraccountStatements,
   staff,
