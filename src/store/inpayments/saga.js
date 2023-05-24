@@ -7,9 +7,12 @@ import {
   GET_LABS,
   GET_DONORS,
   ADD_NEW_IN_PAYMENT,
+  GET_STAFF_PROFILE,
 } from "./actionTypes";
 
 import {
+  getStaffProfileSuccess,
+  getStaffProfileFail,
   getAcceptedLabAdvertisementsSuccess,
   getAcceptedLabAdvertisementsFail,
   getLabsSuccess,
@@ -23,7 +26,8 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getInPayment,   getLabs, getDonors,   getAcceptedLabAdvertisements,
+import { getInPayment,   getStaffProfile,
+  getLabs, getDonors,   getAcceptedLabAdvertisements,
   addNewInPayment,
  } from "../../helpers/django_api_helper";
 
@@ -41,6 +45,15 @@ import { getInPayment,   getLabs, getDonors,   getAcceptedLabAdvertisements,
 //     yield put(getInPaymentFail(error));
 //   }
 // }
+function* fetchStaffProfile(object) {
+  console.log("Saga: ", object);
+  try {
+    const response = yield call(getStaffProfile, object.payload);
+    yield put(getStaffProfileSuccess(response));
+  } catch (error) {
+    yield put(getStaffProfileFail(error));
+  }
+}
 function* fetchLabAdvertisements() {
   try {
     const response = yield call(getAcceptedLabAdvertisements);
@@ -89,6 +102,7 @@ function* onAddNewInPayment(object) {
 }
 
 function* inPaymentSaga() {
+  yield takeEvery(GET_STAFF_PROFILE, fetchStaffProfile);
   yield takeEvery(GET_ACCEPTED_LAB_ADVERTISEMENTS, fetchLabAdvertisements);
   yield takeEvery(GET_IN_PAYMENT,fetchInPayments);
   yield takeEvery(GET_LABS, fetchLabs);

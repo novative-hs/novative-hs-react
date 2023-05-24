@@ -47,7 +47,8 @@ import {
   getBankAccounts,
   getB2bClients,
   addNewOutPayment,
-  getOutPayment
+  getOutPayment,
+  getStaffProfile
 } from "store/outpayments/actions";
 
 import { isEmpty, size } from "lodash";
@@ -60,6 +61,7 @@ class OutPaymentsForm extends Component {
     this.node = React.createRef();
     this.state = {
       outPayments: [],
+      staffProfiles: [],
       outPayment: "",
       modal: false,
       addmodal: false,
@@ -180,6 +182,13 @@ class OutPaymentsForm extends Component {
   };
 
   componentDidMount() {
+    const { staffProfiles, onGetStaffProfile } = this.props;
+    onGetStaffProfile(this.state.user_id);
+    this.setState({ 
+      staffProfiles
+    });
+    console.log("state",staffProfiles)
+
     const { labsMof, onGetlabsMof } = this.props;
     if (labsMof && !labsMof.length) {
       onGetlabsMof();
@@ -266,11 +275,12 @@ class OutPaymentsForm extends Component {
     const { labsMof } = this.props;
     const {listDonation} = this.props;
     const { b2bClients } = this.props;
+    const {staffProfiles} = this.props;
 
 
     // const { units } = this.props;
 
-    const { onAddNewOutPayment, onGetOutPayment } =
+    const { onAddNewOutPayment, onGetOutPayment, onGetStaffProfile} =
       this.props;
     const outPayment = this.state.outPayment;
 
@@ -287,15 +297,24 @@ class OutPaymentsForm extends Component {
       },
     ];
 
+    // const labList = [];
+    // for (let i = 0; i < labsMof.length; i++) {
+    //   let flag = 0;
+    //   // for (let j = 0; j < outPayments.length; j++) {
+    //   //   if (labsMof[i].id == outPayments[j].lab_id) {
+    //   //     flag = 1;
+    //   //   }
+    //   // }
+    //   if (!flag) {
+    //     labList.push({
+    //       label: labsMof[i].name,
+    //       value: labsMof[i].id,
+    //     });
+    //   }
+    // }
     const labList = [];
     for (let i = 0; i < labsMof.length; i++) {
-      let flag = 0;
-      // for (let j = 0; j < outPayments.length; j++) {
-      //   if (labsMof[i].id == outPayments[j].lab_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
+      if (labsMof[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
           label: labsMof[i].name,
           value: labsMof[i].id,
@@ -303,43 +322,60 @@ class OutPaymentsForm extends Component {
       }
     }
 
+    // const DonationAppointmentList = [];
+    // for (let i = 0; i < listDonation.length; i++) {
+    //   let flag = 0;
+    //   // for (let j = 0; j < outPayments.length; j++) {
+    //   //   if (listDonation[i].id == outPayments[j].lab_id) {
+    //   //     flag = 1;
+    //   //   }
+    //   // }
+    //   if (!flag) {
+    //     DonationAppointmentList.push({
+    //       label: listDonation[i].id,
+    //       value: listDonation[i].id,
+    //     });
+    //   }
+    // }
+
     const DonationAppointmentList = [];
     for (let i = 0; i < listDonation.length; i++) {
-      let flag = 0;
-      // for (let j = 0; j < outPayments.length; j++) {
-      //   if (listDonation[i].id == outPayments[j].lab_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
+      if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
         DonationAppointmentList.push({
-          label: listDonation[i].id,
-          value: listDonation[i].id,
+          label: `${listDonation[i].id} - (Lab: ${listDonation[i].lab_name})`,
+          value: `${listDonation[i].id}`,
         });
       }
     }
+    // const b2bList = [];
+    // for (let i = 0; i < b2bClients.length; i++) {
+    //   let flag = 0;
 
+    //   // Check if test available in our database is already being offered by lab
+    //   // If yes then don't push it in labList
+    //   // for (let j = 0; j < outPayments.length; j++) {
+    //   //   if (b2bClients[i].id == outPayments[j].b2b_id) {
+    //   //     flag = 1;
+    //   //   }
+    //   // }
+    //   if (!flag) {
+    //     b2bList.push({
+    //       label: `${b2bClients[i].business_name} - ${b2bClients[i].current_amount}`,
+    //       value: `${b2bClients[i].id}`,
+
+    //     });
+
+    //   }
+    // }
     const b2bList = [];
     for (let i = 0; i < b2bClients.length; i++) {
-      let flag = 0;
-
-      // Check if test available in our database is already being offered by lab
-      // If yes then don't push it in labList
-      // for (let j = 0; j < outPayments.length; j++) {
-      //   if (b2bClients[i].id == outPayments[j].b2b_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
+      if (b2bClients[i].office === this.props.staffProfiles.territory_office) {
         b2bList.push({
           label: `${b2bClients[i].business_name} - ${b2bClients[i].current_amount}`,
           value: `${b2bClients[i].id}`,
-
         });
-
       }
     }
-
 
     const { bankAccounts } = this.props;
     const bankaccountList = [];
@@ -1097,6 +1133,9 @@ OutPaymentsForm.propTypes = {
   onAddNewOutPayment: PropTypes.func,
   onGetbanks: PropTypes.func,
   onGetbankAccounts: PropTypes.func,
+  onGetStaffProfile: PropTypes.func,
+  staffProfiles: PropTypes.func,
+
 };
 
 const mapStateToProps = ({ outPayments }) => ({
@@ -1106,6 +1145,7 @@ const mapStateToProps = ({ outPayments }) => ({
   b2bClients: outPayments.b2bClients,
   banks: outPayments.banks,
   bankAccounts: outPayments.bankAccounts,
+  staffProfiles: outPayments.staffProfiles,
 
 
   // units: outPayments.units,
@@ -1120,6 +1160,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetOutPayment: id => dispatch(getOutPayment(id)),
   onAddNewOutPayment: (outPayment, id) =>
     dispatch(addNewOutPayment(outPayment, id)),
+  onGetStaffProfile: id => dispatch(getStaffProfile(id)),
+
 
 });
 

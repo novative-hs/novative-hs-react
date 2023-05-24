@@ -253,7 +253,7 @@ class SidebarContent extends Component {
                   </li>
                   <li>
                     <Link to="/#" className="has-arrow">
-                      <i className="bx bx-test-tube" />
+                      <i className="fas fa-book" />
                       <span>{this.props.t("Payments Form")}</span>
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
@@ -267,12 +267,12 @@ class SidebarContent extends Component {
                   <Link to="/bank-transfer">{this.props.t("Bank Transfer Details")}
                   </Link>
                 </li>
-                    </ul>
-                  </li>
+                </ul>
+                </li>
                   {/* Payments Status Links */}
                   <li>
                     <Link to="/#" className="has-arrow">
-                      <i className="bx bx-test-tube" />
+                      <i className="far fa-arrow-alt-circle-down" />
                       <span>{this.props.t("MIF Statuses")}</span>
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
@@ -298,9 +298,10 @@ class SidebarContent extends Component {
                       </li>
                     </ul>
                   </li>
+
                   <li>
                     <Link to="/#" className="has-arrow">
-                      <i className="bx bx-test-tube" />
+                      <i className="far fa-arrow-alt-circle-up" />
                       <span>{this.props.t("MOF Statuses")}</span>
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
@@ -328,7 +329,7 @@ class SidebarContent extends Component {
                   </li>
                   <li>
                     <Link to="/#" className="has-arrow">
-                      <i className="bx bx-test-tube" />
+                      <i className="fas fa-landmark" />
                       <span>{this.props.t("BTD Statuses")}</span>
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
@@ -337,10 +338,17 @@ class SidebarContent extends Component {
                   </ul>
                 </li>
                 <li>
-                  <Link to="/all-labs-list">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("All Labs List")}</span>
+                <Link to="/#" className="has-arrow">
+                    <i className="fas fa-hand-holding-heart"/>
+                    <span>{this.props.t("Donation Payment")}</span>
                   </Link>
+                  <ul className="sub-menu" aria-expanded="false">
+                    <li>
+                      <Link to="/all-labs-list">
+                        <span>{this.props.t("All Labs List")}</span>
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
                 </ul>
               </div>

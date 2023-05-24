@@ -20,7 +20,27 @@ import {
   ADD_NEW_OUT_PAYMENT,
   ADD_OUT_PAYMENT_SUCCESS,
   ADD_OUT_PAYMENT_FAIL,
+  GET_STAFF_PROFILE,
+  GET_STAFF_PROFILE_FAIL,
+  GET_STAFF_PROFILE_SUCCESS,
 } from "./actionTypes";
+
+export const getStaffProfile = id => ({
+  type: GET_STAFF_PROFILE,
+  payload: id,
+});
+
+export const getStaffProfileSuccess = staffProfiles => (
+  console.log("actions staff profile",staffProfiles),
+  {
+  type: GET_STAFF_PROFILE_SUCCESS,
+  payload: staffProfiles,
+});
+
+export const getStaffProfileFail = error => ({
+  type: GET_STAFF_PROFILE_FAIL,
+  payload: error,
+});
 
 export const getBankAccounts = () => ({
   type: GET_BANK_ACCOUNTS,

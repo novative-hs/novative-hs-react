@@ -13,9 +13,12 @@ import {
   GET_OUT_PAYMENT_FAIL,
   ADD_OUT_PAYMENT_SUCCESS,
   ADD_OUT_PAYMENT_FAIL,
+  GET_STAFF_PROFILE_SUCCESS,
+  GET_STAFF_PROFILE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
+  staffProfiles: [],
   outPayments: [],
   b2bClients: [],
   outPayment: [],
@@ -28,6 +31,17 @@ const INIT_STATE = {
 
 const outPayments = (state = INIT_STATE, action) => {
   switch (action.type) {
+    case GET_STAFF_PROFILE_SUCCESS:
+      return {
+        ...state,
+        staffProfiles: action.payload.data,
+      };
+
+    case GET_STAFF_PROFILE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_BANK_ACCOUNTS_SUCCESS:
       return {
         ...state,

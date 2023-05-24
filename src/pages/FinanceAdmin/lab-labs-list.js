@@ -50,10 +50,10 @@ class PendingB2BClients extends Component {
         : "",
       pendingB2BClientListColumns: [
         {
-          text: "id",
+          text: "Lab ID",
           dataField: "id",
           sort: true,
-          hidden: true,
+          // hidden: true,
           formatter: (cellContent, pendingB2BClient) => (
             <>{pendingB2BClient.id}</>
           ),
@@ -75,6 +75,11 @@ class PendingB2BClients extends Component {
               </Link>
             </>
           ),
+        },
+        {
+          dataField: "donation_amount",
+          text: "Total Donation Appointment Amount",
+          sort: true,
         },
       //   {
       //     dataField: "email",

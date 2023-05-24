@@ -6,6 +6,10 @@ export const GET_DONORS = "get_donors";
 export const GET_DONORS_SUCCESS = "get_donors_success";
 export const GET_DONORS_FAIL = "get_donors_fail";
 
+export const GET_STAFF_PROFILE = "GET_STAFF_PROFILE";
+export const GET_STAFF_PROFILE_SUCCESS = "GET_STAFF_PROFILE_SUCCESS";
+export const GET_STAFF_PROFILE_FAIL = "GET_STAFF_PROFILE_FAIL";
+
 
 /*  SHARES */
 export const GET_ACCEPTED_LAB_ADVERTISEMENTS = "GET_ACCEPTED_LAB_ADVERTISEMENTS";

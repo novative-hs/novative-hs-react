@@ -9,9 +9,13 @@ import {
   GET_BANK_ACCOUNTS,
   GET_B2B_CLIENTS,
     ADD_NEW_OUT_PAYMENT,
+    GET_STAFF_PROFILE,
+
 } from "./actionTypes";
 
 import {
+  getStaffProfileSuccess,
+  getStaffProfileFail,
   getLabsMofSuccess,
   getLabsMofFail,
   getListDonationAppointmentSuccess,
@@ -29,7 +33,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getOutPayment, getLabsMof ,getListDonationAppointment,   getBanks,   getBankAccounts,
+import { getOutPayment, getLabsMof ,getListDonationAppointment, getStaffProfile,  getBanks,   getBankAccounts,
 
   addNewOutPayment,
   getB2bClients, 
@@ -41,6 +45,16 @@ import { getOutPayment, getLabsMof ,getListDonationAppointment,   getBanks,   ge
     yield put(getBankAccountsSuccess(response));
   } catch (error) {
     yield put(getBankAccountsFail(error));
+  }
+}
+
+function* fetchStaffProfile(object) {
+  console.log("Saga: ", object);
+  try {
+    const response = yield call(getStaffProfile, object.payload);
+    yield put(getStaffProfileSuccess(response));
+  } catch (error) {
+    yield put(getStaffProfileFail(error));
   }
 }
 
@@ -114,6 +128,7 @@ function* onAddNewOutPayment(object) {
 }
 
 function* outPaymentSaga() {
+  yield takeEvery(GET_STAFF_PROFILE, fetchStaffProfile);
   yield takeEvery(GET_BANKS, fetchBanks);
   yield takeEvery(GET_BANK_ACCOUNTS, fetchBankAccounts);
   yield takeEvery(GET_OUT_PAYMENT,fetchOutPayments);

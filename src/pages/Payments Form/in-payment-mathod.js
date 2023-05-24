@@ -45,8 +45,10 @@ import {
   getLabs,
   getDonors,
   addNewInPayment,
-  getInPayment
+  getInPayment,
+  getStaffProfile
 } from "store/inpayments/actions";
+
 
 import { isEmpty, size } from "lodash";
 import ConfirmModal from "components/Common/ConfirmModal";
@@ -58,6 +60,7 @@ class InPaymentsForm extends Component {
     this.node = React.createRef();
     this.state = {
       inPayments: [],
+      staffProfiles: [],
       inPayment: "",
       modal: false,
       addmodal: false,
@@ -92,6 +95,8 @@ class InPaymentsForm extends Component {
     // this.toggleTab = this.toggleTab.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
+    // console.log("finance officer office", this.props.staffProfiles.territory_office);
+
   }
 
   // handleProceedClicks = () => {
@@ -191,6 +196,14 @@ class InPaymentsForm extends Component {
   };
 
   componentDidMount() {
+
+    const { staffProfiles, onGetStaffProfile } = this.props;
+    onGetStaffProfile(this.state.user_id);
+    this.setState({ 
+      staffProfiles
+    });
+    console.log("state",staffProfiles)
+    
     const { labs, onGetlabs } = this.props;
     if (labs && !labs.length) {
       onGetlabs();
@@ -274,11 +287,12 @@ class InPaymentsForm extends Component {
     const { inPayments } = this.props;
     const { labs } = this.props;
     const { advertisements } = this.props;
+    const {staffProfiles} = this.props;
     const { donors } = this.props;
 
     // const { units } = this.props;
 
-    const { onAddInPaymentData, onGetInPayment } =
+    const { onAddInPaymentData, onGetInPayment, onGetStaffProfile } =
       this.props;
     const inPayment = this.state.inPayment;
 
@@ -310,34 +324,54 @@ class InPaymentsForm extends Component {
     //     });
     //   }
     // }
+    // const labList = [];
+    // for (let i = 0; i < labs.length; i++) {
+    //   let flag = 0;
+    //   // for (let j = 0; j < inPayments.length; j++) {
+    //   //   if (labs[i].id == inPayments[j].lab_id) {
+    //   //     flag = 1;
+    //   //   }
+    //   // }
+    //   if (!flag) {
+    //     labList.push(
+    //       {
+    //         label: `${labs[i].name}`,
+    //         value: `${labs[i].id}`,
+    //       },
+    //     );
+    //   }
+    // }
     const labList = [];
     for (let i = 0; i < labs.length; i++) {
-      let flag = 0;
-      // for (let j = 0; j < inPayments.length; j++) {
-      //   if (labs[i].id == inPayments[j].lab_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
-        labList.push(
-          {
-            label: `${labs[i].name}`,
-            value: `${labs[i].id}`,
-          },
-        );
+      if (labs[i].office === this.props.staffProfiles.territory_office) {
+        labList.push({
+          label: labs[i].name,
+          value: labs[i].id,
+        });
       }
     }
+    
 
+
+    // const advertisementList = [];
+    // for (let i = 0; i < advertisements.length; i++) {
+    //   let flag = 0;
+    //   for (let j = 0; j < inPayments.length; j++) {
+    //     if (advertisements[i].id == inPayments[j].advertisement_id) {
+    //       flag = 1;
+    //     }
+    //   }
+    //   if (!flag) {
+    //     // const optionValue = `${advertisements[i].id}-${advertisements[i].lab_id}`;
+    //     advertisementList.push({
+    //       label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name})`,
+    //       value: `${advertisements[i].id}`,
+    //     });
+    //   }
+    // }
     const advertisementList = [];
     for (let i = 0; i < advertisements.length; i++) {
-      let flag = 0;
-      // for (let j = 0; j < inPayments.length; j++) {
-      //   if (advertisements[i].id == inPayments[j].advertisement_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
-        // const optionValue = `${advertisements[i].id}-${advertisements[i].lab_id}`;
+      if (advertisements[i].lab_office === this.props.staffProfiles.territory_office) {
         advertisementList.push({
           label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name})`,
           value: `${advertisements[i].id}`,
@@ -345,19 +379,9 @@ class InPaymentsForm extends Component {
       }
     }
     
-
     const donorList = [];
     for (let i = 0; i < donors.length; i++) {
-      let flag = 0;
-
-      // Check if test available in our database is already being offered by lab
-      // If yes then don't push it in labList
-      // for (let j = 0; j < inPayments.length; j++) {
-      //   if (donors[i].id == inPayments[j].donor_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
+      if (donors[i].office === this.props.staffProfiles.territory_office) {
         donorList.push({
           label: donors[i].name,
           value: donors[i].id,
@@ -1140,6 +1164,8 @@ InPaymentsForm.propTypes = {
   // onGetUnits: PropTypes.func,
   onAddInPaymentData: PropTypes.func,
   onGetAcceptedLabAdvertisements: PropTypes.func,
+  onGetStaffProfile: PropTypes.func,
+  staffProfiles: PropTypes.func,
 
 };
 
@@ -1148,6 +1174,8 @@ const mapStateToProps = ({ inPayments }) => ({
   labs: inPayments.labs,
   donors: inPayments.donors,
   advertisements: inPayments.advertisements,
+  staffProfiles: inPayments.staffProfiles,
+
   // units: inPayments.units,
 });
 
@@ -1159,6 +1187,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetInPayment: id => dispatch(getInPayment(id)),
   onAddInPaymentData: (inPayment, id) =>
     dispatch(addNewInPayment(inPayment, id)),
+  onGetStaffProfile: id => dispatch(getStaffProfile(id)),
+
 
 });
 

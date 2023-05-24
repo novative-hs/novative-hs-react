@@ -10,6 +10,10 @@ export const GET_BANKS = "get_banks";
 export const GET_BANKS_SUCCESS = "get_banks_success";
 export const GET_BANKS_FAIL = "get_banks_fail";
 
+export const GET_STAFF_PROFILE = "GET_STAFF_PROFILE";
+export const GET_STAFF_PROFILE_SUCCESS = "GET_STAFF_PROFILE_SUCCESS";
+export const GET_STAFF_PROFILE_FAIL = "GET_STAFF_PROFILE_FAIL";
+
 export const GET_OUT_PAYMENT =
   "GET_OUT_PAYMENT";
 export const GET_OUT_PAYMENT_SUCCESS =
