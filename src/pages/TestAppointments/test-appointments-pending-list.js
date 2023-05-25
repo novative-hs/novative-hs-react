@@ -428,19 +428,16 @@ class TestAppointmentsPendingList extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
-                                </Col>
-                                <Col sm="7" lg="7">
-                                  <div>
-                                    <p className="text-danger font-size-12" style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
-                                      <strong>Note: </strong>&nbsp;&nbsp; If you want to handle test appointments of all your collection points on your portal, then click on&nbsp;&nbsp;<strong>Yes</strong>.
-                                      <i className="bx bx-right-arrow-alt" style={{ marginLeft: '8px', fontSize: '24px', fontWeight: 'bold' }}></i>
-                                    </p>
-                                  </div>
-                                </Col>
-                                <Col sm="2" lg="2">
+                                </Col>                               
+                                <Col sm="9" lg="9">
                                   <div>
                                     {this.props.labProfiles.type == "Main Lab" && (
-                                      <Button
+                                    <div>
+                                      <p className="text-danger font-size-12" style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+                                        <strong>Note: </strong>&nbsp;&nbsp; If you want to handle test appointments of all your collection points on your portal, then click on&nbsp;&nbsp;<strong>Yes</strong>.
+                                        <i className="bx bx-right-arrow-alt" style={{ marginLeft: '8px', fontSize: '24px', fontWeight: 'bold' }}></i>
+                                      
+                                        <Button
                                         color="primary"
                                         onClick={() => {
                                           // add your button click logic here
@@ -461,9 +458,9 @@ class TestAppointmentsPendingList extends Component {
                                       >
                                         Yes
                                       </Button>
+                                      </p>
+                                    </div>
                                     )}
-
-
                                   </div>
                                 </Col>
                               </Row>
