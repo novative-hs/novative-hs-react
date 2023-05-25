@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 
 import {
   Alert,
@@ -86,25 +85,16 @@ class TestAppointmentsInProcessList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              <strong>{testAppointment.order_id}</strong>
-            </>
-          ),
-        },
-        {
-          dataField: "order_id",
-          text: "Lab Type / Address",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
+              <strong>{testAppointment.order_id}</strong><br></br>
               <strong>
                 {testAppointment.type}{" ("}
                 {testAppointment.address}{")"}
               </strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
-          dataField: "name",
+          dataField: "patient_name",
           text: "Patient name",
           sort: true,
           formatter: (cellContent, testAppointment) => (
@@ -114,13 +104,15 @@ class TestAppointmentsInProcessList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, testAppointment)}
-                >
+                  >
                   {testAppointment.patient_name}
                 </Link>
               </Tooltip>
               </span>
             </>
           ),
+          filter: textFilter(),
+          
         },
         // {
         //   dataField: "booked_at",
@@ -147,7 +139,16 @@ class TestAppointmentsInProcessList extends Component {
               )}
             </>
           ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
+        
         {
           dataField: "estimated_sample_collection_at",
           text: "Sampling time by Lab",
@@ -164,7 +165,7 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "sample_collected_at",
@@ -185,7 +186,7 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "sample_collector",
@@ -309,7 +310,7 @@ class TestAppointmentsInProcessList extends Component {
         //   ),
         // },
         {
-          dataField: "sample_collector",
+          dataField: "collection_status",
           text: "Sample Collector",
           sort: true,
           formatter: (cellContent, testAppointment) => (
@@ -389,11 +390,11 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
-          dataField: "status",
-          text: "Appointment Status",
+          dataField: 'status',
+          text: 'Appointment Status',
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -401,8 +402,8 @@ class TestAppointmentsInProcessList extends Component {
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                   {testAppointment.status}
                 </span>
+        
               )}
-
               {testAppointment.status == "Confirmed" && (
                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
                   {testAppointment.status}
@@ -421,14 +422,28 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               )}
 
+
               {testAppointment.status == "Result Uploaded" && (
                 <span className="badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                   {testAppointment.status}
                 </span>
               )}
+
             </>
           ),
-        },
+          filter: selectFilter({
+          options: {
+          '': 'All',
+          'Pending': 'Pending',
+          'Confirmed': 'Confirmed',
+          'Sample Collected': 'Sample Collected',
+          'Rescheduled': 'Rescheduled',
+          'Result Uploaded': 'Result Uploaded',
+          },
+          defaultValue: 'All',
+          }),
+          },
+      
 //         {
 //           dataField: "reschedule_count",
 //           text: "Rescheduling",
@@ -503,7 +518,17 @@ class TestAppointmentsInProcessList extends Component {
               )}
             </>
           ),
+          filter: selectFilter({
+            options: {
+            '': 'All',
+            'Paid': 'Paid',
+            'Not Paid': 'Not Paid',
+            'Allocate': 'Allocate',
+            },
+            defaultValue: 'All',
+            }),
         },
+       
         // {
         //   dataField: "invoice",
         //   text: "Invoice",
@@ -597,6 +622,7 @@ class TestAppointmentsInProcessList extends Component {
       ],
 
     };
+  
     // this.openPaymentModal =
     // this.openPaymentModal.bind(this);
     this.handleTestAppointmentClick =
@@ -607,7 +633,7 @@ class TestAppointmentsInProcessList extends Component {
       this.handleTestAppointmentClicks.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
     this.toggleReshedualModal = this.toggleReshedualModal.bind(this);
-
+    this.toggle = this.toggle.bind(this);
   }
   componentDidMount() {
     const { onGetTestAppointmentsInProcessList } = this.props;
@@ -850,6 +876,7 @@ class TestAppointmentsInProcessList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}

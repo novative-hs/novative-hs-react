@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row, Modal, Label, ModalBody, ModalHeader} from "reactstrap";
+import { Card, CardBody, Col, Container, Row, Modal, Label, ModalBody, ModalHeader } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Tooltip from "@material-ui/core/Tooltip";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+
 
 
 import paginationFactory, {
@@ -53,39 +55,34 @@ class TestAppointmentsCompletedList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              <strong>{testAppointment.order_id}</strong>
-            </>
-          ),
-        },
-        {
-          dataField: "order_id",
-          text: "Lab Type / Address",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
+              <strong>{testAppointment.order_id}</strong><br></br>
               <strong>
                 {testAppointment.type}{" ("}
                 {testAppointment.address}{")"}
               </strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
-          dataField: "name",
+          dataField: "patient_name",
           text: "Patient name",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
+                <Tooltip title="Patient Info">
                   <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, testAppointment)}
                   >
-                   {testAppointment.patient_name}
+                    {testAppointment.patient_name}
                   </Link>
+                </Tooltip>
               </span>
             </>
           ),
+          filter: textFilter(),
+
         },
         // {
         //   dataField: "booked_at",
@@ -112,41 +109,179 @@ class TestAppointmentsCompletedList extends Component {
               )}
             </>
           ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
-        {
-          dataField: "status",
-          text: "Appointment Status",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending Cancel" && (
-                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  Cancel
-                </span>
-              )}
-              {testAppointment.status == "Sample Collected" && (
-                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
-                  {testAppointment.status}
-                </span>
-              )}
 
-              {testAppointment.status == "Cancel" && (
-                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  {testAppointment.status}
-                </span>
-              )}
-
-              {testAppointment.status == "Result Uploaded" && (
-                <span className="badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                  {testAppointment.status}
-                </span>
-              )}
-            </>
-          ),
-        },
         {
           dataField: "estimated_sample_collection_at",
           text: "Sampling time by Lab",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : (
+                <span>
+                  {new Date(
+                    patientTestAppointment.estimated_sample_collection_at
+                  ).toLocaleString("en-US")}
+                </span>
+              )}
+            </>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "sample_collected_at",
+          text: "Sample collected at",
+          sort: true,
+          formatter: (cellContent, patientTestAppointment) => (
+            <>
+              {patientTestAppointment.status == "Pending" ||
+                patientTestAppointment.status == "Confirmed" ||
+                // patientTestAppointment.status == "Sample Collected" ||
+                patientTestAppointment.status == "Rescheduled" ? (
+                <span>----</span>
+              ) : (
+                <span>
+                  {new Date(
+                    patientTestAppointment.sample_collected_at
+                  ).toLocaleString("en-US")}
+                </span>
+              )}
+            </>
+          ), filter: textFilter(),
+        },
+        // {
+        //   dataField: "sample_collector",
+        //   text: "Sample Collector",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         <span>
+        //           {testAppointment.is_home_sampling_availed &&
+        //             !testAppointment.collector_name && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //                 Not assigned
+        //               </span>
+        //             )}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collector_name && (
+        //               <span>{testAppointment.collector_name}</span>
+        //             )}
+
+        //           {!testAppointment.is_home_sampling_availed && (
+        //             <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+        //               Not availed
+        //             </span>
+        //           )}
+        //            {testAppointment.is_home_sampling_availed &&
+        //             !testAppointment.collection_status && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //                 Pending
+        //               </span>
+        //             )} 
+
+
+        //         </span>
+        //       </span>
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "collection status",
+        //   text: "Sample Collection Status",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         <span>
+        //           {/* {testAppointment.is_home_sampling_availed &&
+        //             !testAppointment.collector_name && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //                 Not assigned
+        //               </span>
+        //             )}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collector_name && (
+        //               <span>{testAppointment.collector_name}</span>
+        //             )}
+
+        //           {!testAppointment.is_home_sampling_availed && (
+        //             <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+        //               Not availed
+        //             </span>
+        //           )} */}
+        //           {/* {testAppointment.is_home_sampling_availed &&
+        //             !testAppointment.collection_status && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //                 Pending
+        //               </span>
+        //             )} */}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collection_status == "Assigned" && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
+        //                 {testAppointment.collection_status}
+        //               </span>
+        //             )}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collection_status == "On way" && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+        //                 {testAppointment.collection_status}
+        //               </span>
+        //             )}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collection_status == "Reached" && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+        //                 {testAppointment.collection_status}
+        //               </span>
+        //             )}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collection_status == "Patient Unavailable" && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //                 {testAppointment.collection_status}
+        //               </span>
+        //             )}
+        //               {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collection_status == "Sample+Payment Collected" && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //                 {testAppointment.collection_status}
+        //               </span>
+        //             )}
+
+        //           {testAppointment.is_home_sampling_availed &&
+        //             testAppointment.collection_status == "Sample+Payment Delivered" && (
+        //               <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+        //                 {testAppointment.collection_status}
+        //               </span>
+        //             )}
+
+        //           {!testAppointment.is_home_sampling_availed && (
+        //             <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+        //               Not availed
+        //             </span>
+        //           )}
+        //         </span>
+        //       </span>
+        //     </>
+        //   ),
+        // },
+        {
+          dataField: "estimated_result_uploading_at",
+          text: "Reporting Time by Lab",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -157,36 +292,15 @@ class TestAppointmentsCompletedList extends Component {
               {testAppointment.status != "Pending" ? (
                 <span>
                   {new Date(
-                    testAppointment.estimated_sample_collection_at
+                    testAppointment.estimated_result_uploading_at
                   ).toLocaleString("en-US")}
                 </span>
               ) : null}
             </>
-          ),
-        },
-        
-        {
-          dataField: "sample_collected_at",
-          text: "Sample collected at",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ||
-              testAppointment.status == "Confirmed" ||
-              testAppointment.status == "Rescheduled" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {new Date(testAppointment.sample_collected_at).toLocaleString(
-                    "en-US"
-                  )}
-                </span>
-              )}
-            </>
-          ),
+          ),filter: textFilter(),
         },
         {
-          dataField: "sample_collector",
+          dataField: "collection_status",
           text: "Sample Collector",
           sort: true,
           formatter: (cellContent, testAppointment) => (
@@ -266,8 +380,115 @@ class TestAppointmentsCompletedList extends Component {
                 </span>
               </span>
             </>
-          ),
+          ), filter: textFilter(),
         },
+        {
+          dataField: 'status',
+          text: 'Appointment Status',
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              {testAppointment.status == "Pending" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {testAppointment.status}
+                </span>
+
+              )}
+              {testAppointment.status == "Confirmed" && (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {testAppointment.status}
+                </span>
+              )}
+
+              {testAppointment.status == "Sample Collected" && (
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+                  {testAppointment.status}
+                </span>
+              )}
+
+              {testAppointment.status == "Rescheduled" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {testAppointment.status}
+                </span>
+              )}
+
+
+              {testAppointment.status == "Result Uploaded" && (
+                <span className="badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                  {testAppointment.status}
+                </span>
+              )}
+
+            </>
+          ),
+          // filter: selectFilter({
+          //   options: {
+          //     '': 'All',
+          //     'Pending': 'Pending',
+          //     'Confirmed': 'Confirmed',
+          //     'Sample Collected': 'Sample Collected',
+          //     'Rescheduled': 'Rescheduled',
+          //     'Result Uploaded': 'Result Uploaded',
+          //   },
+          //   defaultValue: 'All',
+          // }),
+        },
+
+        //         {
+        //           dataField: "reschedule_count",
+        //           text: "Rescheduling",
+        //           sort: true,
+        //           formatter: (cellContent, testAppointment) => (
+        //             <>
+        //               <span>
+        //                 <span>
+        //                   {testAppointment.reschedule_count > 1 && (
+        //                     <span className="text-danger">
+        //                       {testAppointment.reschedule_count} Used, Limit Reached
+        //                     </span>
+        //                   )}
+
+        //                   {(!testAppointment.reschedule_reason ||
+        //                     testAppointment.reschedule_count < 2) && (
+        //                       <span className="text-info">
+        //                         {testAppointment.reschedule_count} Used,{" "}
+        //                         {2 - testAppointment.reschedule_count} Left
+        //                       </span>
+        //                     )}
+        //                   {testAppointment.reschedule_reason &&
+        //                     testAppointment.reschedule_reason == "Other" && (
+        //                       <Link
+        //                         className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
+        //                         to="#"
+        //                         onClick={e => this.openReasonModal(e, testAppointment)}
+        //                       >
+        //                         {testAppointment.reason.slice(0, 10) + "..."}
+        //                       </Link>
+        //                     )}
+
+        //                   {testAppointment.reschedule_reason &&
+        //                     testAppointment.reschedule_reason != "Other" && (
+        //                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+        //                         {testAppointment.reschedule_reason}
+        //                       </span>
+        //                     )}
+
+        //                   {!testAppointment.reschedule_reason && (
+        //                     <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
+        //                       Not Rescheduled
+        //                     </span>
+        //                   )}
+        //                   {/* <Link
+        // to="#"
+        // onClick={e => this.openMessageModal(e, testAppointment)}
+        // >
+        // {testAppointment.reschedule_reason.slice(0, 10) + "..."}
+        // </Link>{" "} */}
+        //                 </span>
+        //               </span>
+        //             </>
+        //           ),
+        //         },
         {
           dataField: "payment_status",
           text: "Payment Status",
@@ -280,86 +501,109 @@ class TestAppointmentsCompletedList extends Component {
                   {testAppointment.payment_status}
                 </span>
               ) : (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-info">
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                   {testAppointment.payment_method},{" "}
                   {testAppointment.payment_status}
                 </span>
               )}
             </>
           ),
-        }, 
-        {
-          dataField: "estimated_result_uploading_at",
-          text: "Reporting Time by Lab",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : null}
-
-              {testAppointment.status != "Pending" ? (
-                <span>
-                  {new Date(
-                    testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
-                </span>
-              ) : null}
-            </>
-          ),
+          // filter: selectFilter({
+          //   options: {
+          //     '': 'All',
+          //     'Paid': 'Paid',
+          //     'Not Paid': 'Not Paid',
+          //     'Allocate': 'Allocate',
+          //   },
+          //   defaultValue: 'All',
+          // }),
         },
+
+        // {
+        //   dataField: "invoice",
+        //   text: "Invoice",
+        //   isDummyField: true,
+        //   editable: false,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <Link
+        //         className="btn btn-primary btn-rounded font-size-10"
+        //         to={`/lab-invoice-detail/${testAppointment.id}`}
+        //       >
+        //         Invoice
+        //       </Link>
+        //     </>
+        //   ),
+        // },
+        // {
+        //   dataField: "payment",
+        //   text: "Payment",
+        //   isDummyField: true,
+        //   editable: false,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <Link
+        //         className="btn btn-primary btn-rounded font-size-10"
+        //         to={`/lab-payments/${testAppointment.id}`}
+        //       >
+        //         Payment
+        //       </Link>
+        //     </>
+        //   ),
+        // },
+       
+
         {
           dataField: process.env.REACT_APP_BACKENDURL + "result",
           text: "Actions",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-            <div className="d-flex gap-3">
-              <Link className="text-success" to="#">
-              <Tooltip title="Reschedual Appoitment Info">
-                <i
-                  className="mdi mdi-calendar-clock font-size-18"
-                  id="edittooltip"
-                  onClick={e => this.openReshedualModal(e, testAppointment)
-                  }
-                ></i>
-              </Tooltip>
+              <div className="d-flex gap-3">
+                <Link className="text-success" to="#">
+                  <Tooltip title="Reschedual Appoitment Info">
+                    <i
+                      className="mdi mdi-calendar-clock font-size-18"
+                      id="edittooltip"
+                      onClick={e => this.openReshedualModal(e, testAppointment)
+                      }
+                    ></i>
+                  </Tooltip>
                   <Tooltip title="Invoice">
-                    
-              <Link 
-                className="mdi mdi-receipt font-size-18"
-                to={`/lab-invoice-detail/${testAppointment.id}`}
-              >
-              </Link>
-              </Tooltip>
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/lab-invoice-detail/${testAppointment.id}`}
+                    >
+                    </Link>
+                  </Tooltip>
 
-              </Link>
-              {testAppointment.result_type == "File" ? (
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL + testAppointment.result,
-                  }}
-                  target="_blank"
-                >
-                Report
                 </Link>
-              ) : (
-                <Link
-                  to={{
-                    pathname: testAppointment.url,
-                  }}
-                  target="_blank"
-                >
-                  View
-                </Link>
-              )}
-              
-            </div>
-              
+                {testAppointment.result_type == "File" ? (
+                  <Link
+                    to={{
+                      pathname:
+                        process.env.REACT_APP_BACKENDURL + testAppointment.result,
+                    }}
+                    target="_blank"
+                  >
+                    Report
+                  </Link>
+                ) : (
+                  <Link
+                    to={{
+                      pathname: testAppointment.url,
+                    }}
+                    target="_blank"
+                  >
+                    View
+                  </Link>
+                )}
+              </div>
             </>
           ),
         },
+
+
       ],
     };
     // this.toggle = this.toggle.bind(this);
@@ -402,7 +646,7 @@ class TestAppointmentsCompletedList extends Component {
       rescheduled_at: arg.rescheduled_at,
     });
   };
-  
+
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -515,186 +759,187 @@ class TestAppointmentsCompletedList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
                                     />
                                   </div>
                                   <Modal
-                                      isOpen={this.state.PatientModal}
-                                      className={this.props.className}
+                                    isOpen={this.state.PatientModal}
+                                    className={this.props.className}
+                                  >
+                                    <ModalHeader
+                                      toggle={this.togglePatientModal}
+                                      tag="h4"
                                     >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Patient Unique Id
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_unique_id
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                      <span></span>
+                                    </ModalHeader>
+                                    <ModalBody>
+                                      <Formik>
+                                        <Form>
+                                          <Row>
+                                            <Col className="col-12">
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Patient Unique Id
+                                                  </Label>
                                                 </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.patient_unique_id
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Age
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.patient_age
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Address
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state
+                                                        .patient_address
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    City
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.patient_city
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Schedule time by Patient
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.appointment_requested_at
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Booked At
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.booked_at
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
+
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Mobile No.
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-6">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.patient_phone
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
                                                 </div>
 
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
+                                                <div className="col-md-3">
+                                                  <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={() => {
+                                                      navigator.clipboard.writeText(
                                                         this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                                          .patient_phone
+                                                      );
+                                                      this.setState({
+                                                        btnText: "Copied",
+                                                      });
+                                                    }}
+                                                  >
+                                                    {this.state.btnText}
+                                                  </button>
                                                 </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      City
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_city
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Schedule time by Patient
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.appointment_requested_at
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Booked At
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.booked_at
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Mobile No.
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_phone
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .patient_phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
-                                                  </div>
-                                                </div>
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
+                                              </div>
+                                            </Col>
+                                          </Row>
+                                        </Form>
+                                      </Formik>
+                                    </ModalBody>
                                   </Modal>
                                   <Modal
-                                      isOpen={this.state.ReshedualModal}
-                                      className={this.props.className}
+                                    isOpen={this.state.ReshedualModal}
+                                    className={this.props.className}
+                                  >
+                                    <ModalHeader
+                                      toggle={this.toggleReshedualModal}
+                                      tag="h4"
                                     >
-                                      <ModalHeader
-                                        toggle={this.toggleReshedualModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                {/* <div className="mb-3 row">
+                                      <span></span>
+                                    </ModalHeader>
+                                    <ModalBody>
+                                      <Formik>
+                                        <Form>
+                                          <Row>
+                                            <Col className="col-12">
+                                              {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                     reschedule_reason
@@ -711,65 +956,65 @@ class TestAppointmentsCompletedList extends Component {
                                                     />
                                                   </div>
                                                 </div> */}
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
                                                     Reschedule Reason
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.reschedule_reason
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                                  </Label>
                                                 </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.reschedule_reason
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
 
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
                                                     Reschedule Count
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.reschedule_count
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                                  </Label>
                                                 </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Reschedule time
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.rescheduled_at
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.reschedule_count
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
                                                 </div>
+                                              </div>
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Reschedule time
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={
+                                                      this.state.rescheduled_at
+                                                    }
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
+                                              </div>
 
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
+                                            </Col>
+                                          </Row>
+                                        </Form>
+                                      </Formik>
+                                    </ModalBody>
+                                  </Modal>
                                   <Modal
                                     isOpen={this.state.reasonModal}
                                     role="dialog"

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import {
   Card,
@@ -87,23 +87,28 @@ class TestAppointmentsPendingList extends Component {
                 {testAppointment.address}{")"}
               </strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
-        // {
-        //   dataField: "order_id",
-        //   text: "Lab Type / Address",
-        //   sort: true,
-        //   formatter: (cellContent, testAppointment) => (
-        //     <>
-        //       <strong>
-        //         {testAppointment.type}{" ("}
-        //         {testAppointment.address}{")"}
-        //       </strong>
-        //     </>
-        //   ),
-        // },
+       // Conditionally add the Lab Type / Address column
+        // ...(main_lab_appointments === "Yes"
+        //   ? [
+        //       {
+        //         dataField: "order_id",
+        //         text: "Lab Type / Address",
+        //         sort: true,
+        //         formatter: (cellContent, testAppointment) => (
+        //           <>
+        //             <strong>
+        //               {testAppointment.type} ({testAppointment.address})
+        //             </strong>
+        //           </>
+        //         ),
+        //       },
+        //     ]
+        //   : []),
+        
         {
-          dataField: "name",
+          dataField: "patient_name",
           text: "Patient name",
           sort: true,
           formatter: (cellContent, testAppointment) => (
@@ -117,7 +122,7 @@ class TestAppointmentsPendingList extends Component {
                 </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "booked_at",
@@ -129,7 +134,7 @@ class TestAppointmentsPendingList extends Component {
                 {new Date(testAppointment.booked_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "appointment_requested_at",
@@ -143,7 +148,7 @@ class TestAppointmentsPendingList extends Component {
                 ).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "is_home_sampling_availed",
@@ -158,6 +163,14 @@ class TestAppointmentsPendingList extends Component {
               )}
             </>
           ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
         // {
         //   dataField: "payment",
@@ -477,6 +490,8 @@ class TestAppointmentsPendingList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory() }
+
                                     />
                                     <Modal
                                       isOpen={this.state.appointmentmodal}
