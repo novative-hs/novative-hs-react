@@ -385,6 +385,7 @@ class AccountStatements extends Component {
                               <th scope="col">Discount By Lab</th>
                               <th scope="col">Discount By LabHazir</th>
                               <th scope="col">Payable After Discount</th>
+                              <th scope="col">Counter Discount By Lab</th>
                               <th scope="col">Margin of Lab</th>
                               <th scope="col">Referrel Fee of LabHazir</th>
                               {/* <th scope="col">Payment Received By LabHazir</th> */}
@@ -523,11 +524,19 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <td>
+                                      {accountStatement.lab_counter_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
                                     <td>
                                       {accountStatement.lab_share == 0 ? (
                                         <p className="d-none">
@@ -818,12 +827,19 @@ class AccountStatements extends Component {
                                         </p>
                                       )}
 
+                                    </td><td>
+                                      {accountStatement.lab_counter_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
                                     </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
                                     <td>
                                       {accountStatement.lab_share == 0 ? (
                                         <p className="d-none">
@@ -1119,20 +1135,28 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
                                     <td>
-                                      {accountStatement.lab_share == 0 ? (
+                                      {accountStatement.lab_counter_discount == 0 ? (
                                         <p className="d-none">
-                                          {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
 
                                       ) : (
                                         <p className="float-end">
-                                          {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
 
@@ -1286,6 +1310,13 @@ class AccountStatements extends Component {
                               <p className="float-end">
                                 {
                                   this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                              <p className="float-end">
+                                {
+                                  this.props.accountStatements.slice(-1).pop().total_labcounterdiscount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                                 </p>
                               </td>
