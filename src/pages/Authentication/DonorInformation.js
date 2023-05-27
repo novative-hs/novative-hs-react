@@ -180,6 +180,32 @@ class DonorInformation extends Component {
                           >
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
+                                  <div className="mb-3">
+                                  <Label for="name" className="form-label">
+                                    Name
+                                  </Label>
+                                  <Field
+                                    id="name"
+                                    name="name"
+                                    placeholder="Enter Name"
+                                    type="text"
+                                    onChange={e =>
+                                      this.setState({ name: e.target.value })
+                                    }
+                                    value={this.state.name}
+                                    className={
+                                      "form-control" +
+                                      (errors.name && touched.name
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="name"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
                                 {/* Landline field */}
                                 <div className="mb-3">
                                   <Label for="phone" className="form-label">

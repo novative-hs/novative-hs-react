@@ -53,6 +53,7 @@ class DonorPayment extends Component {
       bank_id: "",
       account_no: "",
       categorey: "",
+      account_type:"",
       currency: "",
       city: "",
       address: "",
@@ -79,6 +80,7 @@ class DonorPayment extends Component {
         bank_id: this.state.bank_id,
         account_no: this.state.account_no,
         categorey: this.state.categorey,
+        account_type: this.state.account_type,
         currency: this.state.currency,
         city: this.state.city,
         address: this.state.address,
@@ -292,6 +294,43 @@ class DonorPayment extends Component {
                                               })
                                             }
                                           />
+                            </Col>
+                          </FormGroup>
+                          <FormGroup className="mb-4" row>
+                            <Label
+                              htmlFor="name"
+                              md="2"
+                              className="col-form-label"
+                            >
+                              Account Type
+                              <span
+                                style={{ color: "#f46a6a" }}
+                                className="font-size-18"
+                              >
+                                *
+                              </span>
+                            </Label>
+                            <Col md="10">
+                            <select
+                              name="account_type"
+                              component="select"
+                              onChange={e =>
+                                this.setState({
+                                  account_type: e.target.value,
+                                })
+                              }
+                              defaultValue={this.state.account_type}
+                              className="form-select"
+                            >
+                              <option
+                                value=""
+                              >
+                                --- Please select the Account Type                                ---
+                              </option>
+                              <option value="LABHAZIR">Labhazir</option>
+                              <option value="DONATION">Donation</option>
+
+                            </select>
                             </Col>
                           </FormGroup>
                           <FormGroup className="mb-4" row>

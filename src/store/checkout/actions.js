@@ -2,6 +2,9 @@ import {
   GET_HOME_SAMPLED_TESTS,
   GET_HOME_SAMPLED_TESTS_FAIL,
   GET_HOME_SAMPLED_TESTS_SUCCESS,
+  GET_DONATION_CHECK,
+  GET_DONATION_CHECK_FAIL,
+  GET_DONATION_CHECK_SUCCESS,
   GET_CHECKOUT_ITEMS,
   GET_CHECKOUT_ITEMS_FAIL,
   GET_CHECKOUT_ITEMS_SUCCESS,
@@ -22,6 +25,20 @@ export const getHomeSampledTestsSuccess = homeSampledTests => ({
 
 export const getHomeSampledTestsFail = error => ({
   type: GET_HOME_SAMPLED_TESTS_FAIL,
+  payload: error,
+});
+export const getDonationCheck = id => ({
+  type: GET_DONATION_CHECK,
+  payload: id,
+});
+
+export const getDonationCheckSuccess = donationCheck => ({
+  type: GET_DONATION_CHECK_SUCCESS,
+  payload: donationCheck,
+});
+
+export const getDonationCheckFail = error => ({
+  type: GET_DONATION_CHECK_FAIL,
   payload: error,
 });
 

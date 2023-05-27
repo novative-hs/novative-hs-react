@@ -902,6 +902,28 @@ export const getNearbyTests = data => {
   });
 };
 // Get Nearby Tests
+export const getNearbyTestsDiscounted = data => {
+  let formData = new FormData();
+
+  formData.append("latitude", data.latitude);
+  formData.append("longitude", data.longitude);
+  formData.append("search_type", data.search_type);
+  formData.append("km", data.km);
+  formData.append("LabType", data.LabType);
+  formData.append("address", data.address);
+  formData.append("city", data.city);
+  formData.append("test_name", data.test_name);
+  console.log("donorSetting: ", data)
+
+  console.log("In near by lsbd: ", data)
+
+
+  return axios.post(`${url.GET_NEARBY_TESTS_DISCOUNTEDLH}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+// Get Nearby Tests
 export const getNearbyProfiles = data => {
   let formData = new FormData();
 
@@ -1148,7 +1170,11 @@ export const getHomeSampledTests = id =>
   get(`${url.GET_HOME_SAMPLED_TESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
+  
+  export const getDonationCheck = id =>
+  get(`${url.GET_DONATION_CHECK}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 // Get Checkout Items
 export const getCheckoutItems = (id, is_home_sampling_availed, is_state_sampling_availed) => {
   let formData = new FormData();
@@ -1482,6 +1508,7 @@ export const getDonorAccountStatements = id =>
       // formData.append("lab_id", bankAccount.lab_id);
       formData.append("bank_id", bankAccount.bank_id);
       formData.append("account_no", bankAccount.account_no);
+      formData.append("account_type", bankAccount.account_type);
       formData.append("categorey", bankAccount.categorey);
       formData.append("currency", bankAccount.currency);
       formData.append("city", bankAccount.city);

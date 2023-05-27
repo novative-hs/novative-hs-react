@@ -844,7 +844,6 @@ class TestsOffered extends Component {
                                 </span>
                               </div>
                             )}
-
                             {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
                               <div className="my-0">
                                 <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
@@ -869,7 +868,6 @@ class TestsOffered extends Component {
                                 </span>
                               </div>
                             )}
-
                             {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -895,13 +893,7 @@ class TestsOffered extends Component {
 
                               </div>
                             )}
-                            
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Discount Labhazir: {offeredTest.discount_by_labhazir} %
-                              </span>
-                            </div> */}
+                        
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-stopwatch"></i> Reporting

@@ -297,6 +297,7 @@ export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 
 // NEARBY TESTS
 export const GET_NEARBY_TESTS = `${API_ENDPOINT}/api/patient/tests-offered`;
+export const GET_NEARBY_TESTS_DISCOUNTEDLH = `${API_ENDPOINT}/api/patient/LHDiscount-offeredTest`;
 export const GET_NEARBY_PROFILES = `${API_ENDPOINT}/api/patient/profiles-offered`;
 export const GET_PROFILES = `${API_ENDPOINT}/api/medicaltest/profile-list`;
 export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
@@ -307,6 +308,7 @@ export const GET_NEARBY_RADIOLOGY = `${API_ENDPOINT}/api/patient/radiology-tests
 
 // CHECKOUT
 export const GET_HOME_SAMPLED_TESTS = `${API_ENDPOINT}/api/patient/home-sampled-tests`;
+export const GET_DONATION_CHECK = `${API_ENDPOINT}/api/patient/donation-check`;
 export const GET_CHECKOUT_ITEMS = `${API_ENDPOINT}/api/patient/checkout-items`;
 export const ADD_CHECKOUT_DATA = `${API_ENDPOINT}/api/patient/checkout`;
 

@@ -13,6 +13,7 @@ import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 // TestMarket Pages
 import labs from "pages/LabMarket/NearbyLabs/labs";
 import NearbyTests from "pages/LabMarket/NearbyLabs/NearbyTests";
+import NearbyTestsDiscountedlh from "pages/LabMarket/NearbyLabs/NearbyTestsDiscountedlh";
 import NearbyProfiles from "pages/LabMarket/NearbyLabs/NearbyProfiles";
 import NearbyPackages from "pages/LabMarket/NearbyLabs/NearbyPackages";
 import NearbyRadiology from "pages/LabMarket/NearbyLabs/NearbyRadiology";
@@ -676,6 +677,10 @@ const patientPublicRoutes = [
   {
     path: "/nearby-tests/:guest_id?/:uuid?",
     component: NearbyTests,
+  },
+  {
+    path: "/nearby-tests-discountedlh/:guest_id?/:uuid?",
+    component: NearbyTestsDiscountedlh,
   },
   {  path: "/nearby-profiles/:guest_id?/:uuid?",
      component: NearbyProfiles 

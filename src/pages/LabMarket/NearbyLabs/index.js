@@ -1178,9 +1178,9 @@ class NearbyLabs extends Component {
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) ||
-                    "Main",
+                      "Main",
                     km: (this.state && this.state.km) ||
-                    "30",
+                      "30",
                   }}
                   validationSchema={Yup.object().shape({
                     city: Yup.string().when("search_type", {
@@ -1219,7 +1219,7 @@ class NearbyLabs extends Component {
                           <div className="mt-4" style={{ display: 'none' }}>
                             <Field
                               name="search_type"
-                              
+
                               component="select"
                               onChange={e => this.onChangeSearchType(e)}
                               value={this.state.search_type}
@@ -1236,39 +1236,39 @@ class NearbyLabs extends Component {
                         </Col>
                         <Col lg="3">
                           <div className="mb-3">
-                                  <Label for="LabType" className="form-label">
-                                    Search By Labs Type
-                                  </Label>
-                                  <Field
-                                    name="LabType"
-                                    component="select"
-                                    onChange={e => this.onChangeType(e)}
-                                    value={this.state.LabType}
-                                    className="form-select"
-                                  >
-                                    <option value="Main">Main Labs</option>
-                                    <option value="Collection">Collection Points
-                                    </option>
-                                    <option value="Others">Both</option>
-                                  </Field>
-                                </div>
+                            <Label for="LabType" className="form-label">
+                              Search By Labs Type
+                            </Label>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={e => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                            >
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points
+                              </option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
                         </Col>
 
                         {/* City field */}
                         <Col lg="3">
-                            <div className="mb-3">
+                          <div className="mb-3">
                             <Label for="LabType" className="form-label">
-                                    Search By City
-                                  </Label>
-                              <Select
-                                name="city "
-                                comp onent="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={CITIES}
-                                placeholder="Select City..."
-                              />
-                            </div>
+                              Search By City
+                            </Label>
+                            <Select
+                              name="city "
+                              comp onent="Select"
+                              onChange={this.onChangeCity}
+                              className="defautSelectParent is-invalid"
+                              options={CITIES}
+                              placeholder="Select City..."
+                            />
+                          </div>
                         </Col>
 
                         {/* Custom Address field */}
@@ -1697,50 +1697,57 @@ class NearbyLabs extends Component {
                   <Col lg="9" key={"col" + key}>
                     <Card>
                       <CardBody>
-                        <div>
-                          {advLive.poster ? (
-                            advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL + advLive.poster
-                                }
-                                alt="Advertisement"
-                                style={{
-                                  maxWidth: "100%",
-                                  maxHeight: "100%",
-                                  objectFit: "cover",
-                                }}
-                                className="img-fluid mx-auto d-block"
-                              />
-                            ) : (
-                              <video
-                                width="100%"
-                                height="100%"
-                                controls
-                                autoPlay={this.state.autoplay}
-                                loop
-                              >
-                                <source
-                                  src={process.env.REACT_APP_BACKENDURL + advLive.poster}
-                                  type="video/mp4"
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-tests-discountedlh/${this.state.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-tests-discountedlh/${this.state.guest_id}`
+                          }
+                        >
+                          <div>
+                            {advLive.poster ? (
+                              advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL + advLive.poster
+                                  }
+                                  alt="Advertisement"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    objectFit: "cover",
+                                  }}
+                                  className="img-fluid mx-auto d-block"
                                 />
-                                Your browser does not support the video tag.
-                              </video>
+                              ) : (
+                                <video
+                                  width="100%"
+                                  height="100%"
+                                  controls
+                                  autoPlay={this.state.autoplay}
+                                  loop
+                                >
+                                  <source
+                                    src={process.env.REACT_APP_BACKENDURL + advLive.poster}
+                                    type="video/mp4"
+                                  />
+                                  Your browser does not support the video tag.
+                                </video>
 
-                              // <video width="100%" height="100%" controls autoPlay>
-                              //   <source
-                              //     src={
-                              //       process.env.REACT_APP_BACKENDURL + advLive.poster
-                              //     }
-                              //     type="video/mp4"
-                              //   />
-                              //   Your browser does not support the video tag.
-                              // </video>
-                            )
-                          ) : (
-                            <div>No media found.</div>
-                          )}
-                        </div>
+                                // <video width="100%" height="100%" controls autoPlay>
+                                // <source
+                                // src={
+                                // process.env.REACT_APP_BACKENDURL + advLive.poster
+                                // }
+                                // type="video/mp4"
+                                // />
+                                // Your browser does not support the video tag.
+                                // </video>
+                              )
+                            ) : (
+                              <div>No media found.</div>
+                            )}
+                          </div></Link>
                       </CardBody>
                     </Card>
                   </Col>

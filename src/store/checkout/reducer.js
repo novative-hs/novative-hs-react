@@ -1,6 +1,8 @@
 import {
   GET_HOME_SAMPLED_TESTS_FAIL,
   GET_HOME_SAMPLED_TESTS_SUCCESS,
+  GET_DONATION_CHECK_FAIL,
+  GET_DONATION_CHECK_SUCCESS,
   GET_CHECKOUT_ITEMS_SUCCESS,
   GET_CHECKOUT_ITEMS_FAIL,
   ADD_CHECKOUT_DATA_SUCCESS,
@@ -11,6 +13,7 @@ const INIT_STATE = {
   homeSampledTests: [],
   checkoutItems: [],
   checkedoutData: [],
+  donationCheck:[],
   error: {},
 };
 
@@ -27,6 +30,17 @@ const checkout = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+      case GET_DONATION_CHECK_SUCCESS:
+        return {
+          ...state,
+          donationCheck: action.payload,
+        };
+  
+      case GET_DONATION_CHECK_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
 
     case GET_CHECKOUT_ITEMS_SUCCESS:
       return {
