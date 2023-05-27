@@ -742,7 +742,7 @@ class CartList extends Component {
                     }
                     className="btn header-items noti-icon right-bar-toggle"
                   >
-                    <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                    <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                   </Link>
                 </div>
               )
@@ -775,7 +775,7 @@ class CartList extends Component {
                     to="/contact-us"
                     className="btn header-items noti-icon right-bar-toggle"
                   >
-                    <i className="mdi mdi-phone align-middle me-1 font-size-20" />{" "}
+                    <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                     {/* <span className="pt-4 font-size-12">Cart</span> */}
                   </Link>
                 
