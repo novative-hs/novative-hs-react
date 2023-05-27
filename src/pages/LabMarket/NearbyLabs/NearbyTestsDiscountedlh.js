@@ -1293,6 +1293,57 @@ class NearbyTests extends Component {
                                 {nearbyTest.is_home_sampling_available}
                               </span>
                             </div>
+
+                            <div className="my-0">
+                              {" "}
+                              {!this.state.user_id ? (
+                                <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
+                                }
+                                
+                                className="text-dark"
+                              >
+                                <span className="text-primary">
+                                  {nearbyTest.lab_name}{" "}
+                                  
+                                </span>
+                              </Link>
+                              ): this.state.user_id ? (
+                                <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
+                                }
+                                
+                                className="text-dark"
+                              >
+                                <span className="text-primary">
+                                  {nearbyTest.lab_name}{" "}
+                                  
+                                </span>
+                              </Link>
+                              ):null}
+                           <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyTest.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
+                              {/* <span className="text-muted me-2">
+                                <i className="fas fa-vial"></i> Lab:{" "}
+                                {nearbyTest.lab_name}
+                              </span> */}
+                            </div>
+
                             <div className="my-0">
                               {" "}
                               {(this.state.user_id) && (this.state.user_type ==="CSR") && (
@@ -1328,17 +1379,7 @@ class NearbyTests extends Component {
                      </Link>
                       )}
                             </div>
-                            <div className="my-0 mt-2">
-                              <StarRatings
-                                rating={nearbyTest.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
+                          
                             <Button
                               type="button"
                               color="primary"
