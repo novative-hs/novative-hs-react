@@ -299,7 +299,7 @@ class AccountStatements extends Component {
                                 }
                               </td> <td className="border-10">
                                 {
-                                  this.props.donoraccountStatements.slice(-1).pop().total_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  this.props.donoraccountStatements.slice(-1).pop().Balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
                               </td>
                             </tr>
