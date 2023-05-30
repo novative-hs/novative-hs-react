@@ -93,13 +93,10 @@ function* fetchTestAppointmentsCompletedList(object) {
 }
 
 function* onUpdateTestAppointment({ payload: testAppointment }) {
-  console.log("Saga: ", testAppointment);
   try {
     const response = yield call(updateTestAppointment, testAppointment);
-    console.log("Inside try: ", response);
     yield put(updateTestAppointmentSuccess(response));
   } catch (error) {
-    console.log("Inside catch: ", error);
     yield put(updateTestAppointmentFail(error));
   }
 }
