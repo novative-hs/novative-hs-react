@@ -1402,6 +1402,8 @@ class TestAppointmentsInProcessList extends Component {
                                                 rescheduledBy: "Lab",
                                                 status: "Rescheduled",
                                                 process: "rescheduling",
+                                                assigned_to:
+                                                 values.assigned_to,
                                               };
 
                                               // update TestAppointment
