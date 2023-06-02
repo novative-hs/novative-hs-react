@@ -38,6 +38,9 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getTestAppointmentsInProcessList,
   updateTestAppointment,
+  addNewCollectionPointTestAppointment,
+  getLabProfile
+
 } from "store/test-appointments/actions";
 
 import { updatePaymentInfo } from "store/invoices/actions";
@@ -55,12 +58,14 @@ class TestAppointmentsInProcessList extends Component {
     this.state = {
       labs: [],
       testAppointments: [],
+      labProfiles: [],
       patient: [],
       sampleCollectors: [],
       sampleCollector: "",
       btnText: "Copy",
       resultFile: "",
       testAppointment: "",
+      main_lab_appointments: "",
       modal: false,
       PaymentModal: false,
       ReshedualModal: false,
@@ -636,13 +641,24 @@ class TestAppointmentsInProcessList extends Component {
     this.toggle = this.toggle.bind(this);
   }
   componentDidMount() {
-    const { onGetTestAppointmentsInProcessList } = this.props;
+    const { testAppointments, onAddNewCollectionPointTestAppointment, onGetTestAppointmentsInProcessList } = this.props;
     onGetTestAppointmentsInProcessList(this.state.user_id);
-    this.setState({ testAppointments: this.props.testAppointments });
+    // Assign the value to main_lab_appointments
+    testAppointments.main_lab_appointments = "Main";
+
+    // Call the function with the updated value
+    onAddNewCollectionPointTestAppointment(testAppointments, this.state.user_id);
+    this.setState({ testAppointments});
 
     const { onGetSampleCollectors } = this.props;
     onGetSampleCollectors(this.state.user_id);
     this.setState({ sampleCollectors: this.props.sampleCollectors });
+
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({
+      labProfiles
+    });
   }
 
   toggle() {
@@ -790,12 +806,32 @@ class TestAppointmentsInProcessList extends Component {
   //     PaymentModal: !prevState.PaymentModal,
   //   }));
   // };
+  handleTestAppointmentType = e => {
+    // const { id } = useParams();
+    // console.log("id is",id);
+      this.setState({
+        testAppointments: {
+          main_lab_appointments: e.target.value,
+        },
+      });
+
+      // API call to get the checkout items
+
+      const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsInProcessList } = this.props;
+      setTimeout(() => {
+        console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
+      });
+      setTimeout(() => {
+        onGetTestAppointmentsInProcessList(this.state.user_id);
+      }, 1000);
+  };
+
   render() {
     const { SearchBar } = Search;
 
     const { testAppointments } = this.props;
 
-    const { onUpdateTestAppointment, onGetTestAppointmentsInProcessList } =
+    const { onGetLabProfile, onAddNewCollectionPointTestAppointment, onUpdateTestAppointment, onGetTestAppointmentsInProcessList } =
       this.props;
     const testAppointment = this.state.testAppointment;
 
@@ -853,12 +889,26 @@ class TestAppointmentsInProcessList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                                  <div className="ms-2 mb-4">
                                     <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
+                                    {this.props.labProfiles.type === "Main Lab" && (
+                                    <div>
+                                      <Label for="main_lab_appointments" className="form-label">
+                                      <strong>Search By Lab Type</strong>
+                                      </Label>
+                                      <select
+                                        className="form-control select2"
+                                        title="main_lab_appointments"
+                                        name="main_lab_appointments"
+                                        onChange={this.handleTestAppointmentType}
+                                        
+                                      >
+                                        <option value="Main">Main</option>
+                                        <option value="Collection">Collection</option>
+                                        <option value="Both">Both</option>
+                                      </select>
+                                    </div>
+                                  )}
                                     </div>
                                   </div>
                                 </Col>
@@ -2235,14 +2285,22 @@ TestAppointmentsInProcessList.propTypes = {
   onGetSampleCollectors: PropTypes.func,
   onUpdateTestAppointment: PropTypes.func,
   onUpdatePaymentInfo: PropTypes.func,
+  labProfiles: PropTypes.array,
+  onAddNewCollectionPointTestAppointment: PropTypes.func,
+  onGetLabProfile: PropTypes.func,
 };
 
 const mapStateToProps = ({ testAppointments, sampleCollectors }) => ({
   sampleCollectors: sampleCollectors.sampleCollectors,
   testAppointments: testAppointments.testAppointmentsInProcessList,
+  labProfiles: testAppointments.labProfiles,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
+  onAddNewCollectionPointTestAppointment: (testAppointment, id) =>
+  dispatch(addNewCollectionPointTestAppointment(testAppointment, id)),
   onGetTestAppointmentsInProcessList: id =>
     dispatch(getTestAppointmentsInProcessList(id)),
   onGetSampleCollectors: id => dispatch(getSampleCollectors(id)),

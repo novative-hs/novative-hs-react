@@ -87,9 +87,9 @@ class TestAppointmentsPendingList extends Component {
                 {testAppointment.address}{")"}
               </strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
-       // Conditionally add the Lab Type / Address column
+        // Conditionally add the Lab Type / Address column
         // ...(main_lab_appointments === "Yes"
         //   ? [
         //       {
@@ -106,7 +106,7 @@ class TestAppointmentsPendingList extends Component {
         //       },
         //     ]
         //   : []),
-        
+
         {
           dataField: "patient_name",
           text: "Patient name",
@@ -122,7 +122,7 @@ class TestAppointmentsPendingList extends Component {
                 </Link>
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "booked_at",
@@ -134,7 +134,7 @@ class TestAppointmentsPendingList extends Component {
                 {new Date(testAppointment.booked_at).toLocaleString("en-US")}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "appointment_requested_at",
@@ -148,7 +148,7 @@ class TestAppointmentsPendingList extends Component {
                 ).toLocaleString("en-US")}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "is_home_sampling_availed",
@@ -232,13 +232,20 @@ class TestAppointmentsPendingList extends Component {
   }
 
   componentDidMount() {
-    const { testAppointments, onGetTestAppointmentsPendingList } = this.props;
+    const { testAppointments, onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
     onGetTestAppointmentsPendingList(this.state.user_id);
-
+  
+    // Assign the value to main_lab_appointments
+    testAppointments.main_lab_appointments = "Main";
+  
+    // Call the function with the updated value
+    onAddNewCollectionPointTestAppointment(testAppointments, this.state.user_id);
+  
     this.setState({
       testAppointments
       // appointmentmodal: true,
     });
+  
 
     const { labProfiles, onGetLabProfile } = this.props;
     onGetLabProfile(this.state.user_id);
@@ -369,6 +376,26 @@ class TestAppointmentsPendingList extends Component {
     this.toggle();
   };
 
+  handleTestAppointmentType = e => {
+    // const { id } = useParams();
+    // console.log("id is",id);
+      this.setState({
+        testAppointments: {
+          main_lab_appointments: e.target.value,
+        },
+      });
+
+      // API call to get the checkout items
+
+      const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
+      setTimeout(() => {
+        console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
+      });
+      setTimeout(() => {
+        onGetTestAppointmentsPendingList(this.state.user_id);
+      }, 1000);
+  };
+
   render() {
     const { SearchBar } = Search;
 
@@ -433,49 +460,35 @@ class TestAppointmentsPendingList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="3" lg="3">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                                  <div className="ms-2 mb-4">
                                     <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>                               
-                                <Col sm="9" lg="9">
-                                  <div>
-                                    {this.props.labProfiles.type == "Main Lab" && (
+                                    {this.props.labProfiles.type === "Main Lab" && (
                                     <div>
-                                      <p className="text-danger font-size-12" style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
-                                        <strong>Note: </strong>&nbsp;&nbsp; If you want to handle test appointments of all your collection points on your portal, then click on&nbsp;&nbsp;<strong>Yes</strong>.
-                                        <i className="bx bx-right-arrow-alt" style={{ marginLeft: '8px', fontSize: '24px', fontWeight: 'bold' }}></i>
-                                      
-                                        <Button
-                                        color="primary"
-                                        onClick={() => {
-                                          // add your button click logic here
-                                          this.setState({
-                                            testAppointments: {
-                                              main_lab_appointments: "Yes",
-                                            },
-                                          });
-
-                                          const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
-                                          setTimeout(() => {
-                                            console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
-                                          });
-                                          setTimeout(() => {
-                                            onGetTestAppointmentsPendingList(this.state.user_id);
-                                          }, 1000);
-                                        }}
+                                      <Label for="main_lab_appointments" className="form-label">
+                                      <strong>Search By Lab Type</strong>
+                                      </Label>
+                                      <select
+                                        className="form-control select2"
+                                        title="main_lab_appointments"
+                                        name="main_lab_appointments"
+                                        onChange={this.handleTestAppointmentType}
+                                        
                                       >
-                                        Yes
-                                      </Button>
-                                      </p>
+                                        <option value="Main">Main</option>
+                                        <option value="Collection">Collection</option>
+                                        <option value="Both">Both</option>
+                                      </select>
                                     </div>
-                                    )}
+                                  )}
+                                    </div>
                                   </div>
                                 </Col>
+                                {/* <Col sm="6"></Col>
+                                <Col sm="3" lg="3">
+                                  <div>
+                                  
+                                  </div>
+                                </Col> */}
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -490,7 +503,7 @@ class TestAppointmentsPendingList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      filter={ filterFactory() }
+                                      filter={filterFactory()}
 
                                     />
                                     <Modal

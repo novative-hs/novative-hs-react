@@ -24,6 +24,8 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getTestAppointmentsCompletedList,
   updateTestAppointment,
+  addNewCollectionPointTestAppointment,
+  getLabProfile
 } from "store/test-appointments/actions";
 
 import "assets/scss/table.scss";
@@ -34,7 +36,9 @@ class TestAppointmentsCompletedList extends Component {
     this.node = React.createRef();
     this.state = {
       testAppointments: [],
+      labProfiles: [],
       testAppointment: "",
+      main_lab_appointments: "",
       btnText: "Copy",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -614,10 +618,23 @@ class TestAppointmentsCompletedList extends Component {
   }
 
   componentDidMount() {
-    const { onGetTestAppointmentsCompletedList } = this.props;
+
+    const { testAppointments, onAddNewCollectionPointTestAppointment, onGetTestAppointmentsCompletedList } = this.props;
     onGetTestAppointmentsCompletedList(this.state.user_id);
-    this.setState({ testAppointments: this.props.testAppointments });
+    // Assign the value to main_lab_appointments
+    testAppointments.main_lab_appointments = "Main";
+
+    // Call the function with the updated value
+    onAddNewCollectionPointTestAppointment(testAppointments, this.state.user_id);
+    this.setState({ testAppointments});
+
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({
+      labProfiles
+    });
   }
+
 
   // toggle() {
   //   this.setState(prevState => ({
@@ -685,10 +702,33 @@ class TestAppointmentsCompletedList extends Component {
     }
   };
 
+  handleTestAppointmentType = e => {
+    // const { id } = useParams();
+    // console.log("id is",id);
+      this.setState({
+        testAppointments: {
+          main_lab_appointments: e.target.value,
+        },
+      });
+
+      // API call to get the checkout items
+
+      const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsCompletedList } = this.props;
+      setTimeout(() => {
+        console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
+      });
+      setTimeout(() => {
+        onGetTestAppointmentsCompletedList(this.state.user_id);
+      }, 1000);
+  };
+
   render() {
     const { SearchBar } = Search;
 
     const { testAppointments } = this.props;
+    const { onGetLabProfile, onAddNewCollectionPointTestAppointment, onGetTestAppointmentsCompletedList } =
+    this.props;
+    const testAppointment = this.state.testAppointment;
 
     const pageOptions = {
       sizePerPage: 10,
@@ -736,6 +776,29 @@ class TestAppointmentsCompletedList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
+                                <div className="ms-2 mb-4">
+                                    <div className="position-relative">
+                                    {this.props.labProfiles.type === "Main Lab" && (
+                                    <div>
+                                      <Label for="main_lab_appointments" className="form-label">
+                                      <strong>Search By Lab Type</strong>
+                                      </Label>
+                                      <select
+                                        className="form-control select2"
+                                        title="main_lab_appointments"
+                                        name="main_lab_appointments"
+                                        onChange={this.handleTestAppointmentType}
+                                        
+                                      >
+                                        <option value="Main">Main</option>
+                                        <option value="Collection">Collection</option>
+                                        <option value="Both">Both</option>
+                                      </select>
+                                    </div>
+                                  )}
+                                    </div>
+                                  </div>
+                                  {/* {this.props.labProfiles.type === "Collection Point" && (
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
@@ -743,7 +806,7 @@ class TestAppointmentsCompletedList extends Component {
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
-                                  </div>
+                                  </div>)} */}
                                 </Col>
                               </Row>
                               <Row className="mb-4">
@@ -1089,14 +1152,22 @@ TestAppointmentsCompletedList.propTypes = {
   testAppointments: PropTypes.array,
   className: PropTypes.any,
   onGetTestAppointmentsCompletedList: PropTypes.func,
+  labProfiles: PropTypes.array,
+  onAddNewCollectionPointTestAppointment: PropTypes.func,
+  onGetLabProfile: PropTypes.func,
+
   // onUpdateTestAppointment: PropTypes.func,
 };
 
 const mapStateToProps = ({ testAppointments }) => ({
   testAppointments: testAppointments.testAppointmentsCompletedList,
+  labProfiles: testAppointments.labProfiles,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
+  onAddNewCollectionPointTestAppointment: (testAppointment, id) =>
+  dispatch(addNewCollectionPointTestAppointment(testAppointment, id)),
   onGetTestAppointmentsCompletedList: id =>
     dispatch(getTestAppointmentsCompletedList(id)),
   // onUpdateTestAppointment: testAppointment =>
