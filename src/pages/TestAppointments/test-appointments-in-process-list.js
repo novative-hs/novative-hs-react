@@ -1982,8 +1982,8 @@ class TestAppointmentsInProcessList extends Component {
                                                       </div>
                                                     )}
 
-                                                  {this.state.testAppointment
-                                                    .is_home_sampling_availed == true && (
+{this.state.testAppointment.is_home_sampling_availed === true && this.state.testAppointment.status === "Sample Collected" ? null : (
+
                                                       <div className="mb-3">
                                                         <Label>
                                                           Assigned to (Sample

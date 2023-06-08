@@ -901,20 +901,67 @@ class Checkout extends Component {
                                   )}
                                 </Tbody>
                               </Table>
+                              <div style={{ height: "20px" }}></div>
+                              {this.state.is_state_sampling_availed ==
+                                "Yes" && (
+                                <Table>
+                                  <Thead className="table-light">
+                                    <Tr>
+                                      <Th scope="col">Lab name</Th>
+                                      <Th scope="col">Urgent Sampling Time</Th>
+                                      <Th scope="col">
+                                        Urgent Sampling Charges
+                                      </Th>
+                                    </Tr>
+                                  </Thead>
+                                  <Tbody>
+                                    {this.state.homeSampledTests.map(
+                                      (homeSampledTest, key) => {
+                                        // Check if sampling charges and fees exist
+                                        if (
+                                          homeSampledTest.state_sampling_charges &&
+                                          homeSampledTest.state_sampling_time
+                                        ) {
+                                          return (
+                                            <Tr key={"_homeSampledTest_" + key}>
+                                              <Td>
+                                                <p className="font-size-14 float-start">
+                                                  {homeSampledTest.lab_name}
+                                                </p>
+                                              </Td>
+                                              <Td>
+                                                <h5 className="font-size-14 float-start">
+                                                  <a
+                                                    href="/ecommerce-product-details/1"
+                                                    className="text-dark"
+                                                  >
+                                                    {
+                                                      homeSampledTest.state_sampling_time
+                                                    }{" "}
+                                                    hours
+                                                  </a>
+                                                </h5>
+                                              </Td>
+                                              <Td>
+                                                <p className="font-size-14 float-start">
+                                                  {
+                                                    homeSampledTest.state_sampling_charges
+                                                  }
+                                                </p>
+                                              </Td>
+                                            </Tr>
+                                          );
+                                        } else {
+                                          return null; // Skip rendering if sampling charges and fees are missing
+                                        }
+                                      }
+                                    )}
+                                  </Tbody>
+                                </Table>
+                              )}
 
                               <Row className="mt-4">
-                                <Col sm="6">
-                                  {/* <Link
-                                component={Link}
-                                onClick={() => {
-                                  this.toggleTab("1");
-                                }}                                
-                                className="btn text-muted d-none d-sm-inline-block btn-link"
-                              >
-                                <i className="mdi mdi-arrow-left me-1" /> Back
-                                {" "}
-                              </Link> */}
-                                </Col>
+                                <Col sm="6"></Col>
                                 <Col sm="6">
                                   <div className="text-end">
                                     <button
@@ -993,41 +1040,45 @@ class Checkout extends Component {
                                     Credit / Debit Card
                                   </Label>
                                 </div>
-                  <div className="form-check form-check-inline font-size-16">
-                                {this.props.donationCheck.map((donationcheck, key) => {
-  return (
-    <div key={"_donationcheck_" + key}>
-      {donationcheck.bankaccount === true ? (
-        <div>
-          <Input
-            type="radio"
-            value="Donation"
-            name="payment_method"
-            id="customRadioInline1"
-            className="form-check-input"
-            onChange={e =>
-              this.setState({
-                payment_method: e.target.value,
-              })
-            }
-          />
-          <Label
-            className="form-check-label font-size-13"
-            htmlFor="customRadioInline1"
-          >
-            <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "}
-            Avail Donation
-          </Label>
-          </div>
-      ) : donationcheck.bankaccount === false ? (
-        <div className="form-check form-check-inline font-size-16">
-        </div>
-      ) : null}
-     </div>
-  );
-})}
-</div>
-
+                                <div className="form-check form-check-inline font-size-16">
+                                  {!isEmpty(this.props.donationCheck) &&
+                                    this.props.donationCheck.map(
+                                      (donationcheck, key) => {
+                                        return (
+                                          <div key={"_donationcheck_" + key}>
+                                            {donationcheck.bankaccount ===
+                                            true ? (
+                                              <div>
+                                                <Input
+                                                  type="radio"
+                                                  value="Donation"
+                                                  name="payment_method"
+                                                  id="customRadioInline1"
+                                                  className="form-check-input"
+                                                  onChange={e =>
+                                                    this.setState({
+                                                      payment_method:
+                                                        e.target.value,
+                                                    })
+                                                  }
+                                                />
+                                                <Label
+                                                  className="form-check-label font-size-13"
+                                                  htmlFor="customRadioInline1"
+                                                >
+                                                  <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "}
+                                                  Avail Donation
+                                                </Label>
+                                              </div>
+                                            ) : donationcheck.bankaccount ===
+                                              false ? (
+                                              <div className="form-check form-check-inline font-size-16"></div>
+                                            ) : null}
+                                          </div>
+                                        );
+                                      }
+                                    )}
+                                </div>
 
                                 {this.state.payment_method == "Donation" ? (
                                   <div>

@@ -5,7 +5,24 @@ import {
   GET_PROFILES,
   GET_PROFILES_FAIL,
   GET_PROFILES_SUCCESS,
+  GET_TERRITORIES_LIST_SUCCESS,
+  GET_TERRITORIES_LIST_FAIL,
 } from "./actionTypes";
+
+export const getTerritoriesList = () => ({
+  type: GET_TERRITORIES_LIST,
+  payload: {},
+});
+
+export const getTerritoriesListSuccess = territoriesList => ({
+    type: GET_TERRITORIES_LIST_SUCCESS,
+    payload: territoriesList,
+  });
+
+export const getTerritoriesListFail = error => ({
+  type: GET_TERRITORIES_LIST_FAIL,
+  payload: error,
+});
 
 export const getNearbyProfiles = (search_type, address, id, test_name) => ({
   type: GET_NEARBY_PROFILES,

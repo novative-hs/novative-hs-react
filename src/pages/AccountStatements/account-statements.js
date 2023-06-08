@@ -32,6 +32,9 @@ class AccountStatements extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      account_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
       // accountStatementColumn: [
       //   {
       //     text: "id",
@@ -295,11 +298,16 @@ class AccountStatements extends Component {
   }
 
   componentDidMount() {
-    const { onGetAccountStatements } = this.props;
-    onGetAccountStatements(this.state.user_id);
-    this.setState({ accountStatements: this.props.accountStatements });
+    if (this.state.user_id && this.state.account_type === "labowner") {
+      const { onGetAccountStatements } = this.props;
+      onGetAccountStatements(this.state.user_id);
+      this.setState({ accountStatements: this.props.accountStatements });
+    } else if (this.state.user_id && this.state.account_type !== "labowner") {
+      const { onGetAccountStatements } = this.props;
+      onGetAccountStatements(this.props.match.params.id);
+      this.setState({ accountStatements: this.props.accountStatements });
+    }
   }
-
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -356,18 +364,18 @@ class AccountStatements extends Component {
                     Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
                   </strong>
                 </span>
-                <div>
-                  <strong>
-                    Credit: Lab need to Pay LabHazir. <br></br>
-                    Debit: LabHazir need to Pay Lab.
-                  </strong>
+                  <div>
+                    <strong>
+                      Credit: Lab need to Pay LabHazir. <br></br>
+                      Debit: LabHazir need to Pay Lab.
+                    </strong>
                   </div>
-                <div> <span className="text-danger font-size-12">
-                  <strong>
-                    Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
-                  </strong>
-                </span>
-                </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
+                    </strong>
+                  </span>
+                  </div>
                 </div>
                 <Col lg="12">
                   <Card>
@@ -401,7 +409,6 @@ class AccountStatements extends Component {
                             {accountStatements.map((accountStatement, i) => (
                               <>
                                 {accountStatement.transaction_type == "In" ? (
-
                                   <tr key={i} className="badge-soft-primary">
                                     <td>
                                       <p className="text-muted mb-0">
@@ -434,10 +441,10 @@ class AccountStatements extends Component {
                                       {/* </p> */}
                                     </td>
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <p>
+                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
                                     <td>
                                       {accountStatement.dues_before_discount == 0 ? (
                                         <p className="d-none">
@@ -453,621 +460,10 @@ class AccountStatements extends Component {
                                     </td>
 
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.sample_collector_amount == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.discounted_by_lab == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.discounted_by_labhazir == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.dues == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    <td>
-                                      {accountStatement.lab_counter_discount == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    <td>
-                                      {accountStatement.lab_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.payment_method == "Cash" ? (
-                                            <span>
-                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.payment_method == "Cash" ? (
-                                            <span>
-                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Cash" ? (
-                                          <span>
-                                            {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td> */}
-                                   
-                                    <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Card" ? (
-                                          <span>
-                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                        {accountStatement.payment_method == "Donation" ? (
-                                          <span>
-                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Cash" ? (
-                                          <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                         {accountStatement.payment_method == "Cheque" ? (
-                                          <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                         {accountStatement.payment_method == "Card" ? (
-                                          <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <p className="float-end bg-danger bg-soft p-7">
-                                        {accountStatement.payment_method == "Card" ? (
-                                          <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                        {accountStatement.payment_method == "Donation" ? (
-                                          <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td>
-                                    {/* <p>
-                                    {accountStatement.payment_method == "Cash" ? (
-                                      <span>
-                                        {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                    {accountStatement.payment_method == "Card" ? (
-                                      <span>
-                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                    {accountStatement.payment_method == "Donation" ? (
-                                      <span>
-                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                  </p> */}
-                                    {/* <td>
-                                      {accountStatement.is_settled == true ? (
-                                        <div className="text-success">
-                                          <i className="mdi mdi-check-circle font-size-18"></i>
-                                        </div>
-                                      ) : (
-                                        <div className="text-danger">
-                                          <i className="mdi mdi-close-circle font-size-18"></i>
-                                        </div>
-                                      )}
-                                    </td> */}
-                                  </tr>
-                                ) : accountStatement.transaction_type == "Out" ? (
-                                  <tr key={i} className="badge-soft-danger">
-                                                                        <td>
-                                      <p className="text-muted mb-0">
-                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <h5 className="font-size-14 text-truncate">
-                                        <strong>{accountStatement.order_id}</strong>
-                                      </h5>
-                                    </td>
-                                    <td>
-                                      <p className="text-muted mb-0">
-                                        {accountStatement.patient_name}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      {/* <p className="float-end"> */}
-                                      {accountStatement.payment_status == "Not Paid" ? (
-                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      ) : (
-                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-danger">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      )}
-                                      {/* </p> */}
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.dues_before_discount == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.sample_collector_amount == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.discounted_by_lab == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.discounted_by_labhazir == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.dues == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td><td>
-                                      {accountStatement.lab_counter_discount == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    <td>
-                                      {accountStatement.lab_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.lab_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.lab_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-                                    <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.payment_method == "Cash" ? (
-                                            <span>
-                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}                                        </p>
-
-                                      ) : (
-                                        <p>
-                                          {accountStatement.payment_method == "Cash" ? (
-                                            <span>
-                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}                                        </p>
-                                      )}
-
-                                    </td>
-                                     <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                           {accountStatement.payment_method == "Card" ? (
-                                          <span>
-                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                        {accountStatement.payment_method == "Donation" ? (
-                                          <span>
-                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}                                
-                                          </p>
-
-                                      ) : (
-                                        <p>
-                                           {accountStatement.payment_method == "Card" ? (
-                                          <span>
-                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                        {accountStatement.payment_method == "Donation" ? (
-                                          <span>
-                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}                                   
-                                          </p>
-                                      )}
-
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Cash" ? (
-                                          <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Card" ? (
-                                          <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                         {accountStatement.payment_method == "Cash" ? (
-                                          <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                        {accountStatement.payment_method == "Cheque" ? (
-                                          <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <p>
-                                        {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td>
-                                    {/* <p>
-                                    {accountStatement.payment_method == "Cash" ? (
-                                      <span>
-                                        {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                    {accountStatement.payment_method == "Card" ? (
-                                      <span>
-                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                    {accountStatement.payment_method == "Donation" ? (
-                                      <span>
-                                        {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </span>
-                                    ) : (
-                                      null
-                                    )}
-                                  </p> */}
-                                    {/* <td>
-                                      {accountStatement.is_settled == true ? (
-                                        <div className="text-success">
-                                          <i className="mdi mdi-check-circle font-size-18"></i>
-                                        </div>
-                                      ) : (
-                                        <div className="text-danger">
-                                          <i className="mdi mdi-close-circle font-size-18"></i>
-                                        </div>
-                                      )}
-                                    </td> */}
-                                  </tr>
-                                ) : 
-                                  accountStatement.payment_status == "Paid"  ? (
-
-                                  <tr key={i}>
-                                    <td>
-                                      <p className="text-muted mb-0">
-                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      <h5 className="font-size-14 text-truncate">
-                                        <strong>{accountStatement.order_id}</strong>
-                                      </h5>
-                                    </td>
-                                    <td>
-                                      <p className="text-muted mb-0">
-                                        {accountStatement.patient_name}
-                                      </p>
-                                    </td>
-                                    <td>
-                                      {/* <p className="float-end"> */}
-                                      {accountStatement.payment_status == "Not Paid" ? (
-                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      ) : (
-                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      )}
-                                      {/* </p> */}
-                                    </td>
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                    <td>
-                                      {accountStatement.dues_before_discount == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
-
-                                    </td>
-
-                                    {/* <td>
-                                      <p>
-                                        {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <p>
+                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
                                     <td>
                                       {accountStatement.sample_collector_amount == 0 ? (
                                         <p className="d-none">
@@ -1082,10 +478,10 @@ class AccountStatements extends Component {
 
                                     </td>
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <p>
+                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
                                     <td>
                                       {accountStatement.discounted_by_lab == 0 ? (
                                         <p className="d-none">
@@ -1100,10 +496,10 @@ class AccountStatements extends Component {
 
                                     </td>
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <p>
+                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
                                     <td>
                                       {accountStatement.discounted_by_labhazir == 0 ? (
                                         <p className="d-none">
@@ -1118,10 +514,10 @@ class AccountStatements extends Component {
 
                                     </td>
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <p>
+                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
                                     <td>
                                       {accountStatement.dues == 0 ? (
                                         <p className="d-none">
@@ -1163,10 +559,10 @@ class AccountStatements extends Component {
                                     </td>
 
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
+                                    <p>
+                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
                                     <td>
                                       {accountStatement.labhazir_share == 0 ? (
                                         <p className="d-none">
@@ -1204,17 +600,302 @@ class AccountStatements extends Component {
 
                                     </td>
                                     {/* <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Cash" ? (
+                                    <p>
+                                      {accountStatement.payment_method == "Cash" ? (
+                                        <span>
+                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )}
+                                    </p>
+                                  </td> */}
+
+                                    <td>
+                                      <p className="float-end">
+                                        {accountStatement.payment_method == "Card" ? (
                                           <span>
-                                            {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
                                         )}
                                       </p>
-                                    </td> */}
-                                    
+                                    </td>
+                                    <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Card" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <p className="d-none">
+                                            {accountStatement.Receivable == 0 ? (
+                                              <span>
+                                                {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.Receivable != 0 ? (
+                                              <span>
+                                                {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+                                        )}
+                                        {/* {accountStatement.payment_method == "Donation" ? (
+                                        <span>
+                                          {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )} */}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <p className="float-end">
+                                        {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td>
+                                  </tr>
+                                ) : accountStatement.transaction_type == "Out" ? (
+
+                                  <tr key={i} className="badge-soft-danger">
+                                    <td>
+                                      <p className="text-muted mb-0">
+                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <h5 className="font-size-14 text-truncate">
+                                        <strong>{accountStatement.order_id}</strong>
+                                      </h5>
+                                    </td>
+                                    <td>
+                                      <p className="text-muted mb-0">
+                                        {accountStatement.patient_name}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      {/* <p className="float-end"> */}
+                                      {accountStatement.payment_status == "Not Paid" ? (
+                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </span>
+                                      ) : (
+                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status},{" ("}
+                                          {accountStatement.cancel_appintment_status}{")"}
+                                        </span>
+                                      )}
+                                      {/* </p> */}
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.dues_before_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.sample_collector_amount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.discounted_by_lab == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.discounted_by_labhazir == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.dues == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.lab_counter_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.labhazir_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.labhazir_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.payment_method == "Cash" ? (
+                                        <span>
+                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )}
+                                    </p>
+                                  </td> */}
+
                                     <td>
                                       <p className="float-end">
                                         {accountStatement.payment_method == "Card" ? (
@@ -1260,6 +941,13 @@ class AccountStatements extends Component {
                                         ) : (
                                           null
                                         )}
+                                        {accountStatement.payment_method == "Cheque" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
                                       </p>
                                     </td>
                                     <td>
@@ -1268,8 +956,522 @@ class AccountStatements extends Component {
                                       </p>
                                     </td>
                                   </tr>
+                                ) :
+                                  accountStatement.payment_status == "Paid" ? (
 
-                                ):(null)
+                                    <tr key={i}>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <h5 className="font-size-14 text-truncate">
+                                          <strong>{accountStatement.order_id}</strong>
+                                        </h5>
+                                      </td>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {accountStatement.patient_name}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        {/* <p className="float-end"> */}
+                                        {accountStatement.payment_status == "Not Paid" ? (
+                                          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        ) : (
+                                          <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        )}
+                                        {/* </p> */}
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.dues_before_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.sample_collector_amount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_lab == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_labhazir == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.dues == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.lab_counter_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td> */}
+
+                                      <td>
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="float-end">
+                                          {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      </td>
+                                    </tr>
+
+                                  ) : accountStatement.payment_status == "Allocate" ? (
+                                    <tr key={i}>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <h5 className="font-size-14 text-truncate">
+                                          <strong>{accountStatement.order_id}</strong>
+                                        </h5>
+                                      </td>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {accountStatement.patient_name}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        {/* <p className="float-end"> */}
+                                        {accountStatement.payment_status == "Not Paid" ? (
+                                          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        ) : (
+                                          <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-success">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        )}
+                                        {/* </p> */}
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.dues_before_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.sample_collector_amount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_lab == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_labhazir == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.dues == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.lab_counter_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.payment_method == "Cash" ? (
+                                        <span>
+                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )}
+                                    </p>
+                                  </td> */}
+
+                                      <td>
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="float-end">
+                                          {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      </td>
+                                    </tr>
+                                  ) : (null)
                                 }
                               </>
                             )
@@ -1279,94 +1481,94 @@ class AccountStatements extends Component {
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_testby_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </p>
-                              </td>
-                              <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_sample_collector.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_testby_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_discount_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_sample_collector.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_discount_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_discount_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_discount_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_labcounterdiscount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_labshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_labcounterdiscount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_labhazirshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_labshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_payment_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_labhazirshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_payment_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_payment_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </p>
-                              </td>
-                              <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().total_Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_payment_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
-                              <p className="float-end">
-                                {
-                                  this.props.accountStatements.slice(-1).pop().statement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().statement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
                                 </p>
                               </td>
                               <td className="border-10">
@@ -1375,10 +1577,10 @@ class AccountStatements extends Component {
                               </td>
                             </tr>
                           </tbody>
-                         
+
                         </Table>
                       </div>
-                     
+
                     </CardBody>
                   </Card>
                 </Col>

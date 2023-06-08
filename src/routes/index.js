@@ -119,7 +119,9 @@ import DonorAppointments from "pages/DonorReferredAppointments/referred-appointm
 import DonorPayments from "pages/DonorPaymentMathods/payment-mathod";
 import DonorSettings from "pages/Authentication/DonorSettings";
 import DonorAccountStatements from "pages/AccountStatements/donor-account-statements";
+import AccountStatementDonor from "pages/AccountStatements/donor-account-statements";
 import B2bAccountStatements from "pages/AccountStatements/b2b-account-statements";
+import AccountStatementsB2B from "pages/AccountStatements/b2b-account-statements";
 import BankAccountStatements from "pages/AccountStatements/bank-account-statement";
 import Invoiceb2b from "pages/Checkouts/invoice-detail"
 import AllLabsList from "pages/FinanceAdmin/lab-labs-list"
@@ -137,6 +139,7 @@ import B2bPayments from "pages/B2bPaymentMathods/payment-mathod";
 
 // import B2bReferredPatient from "pages/B2bReferredPatients/referred-patients-list";
 import AccountStatements from "pages/AccountStatements/account-statements";
+import AccountStatementsLab from "pages/AccountStatements/account-statements";
 import MedicalTestSheet from "pages/OfferedTests/medical-test-sheet";
 import csrCheckout from "pages/Complaints/csr-checkout";
 import Patientslist from "pages/Dashboard-Csr/patients-list";
@@ -454,7 +457,9 @@ const financeOfficerAuthProtectedRoutes = [
 ];
 const financeAdminAuthProtectedRoutes = [
   { path: "/dashboard-financeadmin", component: DashboardFinanceAdmin },
-
+  { path: "/account-statements-lab/:id", component: AccountStatementsLab },
+  { path: "/account-statement-donor/:id", component: AccountStatementDonor },
+  { path: "/account-statement-b2b/:id", component: AccountStatementsB2B },
   { path: "/cleared-in-payments", component: ClearedInPayments },
   { path: "/approved-in-payments", component: ApprovedInPayments },
   { path: "/unapproved-in-payments", component: UnapprovedInPayments },

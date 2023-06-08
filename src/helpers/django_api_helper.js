@@ -543,6 +543,19 @@ export const getActivityLog = id =>
     headers: getHeader(authHeader()),
   });
   
+  // export const getNotification = id =>
+  // get(`${url.GET_NOTIFICATION}/${id}`, {
+  //   headers: getHeader(authHeader()),
+  // });
+  export const getNotification = (id,previousApiCallTime) => {
+    let formData = new FormData();
+    formData.append("previousApiCallTime", previousApiCallTime);
+    formData.append("id", id);
+   console.log("data",previousApiCallTime )
+    return axios.post(`${url.GET_NOTIFICATION}/${id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
   export const getActivityLogFinance = id =>
   get(`${url.GET_ACTIVITY_LOG_FINANCE}/${id}`, {
     headers: getHeader(authHeader()),
@@ -686,7 +699,6 @@ export const updateTestAppointment = testAppointment => {
   } else if (testAppointment.process == "rescheduling") {
     formData.append("rescheduled_by", testAppointment.rescheduledBy);
     formData.append("assigned_to", testAppointment.assigned_to);
-    console.log("reschedule to the appointments", testAppointment);
 
     if (testAppointment.reschedule_reason == "Other") {
       formData.append("reschedule_reason", testAppointment.reason);
@@ -790,6 +802,8 @@ export const updateLabSettings = (labSettings, id) => {
   );
   formData.append("home_sampling_charges", labSettings.home_sampling_charges);
   formData.append("state_sampling_charges", labSettings.state_sampling_charges);
+  formData.append("state_sampling_time", labSettings.state_sampling_time);
+
   formData.append(
     "is_digital_payment_accepted",
     labSettings.is_digital_payment_accepted

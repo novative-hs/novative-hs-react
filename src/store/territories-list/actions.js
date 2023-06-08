@@ -9,8 +9,7 @@ export const getTerritoriesList = () => ({
   payload: {},
 });
 
-export const getTerritoriesListSuccess =
-  territories => ({
+export const getTerritoriesListSuccess = territoriesList => ({
     type: GET_TERRITORIES_LIST_SUCCESS,
     payload: territoriesList,
   });

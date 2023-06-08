@@ -18,6 +18,7 @@ import { withTranslation } from "react-i18next";
 
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
+import NotificationDropdown from "components/CommonForBoth/TopbarDropdown/NotificationDropdown";
 
 class Header extends Component {
   constructor(props) {
@@ -25,6 +26,9 @@ class Header extends Component {
     this.state = {
       isSearch: false,
       open: false,
+      account_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
       position: "right",
     };
     this.toggleMenu = this.toggleMenu.bind(this);
@@ -97,8 +101,11 @@ class Header extends Component {
                   <i className="bx bx-fullscreen"></i>
                 </button>
               </div>
-
+              {this.state.account_type && this.state.account_type == "labowner" && (
+              <NotificationDropdown />
+              )}
               <ProfileMenu />
+              
             </div>
           </div>
         </header>

@@ -81,6 +81,17 @@ class B2bClientsLists extends Component {
           text: "Current Amount",
           sort: true,
         },
+        {
+          dataField: "account_no",
+          text: "Account Statement",
+          sort: true,
+          formatter: (cellContent, b2bClients) => (
+            <Link to={`/account-statement-b2b/${b2bClients.account_id}`}>
+                                    Account statement
+                                  </Link>
+          ),
+          
+        },
       ],
     };
   }

@@ -80,6 +80,17 @@ class LabsLists extends Component {
           text: "Current Amount",
           sort: true,
         },
+        {
+          dataField: "account_no",
+          text: "Account Statement",
+          sort: true,
+          formatter: (cellContent, labsList) => (
+            <Link to={`/account-statements-lab/${labsList.account_id}`}>
+                                    Account statement
+                                  </Link>
+          ),
+          
+        },
       ],
     };
   }

@@ -51,6 +51,9 @@ import { getNearbyLabs, getAdvLive, getRegionWiseAdvertisement } from "store/lab
 import { any } from "prop-types";
 import "./nearbylabs.scss";
 
+import { getTerritoriesList } from "store/territories-list/actions";
+
+
 import { CITIES } from "helpers/global_variables_helper";
 import offeredTestsList from "pages/OfferedTests/offered-tests-list";
 
@@ -72,6 +75,7 @@ class NearbyLabs extends Component {
       regionWiseAdvertisement: [],
       isMenuOpened: false,
       nearbyLabs: [],
+      territoriesList: [],
       advLives: [],
       advLive: "",
       activeTab: "1",
@@ -106,6 +110,10 @@ class NearbyLabs extends Component {
   };
 
   componentDidMount() {
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
     // const { onGetAdvLive } = this.props;
     // onGetAdvLive(this.state.user_id);
     // this.setState({ advLives: this.props.advLives });
@@ -579,6 +587,13 @@ class NearbyLabs extends Component {
   render() {
     const { history } = this.props;
     const { discountData, nearbyLabs, page, totalPage, regionWiseAdvertisement, } = this.state;
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
 
     return (
       <React.Fragment>
@@ -959,6 +974,7 @@ class NearbyLabs extends Component {
                   >
                     <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                   </Link>
+                  
                 </div>
               )
                 : this.state.user_type == "patient" ? (
@@ -1265,7 +1281,7 @@ class NearbyLabs extends Component {
                               comp onent="Select"
                               onChange={this.onChangeCity}
                               className="defautSelectParent is-invalid"
-                              options={CITIES}
+                              options={cityList}
                               placeholder="Select City..."
                             />
                           </div>
@@ -1824,12 +1840,16 @@ NearbyLabs.propTypes = {
   onGetAdvLive: PropTypes.func,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
   nearbyLabs: state.LabMarket.nearbyLabs,
   regionWiseAdvertisement: state.LabMarket.regionWiseAdvertisement,
   advLives: state.LabMarket.advLives,
+  territoriesList: state.territoriesList.territoriesList,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -1837,6 +1857,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetRegionWiseAdvertisement: locationDetails => dispatch(getRegionWiseAdvertisement(locationDetails)),
   onGetAdvLive: locationDetails => dispatch(getAdvLive(locationDetails)),
   offeredTestsList: guest_id => dispatch(offeredTestsList(guest_id)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+
 });
 export default connect(
   mapStateToProps,

@@ -49,6 +49,8 @@ import { any } from "prop-types";
 import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
+import { getTerritoriesList } from "store/territories-list/actions";
+
 
 class NearbyProfiles extends Component {
   constructor(props) {
@@ -64,6 +66,7 @@ class NearbyProfiles extends Component {
       ratingvalues: [],
       Profiles: [],
       nearbyProfiles: [],
+      territoriesList: [],
       activeTab: "1",
       address: "",
       test_name: "",
@@ -95,6 +98,10 @@ class NearbyProfiles extends Component {
   }
 
   componentDidMount() {
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
     // let matchingMenuItem = null;
     // const ul = document.getElementById("navigation");
     // const items = ul.getElementsByTagName("a");
@@ -560,13 +567,22 @@ class NearbyProfiles extends Component {
     const { page, totalPage } = this.state;
     const { Profiles } = this.props;
 
-    const cityList = [];
+    const profileList = [];
     for (let i = 0; i < this.props.Profiles.length; i++) {
-      cityList.push({
+      profileList.push({
         label: this.props.Profiles[i].name,
         value: this.props.Profiles[i].id,
       });
     }
+
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
+    
     return (
       <React.Fragment>
         <div className="topnav">
@@ -1111,7 +1127,7 @@ class NearbyProfiles extends Component {
                               value={this.state.test_name}
                               className="defautSelectParent"
                               options={
-                                cityList
+                                profileList
                               }
                               defaultValue={{
                                 label:
@@ -1187,7 +1203,7 @@ class NearbyProfiles extends Component {
                               comp onent="Select"
                               onChange={this.onChangeCity}
                               className="defautSelectParent is-invalid"
-                              options={CITIES}
+                              options={cityList}
                               placeholder="Select City..."
                             />
                           </div>
@@ -1453,6 +1469,8 @@ NearbyProfiles.propTypes = {
   ProfileMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
 const mapStateToProps = ({ ProfileMarket, carts }) => ({
@@ -1460,6 +1478,8 @@ const mapStateToProps = ({ ProfileMarket, carts }) => ({
   Profiles: ProfileMarket.Profiles,
   success: carts.success,
   error: carts.error,
+  territoriesList: ProfileMarket.territoriesList,
+
 });
 // const mapStateToProps = ({ nearbyProfiles }) => ({
 //   nearbyProfiles: nearbyProfiles.nearbyProfiles,
@@ -1469,6 +1489,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyProfiles: data => dispatch(getNearbyProfiles(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetProfiles: () => dispatch(getProfiles()),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+
 });
 
 export default connect(

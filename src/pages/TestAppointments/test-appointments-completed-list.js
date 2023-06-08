@@ -580,6 +580,12 @@ class TestAppointmentsCompletedList extends Component {
                     >
                     </Link>
                   </Tooltip>
+                  <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/lab-note-list/${testAppointment.id}`}
+                ></Link>
+              </Tooltip>
 
                 </Link>
                 {testAppointment.result_type == "File" ? (

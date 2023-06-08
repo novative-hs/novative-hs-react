@@ -40,68 +40,11 @@ class LabAudits extends Component {
     this.node = React.createRef();
     this.state = {
       activitylog: [],
-    //   id: "",
-    //   assignedTo: "",
-    //   LabAudits: "",
-    //   auditModal: false,
-    //   reason_of_reaudit:"",
       activitylog: "",
-    //   audit_status:"",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-    //   ActivityLogListColumns: [
-    //     {
-    //       text: "id",
-    //       dataField: "id",
-    //       sort: true,
-    //       hidden: true,
-    //       formatter: (cellContent, activitylog) => <>{activitylog.id}</>,
-    //     },
-    //     {
-    //       dataField: "actions",
-    //       text: "Action Performed",
-    //       sort: true,
-    //     },
-    //     {
-    //       dataField: "lab_name",
-    //       text: "Done by",
-    //       sort: true,
-    //     },
-       
-    //     {
-    //       dataField: "created_at",
-    //       text: "Done at at",
-    //       sort: true,
-    //       formatter: (cellContent, activitylog) => (
-    //         <>
-    //           <span>{new Date(activitylog.created_at).toLocaleString("en-US")}</span>
-    //         </>
-    //       ),
-    //     },
-    //     {
-    //       dataField: "test_name",
-    //       text: "Test Name",
-    //       sort: true,
-    //     },
-    //     {
-    //       dataField: "field_name",
-    //       text: "Field",
-    //       sort: true,
-    //     },
-    //     {
-    //       dataField: "old_value",
-    //       text: "Previous Value",
-    //       sort: true,
-    //     },
-    //     {
-    //     dataField: "new_value",
-    //     text: "New Value",
-    //     sort: true,
-    //   },
-    //   ],
     };
-    // this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {

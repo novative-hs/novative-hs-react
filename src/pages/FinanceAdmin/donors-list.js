@@ -81,6 +81,17 @@ class donors extends Component {
           text: "Current Amount",
           sort: true,
         },
+        {
+          dataField: "account_no",
+          text: "Account Statement",
+          sort: true,
+          formatter: (cellContent, donors) => (
+            <Link to={`/account-statement-donor/${donors.account_id}`}>
+                                    Account statement
+                                  </Link>
+          ),
+          
+        },
       ],
     };
   }

@@ -32,14 +32,23 @@ class AccountStatements extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      account_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
     };
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    const { onGetDonorAccountStatements } = this.props;
-    onGetDonorAccountStatements(this.state.user_id);
-    this.setState({ donoraccountStatements: this.props.donoraccountStatements });
+    if (this.state.user_id && this.state.account_type === "donor") {
+      const { onGetDonorAccountStatements } = this.props;
+      onGetDonorAccountStatements(this.state.user_id);
+      this.setState({ donoraccountStatements: this.props.donoraccountStatements });
+    } else if (this.state.user_id && this.state.account_type !== "donor"){
+      const { onGetDonorAccountStatements } = this.props;
+    onGetDonorAccountStatements(this.props.match.params.id);
+    this.setState({ donoraccountStatements: this.props.donoraccountStatements });;
+    }
   }
 
   toggle() {

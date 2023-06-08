@@ -66,6 +66,7 @@ class NearbyTests extends Component {
       ratingvalues: [],
       nearbyTests: [],
       advertisementLives: [],
+      territoriesList: [],
       advertisementLive: "",
       activeTab: "1",
       address: "",
@@ -98,6 +99,10 @@ class NearbyTests extends Component {
   }
 
   componentDidMount() {
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
     // let matchingMenuItem = null;
     // const ul = document.getElementById("navigation");
     // const items = ul.getElementsByTagName("a");
@@ -577,6 +582,13 @@ class NearbyTests extends Component {
 
   render() {
     const { page, totalPage } = this.state;
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
 
     return (
 
@@ -1143,7 +1155,7 @@ class NearbyTests extends Component {
                                 comp onent="Select"
                                 onChange={this.onChangeCity}
                                 className="defautSelectParent is-invalid"
-                                options={CITIES}
+                                options={cityList}
                                 placeholder="Select City..."
                               />
                             </div>
@@ -1477,6 +1489,8 @@ NearbyTests.propTypes = {
   TestMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
 const mapStateToProps = ({ TestMarket, carts, advertisementLives }) => ({
@@ -1484,6 +1498,8 @@ const mapStateToProps = ({ TestMarket, carts, advertisementLives }) => ({
   success: carts.success,
   error: carts.error,
   advertisementLives: advertisementLives.advertisementLives,
+  territoriesList: TestMarket.territoriesList,
+
 });
 // const mapStateToProps = ({ nearbyTests }) => ({
 //   nearbyTests: nearbyTests.nearbyTests,
@@ -1493,6 +1509,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyTests: data => dispatch(getNearbyTests(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetAdvertisementLives: id => dispatch(getAdvertisementLives(id)),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+
 });
 
 export default connect(

@@ -35,6 +35,7 @@ class LabSettings extends Component {
       closing_time: "",
       home_sampling_charges: "",
       state_sampling_charges: "",
+      state_sampling_time:"",
       health_dept_certified: "",
       health_dept_certificate: "",
       registration_no: "",
@@ -105,6 +106,7 @@ class LabSettings extends Component {
       this.setState({
         home_sampling_charges: this.props.success.home_sampling_charges,
         state_sampling_charges: this.props.success.state_sampling_charges,
+        state_sampling_time: this.props.success.state_sampling_time,
         is_247_opened: this.props.success.is_247_opened,
         opening_time: this.props.success.opening_time,
         closing_time: this.props.success.closing_time,
@@ -154,6 +156,8 @@ class LabSettings extends Component {
                       (this.state && this.state.home_sampling_charges) || "",
                     state_sampling_charges:
                       (this.state && this.state.state_sampling_charges) || "",
+                    state_sampling_time:
+                      (this.state && this.state.state_sampling_time) || "",
                     registration_no:
                       (this.state && this.state.registration_no) || "",
                     license_no: (this.state && this.state.license_no) || "",
@@ -182,6 +186,15 @@ class LabSettings extends Component {
                         0,
                         "Please enter a number greater than or equal to 0"
                       ),
+                      state_sampling_time: Yup.number(
+                        "Please enter number only"
+                      )
+                        .positive()
+                        .integer()
+                        .min(
+                          0,
+                          "Please enter a number greater than or equal to 0"
+                        ),
                     home_sampling_charges: Yup.number(
                       "Please enter number only"
                     )
@@ -759,6 +772,37 @@ class LabSettings extends Component {
                         />
                         <ErrorMessage
                           name="state_sampling_charges"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <Label
+                          for="state_sampling_time"
+                          className="form-label"
+                        >
+                          Urgent Sampling Time (In hours)
+                        </Label>
+                        <Field
+                          id="state_sampling_time"
+                          name="state_sampling_time"
+                          type="number"
+                          onChange={e =>
+                            this.setState({
+                              state_sampling_time: e.target.value,
+                            })
+                          }
+                          value={this.state.state_sampling_time}
+                          className={
+                            "form-control" +
+                            (errors.state_sampling_time &&
+                            touched.state_sampling_time
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="state_sampling_time"
                           component="div"
                           className="invalid-feedback"
                         />

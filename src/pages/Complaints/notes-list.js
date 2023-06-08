@@ -152,11 +152,41 @@ class NotesList extends Component {
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
                       <Card className="mb-2" style={{ backgroundColor: "#f2f2f2" }}>
                         <CardBody className="p-3">
+                          {note.note &&(
                           <div >
                             <p>
                               <b>{note.staff_name}</b>{" "}{note.note} at {" "} {new Date(note.added_at).toLocaleString("en-US")}
                             </p>
-                          </div>
+                          </div> 
+                          )}
+                          {note.field_name == "status" && note.old_value != "Not Paid" &&(
+                           <div >
+                           <p>
+                             <b>{note.staff_name}</b>{" "} changes status of appointment to <b>{note.new_value}</b> at {" "} {new Date(note.added_at).toLocaleString("en-US")}
+                           </p>
+                         </div>
+                          )}
+                          {note.field_name == "collection_status" &&(
+                           <div >
+                           <p>
+                             <b>{note.staff_name}</b>{" "} changes collection status to <b>{note.new_value}</b> at {" "} {new Date(note.added_at).toLocaleString("en-US")}
+                           </p>
+                         </div>
+                          )}
+                           {note.field_name == "assigned_to" &&(
+                           <div >
+                           <p>
+                             <b>{note.staff_name}</b>{" "} assigned appointment to sample collector <b>{note.collector_name}</b> at {" "} {new Date(note.added_at).toLocaleString("en-US")}
+                           </p>
+                         </div>
+                          )}
+                           {note.old_value == "Not Paid" &&(
+                           <div >
+                           <p>
+                             <b>{note.staff_name}</b>{" "} changes payment status to <b>{note.new_value}</b> at {" "} {new Date(note.added_at).toLocaleString("en-US")}
+                           </p>
+                         </div>
+                          )}
                         </CardBody>
                       </Card>
                     </Col>

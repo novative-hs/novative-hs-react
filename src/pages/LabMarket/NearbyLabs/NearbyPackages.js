@@ -49,6 +49,8 @@ import { any } from "prop-types";
 import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
+import { getTerritoriesList } from "store/territories-list/actions";
+
 
 class NearbyPackage extends Component {
   constructor(props) {
@@ -63,6 +65,7 @@ class NearbyPackage extends Component {
         : "",
       ratingvalues: [],
       nearbyPackages: [],
+      territoriesList: [],
       Packages: [],
       activeTab: "1",
       address: "",
@@ -95,6 +98,10 @@ class NearbyPackage extends Component {
   }
 
   componentDidMount() {
+    const { territoriesList, onGetTerritoriesList } = this.props;
+    if (territoriesList && !territoriesList.length) {
+      console.log(onGetTerritoriesList(this.state.user_id));
+    }
     // let matchingMenuItem = null;
     // const ul = document.getElementById("navigation");
     // const items = ul.getElementsByTagName("a");
@@ -533,11 +540,18 @@ class NearbyPackage extends Component {
     const { page, totalPage } = this.state;
     const { Packages } = this.props;
 
-    const cityList = [];
+    const packageList = [];
     for (let i = 0; i < this.props.Packages.length; i++) {
-      cityList.push({
+      packageList.push({
         label: this.props.Packages[i].name,
         value: this.props.Packages[i].id,
+      });
+    }
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
       });
     }
     return (
@@ -1080,7 +1094,7 @@ class NearbyPackage extends Component {
                               value={this.state.test_name}
                               className="defautSelectParent"
                               options={
-                                cityList
+                                packageList
                               }
                               defaultValue={{
                                 label:
@@ -1156,7 +1170,7 @@ class NearbyPackage extends Component {
                               comp onent="Select"
                               onChange={this.onChangeCity}
                               className="defautSelectParent is-invalid"
-                              options={CITIES}
+                              options={cityList}
                               placeholder="Select City..."
                             />
                           </div>
@@ -1431,6 +1445,9 @@ NearbyPackage.propTypes = {
   PackageMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  onGetTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
+
 };
 
 const mapStateToProps = ({ PackageMarket, carts }) => ({
@@ -1438,12 +1455,16 @@ const mapStateToProps = ({ PackageMarket, carts }) => ({
   Packages: PackageMarket.Packages,
   success: carts.success,
   error: carts.error,
+  territoriesList: PackageMarket.territoriesList,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyPackages: data => dispatch(getNearbyPackages(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetPackages: () => dispatch(getPackages()),
+  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+
 });
 
 export default connect(
