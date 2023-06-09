@@ -586,7 +586,7 @@ class NearbyTests extends Component {
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
         label: this.props.territoriesList[i].city,
-        value: this.props.territoriesList[i].id,
+        value: this.props.territoriesList[i].city,
       });
     }
 
