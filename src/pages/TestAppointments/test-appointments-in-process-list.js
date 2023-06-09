@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import {
   Alert,
@@ -96,7 +96,7 @@ class TestAppointmentsInProcessList extends Component {
                 {testAppointment.address}{")"}
               </strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "patient_name",
@@ -105,19 +105,19 @@ class TestAppointmentsInProcessList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-              <Tooltip title="Patient Info">
-                <Link
-                  to="#"
-                  onClick={e => this.openPatientModal(e, testAppointment)}
+                <Tooltip title="Patient Info">
+                  <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, testAppointment)}
                   >
-                  {testAppointment.patient_name}
-                </Link>
-              </Tooltip>
+                    {testAppointment.patient_name}
+                  </Link>
+                </Tooltip>
               </span>
             </>
           ),
           filter: textFilter(),
-          
+
         },
         // {
         //   dataField: "booked_at",
@@ -153,7 +153,7 @@ class TestAppointmentsInProcessList extends Component {
             defaultValue: 'All',
           }),
         },
-        
+
         {
           dataField: "estimated_sample_collection_at",
           text: "Sampling time by Lab",
@@ -170,7 +170,7 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "sample_collected_at",
@@ -191,7 +191,7 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         // {
         //   dataField: "sample_collector",
@@ -225,7 +225,7 @@ class TestAppointmentsInProcessList extends Component {
         //               </span>
         //             )} 
 
-             
+
         //         </span>
         //       </span>
         //     </>
@@ -395,7 +395,7 @@ class TestAppointmentsInProcessList extends Component {
                 </span>
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: 'status',
@@ -407,7 +407,7 @@ class TestAppointmentsInProcessList extends Component {
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                   {testAppointment.status}
                 </span>
-        
+
               )}
               {testAppointment.status == "Confirmed" && (
                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
@@ -437,73 +437,73 @@ class TestAppointmentsInProcessList extends Component {
             </>
           ),
           filter: selectFilter({
-          options: {
-          '': 'All',
-          'Pending': 'Pending',
-          'Confirmed': 'Confirmed',
-          'Sample Collected': 'Sample Collected',
-          'Rescheduled': 'Rescheduled',
-          'Result Uploaded': 'Result Uploaded',
-          },
-          defaultValue: 'All',
+            options: {
+              '': 'All',
+              'Pending': 'Pending',
+              'Confirmed': 'Confirmed',
+              'Sample Collected': 'Sample Collected',
+              'Rescheduled': 'Rescheduled',
+              'Result Uploaded': 'Result Uploaded',
+            },
+            defaultValue: 'All',
           }),
-          },
-      
-//         {
-//           dataField: "reschedule_count",
-//           text: "Rescheduling",
-//           sort: true,
-//           formatter: (cellContent, testAppointment) => (
-//             <>
-//               <span>
-//                 <span>
-//                   {testAppointment.reschedule_count > 1 && (
-//                     <span className="text-danger">
-//                       {testAppointment.reschedule_count} Used, Limit Reached
-//                     </span>
-//                   )}
+        },
 
-//                   {(!testAppointment.reschedule_reason ||
-//                     testAppointment.reschedule_count < 2) && (
-//                       <span className="text-info">
-//                         {testAppointment.reschedule_count} Used,{" "}
-//                         {2 - testAppointment.reschedule_count} Left
-//                       </span>
-//                     )}
-//                   {testAppointment.reschedule_reason &&
-//                     testAppointment.reschedule_reason == "Other" && (
-//                       <Link
-//                         className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
-//                         to="#"
-//                         onClick={e => this.openReasonModal(e, testAppointment)}
-//                       >
-//                         {testAppointment.reason.slice(0, 10) + "..."}
-//                       </Link>
-//                     )}
+        //         {
+        //           dataField: "reschedule_count",
+        //           text: "Rescheduling",
+        //           sort: true,
+        //           formatter: (cellContent, testAppointment) => (
+        //             <>
+        //               <span>
+        //                 <span>
+        //                   {testAppointment.reschedule_count > 1 && (
+        //                     <span className="text-danger">
+        //                       {testAppointment.reschedule_count} Used, Limit Reached
+        //                     </span>
+        //                   )}
 
-//                   {testAppointment.reschedule_reason &&
-//                     testAppointment.reschedule_reason != "Other" && (
-//                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-//                         {testAppointment.reschedule_reason}
-//                       </span>
-//                     )}
+        //                   {(!testAppointment.reschedule_reason ||
+        //                     testAppointment.reschedule_count < 2) && (
+        //                       <span className="text-info">
+        //                         {testAppointment.reschedule_count} Used,{" "}
+        //                         {2 - testAppointment.reschedule_count} Left
+        //                       </span>
+        //                     )}
+        //                   {testAppointment.reschedule_reason &&
+        //                     testAppointment.reschedule_reason == "Other" && (
+        //                       <Link
+        //                         className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger"
+        //                         to="#"
+        //                         onClick={e => this.openReasonModal(e, testAppointment)}
+        //                       >
+        //                         {testAppointment.reason.slice(0, 10) + "..."}
+        //                       </Link>
+        //                     )}
 
-//                   {!testAppointment.reschedule_reason && (
-//                     <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-//                       Not Rescheduled
-//                     </span>
-//                   )}
-//                   {/* <Link
-// to="#"
-// onClick={e => this.openMessageModal(e, testAppointment)}
-// >
-// {testAppointment.reschedule_reason.slice(0, 10) + "..."}
-// </Link>{" "} */}
-//                 </span>
-//               </span>
-//             </>
-//           ),
-//         },
+        //                   {testAppointment.reschedule_reason &&
+        //                     testAppointment.reschedule_reason != "Other" && (
+        //                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+        //                         {testAppointment.reschedule_reason}
+        //                       </span>
+        //                     )}
+
+        //                   {!testAppointment.reschedule_reason && (
+        //                     <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
+        //                       Not Rescheduled
+        //                     </span>
+        //                   )}
+        //                   {/* <Link
+        // to="#"
+        // onClick={e => this.openMessageModal(e, testAppointment)}
+        // >
+        // {testAppointment.reschedule_reason.slice(0, 10) + "..."}
+        // </Link>{" "} */}
+        //                 </span>
+        //               </span>
+        //             </>
+        //           ),
+        //         },
         {
           dataField: "payment_status",
           text: "Payment Status",
@@ -525,15 +525,15 @@ class TestAppointmentsInProcessList extends Component {
           ),
           filter: selectFilter({
             options: {
-            '': 'All',
-            'Paid': 'Paid',
-            'Not Paid': 'Not Paid',
-            'Allocate': 'Allocate',
+              '': 'All',
+              'Paid': 'Paid',
+              'Not Paid': 'Not Paid',
+              'Allocate': 'Allocate',
             },
             defaultValue: 'All',
-            }),
+          }),
         },
-       
+
         // {
         //   dataField: "invoice",
         //   text: "Invoice",
@@ -573,47 +573,47 @@ class TestAppointmentsInProcessList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, testAppointment) => (
-            
-            
+
+
             <div className="d-flex gap-2">
-{testAppointment.payment_status == "Not Paid"&& (
-            <Tooltip title="Payment">
-               <Link
-                className="far fa-money-bill-alt font-size-18"
-                to={`/lab-payments/${testAppointment.id}`}
-              >
-              </Link>
-            </Tooltip>
-            
-          )}
+              {testAppointment.payment_status == "Not Paid" && (
+                <Tooltip title="Payment">
+                  <Link
+                    className="far fa-money-bill-alt font-size-18"
+                    to={`/lab-payments/${testAppointment.id}`}
+                  >
+                  </Link>
+                </Tooltip>
+
+              )}
               <Link className="text-success" to="#">
-              <Tooltip title="Reschedual Appoitment Info">
-                <i
-                  className="mdi mdi-calendar-clock font-size-18"
-                  id="edittooltip"
-                  onClick={e => this.openReshedualModal(e, testAppointment)
-                  }
-                ></i>
-              </Tooltip>
+                <Tooltip title="Reschedual Appoitment Info">
+                  <i
+                    className="mdi mdi-calendar-clock font-size-18"
+                    id="edittooltip"
+                    onClick={e => this.openReshedualModal(e, testAppointment)
+                    }
+                  ></i>
+                </Tooltip>
 
               </Link>
               <Tooltip title="Invoice">
-              <Link
-                className="mdi mdi-receipt font-size-18"
-                to={`/lab-invoice-detail/${testAppointment.id}`}
-              >
-              </Link>
+                <Link
+                  className="mdi mdi-receipt font-size-18"
+                  to={`/lab-invoice-detail/${testAppointment.id}`}
+                >
+                </Link>
               </Tooltip>
               <Link className="text-success" to="#">
-              <Tooltip title="Update">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={() =>
-                    this.handleTestAppointmentClick(testAppointment)
-                  }
-                ></i>
-              </Tooltip>
+                <Tooltip title="Update">
+                  <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={() =>
+                      this.handleTestAppointmentClick(testAppointment)
+                    }
+                  ></i>
+                </Tooltip>
               </Link>
               <Tooltip title="Add Comment">
                 <Link
@@ -627,7 +627,7 @@ class TestAppointmentsInProcessList extends Component {
       ],
 
     };
-  
+
     // this.openPaymentModal =
     // this.openPaymentModal.bind(this);
     this.handleTestAppointmentClick =
@@ -648,7 +648,7 @@ class TestAppointmentsInProcessList extends Component {
 
     // Call the function with the updated value
     onAddNewCollectionPointTestAppointment(testAppointments, this.state.user_id);
-    this.setState({ testAppointments});
+    this.setState({ testAppointments });
 
     const { onGetSampleCollectors } = this.props;
     onGetSampleCollectors(this.state.user_id);
@@ -809,21 +809,21 @@ class TestAppointmentsInProcessList extends Component {
   handleTestAppointmentType = e => {
     // const { id } = useParams();
     // console.log("id is",id);
-      this.setState({
-        testAppointments: {
-          main_lab_appointments: e.target.value,
-        },
-      });
+    this.setState({
+      testAppointments: {
+        main_lab_appointments: e.target.value,
+      },
+    });
 
-      // API call to get the checkout items
+    // API call to get the checkout items
 
-      const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsInProcessList } = this.props;
-      setTimeout(() => {
-        console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
-      });
-      setTimeout(() => {
-        onGetTestAppointmentsInProcessList(this.state.user_id);
-      }, 1000);
+    const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsInProcessList } = this.props;
+    setTimeout(() => {
+      console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
+    });
+    setTimeout(() => {
+      onGetTestAppointmentsInProcessList(this.state.user_id);
+    }, 1000);
   };
 
   render() {
@@ -891,24 +891,24 @@ class TestAppointmentsInProcessList extends Component {
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div className="position-relative">
-                                    {this.props.labProfiles.type === "Main Lab" && (
-                                    <div>
-                                      <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Search By Lab Type</strong>
-                                      </Label>
-                                      <select
-                                        className="form-control select2"
-                                        title="main_lab_appointments"
-                                        name="main_lab_appointments"
-                                        onChange={this.handleTestAppointmentType}
-                                        
-                                      >
-                                        <option value="Main">Main</option>
-                                        <option value="Collection">Collection</option>
-                                        <option value="Both">Both</option>
-                                      </select>
-                                    </div>
-                                  )}
+                                      {this.props.labProfiles.type === "Main Lab" && (
+                                        <div>
+                                          <Label for="main_lab_appointments" className="form-label">
+                                            <strong>Search By Lab Type</strong>
+                                          </Label>
+                                          <select
+                                            className="form-control select2"
+                                            title="main_lab_appointments"
+                                            name="main_lab_appointments"
+                                            onChange={this.handleTestAppointmentType}
+
+                                          >
+                                            <option value="Main">Main</option>
+                                            <option value="Collection">Collection</option>
+                                            <option value="Both">Both</option>
+                                          </select>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 </Col>
@@ -926,7 +926,7 @@ class TestAppointmentsInProcessList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      filter={ filterFactory() }
+                                      filter={filterFactory()}
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}
@@ -1017,7 +1017,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                     Sampling Time by Patient
+                                                      Sampling Time by Patient
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1034,7 +1034,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    Booked At
+                                                      Booked At
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1125,7 +1125,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    Reschedule Reason
+                                                      Reschedule Reason
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1143,7 +1143,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    Reschedule Count
+                                                      Reschedule Count
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1453,7 +1453,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 status: "Rescheduled",
                                                 process: "rescheduling",
                                                 assigned_to:
-                                                 values.assigned_to,
+                                                  values.assigned_to,
                                               };
 
                                               // update TestAppointment
@@ -1471,7 +1471,7 @@ class TestAppointmentsInProcessList extends Component {
                                                 url: values.url,
                                                 result: this.state.resultFile,
                                                 assigned_to:
-                                                 values.assigned_to,
+                                                  values.assigned_to,
                                                 process: "inprocess",
                                               };
 
@@ -1513,7 +1513,7 @@ class TestAppointmentsInProcessList extends Component {
                                                   {testAppointment.payment_status ==
                                                     "Not Paid" &&
                                                     testAppointment.status ==
-                                                    "Sample Collected" && 
+                                                    "Sample Collected" &&
                                                     (
                                                       <Alert color="warning mb-3">
                                                         We&#39;ve disabled{" "}
@@ -1796,16 +1796,16 @@ class TestAppointmentsInProcessList extends Component {
                                                       {/* <option value="Confirmed">
                                                         Confirmed
                                                       </option> */}
-                                                 
-                                                        <option value="Confirmed">
-                                                          Confirmed
-                                                        </option>
-                                                    
-                                                          <option value="Sample Collected">
-                                                            Sample Collected
-                                                          </option>
-                                                    
-                                            
+
+                                                      <option value="Confirmed">
+                                                        Confirmed
+                                                      </option>
+
+                                                      <option value="Sample Collected">
+                                                        Sample Collected
+                                                      </option>
+
+
                                                       {/* <option value="Sample Declined">
                                                         Sample Declined
                                                       </option>
@@ -1824,7 +1824,7 @@ class TestAppointmentsInProcessList extends Component {
                                                         )}
 
                                                       {testAppointment.payment_status !=
-                                                        "Not Paid" && 
+                                                        "Not Paid" &&
                                                         testAppointment.status !==
                                                         "Rescheduled" && (
                                                           <option value="Result Uploaded">
@@ -1982,59 +1982,46 @@ class TestAppointmentsInProcessList extends Component {
                                                       </div>
                                                     )}
 
-{this.state.testAppointment.is_home_sampling_availed === true && this.state.testAppointment.status === "Sample Collected" ? null : (
+                                                  {this.state.testAppointment.is_home_sampling_availed === true &&
+                                                    (this.state.testAppointment.status === "Sample Collected" ||
+                                                      this.state.testAppointment.status === "Confirmed" ||
+                                                      this.state.testAppointment.status === "Rescheduled") ? (
+                                                    <div className="mb-3">
+                                                      <Label>
+                                                        Assigned to (Sample Collector)
+                                                      </Label>
+                                                      <Select
+                                                        name="assigned_to"
+                                                        component="Select"
+                                                        placeholder="Select home sample collector..."
+                                                        onChange={selectedGroup => {
+                                                          this.setState({
+                                                            testAppointment: {
+                                                              id: testAppointment.id,
+                                                              payment_status: testAppointment.payment_status,
+                                                              patient_unique_id: testAppointment.patient_unique_id,
+                                                              is_home_sampling_availed: testAppointment.is_home_sampling_availed,
+                                                              status: testAppointment.status,
+                                                              reschedule_reason: testAppointment.reschedule_reason,
+                                                              reschedule_count: testAppointment.reschedule_count,
+                                                              reason: testAppointment.reason,
+                                                              result_type: testAppointment.result_type,
+                                                              url: testAppointment.url,
+                                                              result: this.state.resultFile,
+                                                              assigned_to: selectedGroup.value,
+                                                            },
+                                                          });
+                                                        }}
+                                                        className="defautSelectParent"
+                                                        options={sampleCollectorList}
+                                                        defaultValue={{
+                                                          label: testAppointment.collector_name,
+                                                          value: testAppointment.assigned_to,
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  ) : null}
 
-                                                      <div className="mb-3">
-                                                        <Label>
-                                                          Assigned to (Sample
-                                                          Collector)
-                                                        </Label>
-                                                        <Select
-                                                          name="assigned_to"
-                                                          component="Select"
-                                                          placeholder="Select home sample collector..."
-                                                          onChange={selectedGroup => {
-                                                            this.setState({
-                                                              testAppointment: {
-                                                                id: testAppointment.id,
-                                                                payment_status:
-                                                                  testAppointment.payment_status,
-                                                                patient_unique_id:
-                                                                  testAppointment.patient_unique_id,
-                                                                is_home_sampling_availed:
-                                                                  testAppointment.is_home_sampling_availed,
-                                                                status:
-                                                                  testAppointment.status,
-                                                                reschedule_reason:
-                                                                  testAppointment.reschedule_reason,
-                                                                reschedule_count:
-                                                                  testAppointment.reschedule_count,
-                                                                reason:
-                                                                  testAppointment.reason,
-                                                                result_type:
-                                                                  testAppointment.result_type,
-                                                                url: testAppointment.url,
-                                                                result:
-                                                                  this.state
-                                                                    .resultFile,
-                                                                assigned_to:
-                                                                  selectedGroup.value,
-                                                              },
-                                                            });
-                                                          }}
-                                                          className="defautSelectParent"
-                                                          options={
-                                                            sampleCollectorList
-                                                          }
-                                                          defaultValue={{
-                                                            label:
-                                                              testAppointment.collector_name,
-                                                            value:
-                                                              testAppointment.assigned_to,
-                                                          }}
-                                                        />
-                                                      </div>
-                                                    )}
                                                   {this.state.testAppointment
                                                     .status ===
                                                     "Result Uploaded" && (
@@ -2300,7 +2287,7 @@ const mapStateToProps = ({ testAppointments, sampleCollectors }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetLabProfile: id => dispatch(getLabProfile(id)),
   onAddNewCollectionPointTestAppointment: (testAppointment, id) =>
-  dispatch(addNewCollectionPointTestAppointment(testAppointment, id)),
+    dispatch(addNewCollectionPointTestAppointment(testAppointment, id)),
   onGetTestAppointmentsInProcessList: id =>
     dispatch(getTestAppointmentsInProcessList(id)),
   onGetSampleCollectors: id => dispatch(getSampleCollectors(id)),
