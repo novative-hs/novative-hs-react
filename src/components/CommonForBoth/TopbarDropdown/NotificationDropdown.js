@@ -97,7 +97,7 @@ class NotificationDropdown extends Component {
           >
             {!isEmpty(this.props.notification) &&
                   this.props.notification.map((notification, key) => (
-                    <Col key={"_col_" + key}>
+                    <Col key={"col" + key}>
                       {notification.notifications_count > 0 && (
                         <div>
             <i className="bx bx-bell bx-tada" />
@@ -107,7 +107,8 @@ class NotificationDropdown extends Component {
                         <div>
             <i className="bx bx-bell bx-tada" />
             <span className="badge bg-danger rounded-pill"></span>
-            </div> )}
+            </div> 
+            )}
             </Col>
                   ))}
           </DropdownToggle>
@@ -131,12 +132,12 @@ class NotificationDropdown extends Component {
               <Link to="" className="text-reset notification-item">
                 {!isEmpty(this.props.notification) &&
                   this.props.notification.map((notification, key) => (
-                    <Col key={"_col_" + key}>
+                    <Col key={"col" + key}>
                       <>
                       {notification.items.map(
                                               (item, key) => (
                      
-                      <div key={"_item_" + key} className="d-flex mt-0">
+                      <div key={"item" + key} className="d-flex mt-0">
                         {item.actions == "Added" && (
                           <div>
                             <i className="fas fa-plus-square font-size-18"></i>{" "}
@@ -166,12 +167,12 @@ class NotificationDropdown extends Component {
                             .
                           </div>
                         )}
-                        {notification.actions == "Cancelled" && (
+                        {item.actions == "Cancelled" && (
                           <div>
                             <i className="fas fa-sync-alt font-size-18"></i>{" "}
-                            Appointment with order id {notification.order_id} is Cancelled at 
+                            Appointment with order id {item.order_id} is Cancelled at 
                             {" "} {new Date(
-                              notification.cancelled_at
+                              item.cancelled_at
                             ).toLocaleTimeString("en-US")}
                             .
                           </div>
