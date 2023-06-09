@@ -51,6 +51,8 @@ import { any } from "prop-types";
 import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
+import { getTerritoriesList } from "store/territories-list/actions";
+
 
 class NearbyTests extends Component {
   constructor(props) {
