@@ -47,7 +47,9 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { productsData } from "common/data";
 
 //Import actions
-import { getNearbyLabs, getAdvLive, getRegionWiseAdvertisement } from "store/labmarket/actions";
+import { getNearbyLabs, getAdvLive, getRegionWiseAdvertisement, getPatientProfile } from "store/labmarket/actions";
+// import { getPatientProfile } from "store/auth/patientprofile/actions";
+
 import { any } from "prop-types";
 import "./nearbylabs.scss";
 
@@ -77,6 +79,7 @@ class NearbyLabs extends Component {
       nearbyLabs: [],
       territoriesList: [],
       advLives: [],
+      patientProfile: [],
       advLive: "",
       activeTab: "1",
       address: "",
@@ -102,7 +105,6 @@ class NearbyLabs extends Component {
     this.onSelectRating = this.onSelectRating.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
     console.log("yaha ani chahi hai uuid", this.props.match.params.guest_id)
-    console.log(this.state.user_type)
   }
   openMenu = () => {
     this.setState({ isMenuOpened: !this.state.isMenuOpened });
@@ -114,6 +116,13 @@ class NearbyLabs extends Component {
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
+
+    const { patientProfile, onGetPatientProfile } = this.props;
+    onGetPatientProfile(this.state.user_id);
+    this.setState({
+      patientProfile
+    });
+    console.log("state", patientProfile)
     // const { onGetAdvLive } = this.props;
     // onGetAdvLive(this.state.user_id);
     // this.setState({ advLives: this.props.advLives });
@@ -586,7 +595,9 @@ class NearbyLabs extends Component {
 
   render() {
     const { history } = this.props;
+    const { patientProfile } = this.props;
     const { discountData, nearbyLabs, page, totalPage, regionWiseAdvertisement, } = this.state;
+    const { onGetPatientProfile } = this.props;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -595,7 +606,18 @@ class NearbyLabs extends Component {
       });
     }
 
+    const openModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    };
+
+    const closeModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "none";
+    };
+
     return (
+      // console.log("in return",this.props.patientProfile.name),
       <React.Fragment>
         <div className="topnav">
           <div className="container-fluid left-space">
@@ -974,7 +996,7 @@ class NearbyLabs extends Component {
                   >
                     <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                   </Link>
-                  
+
                 </div>
               )
                 : this.state.user_type == "patient" ? (
@@ -994,6 +1016,55 @@ class NearbyLabs extends Component {
                       </span>
                     </Link>
 
+                    <>
+                      <button
+                        className="btn header-items noti-icon mb-4 right-bar-toggle"
+                        onClick={openModal}
+                      >
+                        <i className="mdi mdi-wallet align-middle me-1 font-size-20" />{" "}
+                      </button>
+
+                      <div id="modal" className="modal mt-4" style={{ display: "none" }}>
+                       <div className="modal-dialog" style={{ width: "500px", height: "300px" }}> 
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
+                            </div>
+
+
+                            <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
+                              {/* {this.state.patient_name.split(" ")[0]} */}
+                              Rs. {this.props.patientProfile.available_credit}
+                              {/* <div>
+                                <p>
+                                You have received this money in case of refund which you can use only for testing.
+                                </p>
+                              </div> */}
+                            </div>
+                            <div className="my-0" style={{ textAlign: 'center'}}>
+                                <span className="text-danger">
+                                  <i className="mdi mdi-information"></i>{" "}
+                                  You have received this money in case of refund.
+                                </span><br></br>
+                                <span className="text-danger">
+                                  Which you can use only for testing.
+                                </span>
+                              </div>
+
+                            <div className="modal-footer">
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={closeModal}
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+
                     <Link
                       to="/change-password"
                       className="btn header-items noti-icon right-bar-toggle"
@@ -1005,7 +1076,7 @@ class NearbyLabs extends Component {
                       to="/contact-us"
                       className="btn header-items noti-icon right-bar-toggle"
                     >
-                       <i className="mdi mdi-headset align-middle me-1 font-size-20" />{" "}
+                      <i className="mdi mdi-headset align-middle me-1 font-size-20" />{" "}
                       {/* <span className="pt-4 font-size-12">Cart</span> */}
                     </Link>
 
@@ -1828,6 +1899,7 @@ class NearbyLabs extends Component {
 }
 
 NearbyLabs.propTypes = {
+  patientProfile: PropTypes.array,
   history: any,
   location: any,
   match: PropTypes.object,
@@ -1842,6 +1914,10 @@ NearbyLabs.propTypes = {
   t: PropTypes.any,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  onGetPatientProfile: PropTypes.func,
+  patientProfile: PropTypes.array,
+  onGetPatientProfile: PropTypes.func,
+
 };
 
 const mapStateToProps = state => ({
@@ -1849,6 +1925,8 @@ const mapStateToProps = state => ({
   regionWiseAdvertisement: state.LabMarket.regionWiseAdvertisement,
   advLives: state.LabMarket.advLives,
   territoriesList: state.territoriesList.territoriesList,
+  patientProfile: state.LabMarket.patientProfile,
+
 
 });
 
@@ -1858,6 +1936,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAdvLive: locationDetails => dispatch(getAdvLive(locationDetails)),
   offeredTestsList: guest_id => dispatch(offeredTestsList(guest_id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetPatientProfile: id => dispatch(getPatientProfile(id)),
 
 });
 export default connect(

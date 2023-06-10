@@ -8,8 +8,28 @@ import {
   GET_ADV_LIVE,
   GET_ADV_LIVE_FAIL,
   GET_ADV_LIVE_SUCCESS,
+  GET_PATIENT_PROFILE,
+  GET_PATIENT_PROFILE_FAIL,
+  GET_PATIENT_PROFILE_SUCCESS,
 } from "./actionTypes";
 
+
+export const getPatientProfile = id => ({
+  type: GET_PATIENT_PROFILE,
+  payload: id,
+});
+
+export const getPatientProfileSuccess = patientProfile => (
+  console.log("actions",patientProfile),
+  {
+  type: GET_PATIENT_PROFILE_SUCCESS,
+  payload: patientProfile,
+});
+
+export const getPatientProfileFail = error => ({
+  type: GET_PATIENT_PROFILE_FAIL,
+  payload: error,
+});
 export const getNearbyLabs = locationDetails => ({
   type: GET_NEARBY_LABS,
   payload: { locationDetails },
