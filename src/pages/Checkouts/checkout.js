@@ -241,9 +241,9 @@ class Checkout extends Component {
           });
         }
       }, 1000);
-      setTimeout(() => {
-        this.props.history.push("/nearby-labs");
-    }, 2000)
+    //   setTimeout(() => {
+    //     this.props.history.push("/nearby-labs");
+    // }, 2000)
     }
   };
 
@@ -1643,11 +1643,6 @@ class Checkout extends Component {
                               </Card>
 
                             }
-
-
-
-
-
                             <Row className="mt-4">
                               <Col sm="6">
                                 <Link
