@@ -268,7 +268,7 @@ class Checkout extends Component {
           this.setState({ isRequiredFilled: true });
           return true;
         } else {
-          this.setState({ isRequiredFilled: false });
+          // this.setState({ isRequiredFilled: false });
           this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
           return false;
         }
@@ -277,7 +277,7 @@ class Checkout extends Component {
         this.setState({ isRequiredFilled: true });
         return true;
       } else {
-        this.setState({ isRequiredFilled: false });
+        // this.setState({ isRequiredFilled: false });
         this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
         return false;
       }
