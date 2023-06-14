@@ -43,6 +43,7 @@ import { getTerritoriesList } from "store/territories-list/actions";
 
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 
+
 class Checkout extends Component {
   constructor(props) {
     super(props);
@@ -70,7 +71,7 @@ class Checkout extends Component {
       appointment_requested_at: "",
       is_home_sampling_availed: "",
       is_state_sampling_availed: "",
-      payment_method: "Card",
+      payment_method: "",
       card_number: "",
       name_on_card: "",
       expiry_date: "",
@@ -240,6 +241,9 @@ class Checkout extends Component {
           });
         }
       }, 1000);
+      setTimeout(() => {
+        this.props.history.push("/nearby-labs");
+    }, 2000)
     }
   };
 
@@ -265,8 +269,17 @@ class Checkout extends Component {
           return true;
         } else {
           this.setState({ isRequiredFilled: false });
+          this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
           return false;
         }
+      }
+      if (this.state.payment_method) {
+        this.setState({ isRequiredFilled: true });
+        return true;
+      } else {
+        this.setState({ isRequiredFilled: false });
+        this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
+        return false;
       }
       // // If patient's payment method is not Card (Cash) then set isRequiredFilled to true
       this.setState({ isRequiredFilled: true });
@@ -274,6 +287,55 @@ class Checkout extends Component {
     } else {
       this.setState({ isRequiredFilled: false });
       return false;
+    }
+  };
+
+  handleProceedClick4 = () => {
+    const canProceed = this.checkForValidations();
+    if (canProceed) {
+      this.setState({
+        checkoutData: {
+          uuid: this.props.match.params.uuid
+            ? this.props.match.params.uuid
+            : "",
+          patient_name: this.state.patient_name,
+          patient_age: this.state.patient_age,
+          patient_gender: this.state.patient_gender,
+          patient_phone: this.state.patient_phone,
+
+          // relationsip_with_patient: this.state.relationsip_with_patient,
+          // patient_address: this.state.patient_address,
+          city_id: this.state.city_id,
+          // patient_district: this.state.patient_district,
+          appointment_requested_at: this.state.appointment_requested_at,
+          // payment_method: this.state.payment_method,
+          // card_number: this.state.card_number,
+          // name_on_card: this.state.name_on_card,
+          // expiry_date: this.state.expiry_date,
+          // cvv_code: this.state.cvv_code,
+        },
+      });
+
+      // API call to get the checkout items
+      // const { onAddCheckoutData } = this.props;
+      // setTimeout(() => {
+      //   onAddCheckoutData(this.state.checkoutData, this.state.user_id);
+      // }, 2000);
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      setTimeout(() => {
+        if (this.props.checkedoutData) {
+          this.toggleTab("4");
+        }
+      }, 1000);
+
+      // setTimeout(() => {
+      //   this.setState({ checkedoutData: this.props.checkedoutData });
+
+      //   // If checkout operation is successful.
+      //   if (this.props.checkedoutData) {
+      //     this.props.history.push("/nearby-labs");
+      //   }
+      // }, 4000);
     }
   };
 
@@ -360,6 +422,9 @@ class Checkout extends Component {
     }
   };
 
+  
+  
+
   componentDidMount() {
     const { onGetDonationCheck } = this.props;
     if (this.state.user_id && this.state.user_type !== "CSR") {
@@ -436,6 +501,46 @@ class Checkout extends Component {
     // }, 10000);
   }
 
+  handleClickAddPayment = () => {
+    this.toggleTab("3"); // Switch to the "Payment Info" tab with the id of "3"
+  };
+
+  handlePaymentMethodChange = (e) => {
+    const { value, name } = e.target;
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        if (this.state.payment_method === 'Card') {
+          const {
+            card_number,
+            name_on_card,
+            expiry_date,
+            cvv_code
+          } = this.state;
+  
+          // Check if all the required fields for card payment are filled
+          if (card_number && name_on_card && expiry_date && cvv_code) {
+            // Delay the switch to Tab 4 by 2 seconds
+            setTimeout(() => {
+              this.toggleTab('4');
+            }, 2000);
+          }
+        } else {
+          setTimeout(() => {
+            this.toggleTab('4');
+          }, 2000);
+          // For other payment methods, do not switch to Tab 4
+        }
+      }
+    );
+  };
+  
+  
+  
+  
+
   render() {
     // list of city from territories
     const cityList = [];
@@ -484,15 +589,14 @@ class Checkout extends Component {
                           className={classnames({
                             active: this.state.activeTab === "2",
                           })}
-                          onClick={() => {
-                            this.toggleTab("2");
-                          }}
+                          onClick={this.handleProceedClick}
+
                         >
                           <i className="bx bx-home d-block check-nav-icon font-size-18" />
                           {/* <p className="font-weight-bold mb-4">Home Sample</p> */}
                         </NavLink>
                       </NavItem>
-                      <NavItem>
+                      <NavItem style={{ display: 'none' }}>
                         <NavLink
                           className={classnames({
                             active: this.state.activeTab === "3",
@@ -500,6 +604,8 @@ class Checkout extends Component {
                           onClick={() => {
                             this.toggleTab("3");
                           }}
+
+
                         >
                           <i className="bx bx-money d-block check-nav-icon font-size-18" />
                           {/* <p className="font-weight-bold mb-4">Payment Info</p> */}
@@ -510,9 +616,7 @@ class Checkout extends Component {
                           className={classnames({
                             active: this.state.activeTab === "4",
                           })}
-                          onClick={() => {
-                            this.toggleTab("4");
-                          }}
+                          onClick={this.handleProceedClick4}
                         >
                           <i className="bx bx-badge-check d-block check-nav-icon font-size-18" />
                           {/* <p className="font-weight-bold mb-4">Confirmation</p> */}
@@ -729,7 +833,7 @@ class Checkout extends Component {
                                       type="datetime-local"
                                       min={new Date(
                                         new Date().toString().split("GMT")[0] +
-                                          " UTC"
+                                        " UTC"
                                       )
                                         .toISOString()
                                         .slice(0, -8)}
@@ -753,12 +857,12 @@ class Checkout extends Component {
                                       onClick={this.handleProceedClick}
                                       to="/checkout"
                                       className="btn btn-success mb-4"
-                                      // component={Link}
-                                      // onClick={() => {
-                                      //   this.toggleTab("2");
-                                      // }}
-                                      // to="/checkout"
-                                      // className="btn btn-success mb-4"
+                                    // component={Link}
+                                    // onClick={() => {
+                                    //   this.toggleTab("2");
+                                    // }}
+                                    // to="/checkout"
+                                    // className="btn btn-success mb-4"
                                     >
                                       <i className="mdi mdi-truck-fast me-1" />{" "}
                                       Next{" "}
@@ -904,61 +1008,61 @@ class Checkout extends Component {
                               <div style={{ height: "20px" }}></div>
                               {this.state.is_state_sampling_availed ==
                                 "Yes" && (
-                                <Table>
-                                  <Thead className="table-light">
-                                    <Tr>
-                                      <Th scope="col">Lab name</Th>
-                                      <Th scope="col">Urgent Sampling Time</Th>
-                                      <Th scope="col">
-                                        Urgent Sampling Charges
-                                      </Th>
-                                    </Tr>
-                                  </Thead>
-                                  <Tbody>
-                                    {this.state.homeSampledTests.map(
-                                      (homeSampledTest, key) => {
-                                        // Check if sampling charges and fees exist
-                                        if (
-                                          homeSampledTest.state_sampling_charges &&
-                                          homeSampledTest.state_sampling_time
-                                        ) {
-                                          return (
-                                            <Tr key={"_homeSampledTest_" + key}>
-                                              <Td>
-                                                <p className="font-size-14 float-start">
-                                                  {homeSampledTest.lab_name}
-                                                </p>
-                                              </Td>
-                                              <Td>
-                                                <h5 className="font-size-14 float-start">
-                                                  <a
-                                                    href="/ecommerce-product-details/1"
-                                                    className="text-dark"
-                                                  >
+                                  <Table>
+                                    <Thead className="table-light">
+                                      <Tr>
+                                        <Th scope="col">Lab name</Th>
+                                        <Th scope="col">Urgent Sampling Time</Th>
+                                        <Th scope="col">
+                                          Urgent Sampling Charges
+                                        </Th>
+                                      </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                      {this.state.homeSampledTests.map(
+                                        (homeSampledTest, key) => {
+                                          // Check if sampling charges and fees exist
+                                          if (
+                                            homeSampledTest.state_sampling_charges &&
+                                            homeSampledTest.state_sampling_time
+                                          ) {
+                                            return (
+                                              <Tr key={"_homeSampledTest_" + key}>
+                                                <Td>
+                                                  <p className="font-size-14 float-start">
+                                                    {homeSampledTest.lab_name}
+                                                  </p>
+                                                </Td>
+                                                <Td>
+                                                  <h5 className="font-size-14 float-start">
+                                                    <a
+                                                      href="/ecommerce-product-details/1"
+                                                      className="text-dark"
+                                                    >
+                                                      {
+                                                        homeSampledTest.state_sampling_time
+                                                      }{" "}
+                                                      hours
+                                                    </a>
+                                                  </h5>
+                                                </Td>
+                                                <Td>
+                                                  <p className="font-size-14 float-start">
                                                     {
-                                                      homeSampledTest.state_sampling_time
-                                                    }{" "}
-                                                    hours
-                                                  </a>
-                                                </h5>
-                                              </Td>
-                                              <Td>
-                                                <p className="font-size-14 float-start">
-                                                  {
-                                                    homeSampledTest.state_sampling_charges
-                                                  }
-                                                </p>
-                                              </Td>
-                                            </Tr>
-                                          );
-                                        } else {
-                                          return null; // Skip rendering if sampling charges and fees are missing
+                                                      homeSampledTest.state_sampling_charges
+                                                    }
+                                                  </p>
+                                                </Td>
+                                              </Tr>
+                                            );
+                                          } else {
+                                            return null; // Skip rendering if sampling charges and fees are missing
+                                          }
                                         }
-                                      }
-                                    )}
-                                  </Tbody>
-                                </Table>
-                              )}
+                                      )}
+                                    </Tbody>
+                                  </Table>
+                                )}
 
                               <Row className="mt-4">
                                 <Col sm="6"></Col>
@@ -967,7 +1071,7 @@ class Checkout extends Component {
                                     <button
                                       component={Link}
                                       onClick={() => {
-                                        this.toggleTab("3");
+                                        this.toggleTab("4");
                                       }}
                                       to="/checkout"
                                       className="btn btn-success mb-4"
@@ -1000,43 +1104,45 @@ class Checkout extends Component {
                                   <Input
                                     type="radio"
                                     value="Cash"
+                                    // defaultChecked
                                     name="payment_method"
                                     id="customRadioInline1"
                                     className="form-check-input"
-                                    onChange={e =>
-                                      this.setState({
-                                        payment_method: e.target.value,
-                                      })
-                                    }
+                                    onChange={this.handlePaymentMethodChange}
+
                                   />
                                   <Label
                                     className="form-check-label font-size-13"
                                     htmlFor="customRadioInline1"
                                   >
-                                    <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "}
+                                    {/* <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "} */}
+                                    <i className="fas fa-money-bill-alt me-1 font-size-18 align-top" style={{ color: 'green' }} />
+
                                     Cash on Spot
                                   </Label>
                                 </div>
-
                                 <div className="form-check form-check-inline font-size-16">
                                   <Input
                                     type="radio"
                                     value="Card"
-                                    defaultChecked
+                                    // defaultChecked
                                     id="customRadioInline2"
                                     name="payment_method"
                                     className="form-check-input"
-                                    onChange={e =>
-                                      this.setState({
-                                        payment_method: e.target.value,
-                                      })
-                                    }
+                                    onChange={this.handlePaymentMethodChange}
+
                                   />
                                   <Label
                                     className="form-check-label font-size-13"
                                     htmlFor="customRadioInline2"
                                   >
-                                    <i className="fab fa-cc-mastercard me-1 font-size-20 align-top" />{" "}
+                                    <i
+                                      className="fab fa-cc-mastercard me-1 font-size-20 align-top"
+                                      style={{
+                                        color: 'white', // Set the yellow color for the circles
+                                        background: '#FFA800', // Set the red color for the background
+                                      }}
+                                    />
                                     Credit / Debit Card
                                   </Label>
                                 </div>
@@ -1047,7 +1153,7 @@ class Checkout extends Component {
                                         return (
                                           <div key={"_donationcheck_" + key}>
                                             {donationcheck.bankaccount ===
-                                            true ? (
+                                              true ? (
                                               <div>
                                                 <Input
                                                   type="radio"
@@ -1055,30 +1161,74 @@ class Checkout extends Component {
                                                   name="payment_method"
                                                   id="customRadioInline1"
                                                   className="form-check-input"
-                                                  onChange={e =>
-                                                    this.setState({
-                                                      payment_method:
-                                                        e.target.value,
-                                                    })
-                                                  }
+                                                  onChange={this.handlePaymentMethodChange}
+
                                                 />
                                                 <Label
                                                   className="form-check-label font-size-13"
                                                   htmlFor="customRadioInline1"
                                                 >
-                                                  <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "}
+                                                  <i className="fas fa-hand-holding-heart me-1 font-size-20 align-top" style={{ color: 'red' }} />
                                                   Avail Donation
                                                 </Label>
                                               </div>
                                             ) : donationcheck.bankaccount ===
                                               false ? (
-                                              <div className="form-check form-check-inline font-size-16"></div>
+                                              <div style={{ display: 'none' }}></div>
                                             ) : null}
                                           </div>
                                         );
                                       }
                                     )}
                                 </div>
+                                <div className="form-check form-check-inline font-size-16">
+                                  {this.props.donationCheck.map(
+                                    (donationcheck, key) => {
+                                      return (
+                                        <div key={"_donationcheck_" + key}>
+                                          {donationcheck.available_credit >= donationcheck.grand_total_test_cost ? (
+                                            <div>
+                                              <Input
+                                                type="radio"
+                                                value="My Wallet"
+                                                name="payment_method"
+                                                id="customRadioInline1"
+                                                className="form-check-input"
+                                                onChange={this.handlePaymentMethodChange}
+
+                                              />
+                                              <Label
+                                                className="form-check-label font-size-13"
+                                                htmlFor="customRadioInline1"
+                                              >
+                                                <i className="mdi mdi-wallet align-middle me-1 font-size-20" style={{ color: '#0000FF' }} />
+                                                My Wallet
+                                              </Label>
+                                            </div>
+                                          ) : null}
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                                </div>
+
+                                <div className="d-flex justify-content-center">
+                                  {this.state.payment_method === "My Wallet" && (
+                                    this.props.donationCheck.map((donationcheck, key) => (
+                                      <div key={key} className="card" style={{ background: '#ADD8E6', width: '300px', height: '200px' }}>
+                                        <div className="card-body d-flex flex-column justify-content-center">
+                                          <h5 className="card-title text-center font-weight-bold">Available Credit in your Wallet</h5>
+                                          <div className="card-text text-center" style={{ fontSize: '30px' }}>
+                                            Rs. {donationcheck.available_credit}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))
+                                  )}
+                                </div>
+
+
+
 
                                 {this.state.payment_method == "Donation" ? (
                                   <div>
@@ -1131,11 +1281,8 @@ class Checkout extends Component {
                                             id="cardnumberInput"
                                             placeholder="0000 0000 0000 0000"
                                             name="card_number"
-                                            onChange={e =>
-                                              this.setState({
-                                                card_number: e.target.value,
-                                              })
-                                            }
+                                            onChange={this.handlePaymentMethodChange}
+
                                           />
                                         </FormGroup>
                                         <Row>
@@ -1156,12 +1303,8 @@ class Checkout extends Component {
                                                 id="cardnameInput"
                                                 placeholder="Name on Card"
                                                 name="name_on_card"
-                                                onChange={e =>
-                                                  this.setState({
-                                                    name_on_card:
-                                                      e.target.value,
-                                                  })
-                                                }
+                                                onChange={this.handlePaymentMethodChange}
+
                                               />
                                             </FormGroup>
                                           </Col>
@@ -1182,11 +1325,8 @@ class Checkout extends Component {
                                                 id="expirydateInput"
                                                 placeholder="MM/YY"
                                                 name="expiry_date"
-                                                onChange={e =>
-                                                  this.setState({
-                                                    expiry_date: e.target.value,
-                                                  })
-                                                }
+                                                onChange={this.handlePaymentMethodChange}
+
                                               />
                                             </FormGroup>
                                           </Col>
@@ -1207,11 +1347,8 @@ class Checkout extends Component {
                                                 id="cvvcodeInput"
                                                 placeholder="Enter CVV Code"
                                                 name="cvv_code"
-                                                onChange={e =>
-                                                  this.setState({
-                                                    cvv_code: e.target.value,
-                                                  })
-                                                }
+                                                onChange={this.handlePaymentMethodChange}
+
                                               />
                                             </FormGroup>
                                           </Col>
@@ -1222,7 +1359,7 @@ class Checkout extends Component {
                                 ) : null}
                               </div>
                             </div>
-                            <Row className="mt-4">
+                            {/* <Row className="mt-4">
                               <Col sm="6"></Col>
 
                               <Col sm="6">
@@ -1240,7 +1377,7 @@ class Checkout extends Component {
                                   </button>
                                 </div>
                               </Col>
-                            </Row>
+                            </Row> */}
                           </TabPane>
 
                           <TabPane
@@ -1346,64 +1483,64 @@ class Checkout extends Component {
                                           <>
                                             {checkoutItem.lab_home_sampling_charges !=
                                               0 && (
-                                              <tr key={"_checkoutItem_" + key}>
-                                                <td colSpan="4">
-                                                  {this.state
-                                                    .is_home_sampling_availed ==
-                                                    "Yes" &&
-                                                    this.state
-                                                      .is_state_sampling_availed ==
+                                                <tr key={"_checkoutItem_" + key}>
+                                                  <td colSpan="4">
+                                                    {this.state
+                                                      .is_home_sampling_availed ==
+                                                      "Yes" &&
+                                                      this.state
+                                                        .is_state_sampling_availed ==
                                                       "Yes" && (
-                                                      <div className="bg-primary bg-soft p-3 rounded">
-                                                        <h5 className="font-size-14 text-primary mb-0">
-                                                          <i className="fas fa-shipping-fast me-2" />{" "}
-                                                          Sum of Home Sampling +
-                                                          Urgent Sampling
-                                                          Charges{" "}
-                                                          {/* {
+                                                        <div className="bg-primary bg-soft p-3 rounded">
+                                                          <h5 className="font-size-14 text-primary mb-0">
+                                                            <i className="fas fa-shipping-fast me-2" />{" "}
+                                                            Sum of Home Sampling +
+                                                            Urgent Sampling
+                                                            Charges{" "}
+                                                            {/* {
                                                         checkoutItem.lab_name
                                                       } */}
-                                                          <span className="float-end">
-                                                            Rs.{" "}
-                                                            {checkoutItem.total_sampling_charges
-                                                              .toString()
-                                                              .replace(
-                                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                                ","
-                                                              )}
-                                                          </span>
-                                                        </h5>
-                                                      </div>
-                                                    )}
-                                                  {this.state
-                                                    .is_home_sampling_availed ==
-                                                    "Yes" &&
-                                                    this.state
-                                                      .is_state_sampling_availed !=
+                                                            <span className="float-end">
+                                                              Rs.{" "}
+                                                              {checkoutItem.total_sampling_charges
+                                                                .toString()
+                                                                .replace(
+                                                                  /\B(?=(\d{3})+(?!\d))/g,
+                                                                  ","
+                                                                )}
+                                                            </span>
+                                                          </h5>
+                                                        </div>
+                                                      )}
+                                                    {this.state
+                                                      .is_home_sampling_availed ==
+                                                      "Yes" &&
+                                                      this.state
+                                                        .is_state_sampling_availed !=
                                                       "Yes" && (
-                                                      <div className="bg-primary bg-soft p-3 rounded">
-                                                        <h5 className="font-size-14 text-primary mb-0">
-                                                          <i className="fas fa-shipping-fast me-2" />{" "}
-                                                          Sum of Home Sampling
-                                                          Charges{" "}
-                                                          {/* {
+                                                        <div className="bg-primary bg-soft p-3 rounded">
+                                                          <h5 className="font-size-14 text-primary mb-0">
+                                                            <i className="fas fa-shipping-fast me-2" />{" "}
+                                                            Sum of Home Sampling
+                                                            Charges{" "}
+                                                            {/* {
                                                         checkoutItem.lab_name
                                                       } */}
-                                                          <span className="float-end">
-                                                            Rs.{" "}
-                                                            {checkoutItem.total_sampling_charges
-                                                              .toString()
-                                                              .replace(
-                                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                                ","
-                                                              )}
-                                                          </span>
-                                                        </h5>
-                                                      </div>
-                                                    )}
-                                                </td>
-                                              </tr>
-                                            )}
+                                                            <span className="float-end">
+                                                              Rs.{" "}
+                                                              {checkoutItem.total_sampling_charges
+                                                                .toString()
+                                                                .replace(
+                                                                  /\B(?=(\d{3})+(?!\d))/g,
+                                                                  ","
+                                                                )}
+                                                            </span>
+                                                          </h5>
+                                                        </div>
+                                                      )}
+                                                  </td>
+                                                </tr>
+                                              )}
 
                                             {checkoutItem.total_test_cost && (
                                               <Tr>
@@ -1413,7 +1550,7 @@ class Checkout extends Component {
                                                       <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
                                                       Sub Total{" "}
                                                       <span className="float-end">
-                                                        Rsss.{" "}
+                                                        Rs.{" "}
                                                         {checkoutItem.total_test_cost
                                                           .toString()
                                                           .replace(
@@ -1434,6 +1571,82 @@ class Checkout extends Component {
                                 </div>
                               </CardBody>
                             </Card>
+
+                            {!isEmpty(this.state.payment_method) &&
+
+                              <Card className="shadow-none border mb-0">
+                                <CardBody className="text-center">
+                                  <CardTitle className="mb-1">
+                                    <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                    Payment method
+                                  </CardTitle>
+
+                                  {this.state.payment_method !== "card" && (
+                                    <div>
+                                      <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                        <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  {this.state.payment_method === "Card" && (
+                                    <div>
+                                      <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                        {/* <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span> */}
+                                        <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
+                                      </p>
+                                    </div>
+                                  )}
+
+                                  <div>
+                                    <div className="table-responsive">
+                                      <a
+                                        href="#"
+                                        onClick={this.handleClickAddPayment}
+                                        style={{ textDecoration: 'none', color: 'inherit' }}
+                                      >
+                                        <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                        Update Payment method
+                                      </a>
+                                    </div>
+
+                                    {/* Rest of your component code */}
+                                  </div>
+                                </CardBody>
+                              </Card>
+
+                            }
+
+                            {isEmpty(this.state.payment_method) &&
+
+                              <Card className="shadow-none border mb-0">
+                                <CardBody className="text-center">
+                                  <CardTitle className="mb-1">
+                                    <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                    Payment method
+                                  </CardTitle>
+                                  <div>
+                                    <div className="table-responsive">
+                                      <a
+                                        href="#"
+                                        onClick={this.handleClickAddPayment}
+                                        style={{ textDecoration: 'none', color: 'inherit' }}
+                                      >
+                                        <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                        Add Payment method
+                                      </a>
+                                    </div>
+
+                                    {/* Rest of your component code */}
+                                  </div>
+                                </CardBody>
+                              </Card>
+
+                            }
+
+
+
+
 
                             <Row className="mt-4">
                               <Col sm="6">
