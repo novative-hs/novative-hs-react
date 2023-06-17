@@ -65,6 +65,31 @@ class Register extends Component {
     }
   }
 
+  togglePasswordVisibility = () => {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon.className = 'mdi mdi-eye-outline';
+    }
+  };
+  togglePassword2Visibility = () => {
+    const passwordInput = document.querySelector('input[name="password2"]');
+    const eyeIcon2 = document.getElementById('eye-icon2');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon2.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon2.className = 'mdi mdi-eye-outline';
+    }
+  };
+
   render() {
     if (this.props.userID) {
       if (this.props.userAccountType == "patient") {
@@ -324,58 +349,77 @@ class Register extends Component {
                                 </div> */}
 
                                 {/* Password field */}
-                                <div className="mb-3">
-                                  <Label className="form-label">Password</Label>
-                                  <div>
-                                    <Field
-                                      name="password"
-                                      type="password"
-                                      placeholder="Enter password"
-                                      autoComplete="on"
-                                      onFocus={() => {
-                                        this.setState({
-                                          passwordFieldError: null,
-                                        });
-                                      }}
-                                      className={
-                                        "form-control" +
-                                        ((errors.password &&
-                                          touched.password) ||
-                                        this.state.passwordFieldError
-                                          ? " is-invalid"
-                                          : "")
-                                      }
-                                    />
-                                    <ErrorMessage
-                                      name="password"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
 
-                                    <div className="invalid-feedback">
-                                      {this.state.passwordFieldError}
-                                    </div>
-                                  </div>
-                                  <div className="mt-2">
-                                    <Field
-                                      name="password2"
-                                      type="password"
-                                      placeholder="Re-enter password"
-                                      autoComplete="on"
-                                      className={
-                                        "form-control" +
-                                        (errors.password2 && touched.password2
-                                          ? " is-invalid"
-                                          : "")
-                                      }
-                                    />
-                                    <ErrorMessage
-                                      name="password2"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
-                                  </div>
-                                </div>
+                                <div className="mb-3">
+  <Label className="form-label">Password</Label>
+  <div>
+    <div className="input-group auth-pass-inputgroup">
+      <Field
+        name="password"
+        type="password"
+        placeholder="Enter password"
+        autoComplete="on"
+        onFocus={() => {
+          this.setState({
+            passwordFieldError: null,
+          });
+        }}
+        className={
+          "form-control" +
+          ((errors.password && touched.password) || this.state.passwordFieldError
+            ? " is-invalid"
+            : "")
+        }
+      />
+      <button
+        className="btn btn-light"
+        type="button"
+        id="password-addon"
+        onClick={this.togglePasswordVisibility}
+      >
+        <i id="eye-icon" className="mdi mdi-eye-outline"></i>
+      </button>
+    </div>
+    <ErrorMessage
+      name="password"
+      component="div"
+      className="invalid-feedback"
+    />
+
+    <div className="invalid-feedback">
+      {this.state.passwordFieldError}
+    </div>
+  </div>
+  <div className="mt-2">
+    <div className="input-group auth-pass-inputgroup">
+      <Field
+        name="password2"
+        type="password"
+        placeholder="Re-enter password"
+        autoComplete="on"
+        className={
+          "form-control" +
+          (errors.password2 && touched.password2 ? " is-invalid" : "")
+        }
+      />
+      <button
+        className="btn btn-light"
+        type="button"
+        id="password2-addon" // Unique ID for the eye icon of password2
+        onClick={this.togglePassword2Visibility} // Updated function name
+      >
+        <i id="eye-icon2" className="mdi mdi-eye-outline"></i> {/* Updated ID for the eye icon */}
+      </button>
+    </div>
+    <ErrorMessage
+      name="password2"
+      component="div"
+      className="invalid-feedback"
+    />
+  </div>
+</div>
+
+                               
 
                                 {/* Account type field */}
                                 <div className="mb-3">

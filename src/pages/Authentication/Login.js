@@ -17,12 +17,13 @@ import { apiError, loginUser } from "../../store/actions";
 // import images
 import CarouselPage from "../AuthenticationInner/CarouselPage";
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       count: 0,
-      guest_id:"",
+      guest_id: "",
     };
   }
 
@@ -44,6 +45,20 @@ class Login extends Component {
   removeAttributes(element, ...attrs) {
     attrs.forEach(attr => element.removeAttribute(attr));
   }
+
+  togglePasswordVisibility = () => {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon.className = 'mdi mdi-eye-outline';
+    }
+  };
+
 
   render() {
     return (
@@ -83,7 +98,7 @@ class Login extends Component {
                               guest_id:
                                 (this.props && this.props.match.params.guest_id) || "",
                             }
-                          }
+                            }
                             validationSchema={Yup.object().shape({
                               username: Yup.string().required(
                                 "Please enter your username or email"
@@ -94,18 +109,18 @@ class Login extends Component {
                             })}
                             onSubmit={values => {
                               this.props.loginUser(values, this.props.history);
-                              console.log("page: ",values)
+                              console.log("page: ", values)
                               setTimeout(() => {
                                 console.log(values)
                                 const success = this.props.success;
 
                                 if (success.account_type == "patient") {
                                   this.props.history.push(
-                                    this.props.match.params.uuid 
+                                    this.props.match.params.uuid
                                       ? `/nearby-labs/${this.props.match.params.uuid}`
                                       : `/nearby-labs`
                                   );
-                                console.log(this.props.match.params.uuid)
+                                  console.log(this.props.match.params.uuid)
                                 } else if (success.account_type == "labowner") {
                                   this.props.history.push("/dashboard-lab");
                                 } else if (
@@ -132,7 +147,7 @@ class Login extends Component {
                                   success.account_type == "registration-admin"
                                 ) {
                                   this.props.history.push("/pending-labs");
-                                }else if (
+                                } else if (
                                   success.account_type == "marketer-admin"
                                 ) {
                                   this.props.history.push("/discount-labhazir");
@@ -187,23 +202,35 @@ class Login extends Component {
                                   <Label for="password" className="form-label">
                                     Password
                                   </Label>
-                                  <Field
-                                    name="password"
-                                    type="password"
-                                    autoComplete="true"
-                                    className={
-                                      "form-control" +
-                                      (errors.password && touched.password
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
+                                  <div className="input-group auth-pass-inputgroup">
+                                    <Field
+                                      name="password"
+                                      type="password"
+                                      autoComplete="true"
+                                      className={
+                                        "form-control" +
+                                        (errors.password && touched.password ? " is-invalid" : "")
+                                      }
+                                    />
+                                    <button
+                                      className="btn btn-light"
+                                      type="button"
+                                      id="password-addon"
+                                      onClick={this.togglePasswordVisibility}
+                                    >
+                                      <i id="eye-icon" className="mdi mdi-eye-outline"></i>
+                                    </button>
+                                  </div>
                                   <ErrorMessage
                                     name="password"
                                     component="div"
                                     className="invalid-feedback"
                                   />
                                 </div>
+
+
+
+
 
                                 <div className="form-check">
                                   <input
