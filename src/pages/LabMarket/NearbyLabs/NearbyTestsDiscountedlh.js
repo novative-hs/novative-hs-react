@@ -1072,10 +1072,20 @@ class NearbyTests extends Component {
                       className="form-horizontal"
                     >
                       {/* Type field */}
+                      
                       <Row>
-                      <Col lg="3">
-                      <Label>Search By Test Name</Label>
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Test Name
+                            </Label>
+                            <div className="mb-3">
                             <Input
                               type="text"
                               className="form-control"
@@ -1090,10 +1100,19 @@ class NearbyTests extends Component {
                               value={this.state.test_name}
                             />
                           </div>
+                          </div>
                         </Col>
-                      <Col lg="3">
-                        <div className="mb-3">
-                            <Label>Search By Kilo Meters</Label>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Kilo Meters
+                            </Label>
                             <div className="input-group">
                               <Input
                                 defaultValue={this.state.km}
@@ -1108,75 +1127,53 @@ class NearbyTests extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="mt-4" style={{ display: 'none' }}>
+                        </Col>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Labs Type
+                            </Label>
                             <Field
-                              name="search_type"
-                              
+                              name="LabType"
                               component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
+                              onChange={e => this.onChangeType(e)}
+                              value={this.state.LabType}
                               className="form-select"
                             >
-                              <option value="Current Location">
-                                Current Location
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points
                               </option>
-                              <option value="Custom Address">
-                                Custom Address
-                              </option>
+                              <option value="Others">Both</option>
                             </Field>
                           </div>
                         </Col>
-                        <Col lg="3">
+                        <Col xs="6" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                                  <Label for="LabType" className="form-label">
-                                    Search By Labs Type
-                                  </Label>
-                                  <Field
-                                    name="LabType"
-                                    component="select"
-                                    onChange={e => this.onChangeType(e)}
-                                    value={this.state.LabType}
-                                    className="form-select"
-                                  >
-                                    <option value="Main">Main Labs</option>
-                                    <option value="Collection">Collection Points
-                                    </option>
-                                    <option value="Others">Both</option>
-                                  </Field>
-                                </div>
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By City
+                            </Label>
+                            <Select
+                              name="city "
+                              comp onent="Select"
+                              onChange={this.onChangeCity}
+                              className="defautSelectParent is-invalid"
+                              options={cityList}
+                              placeholder="Select City..."
+                            />
+                          </div>
                         </Col>
-
-                        {/* City field */}
-                        <Col lg="3">
-                            <div className="mb-3">
-                            <Label for="LabType" className="form-label">
-                                    Search By City
-                                  </Label>
-                              <Select
-                                name="city "
-                                comp onent="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={cityList}
-                                placeholder="Select City..."
-                              />
-                            </div>
-                        </Col>
-                        {/* Custom Address field */}
-                        {/* <Col lg="3">
-                          {this.state.city != "" && (
-                            <div className="mt-4">
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          )}
-                        </Col> */}
                       </Row>
                     </Form>
                   )}

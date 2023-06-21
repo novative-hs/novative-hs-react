@@ -1109,14 +1109,21 @@ class NearbyPackage extends Component {
                     >
                       {/* Type field */}
                       <Row>
-
-              <Col lg="3">
-              <Label>Search By Radiology Name</Label>
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Radiology Name
+                            </Label>
                             <Select
                               name="profile"
                               component="Select"
-                              
+
                               onChange={selectedGroup =>
                                 this.setState({
                                   test_name: selectedGroup.value,
@@ -1137,9 +1144,17 @@ class NearbyPackage extends Component {
                             />
                           </div>
                         </Col>
-                        <Col lg="3">
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                            <Label>Search By Kilo Meters</Label>
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Kilo Meters
+                            </Label>
                             <div className="input-group">
                               <Input
                                 defaultValue={this.state.km}
@@ -1154,27 +1169,16 @@ class NearbyPackage extends Component {
                               </div>
                             </div>
                           </div>
-                          <div className="mt-4" style={{ display: 'none' }}>
-                            <Field
-                              name="search_type"
-
-                              component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">
-                                Current Location
-                              </option>
-                              <option value="Custom Address">
-                                Custom Address
-                              </option>
-                            </Field>
-                          </div>
                         </Col>
-                        <Col lg="3">
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                            <Label for="LabType" className="form-label">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
                               Search By Labs Type
                             </Label>
                             <Field
@@ -1191,11 +1195,15 @@ class NearbyPackage extends Component {
                             </Field>
                           </div>
                         </Col>
-
-                        {/* City field */}
-                        <Col lg="3">
+                        <Col xs="6" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                            <Label for="LabType" className="form-label">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
                               Search By City
                             </Label>
                             <Select
@@ -1208,21 +1216,6 @@ class NearbyPackage extends Component {
                             />
                           </div>
                         </Col>
-                        {/* Custom Address field */}
-                        {/* <Col lg="3">
-                          {this.state.city != "" && (
-                            <div className="mt-4">
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          )}
-                        </Col> */}
                       </Row>
                     </Form>
                   )}

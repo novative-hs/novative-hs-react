@@ -1025,7 +1025,7 @@ class NearbyLabs extends Component {
                       </button>
 
                       <div id="modal" className="modal mt-4" style={{ display: "none" }}>
-                       <div className="modal-dialog" style={{ width: "500px", height: "300px" }}> 
+                        <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
                           <div className="modal-content">
                             <div className="modal-header">
                               <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
@@ -1041,15 +1041,15 @@ class NearbyLabs extends Component {
                                 </p>
                               </div> */}
                             </div>
-                            <div className="my-0" style={{ textAlign: 'center'}}>
-                                <span className="text-danger">
-                                  <i className="mdi mdi-information"></i>{" "}
-                                  You have received this money in case of refund.
-                                </span><br></br>
-                                <span className="text-danger">
-                                  Which you can use only for testing.
-                                </span>
-                              </div>
+                            <div className="my-0" style={{ textAlign: 'center' }}>
+                              <span className="text-danger">
+                                <i className="mdi mdi-information"></i>{" "}
+                                You have received this money in case of refund.
+                              </span><br></br>
+                              <span className="text-danger">
+                                Which you can use only for testing.
+                              </span>
+                            </div>
 
                             <div className="modal-footer">
                               <button
@@ -1284,14 +1284,19 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       <Row>
-                        <Col lg="3">
-                          {/* <Col lg="3"> */}
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                            <Label>Search By Kilo Meters</Label>
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Kilometers</Label>
                             <div className="input-group">
                               <Input
                                 defaultValue={this.state.km}
-                                onChange={e => this.onChangeKm(e)}
+                                onChange={(e) => this.onChangeKm(e)}
                                 id="pac-input"
                                 type="text"
                                 className="form-control"
@@ -1302,54 +1307,45 @@ class NearbyLabs extends Component {
                               </div>
                             </div>
                           </div>
-                          {/* </Col> */}
-                          <div className="mt-4" style={{ display: 'none' }}>
-                            <Field
-                              name="search_type"
-
-                              component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">
-                                Current Location
-                              </option>
-                              <option value="Custom Address">
-                                Custom Address
-                              </option>
-                            </Field>
-                          </div>
                         </Col>
-                        <Col lg="3">
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                            <Label for="LabType" className="form-label">
+                            <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                              }}
+                            >
                               Search By Labs Type
                             </Label>
                             <Field
                               name="LabType"
                               component="select"
-                              onChange={e => this.onChangeType(e)}
+                              onChange={(e) => this.onChangeType(e)}
                               value={this.state.LabType}
                               className="form-select"
                             >
                               <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points
-                              </option>
+                              <option value="Collection">Collection Points</option>
                               <option value="Others">Both</option>
                             </Field>
                           </div>
                         </Col>
-
-                        {/* City field */}
-                        <Col lg="3">
+                        <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
-                            <Label for="LabType" className="form-label">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                              }}
+                            >
                               Search By City
                             </Label>
                             <Select
-                              name="city "
-                              comp onent="Select"
+                              name="city"
+                              component="Select"
                               onChange={this.onChangeCity}
                               className="defautSelectParent is-invalid"
                               options={cityList}
@@ -1357,24 +1353,8 @@ class NearbyLabs extends Component {
                             />
                           </div>
                         </Col>
-
-                        {/* Custom Address field */}
-                        {/* <Col lg="3">
-                          {this.state.city != "" && (
-                            <div className="mt-4">
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          )}
-                        </Col> */}
-
                       </Row>
+
                     </Form>
                   )}
                 </Formik>
