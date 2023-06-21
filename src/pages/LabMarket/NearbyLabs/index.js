@@ -105,7 +105,6 @@ class NearbyLabs extends Component {
     this.onSelectRating = this.onSelectRating.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
     console.log("yaha ani chahi hai uuid", this.props.match.params.guest_id)
-
   }
   openMenu = () => {
     this.setState({ isMenuOpened: !this.state.isMenuOpened });
@@ -133,8 +132,8 @@ class NearbyLabs extends Component {
     let longitude;
 
     navigator.geolocation.getCurrentPosition(function (position) {
-      latitude = console.log("here latitude in geo location",position.coords.latitude);
-      longitude = console.log("here longitude in geo location",position.coords.longitude);
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude;
 
       //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
       if (window.localStorage) {
@@ -161,8 +160,8 @@ class NearbyLabs extends Component {
 
     setTimeout(() => {
 
-      this.setState({ currentLatitude: latitude});
-      this.setState({ currentLongitude: longitude});
+      this.setState({ currentLatitude: latitude });
+      this.setState({ currentLongitude: longitude });
 
 
       var locationDetails = {
