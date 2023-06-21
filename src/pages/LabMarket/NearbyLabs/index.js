@@ -133,8 +133,8 @@ class NearbyLabs extends Component {
     let longitude;
 
     navigator.geolocation.getCurrentPosition(function (position) {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude;
+      latitude = console.log("here latitude in geo location",position.coords.latitude);
+      longitude = console.log("here longitude in geo location",position.coords.longitude);
 
       //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
       if (window.localStorage) {
