@@ -162,6 +162,7 @@ class NearbyLabs extends Component {
 
       this.setState({ currentLatitude: latitude });
       this.setState({ currentLongitude: longitude });
+      console.log("latitude and longitude",latitude,longitude  )
 
 
       var locationDetails = {
