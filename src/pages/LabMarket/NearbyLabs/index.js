@@ -161,8 +161,8 @@ class NearbyLabs extends Component {
 
     setTimeout(() => {
 
-      this.setState({ currentLatitude: console.log("latitude",latitude) });
-      this.setState({ currentLongitude: console.log("longtitude",longitude) });
+      this.setState({ currentLatitude: latitude});
+      this.setState({ currentLongitude: longitude});
 
 
       var locationDetails = {
