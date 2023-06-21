@@ -105,6 +105,8 @@ class NearbyLabs extends Component {
     this.onSelectRating = this.onSelectRating.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
     console.log("yaha ani chahi hai uuid", this.props.match.params.guest_id)
+    console.log("latitude and longitude",latitude,longitude  )
+
   }
   openMenu = () => {
     this.setState({ isMenuOpened: !this.state.isMenuOpened });
@@ -160,9 +162,8 @@ class NearbyLabs extends Component {
 
     setTimeout(() => {
 
-      this.setState({ currentLatitude: latitude });
-      this.setState({ currentLongitude: longitude });
-      console.log("latitude and longitude",latitude,longitude  )
+      this.setState({ currentLatitude: console.log("latitude",latitude) });
+      this.setState({ currentLongitude: console.log("longtitude",longitude) });
 
 
       var locationDetails = {
