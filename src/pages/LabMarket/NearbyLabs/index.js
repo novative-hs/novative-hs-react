@@ -143,7 +143,32 @@ class NearbyLabs extends Component {
       const longitude = parseFloat(longitudeFromUrl);
       console.log("whsuqi",latitude, longitude)
 
-      const { onGetNearbyLabs } = this.props;
+        // region Wise Advertisement 
+    const { onGetAdvLive } = this.props;
+
+    setTimeout(() => {
+
+      this.setState({ currentLatitude: latitude });
+      this.setState({ currentLongitude: longitude });
+
+
+      var locationDetails = {
+        latitude: this.state.currentLatitude,
+        longitude: this.state.currentLongitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+      };
+
+      if (this.state.currentLatitude && this.state.currentLongitude) {
+        onGetAdvLive(locationDetails);
+        setTimeout(() => {
+          this.setState({ advLives: this.props.advLives });
+        }, 2000);
+      }
+    }, 1000);
+
+    const { onGetNearbyLabs } = this.props;
     // near by labs
 
     setTimeout(() => {
@@ -220,6 +245,31 @@ class NearbyLabs extends Component {
           // console.log("guest id in near by labs and backend;", { nearbyLabs: this.props.nearbyLabs, guest_id })
 
         }, 1000);
+      }
+    }, 1000);
+
+    // region Wise Advertisement 
+    const { onGetRegionWiseAdvertisement } = this.props;
+
+    setTimeout(() => {
+
+      this.setState({ currentLatitude: latitude });
+      this.setState({ currentLongitude: longitude });
+
+
+      var locationDetails = {
+        latitude: this.state.currentLatitude,
+        longitude: this.state.currentLongitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+      };
+
+      if (this.state.currentLatitude && this.state.currentLongitude) {
+        onGetRegionWiseAdvertisement(locationDetails);
+        setTimeout(() => {
+          this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
+        }, 2000);
       }
     }, 1000);
       }
@@ -1449,7 +1499,7 @@ class NearbyLabs extends Component {
         onChange={this.onChangeCity}
         className="defautSelectParent is-invalid"
         options={cityList}
-        placeholder="Select City..."
+        placeholder="City..."
       />
     </div>
   </Col>
