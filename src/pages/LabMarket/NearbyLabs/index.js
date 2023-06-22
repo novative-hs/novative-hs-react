@@ -284,6 +284,7 @@ class NearbyLabs extends Component {
         }, 2000);
       }
     }, 1000);
+    console.log("url with ln and log", window.location.href)
   }
 
   // eslint-disable-next-line no-unused-vars
