@@ -131,29 +131,127 @@ class NearbyLabs extends Component {
     let latitude;
     let longitude;
 
-    navigator.geolocation.getCurrentPosition(function (position) {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude;
+    const params = new URLSearchParams(window.location.search);
+    const latitudeFromUrl = params.get('lat');
+    const longitudeFromUrl = params.get('lon');
+    console.log("whsuqi",latitudeFromUrl, longitudeFromUrl)
 
-      //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
-      if (window.localStorage) {
+    // Check if latitude and longitude values are present in URL parameters
+    if (latitudeFromUrl && longitudeFromUrl) {
+      // Use latitude and longitude from URL
+      const latitude = parseFloat(latitudeFromUrl);
+      const longitude = parseFloat(longitudeFromUrl);
+      console.log("whsuqi",latitude, longitude)
 
-        // If there is no item as 'reload'
-        // in localstorage then create one &
-        // reload the page
-        if (!localStorage.getItem('reload')) {
-          localStorage['reload'] = true;
-          window.location.reload();
-        } else {
+      const { onGetNearbyLabs } = this.props;
+    // near by labs
 
-          // If there exists a 'reload' item
-          // then clear the 'reload' item in
-          // local storage
-          localStorage.removeItem('reload');
-        }
+    setTimeout(() => {
+
+      this.setState({ currentLatitude: latitude });
+      this.setState({ currentLongitude: longitude });
+      // this.setState({ guest_id: guest_id });
+
+
+
+      var locationDetails = {
+        latitude: this.state.currentLatitude,
+        longitude: this.state.currentLongitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        km: this.state.km,
+        LabType: this.state.LabType
+      };
+      if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
+        const guest_id = uuidv4();
+        locationDetails.guest_id = guest_id
+        console.log("guestid in nearby lab:", guest_id, locationDetails.guest_id)
+        // guest_id = locationDetails.guest_id
+        console.log("differ:", guest_id)
+        this.setState({ guest_id: guest_id });
+        console.log("differ:", this.state.guest_id)
+        console.log(window.location.href)
+
+        // locationDetails.guest_id =  guest_id
+
+        // onGetNearbyLabs(locationDetails, guest_id);
+        // setTimeout(() => {
+        //   // const guest_id = uuidv4();
+        //   // console.log("uuid in nearby lab:",guest_id)
+        //   // locationDetails.guest_id =  guest_id
+        //   this.setState({ nearbyLabs: this.props.nearbyLabs });
+        //   // console.log("guest id in near by labs and backend;", { nearbyLabs: this.props.nearbyLabs, guest_id })
+
+        // }, 1000);
+      }
+      // if (isAuthProtected && !localStorage.getItem("authUser")) {
+      //   const guest_id = uuidv4();
+      //   // console.log("differ route main set hoi:",guest_id)
+      //   // this.setState({ guest_id: guest_id });
+
+
+
+      //   return (
+      //     <Redirect
+      //       // to={{ pathname: "/nearby-labs/"+ guest_id, state: { from: props.location } }}
+      //       to={
+      //         { pathname: "/nearby-labs", state: { from: props.location } }
+
+      //       }
+      //     />
+      //   );
+      // }
+
+
+      if (this.state.currentLatitude && this.state.currentLongitude) {
+        // const guest_id = locationDetails.guest_id
+        // console.log("differ:",guest_id)
+        // this.setState({ guest_id: guest_id });
+        // locationDetails.guest_id =  this.state.guest_id
+        // console.log("differ:",locationDetails.guest_id)
+
+        onGetNearbyLabs(locationDetails);
+        setTimeout(() => {
+          // const guest_id = uuidv4();
+          // console.log("uuid in nearby lab:",guest_id)
+          // locationDetails.guest_id =  guest_id
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+          // console.log("guest id in near by labs and backend;", { nearbyLabs: this.props.nearbyLabs, guest_id })
+
+        }, 1000);
+      }
+    }, 1000);
       }
 
-    });
+    else {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            console.log("web",latitude, longitude)
+
+
+            //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
+            if (window.localStorage) {
+
+              // If there is no item as 'reload'
+              // in localstorage then create one &
+              // reload the page
+              if (!localStorage.getItem('reload')) {
+                localStorage['reload'] = true;
+                window.location.reload();
+              } else {
+
+                // If there exists a 'reload' item
+                // then clear the 'reload' item in
+                // local storage
+                localStorage.removeItem('reload');
+              }
+            }
+
+          });
+    }
+        
 
     // region Wise Advertisement 
     const { onGetAdvLive } = this.props;
@@ -284,7 +382,8 @@ class NearbyLabs extends Component {
         }, 2000);
       }
     }, 1000);
-    console.log("url with ln and log", window.location.href)
+   console.log("url with ln and log", window.location.href)
+
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -1026,7 +1125,7 @@ class NearbyLabs extends Component {
                       </button>
 
                       <div id="modal" className="modal mt-4" style={{ display: "none" }}>
-                        <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
+                       <div className="modal-dialog" style={{ width: "500px", height: "300px" }}> 
                           <div className="modal-content">
                             <div className="modal-header">
                               <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
@@ -1042,15 +1141,15 @@ class NearbyLabs extends Component {
                                 </p>
                               </div> */}
                             </div>
-                            <div className="my-0" style={{ textAlign: 'center' }}>
-                              <span className="text-danger">
-                                <i className="mdi mdi-information"></i>{" "}
-                                You have received this money in case of refund.
-                              </span><br></br>
-                              <span className="text-danger">
-                                Which you can use only for testing.
-                              </span>
-                            </div>
+                            <div className="my-0" style={{ textAlign: 'center'}}>
+                                <span className="text-danger">
+                                  <i className="mdi mdi-information"></i>{" "}
+                                  You have received this money in case of refund.
+                                </span><br></br>
+                                <span className="text-danger">
+                                  Which you can use only for testing.
+                                </span>
+                              </div>
 
                             <div className="modal-footer">
                               <button
@@ -1285,76 +1384,76 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       <Row>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >Search By Kilometers</Label>
-                            <div className="input-group">
-                              <Input
-                                defaultValue={this.state.km}
-                                onChange={(e) => this.onChangeKm(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search By Km..."
-                              />
-                              <div className="input-group-append">
-                                <span className="input-group-text">Km</span>
-                              </div>
-                            </div>
-                          </div>
-                        </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                              }}
-                            >
-                              Search By Labs Type
-                            </Label>
-                            <Field
-                              name="LabType"
-                              component="select"
-                              onChange={(e) => this.onChangeType(e)}
-                              value={this.state.LabType}
-                              className="form-select"
-                            >
-                              <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
-                              <option value="Others">Both</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType1"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                              }}
-                            >
-                              Search By City
-                            </Label>
-                            <Select
-                              name="city"
-                              component="Select"
-                              onChange={this.onChangeCity}
-                              className="defautSelectParent is-invalid"
-                              options={cityList}
-                              placeholder="Select City..."
-                            />
-                          </div>
-                        </Col>
-                      </Row>
+  <Col xs="4" sm="4" md="3" lg="3">
+    <div className="mb-3">
+      <Label
+      for="LabType"
+        className="form-label"
+        style={{
+        fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+        }}
+      >Search By Kilometers</Label>
+      <div className="input-group">
+        <Input
+          defaultValue={this.state.km}
+          onChange={(e) => this.onChangeKm(e)}
+          id="pac-input"
+          type="text"
+          className="form-control"
+          placeholder="Search By Km..."
+        />
+        <div className="input-group-append">
+          <span className="input-group-text">Km</span>
+        </div>
+      </div>
+    </div>
+  </Col>
+  <Col xs="4" sm="4" md="3" lg="3">
+    <div className="mb-3">
+    <Label
+      for="LabType2"
+      className="form-label"
+      style={{
+        fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+      }}
+    >
+      Search By Labs Type
+    </Label>
+      <Field
+        name="LabType"
+        component="select"
+        onChange={(e) => this.onChangeType(e)}
+        value={this.state.LabType}
+        className="form-select"
+      >
+        <option value="Main">Main Labs</option>
+        <option value="Collection">Collection Points</option>
+        <option value="Others">Both</option>
+      </Field>
+    </div>
+  </Col>
+  <Col xs="4" sm="4" md="3" lg="3">
+    <div className="mb-3">
+      <Label
+        for="LabType1"
+        className="form-label"
+        style={{
+          fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+        }}
+      >
+        Search By City
+      </Label>
+      <Select
+        name="city"
+        component="Select"
+        onChange={this.onChangeCity}
+        className="defautSelectParent is-invalid"
+        options={cityList}
+        placeholder="Select City..."
+      />
+    </div>
+  </Col>
+</Row>
 
                     </Form>
                   )}
