@@ -96,8 +96,7 @@ class NearbyLabs extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
-    console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
-    console.log("yaha ani chahi hai guid", this.props.match.params.guest_id)
+    console.log("yaha ani chahi hai uuid", this.props.match.params.uuid, this.props.match.params.guest_id, this.props.match.params.filnalurl)
     console.log(this.state.user_type)
   }
 
@@ -127,30 +126,62 @@ class NearbyLabs extends Component {
     let latitude;
     let longitude;
 
-    navigator.geolocation.getCurrentPosition(function (position) {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude;
+    const url = window.location.href;
+    const queryString = url.substring(url.indexOf('&') + 1);
+    const params = new URLSearchParams(queryString);
+    console.log("print params in app", url, queryString, params)
+    
+    const latitudeFromUrl = params.get('lat');
+    const longitudeFromUrl = params.get('lon');
 
-      //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
-      //   if (window.localStorage) {
+    
+    console.log('Latitude:', latitudeFromUrl);
+    console.log('Longitude:', longitudeFromUrl);
+    
+    // Check if latitude and longitude values are present in URL parameters
+    if (latitudeFromUrl && longitudeFromUrl) {
+      // Use latitude and longitude from URL
+      latitude = parseFloat(latitudeFromUrl);
+      longitude = parseFloat(longitudeFromUrl);
+      console.log("print lat log in app", latitude, longitude)
 
-      //     // If there is no item as 'reload'
-      //     // in localstorage then create one &
-      //     // reload the page
-      //     if (!localStorage.getItem('reload')) {
-      //         localStorage['reload'] = true;
-      //         window.location.reload();
-      //     } else {
+      // const url = `http://localhost:3000/nearby-labs/&lat=${latitude}&lon=${longitude}`;
+      // const queryString = url.substring(url.indexOf("&") + 1);
+      // const filnalurl = ("&") + queryString; // Remove the leading question mark ('?')        
+      // this.setState({ filnalurl: filnalurl });
+      // console.log("differ with the final url state:", this.props.match.params.filnalurl)
+      // console.log(filnalurl);
+      // console.log("whsuqi", latitude, longitude)
 
-      //         // If there exists a 'reload' item
-      //         // then clear the 'reload' item in
-      //         // local storage
-      //         localStorage.removeItem('reload');
-      //     }
-      // }
 
     }
-    );
+    else {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log("web", latitude, longitude)
+
+
+        //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
+        if (window.localStorage) {
+
+          // If there is no item as 'reload'
+          // in localstorage then create one &
+          // reload the page
+          if (!localStorage.getItem('reload')) {
+            localStorage['reload'] = true;
+            window.location.reload();
+          } else {
+
+            // If there exists a 'reload' item
+            // then clear the 'reload' item in
+            // local storage
+            localStorage.removeItem('reload');
+          }
+        }
+
+      });
+    }
 
     const { onGetNearbyLabs } = this.props;
     // const guest_id = uuidv4();
@@ -174,48 +205,16 @@ class NearbyLabs extends Component {
         km: this.state.km,
         LabType: this.state.LabType
       };
-      // if (!this.state.user_id && !this.props.match.params.guest_id) {
 
-      //   const guest_id = uuidv4();
-      //   locationDetails.guest_id=guest_id
-      //   console.log("uuid in nearby lab:",guest_id , locationDetails.guest_id)
-      //   // guest_id = locationDetails.guest_id
-      //   console.log("differ:",guest_id)
-      //   this.setState({ guest_id: guest_id });
-      //   console.log("differ:",this.props.match.params.guest_id)
-      //   console.log(window.location.href)
+      // const url = "http://localhost:3000/labs/?lat=33.605039&lon=73.0249898/f06628c0-1e5a-4a5a-8321-8e1aa2149ec1";
+      // const lastSegment = url.substring(url.lastIndexOf("/") + 1);
+      // console.log(lastSegment);
+      // this.props.match.params.guest_id = lastSegment
+      // console.log("yaha ani chahi hai guid", this.props.match.params.guest_id, this.props.match.params.filnalurl)
 
-      //   // locationDetails.guest_id =  guest_id
+      
 
-      //   // onGetNearbyLabs(locationDetails, guest_id);
-      //   // setTimeout(() => {
-      //   //   // const guest_id = uuidv4();
-      //   //   // console.log("uuid in nearby lab:",guest_id)
-      //   //   // locationDetails.guest_id =  guest_id
-      //   //   this.setState({ nearbyLabs: this.props.nearbyLabs });
-      //   //   // console.log("guest id in near by labs and backend;", { nearbyLabs: this.props.nearbyLabs, guest_id })
-
-      //   // }, 1000);
-      // }
-      // if (isAuthProtected && !localStorage.getItem("authUser")) {
-      //   const guest_id = uuidv4();
-      //   // console.log("differ route main set hoi:",guest_id)
-      //   // this.setState({ guest_id: guest_id });
-
-
-
-      //   return (
-      //     <Redirect
-      //       // to={{ pathname: "/nearby-labs/"+ guest_id, state: { from: props.location } }}
-      //       to={
-      //         { pathname: "/nearby-labs", state: { from: props.location } }
-
-      //       }
-      //     />
-      //   );
-      // }
-
-
+    
       if (this.state.currentLatitude && this.state.currentLongitude) {
         // const guest_id = locationDetails.guest_id
         // console.log("differ:",guest_id)
@@ -653,75 +652,144 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-labs/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/nearby-labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-labs/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                      ) : null}
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-test/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/nearby-test/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Tests</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-test/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Tests</span>
+                          </Link>
+                        </li>
+                      ) : null}
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-profiles/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/nearby-profiles/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Profiles</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-profiles/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Profiles</span>
+                          </Link>
+                        </li>
+                      ) : null}
 
-                      <li className="nav-item">
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-packages/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/nearby-packages/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Packages</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-packages/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Packages</span>
+                          </Link>
+                        </li>
+                      ) : null}
 
-                        {/* <Link to="/nearby-tests" className="dropdown-item">
-                       {this.props.t("Search by Tests")}
-                     </Link> */}
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-tests/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-tests/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Tests</span>
-                          {/* {this.props.t("Tests")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-profiles/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Profiles</span>
-                          {/* {this.props.t("Profiles")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-packages/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Packages</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-radiology/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Radiology</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-radiology/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/nearby-radiology/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-radiology/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                          </Link>
+                        </li>
+                      ) : null}
+
                       {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
@@ -1090,76 +1158,76 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       <Row>
-  <Col xs="4" sm="4" md="3" lg="3">
-    <div className="mb-3">
-      <Label
-      for="LabType"
-        className="form-label"
-        style={{
-        fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-        }}
-      >Search By Kilometers</Label>
-      <div className="input-group">
-        <Input
-          defaultValue={this.state.km}
-          onChange={(e) => this.onChangeKm(e)}
-          id="pac-input"
-          type="text"
-          className="form-control"
-          placeholder="Search By Km..."
-        />
-        <div className="input-group-append">
-          <span className="input-group-text">Km</span>
-        </div>
-      </div>
-    </div>
-  </Col>
-  <Col xs="4" sm="4" md="3" lg="3">
-    <div className="mb-3">
-    <Label
-      for="LabType2"
-      className="form-label"
-      style={{
-        fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-      }}
-    >
-      Search By Labs Type
-    </Label>
-      <Field
-        name="LabType"
-        component="select"
-        onChange={(e) => this.onChangeType(e)}
-        value={this.state.LabType}
-        className="form-select"
-      >
-        <option value="Main">Main Labs</option>
-        <option value="Collection">Collection Points</option>
-        <option value="Others">Both</option>
-      </Field>
-    </div>
-  </Col>
-  <Col xs="4" sm="4" md="3" lg="3">
-    <div className="mb-3">
-      <Label
-        for="LabType1"
-        className="form-label"
-        style={{
-          fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-        }}
-      >
-        Search By City
-      </Label>
-      <Select
-        name="city"
-        component="Select"
-        onChange={this.onChangeCity}
-        className="defautSelectParent is-invalid"
-        options={cityList}
-        placeholder="Select City..."
-      />
-    </div>
-  </Col>
-</Row>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Kilometers</Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search By Km..."
+                              />
+                              <div className="input-group-append">
+                                <span className="input-group-text">Km</span>
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                              }}
+                            >
+                              Search By Labs Type
+                            </Label>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={(e) => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                            >
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points</option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
+                        </Col>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                              }}
+                            >
+                              Search By City
+                            </Label>
+                            <Select
+                              name="city"
+                              component="Select"
+                              onChange={this.onChangeCity}
+                              className="defautSelectParent is-invalid"
+                              options={cityList}
+                              placeholder="City..."
+                            />
+                          </div>
+                        </Col>
+                      </Row>
 
                     </Form>
                   )}
