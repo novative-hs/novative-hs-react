@@ -169,18 +169,12 @@ class NearbyLabs extends Component {
 
         //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
         if (window.localStorage) {
-
-          // If there is no item as 'reload'
-          // in localstorage then create one &
-          // reload the page
           if (!localStorage.getItem('reload')) {
-            localStorage['reload'] = true;
-            window.location.reload();
+            localStorage.setItem('reload', true);
+            setTimeout(function() {
+              window.location.reload();
+            }, 500); // 1 second ka delay
           } else {
-
-            // If there exists a 'reload' item
-            // then clear the 'reload' item in
-            // local storage
             localStorage.removeItem('reload');
           }
         }
@@ -210,9 +204,9 @@ class NearbyLabs extends Component {
         onGetAdvLive(locationDetails);
         setTimeout(() => {
           this.setState({ advLives: this.props.advLives });
-        }, 2000);
+        }, 500);
       }
-    }, 1000);
+    }, 500);
 
     const { onGetNearbyLabs } = this.props;
     // near by labs
@@ -263,9 +257,9 @@ class NearbyLabs extends Component {
           this.setState({ nearbyLabs: this.props.nearbyLabs });
           // console.log("guest id in near by labs and backend;", { nearbyLabs: this.props.nearbyLabs, guest_id })
 
-        }, 1000);
+        }, 500);
       }
-    }, 1000);
+    }, 500);
 
     // region Wise Advertisement 
     const { onGetRegionWiseAdvertisement } = this.props;
@@ -288,9 +282,9 @@ class NearbyLabs extends Component {
         onGetRegionWiseAdvertisement(locationDetails);
         setTimeout(() => {
           this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-        }, 2000);
+        }, 500);
       }
-    }, 1000);
+    }, 500);
     console.log("url with ln and log", window.location.href)
 
   }
