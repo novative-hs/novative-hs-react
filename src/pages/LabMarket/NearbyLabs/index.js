@@ -753,8 +753,8 @@ class NearbyLabs extends Component {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-test/${this.state.filnalurl}/${this.state.guest_id}`
-                                : `/nearby-test/${this.state.filnalurl}/${this.state.guest_id}`
+                                ? `/nearby-tests/${this.state.filnalurl}/${this.state.guest_id}`
+                                : `/nearby-tests/${this.state.filnalurl}/${this.state.guest_id}`
                             }
                             className="dropdown-item"
                           >
@@ -766,8 +766,8 @@ class NearbyLabs extends Component {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-test/${this.state.guest_id}/${this.props.match.params.uuid}`
-                                : `/nearby-test/${this.state.guest_id}`
+                                ? `/nearby-tests/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-tests/${this.state.guest_id}`
                             }
                             className="dropdown-item"
                           >
