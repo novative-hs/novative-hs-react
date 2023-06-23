@@ -600,7 +600,7 @@ class NearbyLabs extends Component {
   resetVideo = (event) => {
     event.target.currentTime = 0;
   };
-  
+
 
   render() {
     const isLargeScreen = window.innerWidth > 992;
@@ -633,8 +633,8 @@ class NearbyLabs extends Component {
       // ),
       // Add more settings as needed
     };
-    
-    
+
+
     const { history } = this.props;
     const { patientProfile } = this.props;
     const { discountData, nearbyLabs, page, totalPage, regionWiseAdvertisement, } = this.state;
@@ -1007,7 +1007,29 @@ class NearbyLabs extends Component {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box">
-                <Link
+
+                {isLargeScreen ? (
+
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.state.guest_id}/${this.props.match.params.uuid}`
+                        : `/nearby-labs/${this.state.guest_id}`
+                    }
+                    className="logo logo-dark"
+                  >
+                    <span className="logo-sm">
+                      <img src={logo} alt="" height="40" />
+                    </span>
+                    <span className="logo-lg">
+                      <img src={logoLight} alt="" height="60" />
+                    </span>
+                  </Link>
+
+                ) : null}
+
+
+                {/* <Link
                   to={
                     this.props.match.params.uuid
                       ? `/nearby-labs/${this.state.guest_id}/${this.props.match.params.uuid}`
@@ -1037,7 +1059,7 @@ class NearbyLabs extends Component {
                   <span className="logo-lg">
                     <img src={logoLight} alt="" height="60" />
                   </span>
-                </Link>
+                </Link> */}
               </div>
 
               <button
@@ -1368,80 +1390,80 @@ class NearbyLabs extends Component {
               {!isLargeScreen ? (
                 <Row>
                   <Slider {...settings}>
-          {!isEmpty(this.props.advLives) &&
-            this.props.advLives.map((advLive, key) => (
-              <div key={"advLive-" + key}>
-                <Link
-                  to={
-                    this.props.match.params.uuid
-                      ? `/nearby-tests-discountedlh/${this.state.guest_id}/${this.props.match.params.uuid}`
-                      : `/nearby-tests-discountedlh/${this.state.guest_id}`
-                  }
-                  style={sliderStyles}
-                >
-                  {advLive.poster ? (
-                    advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
-                      <img
-                        src={
-                          process.env.REACT_APP_BACKENDURL + advLive.poster
-                        }
-                        alt="Advertisement"
-                        style={sliderStyles}
-                        className="img-fluid mx-auto d-block"
-                      />
-                    ) : (
-                      <video
-                        width="100%"
-                        height="100%"
-                        controls
-                        autoPlay={this.state.autoplay}
-                        loop
-                        style={sliderStyles}
-                        key={"video-" + key} // Add unique key for video element
-                      >
-                        <source
-                          src={
-                            process.env.REACT_APP_BACKENDURL + advLive.poster
-                          }
-                          type="video/mp4"
-                        />
-                        Your browser does not support the video tag.
-                      </video>
-                    )
-                  ) : (
-                    <div key={"no-media-" + key}>No media found.</div>
-                  )}
-                </Link>
-              </div>
-            ))}
+                    {!isEmpty(this.props.advLives) &&
+                      this.props.advLives.map((advLive, key) => (
+                        <div key={"advLive-" + key}>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-tests-discountedlh/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-tests-discountedlh/${this.state.guest_id}`
+                            }
+                            style={sliderStyles}
+                          >
+                            {advLive.poster ? (
+                              advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL + advLive.poster
+                                  }
+                                  alt="Advertisement"
+                                  style={sliderStyles}
+                                  className="img-fluid mx-auto d-block"
+                                />
+                              ) : (
+                                <video
+                                  width="100%"
+                                  height="100%"
+                                  controls
+                                  autoPlay={this.state.autoplay}
+                                  loop
+                                  style={sliderStyles}
+                                  key={"video-" + key} // Add unique key for video element
+                                >
+                                  <source
+                                    src={
+                                      process.env.REACT_APP_BACKENDURL + advLive.poster
+                                    }
+                                    type="video/mp4"
+                                  />
+                                  Your browser does not support the video tag.
+                                </video>
+                              )
+                            ) : (
+                              <div key={"no-media-" + key}>No media found.</div>
+                            )}
+                          </Link>
+                        </div>
+                      ))}
 
-          {this.props.regionWiseAdvertisement.map(
-            (regionWiseAdvertisement, key) => (
-              <div key={"regionWiseAdvertisement-" + key}>
-                {regionWiseAdvertisement.nearby_adv_list.map(
-                  (nearby_adv_list, index) => (
-                    <Link
-                      to={
-                        this.props.match.params.uuid
-                          ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
-                          : `/nearby-lab-detail/${nearby_adv_list.account_id}`
-                      }
-                      style={sliderStyles}
-                      key={"image-" + index} // Add unique key for image element
-                    >
-                      <img
-                        src={process.env.REACT_APP_BACKENDURL +
-                          nearby_adv_list.poster}
-                        alt="Lab Advertisement"
-                        style={sliderStyles}
-                      />
-                    </Link>
-                  )
-                )}
-              </div>
-            )
-          )}
-        </Slider>
+                    {this.props.regionWiseAdvertisement.map(
+                      (regionWiseAdvertisement, key) => (
+                        <div key={"regionWiseAdvertisement-" + key}>
+                          {regionWiseAdvertisement.nearby_adv_list.map(
+                            (nearby_adv_list, index) => (
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearby_adv_list.account_id}`
+                                }
+                                style={sliderStyles}
+                                key={"image-" + index} // Add unique key for image element
+                              >
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL +
+                                    nearby_adv_list.poster}
+                                  alt="Lab Advertisement"
+                                  style={sliderStyles}
+                                />
+                              </Link>
+                            )
+                          )}
+                        </div>
+                      )
+                    )}
+                  </Slider>
                 </Row>
               ) : null}
 
