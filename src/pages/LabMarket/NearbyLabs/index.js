@@ -606,32 +606,12 @@ class NearbyLabs extends Component {
     const isLargeScreen = window.innerWidth > 992;
     const sliderStyles = {
       width: '100%',
-      height: '120px', // Adjust the height as per your requirements
+      height: '300px', // Adjust the height as per your requirements
       objectFit: 'cover',
 
     };
     const settings = {
       autoplay: true,
-      // arrows: true,
-      // prevArrow: (
-      //   <div
-      //     className="custom-arrow"
-      //     style={{
-      //       color: 'red',
-      //       // Add other custom styles for the arrows
-      //     }}
-      //   >Previous</div> // Add the arrow content here
-      // ),
-      // nextArrow: (
-      //   <div
-      //     className="custom-arrow"
-      //     style={{
-      //       color: 'red',
-      //       // Add other custom styles for the arrows
-      //     }}
-      //   >Next</div> // Add the arrow content here
-      // ),
-      // Add more settings as needed
     };
 
 
@@ -1027,39 +1007,6 @@ class NearbyLabs extends Component {
                   </Link>
 
                 ) : null}
-
-
-                {/* <Link
-                  to={
-                    this.props.match.params.uuid
-                      ? `/nearby-labs/${this.state.guest_id}/${this.props.match.params.uuid}`
-                      : `/nearby-labs/${this.state.guest_id}`
-                  }
-                  className="logo logo-dark"
-                >
-                  <span className="logo-sm">
-                    <img src={logo} alt="" height="40" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={logoLight} alt="" height="60" />
-                  </span>
-                </Link>
-
-                <Link
-                  to={
-                    this.props.match.params.uuid
-                      ? `/nearby-labs/${this.state.guest_id}/${this.props.match.params.uuid}`
-                      : `/nearby-labs/${this.state.guest_id}`
-                  }
-                  className="logo logo-light"
-                >
-                  <span className="logo-sm">
-                    <img src={logoLightSvg} alt="" height="40" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={logoLight} alt="" height="60" />
-                  </span>
-                </Link> */}
               </div>
 
               <button
@@ -1377,18 +1324,9 @@ class NearbyLabs extends Component {
             </div>
           </div>
         </header>
-        <div className="page-content">
 
-          <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
-            <MetaTags>
-              <title>Nearby Labs | Lab Hazir - Dashboard</title>
-            </MetaTags>
-
-            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Nearby Labs" />
-            <Col lg="9">
-
-              {!isLargeScreen ? (
-                <Row>
+        {!isLargeScreen ? (
+                <div className="adv-slider">
                   <Slider {...settings}>
                     {!isEmpty(this.props.advLives) &&
                       this.props.advLives.map((advLive, key) => (
@@ -1464,9 +1402,22 @@ class NearbyLabs extends Component {
                       )
                     )}
                   </Slider>
-                </Row>
+                </div>
               ) : null}
+         
+        <div className={isLargeScreen ? "page-content" : ""}>
 
+        <Row style={{marginLeft: "20px", marginRight: "20px" }}>
+          {isLargeScreen && (
+            <>
+              <MetaTags>
+                <title>Nearby Labs | Lab Hazir - Dashboard</title>
+              </MetaTags>
+
+              <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Nearby Labs" />
+            </>
+          )}
+            <Col lg="9">
               <Row className="mb-2">
                 <Formik
                   enableReinitialize={true}

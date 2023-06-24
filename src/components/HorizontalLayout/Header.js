@@ -250,7 +250,7 @@ class Header extends Component {
                     <span className="pt-4 font-size-12">Sign up</span>
                   </Link>
 
-                  <Link
+                  {/* <Link
                     // to="/contact-us"
                     to={
                       this.props.match.params.uuid
@@ -260,7 +260,7 @@ class Header extends Component {
                     className="btn header-items noti-icon right-bar-toggle"
                   >
                     <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
-                  </Link>
+                  </Link> */}
                 </div>
               ) : this.state.user_type == "patient" ? (
                 <div className="dropdown">
