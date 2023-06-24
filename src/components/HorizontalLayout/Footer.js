@@ -125,12 +125,13 @@ const Footer = () => {
 )}
 {isextraSmallScreen && (
   <Row style={islargfixfooter} className="footer">
-          <Col xs="auto" sm="auto" md="auto" lg="auto">
+    <Row><Col xs="auto" sm="auto" md="auto" lg="auto">
             <div className="text-sm-start">
               {new Date().getFullYear()} © Lab Hazir (Private) Limited
             </div>
-          </Col>
-          <Col xs="auto" sm="auto" md="auto" lg="auto">
+          </Col></Row>
+          <Row>
+             <Col xs="auto" sm="auto" md="auto" lg="auto">
             <div className="text-sm-end">
               <Link to="/disclaimer">
                 <span>Disclaimer</span>
@@ -169,6 +170,8 @@ const Footer = () => {
               </a>
             </div>
           </Col>
+          </Row>
+         
         </Row>
 )}
         
