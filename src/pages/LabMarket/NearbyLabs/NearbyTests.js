@@ -100,6 +100,115 @@ class NearbyTests extends Component {
     console.log(this.state.user_type)  
   }
 
+  // componentDidMount() {
+  //   const { territoriesList, onGetTerritoriesList } = this.props;
+  //   if (territoriesList && !territoriesList.length) {
+  //     console.log(onGetTerritoriesList(this.state.user_id));
+  //   }
+  //   // let matchingMenuItem = null;
+  //   // const ul = document.getElementById("navigation");
+  //   // const items = ul.getElementsByTagName("a");
+  //   // for (let i = 0; i < items.length; ++i) {
+  //   //   if (this.props.location.pathname === items[i].pathname) {
+  //   //     matchingMenuItem = items[i];
+  //   //     break;
+  //   //   }
+  //   // }
+  //   // if (matchingMenuItem) {
+  //   //   this.activateParentDropdown(matchingMenuItem);
+  //   // }
+  //   const { advertisementLives, onGetAdvertisementLives } = this.props;
+  //   onGetAdvertisementLives(this.state.user_id);
+  //   this.setState({ advertisementLives });
+
+  //   let latitude;
+  //   let longitude;
+
+  //   const url = window.location.href;
+  //   const queryString = url.substring(url.indexOf('&') + 1);
+  //   const params = new URLSearchParams(queryString);
+  //   console.log("print params in app", url, queryString, params)
+    
+  //   const latitudeFromUrl = params.get('lat');
+  //   const longitudeFromUrl = params.get('lon');
+
+    
+  //   console.log('Latitude:', latitudeFromUrl);
+  //   console.log('Longitude:', longitudeFromUrl);
+    
+  //   // Check if latitude and longitude values are present in URL parameters
+  //   if (latitudeFromUrl && longitudeFromUrl) {
+  //     // Use latitude and longitude from URL
+  //     latitude = parseFloat(latitudeFromUrl);
+  //     longitude = parseFloat(longitudeFromUrl);
+  //     console.log("print lat log in app", latitude, longitude)
+
+  //     // const url = `http://localhost:3000/nearby-labs/&lat=${latitude}&lon=${longitude}`;
+  //     // const queryString = url.substring(url.indexOf("&") + 1);
+  //     // const filnalurl = ("&") + queryString; // Remove the leading question mark ('?')        
+  //     // this.setState({ filnalurl: filnalurl });
+  //     // console.log("differ with the final url state:", this.state.filnalurl)
+  //     // console.log(filnalurl);
+  //     // console.log("whsuqi", latitude, longitude)
+
+
+  //   }
+  //   else {
+  //     navigator.geolocation.getCurrentPosition(function (position) {
+  //       latitude = position.coords.latitude;
+  //       longitude = position.coords.longitude;
+  //       console.log("web", latitude, longitude)
+
+
+  //       //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
+  //       if (window.localStorage) {
+
+  //         // If there is no item as 'reload'
+  //         // in localstorage then create one &
+  //         // reload the page
+  //         if (!localStorage.getItem('reload')) {
+  //           localStorage['reload'] = true;
+  //           window.location.reload();
+  //         } else {
+
+  //           // If there exists a 'reload' item
+  //           // then clear the 'reload' item in
+  //           // local storage
+  //           localStorage.removeItem('reload');
+  //         }
+  //       }
+
+  //     });
+  //   }
+
+  //   const { onGetNearbyTests } = this.props;
+
+  //   setTimeout(() => {
+  //     this.setState({ currentLatitude: latitude });
+  //     this.setState({ currentLongitude: longitude });
+
+  //     var data = {
+  //       latitude: this.state.currentLatitude,
+  //       longitude: this.state.currentLongitude,
+  //       search_type: this.state.search_type,
+  //       address: this.state.address,
+  //       city: this.state.city,
+  //       test_name: this.state.test_name,
+  //       km: this.state.km,
+  //       LabType: this.state.LabType,
+
+  //     };
+
+  //     if (this.state.currentLatitude && this.state.currentLongitude) {
+  //       onGetNearbyTests(data);
+
+  //       setTimeout(() => {
+  //         this.setState({ nearbyTests: this.props.nearbyTests });
+  //       }, 1000);
+  //     }
+  //   }, 1000);
+  // }
+
   componentDidMount() {
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
@@ -120,67 +229,45 @@ class NearbyTests extends Component {
     const { advertisementLives, onGetAdvertisementLives } = this.props;
     onGetAdvertisementLives(this.state.user_id);
     this.setState({ advertisementLives });
-
+  
     let latitude;
     let longitude;
-
+  
     const url = window.location.href;
     const queryString = url.substring(url.indexOf('&') + 1);
     const params = new URLSearchParams(queryString);
     console.log("print params in app", url, queryString, params)
-    
+  
     const latitudeFromUrl = params.get('lat');
     const longitudeFromUrl = params.get('lon');
-
-    
+  
     console.log('Latitude:', latitudeFromUrl);
     console.log('Longitude:', longitudeFromUrl);
-    
+  
     // Check if latitude and longitude values are present in URL parameters
     if (latitudeFromUrl && longitudeFromUrl) {
       // Use latitude and longitude from URL
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
-      console.log("print lat log in app", latitude, longitude)
-
-      // const url = `http://localhost:3000/nearby-labs/&lat=${latitude}&lon=${longitude}`;
-      // const queryString = url.substring(url.indexOf("&") + 1);
-      // const filnalurl = ("&") + queryString; // Remove the leading question mark ('?')        
-      // this.setState({ filnalurl: filnalurl });
-      // console.log("differ with the final url state:", this.state.filnalurl)
-      // console.log(filnalurl);
-      // console.log("whsuqi", latitude, longitude)
-
-
-    }
-    else {
-      navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("print lat log in app", latitude, longitude);
+  
+      // Call the dependent code here or pass the latitude and longitude values as arguments
+      this.handleLocationUpdate(latitude, longitude);
+    } else {
+      navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
-        console.log("web", latitude, longitude)
-
-
-        //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
-        if (window.localStorage) {
-
-          // If there is no item as 'reload'
-          // in localstorage then create one &
-          // reload the page
-          if (!localStorage.getItem('reload')) {
-            localStorage['reload'] = true;
-            window.location.reload();
-          } else {
-
-            // If there exists a 'reload' item
-            // then clear the 'reload' item in
-            // local storage
-            localStorage.removeItem('reload');
-          }
-        }
-
+        console.log("web", latitude, longitude);
+  
+        // Call the dependent code here or pass the latitude and longitude values as arguments
+        this.handleLocationUpdate(latitude, longitude);
       });
     }
-
+  
+    console.log("url with ln and log", window.location.href);
+  }
+  
+  handleLocationUpdate(latitude, longitude) {
     const { onGetNearbyTests } = this.props;
 
     setTimeout(() => {

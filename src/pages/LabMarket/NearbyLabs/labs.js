@@ -121,68 +121,43 @@ class NearbyLabs extends Component {
     const { advLives, onGetAdvLive } = this.props;
     onGetAdvLive(this.state.user_id);
     this.setState({ advLives });
-
-
+  
     let latitude;
     let longitude;
-
+  
     const url = window.location.href;
     const queryString = url.substring(url.indexOf('&') + 1);
     const params = new URLSearchParams(queryString);
     console.log("print params in app", url, queryString, params)
-    
+  
     const latitudeFromUrl = params.get('lat');
     const longitudeFromUrl = params.get('lon');
-
-    
+  
     console.log('Latitude:', latitudeFromUrl);
     console.log('Longitude:', longitudeFromUrl);
-    
+  
     // Check if latitude and longitude values are present in URL parameters
     if (latitudeFromUrl && longitudeFromUrl) {
       // Use latitude and longitude from URL
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
-      console.log("print lat log in app", latitude, longitude)
-
-      // const url = `http://localhost:3000/nearby-labs/&lat=${latitude}&lon=${longitude}`;
-      // const queryString = url.substring(url.indexOf("&") + 1);
-      // const filnalurl = ("&") + queryString; // Remove the leading question mark ('?')        
-      // this.setState({ filnalurl: filnalurl });
-      // console.log("differ with the final url state:", this.props.match.params.filnalurl)
-      // console.log(filnalurl);
-      // console.log("whsuqi", latitude, longitude)
-
-
-    }
-    else {
-      navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("print lat log in app", latitude, longitude);
+  
+  
+      // Call the dependent code here or pass the latitude and longitude values as arguments
+      this.handleLocationUpdate(latitude, longitude);
+    } else {
+      navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
-        console.log("web", latitude, longitude)
-
-
-        //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
-        if (window.localStorage) {
-
-          // If there is no item as 'reload'
-          // in localstorage then create one &
-          // reload the page
-          if (!localStorage.getItem('reload')) {
-            localStorage['reload'] = true;
-            window.location.reload();
-          } else {
-
-            // If there exists a 'reload' item
-            // then clear the 'reload' item in
-            // local storage
-            localStorage.removeItem('reload');
-          }
-        }
-
+        console.log("web", latitude, longitude);
+  
+        // Call the dependent code here or pass the latitude and longitude values as arguments
+        this.handleLocationUpdate(latitude, longitude);
       });
     }
-
+  }
+  handleLocationUpdate(latitude, longitude) {
     const { onGetNearbyLabs } = this.props;
     // const guest_id = uuidv4();
     // console.log("uuid in nearby lab:",this.state.user_id)
@@ -211,9 +186,6 @@ class NearbyLabs extends Component {
       // console.log(lastSegment);
       // this.props.match.params.guest_id = lastSegment
       // console.log("yaha ani chahi hai guid", this.props.match.params.guest_id, this.props.match.params.filnalurl)
-
-      
-
     
       if (this.state.currentLatitude && this.state.currentLongitude) {
         // const guest_id = locationDetails.guest_id
