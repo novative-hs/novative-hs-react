@@ -165,6 +165,15 @@ class NearbyLabs extends Component {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
         console.log("web", latitude, longitude);
+
+        const url = `http://localhost:3000/nearby-labs/&lat=${latitude}&lon=${longitude}`;
+        const queryString = url.substring(url.indexOf("&") + 1);
+        const finalUrl = ("&") + queryString; // Remove the leading question mark ('?')        
+        this.setState({ finalUrl: finalUrl });
+        console.log("differ with the final url state:", this.state.finalUrl);
+    
+        console.log(finalUrl);
+        console.log("whsuqi", latitude, longitude, this.props.match.params.uuid);
   
         // Call the dependent code here or pass the latitude and longitude values as arguments
         this.handleLocationUpdate(latitude, longitude);
