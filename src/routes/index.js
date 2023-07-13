@@ -680,7 +680,7 @@ const patientPublicRoutes = [
     component: labs,
   },
   {
-    path: "/nearby-tests/:guest_id?/:uuid?",
+    path: "/nearby-test/:guest_id?/:uuid?",
     component: NearbyTests,
   },
   {
