@@ -182,6 +182,10 @@ class TestsOffered extends Component {
     setTimeout(() => {
       this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
+    }, 1000);
+    setTimeout(() => {
+      window.location.reload()
+  
     }, 2000);
   };
   activateParentDropdown = item => {
@@ -825,7 +829,6 @@ class TestsOffered extends Component {
             <Breadcrumbs title="Nearby Labs" breadcrumbItem="Tests Offered" />
 
             {this.state.success ? (
-              window.location.reload()>
               <Alert color="success" className="col-md-4">
                 {this.state.success}
               </Alert>
