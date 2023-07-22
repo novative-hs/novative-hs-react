@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+
 import {
   Card,
+  Input,
   CardBody,
   Col,
   Container,
@@ -27,6 +29,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { getPatientsList } from "store/patients-list/actions";
 import "assets/scss/table.scss";
+// import { color } from "html2canvas/dist/types/css/types/color";
 
 class PatientsList extends Component {
   constructor(props) {
@@ -36,6 +39,7 @@ class PatientsList extends Component {
       patients: [],
       // id: "",
       patient: "",
+      phone:"",
       guest_id:"",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -50,7 +54,6 @@ class PatientsList extends Component {
               <strong>{patient.account_id}</strong>
             </>
           ),
-          filter: textFilter(),
         },
         {
           dataField: "name",
@@ -59,24 +62,27 @@ class PatientsList extends Component {
           formatter: (cellContent, patient) => (
             <>
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-              <Link to={`/nearby-labs/${patient.account_id}`}>
+              <Link 
+              to={
+                this.props.match.params.uuid
+                  ? `/nearby-labs/${this.props.match.params.uuid}/${patient.account_id}`
+                  : `/nearby-labs/${patient.account_id}`
+              }
+              >
                 {patient.name}
               </Link>
             </>
           ),
-          filter: textFilter(),
         },
         {
           dataField: "phone",
           text: "Phone",
           sort: true,
-          filter: textFilter(),
         },
         {
           dataField: "city",
           text: "City",
           sort: true,
-          filter: textFilter(),
         },
       ],
     };
@@ -84,11 +90,25 @@ class PatientsList extends Component {
   }
 
   componentDidMount() {
+    console.log("uuuuuuid", this.props.match.params.uuid)
     const { patients, onGetPatientsList } = this.props;
     onGetPatientsList(this.state.user_id);
     this.setState({ patients });
     console.log("guest", this.props.match.params.guest_id)
   }
+  handleBlur = () => {
+    // Calling API when focus is out of test name and setting nearby tests array
+    const { onGetPatientsList } = this.props;
+    var data = {
+      phone: this.state.phone,
+    };
+
+    onGetPatientsList(data);
+
+    setTimeout(() => {
+      this.setState({ patients: this.props.patients });
+    }, 1000);
+  };
 
   toggle() {
     this.setState(prevState => ({
@@ -155,18 +175,47 @@ class PatientsList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              {/* <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                               <Row className="mb-2 g-0">
+                                <Col sm="2" lg="2">
+                                <div className="mb-2">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Phone No
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              name="phone"
+                              placeholder="Search Phone..."
+                              onChange={e =>
+                                this.setState({
+                                  phone: e.target.value,
+                                })
+                              }
+                              // onBlur={this.handleBlur}
+                              value={this.state.phone}
+                            />
+                          
+                          </div>
+                                </Col>
+                                <Col sm="3" lg="3">
+                                  <span></span>
+                                <div className="mt-4"></div>
+                                  <div>
+                                <button
+                                  onClick={this.handleBlur}
+                                  className="bx bx-search-alt" style={{ fontSize: '32px', color:'white', background:'blue', border:'none'}}>
+                                    {/* <div><i className="bx bx-search-alt" style={{ fontSize: '32px' }}></i></div> */}
+                                    
+                                </button>
                                   </div>
                                 </Col>
-                              </Row> */}
+                              </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -180,7 +229,7 @@ class PatientsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      filter={ filterFactory() }
+                                      // filter={ filterFactory() }
                                     />
                                     <Modal
                                       isOpen={this.state.modal}
@@ -223,7 +272,7 @@ const mapStateToProps = ({ patients }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetPatientsList: id => dispatch(getPatientsList(id)),
+  onGetPatientsList: (data) => dispatch(getPatientsList(data)),
 });
 
 export default connect(

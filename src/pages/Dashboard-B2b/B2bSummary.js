@@ -20,6 +20,7 @@ class B2bProfile extends Component {
       email: "",
       landline: "",
       website_url: "",
+      uuid:"",
       business_logo:"",
       completedAppointments: "",
       inProcessAppointments: "",
@@ -38,6 +39,7 @@ class B2bProfile extends Component {
     setTimeout(() => {
       this.setState({
         business_name: this.props.success.business_name,
+        uuid: this.props.success.uuid,
         business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
         email: this.props.success.email,
         landline: this.props.success.landline,
@@ -100,6 +102,7 @@ class B2bProfile extends Component {
                           </Link>
                         </div>
                       </Col>
+                      
                     </Row>
                   </div>
                 </Col>
@@ -155,31 +158,53 @@ class B2bProfile extends Component {
               </Card>
             </Col>
 
-            <Col md="6">
+            <Col>
               <Card className="mini-stats-wid">
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Monthly Revenue</p>
-                      {/* <h4 className="mb-0">  */}
-                      {/* Converting number to thousands separator string for readability */}
-                      {/* $
-                        {this.state.monthlyRevenue
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      </h4>
-                    </div>
-                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-archive-in font-size-24"} />
-                      </span>*/}
+                      <p className="fw-medium text-bold">Book On call Appointments</p>
+                      <Row>
+                      <Col xs="6">
+                        <div>
+                          <span>Register     </span>
+                          <Link
+                             to={
+                              this.state.uuid
+                                ? `/register/${this.state.uuid}`
+                                : `/register`
+                            }
+                            className="btn btn-primary btn-sm"
+                          >
+                            Register{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
+                        </div>
+                        </Col>
+<Col xs="6">
+                        <div>
+                         <span>Already have an account??    </span>
+                          <Link
+                            to={
+                              this.state.uuid
+                                ? `/patients/${this.state.uuid}`
+                                : `/patients`
+                            }
+                            className="btn btn-primary btn-sm"
+                          >
+                            Proceed{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
+                        </div>
+                      </Col>
+                      </Row>
                     </div>
                   </div>
                 </CardBody>
               </Card>
             </Col>
 
-            <Col md="6">
+            {/* <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
                   <div className="d-flex">
@@ -197,11 +222,11 @@ class B2bProfile extends Component {
                       <span className="avatar-title">
                         <i className={"bx bx-archive-in font-size-24"} />
                       </span>*/}
-                    </div>
+                    {/* </div>
                   </div>
-                </CardBody>
-              </Card>
-            </Col>
+                </CardBody> */}
+              {/* </Card>
+            </Col> */} 
           </Row>
         </Col>
       </React.Fragment>

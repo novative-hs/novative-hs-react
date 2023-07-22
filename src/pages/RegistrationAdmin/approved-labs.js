@@ -39,6 +39,7 @@ class ApprovedLabs extends Component {
       approvedLabs: [],
       id: "",
       btnText: "Copy",
+      isHovered: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       approvedLab: "",
       user_id: localStorage.getItem("authUser")
@@ -61,7 +62,8 @@ class ApprovedLabs extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, approvedLab)}
+                    onMouseEnter={e => this.openPatientModal(e, approvedLab)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {approvedLab.name}
                   </Link>
@@ -152,8 +154,15 @@ class ApprovedLabs extends Component {
       lab_city: arg.lab_city,
       lab_phone: arg.lab_phone,
       lab_email: arg.lab_email,
+      isHovered: true,
     });
   };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+    });
+  };  
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -185,6 +194,7 @@ class ApprovedLabs extends Component {
 
   render() {
     const { SearchBar } = Search;
+    const { isHovered } = this.state;
 
     const { approvedLabs } = this.props;
     const data = this.state.data;
@@ -257,9 +267,11 @@ class ApprovedLabs extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    {this.state.isHovered && (
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -365,6 +377,7 @@ class ApprovedLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                   </Modal>
+                                    )}
                                   </div>
                                 </Col>
                               </Row>

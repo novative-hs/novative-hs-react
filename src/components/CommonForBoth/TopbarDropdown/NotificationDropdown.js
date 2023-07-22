@@ -111,6 +111,12 @@ class NotificationDropdown extends Component {
             )}
             </Col>
                   ))}
+                   {/* {isEmpty(this.props.notification) && (
+              <div>
+              <i className="bx bx-bell bx-tada" />
+              <span className="badge bg-danger rounded-pill">0</span>
+              </div>
+                  )} */}
           </DropdownToggle>
 
           <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">

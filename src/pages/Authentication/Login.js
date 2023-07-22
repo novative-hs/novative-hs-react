@@ -28,6 +28,8 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    console.log("uuid", this.props.match.params.uuid)
+
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
     while (elem.attributes.length > 0) {
@@ -70,7 +72,6 @@ class Login extends Component {
           <Container fluid className="p-0">
             <Row className="g-0">
               <CarouselPage />
-
               <Col md={6} lg={6} xl={6}>
                 <div className="auth-full-page-content p-md-5 p-4">
                   <div className="w-100">

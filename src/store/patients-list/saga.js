@@ -13,8 +13,10 @@ import { getPatientsList } from "../../helpers/django_api_helper";
 
 function* fetchPatientsList(object) {
   try {
-    const response = yield call(getPatientsList, object.payload);
-    yield put(getPatientsListSuccess(response));
+    const response = yield call(getPatientsList,
+       object.payload.phone,
+       );
+    yield put(getPatientsListSuccess(response.data));
   } catch (error) {
     yield put(getPatientsListFail(error));
   }

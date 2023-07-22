@@ -1325,12 +1325,28 @@ export const getB2bAllClientsList = () =>
   get(`${url.GET_B2B_ALL_CLIENTS_LIST}`, {
     headers: getHeader(authHeader()),
   });
+// Get Nearby Tests
+export const getPatientsList = data => {
+  let formData = new FormData();
+
+  formData.append("phone", data.phone);
+  // formData.append("longitude", data.longitude);
+  // formData.append("search_type", data.search_type);
+  // formData.append("km", data.km);
+  // formData.append("LabType", data.LabType);
+  // formData.append("address", data.address);
+  // formData.append("city", data.city);
+  // formData.append("test_name", data.test_name);
+  // console.log("donorSetting: ", data)
+
+  console.log("In patients: ", data)
 
 
-  export const getPatientsList = () =>
-  get(`${url.GET_PATIENTS_LIST}`, {
+  return axios.post(`${url.GET_PATIENTS_LIST}`, formData, {
     headers: getHeader(authHeader()),
   });
+};
+
 // ------------- Lab Profile Requests START -------------
 export const getB2bProfile = id =>
   get(`${url.GET_B2B_PROFILE}/${id}`, {

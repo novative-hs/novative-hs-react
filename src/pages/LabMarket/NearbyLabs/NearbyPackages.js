@@ -522,17 +522,26 @@ class NearbyPackage extends Component {
       onAddToCart(cart, cart.guest_id);
 
       console.log("uuid:", cart.guest_id, this.props.match.params.guest_id)
-    }
-    if (this.state.user_id && this.state.user_type !== "CSR") {
+    } 
+    if(this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       onAddToCart(cart, this.state.user_id);
     }
-    if (this.state.user_id && this.state.user_type === "CSR") {
+    if(this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+      // cart.patient_id = this.props.match.params.guest_id
       onAddToCart(cart, this.props.match.params.guest_id);
+    }
+    if(this.state.user_id && this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+      // cart.patient_id = this.props.match.params.guest_id
+      onAddToCart(cart, this.props.match.params.uuid);
     }
 
     setTimeout(() => {
       this.setState({ success: "Item added to the cart successfully.", });
       this.setState({ error: this.props.error });
+    }, 1000);
+    setTimeout(() => {
+      window.location.reload()
+  
     }, 2000);
   };
 
@@ -568,6 +577,8 @@ class NearbyPackage extends Component {
 
 
   render() {
+    const isLargeScreen = window.innerWidth > 992;
+
     const { page, totalPage } = this.state;
     const { Packages } = this.props;
 
@@ -593,7 +604,7 @@ class NearbyPackage extends Component {
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
-              {this.state.user_id && this.state.user_type === "CSR"
+             {this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient"
                 ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
@@ -618,8 +629,8 @@ class NearbyPackage extends Component {
                         <Link
                           to={
                             this.props.match.params.guest_id
-                              ? `/nearby-tests/${this.props.match.params.guest_id}`
-                              : `/nearby-tests`
+                              ? `/nearby-test/${this.props.match.params.guest_id}`
+                              : `/nearby-test`
                           }
                           className="dropdown-item"
                         >
@@ -847,7 +858,7 @@ class NearbyPackage extends Component {
                        <Link to="/nearby-labs" className="dropdown-item">
                          {this.props.t("Nearby Labs")}
                        </Link>
-                       <Link to="/nearby-tests" className="dropdown-item">
+                       <Link to="/nearby-test" className="dropdown-item">
                          {this.props.t("Nearby Tests")}
                        </Link>
                      </div>
@@ -891,7 +902,8 @@ class NearbyPackage extends Component {
                     </ul>
                   </Collapse>
 
-                ) : this.state.user_id && this.state.user_type !== "CSR" ? (
+                ) 
+                : this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ? (
                   <Collapse
                     isOpen={this.props.menuOpen}
                     className="navbar-collapse"
@@ -913,14 +925,14 @@ class NearbyPackage extends Component {
                       </li>
 
                       <li className="nav-item">
-                        {/* <Link to="/nearby-tests" className="dropdown-item">
+                        {/* <Link to="/nearby-test" className="dropdown-item">
                       {this.props.t("Search by Tests")}
                     </Link> */}
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-tests/${this.props.match.params.uuid}`
-                              : `/nearby-tests/`
+                              ? `/nearby-test/${this.props.match.params.uuid}`
+                              : `/nearby-test/`
                           }
                           className="dropdown-item"
                         >
@@ -988,7 +1000,7 @@ class NearbyPackage extends Component {
                       <Link to="/nearby-labs" className="dropdown-item">
                         {this.props.t("Nearby Labs")}
                       </Link>
-                      <Link to="/nearby-tests" className="dropdown-item">
+                      <Link to="/nearby-test" className="dropdown-item">
                         {this.props.t("Nearby Tests")}
                       </Link>
                     </div>
@@ -1032,6 +1044,90 @@ class NearbyPackage extends Component {
 
                     </ul>
                   </Collapse>
+                ) :
+                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
+                  <Collapse
+                  isOpen={this.state.isMenuOpened}
+                  className="navbar-collapse"
+                  id="topnav-menu-content"
+                >
+                 <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/labs`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Labs</span>
+                      </Link>
+                    </li>
+
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-test`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Tests</span>
+                        {/* {this.props.t("Tests")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-profiles`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Profiles</span>
+                        {/* {this.props.t("Profiles")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-packages`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Packages</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
+                  <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-radiology`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Radiology</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>   
+                    {this.state.user_id && this.state.user_type == "patient" && (
+                      <li className="nav-item">
+                        <Link to={"/test-appointments"} className="dropdown-item">
+                          {/* {this.props.t("My Appointments")} */}
+                          <span className="pt-4 font-size-12">My Appointments</span>
+
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </Collapse>
                 ) : null}
 
             </nav>
@@ -1293,7 +1389,6 @@ class NearbyPackage extends Component {
 
               {/* Alerts to show success and error messages when item is added to the cart */}
               {this.state.success ? (
-                window.location.reload() >
                 <Alert color="success" className="col-md-5">
                   {this.state.success}
                 </Alert>
@@ -1387,42 +1482,70 @@ class NearbyPackage extends Component {
                               </span>
                             </div>
                             <div className="my-0">
-                              {(this.state.user_id) && (this.state.user_type === "CSR") && (
+                            {!this.state.user_id ? (
                                 <Link
-                                  to={
-                                    this.props.match.params.guest_id
-                                      ? `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}`
-                                      : `/nearby-lab-detail/${nearbyPackage.lab_account_id}`
-                                  }
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}`
+                                }
+                                
+                                className="text-dark"
+                              >
+                                <span className="text-primary">
+                                  {nearbyPackage.lab_name}{" "}
+                                  
+                                </span>
+                              </Link>
+                              ):null}
+                              {(this.state.user_id) && (this.state.user_type ==="CSR") && (this.state.user_type !=="b2bclient") && (
+                       <Link
+                       to={
+                         this.props.match.params.guest_id
+                           ? `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}`
+                           : `/nearby-lab-detail/${nearbyPackage.lab_account_id}`
+                       }
 
-                                  className="text-dark"
-                                >
-                                  <span className="text-primary">
-                                    {nearbyPackage.lab_name}{" "}
+                       className="text-dark"
+                     >
+                       <span className="text-primary">
+                         {nearbyPackage.lab_name}{" "}
 
-                                  </span>
-                                </Link>
-                              )}
-                              {(this.state.user_id) && (this.state.user_type !== "CSR") && (
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.uuid}`
-                                      : `/nearby-lab-detail/${nearbyPackage.lab_account_id}`
-                                  }
+                       </span>
+                     </Link>
+                      )}
+                            {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type !=="b2bclient") && (
+                       <Link
+                       to={
+                         this.props.match.params.uuid
+                           ? `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                           : `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}`
+                       }
 
-                                  className="text-dark"
-                                >
-                                  <span className="text-primary">
-                                    {nearbyPackage.lab_name}{" "}
+                       className="text-dark"
+                     >
+                       <span className="text-primary">
+                         {nearbyPackage.lab_name}{" "}
 
-                                  </span>
-                                </Link>
-                              )}
-                              {/* <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Lab:{" "}
-                                {nearbyPackage.lab_name}
-                              </span> */}
+                       </span>
+                     </Link>
+                      )}
+                      {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type ==="b2bclient") && (
+                       <Link
+                       to={
+                         this.props.match.params.guest_id
+                           ? `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                           : `/nearby-lab-detail/${nearbyPackage.lab_account_id}/${this.props.match.params.guest_id}`
+                       }
+
+                       className="text-dark"
+                     >
+                       <span className="text-primary">
+                         {nearbyPackage.lab_name}{" "}
+
+                       </span>
+                     </Link>
+                      )}
                             </div>
 
                             <div className="my-0 mt-2">
@@ -1471,18 +1594,28 @@ class NearbyPackage extends Component {
                       </Card>
                     </Col>
                   ))}
-
-                {isEmpty(this.props.nearbyPackages) && (
-                  <Row>
-                    <Col lg="12">
-                      <div className=" mb-5">
-                        <h4 className="text-uppercase">
-                          Sorry, no result found.
-                        </h4>
-                      </div>
-                    </Col>
-                  </Row>
-                )}
+                {!isLargeScreen ? (
+                  isEmpty(this.props.nearbyPackages) ? (
+                    <Row className="vh-100">
+                      <Col lg="12">
+                        <div className="mb-5">
+                          <h4 className="text-uppercase">
+                            <i className="mdi mdi-refresh-circle mdi-spin display-1" aria-hidden="true" style={{ color: 'blue', marginLeft: '120px' }}></i>
+                          </h4>
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null
+                ) : (
+                  isEmpty(this.props.nearbyPackages) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className=" mb-5">
+                          <h4 className="text-uppercase">Sorry, no result found.</h4>
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null)}
               </Row>
 
               {/* <Row>

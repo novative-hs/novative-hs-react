@@ -102,11 +102,31 @@ class PendingDonors extends Component {
           formatter: (cellContent, donor) => (
             <>
               {donor.is_income_tax_payable == true ? (
-                <span>Yes</span>
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning blinking-text">Yes</span>
               ) : (
                 <span>No</span>
               )}
+               <style>
+          {`
+            .blinking-text {
+              animation: blinking 1s infinite;
+            }
+
+            @keyframes blinking {
+              0% {
+                opacity: 1;
+              }
+              50% {
+                opacity: 0;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
+          `}
+        </style>
             </>
+            
           ),
         },
         {

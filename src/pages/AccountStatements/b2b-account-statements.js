@@ -32,14 +32,17 @@ class AccountStatements extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      account_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
     };
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
     if (this.state.user_id && this.state.account_type === "b2bclient") {
-      const { onGetB2bAccountStatements } = this.props;
-    onGetB2bAccountStatements(this.state.user_id);
+      const {onGetB2bAccountStatements } = this.props;
+    console.log(onGetB2bAccountStatements(this.state.user_id));
     this.setState({ b2baccountStatements: this.props.b2baccountStatements });
     } else if (this.state.user_id && this.state.account_type !== "b2bclient"){
       const { onGetB2bAccountStatements } = this.props;

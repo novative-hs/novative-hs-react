@@ -96,6 +96,7 @@ import CartsList from "../pages/Carts/carts-list";
 // import checkout from "pages/Checkouts/checkout-list";
 import Checkout from "pages/Checkouts/checkout";
 import checkoutcsr from "pages/Checkouts/checkout";
+import checkoutb2b from "pages/Checkouts/checkout";
 import InvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabSettings from "pages/Authentication/LabSettings";
 import FeedbackDetail from "pages/Feedbacks-List/FeedbackDetail";
@@ -143,6 +144,7 @@ import AccountStatementsLab from "pages/AccountStatements/account-statements";
 import MedicalTestSheet from "pages/OfferedTests/medical-test-sheet";
 import csrCheckout from "pages/Complaints/csr-checkout";
 import Patientslist from "pages/Dashboard-Csr/patients-list";
+import Patient from "pages/Dashboard-Csr/patients-list";
 import Disclaimer from "pages/Public/disclaimer";
 import AboutUs from "pages/Public/about-us";
 // import ChatBox from "pages/Public/chat";
@@ -390,6 +392,14 @@ const b2bclientAuthProtectedRoutes = [
   {
     path: "/b2b-referred-patients",
     component: B2bReferredPatient,
+  },
+  {
+    path: "/patients/:uuid",
+    component: Patient,
+  },
+  {
+    path: "/checkout-b2b/:uuid?/:guest_id?",
+    component: checkoutb2b,
   },
   { path: "/b2b-payment", component: B2bPayments },
   { path: "/b2b-account-statements", component: B2bAccountStatements },
@@ -674,7 +684,7 @@ const patientPublicRoutes = [
   { path: "/about-us", component: AboutUs },
   { path: "/chat-box", component: ChatBox },
   { path: "/terms", component: TermsConditions},
-  { path: "/nearby-labs/:uuid?", component: NearbyLabs },
+  { path: "/nearby-labs/:uuid?/:guest_id?", component: NearbyLabs },
   {
     path: "/labs/:guest_id?/:uuid?",
     component: labs,

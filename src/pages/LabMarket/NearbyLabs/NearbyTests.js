@@ -95,119 +95,12 @@ class NearbyTests extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
-    console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
-    console.log("yaha ani chahi hai guid", this.props.match.params.guest_id)
-    console.log(this.state.user_type)  
+    console.log("guest_id", this.props.match.params.guest_id);
+    console.log("uuid", this.props.match.params.uuid);
+    console.log("id", this.props.match.params.id);
+    console.log("fid", this.props.match.params.filnalurl);  
   }
 
-  // componentDidMount() {
-  //   const { territoriesList, onGetTerritoriesList } = this.props;
-  //   if (territoriesList && !territoriesList.length) {
-  //     console.log(onGetTerritoriesList(this.state.user_id));
-  //   }
-  //   // let matchingMenuItem = null;
-  //   // const ul = document.getElementById("navigation");
-  //   // const items = ul.getElementsByTagName("a");
-  //   // for (let i = 0; i < items.length; ++i) {
-  //   //   if (this.props.location.pathname === items[i].pathname) {
-  //   //     matchingMenuItem = items[i];
-  //   //     break;
-  //   //   }
-  //   // }
-  //   // if (matchingMenuItem) {
-  //   //   this.activateParentDropdown(matchingMenuItem);
-  //   // }
-  //   const { advertisementLives, onGetAdvertisementLives } = this.props;
-  //   onGetAdvertisementLives(this.state.user_id);
-  //   this.setState({ advertisementLives });
-
-  //   let latitude;
-  //   let longitude;
-
-  //   const url = window.location.href;
-  //   const queryString = url.substring(url.indexOf('&') + 1);
-  //   const params = new URLSearchParams(queryString);
-  //   console.log("print params in app", url, queryString, params)
-    
-  //   const latitudeFromUrl = params.get('lat');
-  //   const longitudeFromUrl = params.get('lon');
-
-    
-  //   console.log('Latitude:', latitudeFromUrl);
-  //   console.log('Longitude:', longitudeFromUrl);
-    
-  //   // Check if latitude and longitude values are present in URL parameters
-  //   if (latitudeFromUrl && longitudeFromUrl) {
-  //     // Use latitude and longitude from URL
-  //     latitude = parseFloat(latitudeFromUrl);
-  //     longitude = parseFloat(longitudeFromUrl);
-  //     console.log("print lat log in app", latitude, longitude)
-
-  //     // const url = `http://localhost:3000/nearby-labs/&lat=${latitude}&lon=${longitude}`;
-  //     // const queryString = url.substring(url.indexOf("&") + 1);
-  //     // const filnalurl = ("&") + queryString; // Remove the leading question mark ('?')        
-  //     // this.setState({ filnalurl: filnalurl });
-  //     // console.log("differ with the final url state:", this.state.filnalurl)
-  //     // console.log(filnalurl);
-  //     // console.log("whsuqi", latitude, longitude)
-
-
-  //   }
-  //   else {
-  //     navigator.geolocation.getCurrentPosition(function (position) {
-  //       latitude = position.coords.latitude;
-  //       longitude = position.coords.longitude;
-  //       console.log("web", latitude, longitude)
-
-
-  //       //https://www.geeksforgeeks.org/how-to-reload-page-only-once-in-javascript/
-  //       if (window.localStorage) {
-
-  //         // If there is no item as 'reload'
-  //         // in localstorage then create one &
-  //         // reload the page
-  //         if (!localStorage.getItem('reload')) {
-  //           localStorage['reload'] = true;
-  //           window.location.reload();
-  //         } else {
-
-  //           // If there exists a 'reload' item
-  //           // then clear the 'reload' item in
-  //           // local storage
-  //           localStorage.removeItem('reload');
-  //         }
-  //       }
-
-  //     });
-  //   }
-
-  //   const { onGetNearbyTests } = this.props;
-
-  //   setTimeout(() => {
-  //     this.setState({ currentLatitude: latitude });
-  //     this.setState({ currentLongitude: longitude });
-
-  //     var data = {
-  //       latitude: this.state.currentLatitude,
-  //       longitude: this.state.currentLongitude,
-  //       search_type: this.state.search_type,
-  //       address: this.state.address,
-  //       city: this.state.city,
-  //       test_name: this.state.test_name,
-  //       km: this.state.km,
-  //       LabType: this.state.LabType,
-
-  //     };
-
-  //     if (this.state.currentLatitude && this.state.currentLongitude) {
-  //       onGetNearbyTests(data);
-
-  //       setTimeout(() => {
-  //         this.setState({ nearbyTests: this.props.nearbyTests });
-  //       }, 1000);
-  //     }
-  //   }, 1000);
-  // }
 
   componentDidMount() {
     const { territoriesList, onGetTerritoriesList } = this.props;
@@ -283,7 +176,6 @@ class NearbyTests extends Component {
         test_name: this.state.test_name,
         km: this.state.km,
         LabType: this.state.LabType,
-
       };
 
       if (this.state.currentLatitude && this.state.currentLongitude) {
@@ -641,30 +533,35 @@ class NearbyTests extends Component {
      }, 1000);
   };
 
-  handleAddToCart = cart => {
-    const { onAddToCart } = this.props;
+handleAddToCart = cart => {
+  const { onAddToCart } = this.props;
 
-    if (!this.state.user_id) {
-      // this.props.history.push("/login");
-      this.setState({ guest_id: this.props.match.params.guest_id });
-      cart.guest_id = this.props.match.params.guest_id
-      onAddToCart(cart, cart.guest_id);
+  if (!this.state.user_id) {
+    this.setState({ guest_id: this.props.match.params.guest_id });
+    cart.guest_id = this.props.match.params.guest_id;
+    onAddToCart(cart, cart.guest_id);
 
-      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id)
-    } 
-    if(this.state.user_id && this.state.user_type !== "CSR") {
-      onAddToCart(cart, this.state.user_id);
-    }
-    if(this.state.user_id && this.state.user_type === "CSR") {
-      // cart.patient_id = this.props.match.params.guest_id
-      onAddToCart(cart, this.props.match.params.guest_id);
-    }
+    console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
+  } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+    onAddToCart(cart, this.state.user_id);
+  } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+    onAddToCart(cart, this.props.match.params.guest_id);
+  } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+    onAddToCart(cart, this.props.match.params.uuid);
+  }
 
-    setTimeout(() => {
-      this.setState({ success: "Item added to the cart successfully.", });
-      this.setState({ error: this.props.error });
-    }, 2000);
-  };
+  setTimeout(() => {
+    this.setState({
+      success: "Item added to the cart successfully.",
+      error: this.props.error
+    });
+  }, 1000);
+  setTimeout(() => {
+    window.location.reload()
+
+  }, 2000);
+};
+
   // activateParentDropdown = item => {
   //   item.classList.add("active");
   //   const parent = item.parentElement;
@@ -722,6 +619,7 @@ class NearbyTests extends Component {
   }
 
   render() {
+    const isLargeScreen = window.innerWidth > 992;
     const { page, totalPage } = this.state;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
@@ -740,7 +638,7 @@ class NearbyTests extends Component {
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
-               {this.state.user_id && this.state.user_type ==="CSR"
+               {this.state.user_id && this.state.user_type ==="CSR" && this.state.user_type !== "b2bclient"
                 ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
@@ -765,8 +663,8 @@ class NearbyTests extends Component {
                         <Link
                           to={
                             this.props.match.params.guest_id
-                              ? `/nearby-tests/${this.props.match.params.guest_id}`
-                              : `/nearby-tests`
+                              ? `/nearby-test/${this.props.match.params.guest_id}`
+                              : `/nearby-test`
                           }
                           className="dropdown-item"
                         >
@@ -1038,7 +936,8 @@ class NearbyTests extends Component {
                     </ul>
                   </Collapse>
 
-                ) : this.state.user_id && this.state.user_type !== "CSR"  ? (
+                ) : 
+                this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type !== "b2bclient" ? (
                   <Collapse
                     isOpen={this.props.menuOpen}
                     className="navbar-collapse"
@@ -1179,6 +1078,90 @@ class NearbyTests extends Component {
 
                     </ul>
                   </Collapse>
+                ) : 
+                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
+                  <Collapse
+                  isOpen={this.state.isMenuOpened}
+                  className="navbar-collapse"
+                  id="topnav-menu-content"
+                >
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/labs`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Labs</span>
+                      </Link>
+                    </li>
+
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-test`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Tests</span>
+                        {/* {this.props.t("Tests")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-profiles`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Profiles</span>
+                        {/* {this.props.t("Profiles")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-packages`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Packages</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
+                  <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-radiology`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Radiology</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>   
+                    {this.state.user_id && this.state.user_type == "patient" && (
+                      <li className="nav-item">
+                        <Link to={"/test-appointments"} className="dropdown-item">
+                          {/* {this.props.t("My Appointments")} */}
+                          <span className="pt-4 font-size-12">My Appointments</span>
+
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </Collapse>
                 ) : null}
 
             </nav>
@@ -1391,7 +1374,6 @@ class NearbyTests extends Component {
 
               {/* Alerts to show success and error messages when item is added to the cart */}
               {this.state.success ? (
-                 window.location.reload() >
                 <Alert color="success" className="col-md-5">
                   {this.state.success}
                 </Alert>
@@ -1407,28 +1389,10 @@ class NearbyTests extends Component {
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
                       <Card>
                         <CardBody>
-                          {/* <div className="product-img position-relative">
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                "/media/" +
-                                nearbyTest.lab_logo
-                              }
-                              alt="Lab Logo"
-                              style={{
-                                width: "150px",
-                                height: "150px",
-                                objectFit: "cover",
-                              }}
-                              className="img-fluid mx-auto d-block"
-                            />
-                          </div> */}
-
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
                               {nearbyTest.test_name}
                             </h5>
-                            {/* <div className="mt-3 text-center"> */}
                             <Link
                               to="#"
                               onClick={e =>
@@ -1504,21 +1468,6 @@ class NearbyTests extends Component {
 
                               </div>
                             )}
-                            {/* {nearbyTest.discount_by_labhazir>=0.01 && (
-                              <div className="my-0">
-                              <span className="text-success" >
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Discount Lab: {(nearbyTest.discount_by_labhazir*100).toFixed()} % 
-                              </span>
-                              
-                            </div>
-                            )} */}
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {nearbyTest.discount_by_labhazir} % Discount By Labhazir
-                              </span>
-                            </div> */}
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-stopwatch"></i> Reporting
@@ -1532,6 +1481,21 @@ class NearbyTests extends Component {
                                 <i className="fas fa-home"></i> Home Sampling:{" "}
                                 {nearbyTest.is_home_sampling_available}
                               </span>
+                            </div>
+                            <div className="my-0">
+                              {" "}
+                              
+                           <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyTest.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
                             </div>
                             <div className="my-0">
                               {" "}
@@ -1550,41 +1514,8 @@ class NearbyTests extends Component {
                                   
                                 </span>
                               </Link>
-                              ): this.state.user_id ? (
-                                <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
-                                }
-                                
-                                className="text-dark"
-                              >
-                                <span className="text-primary">
-                                  {nearbyTest.lab_name}{" "}
-                                  
-                                </span>
-                              </Link>
                               ):null}
-                           <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyTest.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                              {/* <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Lab:{" "}
-                                {nearbyTest.lab_name}
-                              </span> */}
-                            </div>
-                            <div className="my-0">
-                              {" "}
-                              {(this.state.user_id) && (this.state.user_type ==="CSR") && (
+                              {(this.state.user_id) && (this.state.user_type ==="CSR") && (this.state.user_type !=="b2bclient") && (
                        <Link
                        to={
                          this.props.match.params.guest_id
@@ -1600,10 +1531,26 @@ class NearbyTests extends Component {
                        </span>
                      </Link>
                       )}
-                            {(this.state.user_id) && (this.state.user_type !=="CSR") && (
+                            {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type !=="b2bclient") && (
                        <Link
                        to={
                          this.props.match.params.uuid
+                           ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                           : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
+                       }
+
+                       className="text-dark"
+                     >
+                       <span className="text-primary">
+                         {nearbyTest.lab_name}{" "}
+
+                       </span>
+                     </Link>
+                      )}
+                      {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type ==="b2bclient") && (
+                       <Link
+                       to={
+                         this.props.match.params.guest_id
                            ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                            : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
                        }
@@ -1631,49 +1578,29 @@ class NearbyTests extends Component {
                     </Col>
                   ))}
 
-                {isEmpty(this.props.nearbyTests) && (
-                  <Row>
-                    <Col lg="12">
-                      <div className=" mb-5">
-                        <h4 className="text-uppercase">Loading.....</h4>
-                      </div>
-                    </Col>
-                  </Row>
-                )}
+{!isLargeScreen ? (
+                  isEmpty(this.props.nearbyTests) ? (
+                    <Row className="vh-100">
+                      <Col lg="12">
+                        <div className="mb-5">
+                          <h4 className="text-uppercase">
+                            <i className="mdi mdi-refresh-circle mdi-spin display-1" aria-hidden="true" style={{ color: 'blue', marginLeft: '120px' }}></i>
+                          </h4>
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null
+                ) : (
+                  isEmpty(this.props.nearbyTests) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className=" mb-5">
+                          <h4 className="text-uppercase">Loading.....</h4>
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null)}
               </Row>
-
-              {/* <Row>
-                <Col lg="12">
-                  <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled={page === 1}>
-                      <PaginationLink
-                        previous
-                        href="#"
-                        onClick={() => this.handlePageClick(page - 1)}
-                      />
-                    </PaginationItem>
-                    {map(Array(totalPage), (item, i) => (
-                      <PaginationItem active={i + 1 === page} key={i}>
-                        <PaginationLink
-                          onClick={() => this.handlePageClick(i + 1)}
-                          href="#"
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem disabled={page === totalPage}>
-                      <PaginationLink
-                        next
-                        href="#"
-                        onClick={() => this.handlePageClick(page + 1)}
-                      />
-                    </PaginationItem>
-                  </Pagination>
-                </Col>
-              </Row> */}
-              {/* </Col> */}
-              {/* <ScrollButton /> */}
             </Row>
           </Container>
         </div>

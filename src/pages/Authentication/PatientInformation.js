@@ -37,10 +37,12 @@ class PatientInformation extends Component {
   }
 
   componentDidMount() {
+    console.log("uuid", this.props.match.params.uuid)
+    console.log("id", this.props.match.params.id)
+    console.log("user type", this.state.user_type)
     this.props.addPatientInformationFailed("");
     this.props.getTerritoriesList();
-    console.log(this.state.user_id)
-    console.log(this.props.match.params.uuid)
+    console.log("user id",this.state.user_id)
   }
 
   render() {
@@ -135,14 +137,40 @@ class PatientInformation extends Component {
 
                               // Redirecting back to the login page
                               setTimeout(() => {
-                                if (this.props.patient) {
+                                if (this.props.patient &&
+                                  !this.state.user_id) {
+                                  console.log(this.props.match.params.uuid);
                                   this.props.history.push(
                                     this.props.match.params.uuid
                                       ? `/login/${this.props.match.params.uuid}`
                                       : `/login`
                                   );
+                                } else if (
+                                  this.props.patient &&
+                                  this.state.user_id &&
+                                  this.state.user_type === "b2bclient"
+                                ) {
+                                  console.log(this.props.match.params.uuid);
+                                  this.props.history.push(
+                                    this.props.match.params.uuid
+                                      ? `/labs/${this.props.match.params.uuid}/${this.props.match.params.id}`
+                                      : `/labs`
+                                  );
                                 }
-                              }, 2000);
+                                else if (
+                                  this.props.patient &&
+                                  this.state.user_id &&
+                                  this.state.user_type === "CSR"
+                                ) {
+                                  console.log(this.props.match.params.uuid);
+                                  this.props.history.push(
+                                    this.props.match.params.uuid
+                                      ? `/labs/${this.props.match.params.uuid}/${this.props.match.params.id}`
+                                      : `/labs/${this.props.match.params.id}`
+                                  );
+                                }
+                              }, 5000);
+                              
                             }}
                           >
                             {({ errors, status, touched }) => (

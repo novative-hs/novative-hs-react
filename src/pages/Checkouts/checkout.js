@@ -89,6 +89,7 @@ class Checkout extends Component {
     console.log("guest_id", this.props.match.params.guest_id);
     console.log("uuid", this.props.match.params.uuid);
     console.log("id", this.props.match.params.id);
+    console.log("fid", this.props.match.params.filnalurl);
   }
 
   toggleTab(tab) {
@@ -110,7 +111,7 @@ class Checkout extends Component {
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
-    if (this.state.user_id && this.state.user_type !== "CSR") {
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(
           this.state.user_id,
@@ -118,10 +119,18 @@ class Checkout extends Component {
           this.state.is_state_sampling_availed
         );
       }, 1000);
-    } else if (this.state.user_id && this.state.user_type === "CSR") {
+    } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(
           this.props.match.params.id,
+          this.state.is_home_sampling_availed,
+          this.state.is_state_sampling_availed
+        );
+      }, 1000);
+    } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      setTimeout(() => {
+        onGetCheckoutItems(
+          this.props.match.params.guest_id,
           this.state.is_home_sampling_availed,
           this.state.is_state_sampling_availed
         );
@@ -139,7 +148,7 @@ class Checkout extends Component {
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
-    if (this.state.user_id && this.state.user_type !== "CSR") {
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(
           this.state.user_id,
@@ -147,10 +156,18 @@ class Checkout extends Component {
           this.state.is_state_sampling_availed
         );
       }, 1000);
-    } else if (this.state.user_id && this.state.user_type === "CSR") {
+    } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(
           this.props.match.params.id,
+          this.state.is_home_sampling_availed,
+          this.state.is_state_sampling_availed
+        );
+      }, 1000);
+    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      setTimeout(() => {
+        onGetCheckoutItems(
+          this.props.match.params.guest_id,
           this.state.is_home_sampling_availed,
           this.state.is_state_sampling_availed
         );
@@ -219,15 +236,22 @@ class Checkout extends Component {
 
       // API call to get the checkout items
       const { onAddCheckoutData } = this.props;
-      if (this.state.user_id && this.state.user_type !== "CSR") {
+      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ) {
         setTimeout(() => {
           onAddCheckoutData(this.state.checkoutData, this.state.user_id);
         }, 2000);
-      } else if (this.state.user_id && this.state.user_type === "CSR") {
+      } else if (this.state.user_id && this.state.user_type === "CSR"  && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           onAddCheckoutData(
             this.state.checkoutData,
             this.props.match.params.id
+          );
+        }, 2000);
+      } else if (this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type === "b2bclient") {
+        setTimeout(() => {
+          onAddCheckoutData(
+            this.state.checkoutData,
+            this.props.match.params.guest_id
           );
         }, 2000);
       }
@@ -241,9 +265,9 @@ class Checkout extends Component {
           });
         }
       }, 1000);
-    //   setTimeout(() => {
-    //     this.props.history.push("/nearby-labs");
-    // }, 2000)
+      setTimeout(() => {
+        this.props.history.push("/nearby-labs");
+    }, 2000)
     }
   };
 
@@ -268,7 +292,7 @@ class Checkout extends Component {
           this.setState({ isRequiredFilled: true });
           return true;
         } else {
-          // this.setState({ isRequiredFilled: false });
+          this.setState({ isRequiredFilled: false });
           this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
           return false;
         }
@@ -277,7 +301,7 @@ class Checkout extends Component {
         this.setState({ isRequiredFilled: true });
         return true;
       } else {
-        // this.setState({ isRequiredFilled: false });
+        this.setState({ isRequiredFilled: false });
         this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
         return false;
       }
@@ -427,39 +451,51 @@ class Checkout extends Component {
 
   componentDidMount() {
     const { onGetDonationCheck } = this.props;
-    if (this.state.user_id && this.state.user_type !== "CSR") {
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetDonationCheck(this.state.user_id);
       }, 1000);
-    } else if (this.state.user_id && this.state.user_type === "CSR") {
+    } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetDonationCheck(this.props.match.params.id);
+      }, 1000);
+    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      setTimeout(() => {
+        onGetDonationCheck(this.props.match.params.guest_id);
       }, 1000);
     }
     this.setState({ donationCheck: this.props.donationCheck });
     console.log("heeeeeee", this.props.donationCheck);
     // API call to get the home sampled tests
     const { onGetHomeSampledTests } = this.props;
-    if (this.state.user_id && this.state.user_type !== "CSR") {
+    if (this.state.user_id && this.state.user_type !== "CSR"&& this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetHomeSampledTests(this.state.user_id);
       }, 1000);
-    } else if (this.state.user_id && this.state.user_type === "CSR") {
+    } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetHomeSampledTests(this.props.match.params.id);
+      }, 1000);
+    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      setTimeout(() => {
+        onGetHomeSampledTests(this.props.match.params.guest_id);
       }, 1000);
     }
     this.setState({ homeSampledTests: this.props.homeSampledTests });
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
-    if (this.state.user_id && this.state.user_type !== "CSR") {
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(this.state.user_id);
       }, 1000);
-    } else if (this.state.user_id && this.state.user_type === "CSR") {
+    } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(this.props.match.params.id);
+      }, 1000);
+    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      setTimeout(() => {
+        onGetCheckoutItems(this.props.match.params.guest_id);
       }, 1000);
     }
     this.setState({ checkoutItems: this.props.checkoutItems });
@@ -1643,6 +1679,11 @@ class Checkout extends Component {
                               </Card>
 
                             }
+
+
+
+
+
                             <Row className="mt-4">
                               <Col sm="6">
                                 <Link

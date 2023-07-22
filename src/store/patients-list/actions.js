@@ -4,9 +4,9 @@ import {
   GET_PATIENTS_LIST_FAIL,
 } from "./actionTypes";
 
-export const getPatientsList = () => ({
+export const getPatientsList = (phone) => ({
   type: GET_PATIENTS_LIST,
-  payload: {},
+  payload: {phone},
 });
 
 export const getPatientsListSuccess =

@@ -20,7 +20,7 @@ const Footer = () => {
     bottom: 0,
     width: "100%",
     backgroundColor: "#f8f9fa",
-    fontSize: "6.5px",
+    // fontSize: "6.5px",
     display: "flex",
     justifyContent: "center",
   };
@@ -131,24 +131,24 @@ const Footer = () => {
             </div>
           </Col></Row>
           <Row>
-             <Col xs="auto" sm="auto" md="auto" lg="auto">
+            <Col xs="auto" sm="auto" md="auto" lg="auto">
             <div className="text-sm-end">
               <Link to="/disclaimer">
-                <span>Disclaimer</span>
+              <span style={{ fontSize: '10px' }}>Disclaimer</span> {/* Set font size to 16 pixels */}
               </Link>
             </div>
           </Col>
           <Col xs="auto" sm="auto" md="auto" lg="auto">
             <div className="text-sm-end">
               <Link to="/about-us">
-                <span>About Us</span>
+                <span style={{ fontSize: '10px' }}>About Us</span>
               </Link>
             </div>
           </Col>
           <Col xs="auto" sm="auto" md="auto" lg="auto">
             <div className="text-sm-end">
               <Link to="/terms-conditions">
-                <span>Terms</span>
+                <span style={{ fontSize: '10px' }}>Terms</span>
               </Link>
             </div>
           </Col>
@@ -159,14 +159,14 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="bx bxl-linkedin bx-tada align-middle me-2 font-size-40" />
+                <i className="bx bxl-linkedin bx-tada align-middle me-2" />
               </a>
               <a
                 href="https://www.facebook.com/profile.php?id=100084984286550"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="bx bxl-facebook bx-tada align-middle me-2 font-size-40" />
+                <i className="bx bxl-facebook bx-tada align-middle me-2" />
               </a>
             </div>
           </Col>

@@ -89,24 +89,6 @@ class TestAppointmentsPendingList extends Component {
             </>
           ), filter: textFilter(),
         },
-        // Conditionally add the Lab Type / Address column
-        // ...(main_lab_appointments === "Yes"
-        //   ? [
-        //       {
-        //         dataField: "order_id",
-        //         text: "Lab Type / Address",
-        //         sort: true,
-        //         formatter: (cellContent, testAppointment) => (
-        //           <>
-        //             <strong>
-        //               {testAppointment.type} ({testAppointment.address})
-        //             </strong>
-        //           </>
-        //         ),
-        //       },
-        //     ]
-        //   : []),
-
         {
           dataField: "patient_name",
           text: "Patient name",
@@ -172,29 +154,47 @@ class TestAppointmentsPendingList extends Component {
             defaultValue: 'All',
           }),
         },
-        // {
-        //   dataField: "payment",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Payment",
-        //   formatter: (cellContent, testAppointment) => (
-        //     <>
-        //       {testAppointment.payment_status == "Not Paid" && (
-        //         <div className="d-flex gap-3">
-        //           <Link
-        //             className="btn btn-success btn-rounded"
-        //             onClick={() =>
-        //               this.onClickAccept(testAppointment.id)
-        //             }
-        //             // to={"/b2b-clients-list"}
-        //           >
-        //             <i className="mdi mdi-check-bold"></i> Accept
-        //           </Link>
-        //         </div>
-        //       )}
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: "is_state_sampling_availed",
+          text: "Stat sampling",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              {testAppointment.is_state_sampling_availed == true ? (
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning blinking-text">Yes</span>
+              ) : (
+                <span>No</span>
+              )}
+              <style>
+          {`
+            .blinking-text {
+              animation: blinking 1s infinite;
+            }
+
+            @keyframes blinking {
+              0% {
+                opacity: 1;
+              }
+              50% {
+                opacity: 0;
+              }
+              100% {
+                opacity: 1;
+              }
+            }
+          `}
+        </style>
+            </>
+          ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
+        },
         {
           dataField: "menu",
           isDummyField: true,
@@ -286,7 +286,11 @@ class TestAppointmentsPendingList extends Component {
       appointmentmodal: !prevState.appointmentmodal,
     }));
   };
-
+  rowStyleFormat = (row, rowIdx) => {
+     if (row.is_state_sampling_availed === true) {
+                return {color: 'red' };
+            }
+  };
   toggleConfirmModal = () => {
     this.setState(prevState => ({
       confirmModal: !prevState.confirmModal,
@@ -375,7 +379,8 @@ class TestAppointmentsPendingList extends Component {
 
     this.toggle();
   };
-
+ 
+ 
   handleTestAppointmentType = e => {
     // const { id } = useParams();
     // console.log("id is",id);
@@ -395,7 +400,7 @@ class TestAppointmentsPendingList extends Component {
         onGetTestAppointmentsPendingList(this.state.user_id);
       }, 1000);
   };
-
+ 
   render() {
     const { SearchBar } = Search;
 
@@ -408,7 +413,6 @@ class TestAppointmentsPendingList extends Component {
     const { onGetLabProfile, onAddNewCollectionPointTestAppointment, onUpdateTestAppointment, onGetTestAppointmentsPendingList } =
       this.props;
     const testAppointment = this.state.testAppointment;
-
     const pageOptions = {
       sizePerPage: 10,
       totalSize: testAppointments.length, // replace later with size(testAppointments),
@@ -483,12 +487,6 @@ class TestAppointmentsPendingList extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                                {/* <Col sm="6"></Col>
-                                <Col sm="3" lg="3">
-                                  <div>
-                                  
-                                  </div>
-                                </Col> */}
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -502,6 +500,7 @@ class TestAppointmentsPendingList extends Component {
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
+                                      rowStyle={this.rowStyleFormat} 
                                       ref={this.node}
                                       filter={filterFactory()}
 

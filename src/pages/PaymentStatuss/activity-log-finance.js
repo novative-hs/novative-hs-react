@@ -100,7 +100,7 @@ class ActivityLogFinance extends Component {
                     (activitylogfinance, key) => (
                       <Col key={"_col_" + key}>
                         <div className="mt-3">
-                          {activitylogfinance.actions === "Added" && (
+                          {activitylogfinance.actions === "Added" && activitylogfinance.type !== "Bank Transfer Detail" && (
                             <div>
                               <i className="fas fa-plus-square font-size-18"></i>{" "}
                               {`${activitylogfinance.user_name} Created a `}
@@ -131,8 +131,27 @@ class ActivityLogFinance extends Component {
                               .
                             </div>
                           )}
+                           {activitylogfinance.actions === "Added" && activitylogfinance.type === "Bank Transfer Detail" && (
+                            <div>
+                              <i className="fas fa-plus-square font-size-18"></i>{" "}
+                              {`${activitylogfinance.user_name} Created a `}
+                              <b>{activitylogfinance.type}</b> form on{" "}
+                              {new Date(
+                                activitylogfinance.created_at
+                              ).toLocaleDateString("en-US")}{" "}
+                              at{" "}
+                              {new Date(
+                                activitylogfinance.created_at
+                              ).toLocaleTimeString("en-US")}{" "}
+                              with id{" "}
+                              <b>
+                                {activitylogfinance.btd_id}
+                              </b>
+                              .
+                            </div>
+                          )}
 
-                          {activitylogfinance.actions === "Updated" && (
+                          {activitylogfinance.actions === "Updated" && activitylogfinance.type !== "Bank Transfer Detail" && (
                             <div>
                               <i className="fas fa-exchange-alt font-size-18"></i>{" "}
                               {`${activitylogfinance.user_name} Changed Status of `}
@@ -151,6 +170,24 @@ class ActivityLogFinance extends Component {
                                   : activitylogfinance.lab_name ||
                                     activitylogfinance.b2b_name}
                               </b>{" "}
+                              from <b>{activitylogfinance.old_value}</b> to{" "}
+                              <b>{activitylogfinance.new_value}</b> on{" "}
+                              {new Date(
+                                activitylogfinance.created_at
+                              ).toLocaleDateString("en-US")}{" "}
+                              at{" "}
+                              {new Date(
+                                activitylogfinance.created_at
+                              ).toLocaleTimeString("en-US")}
+                              .
+                            </div>
+                          )}
+                          {activitylogfinance.actions === "Updated" && activitylogfinance.type === "Bank Transfer Detail" && (
+                            <div>
+                              <i className="fas fa-exchange-alt font-size-18"></i>{" "}
+                              {`${activitylogfinance.user_name} Changed Status of `}
+                              <b>{activitylogfinance.type}</b> with id{" "}
+                              {activitylogfinance.btd_id}{" "}
                               from <b>{activitylogfinance.old_value}</b> to{" "}
                               <b>{activitylogfinance.new_value}</b> on{" "}
                               {new Date(

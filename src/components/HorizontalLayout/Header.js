@@ -49,6 +49,8 @@ class Header extends Component {
     this.toggleSearch = this.toggleSearch.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
     console.log("yaha ani chahi hai guid", this.props.match.params.guest_id)
+    console.log("yaha ani chahi hai fuid", this.props.match.params.filnalurl)
+
     console.log(this.state.user_type)
   }
 
@@ -58,21 +60,25 @@ class Header extends Component {
     if (!this.state.user_id) {
       console.log("hellll")
       // this.props.history.push("/login");
-        getCarts(this.props.match.params.guest_id );
-        this.setState({ carts: this.state.carts });
-     console.log("uuid:", carts, this.props.match.params.guest_id) 
-    //  window.location.reload()
-    }
-    if (this.state.user_id && this.state.user_type !="CSR"){
-        getCarts(this.state.user_id);
-        this.setState({ carts: this.state.carts });
-        console.log("uuid:", carts, this.state.user_id) 
-
-          // window.location.reload()
-    }
-    if (this.state.user_id && this.state.user_type =="CSR"){
       getCarts(this.props.match.params.guest_id);
-      console.log("heeelllll:", carts, this.props.match.params.guest_id) 
+      this.setState({ carts: this.state.carts });
+      console.log("uuid:", carts, this.props.match.params.guest_id)
+      //  window.location.reload()
+    }
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+      getCarts(this.state.user_id);
+      this.setState({ carts: this.state.carts });
+      console.log("uuid:", carts, this.state.user_id)
+
+      // window.location.reload()
+    }
+    if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+      getCarts(this.props.match.params.guest_id);
+      console.log("heeelllll:", carts, this.props.match.params.guest_id)
+    }
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      getCarts(this.props.match.params.uuid);
+      console.log("heeelllll:", carts, this.props.match.params.uuid)
     }
     // getCarts(this.state.user_id);
     // this.setState({ carts: this.state.carts });
@@ -81,7 +87,7 @@ class Header extends Component {
     // // console.log("header id:",getCarts(this.props.match.params.id))
     // this.setState({ carts: this.state.carts });
     // if (window.localStorage) {
-  
+
     //   // If there is no item as 'reload'
     //   // in localstorage then create one &
     //   // reload the page
@@ -89,7 +95,7 @@ class Header extends Component {
     //       localStorage['reload'] = true;
     //       window.location.reload();
     //   } else {
-    
+
     //       // If there exists a 'reload' item
     //       // then clear the 'reload' item in
     //       // local storage
@@ -114,7 +120,7 @@ class Header extends Component {
     this.setState({ page });
   };
 
-  
+
   /**
    * Toggle sidebar
    */
@@ -156,54 +162,72 @@ class Header extends Component {
     }
   }
   render() {
+    const isLargeScreen = window.innerWidth > 992;
     return (
       <React.Fragment>
         <header id="page-topbaar">
           <div className="navbar-header">
             <div className="d-flex">
-              <div className="navbar-brand-box">
-                <Link
-                  to={
-                    this.props.match.params.uuid
-                      ? `/nearby-labs/${this.props.match.params.uuid}`
-                      : `/nearby-labs/`
-                  }
-                  className="logo logo-dark"
-                >
-                  <span className="logo-sm">
-                    <img src={logo} alt="" height="40" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={logoLight} alt="" height="60" />
-                  </span>
-                </Link>
+              {isLargeScreen ? (
+                <div className="navbar-brand-box">
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                        : `/nearby-labs/`
+                    }
+                    className="logo logo-dark"
+                  >
+                    <span className="logo-sm">
+                      <img src={logo} alt="" height="40" />
+                    </span>
+                    <span className="logo-lg">
+                      <img src={logoLight} alt="" height="60" />
+                    </span>
+                  </Link>
 
-                <Link
-                  to={
-                    this.props.match.params.uuid
-                      ? `/nearby-labs/${this.props.match.params.uuid}`
-                      : `/nearby-labs/`
-                  }
-                  className="logo logo-light"
-                >
-                  <span className="logo-sm">
-                    <img src={logoLightSvg} alt="" height="40" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={logoLight} alt="" height="60" />
-                  </span>
-                </Link>
-              </div>
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                        : `/nearby-labs/`
+                    }
+                    className="logo logo-light"
+                  >
+                    <span className="logo-sm">
+                      <img src={logoLightSvg} alt="" height="40" />
+                    </span>
+                    <span className="logo-lg">
+                      <img src={logoLight} alt="" height="60" />
+                    </span>
+                  </Link>
+                </div>
 
-              <button
+
+              ) : null}
+
+              {!isLargeScreen ? (
+
+                <button
+                  type="button"
+                  className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                  style={{ left: '12px' }} // Set left position to 10 pixels
+                  data-toggle="collapse"
+                  onClick={this.openMenu}
+                  data-target="#topnav-menu-content"
+                >
+                  <i className="fa fa-fw fa-bars" />
+                </button>
+
+              ) : <button
                 type="button"
                 className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                 data-toggle="collapse"
-                onClick={this.toggleMenu}
+                onClick={this.openMenu}
                 data-target="#topnav-menu-content"
               >
                 <i className="fa fa-fw fa-bars" />
-              </button>
+              </button>}
             </div>
 
             <div className="d-flex">
@@ -212,19 +236,19 @@ class Header extends Component {
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Link
-                      to={
-                        this.props.match.params.uuid
+                    to={
+                      this.props.match.params.uuid
                         ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                         : `/cart/${this.props.match.params.guest_id}`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle"
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
                   >
-                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+                    <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                        {!isEmpty(this.props.carts) &&
-                        
-                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                          }
+                    {!isEmpty(this.props.carts) &&
+
+                      this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                    }
                   </Link>
                   <Link
                     to={
@@ -264,7 +288,7 @@ class Header extends Component {
                 </div>
               ) : this.state.user_type == "patient" ? (
                 <div className="dropdown">
-                 <Link
+                  <Link
                     // to={"/profile"}
                     to={
                       this.props.match.params.uuid
@@ -275,7 +299,7 @@ class Header extends Component {
                   >
                     <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
                     <span className="pt-4 font-size-12">
-                      {console.log("patient name",this.state.patient_name)}
+                      {console.log("patient name", this.state.patient_name)}
                     </span>
                   </Link>{" "}
 
@@ -294,23 +318,23 @@ class Header extends Component {
                     {/* <span className="pt-4 font-size-12">Cart</span> */}
                   </Link>
                   {" "}
-                
+
                   <Link
-                      to={
-                        this.props.match.params.uuid
+                    to={
+                      this.props.match.params.uuid
                         ? `/cart/${this.props.match.params.uuid}`
                         : `/cart`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle"
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
                   >
-                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+                    <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                        {!isEmpty(this.props.carts) &&
-                        
-                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                          }
+                    {!isEmpty(this.props.carts) &&
+
+                      this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                    }
                   </Link>
-          
+
                   <Link
                     to="/logout"
                     className="dropdown-content me-2 text-light"
@@ -332,12 +356,29 @@ class Header extends Component {
                   )}
 
                   {this.state.user_type == "b2bclient" && (
+                    <div className="dropdown d-lg-inline-block ms-4 mt-4">
                     <Link
                       to={"/dashboard-b2bclient"}
                       className="btn header-items noti-icon right-bar-toggle"
                     >
                       <i className="mdi mdi-home me-1 font-size-24" />{" "}
                     </Link>
+                    <Link
+                     to={
+                       this.props.match.params.guest_id
+                       ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                       : `/cart`
+                     }
+                     className="btn header-items noti-icon right-bar-toggle"
+                 >
+                     <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                       {!isEmpty(this.props.carts) &&
+                       
+                         this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                         }
+                 </Link>
+</div>
                   )}
 
                   {this.state.user_type == "auditor" && (
@@ -350,30 +391,30 @@ class Header extends Component {
                   )}
 
                   {this.state.user_type == "CSR" && (
-                                        <div className="dropdown d-lg-inline-block ms-4 mt-4">
+                    <div className="dropdown d-lg-inline-block ms-4 mt-4">
 
-                    <Link
-                      to={"/dashboard-csr"}
-                      className="btn header-items noti-icon right-bar-toggle"
-                    >
-                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                    </Link>
-                    <Link
+                      <Link
+                        to={"/dashboard-csr"}
+                        className="btn header-items noti-icon right-bar-toggle"
+                      >
+                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                      </Link>
+                      <Link
                         to={
                           this.props.match.params.guest_id
-                          ? `/cart/${this.props.match.params.guest_id}`
-                          : `/cart`
+                            ? `/cart/${this.props.match.params.guest_id}`
+                            : `/cart`
                         }
                         className="btn header-items noti-icon right-bar-toggle"
-                    >
+                      >
                         <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-  
-                          {!isEmpty(this.props.carts) &&
-                          
-                            this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                            }
-                    </Link>
-                    {/* <Link
+
+                        {!isEmpty(this.props.carts) &&
+
+                          this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                        }
+                      </Link>
+                      {/* <Link
                       to={
                         this.props.match.params.uuid
                           ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
@@ -385,7 +426,7 @@ class Header extends Component {
                       <span className="pt-4 font-size-12">Login</span>
                     </Link>
    */}
-                    {/* <Link
+                      {/* <Link
                       to={
                         this.props.match.params.uuid
                           ? `/register/${this.props.match.params.uuid}`
@@ -396,8 +437,8 @@ class Header extends Component {
                       <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
                       <span className="pt-4 font-size-12">Sign up</span>
                     </Link> */}
-  
-                    {/* <Link
+
+                      {/* <Link
                       // to="/contact-us"
                       to={
                         this.props.match.params.uuid
@@ -408,7 +449,7 @@ class Header extends Component {
                     >
                       <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                     </Link> */}
-                  </div>
+                    </div>
                   )}
 
                   {this.state.user_type == "registration-admin" && (
@@ -478,8 +519,8 @@ Header.propTypes = {
 
 const mapStateToProps = state => {
   const { layoutType } = state.Layout;
-  const {carts}= state.carts;
-  return { layoutType , carts};
+  const { carts } = state.carts;
+  return { layoutType, carts };
 };
 
 // export default connect(mapStatetoProps, { toggleRightSidebar })(

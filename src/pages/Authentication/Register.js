@@ -32,6 +32,7 @@ class Register extends Component {
   }
 
   componentDidMount() {
+    console.log("uuid", this.props.match.params.uuid)
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
     while (elem.attributes.length > 0) {
