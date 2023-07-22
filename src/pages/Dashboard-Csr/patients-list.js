@@ -39,8 +39,8 @@ class PatientsList extends Component {
       patients: [],
       // id: "",
       patient: "",
-      phone:"",
-      guest_id:"",
+      phone: "",
+      guest_id: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -62,12 +62,12 @@ class PatientsList extends Component {
           formatter: (cellContent, patient) => (
             <>
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-              <Link 
-              to={
-                this.props.match.params.uuid
-                  ? `/nearby-labs/${this.props.match.params.uuid}/${patient.account_id}`
-                  : `/nearby-labs/${patient.account_id}`
-              }
+              <Link
+                to={
+                  this.props.match.params.uuid
+                    ? `/nearby-labs/${this.props.match.params.uuid}/${patient.account_id}`
+                    : `/nearby-labs/${patient.account_id}`
+                }
               >
                 {patient.name}
               </Link>
@@ -175,44 +175,44 @@ class PatientsList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                               <Row className="mb-2 g-0">
+                              <Row className="mb-2 g-0">
                                 <Col sm="2" lg="2">
-                                <div className="mb-2">
-                            <Label
-                              for="LabType1"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
-                              }}
-                            >
-                              Search By Phone No
-                            </Label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              name="phone"
-                              placeholder="Search Phone..."
-                              onChange={e =>
-                                this.setState({
-                                  phone: e.target.value,
-                                })
-                              }
-                              // onBlur={this.handleBlur}
-                              value={this.state.phone}
-                            />
-                          
-                          </div>
-                                </Col>
-                                <Col sm="3" lg="3">
-                                  <span></span>
-                                <div className="mt-4"></div>
-                                  <div>
-                                <button
-                                  onClick={this.handleBlur}
-                                  className="bx bx-search-alt" style={{ fontSize: '32px', color:'white', background:'blue', border:'none'}}>
-                                    {/* <div><i className="bx bx-search-alt" style={{ fontSize: '32px' }}></i></div> */}
-                                    
-                                </button>
+                                  <div className="d-flex flex-column mb-2">
+                                    <Label
+                                      for="LabType1"
+                                      className="form-label"
+                                      style={{
+                                        fontSize: window.innerWidth <= 576 ? "6px" : "12px",
+                                      }}
+                                    >
+                                      Search By Phone No
+                                    </Label>
+                                    <div className="d-flex align-items-center mt-2">
+                                      <Input
+                                        type="text"
+                                        className="form-control"
+                                        name="phone"
+                                        placeholder="Search Phone..."
+                                        onChange={(e) =>
+                                          this.setState({
+                                            phone: e.target.value,
+                                          })
+                                        }
+                                        value={this.state.phone}
+                                        style={{ width: "300px"}} // Set the width for the input
+                                      />
+                                      <button
+                                        onClick={this.handleBlur}
+                                        className="bx bx-search-alt"
+                                        style={{
+                                          fontSize: "32px",
+                                          color: "white",
+                                          background: "blue",
+                                          border: "none",
+                                          // marginLeft: "5px", // Add some space between the input and the button
+                                        }}
+                                      />
+                                    </div>
                                   </div>
                                 </Col>
                               </Row>
@@ -229,7 +229,7 @@ class PatientsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      // filter={ filterFactory() }
+                                    // filter={ filterFactory() }
                                     />
                                     <Modal
                                       isOpen={this.state.modal}

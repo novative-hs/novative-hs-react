@@ -64,6 +64,13 @@ class B2bProfile extends Component {
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
                     <p>Lab Hazir Dashboard</p>
+                    <Link
+                            to={"/b2b-profile"}
+                            className="btn btn-primary btn-sm"
+                          >
+                            View Profile{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
                   </div>
                 </Col>
                 <Col xs="5" className="align-self-end">
@@ -71,19 +78,21 @@ class B2bProfile extends Component {
                 </Col>
               </Row>
             </div>
-            <CardBody className="pt-4">
-              <Row>
-                <Col sm="12">
-                  <div className="pt-4">
-                    <Row>
-                      <Col xs="6">
-                      <div className="avatar-md profile-user-wid mb-4">
-                  <img
-                    src={this.state.business_logo}
-                    alt=""
-                    className="img-thumbnail rounded-circle"
-                  />
-                </div>
+            <CardBody >
+              
+                    <Row className="pt-3">
+                      <Col xs="4">
+                      <div className="avatar-md profile-user-wid">
+                              <img
+                                src={this.state.business_logo}
+                                alt="B2b Logo"
+                                className=" text-end"
+                                style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                              />
+                            </div>
+                        
+                      </Col>
+                      <Col xs="8">
                         <h5 className="font-size-15 text-truncate">
                           {this.state.business_name}
                         </h5>
@@ -91,22 +100,9 @@ class B2bProfile extends Component {
                           {this.state.website_url}
                         </p>
                       </Col>
-                      <Col xs="6">
-                        <div className="mt-2">
-                          <Link
-                            to={"/b2b-profile"}
-                            className="btn btn-primary btn-sm"
-                          >
-                            View Profile{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                      </Col>
                       
                     </Row>
-                  </div>
-                </Col>
-              </Row>
+                  
             </CardBody>
           </Card>
         </Col>
@@ -157,76 +153,64 @@ class B2bProfile extends Component {
                 </CardBody>
               </Card>
             </Col>
-
-            <Col>
+            <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="fw-medium text-bold">Book On call Appointments</p>
-                      <Row>
-                      <Col xs="6">
-                        <div>
-                          <span>Register     </span>
-                          <Link
+                      <p className="text-muted fw-medium">
+                        Book On call Appointments
+                      </p>
+                      <h4 className="mb-0">
+                      New Patients
+                      </h4>
+                    </div>
+                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                    <Link
                              to={
                               this.state.uuid
                                 ? `/register/${this.state.uuid}`
                                 : `/register`
                             }
-                            className="btn btn-primary btn-sm"
+                            // className="btn btn-primary btn-sm"
                           >
-                            Register{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                        </Col>
-<Col xs="6">
-                        <div>
-                         <span>Already have an account??    </span>
-                          <Link
-                            to={
-                              this.state.uuid
-                                ? `/patients/${this.state.uuid}`
-                                : `/patients`
-                            }
-                            className="btn btn-primary btn-sm"
-                          >
-                            Proceed{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                      </Col>
-                      </Row>
+                        <span className="avatar-title">
+                        <i className={"bx bx-copy-alt font-size-24"} />
+                      </span>                          </Link>
                     </div>
                   </div>
                 </CardBody>
               </Card>
             </Col>
-
-            {/* <Col md="6">
+            <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Annual Revenue</p>
-                      {/* Converting number to thousands separator string for readability */}
-                      {/* <h4 className="mb-0">
-                        $
-                        {this.state.annualRevenue
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      <p className="text-muted fw-medium">
+                      Book On call Appointments
+                      </p>
+                      <h4 className="mb-0">
+                      Exist Patients List
                       </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-archive-in font-size-24"} />
-                      </span>*/}
-                    {/* </div>
+                    <Link
+                             to={
+                              this.state.uuid
+                                ? `/patients/${this.state.uuid}`
+                                : `/patients`
+                            }
+                            // className="btn btn-primary btn-sm"
+                          >
+                        <span className="avatar-title">
+                        <i className="mdi mdi-chevron-right font-size-24" style={{ fontWeight: "bold" }} />
+                      </span>                          </Link>
+                    </div>
                   </div>
-                </CardBody> */}
-              {/* </Card>
-            </Col> */} 
+                </CardBody>
+              </Card>
+            </Col>
           </Row>
         </Col>
       </React.Fragment>

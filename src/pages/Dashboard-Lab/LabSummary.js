@@ -57,6 +57,13 @@ class LabSummary extends Component {
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
                     <p>Lab Hazir Dashboard</p>
+                    <Link
+                            to={"/lab-profile"}
+                            className="btn btn-primary btn-sm"
+                          >
+                            View Profile{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
                   </div>
                 </Col>
                 <Col xs="5" className="align-self-end">
@@ -64,41 +71,29 @@ class LabSummary extends Component {
                 </Col>
               </Row>
             </div>
-            <CardBody className="pt-4">
-              <Row>
-                <Col sm="12">
-                  <div className="pt-4">
-                    <Row>
-                      <Col xs="6">
-                      <div className="avatar-md profile-user-wid mb-4">
+            <CardBody>
+
+                    <Row className="pt-2">
+                      <Col xs="4">
+                      <div className="avatar-md profile-user-wid">
                   <img
                     src={this.state.logo}
-                    alt=""
-                    className="img-thumbnail rounded-circle"
-                  />
+                    alt="Lab Logo"
+                    className="text-end"
+                    style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}                  />
                 </div>
-                        <h5 className="font-size-15 text-truncate">
+                        
+                      </Col>
+                      <Col xs="8">
+                      <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>
                         <p className="text-muted mb-0 text-truncate">
                           {this.state.address}
                         </p>
                       </Col>
-                      <Col xs="6">
-                        <div className="mt-2">
-                          <Link
-                            to={"/lab-profile"}
-                            className="btn btn-primary btn-sm"
-                          >
-                            View Profile{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                      </Col>
                     </Row>
-                  </div>
-                </Col>
-              </Row>
+                  
             </CardBody>
           </Card>
         </Col>
@@ -153,22 +148,27 @@ class LabSummary extends Component {
             <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
-                  <div className="d-flex">
+                <div className="d-flex">
                     <div className="flex-grow-1">
-                      {/* <p className="text-muted fw-medium">History</p> */}
-                      <div className="mt-2">
-                      <Link
-                        to={"/activity-log"}
-                        className="btn btn-primary btn-sm"
-                      >
-                        History <i className="mdi mdi-arrow-right ms-1" />
-                      </Link>
-                    </div>
+                      <p className="text-muted fw-medium">
+                      Appointments History
+                      </p>
+                      <h4 className="mb-0">
+                      Activity Log
+                      </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-archive-in font-size-24"} />
-                      </span>
+                    <Link
+                             to={
+                              this.state.uuid
+                                ? `/activity-log/${this.state.uuid}`
+                                : `/activity-log`
+                            }
+                            // className="btn btn-primary btn-sm"
+                          >
+                        <span className="avatar-title">
+                        <i className={"bx bx-history font-size-24"} />
+                      </span>                        </Link>
                     </div>
                   </div>
                 </CardBody>
@@ -177,17 +177,27 @@ class LabSummary extends Component {
             <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
-                  <div className="d-flex">
+                <div className="d-flex">
                     <div className="flex-grow-1">
-                      <h5 className="font-size-15 text-truncate">Audit</h5>
+                      <p className="text-muted fw-medium">
+                      Labs Review
+                      </p>
+                      <h4 className="mb-0">
+                      Audit
+                      </h4>
                     </div>
-                    <div className="mt-2">
-                      <Link
-                        to={"/lab-audit"}
-                        className="btn btn-primary btn-sm"
-                      >
-                        Audit Details <i className="mdi mdi-arrow-right ms-1" />
-                      </Link>
+                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                    <Link
+                             to={
+                              this.state.uuid
+                                ? `/lab-audit/${this.state.uuid}`
+                                : `/lab-audit`
+                            }
+                            // className="btn btn-primary btn-sm"
+                          >
+                        <span className="avatar-title">
+                        <i className={"mdi mdi-note-search font-size-24"} />
+                      </span>                        </Link>
                     </div>
                   </div>
                 </CardBody>

@@ -1717,17 +1717,6 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             }
                           >
-                            {/* <div className="product-img position-relative">
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                           
-                              className="img-thumbnail mx-auto d-block rounded"
-                              />
-                          </div> */}
                             <div style={{
                               width: '200px',
                               height: '100px',
