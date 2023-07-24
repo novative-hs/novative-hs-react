@@ -35,7 +35,6 @@ import {
 } from "reactstrap";
 
 import { isEmpty, map, size } from "lodash";
-import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 
 import "nouislider/distribute/nouislider.css";
 
@@ -84,10 +83,6 @@ class TestsOffered extends Component {
       ongetOfferedTestsReferrel();
       this.setState({ offeredTests: this.props.offeredTests });
     }
-
-    const { onGetCarts } = this.props;
-    onGetCarts(this.state.user_id);
-    this.setState({ carts: this.props.carts });
   }
   // incrementCart = () =>{
   //   this.setState({count: this.state.count + 1})
@@ -180,13 +175,15 @@ class TestsOffered extends Component {
     }
 
     setTimeout(() => {
-      this.setState({ success: "Item added to the cart successfully.", });
-      this.setState({ error: this.props.error });
-    }, 1000);
+      this.setState({
+        success: this.props.success,
+        error: this.props.error
+      });
+    }, 100);
     setTimeout(() => {
       window.location.reload()
   
-    }, 2000);
+    }, 400);
   };
   activateParentDropdown = item => {
     item.classList.add("active");
@@ -1333,7 +1330,6 @@ TestsOffered.propTypes = {
   error: PropTypes.any,
   className: PropTypes.any,
   carts: PropTypes.array,
-  onGetCarts: PropTypes.func,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
 };
@@ -1349,7 +1345,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   ongetOfferedTestsReferrel: () =>
     dispatch(getOfferedTestsReferrel(ownProps.match.params.lab_account_id)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
-  onGetCarts: id => dispatch(getCarts(id)),
 });
 
 export default connect(

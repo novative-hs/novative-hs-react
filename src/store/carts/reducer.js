@@ -59,10 +59,9 @@ const carts = (state = INIT_STATE, action) => {
       };
 
     case ADD_TO_CART_SUCCESS:
-    console.log("reducer", action.payload.data)
       return {
         ...state,
-        success: action.payload.data,
+        success: action.payload,
       };
     case ADD_TO_CART_FAIL:
       return {

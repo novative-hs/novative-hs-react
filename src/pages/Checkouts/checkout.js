@@ -265,9 +265,19 @@ class Checkout extends Component {
           });
         }
       }, 1000);
-      setTimeout(() => {
-        this.props.history.push("/nearby-labs");
-    }, 2000)
+      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ) {
+        setTimeout(() => {
+          this.props.history.push("/nearby-labs");
+      }, 4000)
+      } else if (this.state.user_id && this.state.user_type === "CSR"  && this.state.user_type !== "b2bclient") {
+        setTimeout(() => {
+          this.props.history.push("/dashboard-csr");
+      }, 4000)
+      } else if (this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type === "b2bclient") {
+        setTimeout(() => {
+          this.props.history.push("/dashboard-b2bclient");
+      }, 4000)
+      }
     }
   };
 

@@ -86,14 +86,17 @@ class PatientInformation extends Component {
                         </div>
 
                         <div className="mt-4">
-                          {this.props.patient && this.props.patient ? (
-                            <Alert
-                              color="success"
-                              style={{ marginTop: "13px" }}
-                            >
-                              Your Account Register Successfully, Please login your account.{" "}
-                            </Alert>
-                          ) : null}
+                        {this.props.patient && this.state.user_id ? (
+  this.state.user_type === "b2bclient" || this.state.user_type === "CSR" ? (
+    <Alert color="success" style={{ marginTop: "13px" }}>
+      Account Registered Successfully.
+    </Alert>
+  ) : (
+    <Alert color="success" style={{ marginTop: "13px" }}>
+      Your Account Registered Successfully. Please log in to your account.
+    </Alert>
+  )
+) : null}
 
                           {this.props.addPatientError &&
                           this.props.addPatientError ? (

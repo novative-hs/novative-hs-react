@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { isEmpty, map } from "lodash";
 
 import {
   Card,
@@ -11,6 +12,7 @@ import {
   Col,
   Container,
   Row,
+  Table,
   Label,
   Modal,
   ModalBody,
@@ -44,47 +46,7 @@ class PatientsList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      b2bAllClientListColumns: [
-        {
-          dataField: "account_id",
-          text: "Patient ID",
-          sort: true,
-          formatter: (cellContent, patient) => (
-            <>
-              <strong>{patient.account_id}</strong>
-            </>
-          ),
-        },
-        {
-          dataField: "name",
-          text: "Name",
-          sort: true,
-          formatter: (cellContent, patient) => (
-            <>
-              {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-              <Link
-                to={
-                  this.props.match.params.uuid
-                    ? `/nearby-labs/${this.props.match.params.uuid}/${patient.account_id}`
-                    : `/nearby-labs/${patient.account_id}`
-                }
-              >
-                {patient.name}
-              </Link>
-            </>
-          ),
-        },
-        {
-          dataField: "phone",
-          text: "Phone",
-          sort: true,
-        },
-        {
-          dataField: "city",
-          text: "City",
-          sort: true,
-        },
-      ],
+      showNoResultMessage: false,
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -97,19 +59,28 @@ class PatientsList extends Component {
     console.log("guest", this.props.match.params.guest_id)
   }
   handleBlur = () => {
-    // Calling API when focus is out of test name and setting nearby tests array
+    // Reset the showNoResultMessage state to false before performing the search
+    this.setState({ showNoResultMessage: false });
+
+    // Calling API when focus is out of the text name and setting nearby tests array
     const { onGetPatientsList } = this.props;
-    var data = {
+    const data = {
       phone: this.state.phone,
     };
 
     onGetPatientsList(data);
 
     setTimeout(() => {
-      this.setState({ patients: this.props.patients });
-    }, 1000);
+      // Update the patients state with the search results
+      this.setState({ patients: this.props.patients }, () => {
+        // Check if the patients array is empty after the search
+        if (isEmpty(this.props.patients)) {
+          // Show the "Sorry no result found" message immediately
+          this.setState({ showNoResultMessage: true });
+        }
+      });
+    }, 200);
   };
-
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -156,26 +127,7 @@ class PatientsList extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Patients" breadcrumbItem=" List" />
-            <Row>
-              <Col lg="12">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.b2bAllClientListColumns}
-                      data={patients}
-                    >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.b2bAllClientListColumns}
-                          data={patients}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-2 g-0">
+            <Row className="mb-2 g-0">
                                 <Col sm="2" lg="2">
                                   <div className="d-flex flex-column mb-2">
                                     <Label
@@ -216,44 +168,53 @@ class PatientsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                    // filter={ filterFactory() }
-                                    />
-                                    <Modal
-                                      isOpen={this.state.modal}
-                                      className={this.props.className}
-                                    ></Modal>
-                                  </div>
-                                </Col>
-                              </Row>
-                              {/* <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row> */}
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
-                      )}
-                    </PaginationProvider>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
+                       <Card >
+            <CardBody>
+                      <div className="table-responsive">
+                        <Table className="table-nowrap">
+                          <thead>
+                            <tr>
+                              <th className="text-start">Account id</th>
+                              <th className="text-start">Name</th>
+                              <th className="text-start">Phone</th>
+                              <th className="text-start">City</th>
+
+                            </tr>
+                          </thead>
+                          {!isEmpty(patients) &&
+                  patients.map((patient, key) => (
+                    <tr key={"_row_" + key}>
+                      <td className="text-start py-2 pl-3 pr-4">{patient.account_id}</td>
+                      <td className="text-start py-2 pl-3 pr-4">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-labs/${this.props.match.params.uuid}/${patient.account_id}`
+                              : `/nearby-labs/${patient.account_id}`
+                          }
+                        >
+                          {patient.name}
+                        </Link>
+                      </td>
+                      <td className="text-start py-2 pl-3 pr-4">{patient.phone}</td>
+                      <td className="text-start py-2 pl-3 pr-4">{patient.city}</td>
+                    </tr>
+                  ))}
+                  {this.state.showNoResultMessage && (
+              <Row>
+                  <div className=" mb-5">
+                    <h4 className="text-uppercase">
+                      Sorry no result found.
+                    </h4>
+                  </div>
+              </Row>
+            )}
+                        </Table>
+                      </div>
+                         </CardBody>
+                      </Card>
+                     
+                      
           </Container>
         </div>
       </React.Fragment>

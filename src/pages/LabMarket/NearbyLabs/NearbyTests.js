@@ -552,14 +552,14 @@ handleAddToCart = cart => {
 
   setTimeout(() => {
     this.setState({
-      success: "Item added to the cart successfully.",
+      success: this.props.success,
       error: this.props.error
     });
-  }, 1000);
+  }, 100);
   setTimeout(() => {
     window.location.reload()
 
-  }, 2000);
+  }, 400);
 };
 
   // activateParentDropdown = item => {

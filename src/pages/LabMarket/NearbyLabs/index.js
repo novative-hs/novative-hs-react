@@ -208,6 +208,25 @@ class NearbyLabs extends Component {
         }
       }
 
+      // near by labs
+      if (this.state.user_id  || this.state.user_type === "b2bclient") {
+        const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+        };
+        if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+            this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+        }
+      }
+
       // region Wise Advertisement 
       const regionWiseAdvLocationDetails = {
         latitude,
@@ -246,6 +265,24 @@ class NearbyLabs extends Component {
             this.setState({ advLives: this.props.advLives });
           }, 500);
         }
+              // near by labs
+      if (this.state.user_id || this.state.user_type === "b2bclient") {
+        const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+        };
+        if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+            this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+        }
+      }
 
         // near by labs
         if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
@@ -1717,6 +1754,17 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             }
                           >
+                            {/* <div className="product-img position-relative">
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                           
+                              className="img-thumbnail mx-auto d-block rounded"
+                              />
+                          </div> */}
                             <div style={{
                               width: '200px',
                               height: '100px',

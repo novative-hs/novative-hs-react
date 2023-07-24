@@ -539,13 +539,15 @@ class nearbyRadiology extends Component {
     }
 
     setTimeout(() => {
-      this.setState({ success: "Item added to the cart successfully.", });
-      this.setState({ error: this.props.error });
-    }, 1000);
+      this.setState({
+        success: this.props.success,
+        error: this.props.error
+      });
+    }, 100);
     setTimeout(() => {
       window.location.reload()
   
-    }, 2000);
+    }, 400);
   };
 
   onChangeKm = e => {
