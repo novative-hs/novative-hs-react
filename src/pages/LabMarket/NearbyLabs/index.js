@@ -1783,8 +1783,8 @@ class NearbyLabs extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-3 text-truncate">
-                            <a
-                href="https://www.labhazir.com/nearby-labs/a8651a5f-4f7c-47ab-81fa-fa4199a4bef3"
+                                                          <a
+                href="https://infinityhealthpk.com/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
