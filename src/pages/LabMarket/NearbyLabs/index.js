@@ -1783,7 +1783,14 @@ class NearbyLabs extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-3 text-truncate">
-                              <Link
+                            <a
+                href="https://www.labhazir.com/nearby-labs/a8651a5f-4f7c-47ab-81fa-fa4199a4bef3"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {nearbyLab.name}{" "}
+              </a>
+                              {/* <Link
                                 to={
                                   this.props.match.params.uuid
                                     ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
@@ -1792,7 +1799,7 @@ class NearbyLabs extends Component {
                                 className="text-dark"
                               >
                                 {nearbyLab.name}{" "}
-                              </Link>
+                              </Link> */}
                             </h5>
 
                             {nearbyLab.opening_time &&
@@ -1897,11 +1904,11 @@ class NearbyLabs extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-3 text-truncate">
-                              <Link
+                            <Link
                                 to={
                                   this.props.match.params.uuid
-                                    ? `https://www.labhazir.com/nearby-labs/a8651a5f-4f7c-47ab-81fa-fa4199a4bef3`
-                                    : `https://www.labhazir.com/nearby-labs/a8651a5f-4f7c-47ab-81fa-fa4199a4bef3`
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}`
                                 }
                                 className="text-dark"
                               >
