@@ -1783,14 +1783,7 @@ class NearbyLabs extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-3 text-truncate">
-                                                          <a
-                href="https://infinityhealthpk.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {nearbyLab.name}{" "}
-              </a>
-                              {/* <Link
+                              <Link
                                 to={
                                   this.props.match.params.uuid
                                     ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
@@ -1799,7 +1792,7 @@ class NearbyLabs extends Component {
                                 className="text-dark"
                               >
                                 {nearbyLab.name}{" "}
-                              </Link> */}
+                              </Link>
                             </h5>
 
                             {nearbyLab.opening_time &&
