@@ -1900,8 +1900,8 @@ class NearbyLabs extends Component {
                               <Link
                                 to={
                                   this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyLab.account_id}`
+                                    ? `https://www.labhazir.com/nearby-labs/a8651a5f-4f7c-47ab-81fa-fa4199a4bef3`
+                                    : `https://www.labhazir.com/nearby-labs/a8651a5f-4f7c-47ab-81fa-fa4199a4bef3`
                                 }
                                 className="text-dark"
                               >
