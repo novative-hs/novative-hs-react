@@ -555,11 +555,11 @@ handleAddToCart = cart => {
       success: this.props.success,
       error: this.props.error
     });
-  }, 500);
+  }, 100);
   setTimeout(() => {
     window.location.reload()
 
-  }, 1000);
+  }, 400);
 };
 
   // activateParentDropdown = item => {

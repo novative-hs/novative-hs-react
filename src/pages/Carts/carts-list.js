@@ -35,8 +35,10 @@ class CartList extends Component {
     this.node = React.createRef();
     this.state = {
       carts: [],
+      isMenuOpened: false,
       cart: "",
       abc: "",
+      isDropdownOpen: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -77,8 +79,7 @@ class CartList extends Component {
           formatter: (cellContent, cart) => (
             <>
               {(
-                                  <span>{cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-
+              <span>{cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               )}
             </>
           ),
@@ -361,8 +362,19 @@ class CartList extends Component {
 
     this.toggle();
   };
+  toggleDropdown = () => {
+    this.setState((prevState) => ({
+      isDropdownOpen: !prevState.isDropdownOpen,
+    }));
+  };
+  openMenu = () => {
+    this.setState({ isMenuOpened: !this.state.isMenuOpened });
+    console.log(this.state.isMenuOpened)
+  };
 
   render() {
+    const { isDropdownOpen } = this.state;
+
     const { SearchBar } = Search;
 
     const { carts } = this.props;
@@ -484,7 +496,7 @@ class CartList extends Component {
               {!this.state.user_id
                 ? (
                   <Collapse
-                    isOpen={this.props.menuOpen}
+                    isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
                     id="topnav-menu-content"
                   >
@@ -697,7 +709,7 @@ class CartList extends Component {
                 ) : 
                 this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type !== "b2bclient" ? (
                   <Collapse
-                    isOpen={this.props.menuOpen}
+                    isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
                     id="topnav-menu-content"
                   >
@@ -968,7 +980,7 @@ class CartList extends Component {
                 type="button"
                 className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                 data-toggle="collapse"
-                onClick={this.toggleMenu}
+                onClick={this.openMenu}
                 data-target="#topnav-menu-content"
               >
                 <i className="fa fa-fw fa-bars" />
@@ -1033,63 +1045,70 @@ class CartList extends Component {
                 </div>
               )
                : this.state.user_type == "patient" ? (
-                <div className="dropdown">
-                  <Link
-                    // to={"/profile"}
-                    to={
-                      this.props.match.params.uuid
-                        ? `/profile/${this.props.match.params.uuid}`
-                        : `/profile`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-account-box align-middle me-1 font-size-20" />{" "}
-                    <span className="pt-4 font-size-12">
-                      {this.state.patient_name}
-                      {/* .split(" ")[0]} */}
-                    </span>
-                  </Link>
+                <div className="dropdown d-lg-inline-block ms-4 mt-2">
+                <Link
+                  // to={"/profile"}
+                  to={
+                    this.props.match.params.uuid
+                      ? `/profile/${this.props.match.params.uuid}`
+                      : `/profile`
+                  }
+                  className="dropdown-content me-2 text-light"
+                >
+                  <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
+                  <span className="pt-4 font-size-12">
+                    {this.state.patient_name.split(" ")[0]}                    
+                  </span>
+                </Link>{" "}
+                <button
+                  className="btn header-items noti-icon right-bar-toggle"
+                  style={{ position: 'relative' }}
+                  onClick={this.toggleDropdown}
+                >
+                  <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
+                </button>
 
-                  <Link
-                    to="/change-password"
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-key align-middle me-1 font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Cart</span> */}
-                  </Link>
-                  <Link
-                    to="/contact-us"
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Cart</span> */}
-                  </Link>
-                
-                  <Link
-                      to={
-                        this.props.match.params.uuid
-                        ? `/cart/${this.props.match.params.uuid}`
-                        : `/cart`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle d-none"
-                  >
-                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                        {!isEmpty(this.props.carts) &&
-                        
-                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                          }
-                  </Link>
-          
-
-                  <Link
-                    to="/logout"
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-power align-middle font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Logout</span> */}
-                  </Link>
-                </div>
+                {isDropdownOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50px', // Adjust this value to set the distance between the button and the dropdown
+                    right: '20px',
+                    backgroundColor: '#f9f9f9',
+                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                    padding: '10px',
+                    minWidth: '150px',
+                    zIndex: 1,
+                  }}>
+                    <ul style={{ listStyleType: "none", padding: '2px' }}>
+                      <li>
+                        <Link to="/change-password" className="dropdown-content me-2 text-light">
+                          <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                          <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                            Password
+                          </span>
+                          <hr style={{margin: '0 0' }} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/contact-us" className="dropdown-content me-2 text-light">
+                          <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                          <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                            Contact Us                  </span>
+                          <hr style={{ margin: '0 0' }} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/logout" className="dropdown-content text-light">
+                          <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
+                          <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                            Log Out                    
+                          </span>
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
               ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (
@@ -1177,74 +1196,72 @@ class CartList extends Component {
             </div>
           </div>
         </header>
+
         <div className="page-content">
           <MetaTags>
             <title>Carts List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
-            {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Carts" breadcrumbItem="Carts List" />
-            <Row>
-              <Col lx="12">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
+        <Breadcrumbs title="Carts" breadcrumbItem="Carts List" />
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody>
+                <PaginationProvider
+                  pagination={paginationFactory(pageOptions)}
+                  keyField="id"
+                  columns={this.state.cartListColumns}
+                  data={carts}
+                >
+                  {({ paginationProps, paginationTableProps }) => (
+                    <ToolkitProvider
                       keyField="id"
                       columns={this.state.cartListColumns}
                       data={carts}
+                      search
                     >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.cartListColumns}
-                          data={carts}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                    />
-                                  </div>
-                                </Col>
-                              </Row>
-                              {/* <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row> */}
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
+                      {(toolkitprops) => (
+                        <React.Fragment>
+                          <Row className="mb-2">
+                            <Col sm="4">
+                              <div className="search-box ms-2 mb-2 d-inline-block">
+                                <div className="position-relative">
+                                  <SearchBar {...toolkitprops.searchProps} />
+                                  <i className="bx bx-search-alt search-icon" />
+                                </div>
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col xl="12">
+                              <div className="table-responsive">
+                                <BootstrapTable
+                                  {...toolkitprops.baseProps}
+                                  {...paginationTableProps}
+                                  defaultSorted={defaultSorted}
+                                  classes={"table align-middle table-hover table-responsive"} // Added responsive class here
+                                  bordered={false}
+                                  striped={true}
+                                  headerWrapperClasses={"table-light"}
+                                  responsive
+                                  ref={this.node}
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row className="align-items-md-center mt-30">
+                            <Col className="pagination pagination-rounded justify-content-end mb-2">
+                              <PaginationListStandalone
+                                {...paginationProps}
+                              />
+                            </Col>
+                          </Row>
+                        </React.Fragment>
                       )}
-                    </PaginationProvider>
-                    <Row className="mt-4">
+                    </ToolkitProvider>
+                  )}
+                </PaginationProvider>
+                <Row className="mt-4">
                       <Col sm="6">
                         <button
                           to="/dashboard-patient/:id/nearby-labs"
@@ -1274,11 +1291,11 @@ class CartList extends Component {
                         </div>
                       </Col>
                     </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
         </div>
       </React.Fragment>
     );

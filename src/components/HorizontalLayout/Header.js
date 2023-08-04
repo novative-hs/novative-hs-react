@@ -32,6 +32,7 @@ class Header extends Component {
       open: false,
       count: 0,
       carts: [],
+      isDropdownOpen: false,
       cart: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -161,7 +162,13 @@ class Header extends Component {
       }
     }
   }
+  toggleDropdown = () => {
+    this.setState((prevState) => ({
+      isDropdownOpen: !prevState.isDropdownOpen,
+    }));
+  };
   render() {
+    const { isDropdownOpen } = this.state;
     const isLargeScreen = window.innerWidth > 992;
     return (
       <React.Fragment>
@@ -213,7 +220,7 @@ class Header extends Component {
                   className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                   style={{ left: '12px' }} // Set left position to 10 pixels
                   data-toggle="collapse"
-                  onClick={this.openMenu}
+                  onClick={this.toggleMenu}
                   data-target="#topnav-menu-content"
                 >
                   <i className="fa fa-fw fa-bars" />
@@ -223,7 +230,7 @@ class Header extends Component {
                 type="button"
                 className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                 data-toggle="collapse"
-                onClick={this.openMenu}
+                onClick={this.toggleMenu}
                 data-target="#topnav-menu-content"
               >
                 <i className="fa fa-fw fa-bars" />
@@ -287,63 +294,86 @@ class Header extends Component {
                   </Link> */}
                 </div>
               ) : this.state.user_type == "patient" ? (
-                <div className="dropdown">
-                  <Link
-                    // to={"/profile"}
-                    to={
-                      this.props.match.params.uuid
-                        ? `/profile/${this.props.match.params.uuid}`
-                        : `/profile`
-                    }
-                    className="dropdown-content me-2 text-light"
-                  >
-                    <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
-                    <span className="pt-4 font-size-12">
-                      {console.log("patient name", this.state.patient_name)}
-                    </span>
-                  </Link>{" "}
+                <div className="dropdown d-lg-inline-block ms-4 mt-2">
+                    <Link
+                      // to={"/profile"}
+                      to={
+                        this.props.match.params.uuid
+                          ? `/profile/${this.props.match.params.uuid}`
+                          : `/profile`
+                      }
+                      className="dropdown-content me-2 text-light"
+                    >
+                      <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
+                      <span className="pt-4 font-size-12">
+                        {this.state.patient_name.split(" ")[0]}                    
+                      </span>
+                    </Link>{" "}
+                    <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/cart/${this.props.match.params.uuid}`
+                          : `/cart`
+                      }
+                      className="dropdown-content me-2 text-light"
+                    >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                  <Link
-                    to="/change-password"
-                    className="dropdown-content me-2 text-light"
-                  >
-                    <i className="mdi mdi-key align-middle me-1 font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Cart</span> */}
-                  </Link>{" "}
-                  <Link
-                    to="/contact-us"
-                    className="dropdown-content me-2 text-light"
-                  >
-                    <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Cart</span> */}
-                  </Link>
-                  {" "}
+                      {!isEmpty(this.props.carts) &&
 
-                  <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/cart/${this.props.match.params.uuid}`
-                        : `/cart`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+                        this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                      }
+                    </Link>
+                    
+                    <button
+                      className="btn header-items noti-icon right-bar-toggle"
+                      style={{ position: 'relative' }}
+                      onClick={this.toggleDropdown}
+                    >
+                      <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
+                    </button>
 
-                    {!isEmpty(this.props.carts) &&
-
-                      this.props.carts.slice(-1).pop().cart_quantity + this.state.count
-                    }
-                  </Link>
-
-                  <Link
-                    to="/logout"
-                    className="dropdown-content me-2 text-light"
-                  >
-                    <i className="mdi mdi-power align-middle font-size-20" />{" "}
-                    {/* <span className="pt-4 font-size-12">Logout</span> */}
-                  </Link>
-                  {" "}
-                </div>
+                    {isDropdownOpen && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '50px', // Adjust this value to set the distance between the button and the dropdown
+                        right: '20px',
+                        backgroundColor: '#f9f9f9',
+                        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                        padding: '10px',
+                        minWidth: '150px',
+                        zIndex: 1,
+                      }}>
+                        <ul style={{ listStyleType: "none", padding: '2px' }}>
+                          <li>
+                            <Link to="/change-password" className="dropdown-content me-2 text-light">
+                              <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                                Password
+                              </span>
+                              <hr style={{margin: '0 0' }} />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/contact-us" className="dropdown-content me-2 text-light">
+                              <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                                Contact Us                  </span>
+                              <hr style={{ margin: '0 0' }} />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/logout" className="dropdown-content text-light">
+                              <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
+                              <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                                Log Out                    
+                              </span>
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
               ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (

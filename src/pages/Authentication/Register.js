@@ -92,6 +92,7 @@ class Register extends Component {
   };
 
   render() {
+    const isLargeScreen = window.innerWidth > 470;
     if (this.props.userID) {
       if (this.props.userAccountType == "patient") {
         if (!this.props.match.params.uuid) {
@@ -145,16 +146,16 @@ class Register extends Component {
           />
         );
       }
-     else if (this.props.userAccountType == "donor") {
-      return (
-        <Redirect
-          to={{
-            pathname: "/donor-information/" + this.props.userID,
-            state: { redirectState: null }, // sending state so that corporate page doesn't redirect back to register
-          }}
-        />
-      );
-    }
+      else if (this.props.userAccountType == "donor") {
+        return (
+          <Redirect
+            to={{
+              pathname: "/donor-information/" + this.props.userID,
+              state: { redirectState: null }, // sending state so that corporate page doesn't redirect back to register
+            }}
+          />
+        );
+      }
     }
 
     return (
@@ -263,7 +264,7 @@ class Register extends Component {
                             onSubmit={values => {
                               this.props.registerUser(values);
                               // console.log(window.location.href)
-                              window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                              window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                               // If no error messages then show wait message
                               setTimeout(() => {
                                 if (
@@ -302,7 +303,7 @@ class Register extends Component {
                                     className={
                                       "form-control" +
                                       ((errors.username && touched.username) ||
-                                      this.state.usernameFieldError
+                                        this.state.usernameFieldError
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -352,101 +353,127 @@ class Register extends Component {
                                 {/* Password field */}
 
                                 <div className="mb-3">
-  <Label className="form-label">Password</Label>
-  <div>
-    <div className="input-group auth-pass-inputgroup">
-      <Field
-        name="password"
-        type="password"
-        placeholder="Enter password"
-        autoComplete="on"
-        onFocus={() => {
-          this.setState({
-            passwordFieldError: null,
-          });
-        }}
-        className={
-          "form-control" +
-          ((errors.password && touched.password) || this.state.passwordFieldError
-            ? " is-invalid"
-            : "")
-        }
-      />
-      <button
-        className="btn btn-light"
-        type="button"
-        id="password-addon"
-        onClick={this.togglePasswordVisibility}
-      >
-        <i id="eye-icon" className="mdi mdi-eye-outline"></i>
-      </button>
-    </div>
-    <ErrorMessage
-      name="password"
-      component="div"
-      className="invalid-feedback"
-    />
+                                  <Label className="form-label">Password</Label>
+                                  <div>
+                                    <div className="input-group auth-pass-inputgroup">
+                                      <Field
+                                        name="password"
+                                        type="password"
+                                        placeholder="Enter password"
+                                        autoComplete="on"
+                                        onFocus={() => {
+                                          this.setState({
+                                            passwordFieldError: null,
+                                          });
+                                        }}
+                                        className={
+                                          "form-control" +
+                                          ((errors.password && touched.password) || this.state.passwordFieldError
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <button
+                                        className="btn btn-light"
+                                        type="button"
+                                        id="password-addon"
+                                        onClick={this.togglePasswordVisibility}
+                                      >
+                                        <i id="eye-icon" className="mdi mdi-eye-outline"></i>
+                                      </button>
+                                    </div>
+                                    <ErrorMessage
+                                      name="password"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
 
-    <div className="invalid-feedback">
-      {this.state.passwordFieldError}
-    </div>
-  </div>
-  <div className="mt-2">
-    <div className="input-group auth-pass-inputgroup">
-      <Field
-        name="password2"
-        type="password"
-        placeholder="Re-enter password"
-        autoComplete="on"
-        className={
-          "form-control" +
-          (errors.password2 && touched.password2 ? " is-invalid" : "")
-        }
-      />
-      <button
-        className="btn btn-light"
-        type="button"
-        id="password2-addon" // Unique ID for the eye icon of password2
-        onClick={this.togglePassword2Visibility} // Updated function name
-      >
-        <i id="eye-icon2" className="mdi mdi-eye-outline"></i> {/* Updated ID for the eye icon */}
-      </button>
-    </div>
-    <ErrorMessage
-      name="password2"
-      component="div"
-      className="invalid-feedback"
-    />
-  </div>
-</div>
+                                    <div className="invalid-feedback">
+                                      {this.state.passwordFieldError}
+                                    </div>
+                                  </div>
+                                  <div className="mt-2">
+                                    <div className="input-group auth-pass-inputgroup">
+                                      <Field
+                                        name="password2"
+                                        type="password"
+                                        placeholder="Re-enter password"
+                                        autoComplete="on"
+                                        className={
+                                          "form-control" +
+                                          (errors.password2 && touched.password2 ? " is-invalid" : "")
+                                        }
+                                      />
+                                      <button
+                                        className="btn btn-light"
+                                        type="button"
+                                        id="password2-addon" // Unique ID for the eye icon of password2
+                                        onClick={this.togglePassword2Visibility} // Updated function name
+                                      >
+                                        <i id="eye-icon2" className="mdi mdi-eye-outline"></i> {/* Updated ID for the eye icon */}
+                                      </button>
+                                    </div>
+                                    <ErrorMessage
+                                      name="password2"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </div>
 
-                               
+
+                                {isLargeScreen ? (
+                                  <div className="mb-3">
+                                    <Label
+                                      for="account_type"
+                                      className="form-label"
+                                    >
+                                      Account type
+                                    </Label>
+                                    <Field
+                                      name="account_type"
+                                      component="select"
+                                      className="form-select"
+                                    >
+                                      <option value="patient">Patient</option>
+                                      <option value="labowner">Lab</option>
+                                      <option value="b2bclient">
+                                        B2B Client
+                                      </option>
+                                      <option value="donor">
+                                        Donor
+                                      </option>
+                                      {/* <option value="corporate">Corporate</option> */}
+                                    </Field>
+                                  </div>
+                                ) :
+                                  <div className="mb-3">
+                                    <Label
+                                      for="account_type"
+                                      className="form-label"
+                                    >
+                                      Account type
+                                    </Label>
+                                    <Field
+                                    name="account_type"
+                                    value="patient"
+                                    className={
+                                      "form-control" +
+                                      (errors.account_type && touched.account_type
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                    readOnly // Add the readOnly attribute here
+                                  />
+                                  <ErrorMessage
+                                    name="account_type"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                  </div>}
 
                                 {/* Account type field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="account_type"
-                                    className="form-label"
-                                  >
-                                    Account type
-                                  </Label>
-                                  <Field
-                                    name="account_type"
-                                    component="select"
-                                    className="form-select"
-                                  >
-                                    <option value="patient">Patient</option>
-                                    <option value="labowner">Lab</option>
-                                    <option value="b2bclient">
-                                      B2B Client
-                                    </option>
-                                    <option value="donor">
-                                      Donor
-                                    </option>
-                                    {/* <option value="corporate">Corporate</option> */}
-                                  </Field>
-                                </div>
-                  
+
                                 <div className="mt-3 d-grid">
                                   <button
                                     className="btn btn-primary btn-block"

@@ -164,7 +164,7 @@ class Checkout extends Component {
           this.state.is_state_sampling_availed
         );
       }, 1000);
-    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+    } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(
           this.props.match.params.guest_id,
@@ -236,18 +236,18 @@ class Checkout extends Component {
 
       // API call to get the checkout items
       const { onAddCheckoutData } = this.props;
-      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ) {
+      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           onAddCheckoutData(this.state.checkoutData, this.state.user_id);
         }, 2000);
-      } else if (this.state.user_id && this.state.user_type === "CSR"  && this.state.user_type !== "b2bclient") {
+      } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           onAddCheckoutData(
             this.state.checkoutData,
             this.props.match.params.id
           );
         }, 2000);
-      } else if (this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type === "b2bclient") {
+      } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
         setTimeout(() => {
           onAddCheckoutData(
             this.state.checkoutData,
@@ -265,18 +265,18 @@ class Checkout extends Component {
           });
         }
       }, 1000);
-      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ) {
+      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/nearby-labs");
-      }, 4000)
-      } else if (this.state.user_id && this.state.user_type === "CSR"  && this.state.user_type !== "b2bclient") {
+        }, 4000)
+      } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/dashboard-csr");
-      }, 4000)
-      } else if (this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type === "b2bclient") {
+        }, 4000)
+      } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/dashboard-b2bclient");
-      }, 4000)
+        }, 4000)
       }
     }
   };
@@ -456,8 +456,8 @@ class Checkout extends Component {
     }
   };
 
-  
-  
+
+
 
   componentDidMount() {
     const { onGetDonationCheck } = this.props;
@@ -469,7 +469,7 @@ class Checkout extends Component {
       setTimeout(() => {
         onGetDonationCheck(this.props.match.params.id);
       }, 1000);
-    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+    } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
       setTimeout(() => {
         onGetDonationCheck(this.props.match.params.guest_id);
       }, 1000);
@@ -478,7 +478,7 @@ class Checkout extends Component {
     console.log("heeeeeee", this.props.donationCheck);
     // API call to get the home sampled tests
     const { onGetHomeSampledTests } = this.props;
-    if (this.state.user_id && this.state.user_type !== "CSR"&& this.state.user_type !== "b2bclient") {
+    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
         onGetHomeSampledTests(this.state.user_id);
       }, 1000);
@@ -486,7 +486,7 @@ class Checkout extends Component {
       setTimeout(() => {
         onGetHomeSampledTests(this.props.match.params.id);
       }, 1000);
-    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+    } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
       setTimeout(() => {
         onGetHomeSampledTests(this.props.match.params.guest_id);
       }, 1000);
@@ -503,7 +503,7 @@ class Checkout extends Component {
       setTimeout(() => {
         onGetCheckoutItems(this.props.match.params.id);
       }, 1000);
-    }else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+    } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
       setTimeout(() => {
         onGetCheckoutItems(this.props.match.params.guest_id);
       }, 1000);
@@ -565,7 +565,7 @@ class Checkout extends Component {
             expiry_date,
             cvv_code
           } = this.state;
-  
+
           // Check if all the required fields for card payment are filled
           if (card_number && name_on_card && expiry_date && cvv_code) {
             // Delay the switch to Tab 4 by 2 seconds
@@ -582,13 +582,14 @@ class Checkout extends Component {
       }
     );
   };
-  
-  
-  
-  
+
+
+
+
 
   render() {
     // list of city from territories
+    const isLargeScreen = window.innerWidth > 645;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -682,7 +683,7 @@ class Checkout extends Component {
                     <Card>
                       <CardBody>
                         <TabContent activeTab={this.state.activeTab}>
-                          <TabPane tabId="1">
+                          {/* <TabPane tabId="1">
                             <div>
                               <CardTitle className="h4">
                                 Patient information
@@ -799,35 +800,6 @@ class Checkout extends Component {
                                     </select>
                                   </Col>
                                 </FormGroup>
-                                {/* 
-                              <FormGroup className="mb-4" row>
-                                <Label
-                                  htmlFor="patient-name"
-                                  md="2"
-                                  className="col-form-label"
-                                >
-                                  Address
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                  <Input
-                                    type="text"
-                                    className="form-control"
-                                    name="patient_address"
-                                    placeholder="Enter your complete address"
-                                    onChange={e =>
-                                      this.setState({
-                                        patient_address: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Col>
-                              </FormGroup> */}
                                 <FormGroup className="mb-4" row>
                                   <Label
                                     htmlFor="patient-name"
@@ -903,12 +875,6 @@ class Checkout extends Component {
                                       onClick={this.handleProceedClick}
                                       to="/checkout"
                                       className="btn btn-success mb-4"
-                                    // component={Link}
-                                    // onClick={() => {
-                                    //   this.toggleTab("2");
-                                    // }}
-                                    // to="/checkout"
-                                    // className="btn btn-success mb-4"
                                     >
                                       <i className="mdi mdi-truck-fast me-1" />{" "}
                                       Next{" "}
@@ -917,9 +883,185 @@ class Checkout extends Component {
                                 </Col>
                               </Row>
                             </div>
+                          </TabPane> */}
+
+                          <TabPane tabId="1">
+                            <div>
+                              <CardTitle className="h4">Patient information</CardTitle>
+                              <p className="card-title-desc">
+                                Fill all the information for the patient below
+                              </p>
+                              <Container>
+                                <Form>
+                                  <FormGroup className="mb-4" row>
+                                    <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                      Patient Name
+                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md="10">
+                                      <Input
+                                        type="text"
+                                        className="form-control"
+                                        name="patient_name"
+                                        placeholder="Enter your name"
+                                        onChange={(e) =>
+                                          this.setState({ patient_name: e.target.value })
+                                        }
+                                      />
+                                    </Col>
+                                  </FormGroup>
+
+                                  <FormGroup className="mb-4" row>
+                                    <Label md="2" className="col-form-label">
+                                      Patient Phone
+                                      <span
+                                        style={{ color: "#f46a6a" }}
+                                        className="font-size-18"
+                                      >
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md={10}>
+                                      <input
+                                        type="text"
+                                        className="form-control"
+                                        name="patient_phone"
+                                        placeholder="Enter Contact no of Patient"
+                                        onChange={e =>
+                                          this.setState({
+                                            patient_phone: e.target.value,
+                                          })
+                                        }
+                                      />
+                                    </Col>
+                                  </FormGroup>
+
+                                  <FormGroup className="mb-4" row>
+                                    <Label md="2" className="col-form-label">
+                                      Patient Age
+                                      <span
+                                        style={{ color: "#f46a6a" }}
+                                        className="font-size-18"
+                                      >
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md={10}>
+                                      <input
+                                        type="number"
+                                        className="form-control"
+                                        name="patient_age"
+                                        min="0"
+                                        max="150"
+                                        placeholder="Enter your age"
+                                        onChange={e =>
+                                          this.setState({
+                                            patient_age: e.target.value,
+                                          })
+                                        }
+                                      />
+                                    </Col>
+                                  </FormGroup>
+
+                                  <FormGroup className="mb-4" row>
+                                    <Label md="2" className="col-form-label">
+                                      Patient Gender
+                                      <span
+                                        style={{ color: "#f46a6a" }}
+                                        className="font-size-18"
+                                      >
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md="10">
+                                      <select
+                                        className="form-control select2"
+                                        title="Gender"
+                                        name="patient_gender"
+                                        onChange={e =>
+                                          this.setState({
+                                            patient_gender: e.target.value,
+                                          })
+                                        }
+                                      >
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                      </select>
+                                    </Col>
+                                  </FormGroup>
+
+                                  <FormGroup className="mb-4" row>
+                                    <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                      City
+                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md="10">
+                                      <Select
+                                        name="city_id"
+                                        component="Select"
+                                        onChange={(selectedGroup) =>
+                                          this.setState({ city_id: selectedGroup.value })
+                                        }
+                                        className="defautSelectParent"
+                                        options={cityList}
+                                        defaultValue={{
+                                          label: this.state.city,
+                                          value: this.state.id,
+                                        }}
+                                        placeholder="Select City..."
+                                      />
+                                    </Col>
+                                  </FormGroup>
+
+                                  <FormGroup className="mb-4" row>
+                                    <Label md="12" className="col-form-label">
+                                      Please select a suitable date and time for the appointment?
+                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md="12">
+                                      <Input
+                                        name="appointment_requested_at"
+                                        type="datetime-local"
+                                        min={new Date(
+                                          new Date().toString().split("GMT")[0] + " UTC"
+                                        )
+                                          .toISOString()
+                                          .slice(0, -8)}
+                                        className="form-control"
+                                        onChange={(e) =>
+                                          this.setState({ appointment_requested_at: e.target.value })
+                                        }
+                                      />
+                                    </Col>
+                                  </FormGroup>
+                                </Form>
+                              </Container>
+                              <Row className="mt-4">
+                                <Col sm="6"></Col>
+                                <Col sm="6">
+                                  <div className="text-end">
+                                    <button
+                                      component={Link}
+                                      onClick={this.handleProceedClick}
+                                      to="/checkout"
+                                      className="btn btn-success mb-4"
+                                    >
+                                      <i className="mdi mdi-truck-fast me-1" /> Next
+                                    </button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
                           </TabPane>
 
-                          <TabPane
+                          {/* <TabPane
                             tabId="2"
                             id="v-pills-payment"
                             role="tabpanel"
@@ -1129,7 +1271,323 @@ class Checkout extends Component {
                                 </Col>
                               </Row>
                             </div>
+                          </TabPane> */}
+                          <TabPane
+                            tabId="2"
+                            id="v-pills-payment"
+                            role="tabpanel"
+                            aria-labelledby="v-pills-payment-tab"
+                          >
+                            <div className="container">
+                              <div className="row">
+                                <div className="col-md-12">
+                                  <CardTitle className="h4">Home Sampled Tests</CardTitle>
+                                  <p className="card-title-desc">
+                                    Please choose whether you want to avail home sampling services for the following tests
+                                  </p>
+
+                                  <FormGroup className="mb-4">
+                                    <select
+                                      className="form-control select2"
+                                      title="home-sampling"
+                                      name="is_home_sampling_availed"
+                                      onChange={this.handleHomeSamplingChange}
+                                    >
+                                      <option value="">Please Select</option>
+                                      <option value="Yes">Yes</option>
+                                      <option value="No">No</option>
+                                    </select>
+                                  </FormGroup>
+
+                                  {this.state.is_home_sampling_availed === "Yes" && (
+                                    <>
+                                      <FormGroup className="mb-4" row>
+                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                          Address
+                                          <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
+                                        </Label>
+                                        <Col md="10">
+                                          <Input
+                                            type="text"
+                                            className="form-control"
+                                            name="patient_address"
+                                            placeholder="Enter your complete address"
+                                            onChange={(e) =>
+                                              this.setState({
+                                                patient_address: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </Col>
+                                      </FormGroup>
+
+                                      <FormGroup className="mb-4" row>
+                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                          Urgent Sampling
+                                          <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
+                                        </Label>
+                                        <Col md="10">
+                                          <select
+                                            className="form-control select2"
+                                            title="state-sampling"
+                                            name="is_state_sampling_availed"
+                                            onChange={this.handleStateSamplingChange}
+                                          >
+                                            <option value="">Please Select</option>
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
+                                          </select>
+                                          <span className="text-primary font-size-12">
+                                            <strong>
+                                              Note: Please choose whether you want to avail Urgent sampling service, this will include extra charges.
+                                            </strong>
+                                          </span>
+                                        </Col>
+                                      </FormGroup>
+                                    </>
+                                  )}
+
+                                  {/* <div className="table-responsive"> */}
+                                  {isLargeScreen ? (
+                                    // <Table>
+                                    //   <thead className="table-light">
+                                    //     <tr>
+                                    //       <th>Home Sampling Offered</th>
+                                    //       <th>Test name</th>
+                                    //       <th>Lab name</th>
+                                    //     </tr>
+                                    //   </thead>
+                                    //   <tbody>
+                                    //     {this.state.homeSampledTests.map((homeSampledTest, key) => (
+                                    //       <tr key={"_homeSampledTest_" + key}>
+                                    //         <td>{homeSampledTest.is_home_sampling_available}</td>
+                                    //         <td>
+                                    //           <h6>
+                                    //             <a href="/ecommerce-product-details/1" className="text-dark">
+                                    //               {homeSampledTest.test_name}
+                                    //             </a>
+                                    //           </h6>
+                                    //         </td>
+                                    //         <td>{homeSampledTest.lab_name}</td>
+                                    //       </tr>
+                                    //     ))}
+                                    //   </tbody>
+                                    // </Table>
+                                    <Table>
+                                      <Thead className="table-light">
+                                        <Tr>
+                                          <Th scope="col">Home Sampling Offered</Th>
+                                          <Th scope="col">Test name</Th>
+                                          <Th scope="col">Lab name</Th>
+                                        </Tr>
+                                      </Thead>
+                                      <Tbody>
+                                        {this.state.homeSampledTests.map(
+                                          (homeSampledTest, key) => (
+                                            <Tr key={"_homeSampledTest_" + key}>
+                                              <p className="font-size-14 float-start">
+                                                <Td>
+                                                  {
+                                                    homeSampledTest.is_home_sampling_available
+                                                  }
+                                                </Td>
+                                              </p>
+
+                                              <Td>
+                                                <h5 className="font-size-14 float-start">
+                                                  <a
+                                                    href="/ecommerce-product-details/1"
+                                                    className="text-dark"
+                                                  >
+                                                    {homeSampledTest.test_name}{" "}
+                                                  </a>
+                                                </h5>
+                                              </Td>
+                                              <p className="font-size-14 float-start">
+                                                <Td>{homeSampledTest.lab_name}</Td>
+                                              </p>
+                                            </Tr>
+                                          )
+                                        )}
+                                      </Tbody>
+                                    </Table>
+                                  ) : (
+                                    <Table>
+                                      <Thead className="table-light">
+                                        <Tr>
+                                          <Th style={{ fontSize: "8px" }} scope="col">Home Sampling Offered</Th>
+                                          <Th style={{ fontSize: "8px" }} scope="col">Test name</Th>
+                                          <Th style={{ fontSize: "8px" }} scope="col">Lab name</Th>
+                                        </Tr>
+                                      </Thead>
+                                      <Tbody>
+                                        {this.state.homeSampledTests.map(
+                                          (homeSampledTest, key) => (
+                                            <Tr key={"_homeSampledTest_" + key}>
+                                              {/* <p className="float-start"  style={{ fontSize: "4px" }}> */}
+                                              <Td style={{ fontSize: "6px" }}>
+                                                {
+                                                  homeSampledTest.is_home_sampling_available
+                                                }
+                                              </Td>
+                                              {/* </p> */}
+
+                                              <Td style={{ fontSize: "6px" }}>
+                                                {/* <h5 className="font-size-14 float-start"> */}
+                                                <a
+                                                  href="/ecommerce-product-details/1"
+                                                  className="text-dark"
+                                                >
+                                                  {homeSampledTest.test_name}{" "}
+                                                </a>
+                                                {/* </h5> */}
+                                              </Td>
+                                              {/* <p className="font-size-14 float-start"> */}
+                                              <Td style={{ fontSize: "6px" }}>{homeSampledTest.lab_name}</Td>
+                                              {/* </p> */}
+                                            </Tr>
+                                          )
+                                        )}
+                                      </Tbody>
+                                    </Table>
+                                    // <Table>
+                                    //   <thead className="table-light">
+                                    //     <tr>
+                                    //       <th style={{ fontSize: "4px" }}>Home Sampling Offered</th>
+                                    //       <th style={{ fontSize: "4px" }}>Test name</th>
+                                    //       <th style={{ fontSize: "4px" }}>Lab name</th>
+                                    //     </tr>
+                                    //   </thead>
+                                    //   <tbody>
+                                    //     {this.state.homeSampledTests.map((homeSampledTest, key) => (
+                                    //       <tr key={"_homeSampledTest_" + key}>
+                                    //         <td style={{ fontSize: "4px" }}>{homeSampledTest.is_home_sampling_available}</td>
+                                    //         <td style={{ fontSize: "4px" }}>
+                                    //           <h6>
+                                    //             <a href="/ecommerce-product-details/1" className="text-dark">
+                                    //               {homeSampledTest.test_name}
+                                    //             </a>
+                                    //           </h6>
+                                    //         </td>
+                                    //         <td style={{ fontSize: "4px" }}>{homeSampledTest.lab_name}</td>
+                                    //       </tr>
+                                    //     ))}
+                                    //   </tbody>
+                                    // </Table>
+                                  )}
+                                  {/* {this.state.is_home_sampling_availed === "Yes" ? (
+                                     <div className="table-responsive">
+                                     <Table className="table">
+                                       <thead className="table-light">
+                                         <tr>
+                                           <th>Home Sampling Offered</th>
+                                           <th>Test name</th>
+                                           <th>Lab name</th>
+                                         </tr>
+                                       </thead>
+                                       <tbody>
+                                         {this.state.homeSampledTests.map((homeSampledTest, key) => (
+                                           <tr key={"_homeSampledTest_" + key}>
+                                             <td>{homeSampledTest.is_home_sampling_available}</td>
+                                             <td>
+                                               <h5>
+                                                 <a href="/ecommerce-product-details/1" className="text-dark">
+                                                   {homeSampledTest.test_name}
+                                                 </a>
+                                               </h5>
+                                             </td>
+                                             <td>{homeSampledTest.lab_name}</td>
+                                           </tr>
+                                         ))}
+                                       </tbody>
+                                     </Table>
+                                   </div>
+                                  ) :  <div className="table-responsive">
+                                  <Table className="table">
+                                    <thead className="table-light">
+                                      <tr>
+                                        <th>Home Sampling Offered</th>
+                                        <th>Test name</th>
+                                        <th>Lab name</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {this.state.homeSampledTests.map((homeSampledTest, key) => (
+                                        <tr key={"_homeSampledTest_" + key}>
+                                          <td>{homeSampledTest.is_home_sampling_available}</td>
+                                          <td>
+                                            <h5>
+                                              <a href="/ecommerce-product-details/1" className="text-dark">
+                                                {homeSampledTest.test_name}
+                                              </a>
+                                            </h5>
+                                          </td>
+                                          <td>{homeSampledTest.lab_name}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </Table>
+                                </div>} */}
+
+                                  {this.state.is_state_sampling_availed === "Yes" && (
+                                    <Table responsive>
+                                      <thead className="table-light">
+                                        <tr>
+                                          <th scope="col">Lab name</th>
+                                          <th scope="col">Urgent Sampling Time</th>
+                                          <th scope="col">Urgent Sampling Charges</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {this.state.homeSampledTests.map((homeSampledTest, key) => {
+                                          // Check if sampling charges and fees exist
+                                          if (
+                                            homeSampledTest.state_sampling_charges &&
+                                            homeSampledTest.state_sampling_time
+                                          ) {
+                                            return (
+                                              <tr key={"_homeSampledTest_" + key}>
+                                                <td>{homeSampledTest.lab_name}</td>
+                                                <td>
+                                                  <h5>
+                                                    <a href="/ecommerce-product-details/1" className="text-dark">
+                                                      {homeSampledTest.state_sampling_time} hours
+                                                    </a>
+                                                  </h5>
+                                                </td>
+                                                <td>{homeSampledTest.state_sampling_charges}</td>
+                                              </tr>
+                                            );
+                                          } else {
+                                            return null; // Skip rendering if sampling charges and fees are missing
+                                          }
+                                        })}
+                                      </tbody>
+                                    </Table>
+                                  )}
+
+                                  <Row className="mt-4">
+                                    <Col sm="6"></Col>
+                                    <Col sm="6">
+                                      <div className="text-end">
+                                        <button
+                                          component={Link}
+                                          onClick={() => {
+                                            this.toggleTab("4");
+                                          }}
+                                          to="/checkout"
+                                          className="btn btn-success mb-4"
+                                        >
+                                          <i className="mdi mdi-truck-fast me-1" /> Next
+                                        </button>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </div>
+                            </div>
                           </TabPane>
+
 
                           <TabPane
                             tabId="3"
@@ -1432,293 +1890,356 @@ class Checkout extends Component {
                             role="tabpanel"
                           >
                             <Card className="shadow-none border mb-0">
-                              <CardBody>
-                                <CardTitle className="mb-4">
-                                  Order Summary
-                                </CardTitle>
+                              <div className="container">
 
-                                <div className="table-responsive">
-                                  <Table className="align-end mb-0 table-nowrap">
-                                    <Thead className="table-light">
-                                      <Tr>
-                                        <Th
-                                          scope="col"
-                                          style={{ width: "20%" }}
-                                          className="text-start px-4"
-                                        >
-                                          Test Name
-                                        </Th>
-                                        <Th
-                                          scope="col"
-                                          style={{ width: "25%" }}
-                                          className="text-end px-4"
-                                        >
-                                          Price
-                                        </Th>
-                                        <Th
-                                          scope="col"
-                                          style={{ width: "25%" }}
-                                          className="text-end px-4"
-                                        >
-                                          Sum Of Discount (Lab+LabHazir)
-                                        </Th>
-                                        <Th
-                                          scope="col"
-                                          style={{ width: "25%" }}
-                                          className="text-end px-4"
-                                        >
-                                          Net Payable
-                                        </Th>
-                                      </Tr>
-                                    </Thead>
-                                    <Tbody>
-                                      {this.state.checkoutItems.map(
-                                        (checkoutItem, key) => (
-                                          <>
-                                            {checkoutItem.items.map(
-                                              (item, key) => (
-                                                <Tr key={"_item_" + key}>
-                                                  <Td>
-                                                    <p className="text-start px-4">
-                                                      <h5 className="font-size-14 text-truncate">
-                                                        {item.test_name}{" "}
-                                                      </h5>
-                                                      <p className="text-muted mb-0">
-                                                        {item.lab_name}
-                                                      </p>
-                                                    </p>
-                                                  </Td>
+                                <CardBody>
+                                  <CardTitle className="mb-4">
+                                    Order Summary
+                                  </CardTitle>
 
-                                                  <Td>
-                                                    <p className="text-end px-4">
-                                                      {item.price
-                                                        .toString()
-                                                        .replace(
-                                                          /\B(?=(\d{3})+(?!\d))/g,
-                                                          ","
-                                                        )}
-                                                    </p>
-                                                  </Td>
-                                                  <Td>
-                                                    <p className="text-end px-4">
-                                                      {item.discount_per +
-                                                        item.discount_by_labhazir_per +
-                                                        item.discount_by_labhazird_by_test_per}
-                                                    </p>
-                                                  </Td>
-                                                  <Td>
-                                                    <p className="text-end px-4">
-                                                      {item.current_amount
-                                                        .toString()
-                                                        .replace(
-                                                          /\B(?=(\d{3})+(?!\d))/g,
-                                                          ","
-                                                        )}
-                                                    </p>
-                                                  </Td>
-                                                </Tr>
-                                              )
-                                            )}
-                                          </>
-                                        )
-                                      )}
-                                    </Tbody>
-                                    <tfoot>
-                                      {this.state.checkoutItems.map(
-                                        (checkoutItem, key) => (
-                                          <>
-                                            {checkoutItem.lab_home_sampling_charges !=
-                                              0 && (
-                                                <tr key={"_checkoutItem_" + key}>
-                                                  <td colSpan="4">
-                                                    {this.state
-                                                      .is_home_sampling_availed ==
-                                                      "Yes" &&
-                                                      this.state
-                                                        .is_state_sampling_availed ==
-                                                      "Yes" && (
-                                                        <div className="bg-primary bg-soft p-3 rounded">
-                                                          <h5 className="font-size-14 text-primary mb-0">
-                                                            <i className="fas fa-shipping-fast me-2" />{" "}
-                                                            Sum of Home Sampling +
-                                                            Urgent Sampling
-                                                            Charges{" "}
-                                                            {/* {
-                                                        checkoutItem.lab_name
-                                                      } */}
-                                                            <span className="float-end">
-                                                              Rs.{" "}
-                                                              {checkoutItem.total_sampling_charges
-                                                                .toString()
-                                                                .replace(
-                                                                  /\B(?=(\d{3})+(?!\d))/g,
-                                                                  ","
-                                                                )}
-                                                            </span>
-                                                          </h5>
-                                                        </div>
-                                                      )}
-                                                    {this.state
-                                                      .is_home_sampling_availed ==
-                                                      "Yes" &&
-                                                      this.state
-                                                        .is_state_sampling_availed !=
-                                                      "Yes" && (
-                                                        <div className="bg-primary bg-soft p-3 rounded">
-                                                          <h5 className="font-size-14 text-primary mb-0">
-                                                            <i className="fas fa-shipping-fast me-2" />{" "}
-                                                            Sum of Home Sampling
-                                                            Charges{" "}
-                                                            {/* {
-                                                        checkoutItem.lab_name
-                                                      } */}
-                                                            <span className="float-end">
-                                                              Rs.{" "}
-                                                              {checkoutItem.total_sampling_charges
-                                                                .toString()
-                                                                .replace(
-                                                                  /\B(?=(\d{3})+(?!\d))/g,
-                                                                  ","
-                                                                )}
-                                                            </span>
-                                                          </h5>
-                                                        </div>
-                                                      )}
-                                                  </td>
-                                                </tr>
-                                              )}
+                                  {isLargeScreen ? (
+                                    <div className="table-responsive">
+                                      <Table>
+                                        <Thead className="table-light">
+                                          <Tr>
+                                            <Th
+                                              scope="col"
+                                              style={{ width: "20%" }}
+                                              className="text-start"
+                                            >
+                                              Test Name
+                                            </Th>
+                                            <Th
+                                              scope="col"
+                                              style={{ width: "25%" }}
+                                              className="text-end"
+                                            >
+                                              Price
+                                            </Th>
+                                            <Th
+                                              scope="col"
+                                              style={{ width: "25%" }}
+                                              className="text-end"
+                                            >
+                                              Sum Of Discount (Lab + Labhazir)
+                                            </Th>
+                                            <Th
+                                              scope="col"
+                                              style={{ width: "25%" }}
+                                              className="text-end"
+                                            >
+                                              Net Payable
+                                            </Th>
+                                          </Tr>
+                                        </Thead>
+                                        <Tbody>
+                                          {this.state.checkoutItems.map(
+                                            (checkoutItem, key) => (
+                                              <>
+                                                {checkoutItem.items.map(
+                                                  (item, key) => (
+                                                    <Tr key={"_item_" + key}>
+                                                      <Td>
+                                                        <p className="text-start">
+                                                          <h6>
+                                                            {item.test_name}{" "}
+                                                          </h6>
+                                                          <p className="text-muted mb-0">
+                                                            {item.lab_name}
+                                                          </p>
+                                                        </p>
+                                                      </Td>
 
-                                            {checkoutItem.total_test_cost && (
-                                              <Tr>
-                                                <Td colSpan="4">
-                                                  <div className="bg-success bg-soft p-3 rounded">
-                                                    <h5 className="font-size-14 text-success mb-0">
-                                                      <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
-                                                      Sub Total{" "}
-                                                      <span className="float-end">
-                                                        Rs.{" "}
-                                                        {checkoutItem.total_test_cost
-                                                          .toString()
-                                                          .replace(
-                                                            /\B(?=(\d{3})+(?!\d))/g,
-                                                            ","
+                                                      <Td>
+                                                        <p className="text-end">
+                                                          {item.price
+                                                            .toString()
+                                                            .replace(
+                                                              /\B(?=(\d{3})+(?!\d))/g,
+                                                              ","
+                                                            )}
+                                                        </p>
+                                                      </Td>
+                                                      <Td>
+                                                        <p className="text-end">
+                                                          {item.discount_per +
+                                                            item.discount_by_labhazir_per +
+                                                            item.discount_by_labhazird_by_test_per}
+                                                        </p>
+                                                      </Td>
+                                                      <Td>
+                                                        <p className="text-end">
+                                                          {item.current_amount
+                                                            .toString()
+                                                            .replace(
+                                                              /\B(?=(\d{3})+(?!\d))/g,
+                                                              ","
+                                                            )}
+                                                        </p>
+                                                      </Td>
+                                                    </Tr>
+                                                  )
+                                                )}
+                                              </>
+                                            )
+                                          )}
+                                        </Tbody>
+                                        <tfoot>
+                                          {this.state.checkoutItems.map(
+                                            (checkoutItem, key) => (
+                                              <>
+                                                {checkoutItem.lab_home_sampling_charges !=
+                                                  0 && (
+                                                    <tr key={"_checkoutItem_" + key}>
+                                                      <td colSpan="4">
+                                                        {this.state
+                                                          .is_home_sampling_availed ==
+                                                          "Yes" &&
+                                                          this.state
+                                                            .is_state_sampling_availed ==
+                                                          "Yes" && (
+                                                            <div className="bg-primary bg-soft p-3 rounded">
+                                                              <h5 className="font-size-14 text-primary mb-0">
+                                                                <i className="fas fa-shipping-fast me-2" />{" "}
+                                                                Sum of Home Sampling +
+                                                                Urgent Sampling
+                                                                Charges{" "}
+                                                                {/* {
+                     checkoutItem.lab_name
+                   } */}
+                                                                <span className="float-end">
+                                                                  Rs.{" "}
+                                                                  {checkoutItem.total_sampling_charges
+                                                                    .toString()
+                                                                    .replace(
+                                                                      /\B(?=(\d{3})+(?!\d))/g,
+                                                                      ","
+                                                                    )}
+                                                                </span>
+                                                              </h5>
+                                                            </div>
                                                           )}
-                                                      </span>
-                                                    </h5>
-                                                  </div>
-                                                </Td>
-                                              </Tr>
-                                            )}
-                                          </>
-                                        )
+                                                        {this.state
+                                                          .is_home_sampling_availed ==
+                                                          "Yes" &&
+                                                          this.state
+                                                            .is_state_sampling_availed !=
+                                                          "Yes" && (
+                                                            <div className="bg-primary bg-soft p-3 rounded">
+                                                              <h5 className="font-size-14 text-primary mb-0">
+                                                                <i className="fas fa-shipping-fast me-2" />{" "}
+                                                                Sum of Home Sampling
+                                                                Charges{" "}
+                                                                {/* {
+                     checkoutItem.lab_name
+                   } */}
+                                                                <span className="float-end">
+                                                                  Rs.{" "}
+                                                                  {checkoutItem.total_sampling_charges
+                                                                    .toString()
+                                                                    .replace(
+                                                                      /\B(?=(\d{3})+(?!\d))/g,
+                                                                      ","
+                                                                    )}
+                                                                </span>
+                                                              </h5>
+                                                            </div>
+                                                          )}
+                                                      </td>
+                                                    </tr>
+                                                  )}
+
+                                                {checkoutItem.total_test_cost && (
+                                                  <Tr>
+                                                    <Td colSpan="4">
+                                                      <div className="bg-success bg-soft p-3 rounded">
+                                                        <h5 className="font-size-14 text-success mb-0">
+                                                          <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
+                                                          Sub Total{" "}
+                                                          <span className="float-end">
+                                                            Rs.{" "}
+                                                            {checkoutItem.total_test_cost
+                                                              .toString()
+                                                              .replace(
+                                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                                ","
+                                                              )}
+                                                          </span>
+                                                        </h5>
+                                                      </div>
+                                                    </Td>
+                                                  </Tr>
+                                                )}
+                                              </>
+                                            )
+                                          )}
+                                        </tfoot>
+                                      </Table>
+                                    </div>
+                                  ) : 
+                                  this.state.checkoutItems.map(
+                                    (checkoutItem, key) => (
+                                      <>
+                                        {checkoutItem.items.map(
+                                          (item, key) => (
+                                            <Row key={"_item_" + key}>
+                                              <Col>
+                                              {key === 0 && (
+                                                <h6 style={{ fontSize: "10px" }}>Name</h6>
+                                              )}
+                                              <p className="text-start">
+                                                  <h6 style={{ fontSize: "8px" }}>
+                                                    {item.test_name}{" "}
+                                                  </h6>
+                                                  <p className="text-muted mb-0" style={{ fontSize: "8px" }}>
+                                                    {item.lab_name}
+                                                  </p>
+                                                </p>
+                                              </Col>
+                                                <Col>{key === 0 && (
+                                                  <h6 style={{ fontSize: "10px" }}>Price</h6>
+                                                )}
+                                                <p className="text-end" style={{ fontSize: "8px" }}>
+                                                  {item.price
+                                                    .toString()
+                                                    .replace(
+                                                      /\B(?=(\d{3})+(?!\d))/g,
+                                                      ","
+                                                    )}
+                                                </p>
+                                                </Col>
+
+                                                <Col>
+                                                {key === 0 && (
+                                                  <h6 style={{ fontSize: "10px" }}>Discount</h6>
+                                                )}
+                                                <p className="text-end" style={{ fontSize: "8px" }}>
+                                                  {item.discount_per +
+                                                    item.discount_by_labhazir_per +
+                                                    item.discount_by_labhazird_by_test_per}
+                                                </p>
+                                                </Col>
+
+                                                <Col>
+                                                {key === 0 && (
+                                                  <h6 style={{ fontSize: "10px" }}>Payment</h6>
+                                                )}
+                                                <p className="text-end" style={{ fontSize: "8px" }}>
+                                                  {item.current_amount
+                                                    .toString()
+                                                    .replace(
+                                                      /\B(?=(\d{3})+(?!\d))/g,
+                                                      ","
+                                                    )}
+                                                </p>
+                                                </Col>
+                                            </Row>
+                                          )
+                                        )}
+                                      </>
+                                    )
+                                  )}
+
+                                </CardBody>
+                                {!isEmpty(this.state.payment_method) &&
+
+                                  <Card className="shadow-none border mb-0">
+                                    <CardBody className="text-center">
+                                      <CardTitle className="mb-1">
+                                        <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                        Payment method
+                                      </CardTitle>
+
+                                      {this.state.payment_method !== "card" && (
+                                        <div>
+                                          <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                            <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
+                                          </p>
+                                        </div>
                                       )}
-                                    </tfoot>
-                                  </Table>
-                                </div>
-                              </CardBody>
+
+                                      {this.state.payment_method === "Card" && (
+                                        <div>
+                                          <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                            {/* <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span> */}
+                                            <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
+                                          </p>
+                                        </div>
+                                      )}
+
+                                      <div>
+                                        <div className="table-responsive">
+                                          <a
+                                            href="#"
+                                            onClick={this.handleClickAddPayment}
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
+                                          >
+                                            <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                            Update Payment method
+                                          </a>
+                                        </div>
+
+                                        {/* Rest of your component code */}
+                                      </div>
+                                    </CardBody>
+                                  </Card>
+
+                                }
+
+                                {isEmpty(this.state.payment_method) &&
+
+                                  <Card className="shadow-none border mb-0">
+                                    <CardBody className="text-center">
+                                      <CardTitle className="mb-1">
+                                        <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                        Payment method
+                                      </CardTitle>
+                                      <div>
+                                        <div className="table-responsive">
+                                          <a
+                                            href="#"
+                                            onClick={this.handleClickAddPayment}
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
+                                          >
+                                            <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                            Add Payment method
+                                          </a>
+                                        </div>
+
+                                        {/* Rest of your component code */}
+                                      </div>
+                                    </CardBody>
+                                  </Card>
+
+                                }
+
+                                <Row className="mt-4">
+                                  <Col sm="6">
+                                    <Link
+                                      to="/cart"
+                                      className="btn text-muted d-none d-sm-inline-block btn-link"
+                                    >
+                                      <i className="mdi mdi-arrow-left me-1" /> Back
+                                      to Shopping Cart{" "}
+                                    </Link>
+                                  </Col>
+                                  <Col sm="6">
+                                    <div className="text-end">
+                                      <button
+                                        component={Link}
+                                        onClick={this.handleFullProceedClick}
+                                        to="/checkout"
+                                        className="btn btn-success mb-4"
+                                        disabled={this.state.checkoutSuccess}
+                                      >
+                                        <i className="mdi mdi-truck-fast me-1" />{" "}
+                                        Book Appointment{" "}
+                                      </button>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </div>
                             </Card>
-
-                            {!isEmpty(this.state.payment_method) &&
-
-                              <Card className="shadow-none border mb-0">
-                                <CardBody className="text-center">
-                                  <CardTitle className="mb-1">
-                                    <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                    Payment method
-                                  </CardTitle>
-
-                                  {this.state.payment_method !== "card" && (
-                                    <div>
-                                      <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                        <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
-                                      </p>
-                                    </div>
-                                  )}
-
-                                  {this.state.payment_method === "Card" && (
-                                    <div>
-                                      <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                        {/* <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span> */}
-                                        <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
-                                      </p>
-                                    </div>
-                                  )}
-
-                                  <div>
-                                    <div className="table-responsive">
-                                      <a
-                                        href="#"
-                                        onClick={this.handleClickAddPayment}
-                                        style={{ textDecoration: 'none', color: 'inherit' }}
-                                      >
-                                        <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                        Update Payment method
-                                      </a>
-                                    </div>
-
-                                    {/* Rest of your component code */}
-                                  </div>
-                                </CardBody>
-                              </Card>
-
-                            }
-
-                            {isEmpty(this.state.payment_method) &&
-
-                              <Card className="shadow-none border mb-0">
-                                <CardBody className="text-center">
-                                  <CardTitle className="mb-1">
-                                    <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                    Payment method
-                                  </CardTitle>
-                                  <div>
-                                    <div className="table-responsive">
-                                      <a
-                                        href="#"
-                                        onClick={this.handleClickAddPayment}
-                                        style={{ textDecoration: 'none', color: 'inherit' }}
-                                      >
-                                        <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                        Add Payment method
-                                      </a>
-                                    </div>
-
-                                    {/* Rest of your component code */}
-                                  </div>
-                                </CardBody>
-                              </Card>
-
-                            }
-
-
-
-
-
-                            <Row className="mt-4">
-                              <Col sm="6">
-                                <Link
-                                  to="/cart"
-                                  className="btn text-muted d-none d-sm-inline-block btn-link"
-                                >
-                                  <i className="mdi mdi-arrow-left me-1" /> Back
-                                  to Shopping Cart{" "}
-                                </Link>
-                              </Col>
-                              <Col sm="6">
-                                <div className="text-end">
-                                  <button
-                                    component={Link}
-                                    onClick={this.handleFullProceedClick}
-                                    to="/checkout"
-                                    className="btn btn-success mb-4"
-                                    disabled={this.state.checkoutSuccess}
-                                  >
-                                    <i className="mdi mdi-truck-fast me-1" />{" "}
-                                    Book Appointment{" "}
-                                  </button>
-                                </div>
-                              </Col>
-                            </Row>
                           </TabPane>
                         </TabContent>
                       </CardBody>

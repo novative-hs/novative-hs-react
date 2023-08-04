@@ -1224,7 +1224,7 @@ class NearbyLabs extends Component {
                                 fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                               }}
                             >Search By Kilometers</Label>
-                            <div className="input-group">
+                            <div>
                               <Input
                                 defaultValue={this.state.km}
                                 onChange={(e) => this.onChangeKm(e)}
@@ -1233,9 +1233,9 @@ class NearbyLabs extends Component {
                                 className="form-control"
                                 placeholder="Search By Km..."
                               />
-                              <div className="input-group-append">
+                              {/* <div className="input-group-sm">
                                 <span className="input-group-text">Km</span>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         </Col>
