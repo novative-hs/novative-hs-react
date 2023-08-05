@@ -25,11 +25,12 @@ class PatientInformation extends Component {
     this.state = {
       name: "",
       phone: "",
+      email: "",
       city_id: "",
-      guest_id:"",
+      guest_id: "",
       user_id: localStorage.getItem("authUser")
-      ? JSON.parse(localStorage.getItem("authUser")).user_id
-      : "",
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : "",
       user_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
@@ -42,19 +43,19 @@ class PatientInformation extends Component {
     console.log("user type", this.state.user_type)
     this.props.addPatientInformationFailed("");
     this.props.getTerritoriesList();
-    console.log("user id",this.state.user_id)
+    console.log("user id", this.state.user_id)
   }
 
   render() {
 
     // list of city from territories
-        const cityList = [];
-        for (let i = 0; i < this.props.territoriesList.length; i++) {
-          cityList.push({
-            label: this.props.territoriesList[i].city,
-            value: this.props.territoriesList[i].id,
-          });
-        }
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
     // Redirect to register page if getting access directly from url
     if (typeof this.props.location.state == "undefined") {
       return <Redirect to={"/register"} />;
@@ -86,20 +87,20 @@ class PatientInformation extends Component {
                         </div>
 
                         <div className="mt-4">
-                        {this.props.patient && this.state.user_id ? (
-  this.state.user_type === "b2bclient" || this.state.user_type === "CSR" ? (
-    <Alert color="success" style={{ marginTop: "13px" }}>
-      Account Registered Successfully.
-    </Alert>
-  ) : (
-    <Alert color="success" style={{ marginTop: "13px" }}>
-      Your Account Registered Successfully. Please log in to your account.
-    </Alert>
-  )
-) : null}
+                          {this.props.patient || this.state.user_id ? (
+                            this.state.user_type === "b2bclient" || this.state.user_type === "CSR" ? (
+                              <Alert color="success" style={{ marginTop: "13px" }}>
+                                Account Registered Successfully.
+                              </Alert>
+                            ) : (
+                              <Alert color="success" style={{ marginTop: "13px" }}>
+                                Your Account Registered Successfully. Please log in to your account.
+                              </Alert>
+                            )
+                          ) : null}
 
                           {this.props.addPatientError &&
-                          this.props.addPatientError ? (
+                            this.props.addPatientError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
                               {this.props.addPatientError}
                             </Alert>
@@ -110,6 +111,7 @@ class PatientInformation extends Component {
                             initialValues={{
                               name: (this.state && this.state.name) || "",
                               phone: (this.state && this.state.phone) || "",
+                              email: (this.state && this.state.email) || "",
                               city_id: (this.state && this.state.city_id) || "",
 
                             }}
@@ -130,24 +132,29 @@ class PatientInformation extends Component {
                                   /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                   "Please enter a valid Pakistani phone number e.g. 03123456789"
                                 ),
+                              email: Yup.string()
+                                .required("Please enter your Email.")
+                                .email("Please enter valid Email")
                             })}
                             onSubmit={values => {
                               this.props.addPatientInformation(
                                 values,
                                 this.props.match.params.id
                               );
-                              window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                              window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
                               // Redirecting back to the login page
                               setTimeout(() => {
-                                if (this.props.patient &&
-                                  !this.state.user_id) {
+                                if (this.props.patient && !this.state.user_id) {
                                   console.log(this.props.match.params.uuid);
-                                  this.props.history.push(
-                                    this.props.match.params.uuid
-                                      ? `/login/${this.props.match.params.uuid}`
-                                      : `/login`
-                                  );
+                                  // Add a 4-second delay using setTimeout
+                                  setTimeout(() => {
+                                    this.props.history.push(
+                                      this.props.match.params.uuid
+                                        ? `/login/${this.props.match.params.uuid}`
+                                        : `/login`
+                                    );
+                                  }, 4000); // 4000 milliseconds = 4 seconds
                                 } else if (
                                   this.props.patient &&
                                   this.state.user_id &&
@@ -173,7 +180,7 @@ class PatientInformation extends Component {
                                   );
                                 }
                               }, 5000);
-                              
+
                             }}
                           >
                             {({ errors, status, touched }) => (
@@ -233,54 +240,79 @@ class PatientInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
-                                               {/* city field */}
-                        <div className="mb-3">
+
+                                <div className="mb-3">
+                                  <Label for="email" className="form-label">
+                                    Email
+                                  </Label>
+                                  <Field
+                                    id="email"
+                                    name="email"
+                                    type="text"
+                                    placeholder="Please enter your Email"
+                                    onChange={e =>
+                                      this.setState({ email: e.target.value })
+                                    }
+                                    value={this.state.email}
+                                    className={
+                                      "form-control" +
+                                      (errors.email && touched.email ? " is-invalid" : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                                {/* city field */}
+                                <div className="mb-3">
 
 
-<Label for="city_id" className="form-label">
-  City
-</Label>
-    <Select
-      name="city_id"
-      component="Select"
-      onChange={selectedGroup =>
-        this.setState({
-          city_id: selectedGroup.value,
-        })
-      }
-      className={
-        "defautSelectParent" +
-        (errors.city_id && touched.city_id
-          ? " is-invalid"
-          : "")
-      }
-      styles={{
-        control: (base, state) => ({
-          ...base,
-          borderColor:
-            errors.city_id && touched.city_id
-              ? "#f46a6a"
-              : "#ced4da",
-        }),
-      }}
-      options={
-        cityList
-      }
-      defaultValue={{
-        label:
-        this.state.city,
-        value:
-        this.state.id,                                       
-      }}
-    
-    />
+                                  <Label for="city_id" className="form-label">
+                                    City
+                                  </Label>
+                                  <Select
+                                    name="city_id"
+                                    component="Select"
+                                    onChange={selectedGroup =>
+                                      this.setState({
+                                        city_id: selectedGroup.value,
+                                      })
+                                    }
+                                    className={
+                                      "defautSelectParent" +
+                                      (errors.city_id && touched.city_id
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                    styles={{
+                                      control: (base, state) => ({
+                                        ...base,
+                                        borderColor:
+                                          errors.city_id && touched.city_id
+                                            ? "#f46a6a"
+                                            : "#ced4da",
+                                      }),
+                                    }}
+                                    options={
+                                      cityList
+                                    }
+                                    defaultValue={{
+                                      label:
+                                        this.state.city,
+                                      value:
+                                        this.state.id,
+                                    }}
 
-    <ErrorMessage
-      name="city_id"
-      component="div"
-      className="invalid-feedback"
-    />
-</div>
+                                  />
+
+                                  <ErrorMessage
+                                    name="city_id"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
 
 
                                 <div className="mt-3 d-grid">
@@ -317,7 +349,7 @@ PatientInformation.propTypes = {
   addPatientInformationFailed: PropTypes.any,
   addPatientError: PropTypes.any,
   patient: PropTypes.any,
-  getTerritoriesList:PropTypes.func,
+  getTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
 };
 
@@ -326,7 +358,7 @@ const mapStateToProps = state => {
   const { territoriesList } = state.PatientInformation;
   const { patient, addPatientError, loading } = state.PatientInformation;
   return { patient, addPatientError, loading, territoriesList };
-  
+
 };
 
 export default connect(mapStateToProps, {

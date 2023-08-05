@@ -1890,355 +1890,255 @@ class Checkout extends Component {
                             role="tabpanel"
                           >
                             <Card className="shadow-none border mb-0">
-                              <div className="container">
-
-                                <CardBody>
-                                  <CardTitle className="mb-4">
-                                    Order Summary
-                                  </CardTitle>
-
-                                  {isLargeScreen ? (
-                                    <div className="table-responsive">
-                                      <Table>
-                                        <Thead className="table-light">
-                                          <Tr>
-                                            <Th
-                                              scope="col"
-                                              style={{ width: "20%" }}
-                                              className="text-start"
-                                            >
-                                              Test Name
-                                            </Th>
-                                            <Th
-                                              scope="col"
-                                              style={{ width: "25%" }}
-                                              className="text-end"
-                                            >
-                                              Price
-                                            </Th>
-                                            <Th
-                                              scope="col"
-                                              style={{ width: "25%" }}
-                                              className="text-end"
-                                            >
-                                              Sum Of Discount (Lab + Labhazir)
-                                            </Th>
-                                            <Th
-                                              scope="col"
-                                              style={{ width: "25%" }}
-                                              className="text-end"
-                                            >
-                                              Net Payable
-                                            </Th>
-                                          </Tr>
-                                        </Thead>
-                                        <Tbody>
-                                          {this.state.checkoutItems.map(
-                                            (checkoutItem, key) => (
-                                              <>
-                                                {checkoutItem.items.map(
-                                                  (item, key) => (
-                                                    <Tr key={"_item_" + key}>
-                                                      <Td>
-                                                        <p className="text-start">
-                                                          <h6>
-                                                            {item.test_name}{" "}
-                                                          </h6>
-                                                          <p className="text-muted mb-0">
-                                                            {item.lab_name}
-                                                          </p>
-                                                        </p>
-                                                      </Td>
-
-                                                      <Td>
-                                                        <p className="text-end">
-                                                          {item.price
-                                                            .toString()
-                                                            .replace(
-                                                              /\B(?=(\d{3})+(?!\d))/g,
-                                                              ","
-                                                            )}
-                                                        </p>
-                                                      </Td>
-                                                      <Td>
-                                                        <p className="text-end">
-                                                          {item.discount_per +
-                                                            item.discount_by_labhazir_per +
-                                                            item.discount_by_labhazird_by_test_per}
-                                                        </p>
-                                                      </Td>
-                                                      <Td>
-                                                        <p className="text-end">
-                                                          {item.current_amount
-                                                            .toString()
-                                                            .replace(
-                                                              /\B(?=(\d{3})+(?!\d))/g,
-                                                              ","
-                                                            )}
-                                                        </p>
-                                                      </Td>
-                                                    </Tr>
-                                                  )
-                                                )}
-                                              </>
-                                            )
-                                          )}
-                                        </Tbody>
-                                        <tfoot>
-                                          {this.state.checkoutItems.map(
-                                            (checkoutItem, key) => (
-                                              <>
-                                                {checkoutItem.lab_home_sampling_charges !=
-                                                  0 && (
-                                                    <tr key={"_checkoutItem_" + key}>
-                                                      <td colSpan="4">
-                                                        {this.state
-                                                          .is_home_sampling_availed ==
-                                                          "Yes" &&
-                                                          this.state
-                                                            .is_state_sampling_availed ==
-                                                          "Yes" && (
-                                                            <div className="bg-primary bg-soft p-3 rounded">
-                                                              <h5 className="font-size-14 text-primary mb-0">
-                                                                <i className="fas fa-shipping-fast me-2" />{" "}
-                                                                Sum of Home Sampling +
-                                                                Urgent Sampling
-                                                                Charges{" "}
-                                                                {/* {
-                     checkoutItem.lab_name
-                   } */}
-                                                                <span className="float-end">
-                                                                  Rs.{" "}
-                                                                  {checkoutItem.total_sampling_charges
-                                                                    .toString()
-                                                                    .replace(
-                                                                      /\B(?=(\d{3})+(?!\d))/g,
-                                                                      ","
-                                                                    )}
-                                                                </span>
-                                                              </h5>
-                                                            </div>
-                                                          )}
-                                                        {this.state
-                                                          .is_home_sampling_availed ==
-                                                          "Yes" &&
-                                                          this.state
-                                                            .is_state_sampling_availed !=
-                                                          "Yes" && (
-                                                            <div className="bg-primary bg-soft p-3 rounded">
-                                                              <h5 className="font-size-14 text-primary mb-0">
-                                                                <i className="fas fa-shipping-fast me-2" />{" "}
-                                                                Sum of Home Sampling
-                                                                Charges{" "}
-                                                                {/* {
-                     checkoutItem.lab_name
-                   } */}
-                                                                <span className="float-end">
-                                                                  Rs.{" "}
-                                                                  {checkoutItem.total_sampling_charges
-                                                                    .toString()
-                                                                    .replace(
-                                                                      /\B(?=(\d{3})+(?!\d))/g,
-                                                                      ","
-                                                                    )}
-                                                                </span>
-                                                              </h5>
-                                                            </div>
-                                                          )}
-                                                      </td>
-                                                    </tr>
-                                                  )}
-
-                                                {checkoutItem.total_test_cost && (
-                                                  <Tr>
-                                                    <Td colSpan="4">
-                                                      <div className="bg-success bg-soft p-3 rounded">
-                                                        <h5 className="font-size-14 text-success mb-0">
-                                                          <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
-                                                          Sub Total{" "}
-                                                          <span className="float-end">
-                                                            Rs.{" "}
-                                                            {checkoutItem.total_test_cost
-                                                              .toString()
-                                                              .replace(
-                                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                                ","
-                                                              )}
-                                                          </span>
-                                                        </h5>
-                                                      </div>
-                                                    </Td>
-                                                  </Tr>
-                                                )}
-                                              </>
-                                            )
-                                          )}
-                                        </tfoot>
-                                      </Table>
-                                    </div>
-                                  ) : 
-                                  this.state.checkoutItems.map(
-                                    (checkoutItem, key) => (
-                                      <>
-                                        {checkoutItem.items.map(
-                                          (item, key) => (
-                                            <Row key={"_item_" + key}>
-                                              <Col>
-                                              {key === 0 && (
-                                                <h6 style={{ fontSize: "10px" }}>Name</h6>
-                                              )}
-                                              <p className="text-start">
-                                                  <h6 style={{ fontSize: "8px" }}>
-                                                    {item.test_name}{" "}
-                                                  </h6>
-                                                  <p className="text-muted mb-0" style={{ fontSize: "8px" }}>
-                                                    {item.lab_name}
+                              <CardBody>
+                                <CardTitle className="mb-4">
+                                  Order Summary
+                                </CardTitle>
+                                <div className="container">
+                                  <div className="table-responsive" style={{ overflowX: "auto" }}>
+                                    <table className="table">
+                                      <thead  style={{ backgroundColor: "blue", color: "#fff" }}>
+                                        <tr>
+                                          <th scope="col" style={{ width: "20%" }} className="text-start">
+                                            Test Name
+                                          </th>
+                                          <th scope="col" style={{ width: "25%" }} className="text-end">
+                                            Price
+                                          </th>
+                                          <th scope="col" style={{ width: "25%" }} className="text-end">
+                                            Sum Of Discount (Lab + Labhazir)
+                                          </th>
+                                          <th scope="col" style={{ width: "25%" }} className="text-end">
+                                            Net Payable
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {this.state.checkoutItems.map((checkoutItem, key) => (
+                                          <>
+                                            {checkoutItem.items.map((item, key) => (
+                                              <tr key={"_item_" + key}>
+                                                <td>
+                                                  <p className="text-start">
+                                                    <h6>{item.test_name}</h6>
+                                                    <p className="text-muted mb-0">{item.lab_name}</p>
                                                   </p>
-                                                </p>
-                                              </Col>
-                                                <Col>{key === 0 && (
-                                                  <h6 style={{ fontSize: "10px" }}>Price</h6>
-                                                )}
-                                                <p className="text-end" style={{ fontSize: "8px" }}>
-                                                  {item.price
-                                                    .toString()
-                                                    .replace(
-                                                      /\B(?=(\d{3})+(?!\d))/g,
-                                                      ","
-                                                    )}
-                                                </p>
-                                                </Col>
+                                                </td>
 
-                                                <Col>
-                                                {key === 0 && (
-                                                  <h6 style={{ fontSize: "10px" }}>Discount</h6>
+                                                <td>
+                                                  <p className="text-end">
+                                                    {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                  </p>
+                                                </td>
+                                                <td>
+                                                  <p className="text-end">
+                                                    {item.discount_per +
+                                                      item.discount_by_labhazir_per +
+                                                      item.discount_by_labhazird_by_test_per}
+                                                  </p>
+                                                </td>
+                                                <td>
+                                                  <p className="text-end">
+                                                    {item.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                  </p>
+                                                </td>
+                                              </tr>
+                                            ))}
+                                          </>
+                                        ))}
+                                      </tbody>
+                                      <tfoot>
+                                        {this.state.checkoutItems.map(
+                                          (checkoutItem, key) => (
+                                            <>
+                                              {checkoutItem.lab_home_sampling_charges !=
+                                                0 && (
+                                                  <tr key={"_checkoutItem_" + key}>
+                                                    <td colSpan="4">
+                                                      {this.state
+                                                        .is_home_sampling_availed ==
+                                                        "Yes" &&
+                                                        this.state
+                                                          .is_state_sampling_availed ==
+                                                        "Yes" && (
+                                                          <div className="bg-primary bg-soft p-3 rounded">
+                                                            <h5 className="font-size-14 text-primary mb-0">
+                                                              <i className="fas fa-shipping-fast me-2" />{" "}
+                                                              Sum of Home Sampling +
+                                                              Urgent Sampling
+                                                              Charges{" "}
+                                                              {/* {
+                     checkoutItem.lab_name
+                   } */}
+                                                              <span className="float-end">
+                                                                Rs.{" "}
+                                                                {checkoutItem.total_sampling_charges
+                                                                  .toString()
+                                                                  .replace(
+                                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                                    ","
+                                                                  )}
+                                                              </span>
+                                                            </h5>
+                                                          </div>
+                                                        )}
+                                                      {this.state
+                                                        .is_home_sampling_availed ==
+                                                        "Yes" &&
+                                                        this.state
+                                                          .is_state_sampling_availed !=
+                                                        "Yes" && (
+                                                          <div className="bg-primary bg-soft p-3 rounded">
+                                                            <h5 className="font-size-14 text-primary mb-0">
+                                                              <i className="fas fa-shipping-fast me-2" />{" "}
+                                                              Sum of Home Sampling
+                                                              Charges{" "}
+                                                              {/* {
+                     checkoutItem.lab_name
+                   } */}
+                                                              <span className="float-end">
+                                                                Rs.{" "}
+                                                                {checkoutItem.total_sampling_charges
+                                                                  .toString()
+                                                                  .replace(
+                                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                                    ","
+                                                                  )}
+                                                              </span>
+                                                            </h5>
+                                                          </div>
+                                                        )}
+                                                    </td>
+                                                  </tr>
                                                 )}
-                                                <p className="text-end" style={{ fontSize: "8px" }}>
-                                                  {item.discount_per +
-                                                    item.discount_by_labhazir_per +
-                                                    item.discount_by_labhazird_by_test_per}
-                                                </p>
-                                                </Col>
 
-                                                <Col>
-                                                {key === 0 && (
-                                                  <h6 style={{ fontSize: "10px" }}>Payment</h6>
-                                                )}
-                                                <p className="text-end" style={{ fontSize: "8px" }}>
-                                                  {item.current_amount
-                                                    .toString()
-                                                    .replace(
-                                                      /\B(?=(\d{3})+(?!\d))/g,
-                                                      ","
-                                                    )}
-                                                </p>
-                                                </Col>
-                                            </Row>
+                                              {checkoutItem.total_test_cost && (
+                                                <Tr>
+                                                  <Td colSpan="4">
+                                                    <div className="bg-success bg-soft p-3 rounded">
+                                                      <h5 className="font-size-14 text-success mb-0">
+                                                        <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
+                                                        Sub Total{" "}
+                                                        <span className="float-end">
+                                                          Rs.{" "}
+                                                          {checkoutItem.total_test_cost
+                                                            .toString()
+                                                            .replace(
+                                                              /\B(?=(\d{3})+(?!\d))/g,
+                                                              ","
+                                                            )}
+                                                        </span>
+                                                      </h5>
+                                                    </div>
+                                                  </Td>
+                                                </Tr>
+                                              )}
+                                            </>
                                           )
                                         )}
-                                      </>
-                                    )
-                                  )}
+                                      </tfoot>
+                                    </table>
+                                  </div>
+                                </div>
 
-                                </CardBody>
-                                {!isEmpty(this.state.payment_method) &&
+                              </CardBody>
+                              {!isEmpty(this.state.payment_method) &&
 
-                                  <Card className="shadow-none border mb-0">
-                                    <CardBody className="text-center">
-                                      <CardTitle className="mb-1">
-                                        <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                        Payment method
-                                      </CardTitle>
+                                <Card className="shadow-none border mb-0">
+                                  <CardBody className="text-center">
+                                    <CardTitle className="mb-1">
+                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                      Payment method
+                                    </CardTitle>
 
-                                      {this.state.payment_method !== "card" && (
-                                        <div>
-                                          <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                            <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
-                                          </p>
-                                        </div>
-                                      )}
-
-                                      {this.state.payment_method === "Card" && (
-                                        <div>
-                                          <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                            {/* <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span> */}
-                                            <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
-                                          </p>
-                                        </div>
-                                      )}
-
+                                    {this.state.payment_method !== "card" && (
                                       <div>
-                                        <div className="table-responsive">
-                                          <a
-                                            href="#"
-                                            onClick={this.handleClickAddPayment}
-                                            style={{ textDecoration: 'none', color: 'inherit' }}
-                                          >
-                                            <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                            Update Payment method
-                                          </a>
-                                        </div>
-
-                                        {/* Rest of your component code */}
+                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                          <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
+                                        </p>
                                       </div>
-                                    </CardBody>
-                                  </Card>
+                                    )}
 
-                                }
-
-                                {isEmpty(this.state.payment_method) &&
-
-                                  <Card className="shadow-none border mb-0">
-                                    <CardBody className="text-center">
-                                      <CardTitle className="mb-1">
-                                        <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                        Payment method
-                                      </CardTitle>
+                                    {this.state.payment_method === "Card" && (
                                       <div>
-                                        <div className="table-responsive">
-                                          <a
-                                            href="#"
-                                            onClick={this.handleClickAddPayment}
-                                            style={{ textDecoration: 'none', color: 'inherit' }}
-                                          >
-                                            <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                            Add Payment method
-                                          </a>
-                                        </div>
-
-                                        {/* Rest of your component code */}
+                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                          {/* <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span> */}
+                                          <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
+                                        </p>
                                       </div>
-                                    </CardBody>
-                                  </Card>
+                                    )}
 
-                                }
+                                    <div>
+                                      <div className="table-responsive">
+                                        <a
+                                          href="#"
+                                          onClick={this.handleClickAddPayment}
+                                          style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                          <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                          Update Payment method
+                                        </a>
+                                      </div>
 
-                                <Row className="mt-4">
-                                  <Col sm="6">
-                                    <Link
-                                      to="/cart"
-                                      className="btn text-muted d-none d-sm-inline-block btn-link"
-                                    >
-                                      <i className="mdi mdi-arrow-left me-1" /> Back
-                                      to Shopping Cart{" "}
-                                    </Link>
-                                  </Col>
-                                  <Col sm="6">
-                                    <div className="text-end">
-                                      <button
-                                        component={Link}
-                                        onClick={this.handleFullProceedClick}
-                                        to="/checkout"
-                                        className="btn btn-success mb-4"
-                                        disabled={this.state.checkoutSuccess}
-                                      >
-                                        <i className="mdi mdi-truck-fast me-1" />{" "}
-                                        Book Appointment{" "}
-                                      </button>
+                                      {/* Rest of your component code */}
                                     </div>
-                                  </Col>
-                                </Row>
-                              </div>
+                                  </CardBody>
+                                </Card>
+
+                              }
+
+                              {isEmpty(this.state.payment_method) &&
+
+                                <Card className="shadow-none border mb-0">
+                                  <CardBody className="text-center">
+                                    <CardTitle className="mb-1">
+                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                      Payment method
+                                    </CardTitle>
+                                    <div>
+                                      <div className="table-responsive">
+                                        <a
+                                          href="#"
+                                          onClick={this.handleClickAddPayment}
+                                          style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                          <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                          Add Payment method
+                                        </a>
+                                      </div>
+
+                                      {/* Rest of your component code */}
+                                    </div>
+                                  </CardBody>
+                                </Card>
+
+                              }
+
+                              <Row className="mt-4">
+                                <Col sm="6">
+                                  <Link
+                                    to="/cart"
+                                    className="btn text-muted d-none d-sm-inline-block btn-link"
+                                  >
+                                    <i className="mdi mdi-arrow-left me-1" /> Back
+                                    to Shopping Cart{" "}
+                                  </Link>
+                                </Col>
+                                <Col sm="6">
+                                  <div className="text-end">
+                                    <button
+                                      component={Link}
+                                      onClick={this.handleFullProceedClick}
+                                      to="/checkout"
+                                      className="btn btn-success mb-4"
+                                      disabled={this.state.checkoutSuccess}
+                                    >
+                                      <i className="mdi mdi-truck-fast me-1" />{" "}
+                                      Book Appointment{" "}
+                                    </button>
+                                  </div>
+                                </Col>
+                              </Row>
                             </Card>
                           </TabPane>
                         </TabContent>

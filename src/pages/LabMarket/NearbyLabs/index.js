@@ -16,6 +16,8 @@ import logoLightSvg from "../../../assets/images/logo-light.svg";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Header from "../../../components/HorizontalLayout/Header";
+
 
 
 
@@ -59,10 +61,11 @@ import { any } from "prop-types";
 import "./nearbylabs.scss";
 
 import { getTerritoriesList } from "store/territories-list/actions";
-
+import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 
 import { CITIES } from "helpers/global_variables_helper";
 import offeredTestsList from "pages/OfferedTests/offered-tests-list";
+
 
 class NearbyLabs extends Component {
   constructor(props) {
@@ -183,6 +186,7 @@ class NearbyLabs extends Component {
           this.setState({ advLives: this.props.advLives });
         }, 500);
       }
+      
 
       // near by labs
       if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
@@ -228,6 +232,47 @@ class NearbyLabs extends Component {
         }
       }
 
+      if ((!this.state.user_id)&& !this.props.match.params.guest_id) {
+        const guest_id = uuidv4();
+        const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          guest_id,
+        };
+        console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+        this.setState({ guest_id });
+        console.log("differ:", this.state.guest_id)
+        console.log(window.location.href);
+        if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+            this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+        }
+      }
+      if (this.state.user_id) {
+        const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+        };
+        if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+            this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+        }
+      }
+
       // region Wise Advertisement 
       const regionWiseAdvLocationDetails = {
         latitude,
@@ -251,7 +296,6 @@ class NearbyLabs extends Component {
         this.setState({ currentLatitude: latitude });
         this.setState({ currentLongitude: longitude });
 
-        // region Wise Advertisement
         const advLiveLocationDetails = {
           latitude,
           longitude,
@@ -259,32 +303,15 @@ class NearbyLabs extends Component {
           address: this.state.address,
           city: this.state.city,
         };
-
+  
         if (latitude && longitude) {
           onGetAdvLive(advLiveLocationDetails);
           setTimeout(() => {
             this.setState({ advLives: this.props.advLives });
           }, 500);
         }
-        // near by labs
-        if (this.state.user_id || this.state.user_type === "b2bclient") {
-          const nearbyLabsLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-            km: this.state.km,
-            LabType: this.state.LabType,
-          };
-          if (latitude && longitude) {
-            onGetNearbyLabs(nearbyLabsLocationDetails);
-            setTimeout(() => {
-              this.setState({ nearbyLabs: this.props.nearbyLabs });
-            }, 500);
-          }
-        }
-
+        
+  
         // near by labs
         if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
           const guest_id = uuidv4();
@@ -309,7 +336,67 @@ class NearbyLabs extends Component {
             }, 500);
           }
         }
-
+  
+        // near by labs
+        if (this.state.user_id || this.state.user_type === "b2bclient") {
+          const nearbyLabsLocationDetails = {
+            latitude,
+            longitude,
+            search_type: this.state.search_type,
+            address: this.state.address,
+            city: this.state.city,
+            km: this.state.km,
+            LabType: this.state.LabType,
+          };
+          if (latitude && longitude) {
+            onGetNearbyLabs(nearbyLabsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyLabs: this.props.nearbyLabs });
+            }, 500);
+          }
+        }
+  
+        if ((!this.state.user_id)&& !this.props.match.params.guest_id) {
+          const guest_id = uuidv4();
+          const nearbyLabsLocationDetails = {
+            latitude,
+            longitude,
+            search_type: this.state.search_type,
+            address: this.state.address,
+            city: this.state.city,
+            km: this.state.km,
+            LabType: this.state.LabType,
+            guest_id,
+          };
+          console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+          this.setState({ guest_id });
+          console.log("differ:", this.state.guest_id)
+          console.log(window.location.href);
+          if (latitude && longitude) {
+            onGetNearbyLabs(nearbyLabsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyLabs: this.props.nearbyLabs });
+            }, 500);
+          }
+        }
+        if (this.state.user_id) {
+          const nearbyLabsLocationDetails = {
+            latitude,
+            longitude,
+            search_type: this.state.search_type,
+            address: this.state.address,
+            city: this.state.city,
+            km: this.state.km,
+            LabType: this.state.LabType,
+          };
+          if (latitude && longitude) {
+            onGetNearbyLabs(nearbyLabsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyLabs: this.props.nearbyLabs });
+            }, 500);
+          }
+        }
+  
         // region Wise Advertisement 
         const regionWiseAdvLocationDetails = {
           latitude,
@@ -322,12 +409,11 @@ class NearbyLabs extends Component {
           onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
           setTimeout(() => {
             this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-          }, 500);
-        }
+          }, 500);}
       });
     }
 
-    console.log("url with ln and log", window.location.href);
+    // console.log("url with ln and log", window.location.href);
   }
 
 
@@ -1238,8 +1324,6 @@ class NearbyLabs extends Component {
             </div>
 
             <div className="d-flex">
-              {/* Display login and signup links if the user is not logged in,
-              otherwise show logout and cart links to the user with patient account and is logged in */}
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Link
@@ -1294,132 +1378,10 @@ class NearbyLabs extends Component {
                   </Link>
 
                 </div>
-              )
-                : this.state.user_type == "patient" ? (
-                  <div className="dropdown d-lg-inline-block ms-4 mt-2">
-                    <Link
-                      // to={"/profile"}
-                      to={
-                        this.props.match.params.uuid
-                          ? `/profile/${this.props.match.params.uuid}`
-                          : `/profile`
-                      }
-                      className="dropdown-content me-2 text-light"
-                    >
-                      <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">
-                        {this.state.patient_name.split(" ")[0]}                    </span>
-                    </Link>{" "}
-                    <button
-                      className="btn header-items noti-icon right-bar-toggle"
-                      style={{ position: 'relative' }}
-                      onClick={this.toggleDropdown}
-                    >
-                      <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
-                    </button>
+              ) :this.state.user_type == "patient" ? (
+                <Header />
 
-                    {isDropdownOpen && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '50px', // Adjust this value to set the distance between the button and the dropdown
-                        right: '20px',
-                        backgroundColor: '#f9f9f9',
-                        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-                        padding: '10px',
-                        minWidth: '150px',
-                        zIndex: 1,
-                      }}>
-                        <ul style={{ listStyleType: "none", padding: '2px' }}>
-                          <li>
-                          <a
-                            href="#"
-                            className="header-items noti-icon right-bar-toggle"
-                            onClick={openModal}
-                            style={{ textDecoration: 'none', color: 'blue', display: 'flex', alignItems: 'center' }}
-                          >
-                            <i className="mdi mdi-wallet align-middle me-1 font-size-20" style={{ color: 'blue' }} />
-                            <span className=" font-size-12" style={{ marginLeft: '4px' }}>
-                              My Wallet
-                            </span>
-                          </a>
-                            <div  id="modal" className="modal mt-4" style={{ display: "none", maxWidth: "100%", width: "500px", minHeight: "200px", maxHeight: "80vh", margin: "0 auto"}} >
-                              <div className="modal-dialog">
-                                <div className="modal-content">
-                                  <div className="modal-header">
-                                    <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
-                                  </div>
-                                  <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '2rem' }}>
-                                    Rs. {this.props.patientProfile.available_credit}
-                                  </div>
-                                  <div className="my-0" style={{ textAlign: 'center' }}>
-                                    <span className="text-danger">
-                                      <i className="mdi mdi-information"></i>{" "}
-                                      You have received this money in case of a refund.
-                                    </span><br />
-                                    <span className="text-danger">
-                                      Which you can use only for testing.
-                                    </span>
-                                  </div>
-                                  <div className="modal-footer">
-                                    <button
-                                      type="button"
-                                      className="btn btn-primary"
-                                      onClick={closeModal}
-                                    >
-                                      Close
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                          </li>
-
-                          <li>
-                            <Link to="/change-password" className="dropdown-content me-2 text-light">
-                              <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Password
-                              </span>
-                              <hr style={{ margin: '0 0' }} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/contact-us" className="dropdown-content me-2 text-light">
-                              <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Contact Us                  </span>
-                              <hr style={{ margin: '0 0' }} />
-                            </Link>
-                          </li>
-                          {/* <li>
-                <Link
-                  to={
-                    this.props.match.params.uuid
-                      ? `/cart/${this.props.match.params.uuid}`
-                      : `/cart`
-                  }
-                  className="btn header-items noti-icon right-bar-toggle"
-                >
-                  <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-                  {!isEmpty(this.props.carts) &&
-                    this.props.carts.slice(-1).pop().cart_quantity + count}
-                </Link>
-              </li> */}
-                          <li>
-                            <Link to="/logout" className="dropdown-content text-light">
-                              <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
-                                Log Out
-                              </span>
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-
-                ) : (
+              ) : (
                   <div className="dropdown d-lg-inline-block ms-3 mt-3">
                     {this.state.user_type == "labowner" && (
                       <Link
@@ -4258,8 +4220,8 @@ NearbyLabs.propTypes = {
   history: any,
   location: any,
   match: PropTypes.object,
-  carts: PropTypes.array,
   advLives: PropTypes.array,
+  carts: PropTypes.array,
   regionWiseAdvertisement: PropTypes.array,
   nearbyLabs: PropTypes.array,
   onGetNearbyLabs: PropTypes.func,
@@ -4271,7 +4233,6 @@ NearbyLabs.propTypes = {
   territoriesList: PropTypes.array,
   onGetPatientProfile: PropTypes.func,
   patientProfile: PropTypes.array,
-  onGetPatientProfile: PropTypes.func,
 
 };
 
@@ -4281,7 +4242,6 @@ const mapStateToProps = state => ({
   advLives: state.LabMarket.advLives,
   territoriesList: state.territoriesList.territoriesList,
   patientProfile: state.LabMarket.patientProfile,
-
 
 });
 

@@ -68,6 +68,7 @@ export const postPatientInformation = (id, patient) => {
   let formData = new FormData();
   formData.append("name", patient.name);
   formData.append("phone", patient.phone);
+  formData.append("email", patient.email);
   formData.append("city_id", patient.city_id);
   formData.append("url", patient.url);
   console.log(url, patient.city_id)

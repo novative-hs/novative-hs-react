@@ -54,56 +54,61 @@ class Header extends Component {
 
     console.log(this.state.user_type)
   }
-
   componentDidMount() {
-
     const { getCarts } = this.props;
+    
     if (!this.state.user_id) {
-      console.log("hellll")
-      // this.props.history.push("/login");
+      console.log("hellll");
       getCarts(this.props.match.params.guest_id);
       this.setState({ carts: this.state.carts });
-      console.log("uuid:", carts, this.props.match.params.guest_id)
-      //  window.location.reload()
+      console.log("uuid:", this.state.carts, this.props.match.params.guest_id);
     }
+    
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       getCarts(this.state.user_id);
       this.setState({ carts: this.state.carts });
-      console.log("uuid:", carts, this.state.user_id)
-
-      // window.location.reload()
+      console.log("uuid:", this.state.carts, this.state.user_id);
     }
+    
     if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       getCarts(this.props.match.params.guest_id);
-      console.log("heeelllll:", carts, this.props.match.params.guest_id)
+      console.log("heeelllll:", this.state.carts, this.props.match.params.guest_id);
     }
+    
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
       getCarts(this.props.match.params.uuid);
-      console.log("heeelllll:", carts, this.props.match.params.uuid)
+      console.log("heeelllll:", this.state.carts, this.props.match.params.uuid);
     }
-    // getCarts(this.state.user_id);
-    // this.setState({ carts: this.state.carts });
 
-    // getCarts(this.props.match.params.id);
-    // // console.log("header id:",getCarts(this.props.match.params.id))
-    // this.setState({ carts: this.state.carts });
-    // if (window.localStorage) {
-
-    //   // If there is no item as 'reload'
-    //   // in localstorage then create one &
-    //   // reload the page
-    //   if (!localStorage.getItem('reload')) {
-    //       localStorage['reload'] = true;
-    //       window.location.reload();
-    //   } else {
-
-    //       // If there exists a 'reload' item
-    //       // then clear the 'reload' item in
-    //       // local storage
-    //       localStorage.removeItem('reload');
-    //   }
-    // }
+    // Now start the 2-second interval function
+    this.interval = setInterval(() => {
+      this.handleAsyncAction();
+    }, 2000);
   }
+
+  componentWillUnmount() {
+    // Clear the interval when the component is unmounted to avoid memory leaks
+    clearInterval(this.interval);
+  }
+
+  async handleAsyncAction() {
+    const { getCarts } = this.props;
+
+    // You can conditionally fetch carts based on your requirements
+    if (!this.state.user_id) {
+      getCarts(this.props.match.params.guest_id);
+    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+      getCarts(this.state.user_id);
+    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+      getCarts(this.props.match.params.guest_id);
+    } else if (this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+      getCarts(this.props.match.params.uuid);
+    }
+
+    // Now update the state with the fetched carts (if necessary)
+    // For example: this.setState({ carts: updatedCarts });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
     if (
@@ -170,6 +175,8 @@ class Header extends Component {
   render() {
     const { isDropdownOpen } = this.state;
     const isLargeScreen = window.innerWidth > 992;
+    const isSmallScreen = window.innerWidth < 540;
+
     return (
       <React.Fragment>
         <header id="page-topbaar">
@@ -218,7 +225,7 @@ class Header extends Component {
                 <button
                   type="button"
                   className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
-                  style={{ left: '12px' }} // Set left position to 10 pixels
+                  style={{ left: '12px', top: '6px' }} // Set left position to 10 pixels
                   data-toggle="collapse"
                   onClick={this.toggleMenu}
                   data-target="#topnav-menu-content"
@@ -374,7 +381,88 @@ class Header extends Component {
                       </div>
                     )}
                   </div>
-              ) : (
+              ): this.state.user_type == "patient" && isSmallScreen ? ( 
+                <div className="dropdown d-lg-inline-block ms-4 mt-6">
+                    <Link
+                      // to={"/profile"}
+                      to={
+                        this.props.match.params.uuid
+                          ? `/profile/${this.props.match.params.uuid}`
+                          : `/profile`
+                      }
+                      className="dropdown-content me-2 text-light"
+                    >
+                      <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
+                      <span className="pt-4 font-size-12">
+                        {this.state.patient_name.split(" ")[0]}                    
+                      </span>
+                    </Link>{" "}
+                    <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/cart/${this.props.match.params.uuid}`
+                          : `/cart`
+                      }
+                      className="dropdown-content me-2 text-light"
+                    >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                      {!isEmpty(this.props.carts) &&
+
+                        this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                      }
+                    </Link>
+                    
+                    <button
+                      className="btn header-items noti-icon right-bar-toggle"
+                      style={{ position: 'relative' }}
+                      onClick={this.toggleDropdown}
+                    >
+                      <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
+                    </button>
+
+                    {isDropdownOpen && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '50px', // Adjust this value to set the distance between the button and the dropdown
+                        right: '20px',
+                        backgroundColor: '#f9f9f9',
+                        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                        padding: '10px',
+                        minWidth: '150px',
+                        zIndex: 1,
+                      }}>
+                        <ul style={{ listStyleType: "none", padding: '2px' }}>
+                          <li>
+                            <Link to="/change-password" className="dropdown-content me-2 text-light">
+                              <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                                Password
+                              </span>
+                              <hr style={{margin: '0 0' }} />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/contact-us" className="dropdown-content me-2 text-light">
+                              <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                                Contact Us                  </span>
+                              <hr style={{ margin: '0 0' }} />
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/logout" className="dropdown-content text-light">
+                              <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
+                              <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                                Log Out                    
+                              </span>
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+              ): (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (
                     <Link
@@ -531,8 +619,9 @@ class Header extends Component {
             </div>
           </div>
         </header>
-
+        {!this.state.user_type == "patient" ? (
         <Navbar menuOpen={this.state.open} />
+        ) : null }
       </React.Fragment>
     );
   }

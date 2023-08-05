@@ -544,10 +544,6 @@ class nearbyRadiology extends Component {
         error: this.props.error
       });
     }, 100);
-    setTimeout(() => {
-      window.location.reload()
-  
-    }, 400);
   };
 
   onChangeKm = e => {

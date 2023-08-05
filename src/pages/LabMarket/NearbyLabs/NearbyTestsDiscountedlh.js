@@ -556,10 +556,6 @@ class NearbyTests extends Component {
         error: this.props.error
       });
     }, 100);
-    setTimeout(() => {
-      window.location.reload()
-  
-    }, 400);
   };
   // activateParentDropdown = item => {
   //   item.classList.add("active");

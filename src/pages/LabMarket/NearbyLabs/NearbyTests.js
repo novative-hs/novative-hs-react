@@ -556,10 +556,6 @@ handleAddToCart = cart => {
       error: this.props.error
     });
   }, 100);
-  setTimeout(() => {
-    window.location.reload()
-
-  }, 400);
 };
 
   // activateParentDropdown = item => {

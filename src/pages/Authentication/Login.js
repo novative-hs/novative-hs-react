@@ -28,7 +28,9 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    console.log("uuid", this.props.match.params.uuid)
+    console.log("uuid", this.props.match.params.uuid)    
+    console.log("guest", this.props.match.params.guest_id)
+
 
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
@@ -153,7 +155,10 @@ class Login extends Component {
                                     this.props.history.push("/donor-profile");
                                   }
                                 } else {
+                                  // this.props.match.params.uuid = this.props.match.params.guest_id
+                                  console.log("uuid in mobile app else case", this.props.match.params.uuid)
                                   if (success.account_type === "patient") {
+                                    this.props.match.params.uuid = this.props.match.params.guest_id
                                     this.props.history.push(
                                       this.props.match.params.uuid
                                         ? `/nearby-labs/${this.props.match.params.uuid}`
