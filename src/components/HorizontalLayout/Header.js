@@ -54,60 +54,65 @@ class Header extends Component {
 
     console.log(this.state.user_type)
   }
-  componentDidMount() {
+  async componentDidMount() {
     const { getCarts } = this.props;
-    
+    this.isFetching = false; // Add a flag to track if a fetch is already in progress
+  
+    // Fetch carts initially based on conditions
     if (!this.state.user_id) {
       console.log("hellll");
-      getCarts(this.props.match.params.guest_id);
-      this.setState({ carts: this.state.carts });
+      await this.fetchCarts(getCarts, this.props.match.params.guest_id);
       console.log("uuid:", this.state.carts, this.props.match.params.guest_id);
-    }
-    
-    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.state.user_id);
-      this.setState({ carts: this.state.carts });
+    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       console.log("uuid:", this.state.carts, this.state.user_id);
-    }
-    
-    if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.props.match.params.guest_id);
+      await this.fetchCarts(getCarts, this.state.user_id);
+    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       console.log("heeelllll:", this.state.carts, this.props.match.params.guest_id);
-    }
-    
-    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-      getCarts(this.props.match.params.uuid);
+      await this.fetchCarts(getCarts, this.props.match.params.guest_id);
+    } else if (this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
       console.log("heeelllll:", this.state.carts, this.props.match.params.uuid);
+      await this.fetchCarts(getCarts, this.props.match.params.uuid);
     }
-
+  
     // Now start the 2-second interval function
-    this.interval = setInterval(() => {
-      this.handleAsyncAction();
+    this.interval = setInterval(async () => {
+      if (!this.isFetching) { // Check if a fetch is already in progress
+        await this.handleAsyncAction(getCarts);
+      }
     }, 2000);
   }
-
+  
   componentWillUnmount() {
     // Clear the interval when the component is unmounted to avoid memory leaks
     clearInterval(this.interval);
   }
-
-  async handleAsyncAction() {
-    const { getCarts } = this.props;
-
-    // You can conditionally fetch carts based on your requirements
-    if (!this.state.user_id) {
-      getCarts(this.props.match.params.guest_id);
-    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.state.user_id);
-    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.props.match.params.guest_id);
-    } else if (this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-      getCarts(this.props.match.params.uuid);
+  
+  async fetchCarts(getCarts, param) {
+    this.isFetching = true; // Set the flag to indicate fetch is in progress
+    const fetchedCarts = await getCarts(param);
+    this.setState({ carts: fetchedCarts });
+    this.isFetching = false; // Reset the flag once fetch is completed
+  }
+  
+  async handleAsyncAction(getCarts) {
+    const { user_id, user_type } = this.state;
+  
+    if (!user_id) {
+      await this.fetchCarts(getCarts, this.props.match.params.guest_id);
+    } else if (user_type !== "CSR" && user_type !== "b2bclient") {
+      await this.fetchCarts(getCarts, user_id);
+    } else if (user_type === "CSR" && user_type !== "b2bclient") {
+      // No need to update state in this case
+      await getCarts(this.props.match.params.guest_id);
+    } else if (user_type !== "CSR" && user_type === "b2bclient") {
+      // No need to update state in this case
+      await getCarts(this.props.match.params.uuid);
     }
-
+  
     // Now update the state with the fetched carts (if necessary)
     // For example: this.setState({ carts: updatedCarts });
   }
+  
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
