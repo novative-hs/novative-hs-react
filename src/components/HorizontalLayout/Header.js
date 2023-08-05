@@ -79,7 +79,7 @@ class Header extends Component {
       if (!this.isFetching) { // Check if a fetch is already in progress
         await this.handleAsyncAction(getCarts);
       }
-    }, 8000);
+    });
   }
   
   componentWillUnmount() {
