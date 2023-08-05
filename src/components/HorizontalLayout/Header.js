@@ -54,60 +54,46 @@ class Header extends Component {
 
     console.log(this.state.user_type)
   }
-  componentDidMount() {
+  async componentDidMount() {
+    // Call the asynchronous function initially
+    await this.getData();
+  
+    // Set an interval to call the asynchronous function every 2 seconds
+    this.interval = setInterval(this.getData, 2000);
+  }
+  
+  componentWillUnmount() {
+    // Clear the interval when the component is unmounted to prevent memory leaks
+    clearInterval(this.interval);
+  }
+  
+  getData = async () => {
     const { getCarts } = this.props;
-    
+  
     if (!this.state.user_id) {
       console.log("hellll");
-      getCarts(this.props.match.params.guest_id);
+      await getCarts(this.props.match.params.guest_id);
       this.setState({ carts: this.state.carts });
       console.log("uuid:", this.state.carts, this.props.match.params.guest_id);
     }
-    
+  
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.state.user_id);
+      await getCarts(this.state.user_id);
       this.setState({ carts: this.state.carts });
       console.log("uuid:", this.state.carts, this.state.user_id);
     }
-    
+  
     if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.props.match.params.guest_id);
+      await getCarts(this.props.match.params.guest_id);
       console.log("heeelllll:", this.state.carts, this.props.match.params.guest_id);
     }
-    
+  
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-      getCarts(this.props.match.params.uuid);
+      await getCarts(this.props.match.params.uuid);
       console.log("heeelllll:", this.state.carts, this.props.match.params.uuid);
     }
-
-    // Now start the 2-second interval function
-    this.interval = setInterval(() => {
-      this.handleAsyncAction();
-    }, 2000);
   }
-
-  componentWillUnmount() {
-    // Clear the interval when the component is unmounted to avoid memory leaks
-    clearInterval(this.interval);
-  }
-
-  async handleAsyncAction() {
-    const { getCarts } = this.props;
-
-    // You can conditionally fetch carts based on your requirements
-    if (!this.state.user_id) {
-      getCarts(this.props.match.params.guest_id);
-    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.state.user_id);
-    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      getCarts(this.props.match.params.guest_id);
-    } else if (this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-      getCarts(this.props.match.params.uuid);
-    }
-
-    // Now update the state with the fetched carts (if necessary)
-    // For example: this.setState({ carts: updatedCarts });
-  }
+  
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
