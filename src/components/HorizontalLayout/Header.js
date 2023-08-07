@@ -72,28 +72,28 @@ class Header extends Component {
   
     if (!this.state.user_id) {
       console.log("hellll");
-      await getCarts(this.props.match.params.guest_id);
-      this.setState({ carts: this.state.carts });
-      console.log("uuid:", this.state.carts, this.props.match.params.guest_id);
+      const carts = await getCarts(this.props.match.params.guest_id);
+      this.setState({ carts });
+      console.log("uuid:", carts, this.props.match.params.guest_id);
     }
   
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      await getCarts(this.state.user_id);
-      this.setState({ carts: this.state.carts });
-      console.log("uuid:", this.state.carts, this.state.user_id);
+      const carts = await getCarts(this.state.user_id);
+      this.setState({ carts });
+      console.log("uuid:", carts, this.state.user_id);
     }
   
     if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      await getCarts(this.props.match.params.guest_id);
-      console.log("heeelllll:", this.state.carts, this.props.match.params.guest_id);
+      const carts = await getCarts(this.props.match.params.guest_id);
+      console.log("heeelllll:", carts, this.props.match.params.guest_id);
     }
   
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-      await getCarts(this.props.match.params.uuid);
-      console.log("heeelllll:", this.state.carts, this.props.match.params.uuid);
+      const carts = await getCarts(this.props.match.params.uuid);
+      console.log("heeelllll:", carts, this.props.match.params.uuid);
     }
   }
-  
+    
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
