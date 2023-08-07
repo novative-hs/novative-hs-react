@@ -247,7 +247,7 @@ class Header extends Component {
 
                     {!isEmpty(this.props.carts) &&
 
-                      this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                      this.props.carts.slice(-1).pop()?.cart_quantity + this.state.count
                     }
                   </Link>
                   <Link
@@ -314,7 +314,7 @@ class Header extends Component {
 
                       {!isEmpty(this.props.carts) &&
 
-                        this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                        this.props.carts.slice(-1).pop()?.cart_quantity + this.state.count
                       }
                     </Link>
                     
@@ -395,7 +395,7 @@ class Header extends Component {
 
                       {!isEmpty(this.props.carts) &&
 
-                        this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                        this.props.carts.slice(-1).pop()?.cart_quantity + this.state.count
                       }
                     </Link>
                     
@@ -515,7 +515,7 @@ class Header extends Component {
 
                         {!isEmpty(this.props.carts) &&
 
-                          this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                          this.props.carts.slice(-1).pop()?.cart_quantity + this.state.count
                         }
                       </Link>
                       {/* <Link
