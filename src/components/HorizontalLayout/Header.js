@@ -245,9 +245,9 @@ class Header extends Component {
                   >
                     <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                    {!isEmpty(this.props.carts) &&
-                      this.props.carts.slice(-1).pop()?.cart_quantity !== null ? (
-                        this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                    {!isEmpty(console.log("kya a raha h ism dekhty h",this.props.carts)) &&
+                      this.props.carts.cart_quantity !== null ? (
+                        this.props.carts.cart_quantity + this.state.count
                       ) : (
                         this.state.count
                       )}
