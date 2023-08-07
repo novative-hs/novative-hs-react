@@ -69,30 +69,23 @@ class Header extends Component {
   
   getData = async () => {
     const { getCarts } = this.props;
-  
-    if (!this.state.user_id) {
-      console.log("hellll");
-      const carts = await getCarts(this.props.match.params.guest_id);
-      this.setState({ carts });
-      console.log("uuid:", carts, this.props.match.params.guest_id);
+
+    const { user_id, user_type } = this.state;
+
+    let cartsData;
+
+    if (!user_id) {
+      cartsData = await getCarts(this.props.match.params.guest_id);
+    } else if (user_type !== "CSR" && user_type !== "b2bclient") {
+      cartsData = await getCarts(user_id);
+    } else if (user_type === "CSR" && user_type !== "b2bclient") {
+      cartsData = await getCarts(this.props.match.params.guest_id);
+    } else if (user_type !== "CSR" && user_type === "b2bclient") {
+      cartsData = await getCarts(this.props.match.params.uuid);
     }
-  
-    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      const carts = await getCarts(this.state.user_id);
-      this.setState({ carts });
-      console.log("uuid:", carts, this.state.user_id);
-    }
-  
-    if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      const carts = await getCarts(this.props.match.params.guest_id);
-      console.log("heeelllll:", carts, this.props.match.params.guest_id);
-    }
-  
-    if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-      const carts = await getCarts(this.props.match.params.uuid);
-      console.log("heeelllll:", carts, this.props.match.params.uuid);
-    }
-  }
+
+    this.setState({ carts: cartsData });
+  };
     
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -249,8 +242,7 @@ class Header extends Component {
                     <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
                     {!isEmpty(this.props.carts) &&
-                        totalLength + this.state.count
-                      }
+                        totalLength + this.state.count}
                   </Link>
                   <Link
                     to={
