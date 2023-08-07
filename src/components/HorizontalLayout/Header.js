@@ -159,6 +159,9 @@ class Header extends Component {
     }));
   };
   render() {
+    const { carts } = this.props;
+    const totalLength = carts.length + this.state.count;
+    console.log("total array length", totalLength)
     const { isDropdownOpen } = this.state;
     const isLargeScreen = window.innerWidth > 992;
     const isSmallScreen = window.innerWidth < 540;
@@ -245,9 +248,8 @@ class Header extends Component {
                   >
                     <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                    {!isEmpty(console.log("kya a raha h ism dekhty h",this.props.carts)) &&
-                        this.props.carts.length + this.state.count
-
+                    {!isEmpty(this.props.carts) &&
+                        totalLength + this.state.count
                       }
                   </Link>
                   <Link
