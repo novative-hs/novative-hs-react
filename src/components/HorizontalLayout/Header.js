@@ -94,7 +94,7 @@ class Header extends Component {
       !isEmpty(carts) &&
       size(prevProps.carts) !== size(carts)
     ) {
-      this.setState({ carts: {} });
+      this.setState({ carts: [] });
     }
   }
   toggleSearch = () => {
