@@ -174,13 +174,11 @@ class TestsOffered extends Component {
       onAddToCart(cart, this.props.match.params.uuid);
     }
 
-    console.log("Props received:", this.props.success, this.props.error);
     setTimeout(() => {
       this.setState({
-        success: this.props.success,
+        success: "Item added Successfully",
         error: this.props.error
       });
-      console.log("Setting state with end of cart", this.state.success, this.state.error);
     }, 100);
   };
   activateParentDropdown = item => {
