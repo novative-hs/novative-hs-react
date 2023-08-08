@@ -181,6 +181,7 @@ class TestsOffered extends Component {
         success: this.props.success,
         error: this.props.error
       });
+      console.log("Setting state with end of cart", this.props.success, this.props.error);
     }, 100);
   };
   activateParentDropdown = item => {
