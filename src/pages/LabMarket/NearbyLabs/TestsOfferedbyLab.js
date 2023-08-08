@@ -174,12 +174,12 @@ class TestsOffered extends Component {
       onAddToCart(cart, this.props.match.params.uuid);
     }
 
-    setTimeout(() => {
-      this.setState({
-        success: this.props.success,
-        error: this.props.error
-      });
-    }, 100);
+    // setTimeout(() => {
+    //   this.setState({
+    //     success: this.props.success,
+    //     error: this.props.error
+    //   });
+    // }, 100);
   };
   activateParentDropdown = item => {
     item.classList.add("active");
