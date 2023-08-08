@@ -176,7 +176,6 @@ class TestsOffered extends Component {
 
     console.log("Props received:", this.props.success, this.props.error);
     setTimeout(() => {
-      console.log("Setting state with:", this.props.success, this.props.error);
       this.setState({
         success: this.props.success,
         error: this.props.error
