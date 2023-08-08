@@ -594,7 +594,7 @@ class NearbyProfiles extends Component {
 
     setTimeout(() => {
       this.setState({
-        success: this.props.success,
+        success: "Item added Successfully",
         error: this.props.error
       });
     }, 100);
@@ -1653,8 +1653,8 @@ NearbyProfiles.propTypes = {
   onGetProfiles: PropTypes.func,
   Profiles: PropTypes.array,
   onAddToCart: PropTypes.func,
-  success: PropTypes.any,
-  error: PropTypes.any,
+  success: PropTypes.string,
+  error: PropTypes.string,
   ProfileMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,

@@ -552,7 +552,7 @@ handleAddToCart = cart => {
 
   setTimeout(() => {
     this.setState({
-      success: this.props.success,
+      success: "Item added Successfully",
       error: this.props.error
     });
   }, 100);
@@ -1614,8 +1614,8 @@ NearbyTests.propTypes = {
   onGetAdvertisementLives: PropTypes.func,
   onGetNearbyTests: PropTypes.func,
   onAddToCart: PropTypes.func,
-  success: PropTypes.any,
-  error: PropTypes.any,
+  success: PropTypes.string,
+  error: PropTypes.string,
   className: PropTypes.any,
   TestMarket: PropTypes.any,
   menuOpen: PropTypes.any,

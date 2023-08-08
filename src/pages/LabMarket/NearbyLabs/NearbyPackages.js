@@ -537,7 +537,7 @@ class NearbyPackage extends Component {
 
     setTimeout(() => {
       this.setState({
-        success: this.props.success,
+        success: "Item added Successfully",
         error: this.props.error
       });
     }, 100);
@@ -1665,9 +1665,9 @@ NearbyPackage.propTypes = {
   onAddToCart: PropTypes.func,
   onGetPackages: PropTypes.func,
   Packages: PropTypes.array,
-  success: PropTypes.any,
+  success: PropTypes.string,
   className: PropTypes.any,
-  error: PropTypes.any,
+  error: PropTypes.string,
   PackageMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
