@@ -26,7 +26,7 @@ const carts = (state = INIT_STATE, action) => {
     case GET_CARTS_FAIL:
       return {
         ...state,
-        error: action.payload.data,
+        error: action.payload,
       };
 
     case EMPTY_CART_SUCCESS:
