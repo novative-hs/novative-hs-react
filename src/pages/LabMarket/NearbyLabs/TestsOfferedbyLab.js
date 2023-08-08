@@ -177,7 +177,7 @@ class TestsOffered extends Component {
     setTimeout(() => {
       this.setState({
         success: "Item added Successfully",
-        error: this.props.error
+        error: "Item Already Exists in cart"
       });
     }, 100);
   };
