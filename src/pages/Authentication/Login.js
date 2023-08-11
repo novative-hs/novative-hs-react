@@ -28,9 +28,19 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    console.log("uuid", this.props.match.params.uuid)    
-    console.log("guest", this.props.match.params.guest_id)
 
+    const url = window.location.href;
+    const queryString = url.substring(url.indexOf('&') + 1);
+    const params = new URLSearchParams(queryString);
+    console.log("print params in app", url, queryString, params)
+
+    const latitudeFromUrl = params.get('lat');
+    const longitudeFromUrl = params.get('lon');
+
+    const appurl = `http://localhost:3000/login/&lat=${latitudeFromUrl}&lon=${longitudeFromUrl}`;
+    const appqueryString = appurl.substring(appurl.indexOf("&") + 1);
+    const finalUrl = ("&") + appqueryString; // Remove the leading question mark ('?')        
+    this.setState({ finalUrl: finalUrl });
 
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
@@ -44,6 +54,8 @@ class Login extends Component {
       this.props.history.push("/logout");
     }
     this.props.apiError("");
+    console.log("finalurl in the app", finalUrl, this.state.finalUrl)
+
   }
 
   removeAttributes(element, ...attrs) {
@@ -117,7 +129,18 @@ class Login extends Component {
                               setTimeout(() => {
                                 console.log(values)
                                 const success = this.props.success;
-                                if (isLargeScreen) {
+                                if (!isLargeScreen && this.state.finalUrl) {
+                                  console.log("finalUrl in mobile app else case", this.state.finalUrl)
+                                  if (success.account_type === "patient") {
+                                    this.props.history.push(
+                                      this.state.finalUrl
+                                        ? `/nearby-labs/${this.state.finalUrl}`
+                                        : `/nearby-labs/${this.state.finalUrl}`
+                                    );
+                                  } else if (success.account_type === "samplecollector") {
+                                    this.props.history.push("/dashboard-samplecollector");
+                                  }
+                                } else {
                                   if (success.account_type === "patient") {
                                     this.props.history.push(
                                       this.props.match.params.uuid
@@ -154,22 +177,9 @@ class Login extends Component {
                                   } else if (success.account_type === "donor") {
                                     this.props.history.push("/donor-profile");
                                   }
-                                } else {
-                                  // this.props.match.params.uuid = this.props.match.params.guest_id
-                                  console.log("uuid in mobile app else case", this.props.match.params.uuid)
-                                  if (success.account_type === "patient") {
-                                    this.props.match.params.uuid = this.props.match.params.guest_id
-                                    this.props.history.push(
-                                      this.props.match.params.uuid
-                                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                                        : `/nearby-labs`
-                                    );
-                                  } else if (success.account_type === "samplecollector") {
-                                    this.props.history.push("/dashboard-samplecollector");
-                                  }
                                 }
-                                
-                               
+
+
                               }, 1000);
                             }}
                           >
@@ -259,22 +269,29 @@ class Login extends Component {
                                 </div>
 
                                 <div className="mt-3 text-center">
-                                  <p>
-                                    Do not have an account?{" "}
-                                    <Link
-                                      // to={{ pathname: "/register" }}
-                                      to={
-                                        this.props.match.params.uuid
-                                          ? `/register/${this.props.match.params.uuid}`
-                                          : `/register`
-                                      }
-                                      className="fw-medium text-primary"
-                                    >
-                                      {" "}
-                                      Register
-                                    </Link>{" "}
-                                  </p>
+                                  {(!isLargeScreen && this.state.finalUrl) ? (
+                                    <p>
+                                      Do not have an account?{" "}
+                                      <Link
+                                        to={this.state.finalUrl ? `/register/${this.state.finalUrl}` : "/register"}
+                                        className="fw-medium text-primary"
+                                      >
+                                        Register
+                                      </Link>{" "}
+                                    </p>
+                                  ) : (
+                                    <p>
+                                      Do not have an account?{" "}
+                                      <Link
+                                        to={this.props.match.params.uuid ? `/register/${this.props.match.params.uuid}` : "/register"}
+                                        className="fw-medium text-primary"
+                                      >
+                                        Register
+                                      </Link>{" "}
+                                    </p>
+                                  )}
                                 </div>
+
                               </Form>
                             )}
                           </Formik>
