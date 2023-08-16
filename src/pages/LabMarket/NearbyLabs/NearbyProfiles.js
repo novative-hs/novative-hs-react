@@ -572,7 +572,7 @@ class NearbyProfiles extends Component {
   handleAddToCart = cart => {
     const { onAddToCart } = this.props;
 
-    if (!this.state.user_id) {
+    if (!this.state.user_id || this.state.user_id) {
       // this.props.history.push("/login");
       this.setState({ guest_id: this.props.match.params.guest_id });
       cart.guest_id = this.props.match.params.guest_id
@@ -601,7 +601,7 @@ class NearbyProfiles extends Component {
   };
 
   render() {
-    const isLargeScreen = window.innerWidth > 992;
+    const isLargeScreen = window.innerWidth < 490;
 
     const { page, totalPage } = this.state;
     const { Profiles } = this.props;
@@ -1578,7 +1578,7 @@ class NearbyProfiles extends Component {
                       </Card>
                     </Col>
                   ))}
-                 {!isLargeScreen ? (
+                 {isLargeScreen ? (
                   isEmpty(this.props.nearbyProfiles) ? (
                     <Row className="vh-100">
                       <Col lg="12">
@@ -1653,8 +1653,8 @@ NearbyProfiles.propTypes = {
   onGetProfiles: PropTypes.func,
   Profiles: PropTypes.array,
   onAddToCart: PropTypes.func,
-  success: PropTypes.string,
-  error: PropTypes.string,
+  success: PropTypes.any,
+  error: PropTypes.any,
   ProfileMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,

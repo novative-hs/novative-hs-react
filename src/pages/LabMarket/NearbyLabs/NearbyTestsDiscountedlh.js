@@ -534,7 +534,7 @@ class NearbyTests extends Component {
   handleAddToCart = cart => {
     const { onAddToCart } = this.props;
 
-    if (!this.state.user_id) {
+    if (!this.state.user_id || this.state.user_id) {
       // this.props.history.push("/login");
       this.setState({ guest_id: this.props.match.params.guest_id });
       cart.guest_id = this.props.match.params.guest_id
@@ -614,7 +614,7 @@ class NearbyTests extends Component {
   }
 
   render() {
-    const isLargeScreen = window.innerWidth > 992;
+    const isLargeScreen = window.innerWidth < 490;
 
     const { page, totalPage } = this.state;
     const cityList = [];
@@ -1592,7 +1592,7 @@ class NearbyTests extends Component {
                       </Card>
                     </Col>
                   ))}
-                {!isLargeScreen ? (
+                {isLargeScreen ? (
                   isEmpty(this.props.nearbyTests) ? (
                     <Row className="vh-100">
                       <Col lg="12">
@@ -1665,8 +1665,8 @@ NearbyTests.propTypes = {
   onGetAdvertisementLives: PropTypes.func,
   onGetNearbyTestsDiscounted: PropTypes.func,
   onAddToCart: PropTypes.func,
-  success: PropTypes.string,
-  error: PropTypes.string,
+  success: PropTypes.any,
+  error: PropTypes.any,
   className: PropTypes.any,
   TestMarket: PropTypes.any,
   menuOpen: PropTypes.any,

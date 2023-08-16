@@ -2,9 +2,9 @@ import {
   GET_TERRITORIES_LIST,
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
-  GET_LABS,
-  GET_LABS_SUCCESS,
-  GET_LABS_FAIL,
+  GET_MAIN_LABS,
+  GET_MAIN_LABS_SUCCESS,
+  GET_MAIN_LABS_FAIL,
   ADD_LAB_INFORMATION,
   ADD_LAB_INFORMATION_SUCCESSFUL,
   ADD_LAB_INFORMATION_FAILED,
@@ -29,17 +29,17 @@ export const getTerritoriesListFail = error => ({
   payload: error,
 });
 // lab info
-export const getLabs = () => ({
-  type: GET_LABS,
+export const getMainLabs = () => ({
+  type: GET_MAIN_LABS,
 });
 
-export const getLabsSuccess = labs => ({
-  type: GET_LABS_SUCCESS,
+export const getMainLabsSuccess = labs => ({
+  type: GET_MAIN_LABS_SUCCESS,
   payload: labs,
 });
 
-export const getLabsFail = error => ({
-  type: GET_LABS_FAIL,
+export const getMainLabsFail = error => ({
+  type: GET_MAIN_LABS_FAIL,
   payload: error,
 });
 

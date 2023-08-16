@@ -1,8 +1,8 @@
 import {
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
-  GET_LABS_SUCCESS,
-  GET_LABS_FAIL,
+  GET_MAIN_LABS_SUCCESS,
+  GET_MAIN_LABS_FAIL,
   ADD_LAB_INFORMATION,
   ADD_LAB_INFORMATION_SUCCESSFUL,
   ADD_LAB_INFORMATION_FAILED,
@@ -31,13 +31,13 @@ const labInformation = (state = initialState, action) => {
         error: action.payload,
       };
     // lab information
-    case GET_LABS_SUCCESS:
+    case GET_MAIN_LABS_SUCCESS:
       return {
         ...state,
         labs: action.payload.data,
       };
 
-    case GET_LABS_FAIL:
+    case GET_MAIN_LABS_FAIL:
       return {
         ...state,
         error: action.payload,

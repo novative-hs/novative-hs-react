@@ -32,6 +32,27 @@ class Register extends Component {
   }
 
   componentDidMount() {
+    const url = window.location.href;
+    const queryString = url.includes('&') ? url.substring(url.indexOf('&') + 1) : '';
+    console.log(queryString);
+    const params = new URLSearchParams(queryString);
+    console.log("print params in app", url, queryString, params)
+    const latitudeFromUrl = params.get('lat');
+    const longitudeFromUrl = params.get('lon');
+
+    console.log('Latitude:', latitudeFromUrl);
+    console.log('Longitude:', longitudeFromUrl);
+    if (latitudeFromUrl && longitudeFromUrl) {
+
+      const url = `http://localhost:3000/nearby-labs/&lat=${latitudeFromUrl}&lon=${longitudeFromUrl}`;
+      const queryString = url.substring(url.indexOf("&") + 1);
+      const finalUrl = ("&") + queryString; // Remove the leading question mark ('?')        
+      this.setState({ finalUrl: finalUrl });
+      console.log("differ with the final url state:", this.state.finalUrl);
+
+      console.log(finalUrl);
+      console.log("whsuqi", this.props.match.params.uuid);
+    }
     console.log("uuid", this.props.match.params.uuid)
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
@@ -44,6 +65,7 @@ class Register extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    
     if (prevProps.usernameError != this.props.usernameError) {
       this.setState({ usernameFieldError: this.props.usernameError });
     }
@@ -446,8 +468,8 @@ class Register extends Component {
                                       {/* <option value="corporate">Corporate</option> */}
                                     </Field>
                                   </div>
-                                ) :
-                                  <div className="mb-3">
+                                ) : !isLargeScreen && this.state.finalUrl ?(
+<div className="mb-3">
                                     <Label
                                       for="account_type"
                                       className="form-label"
@@ -470,7 +492,32 @@ class Register extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-                                  </div>}
+                                  </div>
+                                ) : 
+                                <div className="mb-3">
+                                    <Label
+                                      for="account_type"
+                                      className="form-label"
+                                    >
+                                      Account type
+                                    </Label>
+                                    <Field
+                                      name="account_type"
+                                      component="select"
+                                      className="form-select"
+                                    >
+                                      <option value="patient">Patient</option>
+                                      <option value="labowner">Lab</option>
+                                      <option value="b2bclient">
+                                        B2B Client
+                                      </option>
+                                      <option value="donor">
+                                        Donor
+                                      </option>
+                                      {/* <option value="corporate">Corporate</option> */}
+                                    </Field>
+                                  </div>
+                                  }
 
                                 {/* Account type field */}
 

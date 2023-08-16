@@ -13,8 +13,8 @@ import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 // action
 import {
   getTerritoriesList,
-  getLabs,
-  getLabsSuccess,
+  getMainLabs,
+  getMainLabsSuccess,
   addLabInformation,
   addLabInformationFailed,
 } from "../../store/actions";
@@ -82,14 +82,14 @@ class LabInformation extends Component {
   }
 
   componentDidMount() {
-    this.props.getLabs(); // Calling to get labs list from database
+    this.props.getMainLabs(); // Calling to get labs list from database
     this.props.addLabInformationFailed("");
     this.props.getTerritoriesList();
 
     // Wait for sometime so that response is loaded from database
     setTimeout(() => {
       if (this.props.labs.length) {
-        const labs = this.props.labs.filter(lab => lab.type === "Main Lab");
+        const labs = this.props.labs;
         // const mainLabs = this.props.labs.filter(lab => lab.type === "main lab");
 
         for (let i = 0; i < labs.length; i++) {
@@ -1390,11 +1390,11 @@ LabInformation.propTypes = {
   history: PropTypes.any,
   match: PropTypes.object,
   location: PropTypes.object,
-  onGetLabs: PropTypes.func,
+  onGetMainLabs: PropTypes.func,
   labs: PropTypes.array,
   getTerritoriesList: PropTypes.func,
-  getLabs: PropTypes.func,
-  getLabsSuccess: PropTypes.func,
+  getMainLabs: PropTypes.func,
+  getMainLabsSuccess: PropTypes.func,
   addLabInformation: PropTypes.func,
   addLabInformationFailed: PropTypes.any,
   addLabError: PropTypes.any,
@@ -1411,8 +1411,8 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getTerritoriesList,
-  getLabs,
-  getLabsSuccess,
+  getMainLabs,
+  getMainLabsSuccess,
   addLabInformation,
   addLabInformationFailed,
 })(LabInformation);

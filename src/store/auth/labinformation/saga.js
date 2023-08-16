@@ -1,19 +1,19 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 
 //Account Redux states
-import { GET_LABS, ADD_LAB_INFORMATION, GET_TERRITORIES_LIST } from "./actionTypes";
+import { GET_MAIN_LABS, ADD_LAB_INFORMATION, GET_TERRITORIES_LIST } from "./actionTypes";
 import {
   getTerritoriesListSuccess,
   getTerritoriesListFail,
-  getLabsSuccess,
-  getLabsFail,
+  getMainLabsSuccess,
+  getMainLabsFail,
   addLabInformationSuccessful,
   addLabInformationFailed,
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import {
-  getLabs,
+  getMainLabs,
   postLabInformation,
   getTerritoriesList,
 } from "../../../helpers/django_api_helper";
@@ -26,12 +26,12 @@ function* fetchTerritoriesList(object) {
     yield put(getTerritoriesListFail(error));
   }
 }
-function* fetchLabs() {
+function* fethMainLabs() {
   try {
-    const response = yield call(getLabs);
-    yield put(getLabsSuccess(response));
+    const response = yield call(getMainLabs);
+    yield put(getMainLabsSuccess(response));
   } catch (error) {
-    yield put(getLabsFail(error));
+    yield put(getMainLabsFail(error));
   }
 }
 
@@ -51,7 +51,7 @@ function* addLabInformation({ payload: { lab, id } }) {
 }
 
 function* LabInformationSaga() {
-  yield takeEvery(GET_LABS, fetchLabs);
+  yield takeEvery(GET_MAIN_LABS, fethMainLabs);
   yield takeEvery(ADD_LAB_INFORMATION, addLabInformation);
   yield takeEvery(GET_TERRITORIES_LIST,fetchTerritoriesList);
 }

@@ -20,6 +20,8 @@ export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corpora
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
+export const GET_MAIN_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
+
 
 
 // TEST

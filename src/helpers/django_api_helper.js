@@ -341,7 +341,10 @@ export const getLabs = () =>
   get(url.GET_LABS, {
     headers: getHeader(authHeader()),
   });
-
+  export const getMainLabs = () =>
+  get(url.GET_MAIN_LABS, {
+    headers: getHeader(authHeader()),
+  });
 export const getDonors = () =>
   get(url.GET_DONORS, {
     headers: getHeader(authHeader()),

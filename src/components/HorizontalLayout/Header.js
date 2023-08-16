@@ -54,33 +54,44 @@ class Header extends Component {
 
     console.log(this.state.user_type)
   }
-  async componentDidMount() {
+  componentDidMount() {
+    const url = window.location.href;
+    const queryString = url.includes('&') ? url.substring(url.indexOf('&') + 1) : '';
+    const params = new URLSearchParams(queryString);
+    const latitudeFromUrl = params.get('lat');
+    const longitudeFromUrl = params.get('lon');
+
+    if (latitudeFromUrl && longitudeFromUrl) {
+      const finalUrl = `http://localhost:3000/nearby-labs/&lat=${latitudeFromUrl}&lon=${longitudeFromUrl}`;
+      this.setState({ finalUrl });
+      console.log('Final URL:', this.state.finalUrl);
+    }
+
     // Call the asynchronous function initially
-    await this.getData();
-  
+    this.getData();
+
     // Set an interval to call the asynchronous function every 2 seconds
     this.interval = setInterval(this.getData, 2000);
   }
-  
+
   componentWillUnmount() {
     // Clear the interval when the component is unmounted to prevent memory leaks
     clearInterval(this.interval);
   }
-  
+
   getData = async () => {
     const { getCarts } = this.props;
-
     const { user_id, user_type } = this.state;
 
     let cartsData;
 
     if (!user_id) {
       cartsData = await getCarts(this.props.match.params.guest_id);
-    } else if (user_type !== "CSR" && user_type !== "b2bclient") {
+    } else if (user_type !== 'CSR' && user_type !== 'b2bclient') {
       cartsData = await getCarts(user_id);
-    } else if (user_type === "CSR" && user_type !== "b2bclient") {
+    } else if (user_type === 'CSR' && user_type !== 'b2bclient') {
       cartsData = await getCarts(this.props.match.params.guest_id);
-    } else if (user_type !== "CSR" && user_type === "b2bclient") {
+    } else if (user_type !== 'CSR' && user_type === 'b2bclient') {
       cartsData = await getCarts(this.props.match.params.uuid);
     }
 
@@ -94,7 +105,7 @@ class Header extends Component {
       !isEmpty(carts) &&
       size(prevProps.carts) !== size(carts)
     ) {
-      this.setState({ carts: [] });
+      this.setState({ carts: {} });
     }
   }
   toggleSearch = () => {
@@ -156,15 +167,15 @@ class Header extends Component {
     const totalLength = carts.length + this.state.count;
     console.log("total array length", totalLength)
     const { isDropdownOpen } = this.state;
-    const isLargeScreen = window.innerWidth > 992;
-    const isSmallScreen = window.innerWidth < 540;
+    // const isLargeScreen = window.innerWidth > 992;
+    const isSmallScreen = window.innerWidth < 490;
 
     return (
       <React.Fragment>
         <header id="page-topbaar">
           <div className="navbar-header">
             <div className="d-flex">
-              {isLargeScreen ? (
+              {!isSmallScreen ? (
                 <div className="navbar-brand-box">
                   <Link
                     to={
@@ -202,7 +213,7 @@ class Header extends Component {
 
               ) : null}
 
-              {!isLargeScreen ? (
+              {isSmallScreen ? (
 
                 <button
                   type="button"
@@ -242,7 +253,8 @@ class Header extends Component {
                     <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
                     {!isEmpty(this.props.carts) &&
-                        totalLength + this.state.count}
+                        totalLength + this.state.count
+                      }
                   </Link>
                   <Link
                     to={
@@ -361,13 +373,13 @@ class Header extends Component {
                       </div>
                     )}
                   </div>
-              ): this.state.user_type == "patient" && isSmallScreen ? ( 
+              ): this.state.user_type == "patient" && isSmallScreen && this.state.filnalurl ? ( 
                 <div className="dropdown d-lg-inline-block ms-4 mt-6">
                     <Link
                       // to={"/profile"}
                       to={
                         this.props.match.params.uuid
-                          ? `/profile/${this.props.match.params.uuid}`
+                          ? `/profile/${this.state.filnalurl}/${this.props.match.params.uuid}`
                           : `/profile`
                       }
                       className="dropdown-content me-2 text-light"
@@ -380,7 +392,7 @@ class Header extends Component {
                     <Link
                       to={
                         this.props.match.params.uuid
-                          ? `/cart/${this.props.match.params.uuid}`
+                          ? `/cart/${this.state.filnalurl}/${this.props.match.params.uuid}`
                           : `/cart`
                       }
                       className="dropdown-content me-2 text-light"
@@ -599,9 +611,9 @@ class Header extends Component {
             </div>
           </div>
         </header>
-        {!this.state.user_type == "patient" ? (
+        {/* {!this.state.user_type == "patient" ? (
         <Navbar menuOpen={this.state.open} />
-        ) : null }
+        ) : null } */}
       </React.Fragment>
     );
   }

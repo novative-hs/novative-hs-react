@@ -651,7 +651,7 @@ const patientAuthProtectedRoutes = [
     component: PatientProfile,
   },
   {
-    path: "/cart/:uuid?",
+    path: "/cart/:guest_id?/:uuid?",
     component: CartsList,
   },
   {

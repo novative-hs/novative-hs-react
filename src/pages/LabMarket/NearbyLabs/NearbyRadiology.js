@@ -518,7 +518,7 @@ class nearbyRadiology extends Component {
   handleAddToCart = cart => {
     const { onAddToCart } = this.props;
 
-    if (!this.state.user_id) {
+    if (!this.state.user_id || this.state.user_id) {
       // this.props.history.push("/login");
       this.setState({ guest_id: this.props.match.params.guest_id });
       cart.guest_id = this.props.match.params.guest_id
@@ -607,7 +607,7 @@ class nearbyRadiology extends Component {
   };
 
   render() {
-    const isLargeScreen = window.innerWidth > 992;
+    const isLargeScreen = window.innerWidth < 490;
 
     const { page, totalPage } = this.state;
     const { Radiology } = this.props;
@@ -1625,7 +1625,7 @@ class nearbyRadiology extends Component {
                       </Card>
                     </Col>
                   ))}
-                {!isLargeScreen ? (
+                {isLargeScreen ? (
                   isEmpty(this.props.nearbyRadiology) ? (
                     <Row className="vh-100">
                       <Col lg="12">
@@ -1698,9 +1698,9 @@ nearbyRadiology.propTypes = {
   onAddToCart: PropTypes.func,
   onGetRadiology: PropTypes.func,
   Radiology: PropTypes.array,
-  success: PropTypes.string,
+  success: PropTypes.any,
   className: PropTypes.any,
-  error: PropTypes.string,
+  error: PropTypes.any,
   RadiologyMarket: PropTypes.any,
   menuOpen: PropTypes.any,
   t: PropTypes.any,

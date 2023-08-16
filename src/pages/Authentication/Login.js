@@ -30,17 +30,26 @@ class Login extends Component {
   componentDidMount() {
 
     const url = window.location.href;
-    const queryString = url.substring(url.indexOf('&') + 1);
+    const queryString = url.includes('&') ? url.substring(url.indexOf('&') + 1) : '';
+    console.log(queryString);
     const params = new URLSearchParams(queryString);
     console.log("print params in app", url, queryString, params)
-
     const latitudeFromUrl = params.get('lat');
     const longitudeFromUrl = params.get('lon');
 
-    const appurl = `http://localhost:3000/login/&lat=${latitudeFromUrl}&lon=${longitudeFromUrl}`;
-    const appqueryString = appurl.substring(appurl.indexOf("&") + 1);
-    const finalUrl = ("&") + appqueryString; // Remove the leading question mark ('?')        
-    this.setState({ finalUrl: finalUrl });
+    console.log('Latitude:', latitudeFromUrl);
+    console.log('Longitude:', longitudeFromUrl);
+    if (latitudeFromUrl && longitudeFromUrl) {
+
+      const url = `http://localhost:3000/nearby-labs/&lat=${latitudeFromUrl}&lon=${longitudeFromUrl}`;
+      const queryString = url.substring(url.indexOf("&") + 1);
+      const finalUrl = ("&") + queryString; // Remove the leading question mark ('?')        
+      this.setState({ finalUrl: finalUrl });
+      console.log("differ with the final url state:", this.state.finalUrl);
+
+      console.log(finalUrl);
+      console.log("whsuqi", this.props.match.params.uuid);
+    }
 
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
@@ -54,7 +63,7 @@ class Login extends Component {
       this.props.history.push("/logout");
     }
     this.props.apiError("");
-    console.log("finalurl in the app", finalUrl, this.state.finalUrl)
+    // console.log("finalurl in the app", finalUrl, this.state.finalUrl)
 
   }
 

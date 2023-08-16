@@ -11,6 +11,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button, Collapse } from "reactstrap";
 import classname from "classnames";
 import logo from "../../../assets/images/logo.svg";
+import mtest from "../../../assets/images/m.test.png";
+import mprofile from "../../../assets/images/m.profile1.jpeg";
+import mpackages from "../../../assets/images/m.package.jpeg";
+import mradiology from "../../../assets/images/m.radiology.jpeg";
+import mappointment from "../../../assets/images/m.appointment.png";
 import logoLight from "../../../assets/images/logo-light.png";
 import logoLightSvg from "../../../assets/images/logo-light.svg";
 import Slider from "react-slick";
@@ -186,7 +191,7 @@ class NearbyLabs extends Component {
           this.setState({ advLives: this.props.advLives });
         }, 500);
       }
-      
+
 
       // near by labs
       if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
@@ -232,7 +237,7 @@ class NearbyLabs extends Component {
         }
       }
 
-      if ((!this.state.user_id)&& !this.props.match.params.guest_id) {
+      if ((!this.state.user_id) && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
         const nearbyLabsLocationDetails = {
           latitude,
@@ -303,15 +308,15 @@ class NearbyLabs extends Component {
           address: this.state.address,
           city: this.state.city,
         };
-  
+
         if (latitude && longitude) {
           onGetAdvLive(advLiveLocationDetails);
           setTimeout(() => {
             this.setState({ advLives: this.props.advLives });
           }, 500);
         }
-        
-  
+
+
         // near by labs
         if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
           const guest_id = uuidv4();
@@ -336,7 +341,7 @@ class NearbyLabs extends Component {
             }, 500);
           }
         }
-  
+
         // near by labs
         if (this.state.user_id || this.state.user_type === "b2bclient") {
           const nearbyLabsLocationDetails = {
@@ -355,8 +360,8 @@ class NearbyLabs extends Component {
             }, 500);
           }
         }
-  
-        if ((!this.state.user_id)&& !this.props.match.params.guest_id) {
+
+        if ((!this.state.user_id) && !this.props.match.params.guest_id) {
           const guest_id = uuidv4();
           const nearbyLabsLocationDetails = {
             latitude,
@@ -396,7 +401,7 @@ class NearbyLabs extends Component {
             }, 500);
           }
         }
-  
+
         // region Wise Advertisement 
         const regionWiseAdvLocationDetails = {
           latitude,
@@ -409,7 +414,8 @@ class NearbyLabs extends Component {
           onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
           setTimeout(() => {
             this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-          }, 500);}
+          }, 500);
+        }
       });
     }
 
@@ -804,7 +810,7 @@ class NearbyLabs extends Component {
 
   render() {
     const { isDropdownOpen } = this.state;
-    const isLargeScreen = window.innerWidth > 992;
+    const isLargeScreen = window.innerWidth < 490;
     const sliderStyles = {
       maxWidth: '100%',
       maxHeight: '100%', // Adjust the height as per your requirements
@@ -1103,8 +1109,8 @@ class NearbyLabs extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}`
-                              : `/nearby-labs/`
+                              ? `/labs/${this.props.match.params.uuid}`
+                              : `/labs`
                           }
                           className="dropdown-item"
                         >
@@ -1121,7 +1127,7 @@ class NearbyLabs extends Component {
                           to={
                             this.props.match.params.uuid
                               ? `/nearby-test/${this.props.match.params.uuid}`
-                              : `/nearby-test/`
+                              : `/nearby-test`
                           }
                           className="dropdown-item"
                         >
@@ -1134,7 +1140,7 @@ class NearbyLabs extends Component {
                           to={
                             this.props.match.params.uuid
                               ? `/nearby-profiles/${this.props.match.params.uuid}`
-                              : `/nearby-profiles/`
+                              : `/nearby-profiles`
                           }
                           className="dropdown-item"
                         >
@@ -1147,7 +1153,7 @@ class NearbyLabs extends Component {
                           to={
                             this.props.match.params.uuid
                               ? `/nearby-packages/${this.props.match.params.uuid}`
-                              : `/nearby-packages/`
+                              : `/nearby-packages`
                           }
                           className="dropdown-item"
                         >
@@ -1160,7 +1166,7 @@ class NearbyLabs extends Component {
                           to={
                             this.props.match.params.uuid
                               ? `/nearby-radiology/${this.props.match.params.uuid}`
-                              : `/nearby-radiology/`
+                              : `/nearby-radiology`
                           }
                           className="dropdown-item"
                         >
@@ -1279,7 +1285,7 @@ class NearbyLabs extends Component {
             <div className="d-flex">
               <div className="navbar-brand-box">
 
-                {isLargeScreen ? (
+                {!isLargeScreen ? (
 
                   <Link
                     to={
@@ -1299,7 +1305,7 @@ class NearbyLabs extends Component {
 
                 ) : null}
               </div>
-              {!isLargeScreen ? (
+              {isLargeScreen ? (
 
                 <button
                   type="button"
@@ -1378,63 +1384,63 @@ class NearbyLabs extends Component {
                   </Link>
 
                 </div>
-              ) :this.state.user_type == "patient" ? (
+              ) : this.state.user_type == "patient" ? (
                 <Header />
 
               ) : (
-                  <div className="dropdown d-lg-inline-block ms-3 mt-3">
-                    {this.state.user_type == "labowner" && (
+                <div className="dropdown d-lg-inline-block ms-3 mt-3">
+                  {this.state.user_type == "labowner" && (
+                    <Link
+                      to={"/dashboard-lab"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "b2bclient" && (
+                    <Link
+                      to={"/dashboard-b2bclient"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "auditor" && (
+                    <Link
+                      to={"/dashboard-auditor"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+
+                  {this.state.user_type == "CSR" && (
+                    <div className="dropdown d-lg-inline-block ms-4 mt-4">
+
                       <Link
-                        to={"/dashboard-lab"}
+                        to={"/dashboard-csr"}
                         className="btn header-items noti-icon right-bar-toggle"
                       >
                         <i className="mdi mdi-home me-1 font-size-24" />{" "}
                       </Link>
-                    )}
-
-                    {this.state.user_type == "b2bclient" && (
                       <Link
-                        to={"/dashboard-b2bclient"}
+                        to={
+                          this.props.match.params.uuid
+                            ? `/cart/${this.props.match.params.uuid}`
+                            : `/cart`
+                        }
                         className="btn header-items noti-icon right-bar-toggle"
                       >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                        <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                        {!isEmpty(this.props.carts) &&
+
+                          this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+                        }
                       </Link>
-                    )}
-
-                    {this.state.user_type == "auditor" && (
-                      <Link
-                        to={"/dashboard-auditor"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                    )}
-
-                    {this.state.user_type == "CSR" && (
-                      <div className="dropdown d-lg-inline-block ms-4 mt-4">
-
-                        <Link
-                          to={"/dashboard-csr"}
-                          className="btn header-items noti-icon right-bar-toggle"
-                        >
-                          <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                        </Link>
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/cart/${this.props.match.params.uuid}`
-                              : `/cart`
-                          }
-                          className="btn header-items noti-icon right-bar-toggle"
-                        >
-                          <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                          {!isEmpty(this.props.carts) &&
-
-                            this.props.carts.slice(-1).pop().cart_quantity + this.state.count
-                          }
-                        </Link>
-                        {/* <Link
+                      {/* <Link
                      to={
                        this.props.match.params.uuid
                          ? `/login/${this.props.match.params.uuid}`
@@ -1469,59 +1475,59 @@ class NearbyLabs extends Component {
                    >
                       <i className="mdi mdi-headset align-middle me-1 font-size-20" />{" "}
                    </Link> */}
-                      </div>
-                    )}
+                    </div>
+                  )}
 
-                    {this.state.user_type == "registration-admin" && (
-                      <Link
-                        to={"/pending-labs"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                    )}
+                  {this.state.user_type == "registration-admin" && (
+                    <Link
+                      to={"/pending-labs"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
 
-                    {this.state.user_type == "auditor-admin" && (
-                      <Link
-                        to={"/pending-audits"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                    )}
+                  {this.state.user_type == "auditor-admin" && (
+                    <Link
+                      to={"/pending-audits"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
 
-                    {this.state.user_type == "csr-admin" && (
-                      <Link
-                        to={"/pending-complaints-lab"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                    )}
+                  {this.state.user_type == "csr-admin" && (
+                    <Link
+                      to={"/pending-complaints-lab"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
 
-                    {this.state.user_type == "hr-admin" && (
-                      <Link
-                        to={"/add-staff"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                    )}
+                  {this.state.user_type == "hr-admin" && (
+                    <Link
+                      to={"/add-staff"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
 
-                    {this.state.user_type == "marketer-admin" && (
-                      <Link
-                        to={"/discount-labhazir"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
-                    )}
-                  </div>
-                )}
+                  {this.state.user_type == "marketer-admin" && (
+                    <Link
+                      to={"/discount-labhazir"}
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </header>
-        {isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
+        {!isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
           <div className="page-content">
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -2160,7 +2166,7 @@ class NearbyLabs extends Component {
               </Row>
             </Container>
           </div>
-        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) ? (
+        ) : !isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) ? (
           <div className="page-content">
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -2907,13 +2913,110 @@ class NearbyLabs extends Component {
                 ))}
               </Col>
             </Row></div>
-        ) : !isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
+        ) : isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) && this.state.user_type === "patient" ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "80px", marginLeft: "20px", marginRight: "20px" }}>
-              <Row className="mb-2">
+              <Card className="mini-stats-wid" style={{ margin: 0, padding: 0 }}>
+                <CardBody>
+                  <h4>Categories</h4>
+                  <p className={"font-size-10"}>Sehatmand Pakistan, Khushhaal Pakistan: Aapki Sehat, Hamari Zimmedari!</p>
+
+                  {/* First Row */}
+                  <Row>
+                    {/* Column 1 */}
+                    <Col>
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-test/${this.props.match.params.uuid}`
+                            : `/nearby-test/`
+                        }
+                      >
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mtest} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>
+                          Tests
+                        </p>
+                      </Link>
+                    </Col>
+
+
+                    {/* Column 2 */}
+                    <Col>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-profiles/${this.props.match.params.uuid}`
+                          : `/nearby-profiles/`
+                      }>
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mprofile} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>Profiles</p>
+                      </Link>
+                    </Col>
+
+                    {/* Column 3 */}
+                    <Col>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-packages/${this.props.match.params.uuid}`
+                          : `/nearby-packages/`
+                      }>
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mpackages} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"}>Packages</p>
+                      </Link>
+
+                    </Col>
+                  </Row>
+                  <Row>
+                    {/* Column 1 */}
+                    <Col></Col>
+                    <Col className="mb-2" style={{ marginRight: "12px" }}>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-radiology/${this.props.match.params.uuid}`
+                          : `/nearby-radiology/`
+                      }>
+
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mradiology} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"}>Radiology</p>
+                      </Link>
+
+                    </Col>
+
+                    {/* Column 2 */}
+                    <Col className="mb-2" style={{ marginLeft: "12px" }}>
+                      <Link to={"/test-appointments"}>
+
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mappointment} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"}>Appointments</p>
+                      </Link>
+                    </Col>
+                    <Col></Col>
+                  </Row>
+                </CardBody>
+              </Card>
+              <Row style={{ margin: 0, padding: 0 }}>
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
@@ -3542,7 +3645,1310 @@ class NearbyLabs extends Component {
 
               {/* <ScrollButton /> */}
             </Row></div>
-        ) : !isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) ? (
+        ) : isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
+          <div>
+            <MetaTags>
+              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+            </MetaTags>
+            <Row style={{ marginTop: "80px", marginLeft: "20px", marginRight: "20px" }}>
+              <Row style={{ margin: 0, padding: 0 }}>
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    search_type:
+                      (this.state && this.state.search_type) ||
+                      "Current Location",
+                    city: (this.state && this.state.city) || "",
+                    location: (this.state && this.state.location) || "",
+                    LabType: (this.state && this.state.LabType) ||
+                      "Main",
+                    km: (this.state && this.state.km) ||
+                      "30",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    city: Yup.string().when("search_type", {
+                      is: val => val === "Custom Address",
+                      then: Yup.string().required("Please enter your City"),
+                    }),
+                    location: Yup.string().when("city", {
+                      is: val => val != "",
+                      then: Yup.string().required("Please enter your Location"),
+                    }),
+                  })}
+                >
+                  {({ errors, status, touched }) => (
+                    <Form className="form-horizontal">
+                      {/* Type field */}
+                      <Row>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Kilometers</Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                placeholder="Search By Km..."
+
+                              />
+                            </div>
+                          </div>
+                        </Col>
+
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >
+                              Search By Labs Type
+                            </Label>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={(e) => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                            >
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points</option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
+                        </Col>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                              }}
+                            >
+                              Search By City
+                            </Label>
+                            <Select
+                              name="city"
+                              component="Select"
+                              onChange={this.onChangeCity}
+                              className="defautSelectParent is-invalid"
+                              options={cityList}
+                              placeholder="City..."
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+
+                    </Form>
+                  )}
+                </Formik>
+              </Row>
+
+              {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
+                nearbyLabs.map((nearbyLab, key) => (
+                  <Col xl="4" sm="6" key={"_col_" + key}>
+                    <Card
+                      onClick={() =>
+                        history.push(
+                          this.props.match.params.uuid
+                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                        )
+                      }
+                    >
+                      <CardBody>
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                          }
+                        >
+                          {/* <div className="product-img position-relative">
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              nearbyLab.logo
+                            }
+                            alt="Lab Logo"
+                         
+                            className="img-thumbnail mx-auto d-block rounded"
+                            />
+                        </div> */}
+                          <div style={{
+                            width: '200px',
+                            height: '100px',
+                          }}>
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                            />
+                          </div>
+
+
+
+                        </Link>
+
+                        <div className="mt-4 text-center">
+                          <h5 className="mb-3 text-truncate">
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                              }
+                              className="text-dark"
+                            >
+                              {nearbyLab.name}{" "}
+                            </Link>
+                          </h5>
+
+                          {nearbyLab.opening_time &&
+                            nearbyLab.closing_time &&
+                            nearbyLab.is_247_opened && (
+                              <div className="my-0">
+                                <span className=" text-success me-2">
+                                  <i className="mdi mdi-timer text-success"></i>{" "}
+                                  <strong>Open for 24 Hours</strong>
+                                </span>
+                              </div>
+                            )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                          </div>
+
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_time}
+                              </span>
+                            </div>
+                          )}
+
+                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.closing_time}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-phone"></i>{" "}
+                              {nearbyLab.landline}
+                            </span>
+                          </div>
+                          {nearbyLab.female_collectors == "Yes" && (
+                            <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="mdi mdi-account-question"></i>{" "}
+                                Lab has female sample collectors
+                              </span>
+                            </div>
+                          )}
+                          <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyLab.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                ))}
+
+              {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") &&
+                nearbyLabs.map((nearbyLab, key) => (
+                  <Col xl="4" sm="9" key={"col" + key}>
+                    <Card
+                      onClick={() =>
+                        history.push(
+                          this.props.match.params.uuid
+                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearbyLab.account_id}`
+                        )
+                      }
+                    >
+                      <CardBody>
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          }
+                        >
+                          <div style={{
+                            width: '200px',
+                            height: '100px',
+                          }}>
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                            />
+                          </div>
+                        </Link>
+
+                        <div className="mt-4 text-center">
+                          <h5 className="mb-3 text-truncate">
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}`
+                              }
+                              className="text-dark"
+                            >
+                              {nearbyLab.name}{" "}
+                            </Link>
+                          </h5>
+
+                          {nearbyLab.opening_time &&
+                            nearbyLab.closing_time &&
+                            nearbyLab.is_247_opened && (
+                              <div className="my-0">
+                                <span className=" text-success me-2">
+                                  <i className="mdi mdi-timer text-success"></i>{" "}
+                                  <strong>Open for 24 Hours</strong>
+                                </span>
+                              </div>
+                            )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                          </div>
+
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_time}
+                              </span>
+                            </div>
+                          )}
+
+                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.closing_time}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-email"></i>{" "}
+                              {nearbyLab.email}
+                            </span>
+                          </div>
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="bx bx-mobile"></i>{" "}
+                              {nearbyLab.phone}
+                            </span>
+                          </div>
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-phone"></i>{" "}
+                              {nearbyLab.landline}
+                            </span>
+                          </div>
+                          {nearbyLab.female_collectors == "Yes" && (
+                            <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="mdi mdi-account-question"></i>{" "}
+                                Lab has female sample collectors
+                              </span>
+                            </div>
+                          )}
+                          <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyLab.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                ))}
+              {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") &&
+                nearbyLabs.map((nearbyLab, key) => (
+                  <Col xl="4" sm="6" key={"_col_" + key}>
+                    <Card
+                      onClick={() =>
+                        history.push(
+                          this.props.match.params.uuid
+                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearbyLab.account_id}`
+                        )
+                      }
+                    >
+                      <CardBody>
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          }
+                        >
+                          {/* <div className="product-img position-relative">
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              nearbyLab.logo
+                            }
+                            alt="Lab Logo"
+                         
+                            className="img-thumbnail mx-auto d-block rounded"
+                            />
+                        </div> */}
+                          <div style={{
+                            width: '200px',
+                            height: '100px',
+                          }}>
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                            />
+                          </div>
+
+
+
+                        </Link>
+
+                        <div className="mt-4 text-center">
+                          <h5 className="mb-3 text-truncate">
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}`
+                              }
+                              className="text-dark"
+                            >
+                              {nearbyLab.name}{" "}
+                            </Link>
+                          </h5>
+
+                          {nearbyLab.opening_time &&
+                            nearbyLab.closing_time &&
+                            nearbyLab.is_247_opened && (
+                              <div className="my-0">
+                                <span className=" text-success me-2">
+                                  <i className="mdi mdi-timer text-success"></i>{" "}
+                                  <strong>Open for 24 Hours</strong>
+                                </span>
+                              </div>
+                            )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                          </div>
+
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_time}
+                              </span>
+                            </div>
+                          )}
+
+                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.closing_time}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-phone"></i>{" "}
+                              {nearbyLab.landline}
+                            </span>
+                          </div>
+                          {nearbyLab.female_collectors == "Yes" && (
+                            <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="mdi mdi-account-question"></i>{" "}
+                                Lab has female sample collectors
+                              </span>
+                            </div>
+                          )}
+                          <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyLab.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                ))}
+              {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") &&
+                nearbyLabs.map((nearbyLab, key) => (
+                  <Col xl="4" sm="6" key={"_col_" + key}>
+                    <Card
+                      onClick={() =>
+                        history.push(
+                          this.props.match.params.uuid
+                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                            : `/nearby-lab-detail/${nearbyLab.account_id}`
+                        )
+                      }
+                    >
+                      <CardBody>
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          }
+                        >
+                          {/* <div className="product-img position-relative">
+                          <img
+                            src={
+                              process.env.REACT_APP_BACKENDURL +
+                              nearbyLab.logo
+                            }
+                            alt="Lab Logo"
+                         
+                            className="img-thumbnail mx-auto d-block rounded"
+                            />
+                        </div> */}
+                          <div style={{
+                            width: '200px',
+                            height: '100px',
+                          }}>
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                            />
+                          </div>
+
+
+
+                        </Link>
+
+                        <div className="mt-4 text-center">
+                          <h5 className="mb-3 text-truncate">
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}`
+                              }
+                              className="text-dark"
+                            >
+                              {nearbyLab.name}{" "}
+                            </Link>
+                          </h5>
+
+                          {nearbyLab.opening_time &&
+                            nearbyLab.closing_time &&
+                            nearbyLab.is_247_opened && (
+                              <div className="my-0">
+                                <span className=" text-success me-2">
+                                  <i className="mdi mdi-timer text-success"></i>{" "}
+                                  <strong>Open for 24 Hours</strong>
+                                </span>
+                              </div>
+                            )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                          </div>
+
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_time}
+                              </span>
+                            </div>
+                          )}
+
+                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.closing_time}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-phone"></i>{" "}
+                              {nearbyLab.landline}
+                            </span>
+                          </div>
+                          {nearbyLab.female_collectors == "Yes" && (
+                            <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="mdi mdi-account-question"></i>{" "}
+                                Lab has female sample collectors
+                              </span>
+                            </div>
+                          )}
+                          <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyLab.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                ))}
+              {isEmpty(nearbyLabs) && (
+                <Row>
+                  <Col lg="12">
+                    <div className=" mb-5">
+                      <h4 className="text-uppercase">
+                        {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                        Loading.....
+                      </h4>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+
+              {/* <ScrollButton /> */}
+            </Row></div>
+        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && !this.state.user_type === "patient" ? (
+          <div>
+            <MetaTags>
+              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+            </MetaTags>
+            <Row style={{ marginTop: "70px" }}>
+              <Slider {...settings}>
+                {!isEmpty(this.props.advLives) &&
+                  this.props.advLives.map((advLive, key) => (
+                    <div key={"advLive-" + key}>
+                      <Link
+                        to={this.props.match.params.uuid
+                          ? `/nearby-tests-discountedlh/${this.state.guest_id}/${this.props.match.params.uuid}`
+                          : `/nearby-tests-discountedlh/${this.state.guest_id}`}
+                        style={sliderStyles}
+                      >
+                        {advLive.poster ? (
+                          advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL + advLive.poster}
+                              alt="Advertisement"
+                              style={sliderStyles}
+                              className="img-fluid mx-auto d-block" />
+                          ) : (
+                            <video
+                              width="100%"
+                              height="100%"
+                              controls
+                              autoPlay={this.state.autoplay}
+                              loop
+                              style={sliderStyles}
+                              key={"video-" + key} // Add unique key for video element
+                            >
+                              <source
+                                src={process.env.REACT_APP_BACKENDURL + advLive.poster}
+                                type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+                          )
+                        ) : (
+                          <div key={"no-media-" + key}>No media found.</div>
+                        )}
+                      </Link>
+                    </div>
+                  ))}
+
+                {this.props.regionWiseAdvertisement.map(
+                  (regionWiseAdvertisement, key) => (
+                    <div key={"regionWiseAdvertisement-" + key}>
+                      {regionWiseAdvertisement.nearby_adv_list.map(
+                        (nearby_adv_list, index) => (
+                          <Link
+                            to={this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearby_adv_list.account_id}`}
+                            style={sliderStyles}
+                            key={"image-" + index} // Add unique key for image element
+                          >
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL +
+                                nearby_adv_list.poster}
+                              alt="Lab Advertisement"
+                              style={sliderStyles} />
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  )
+                )}
+              </Slider>
+            </Row>
+
+            <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
+              <Col lg="9">
+                <Row>
+                  <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                      search_type: (this.state && this.state.search_type) ||
+                        "Current Location",
+                      city: (this.state && this.state.city) || "",
+                      location: (this.state && this.state.location) || "",
+                      LabType: (this.state && this.state.LabType) ||
+                        "Main",
+                      km: (this.state && this.state.km) ||
+                        "30",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      city: Yup.string().when("search_type", {
+                        is: val => val === "Custom Address",
+                        then: Yup.string().required("Please enter your City"),
+                      }),
+                      location: Yup.string().when("city", {
+                        is: val => val != "",
+                        then: Yup.string().required("Please enter your Location"),
+                      }),
+                    })}
+                  >
+                    {({ errors, status, touched }) => (
+                      <Form className="form-horizontal">
+                        {/* Type field */}
+                        <Row>
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..." />
+                              </div>
+                            </div>
+                          </Col>
+
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={this.onChangeCity}
+                                className="defautSelectParent is-invalid"
+                                options={cityList}
+                                placeholder="City..." />
+                            </div>
+                          </Col>
+                        </Row>
+
+                      </Form>
+                    )}
+                  </Formik>
+                </Row>
+
+                <Row>
+                  {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
+                    nearbyLabs.map((nearbyLab, key) => (
+                      <Col xl="4" sm="6" key={"_col_" + key}>
+                        <Card
+                          onClick={() => history.push(
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                          )}
+                        >
+                          <CardBody>
+                            <Link
+                              to={this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`}
+                            >
+                              {/* <div className="product-img position-relative">
+            <img
+              src={
+                process.env.REACT_APP_BACKENDURL +
+                nearbyLab.logo
+              }
+              alt="Lab Logo"
+           
+              className="img-thumbnail mx-auto d-block rounded"
+              />
+          </div> */}
+                              <div style={{
+                                width: '200px',
+                                height: '100px',
+                              }}>
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }} />
+                              </div>
+
+
+
+                            </Link>
+
+                            <div className="mt-4 text-center">
+                              <h5 className="mb-3 text-truncate">
+                                <Link
+                                  to={this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`}
+                                  className="text-dark"
+                                >
+                                  {nearbyLab.name}{" "}
+                                </Link>
+                              </h5>
+
+                              {nearbyLab.opening_time &&
+                                nearbyLab.closing_time &&
+                                nearbyLab.is_247_opened && (
+                                  <div className="my-0">
+                                    <span className=" text-success me-2">
+                                      <i className="mdi mdi-timer text-success"></i>{" "}
+                                      <strong>Open for 24 Hours</strong>
+                                    </span>
+                                  </div>
+                                )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </div>
+
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.opening_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.closing_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>
+                              {nearbyLab.female_collectors == "Yes" && (
+                                <div className="my-0">
+                                  <span className="text-danger">
+                                    <i className="mdi mdi-account-question"></i>{" "}
+                                    Lab has female sample collectors
+                                  </span>
+                                </div>
+                              )}
+                              <div className="my-0 mt-2">
+                                <StarRatings
+                                  rating={nearbyLab.rating}
+                                  starRatedColor="#F1B44C"
+                                  starEmptyColor="#2D363F"
+                                  numberOfStars={5}
+                                  name="rating"
+                                  starDimension="14px"
+                                  starSpacing="3px" />
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+
+                  {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") &&
+                    nearbyLabs.map((nearbyLab, key) => (
+                      <Col xl="4" sm="9" key={"col" + key}>
+                        <Card
+                          onClick={() => history.push(
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          )}
+                        >
+                          <CardBody>
+                            <Link
+                              to={this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}`}
+                            >
+                              <div style={{
+                                width: '200px',
+                                height: '100px',
+                              }}>
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }} />
+                              </div>
+                            </Link>
+
+                            <div className="mt-4 text-center">
+                              <h5 className="mb-3 text-truncate">
+                                <Link
+                                  to={this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}`}
+                                  className="text-dark"
+                                >
+                                  {nearbyLab.name}{" "}
+                                </Link>
+                              </h5>
+
+                              {nearbyLab.opening_time &&
+                                nearbyLab.closing_time &&
+                                nearbyLab.is_247_opened && (
+                                  <div className="my-0">
+                                    <span className=" text-success me-2">
+                                      <i className="mdi mdi-timer text-success"></i>{" "}
+                                      <strong>Open for 24 Hours</strong>
+                                    </span>
+                                  </div>
+                                )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </div>
+
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.opening_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.closing_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-email"></i>{" "}
+                                  {nearbyLab.email}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="bx bx-mobile"></i>{" "}
+                                  {nearbyLab.phone}
+                                </span>
+                              </div>
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>
+                              {nearbyLab.female_collectors == "Yes" && (
+                                <div className="my-0">
+                                  <span className="text-danger">
+                                    <i className="mdi mdi-account-question"></i>{" "}
+                                    Lab has female sample collectors
+                                  </span>
+                                </div>
+                              )}
+                              <div className="my-0 mt-2">
+                                <StarRatings
+                                  rating={nearbyLab.rating}
+                                  starRatedColor="#F1B44C"
+                                  starEmptyColor="#2D363F"
+                                  numberOfStars={5}
+                                  name="rating"
+                                  starDimension="14px"
+                                  starSpacing="3px" />
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+                  {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") &&
+                    nearbyLabs.map((nearbyLab, key) => (
+                      <Col xl="4" sm="6" key={"_col_" + key}>
+                        <Card
+                          onClick={() => history.push(
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          )}
+                        >
+                          <CardBody>
+                            <Link
+                              to={this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}`}
+                            >
+                              {/* <div className="product-img position-relative">
+            <img
+              src={
+                process.env.REACT_APP_BACKENDURL +
+                nearbyLab.logo
+              }
+              alt="Lab Logo"
+           
+              className="img-thumbnail mx-auto d-block rounded"
+              />
+          </div> */}
+                              <div style={{
+                                width: '200px',
+                                height: '100px',
+                              }}>
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }} />
+                              </div>
+
+
+
+                            </Link>
+
+                            <div className="mt-4 text-center">
+                              <h5 className="mb-3 text-truncate">
+                                <Link
+                                  to={this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}`}
+                                  className="text-dark"
+                                >
+                                  {nearbyLab.name}{" "}
+                                </Link>
+                              </h5>
+
+                              {nearbyLab.opening_time &&
+                                nearbyLab.closing_time &&
+                                nearbyLab.is_247_opened && (
+                                  <div className="my-0">
+                                    <span className=" text-success me-2">
+                                      <i className="mdi mdi-timer text-success"></i>{" "}
+                                      <strong>Open for 24 Hours</strong>
+                                    </span>
+                                  </div>
+                                )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </div>
+
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.opening_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.closing_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>
+                              {nearbyLab.female_collectors == "Yes" && (
+                                <div className="my-0">
+                                  <span className="text-danger">
+                                    <i className="mdi mdi-account-question"></i>{" "}
+                                    Lab has female sample collectors
+                                  </span>
+                                </div>
+                              )}
+                              <div className="my-0 mt-2">
+                                <StarRatings
+                                  rating={nearbyLab.rating}
+                                  starRatedColor="#F1B44C"
+                                  starEmptyColor="#2D363F"
+                                  numberOfStars={5}
+                                  name="rating"
+                                  starDimension="14px"
+                                  starSpacing="3px" />
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+                  {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") &&
+                    nearbyLabs.map((nearbyLab, key) => (
+                      <Col xl="4" sm="6" key={"_col_" + key}>
+                        <Card
+                          onClick={() => history.push(
+                            this.props.match.params.uuid
+                              ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                              : `/nearby-lab-detail/${nearbyLab.account_id}`
+                          )}
+                        >
+                          <CardBody>
+                            <Link
+                              to={this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}`}
+                            >
+                              {/* <div className="product-img position-relative">
+            <img
+              src={
+                process.env.REACT_APP_BACKENDURL +
+                nearbyLab.logo
+              }
+              alt="Lab Logo"
+           
+              className="img-thumbnail mx-auto d-block rounded"
+              />
+          </div> */}
+                              <div style={{
+                                width: '200px',
+                                height: '100px',
+                              }}>
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }} />
+                              </div>
+
+
+
+                            </Link>
+
+                            <div className="mt-4 text-center">
+                              <h5 className="mb-3 text-truncate">
+                                <Link
+                                  to={this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}`}
+                                  className="text-dark"
+                                >
+                                  {nearbyLab.name}{" "}
+                                </Link>
+                              </h5>
+
+                              {nearbyLab.opening_time &&
+                                nearbyLab.closing_time &&
+                                nearbyLab.is_247_opened && (
+                                  <div className="my-0">
+                                    <span className=" text-success me-2">
+                                      <i className="mdi mdi-timer text-success"></i>{" "}
+                                      <strong>Open for 24 Hours</strong>
+                                    </span>
+                                  </div>
+                                )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </div>
+
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.opening_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {nearbyLab.closing_time}
+                                  </span>
+                                </div>
+                              )}
+
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>
+                              {nearbyLab.female_collectors == "Yes" && (
+                                <div className="my-0">
+                                  <span className="text-danger">
+                                    <i className="mdi mdi-account-question"></i>{" "}
+                                    Lab has female sample collectors
+                                  </span>
+                                </div>
+                              )}
+                              <div className="my-0 mt-2">
+                                <StarRatings
+                                  rating={nearbyLab.rating}
+                                  starRatedColor="#F1B44C"
+                                  starEmptyColor="#2D363F"
+                                  numberOfStars={5}
+                                  name="rating"
+                                  starDimension="14px"
+                                  starSpacing="3px" />
+                              </div>
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+                </Row>
+                {isEmpty(nearbyLabs) && (
+                  <Row>
+                    <Col lg="12">
+                      <div className=" mb-5">
+                        <h4 className="text-uppercase">
+                          {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                          Loading.....
+                        </h4>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
+              </Col>
+            </Row></div>
+        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && this.state.user_type === "patient" ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -3614,6 +5020,103 @@ class NearbyLabs extends Component {
               </Slider>
             </Row>
             <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
+              <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#e2f9fe" }}>
+                <CardBody>
+                  <h4>Categories</h4>
+                  <p className={"font-size-10"}>Sehatmand Pakistan, Khushhaal Pakistan: Aapki Sehat, Hamari Zimmedari!</p>
+
+                  {/* First Row */}
+                  <Row>
+                    {/* Column 1 */}
+                    <Col style={{ marginLeft: "20px" }}>
+                      <Link
+                        to={
+                          this.props.match.params.uuid
+                            ? `/nearby-test/${this.props.match.params.uuid}`
+                            : `/nearby-test/`
+                        }
+                      >
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mtest} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>
+                          Tests
+                        </p>
+                      </Link>
+                    </Col>
+
+
+                    {/* Column 2 */}
+                    <Col>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-profiles/${this.props.match.params.uuid}`
+                          : `/nearby-profiles/`
+                      }>
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mprofile} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>Profiles</p>
+                      </Link>
+                    </Col>
+
+                    {/* Column 3 */}
+                    <Col>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-packages/${this.props.match.params.uuid}`
+                          : `/nearby-packages/`
+                      }>
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mpackages} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"}>Packages</p>
+                      </Link>
+
+                    </Col>
+                  </Row>
+                  <Row>
+                    {/* Column 1 */}
+                    <Col></Col>
+                    <Col className="mb-2" style={{ marginRight: "12px" }}>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-radiology/${this.props.match.params.uuid}`
+                          : `/nearby-radiology/`
+                      }>
+
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mradiology} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"}>Radiology</p>
+                      </Link>
+
+                    </Col>
+
+                    {/* Column 2 */}
+                    <Col className="mb-2" style={{ marginLeft: "12px" }}>
+                      <Link to={"/test-appointments"}>
+
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={mappointment} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className={"font-size-10 mt-1"}>Appointments</p>
+                      </Link>
+                    </Col>
+                    <Col></Col>
+                  </Row>
+                </CardBody>
+              </Card>
               <Col lg="9">
                 <Row>
                   <Formik

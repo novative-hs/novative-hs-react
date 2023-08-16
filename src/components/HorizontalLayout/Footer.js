@@ -124,55 +124,7 @@ const Footer = () => {
         </Row>
 )}
 {isextraSmallScreen && (
-  <Row style={islargfixfooter} className="footer">
-    <Row><Col xs="auto" sm="auto" md="auto" lg="auto">
-            <div className="text-sm-start">
-              {new Date().getFullYear()} © Lab Hazir (Private) Limited
-            </div>
-          </Col></Row>
-          <Row>
-            <Col xs="auto" sm="auto" md="auto" lg="auto">
-            <div className="text-sm-end">
-              <Link to="/disclaimer">
-              <span style={{ fontSize: '10px' }}>Disclaimer</span> {/* Set font size to 16 pixels */}
-              </Link>
-            </div>
-          </Col>
-          <Col xs="auto" sm="auto" md="auto" lg="auto">
-            <div className="text-sm-end">
-              <Link to="/about-us">
-                <span style={{ fontSize: '10px' }}>About Us</span>
-              </Link>
-            </div>
-          </Col>
-          <Col xs="auto" sm="auto" md="auto" lg="auto">
-            <div className="text-sm-end">
-              <Link to="/terms-conditions">
-                <span style={{ fontSize: '10px' }}>Terms</span>
-              </Link>
-            </div>
-          </Col>
-          <Col xs="auto" sm="auto" md="auto" lg="auto">
-            <div className="text-sm-end">
-              <a
-                href="https://www.linkedin.com/company/labhazir/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="bx bxl-linkedin bx-tada align-middle me-2" />
-              </a>
-              <a
-                href="https://www.facebook.com/profile.php?id=100084984286550"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className="bx bxl-facebook bx-tada align-middle me-2" />
-              </a>
-            </div>
-          </Col>
-          </Row>
-         
-        </Row>
+  null
 )}
         
       </Container>
