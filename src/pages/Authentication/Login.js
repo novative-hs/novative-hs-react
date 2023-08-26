@@ -28,7 +28,7 @@ class Login extends Component {
   }
 
   componentDidMount() {
-
+ 
     const url = window.location.href;
     const queryString = url.includes('&') ? url.substring(url.indexOf('&') + 1) : '';
     console.log(queryString);
@@ -64,6 +64,8 @@ class Login extends Component {
     }
     this.props.apiError("");
     // console.log("finalurl in the app", finalUrl, this.state.finalUrl)
+    console.log("guest_id",this.props.match.params.guest_id)
+    console.log("uuid",this.props.match.params.uuid)
 
   }
 

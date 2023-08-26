@@ -594,7 +594,7 @@ class NearbyProfiles extends Component {
 
     setTimeout(() => {
       this.setState({
-        success: "Item added Successfully",
+        success: this.props.success,
         error: this.props.error
       });
     }, 100);
@@ -1026,7 +1026,7 @@ class NearbyProfiles extends Component {
                       <Link to="/nearby-labs" className="dropdown-item">
                         {this.props.t("Nearby Labs")}
                       </Link>
-                      <Link to="/nearby-tests" className="dropdown-item">
+                      <Link to="/nearby-test" className="dropdown-item">
                         {this.props.t("Nearby Tests")}
                       </Link>
                     </div>

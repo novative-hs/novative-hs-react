@@ -537,7 +537,7 @@ class NearbyPackage extends Component {
 
     setTimeout(() => {
       this.setState({
-        success: "Item added Successfully",
+        success: this.props.success,
         error: this.props.error
       });
     }, 100);

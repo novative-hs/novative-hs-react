@@ -552,7 +552,7 @@ handleAddToCart = cart => {
 
   setTimeout(() => {
     this.setState({
-      success: "Item added Successfully",
+      success: this.props.success,
       error: this.props.error
     });
   }, 100);
@@ -888,7 +888,7 @@ handleAddToCart = cart => {
                        <Link to="/nearby-labs" className="dropdown-item">
                          {this.props.t("Nearby Labs")}
                        </Link>
-                       <Link to="/nearby-tests" className="dropdown-item">
+                       <Link to="/nearby-test" className="dropdown-item">
                          {this.props.t("Nearby Tests")}
                        </Link>
                      </div>
@@ -955,14 +955,14 @@ handleAddToCart = cart => {
                       </li>
 
                       <li className="nav-item">
-                        {/* <Link to="/nearby-tests" className="dropdown-item">
+                        {/* <Link to="/nearby-test" className="dropdown-item">
                       {this.props.t("Search by Tests")}
                     </Link> */}
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-tests/${this.props.match.params.uuid}`
-                              : `/nearby-tests/`
+                              ? `/nearby-test/${this.props.match.params.uuid}`
+                              : `/nearby-test/`
                           }
                           className="dropdown-item"
                         >
@@ -1030,7 +1030,7 @@ handleAddToCart = cart => {
                       <Link to="/nearby-labs" className="dropdown-item">
                         {this.props.t("Nearby Labs")}
                       </Link>
-                      <Link to="/nearby-tests" className="dropdown-item">
+                      <Link to="/nearby-test" className="dropdown-item">
                         {this.props.t("Nearby Tests")}
                       </Link>
                     </div>

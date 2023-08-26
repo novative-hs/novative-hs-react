@@ -715,20 +715,18 @@ const patientPublicRoutes = [
     component: TestsOfferedbyLab,
   },
   {
-    path: "/:lab_account_id/lab-quality-certificates/:uuid?",
+    path: "/:lab_account_id/lab-quality-certificates/:guest_id?/:uuid?",
     component: LabQualityCertificates,
   },
   {
-    path: "/:lab_account_id/lab-sample-collectors/:uuid?",
+    path: "/:lab_account_id/lab-sample-collectors/:guest_id?/:uuid?",
     component: LabSampleCollectors,
   },
   {
-    path: "/:lab_account_id/lab-pathologists/:uuid?",
+    path: "/:lab_account_id/lab-pathologists/:guest_id?/:uuid?",
     component: LabPathologists,
   },
-  { path: "/test-descriptions/:test_id/:uuid?", component: TestDescriptions },
-
-  
+  { path: "/test-descriptions/:test_id/:uuid?", component: TestDescriptions },  
 ];
 
 const corporateAuthProtectedRoutes = [

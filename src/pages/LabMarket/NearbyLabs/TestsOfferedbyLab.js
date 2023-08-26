@@ -176,10 +176,10 @@ class TestsOffered extends Component {
 
     setTimeout(() => {
       this.setState({
-        success: "Item added Successfully",
+        success: this.props.success,
         error: this.props.error
       });
-    }, 100);
+    }, 1000);
   };
   activateParentDropdown = item => {
     item.classList.add("active");

@@ -364,7 +364,7 @@ class Navbar extends Component {
 
                       <li className="nav-item">
                         {/* <Link to="/nearby-test" className="dropdown-item">
-                      {this.props.t("Search by Tests")}
+                      {this.props.t("Tests")}
                     </Link> */}
                         <Link
                           to={

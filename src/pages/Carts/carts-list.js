@@ -664,7 +664,7 @@ class CartList extends Component {
                        <Link to="/nearby-labs" className="dropdown-item">
                          {this.props.t("Nearby Labs")}
                        </Link>
-                       <Link to="/nearby-tests" className="dropdown-item">
+                       <Link to="/nearby-test" className="dropdown-item">
                          {this.props.t("Nearby Tests")}
                        </Link>
                      </div>
@@ -731,14 +731,14 @@ class CartList extends Component {
                       </li>
 
                       <li className="nav-item">
-                        {/* <Link to="/nearby-tests" className="dropdown-item">
+                        {/* <Link to="/nearby-test" className="dropdown-item">
                       {this.props.t("Search by Tests")}
                     </Link> */}
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-tests/${this.props.match.params.uuid}`
-                              : `/nearby-tests/`
+                              ? `/nearby-test/${this.props.match.params.uuid}`
+                              : `/nearby-test/`
                           }
                           className="dropdown-item"
                         >
@@ -806,7 +806,7 @@ class CartList extends Component {
                       <Link to="/nearby-labs" className="dropdown-item">
                         {this.props.t("Nearby Labs")}
                       </Link>
-                      <Link to="/nearby-tests" className="dropdown-item">
+                      <Link to="/nearby-test" className="dropdown-item">
                         {this.props.t("Nearby Tests")}
                       </Link>
                     </div>
