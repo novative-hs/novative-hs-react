@@ -16,6 +16,7 @@ import mprofile from "../../../assets/images/m.profile1.jpeg";
 import mpackages from "../../../assets/images/m.package.jpeg";
 import mradiology from "../../../assets/images/m.radiology.jpeg";
 import mappointment from "../../../assets/images/m.appointment.png";
+import discount from "../../../assets/images/discount.png";
 import logoLight from "../../../assets/images/logo-light.png";
 import logoLightSvg from "../../../assets/images/logo-light.svg";
 import Slider from "react-slick";
@@ -819,7 +820,31 @@ class NearbyLabs extends Component {
     };
     const settings = {
       autoplay: true,
+      dots: true, // Add slider dots
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
     };
+
+    const customDots = dots => (
+      <ul style={{ marginBottom: "0", textAlign: "center"}}>
+        {dots.map((dot, index) => (
+          <li
+            key={index}
+            style={{
+              display: "inline-block",
+              margin: 0,
+              position: "relative",
+              top: "-40px",
+              height: "20px",
+            }}
+          >
+            {dot}
+          </li>
+        ))}
+      </ul>
+    );
 
 
     const { history } = this.props;
@@ -2919,7 +2944,7 @@ class NearbyLabs extends Component {
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "80px", marginLeft: "20px", marginRight: "20px" }}>
-              <Card className="mini-stats-wid" style={{ margin: 0, padding: 0 }}>
+            <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#CFE0F6" }}>
                 <CardBody>
                   <h4>Categories</h4>
                   <p className={"font-size-10"}>Sehatmand Pakistan, Khushhaal Pakistan: Aapki Sehat, Hamari Zimmedari!</p>
@@ -2927,7 +2952,7 @@ class NearbyLabs extends Component {
                   {/* First Row */}
                   <Row>
                     {/* Column 1 */}
-                    <Col>
+                    <Col style={{ marginLeft: "20px" }}>
                       <Link
                         to={
                           this.props.match.params.uuid
@@ -2940,7 +2965,7 @@ class NearbyLabs extends Component {
                             <img src={mtest} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>
+                        <p className="font-size-10 mt-1" style={{ color: "black", marginLeft: "12px" }}>
                           Tests
                         </p>
                       </Link>
@@ -2959,7 +2984,7 @@ class NearbyLabs extends Component {
                             <img src={mprofile} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>Profiles</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black", marginLeft: "12px" }}>Profiles</p>
                       </Link>
                     </Col>
 
@@ -2975,15 +3000,14 @@ class NearbyLabs extends Component {
                             <img src={mpackages} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"}>Packages</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Packages</p>
                       </Link>
 
                     </Col>
                   </Row>
                   <Row>
                     {/* Column 1 */}
-                    <Col></Col>
-                    <Col className="mb-2" style={{ marginRight: "12px" }}>
+                    <Col className="mb-2" style={{ marginLeft: "20px" }}>
                       <Link to={
                         this.props.match.params.uuid
                           ? `/nearby-radiology/${this.props.match.params.uuid}`
@@ -2995,13 +3019,32 @@ class NearbyLabs extends Component {
                             <img src={mradiology} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"}>Radiology</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Radiology</p>
                       </Link>
 
                     </Col>
 
-                    {/* Column 2 */}
-                    <Col className="mb-2" style={{ marginLeft: "12px" }}>
+                                        {/* Column 2 */}
+
+
+                    <Col>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-packages/${this.props.match.params.uuid}`
+                          : `/nearby-packages/`
+                      }>
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={discount} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Discounts</p>
+                      </Link>
+
+                    </Col>
+                    {/* Column 3 */}
+
+                    <Col>
                       <Link to={"/test-appointments"}>
 
                         <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
@@ -3009,10 +3052,10 @@ class NearbyLabs extends Component {
                             <img src={mappointment} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"}>Appointments</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Appointments</p>
                       </Link>
                     </Col>
-                    <Col></Col>
+                   
                   </Row>
                 </CardBody>
               </Card>
@@ -4280,13 +4323,13 @@ class NearbyLabs extends Component {
 
               {/* <ScrollButton /> */}
             </Row></div>
-        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && !this.state.user_type === "patient" ? (
+        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && isEmpty(this.state.user_type) ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "70px" }}>
-              <Slider {...settings}>
+              <Slider {...settings} appendDots={customDots}>
                 {!isEmpty(this.props.advLives) &&
                   this.props.advLives.map((advLive, key) => (
                     <div key={"advLive-" + key}>
@@ -4954,7 +4997,7 @@ class NearbyLabs extends Component {
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "70px" }}>
-              <Slider {...settings}>
+              <Slider {...settings} appendDots={customDots}>
                 {!isEmpty(this.props.advLives) &&
                   this.props.advLives.map((advLive, key) => (
                     <div key={"advLive-" + key}>
@@ -5020,7 +5063,7 @@ class NearbyLabs extends Component {
               </Slider>
             </Row>
             <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
-              <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#e2f9fe" }}>
+              <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#CFE0F6" }}>
                 <CardBody>
                   <h4>Categories</h4>
                   <p className={"font-size-10"}>Sehatmand Pakistan, Khushhaal Pakistan: Aapki Sehat, Hamari Zimmedari!</p>
@@ -5041,7 +5084,7 @@ class NearbyLabs extends Component {
                             <img src={mtest} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>
+                        <p className="font-size-10 mt-1" style={{ color: "black", marginLeft: "12px" }}>
                           Tests
                         </p>
                       </Link>
@@ -5060,7 +5103,7 @@ class NearbyLabs extends Component {
                             <img src={mprofile} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"} style={{ marginLeft: "12px" }}>Profiles</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black", marginLeft: "12px" }}>Profiles</p>
                       </Link>
                     </Col>
 
@@ -5076,15 +5119,14 @@ class NearbyLabs extends Component {
                             <img src={mpackages} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"}>Packages</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Packages</p>
                       </Link>
 
                     </Col>
                   </Row>
                   <Row>
                     {/* Column 1 */}
-                    <Col></Col>
-                    <Col className="mb-2" style={{ marginRight: "12px" }}>
+                    <Col className="mb-2" style={{ marginLeft: "20px" }}>
                       <Link to={
                         this.props.match.params.uuid
                           ? `/nearby-radiology/${this.props.match.params.uuid}`
@@ -5096,13 +5138,32 @@ class NearbyLabs extends Component {
                             <img src={mradiology} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"}>Radiology</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Radiology</p>
                       </Link>
 
                     </Col>
 
-                    {/* Column 2 */}
-                    <Col className="mb-2" style={{ marginLeft: "12px" }}>
+                                        {/* Column 2 */}
+
+
+                    <Col>
+                      <Link to={
+                        this.props.match.params.uuid
+                          ? `/nearby-packages/${this.props.match.params.uuid}`
+                          : `/nearby-packages/`
+                      }>
+                        <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
+                          <span className="avatar-title">
+                            <img src={discount} alt="" height="60" />
+                          </span>
+                        </div>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Discounts</p>
+                      </Link>
+
+                    </Col>
+                    {/* Column 3 */}
+
+                    <Col>
                       <Link to={"/test-appointments"}>
 
                         <div className="mini-stat-icon avatar-sm rounded-circle bg-white">
@@ -5110,10 +5171,10 @@ class NearbyLabs extends Component {
                             <img src={mappointment} alt="" height="60" />
                           </span>
                         </div>
-                        <p className={"font-size-10 mt-1"}>Appointments</p>
+                        <p className="font-size-10 mt-1" style={{ color: "black" }}>Appointments</p>
                       </Link>
                     </Col>
-                    <Col></Col>
+                   
                   </Row>
                 </CardBody>
               </Card>
