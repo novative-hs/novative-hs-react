@@ -552,7 +552,7 @@ class NearbyTests extends Component {
 
     setTimeout(() => {
       this.setState({
-        success: this.props.success,
+        success: "Item added Successfully",
         error: this.props.error
       });
     }, 100);
