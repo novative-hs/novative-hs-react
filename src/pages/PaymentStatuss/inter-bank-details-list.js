@@ -24,6 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -63,32 +64,33 @@ class PaymentStatussList extends Component {
           hidden: false,
           formatter: (cellContent, bankTransfer) => (
             <>{bankTransfer.id}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "invoice_id",
-          text: "invoice ID",
+          text: "Invoice ID",
           sort: true,
           hidden: true,
           formatter: (cellContent, bankTransfer) => (
             <>
               <strong>{bankTransfer.invoice_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "transfer_type",
           text: "Transfer Type",
           sort: true,
+          formatter: (cellContent, bankTransfer) => (
+            <>
+              <strong>{bankTransfer.transfer_type}</strong>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "deposit_type",
           text: "Deposit Type",
           sort: true,
-          // headerStyle: {
-          //   width: "330px",
-          //   // textAlign: "left",
-          // },
           formatter: (cellContent, bankTransfer) => (
             <>
               {bankTransfer.transfer_type == "Deposit" ? (
@@ -101,7 +103,7 @@ class PaymentStatussList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "bank",
@@ -119,21 +121,23 @@ class PaymentStatussList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "amount",
           text: "Amount",
           sort: true,
+          formatter: (cellContent, bankTransfer) => (
+            <>
+              <div className="text-end">
+              <strong>{bankTransfer.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "cheque_no",
           text: "Cheque/Online Ref#",
           sort: true,
-          // headerStyle: {
-          //   width: "330px",
-          //   // textAlign: "left",
-          // },
           formatter: (cellContent, bankTransfer) => (
             <>
               {bankTransfer.transfer_type == "Deposit" ? (
@@ -146,7 +150,7 @@ class PaymentStatussList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "bank",
@@ -161,7 +165,7 @@ class PaymentStatussList extends Component {
                 </span>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "bank",
@@ -180,7 +184,7 @@ class PaymentStatussList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "bank",
@@ -212,21 +216,24 @@ class PaymentStatussList extends Component {
           dataField: "bank",
           text: "Deposit DateTime",
           sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.transfer_type == "Withdraw" ? (
-                 <span>
-                  {"---"}
-                 </span>
-              ) : (
-                <span>
-                {new Date(bankTransfer.deposit_datetime).toLocaleString("en-US")}
-
-                </span>
-              )}
-            </>
-          ),
-        },
+          formatter: (cellContent, bankTransfer) => {
+            if (bankTransfer.transfer_type === "Withdraw") {
+              return <span>---</span>;
+            } else {
+              const date = new Date(bankTransfer.deposit_datetime);
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear();
+              
+              return (
+                <p className="text-muted mb-0">
+                  {`${day}/${month}/${year}`}
+                </p>
+              );
+            }
+          },
+          filter: textFilter()
+        },        
         {
           dataField: "bank",
           text: "Payment Copy",
@@ -251,14 +258,18 @@ class PaymentStatussList extends Component {
           dataField: "bank",
           text: "Payment DateTime",
           sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-                <span>
-                {new Date(bankTransfer.payment_datetime).toLocaleString("en-US")}
-
-                </span>
-            </>
-          ),
+          formatter: (cellContent, bankTransfer) => {
+            const date = new Date(bankTransfer.payment_datetime);
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Adding 1 to get the correct month
+            const year = date.getFullYear();
+            
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}/${month}/${year}`}
+                </p>
+            );
+        },filter: textFilter(),
         },
         // {
         //   dataField: "bank",
@@ -277,20 +288,22 @@ class PaymentStatussList extends Component {
           dataField: "bank",
           text: "Clearence DateTime",
           sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.clearence_datetime == null ? (
-                 <span>
-                  {"---"}
-                 </span>
-              ) : (
-                <span>
-                {new Date(bankTransfer.deposit_datetime).toLocaleString("en-US")}
-
-                </span>
-              )}
-            </>
-          ),
+          formatter: (cellContent, bankTransfer) => {
+            if (bankTransfer.clearence_datetime === "null") {
+              return <span>---</span>;
+            } else {
+              const date = new Date(bankTransfer.deposit_datetime);
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear();
+              
+              return (
+                <p className="text-muted mb-0">
+                  {`${day}/${month}/${year}`}
+                </p>
+              );
+            }
+          }, filter: textFilter(),
         },
         {
           dataField: "status",
@@ -500,6 +513,8 @@ class PaymentStatussList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
+
                                     />
 
                                     <Modal

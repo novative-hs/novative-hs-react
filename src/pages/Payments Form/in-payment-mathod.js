@@ -347,6 +347,8 @@ class InPaymentsForm extends Component {
         labList.push({
           label: labs[i].name,
           value: labs[i].id,
+          label: `(Name: ${labs[i].name}) - (Type: ${labs[i].type}) - (City: ${labs[i].city})`,
+          value: `${labs[i].id}`,
         });
       }
     }

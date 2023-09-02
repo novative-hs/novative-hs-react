@@ -278,10 +278,10 @@ class SidebarContent extends Component {
                     <ul className="sub-menu" aria-expanded="false">
                       <li>
                         <Link to={"/payment-status"}>
-                          {this.props.t("MIF Created")}
+                          {this.props.t("MIF Statuses")}
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to={"/payment-in-pending-clearence-status"}>
                           {this.props.t("MIF Pending Clearence")}
                         </Link>
@@ -295,7 +295,7 @@ class SidebarContent extends Component {
                         <Link to={"/bounced-status"}>
                           {this.props.t("MIF Bounced")}
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
 
@@ -307,10 +307,10 @@ class SidebarContent extends Component {
                     <ul className="sub-menu" aria-expanded="false">
                       <li>
                         <Link to={"/payment-out-created-status"}>
-                          {this.props.t("MOF Created")}
+                          {this.props.t("MOF Statuses")}
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to={"/payment-out-pending-clearence-status"}>
                           {this.props.t("MOF Pending Clearence")}
                         </Link>
@@ -324,7 +324,7 @@ class SidebarContent extends Component {
                         <Link to={"/payment-out-bounced-status"}>
                           {this.props.t("MOF Bounced")}
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                   <li>
@@ -379,7 +379,7 @@ class SidebarContent extends Component {
                         {this.props.t("Cleared")}
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link to={"/approved-in-payments"}>
                         {this.props.t("Approved")}
                       </Link>
@@ -388,7 +388,7 @@ class SidebarContent extends Component {
                       <Link to={"/unapproved-in-payments"}>
                         {this.props.t("Unapproved")}
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
                 <li>
@@ -413,6 +413,12 @@ class SidebarContent extends Component {
                   <Link to="/bankaccounts-list">
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("Bank Accounts List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/bank-account-statements/:id">
+                    <i className="bx bx-receipt" />
+                    <span>{this.props.t("Account Statements")}</span>
                   </Link>
                 </li>
                 <li>

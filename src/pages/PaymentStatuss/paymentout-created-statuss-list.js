@@ -24,6 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -60,12 +61,21 @@ class PathologistsList extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, paymentCreatedStatus) => <>{paymentCreatedStatus.id}</>,
+          formatter: (cellContent, paymentCreatedStatus) => (
+          <>
+          <span>{paymentCreatedStatus.id}</span>
+          </>
+          ),filter: textFilter(),
         },
         {
           dataField: "payment_for",
           text: "Payment From",
           sort: true,
+          formatter: (cellContent, paymentCreatedStatus) => (
+            <>
+            <span>{paymentCreatedStatus.payment_for}</span>
+            </>
+          ),filter: textFilter(),
         },
      
         {
@@ -81,7 +91,7 @@ class PathologistsList extends Component {
               </span>
             </span>
           </>
-        ),
+        ),filter: textFilter(),
         },
         // {
         //   dataField: "b2b_id",
@@ -92,21 +102,40 @@ class PathologistsList extends Component {
           dataField: "payment_method",
           text: "Payment Type.",
           sort: true,
+          formatter: (cellContent, paymentCreatedStatus) => (
+            <>
+            <span>{paymentCreatedStatus.payment_method}</span>
+            </>
+            ),filter: textFilter(),
         },
         {
           dataField: "payment_at",
-          text: "Payment Date",
+          text: "Deposite Date",
           sort: true,
-        },
-        {
-          dataField: "cheque_no",
-          text: "Cheque/Online Ref #",
-          sort: true,
+          formatter: (cellContent, paymentCreatedStatus) => {
+              const date = new Date(paymentCreatedStatus.payment_at);
+              const day = date.getDate();
+              const month = date.getMonth() + 1; // Adding 1 to get the correct month
+              const year = date.getFullYear();
+              
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}/${month}/${year}`}
+                  </p>
+              );
+          },
+          filter: textFilter(),
         },
         {
           dataField: "amount",
           text: "Payment",
           sort: true,
+          formatter: (cellContent, paymentCreatedStatus) => (
+            <>
+              <div className="text-end">
+                  <strong>{paymentCreatedStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+            ),filter: textFilter(),
         },
         {
           dataField: "bank",
@@ -117,18 +146,18 @@ class PathologistsList extends Component {
               <span>
                 <span>
                   {paymentCreatedStatus.bank_name},{" "}
-                  {paymentCreatedStatus.account_no}
+                  {paymentCreatedStatus.bank_account_no}
                 </span>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
        
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-        },
+        // {
+        //   dataField: "status",
+        //   text: "Status",
+        //   sort: true,
+        // },
         {
           dataField: "deposit_copy",
           text: "Deposite Copy",
@@ -344,6 +373,23 @@ class PathologistsList extends Component {
     this.toggle();
   };
 
+  handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    // Perform navigation based on the selected value
+    if (selectedValue === 'Created') {
+      this.props.history.push('/payment-out-created-status');
+    }
+    if (selectedValue === 'Pending Clearence') {
+        this.props.history.push('/payment-out-pending-clearence-status');
+    }
+    if (selectedValue === 'Cleared') {
+    this.props.history.push('/payment-out-clear-status');
+    }
+    if (selectedValue === 'Bounced') {
+    this.props.history.push('/payment-out-bounced-status');
+    }
+  }
+
   render() {
     const { SearchBar } = Search;
 
@@ -407,14 +453,24 @@ class PathologistsList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
+                                <div className="ms-2 mb-4">
+        <div>
+            <Label for="main_lab_appointments" className="form-label">
+                <strong>Money Out Form Statuses</strong>
+            </Label>
+            <select
+                className="form-control select2"
+                title="main_lab_appointments"
+                name="main_lab_appointments"
+                onChange={this.handleSelectChange}
+            >
+                <option value="Created">Created</option>
+                <option value="Pending Clearence">Pending Clearence</option>
+                <option value="Cleared">Cleared</option>
+                <option value="Bounced">Bounced</option>
+            </select>
+        </div>
+    </div>
                                 </Col>
 
                               </Row>
@@ -431,6 +487,7 @@ class PathologistsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
 
                                     <Modal
@@ -1185,6 +1242,8 @@ PathologistsList.propTypes = {
   onGetCreatedOutStatuss: PropTypes.func,
   onDeletePaymentout: PropTypes.func,
   onUpdatePaymentOutCreatedStatuss: PropTypes.func,
+  history: PropTypes.any,
+
 };
 
 const mapStateToProps = ({ paymentStatuss }) => ({

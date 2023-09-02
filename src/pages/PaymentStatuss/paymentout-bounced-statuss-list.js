@@ -27,6 +27,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -70,34 +71,51 @@ class paymentCreatedList extends Component {
         : "",
         paymentBouncedStatusListColumns: [
           {
-            text: "id",
+            text: "MOF ID",
             dataField: "id",
             sort: true,
             hidden: false,
             formatter: (cellContent, paymentBouncedStatus) => (
               <>{paymentBouncedStatus.id}</>
-            ),
+            ),filter: textFilter(),
           },
           {
             dataField: "invoice_id",
-            text: "invoice ID",
+            text: "Invoice ID",
             sort: true,
             hidden: true,
             formatter: (cellContent, paymentBouncedStatus) => (
               <>
                 <strong>{paymentBouncedStatus.invoice_id}</strong>
               </>
-            ),
+            ),filter: textFilter(),
           },
           {
             dataField: "payment_method",
             text: "Payment Method",
             sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => (
+              <>
+                <strong>{paymentBouncedStatus.payment_method}</strong>
+              </>
+            ),filter: textFilter(),
           },
           {
             dataField: "payment_for",
             text: "Payment To",
             sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => {
+              const date = new Date(paymentBouncedStatus.payment_for);
+              const day = date.getDate();
+              const month = date.getMonth() + 1; // Adding 1 to get the correct month
+              const year = date.getFullYear();
+              
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}/${month}/${year}`}
+                  </p>
+              );
+          },filter: textFilter(),
           },
           {
             dataField: "lab_name",
@@ -112,22 +130,37 @@ class paymentCreatedList extends Component {
                 </span>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
           },
           {
             dataField: "payment_at",
             text: "Payment Date",
             sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => (
+              <>
+                <strong>{paymentBouncedStatus.payment_at}</strong>
+              </>
+            ),filter: textFilter(),
           },
           {
             dataField: "cheque_no",
             text: "Cheque/Online Ref#",
             sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => (
+              <>
+                <strong>{paymentBouncedStatus.cheque_no}</strong>
+              </>
+            ),filter: textFilter(),
           },
           {
             dataField: "amount",
             text: "Payment",
             sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => (
+              <>
+                <strong>{paymentBouncedStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+              </>
+            ),filter: textFilter(),
           },
           {
             dataField: "bank",
@@ -142,23 +175,35 @@ class paymentCreatedList extends Component {
                   </span>
                 </span>
               </>
-            ),
+            ),filter: textFilter(),
           },
          
           {
             dataField: "is_cleared",
             text: "Cleared",
             sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => (
+              <>
+                <strong>{paymentBouncedStatus.is_cleared}</strong>
+              </>
+            ),filter: textFilter(),
           },
           {
             dataField: "cleared_at",
             text: "Cleared Date",
             sort: true,
-          },
-          {
-            dataField: "status",
-            text: "Status",
-            sort: true,
+            formatter: (cellContent, paymentBouncedStatus) => {
+              const date = new Date(paymentBouncedStatus.cleared_at);
+              const day = date.getDate();
+              const month = date.getMonth() + 1; // Adding 1 to get the correct month
+              const year = date.getFullYear();
+              
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}/${month}/${year}`}
+                  </p>
+              );
+          },filter: textFilter(),
           },
           {
             dataField: "deposit_copy",
@@ -370,6 +415,23 @@ class paymentCreatedList extends Component {
     this.toggle();
   };
 
+  handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    // Perform navigation based on the selected value
+    if (selectedValue === 'Created') {
+      this.props.history.push('/payment-out-created-status');
+    }
+    if (selectedValue === 'Pending Clearence') {
+        this.props.history.push('/payment-out-pending-clearence-status');
+    }
+    if (selectedValue === 'Cleared') {
+    this.props.history.push('/payment-out-clear-status');
+    }
+    if (selectedValue === 'Bounced') {
+    this.props.history.push('/payment-out-bounced-status');
+    }
+  }
+
   render() {
     const { SearchBar } = Search;
     const { labs } = this.props;
@@ -463,14 +525,22 @@ class paymentCreatedList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
+                                <div>
+            <Label for="main_lab_appointments" className="form-label">
+                <strong>Money Out Form Statuses</strong>
+            </Label>
+            <select
+                className="form-control select2"
+                title="main_lab_appointments"
+                name="main_lab_appointments"
+                onChange={this.handleSelectChange}
+            >
+                <option value="Bounced">Bounced</option>
+                <option value="Created">Created</option>
+                <option value="Pending Clearence">Pending Clearence</option>
+                <option value="Cleared">Cleared</option>
+            </select>
+        </div>
                                 </Col>
                               </Row>
                               <Row className="mb-4">
@@ -486,6 +556,7 @@ class paymentCreatedList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
                                     <Modal
                                       isOpen={this.state.modal}
@@ -1365,7 +1436,7 @@ paymentCreatedList.propTypes = {
   onUpdatePaymentOutCreatedStatuss: PropTypes.func,
   onGetlabs: PropTypes.func,
   onGetbankAccounts: PropTypes.func,
-
+  history: PropTypes.any,
 
 };
 

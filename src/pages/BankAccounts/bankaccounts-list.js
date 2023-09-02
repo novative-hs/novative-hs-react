@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import Select from "react-select";
 import {
   Card,
   CardBody,
@@ -24,6 +25,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -62,43 +64,67 @@ class BanksList extends Component {
           sort: true,
           formatter: (cellContent, bankaccount) => (
             <>{bankaccount.id}</>
-          ),
+          ), filter: textFilter(),
         },
         {
           dataField: "account_no",
           text: "Account No",
           sort: true,
           formatter: (cellContent, bankaccount) => (
-            <Link to={`/bank-account-statements/${bankaccount.id}`}>
-                                    {bankaccount.account_no}
-                                  </Link>
-          ),
-          
+            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+            <> {bankaccount.account_no}</>
+            // </Link>
+          ), filter: textFilter(),
+
         },
         {
           dataField: "categorey",
           text: "Catagorey",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+            <> {bankaccount.categorey}</>
+            // </Link>
+          ), filter: textFilter(),
         },
         {
           dataField: "currency",
           text: "Currency",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+            <> {bankaccount.currency}</>
+            // </Link>
+          ), filter: textFilter(),
         },
         {
           dataField: "city",
           text: "City",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+            <> {bankaccount.city}</>
+            // </Link>
+          ), filter: textFilter(),
         },
         {
           dataField: "address",
           text: "Address",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+            <> {bankaccount.address}</>
+            // </Link>
+          ), filter: textFilter(),
         },
         {
           dataField: "opening_balance",
           text: "Opening Balance",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            <div className="text-end">
+              <> {bankaccount.opening_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</>
+            </div>), filter: textFilter(),
         },
         {
           dataField: "creating_at",
@@ -107,15 +133,20 @@ class BanksList extends Component {
           formatter: (cellContent, bankaccount) => (
             <>
               <span>
-                {new Date(bankaccount.registered_at).toLocaleString("en-US")}
+                {new Date(bankaccount.creating_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ), filter: textFilter(),
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
+          formatter: (cellContent, bankaccount) => (
+            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+            <> {bankaccount.status}</>
+            // </Link>
+          ), filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -133,7 +164,7 @@ class BanksList extends Component {
                   }
                 ></i>
               </Link>
-              
+
             </div>
           ),
         },
@@ -175,6 +206,12 @@ class BanksList extends Component {
     const { bankaccounts, onGetBankaccounts } = this.props;
     onGetBankaccounts(this.state.user_id);
     this.setState({ bankaccounts });
+
+    // const { bankaccounts, onGetbankAccounts } = this.props;
+    // if (bankaccounts && !bankaccounts.length) {
+    //   onGetbankAccounts();
+    // }
+    // this.setState({ bankaccounts });
   }
 
   toggle() {
@@ -243,7 +280,6 @@ class BanksList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { bankaccounts } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
@@ -265,6 +301,25 @@ class BanksList extends Component {
         order: "desc", // desc or asc
       },
     ];
+
+    const { bankaccounts } = this.props;
+    const bankaccountList = [];
+    for (let i = 0; i < bankaccounts.length; i++) {
+      let flag = 0;
+      // for (let j = 0; j < bankaccounts.length; j++) {
+      //   if (banks[i].id == bankaccounts[j].bank_id) {
+      //     flag = 1;
+      //   }
+      // }
+      if (!flag) {
+        bankaccountList.push(
+          {
+            label: `${bankaccounts[i].bank_name} - ${bankaccounts[i].account_no}`,
+            value: `${bankaccounts[i].id}`,
+          }
+        );
+      }
+    }
 
     return (
       <React.Fragment>
@@ -299,14 +354,44 @@ class BanksList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
+                                  {/* {bankaccount.bankaccount_id ? (
+                                    <div className="mb-3">
+                                      <Label className="col-form-label">Bank Account Name</Label>
+
+                                      <Field
+                                        name="bankaccount_id"
+                                        as="select"
+                                        defaultValue={bankaccount.bankaccount_id}
+                                        className="form-control"
+                                        readOnly={true}
+                                        multiple={false}
+                                        onChange={(e) => {
+                                          const selectedAccountId = e.target.value;
+                                          this.props.history.push(`/bank-account-statements/${selectedAccountId}`);
+                                        }}
+                                      >
+                                        <option key={bankaccount.bankaccount_id} value={bankaccount.bankaccount_id}>
+                                          {bankaccount.account_no}
+                                        </option>
+                                      </Field>
                                     </div>
-                                  </div>
+                                  ) : (
+                                    <div className="mb-3 select2-container">
+                                      <Label className="col-form-label">Bank Account Name</Label>
+
+                                      <Select
+                                        name="bankaccount_id"
+                                        component="Select"
+                                        onChange={(selectedOption) => {
+                                          const selectedAccountId = selectedOption.value;
+                                          this.props.history.push(`/bank-account-statements/${selectedAccountId}`);
+                                        }}
+                                        options={bankaccountList}
+                                        placeholder="Select Bank Account..."
+                                      />
+                                    </div>
+                                  )} */}
+
                                 </Col>
                               </Row>
                               <Row className="mb-4">
@@ -322,6 +407,8 @@ class BanksList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+
                                     />
 
                                     <Modal
@@ -374,13 +461,13 @@ class BanksList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                           
-                                                //   deposit_slip: Yup.string().required(
-                                                //   "Please upload the file of payment slip"
-                                                // ),
-                                             
 
-                                              deposit_slip: Yup.string().when(
+                                            //   deposit_slip: Yup.string().required(
+                                            //   "Please upload the file of payment slip"
+                                            // ),
+
+
+                                            deposit_slip: Yup.string().when(
                                               "hiddenEditFlag",
                                               {
                                                 is: hiddenEditFlag =>
@@ -390,14 +477,14 @@ class BanksList extends Component {
                                                 ),
                                               }
                                             ),
-                                             // Validation for logo based on type value
+                                            // Validation for logo based on type value
                                             // type: Yup.string(),
                                             // logo: Yup.mixed().test(
                                             //   "required",
                                             //   "Please upload logo",
                                             // ),
 
-                                           
+
                                           })}
                                           onSubmit={values => {
                                             const updateBankaccount =
@@ -409,18 +496,18 @@ class BanksList extends Component {
                                               account_no: values.account_no,
                                               status:
                                                 values.status,
-                                                
+
                                             };
 
-                                          // update PaymentStatus
-                                          onUpdateBankaccount(
-                                            updateBankaccount
-                                          );
-                                          setTimeout(() => {
-                                            onGetBankaccounts(
-                                              this.state.user_id
+                                            // update PaymentStatus
+                                            onUpdateBankaccount(
+                                              updateBankaccount
                                             );
-                                          }, 1000);
+                                            setTimeout(() => {
+                                              onGetBankaccounts(
+                                                this.state.user_id
+                                              );
+                                            }, 1000);
                                             this.toggle();
                                           }}
                                         >
@@ -686,7 +773,7 @@ class BanksList extends Component {
                                                         className="invalid-feedback"
                                                       />
                                                     </div>  */}
-                                                 
+
                                                   {/* Certificate Type field */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
@@ -702,7 +789,7 @@ class BanksList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.account_no &&
-                                                        touched.account_no
+                                                          touched.account_no
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -714,7 +801,7 @@ class BanksList extends Component {
                                                             //   bankaccount.deposit_bank,
                                                             // // deposited_at: bankaccount.deposit_bank,
                                                             // deposit_slip: bankaccount.deposit_slip,
-                                                            account_no :
+                                                            account_no:
                                                               e.target.value,
                                                           },
                                                         });
@@ -732,8 +819,8 @@ class BanksList extends Component {
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div> 
-                                                   <div className="mb-3">
+                                                  </div>
+                                                  <div className="mb-3">
                                                     <Label className="form-label">
                                                       Status Type
                                                       <span className="text-danger font-size-12">
@@ -747,7 +834,7 @@ class BanksList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.status &&
-                                                        touched.status
+                                                          touched.status
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -771,18 +858,18 @@ class BanksList extends Component {
                                                           .status
                                                       }
                                                     >
-                                                    <option value="ACTIVE">Active</option>
-                                                    <option value="IN_ACTIVE">In_Active</option>
-                                                      
+                                                      <option value="ACTIVE">Active</option>
+                                                      <option value="IN_ACTIVE">In_Active</option>
+
                                                     </Field>
                                                     <ErrorMessage
                                                       name="status"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div> 
+                                                  </div>
 
-                                                 
+
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -834,6 +921,8 @@ BanksList.propTypes = {
   className: PropTypes.any,
   onGetBankaccounts: PropTypes.func,
   onUpdateBankaccount: PropTypes.func,
+  history: PropTypes.any,
+
 };
 
 const mapStateToProps = ({ bankaccounts }) => ({

@@ -24,6 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -71,7 +72,7 @@ class PaymentStatussList extends Component {
           hidden: false,
           formatter: (cellContent, paymentStatus) => (
               <>{paymentStatus.id}</>
-          ),
+          ),filter: textFilter(),
       },
         {
           dataField: "invoice_id",
@@ -82,17 +83,27 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentStatus.invoice_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "payment_method",
           text: "Payment Method",
           sort: true,
+          formatter: (cellContent, paymentStatus) => (
+            <>
+              <strong>{paymentStatus.payment_method}</strong>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "payment_for",
           text: "Payment To",
           sort: true,
+          formatter: (cellContent, paymentStatus) => (
+            <>
+              <strong>{paymentStatus.payment_for}</strong>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "lab_name",
@@ -109,12 +120,17 @@ class PaymentStatussList extends Component {
               </span>
             </span>
           </>
-        ),
+        ),filter: textFilter(),
         },
         {
           dataField: "amount",
           text: "Amount",
           sort: true,
+          formatter: (cellContent, paymentStatus) => (
+            <>
+          <div className="text-end">
+                  <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>            </>
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "deposited_at",
@@ -135,7 +151,36 @@ class PaymentStatussList extends Component {
                 </span>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
+        },
+       
+        // {
+        //   dataField: "is_settled",
+        //   text: "Is Settled",
+        //   sort: true,
+        // },
+        // {
+        //   dataField: "verified_by",
+        //   text: "Verified By",
+        //   sort: true,
+        // },
+        {
+          dataField: "cleared_at",
+          text: "Cleared Date",
+          sort: true,
+          formatter: (cellContent, paymentStatuss) => {
+              const date = new Date(paymentStatuss.cleared_at);
+              const day = date.getDate();
+              const month = date.getMonth() + 1; // Adding 1 to get the correct month
+              const year = date.getFullYear();
+              
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}/${month}/${year}`}
+                  </p>
+              );
+          },
+          filter: textFilter(),
         },
         {
           dataField: "deposit_slip",
@@ -157,29 +202,10 @@ class PaymentStatussList extends Component {
           ),
         },
         // {
-        //   dataField: "is_settled",
-        //   text: "Is Settled",
+        //   dataField: "status",
+        //   text: "Status",
         //   sort: true,
         // },
-        // {
-        //   dataField: "verified_by",
-        //   text: "Verified By",
-        //   sort: true,
-        // },
-        {
-          dataField: "cleared_at",
-          text: "Cleared Date",
-          sort: true,
-          formatter: (cellContent, paymentStatuss) => (
-            <p className="text-muted mb-0">
-            {new Date(paymentStatuss.cleared_at).toLocaleString("en-US")}
-          </p>                    ),
-        },
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-        },
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -227,6 +253,23 @@ class PaymentStatussList extends Component {
       deleteModal: !prevState.deleteModal,
     }));
   };
+
+  handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    // Perform navigation based on the selected value
+    if (selectedValue === 'Created') {
+      this.props.history.push('/payment-out-created-status');
+    }
+    if (selectedValue === 'Pending Clearence') {
+        this.props.history.push('/payment-out-pending-clearence-status');
+    }
+    if (selectedValue === 'Cleared') {
+    this.props.history.push('/payment-out-clear-status');
+    }
+    if (selectedValue === 'Bounced') {
+    this.props.history.push('/payment-out-bounced-status');
+    }
+  }
 
   render() {
     const { SearchBar } = Search;
@@ -286,14 +329,22 @@ class PaymentStatussList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
+                                <div>
+                                  <Label for="main_lab_appointments" className="form-label">
+                                      <strong>Money Out Form Statuses</strong>
+                                  </Label>
+                                  <select
+                                      className="form-control select2"
+                                      title="main_lab_appointments"
+                                      name="main_lab_appointments"
+                                      onChange={this.handleSelectChange}
+                                  >
+                                      <option value="Cleared">Cleared</option>
+                                      <option value="Bounced">Bounced</option>
+                                      <option value="Created">Created</option>
+                                      <option value="Pending Clearence">Pending Clearence</option>
+                                  </select>
+                              </div>
                                 </Col>
                               </Row>
                               <Row className="mb-4">
@@ -309,6 +360,7 @@ class PaymentStatussList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
                                   </div>
                                 </Col>
@@ -341,6 +393,8 @@ PaymentStatussList.propTypes = {
   paymentStatuss: PropTypes.array,
   className: PropTypes.any,
   onGetPaymentOutClearStatuss: PropTypes.func,
+  history: PropTypes.any,
+
 };
 
 const mapStateToProps = ({ paymentStatuss }) => ({

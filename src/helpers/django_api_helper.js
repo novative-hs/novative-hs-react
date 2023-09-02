@@ -2216,6 +2216,7 @@ export const updatePaymentStatus = paymentStatus => {
 export const updatePaymentInStatus = paymentInStatus => {
   let formData = new FormData();
   formData.append("is_cleared",  paymentInStatus.is_cleared);
+  formData.append("cleared_at",  paymentInStatus.cleared_at);
   return axios.put(
     `${url.UPDATE_PAYMENTIN_STATUS}/${paymentInStatus.id}`,
     formData,
@@ -2451,6 +2452,7 @@ export const getCreatedOutStatuss = id =>
 export const updatePaymentOutStatus = paymentOutStatus => {
   let formData = new FormData();
   formData.append("is_cleared",  paymentOutStatus.is_cleared);
+  formData.append("cleared_at",  paymentOutStatus.cleared_at);
   return axios.put(
     `${url.UPDATE_PAYMENTOUT_STATUS}/${paymentOutStatus.id}`,
     formData,

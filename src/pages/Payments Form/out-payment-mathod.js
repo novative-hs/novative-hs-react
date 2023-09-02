@@ -89,7 +89,7 @@ class OutPaymentsForm extends Component {
       comments: "",
       checkedoutData: "",
       successMessage: "",
-      transection_type : "Other",
+      transection_type: "Other",
     };
     // this.toggleTab = this.toggleTab.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -128,7 +128,7 @@ class OutPaymentsForm extends Component {
         comments: this.state.comments,
       },
     });
-  
+
     // API call to create a new outPayment record
     const { onAddNewOutPayment } = this.props;
     setTimeout(() => {
@@ -137,12 +137,12 @@ class OutPaymentsForm extends Component {
       );
     }, 2000);
     setTimeout(() => {
-        this.props.history.push("/payment-out-pending-clearence-status");
+      this.props.history.push("/payment-out-pending-clearence-status");
     }, 2000)
   };
 
-  
-  
+
+
   handleProceedClick = () => {
     this.setState({
       outPayment: {
@@ -169,7 +169,7 @@ class OutPaymentsForm extends Component {
     setTimeout(() => {
       console.log(
         onAddNewOutPayment(this.state.outPayment, this.state.user_id)
-        
+
       );
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }, 2000);
@@ -178,16 +178,16 @@ class OutPaymentsForm extends Component {
       this.props.history.push("/payment-out-created-status");
       window.location.reload()
 
-  }, 2000)
+    }, 2000)
   };
 
   componentDidMount() {
     const { staffProfiles, onGetStaffProfile } = this.props;
     onGetStaffProfile(this.state.user_id);
-    this.setState({ 
+    this.setState({
       staffProfiles
     });
-    console.log("state",staffProfiles)
+    console.log("state", staffProfiles)
 
     const { labsMof, onGetlabsMof } = this.props;
     if (labsMof && !labsMof.length) {
@@ -273,14 +273,14 @@ class OutPaymentsForm extends Component {
 
     const { outPayments } = this.props;
     const { labsMof } = this.props;
-    const {listDonation} = this.props;
+    const { listDonation } = this.props;
     const { b2bClients } = this.props;
-    const {staffProfiles} = this.props;
+    const { staffProfiles } = this.props;
 
 
     // const { units } = this.props;
 
-    const { onAddNewOutPayment, onGetOutPayment, onGetStaffProfile} =
+    const { onAddNewOutPayment, onGetOutPayment, onGetStaffProfile } =
       this.props;
     const outPayment = this.state.outPayment;
 
@@ -316,7 +316,7 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < labsMof.length; i++) {
       if (labsMof[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
-          label: labsMof[i].name,
+          label: `(Name: ${labsMof[i].name}) - (Type: ${labsMof[i].type}) - (City: ${labsMof[i].city})`,
           value: labsMof[i].id,
         });
       }
@@ -342,7 +342,7 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < listDonation.length; i++) {
       if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
         DonationAppointmentList.push({
-          label: `${listDonation[i].id} - (Lab: ${listDonation[i].lab_name})`,
+          label: `${listDonation[i].id} - (Lab: ${listDonation[i].lab_name}) - (Type: ${listDonation[i].lab_type}) - (City: ${listDonation[i].lab_city})`,
           value: `${listDonation[i].id}`,
         });
       }
@@ -424,7 +424,7 @@ class OutPaymentsForm extends Component {
             <Breadcrumbs title="Form" breadcrumbItem="OutPayment" />
             <Formik>
               <div className="checkout-tabs">
-              {this.state.successMessage && <div>{this.state.successMessage}</div>}
+                {this.state.successMessage && <div>{this.state.successMessage}</div>}
                 <Row>
                   <Col lg="1" sm="1">
                   </Col>
@@ -467,34 +467,34 @@ class OutPaymentsForm extends Component {
 
                           {this.state.payment_for == "Lab" ? (
                             <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
-                              What type of Transection?
-                              <span
-                                style={{ color: "#f46a6a" }}
-                                className="font-size-18"
+                              <Label htmlFor="cardnumberInput">
+                                What type of Transection?
+                                <span
+                                  style={{ color: "#f46a6a" }}
+                                  className="font-size-18"
+                                >
+                                  *
+                                </span>
+                              </Label>
+                              <select
+                                name="transection_type"
+                                component="select"
+                                onChange={e =>
+                                  this.setState({
+                                    transection_type: e.target.value,
+                                  })
+                                }
+                                defaultValue={this.state.transection_type}
+                                className="form-select"
                               >
-                                *
-                              </span>
-                            </Label>
-                            <select
-                              name="transection_type"
-                              component="select"
-                              onChange={e =>
-                                this.setState({
-                                  transection_type: e.target.value,
-                                })
-                              }
-                              defaultValue={this.state.transection_type}
-                              className="form-select"
-                            >
-                              <option value="Other">Other</option>
-                              <option value="Donation">Donation</option>
-                            </select>
+                                <option value="Other">Other</option>
+                                <option value="Donation">Donation</option>
+                              </select>
 
-                          </FormGroup>
+                            </FormGroup>
                           ) : null}
 
-                          {this.state.payment_for == "Lab" ? (
+                          {this.state.payment_for == "Lab" && this.state.transection_type == "Other" ? (
                             outPayment.lab_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">
@@ -564,67 +564,67 @@ class OutPaymentsForm extends Component {
                               </div>)
                           ) : null}
 
-{this.state.transection_type == "Donation" ? (
-   outPayment.test_appointment_id ? (
-    <div className="mb-3">
-      <Label className="form-label">
-        Test Appointments
-      </Label>
-      <Field
-        name="test_appointment_id"
-        as="select"
-        defaultValue={outPayment.test_appointment_id}
-        className="form-control"
-        readOnly={true}
-        multiple={true} // Set to true to allow multiple selections
-      >
-        {/* Render options for each selected test_appointment_id */}
-        {outPayment.test_appointment_id.map(value => (
-          <option key={value} value={value}>
-            {value}
-          </option>
-        ))}
-      </Field>
-    </div>
-  ) : (
-    <div className="mb-3 select2-container">
-      <Label>Test Appointments</Label>
-      <Select
-        name="test_appointment_id"
-        component="Select"
-        isMulti={true} // Uncomment this line
-        onChange={selectedGroup =>
-          this.setState({
-            test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
-          })
-        }
-        className={
-          "defautSelectParent" +
-          (!this.state.test_appointment_id
-            ? " is-invalid"
-            : "")
-        }
-        styles={{
-          control: (
-            base,
-            state
-          ) => ({
-            ...base,
-            borderColor: !this
-              .state.test_appointment_id
-              ? "#f46a6a"
-              : "#ced4da",
-          }),
-        }}
-        options={DonationAppointmentList}
-        placeholder="Select Appointment..."
-      />
+                          {this.state.transection_type == "Donation" ? (
+                            outPayment.test_appointment_id ? (
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  Test Appointments
+                                </Label>
+                                <Field
+                                  name="test_appointment_id"
+                                  as="select"
+                                  defaultValue={outPayment.test_appointment_id}
+                                  className="form-control"
+                                  readOnly={true}
+                                  multiple={true} // Set to true to allow multiple selections
+                                >
+                                  {/* Render options for each selected test_appointment_id */}
+                                  {outPayment.test_appointment_id.map(value => (
+                                    <option key={value} value={value}>
+                                      {value}
+                                    </option>
+                                  ))}
+                                </Field>
+                              </div>
+                            ) : (
+                              <div className="mb-3 select2-container">
+                                <Label>Test Appointments</Label>
+                                <Select
+                                  name="test_appointment_id"
+                                  component="Select"
+                                  isMulti={true} // Uncomment this line
+                                  onChange={selectedGroup =>
+                                    this.setState({
+                                      test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
+                                    })
+                                  }
+                                  className={
+                                    "defautSelectParent" +
+                                    (!this.state.test_appointment_id
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  styles={{
+                                    control: (
+                                      base,
+                                      state
+                                    ) => ({
+                                      ...base,
+                                      borderColor: !this
+                                        .state.test_appointment_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                    }),
+                                  }}
+                                  options={DonationAppointmentList}
+                                  placeholder="Select Appointment..."
+                                />
 
-      <div className="invalid-feedback">
-        Please select Appointment
-      </div>
-    </div>)
-    ) : null}
+                                <div className="invalid-feedback">
+                                  Please select Appointment
+                                </div>
+                              </div>)
+                          ) : null}
 
                           {this.state.payment_for == "B2BClient" ? (
                             outPayment.b2b_id ? (

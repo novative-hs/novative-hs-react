@@ -213,28 +213,30 @@ class Header extends Component {
 
               ) : null}
 
-              {isSmallScreen ? (
-
-                <button
-                  type="button"
-                  className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
-                  style={{ left: '12px', top: '6px' }} // Set left position to 10 pixels
-                  data-toggle="collapse"
-                  onClick={this.toggleMenu}
-                  data-target="#topnav-menu-content"
-                >
-                  <i className="fa fa-fw fa-bars" />
-                </button>
-
-              ) : <button
+            {isSmallScreen && this.state.user_type == "patient" && window.location.pathname == "/nearby-labs" ? (
+              <button
                 type="button"
                 className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                style={{ left: '12px', top: '6px', display: 'none' }} // Hide the button
                 data-toggle="collapse"
                 onClick={this.toggleMenu}
                 data-target="#topnav-menu-content"
               >
                 <i className="fa fa-fw fa-bars" />
-              </button>}
+              </button>
+            ) : isSmallScreen && this.state.user_type == "patient" && window.location.pathname !== "/nearby-labs" ? (
+              <button
+                type="button"
+                className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                data-toggle="collapse"
+                style={{ left: '12px', top: '6px'}}
+                onClick={this.toggleMenu}
+                data-target="#topnav-menu-content"
+              >
+                <i className="fa fa-fw fa-bars" />
+              </button>
+            ): null}
+
             </div>
 
             <div className="d-flex">

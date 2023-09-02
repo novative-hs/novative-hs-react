@@ -24,6 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -57,13 +58,13 @@ class PaymentStatussList extends Component {
         : "",
       paymentOutStatusListColumns: [
         {
-          text: "id",
+          text: "MOF ID",
           dataField: "id",
           sort: true,
           hidden: false,
           formatter: (cellContent, paymentOutStatus) => (
             <>{paymentOutStatus.id}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "invoice_id",
@@ -80,11 +81,21 @@ class PaymentStatussList extends Component {
           dataField: "payment_method",
           text: "Payment Method",
           sort: true,
+          formatter: (cellContent, paymentOutStatus) => (
+            <>
+              <strong>{paymentOutStatus.payment_method}</strong>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "payment_for",
           text: "Payment To",
           sort: true,
+          formatter: (cellContent, paymentOutStatus) => (
+            <>
+              <strong>{paymentOutStatus.payment_for}</strong>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "lab_name",
@@ -99,22 +110,46 @@ class PaymentStatussList extends Component {
               </span>
             </span>
           </>
-        ),
+        ),filter: textFilter(),
         },
         {
           dataField: "payment_at",
           text: "Payment Date",
           sort: true,
+          formatter: (cellContent, paymentOutStatus) => {
+              const date = new Date(paymentOutStatus.payment_at);
+              const day = date.getDate();
+              const month = date.getMonth() + 1; // Adding 1 to get the correct month
+              const year = date.getFullYear();
+              
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}/${month}/${year}`}
+                  </p>
+              );
+          },
+          filter: textFilter(),
         },
         {
           dataField: "cheque_no",
           text: "Cheque/Online Ref#",
           sort: true,
+          formatter: (cellContent, paymentOutStatus) => (
+            <>
+              <strong>{paymentOutStatus.cheque_no}</strong>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "amount",
           text: "Payment",
           sort: true,
+          formatter: (cellContent, paymentOutStatus) => (
+            <>
+            <div className="text-end">
+              <strong>{paymentOutStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "bank",
@@ -129,13 +164,13 @@ class PaymentStatussList extends Component {
                 </span>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-        },
+        // {
+        //   dataField: "status",
+        //   text: "Status",
+        //   sort: true,
+        // },
         {
           dataField: "deposit_copy",
           text: "Deposite Copy",
@@ -275,6 +310,22 @@ class PaymentStatussList extends Component {
 
     this.toggle();
   };
+  handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+    // Perform navigation based on the selected value
+    if (selectedValue === 'Created') {
+      this.props.history.push('/payment-out-created-status');
+    }
+    if (selectedValue === 'Pending Clearence') {
+        this.props.history.push('/payment-out-pending-clearence-status');
+    }
+    if (selectedValue === 'Cleared') {
+    this.props.history.push('/payment-out-clear-status');
+    }
+    if (selectedValue === 'Bounced') {
+    this.props.history.push('/payment-out-bounced-status');
+    }
+  }
 
   render() {
     const { SearchBar } = Search;
@@ -335,14 +386,22 @@ class PaymentStatussList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
+                                <div>
+                                  <Label for="main_lab_appointments" className="form-label">
+                                      <strong>Money Out Form Statuses</strong>
+                                  </Label>
+                                  <select
+                                      className="form-control select2"
+                                      title="main_lab_appointments"
+                                      name="main_lab_appointments"
+                                      onChange={this.handleSelectChange}
+                                  >
+                                      <option value="Pending Clearence">Pending Clearence</option>
+                                      <option value="Bounced">Bounced</option>
+                                      <option value="Created">Created</option>
+                                      <option value="Cleared">Cleared</option>
+                                  </select>
+                              </div>
                                 </Col>
                               </Row>
                               <Row className="mb-4">
@@ -358,6 +417,7 @@ class PaymentStatussList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
 
                                     <Modal
@@ -437,7 +497,7 @@ class PaymentStatussList extends Component {
                                               // cleared_at:
                                               //   values.cleared_at,
                                               is_cleared: values.is_cleared,
-                                              // cleared_at: values.cleared_at,
+                                              cleared_at: values.cleared_at,
                                              
                                               // comments:
                                               //   values.comments,
@@ -493,7 +553,7 @@ class PaymentStatussList extends Component {
                                                             // deposit_bank:
                                                             //   paymentOutStatus.deposit_bank,
                                                             // // deposited_at: paymentOutStatus.deposit_bank,
-                                                            // deposit_slip: paymentOutStatus.deposit_slip,
+                                                            cleared_at: paymentOutStatus.cleared_at,
                                                             is_cleared :
                                                               e.target.value,
                                                           },
@@ -525,6 +585,40 @@ class PaymentStatussList extends Component {
                                                     />
                                                   </div>
 
+                                                  {this.state.paymentOutStatus.is_cleared == "Yes" ? (
+                                                  <div className="mb-3">
+
+                                                  <Label htmlFor="cardnumberInput">
+                                                  Please select clearence date and time
+                                                                  <span
+                                                                    style={{ color: "#f46a6a" }}
+                                                                    className="font-size-18"
+                                                                  >
+                                                                    *
+                                                                  </span>
+                                                                </Label>
+                                                                <input
+                                                                  name="cleared_at"
+                                                                  type="datetime-local"
+                                                                  max={new Date(
+                                                                    new Date().toString().split("GMT")[0] + " UTC"
+                                                                  )
+                                                                    .toISOString()
+                                                                    .slice(0, -8)}
+                                                                  className="form-control"
+                                                                  onChange={e => {
+                                                                  this.setState({
+                                                                      paymentOutStatus: {
+                                                                          id: paymentOutStatus.id,
+                                                                          is_cleared: paymentOutStatus.is_cleared,
+                                                                          cleared_at: e.target.value,
+                                                                      },
+                                                          });
+                                                      }}
+                                                  />
+                                                  </div>
+                                                  ) : null}
+
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -534,7 +628,7 @@ class PaymentStatussList extends Component {
                                                       type="submit"
                                                       className="btn btn-success save-user"
                                                     >
-                                                      Save
+                                                      Submit
                                                     </button>
                                                   </div>
                                                 </Col>
@@ -576,6 +670,8 @@ PaymentStatussList.propTypes = {
   className: PropTypes.any,
   onGetPaymentOutStatuss: PropTypes.func,
   onUpdatePaymentOutStatus: PropTypes.func,
+  history: PropTypes.any,
+
 };
 
 const mapStateToProps = ({ paymentStatuss }) => ({

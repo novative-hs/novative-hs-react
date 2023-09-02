@@ -25,6 +25,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -66,7 +67,7 @@ class PaymentStatussList extends Component {
                     hidden: false,
                     formatter: (cellContent, paymentStatus) => (
                         <>{paymentStatus.id}</>
-                    ),
+                    ),filter: textFilter(),
                 },
                 {
                     dataField: "invoice_id",
@@ -77,12 +78,17 @@ class PaymentStatussList extends Component {
                         <>
                             <strong>{paymentStatus.invoice_id}</strong>
                         </>
-                    ),
+                    ),filter: textFilter(),
                 },
                 {
                     dataField: "payment_for",
                     text: "Payment From",
                     sort: true,
+                    formatter: (cellContent, paymentStatus) => (
+                        <>
+                            <strong>{paymentStatus.payment_for}</strong>
+                        </>
+                    ),filter: textFilter(),
                 },
                 {
                     dataField: "lab_name",
@@ -91,20 +97,44 @@ class PaymentStatussList extends Component {
                     formatter: (cellContent, paymentStatus) => (
                         <>
                             <span>
-                                <span>
-                                    {paymentStatus.lab_name}{" "}
-                                    {paymentStatus.donor_name}{" "}
-                                    {paymentStatus.advertisement_title}
-                                </span>
+                                {paymentStatus.donor_name}{" "}
+                                {paymentStatus.lab_name}{" "}
+                                {paymentStatus.advertisement_title}
                             </span>
                         </>
-                    ),
+                    ),filter: textFilter(),
                 },
+                
                 {
                     dataField: "payment_method",
                     text: "Payment Method",
                     sort: true,
+                    formatter: (cellContent, paymentStatus) => (
+                        <>
+                            <strong>{paymentStatus.payment_method}</strong>
+                        </>
+                    ),filter: textFilter(),
                 },
+                // {
+                //     dataField: "cheque_no",
+                //     text: "Cheque/Ref#",
+                //     sort: true,
+                //     formatter: (cellContent, paymentStatus) => (
+                //         <>
+                //             {paymentStatus.cheque_no && (
+                //                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                //                     {paymentStatus.cheque_no}
+                //                 </span>
+                //             )}
+
+                //             {paymentStatus.cheque_no && (
+                //                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                //                     {paymentStatus.refered_no}
+                //                 </span>
+                //             )}
+                //         </>
+                //     ),filter: textFilter(),
+                // },
                 {
                     dataField: "cheque_no",
                     text: "Cheque/Ref#",
@@ -116,19 +146,37 @@ class PaymentStatussList extends Component {
                                     {paymentStatus.cheque_no}
                                 </span>
                             )}
-
-                            {paymentStatus.cheque_no && (
+                
+                            {paymentStatus.refered_no && (
                                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
                                     {paymentStatus.refered_no}
                                 </span>
                             )}
                         </>
                     ),
+                    filter: textFilter({
+                        placeholder: "Filter Cheque/Ref#",
+                        getFilter: (filter) => ({ 
+                            // Custom filter logic for both fields
+                            comparator: (filterValue, cellValue, row) => {
+                                return (
+                                    row.cheque_no.includes(filterValue) || 
+                                    row.refered_no.includes(filterValue)
+                                );
+                            },
+                        }),
+                    }),
                 },
                 {
                     dataField: "amount",
                     text: "Amount",
                     sort: true,
+                    formatter: (cellContent, paymentStatus) => (
+                        <>
+                        <div className="text-end">
+                            <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+                        </>
+                    ),filter: textFilter(),
                 },
               
                 // {
@@ -148,16 +196,22 @@ class PaymentStatussList extends Component {
                 // },
                 {
                     dataField: "paid_at",
-                    text: "Payment Recieved Date",
+                    text: "Payment Received Date",
                     sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <p className="text-muted mb-0">
-                        {new Date(paymentStatus.paid_at).toLocaleDateString("en-US", {
-                            dateStyle: "short",
-                            timeZone: "UTC",
-                            }).replace(/\//g, " - ")}</p>),
-                },                                        
-
+                    formatter: (cellContent, paymentStatus) => {
+                        const date = new Date(paymentStatus.paid_at);
+                        const day = date.getDate();
+                        const month = date.getMonth() + 1; // Adding 1 to get the correct month
+                        const year = date.getFullYear();
+                        
+                        return (
+                            <p className="text-muted mb-0">
+                                {`${day}/${month}/${year}`}
+                            </p>
+                        );
+                    },
+                    filter: textFilter(),
+                },                
                 // {
                 // dataField: "bankaccount_id",
                 // text: "Deposit Bank",
@@ -200,11 +254,11 @@ class PaymentStatussList extends Component {
                         </>
                     ),
                 },
-                {
-                    dataField: "payment_status",
-                    text: "Status",
-                    sort: true,
-                },
+                // {
+                //     dataField: "payment_status",
+                //     text: "Status",
+                //     sort: true,
+                // },
                 {
                     dataField: "menu",
                     isDummyField: true,
@@ -218,7 +272,7 @@ class PaymentStatussList extends Component {
                                 onClick={e => this.handlePaymentStatusClick(e, paymentStatus)}
 
                             >
-                                Submit
+                                Update
                             </button>
                         </div>
                     ),
@@ -331,6 +385,23 @@ class PaymentStatussList extends Component {
         this.toggle();
     };
 
+    handleSelectChange = (event) => {
+        const selectedValue = event.target.value;
+        // Perform navigation based on the selected value
+        if (selectedValue === 'Created') {
+          this.props.history.push('/payment-status');
+        }
+        if (selectedValue === 'Pending Clearence') {
+            this.props.history.push('/payment-in-pending-clearence-status');
+        }
+        if (selectedValue === 'Cleared') {
+        this.props.history.push('/clear-status');
+        }
+        if (selectedValue === 'Bounced') {
+        this.props.history.push('/bounced-status');
+        }
+    }
+
     render() {
         const { SearchBar } = Search;
 
@@ -406,16 +477,27 @@ class PaymentStatussList extends Component {
                                                     {toolkitprops => (
                                                         <React.Fragment>
                                                             <Row className="mb-2">
-                                                                <Col sm="4">
-                                                                    <div className="search-box ms-2 mb-2 d-inline-block">
-                                                                        <div className="position-relative">
-                                                                            <SearchBar
-                                                                                {...toolkitprops.searchProps}
-                                                                            />
-                                                                            <i className="bx bx-search-alt search-icon" />
-                                                                        </div>
-                                                                    </div>
-                                                                </Col>
+                                                            <Col sm="4">
+    <div className="ms-2 mb-4">
+        <div>
+            <Label for="main_lab_appointments" className="form-label">
+                <strong>Money In Form Statuses</strong>
+            </Label>
+            <select
+                className="form-control select2"
+                title="main_lab_appointments"
+                name="main_lab_appointments"
+                onChange={this.handleSelectChange}
+            >
+                <option value="Created">Created</option>
+                <option value="Pending Clearence">Pending Clearence</option>
+                <option value="Cleared">Cleared</option>
+                <option value="Bounced">Bounced</option>
+            </select>
+        </div>
+    </div>
+</Col>
+
                                                             </Row>
                                                             <Row className="mb-4">
                                                                 <Col xl="12">
@@ -430,6 +512,7 @@ class PaymentStatussList extends Component {
                                                                             headerWrapperClasses={"table-light"}
                                                                             responsive
                                                                             ref={this.node}
+                                                                            filter={ filterFactory() }
                                                                         />
 
                                                                         <Modal
@@ -693,7 +776,7 @@ class PaymentStatussList extends Component {
                                                                                                             type="submit"
                                                                                                             className="btn btn-success save-user"
                                                                                                         >
-                                                                                                            Save
+                                                                                                            Submit
                                                                                                         </button>
                                                                                                     </div>
                                                                                                 </Col>
@@ -737,6 +820,8 @@ PaymentStatussList.propTypes = {
     onGetPaymentStatuss: PropTypes.func,
     onUpdatePaymentInBouncedStatus: PropTypes.func,
     onGetbankAccounts: PropTypes.func,
+    history: PropTypes.any,
+
 
 };
 

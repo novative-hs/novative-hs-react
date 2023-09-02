@@ -24,6 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -62,27 +63,47 @@ class BanksList extends Component {
           sort: true,
           formatter: (cellContent, bank) => (
             <>{bank.id}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
           text: "Bank Name",
           sort: true,
+          formatter: (cellContent, bank) => (
+            <>
+                {bank.name}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "phone",
           text: "Bank Phone",
           sort: true,
+          formatter: (cellContent, bank) => (
+            <>
+                {bank.phone}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "email",
           text: "Bank Email",
           sort: true,
+          formatter: (cellContent, bank) => (
+            <>
+                {bank.email}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "registered_by",
           text: "Registered By",
           sort: true,
+          formatter: (cellContent, bank) => (
+            <>
+                {bank.registered_by}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -94,7 +115,7 @@ class BanksList extends Component {
                 {new Date(bank.registered_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -301,6 +322,7 @@ class BanksList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
 
                                     <Modal
