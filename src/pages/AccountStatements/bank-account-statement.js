@@ -14,6 +14,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 //Import Breadcrumb
@@ -24,6 +25,7 @@ import {
 import { getBankStatements } from "store/account-statements/actions";
 
 import "assets/scss/table.scss";
+// Define the custom footer component
 
 class AccountStatements extends Component {
   constructor(props) {
@@ -64,29 +66,19 @@ class AccountStatements extends Component {
     this.setState({ bankStatements: this.props.bankStatements });
   };
 
-
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
 
-  onPaginationPageChange = page => {
-    if (
-      this.node &&
-      this.node.current &&
-      this.node.current.props &&
-      this.node.current.props.pagination &&
-      this.node.current.props.pagination.options
-    ) {
-      this.node.current.props.pagination.options.onPageChange(page);
-    }
-  };
-
-  render() {
+  render() {    
     const { SearchBar } = Search;
     const { bankStatements } = this.props;
     const bankStatement = this.state.bankStatement;
+    // const footer = {
+    //   totalDebit: bankStatements[0].total_Debit, // Replace with the actual data from your backend
+    // };console.log("totaldebit is ", this.props.bankStatements.total_Debit)
 
     const {
       onGetBankaccounts,
@@ -107,12 +99,76 @@ class AccountStatements extends Component {
 
     // Define the structure of your table headers
     const tableHeaders = [
-      "Clearenec DateTime",
-      "Description",
-      "Payment Status",
-      "Credit",
-      "Debit",
-      "Balance",
+      {
+        dataField: 'clearence_datetime',
+        text: 'Clearence DateTime',
+        sort: true,
+        footer: '', // Empty footer for this column
+        formatter: (cellContent, bankStatement) => (
+          <>
+            <strong>{bankStatement.clearence_datetime}</strong>
+          </>
+        ), filter: textFilter(), // Add a text filter for this column
+      },
+      {
+        dataField: 'account_name',
+        text: 'Description',
+        footer: '', // Empty footer for this column
+        formatter: (cellContent, bankStatement) => (
+          <>
+            <strong>{bankStatement.account_name}{", "}
+              {bankStatement.account_no}{", "}
+              {bankStatement.mif_id
+                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id}</span>
+                : bankStatement.mof_id
+                  ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id}</span>
+                  : <span><span style={{ color: 'red' }}>BTD ID: </span> {bankStatement.btd_id}</span>}</strong>
+          </>
+        ), filter: textFilter(), // Add a text filter for this column // Add a text filter for this column
+      },
+      {
+        dataField: 'Status',
+        text: 'Payment Status',
+        footer: '', // Empty footer for this column
+        formatter: (cellContent, bankStatement) => (
+          <>
+            <strong>{bankStatement.Status}</strong>
+          </>
+        ), filter: textFilter(), // Add a text filter for this column
+      },
+      {
+        dataField: 'credit',
+        text: 'Credit',
+        footer: 'Total Credit', // Footer label for this column
+        footerdataField: 'total_Credit',
+        formatter: (cellContent, bankStatement) => (
+          <>
+            <strong>{bankStatement.credit}</strong>
+          </>
+        ), filter: textFilter(), // Add a text filter for this column
+      },
+      {
+        dataField: 'Debit',
+        text: 'Debit',
+        footer: 'Total Debit', // Footer label for this column
+        footerdataField: 'totalDebit',
+        formatter: (cellContent, bankStatement) => (
+          <>
+            <strong>{bankStatement.Debit}</strong>
+          </>
+        ), filter: textFilter(), // Add a text filter for this column
+      },
+      {
+        dataField: 'account_balance',
+        text: 'Balance',
+        footer: 'Total Balance', // Footer label for this column
+        footerdataField: 'account_balance',
+        formatter: (cellContent, bankStatement) => (
+          <>
+            <strong>{bankStatement.account_balance}</strong>
+          </>
+        ), filter: textFilter(), // Add a text filter for this column
+      },
     ];
 
     // Check if bankStatements is empty
@@ -152,6 +208,8 @@ class AccountStatements extends Component {
                   <CardBody>
                     <Row className="mb-2">
                       <Col sm="4">
+                      <Row className="mb-2">
+                      <Col sm="8">
 
                         {bankStatement.bankaccount_id ? (
                           <div className="mb-3">
@@ -176,7 +234,7 @@ class AccountStatements extends Component {
                           </div>
                         ) : (
                           <div className="mb-3 select2-container">
-                            <Label className="col-form-label">Bank Account Name</Label>
+                            <Label className="col-form-label">Bank Account Name and Number</Label>
 
                             <Select
                               name="bankaccount_id"
@@ -190,127 +248,29 @@ class AccountStatements extends Component {
                             />
                           </div>
                         )}</Col></Row>
+                      </Col>
+                    </Row>
 
                     <div className="table-responsive">
-                      <Table>
-                        <thead className="table-light">
-                          <tr>
-                            {tableHeaders.map((header, index) => (
-                              <th key={index} scope="col">
-                                {header}
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {isDataEmpty ? (
-                            <tr>
-                              <td colSpan={tableHeaders.length}>
-                                No data available
-                              </td>
-                            </tr>
-                          ) : (
-                            bankStatements.map((bankStatement, i) => (
-                              <tr key={i} className="badge-soft-primary">
-                                <td>
-                                  <p className="text-muted mb-0">
-                                    {new Date(bankStatement.clearence_datetime).toLocaleString("en-US")}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p>
-                                    {bankStatement.account_name}{", "}
-                                    {bankStatement.account_no}
-                                  </p>
-                                </td>
-                                {/* <td>
-                              {bankStatement.Lab_id == null &&
-                                bankStatement.mif_id == null ? (
-                                <p className="d-none">
-                                  {bankStatement.mif_id}
-                                  {bankStatement.Lab_id}
-                                </p>
-
-                              ) : bankStatement.Advertisement_id == null &&
-                              (
-                                <p>
-                                  {"MIF ID: "}{bankStatement.mif_id}{" For "}{"Lab ID: "}{bankStatement.Lab_id}
-                                </p>
-                              )}
-                              {bankStatement.Advertisement_id == null ||
-                                bankStatement.mif_id == null ? (
-                                <p className="d-none">
-                                  {bankStatement.mif_id}
-                                  {bankStatement.Advertisement_id}
-                                </p>
-
-                              ) : bankStatement.Lab_id == null && (
-                                <p>
-                                  {"MIF ID: "}{bankStatement.mif_id}{" For "}{"Lab Advertisement ID: "}{bankStatement.Advertisement_id}
-                                </p>
-                              )}
-                            </td> */}
-                                <td>
-                                  <p>
-                                    {bankStatement.Status}
-                                  </p>
-                                </td>
-                                <td>
-                                  {bankStatement.credit == 0 ? (
-                                    <p className="d-none">
-                                      {bankStatement.credit}
-                                    </p>
-
-                                  ) : (
-                                    <p className="float-end">
-                                      {bankStatement.credit}
-                                    </p>
-                                  )}
-                                </td>
-                                <td>
-                                  {bankStatement.Debit == 0 ? (
-                                    <p className="d-none">
-                                      {bankStatement.Debit}
-                                    </p>
-
-                                  ) : (
-                                    <p className="float-end">
-                                      {bankStatement.Debit}
-                                    </p>
-                                  )}
-                                </td>
-                                <td>
-                                  <p className="float-end">
-                                    {bankStatement.account_balance}
-                                  </p>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                          {!isDataEmpty && (
-                            <tr className="bg-success bg-soft">
-                              <td colSpan="3" className="border-0 text-end">
-                                <strong>Total</strong>
-                              </td>
-                              <td className="border-10">
-                                <p className="float-end">
-                                  {bankStatements.slice(-1).pop().total_Credit}
-                                </p>
-                              </td>
-                              <td className="border-10">
-                                <p className="float-end">
-                                  {bankStatements.slice(-1).pop().total_Debit}
-                                </p>
-                              </td>
-                              <td className="border-10">
-                                <p className="float-end">
-                                  {bankStatements.slice(-1).pop().account_balance}
-                                </p>
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </Table>
+                      {/* Add filter and footer to BootstrapTable */}
+                      <ToolkitProvider
+                        keyField="id"
+                        data={bankStatements}
+                        columns={tableHeaders}
+                        search
+                      >
+                        {props => (
+                          <div>
+                            {/* <SearchBar {...props.searchProps} /> */}
+                            <BootstrapTable
+                              {...props.baseProps}
+                              defaultSorted={defaultSorted}
+                              pagination={paginationFactory(pageOptions)}
+                              filter={filterFactory()} // Enable filtering for the entire table
+                            />
+                          </div>
+                        )}
+                      </ToolkitProvider>
                     </div>
                   </CardBody>
                 </Card>
@@ -337,13 +297,11 @@ AccountStatements.propTypes = {
 const mapStateToProps = ({ accountStatements, bankaccounts }) => ({
   bankStatements: accountStatements.bankStatements,
   bankaccounts: bankaccounts.bankaccounts,
-
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetBankStatements: id => dispatch(getBankStatements(id)),
   onGetBankaccounts: id => dispatch(getBankaccounts(id)),
-
 });
 
 export default connect(
