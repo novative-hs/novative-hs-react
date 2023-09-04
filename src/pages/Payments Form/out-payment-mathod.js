@@ -494,7 +494,7 @@ class OutPaymentsForm extends Component {
                             </FormGroup>
                           ) : null}
 
-                          {this.state.payment_for == "Lab" && this.state.transection_type == "Other" ? (
+                          {this.state.payment_for == "Lab" ? (
                             outPayment.lab_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">
@@ -564,7 +564,7 @@ class OutPaymentsForm extends Component {
                               </div>)
                           ) : null}
 
-                          {this.state.transection_type == "Donation" ? (
+                          {this.state.transection_type == "Donation" && this.state.payment_for == "Lab" ? (
                             outPayment.test_appointment_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">

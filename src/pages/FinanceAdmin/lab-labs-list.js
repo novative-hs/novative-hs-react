@@ -76,6 +76,16 @@ class PendingB2BClients extends Component {
             </>
           ),
         },
+           {
+          dataField: "city",
+          text: "Lab City",
+          sort: true,
+        },
+                   {
+          dataField: "office",
+          text: "Lab Office",
+          sort: true,
+        },
         {
           dataField: "donation_amount",
           text: "Total Donation Appointment Amount",
