@@ -220,16 +220,17 @@ class PaymentStatussList extends Component {
             if (bankTransfer.transfer_type === "Withdraw") {
               return <span>---</span>;
             } else {
-              const date = new Date(bankTransfer.deposit_datetime);
-              const day = date.getDate();
-              const month = date.getMonth() + 1;
-              const year = date.getFullYear();
-              
-              return (
-                <p className="text-muted mb-0">
-                  {`${day}/${month}/${year}`}
-                </p>
-              );
+                const date = new Date(bankTransfer.deposit_datetime);
+                const day = date.getDate();
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const month = monthNames[date.getMonth()];
+                const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+            
+                return (
+                    <p className="text-muted mb-0">
+                        {`${day}-${month}-${year}`}
+                    </p>
+                );
             }
           },
           filter: textFilter()

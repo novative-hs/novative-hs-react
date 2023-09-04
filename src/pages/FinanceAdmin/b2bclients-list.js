@@ -22,6 +22,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 
@@ -57,7 +58,7 @@ class B2bClientsLists extends Component {
             <>
               <strong>{b2bClients.id}</strong>
             </>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "business_name",
@@ -65,21 +66,67 @@ class B2bClientsLists extends Component {
           sort: true,
           formatter: (cellContent, b2bClients) => (
             <>
-              <span>
-                  <Link
+              <span>                   {b2bClients.business_name}
+
+                  {/* <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, b2bClients)}
                   >
                    {b2bClients.business_name}
-                  </Link>
+                  </Link> */}
               </span>
             </>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "landline",
+          text: "Phone",
+          sort: true,
+          formatter: (cellContent, b2bClients) => (
+            <>
+              <span>{b2bClients.landline}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "email",
+          text: "Email",
+          sort: true,
+          formatter: (cellContent, b2bClients) => (
+            <>
+              <span>{b2bClients.email}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "city",
+          text: "City",
+          sort: true,
+          formatter: (cellContent, b2bClients) => (
+            <>
+              <span>{b2bClients.city}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "website_url",
+          text: "Website URL",
+          sort: true,
+          formatter: (cellContent, b2bClients) => (
+            <>
+              <span>{b2bClients.website_url}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "current_amount",
           text: "Current Amount",
           sort: true,
+          formatter: (cellContent, b2bClients) => (
+            <p className="text-end">
+            {b2bClients.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "account_no",
@@ -89,7 +136,7 @@ class B2bClientsLists extends Component {
             <Link to={`/account-statement-b2b/${b2bClients.account_id}`}>
                                     Account statement
                                   </Link>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
           
         },
       ],
@@ -220,6 +267,7 @@ class B2bClientsLists extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()} // Enable filtering for the entire table
                                     />
                                       <Modal
                                       isOpen={this.state.PatientModal}

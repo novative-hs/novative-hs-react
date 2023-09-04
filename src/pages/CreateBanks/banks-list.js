@@ -109,13 +109,19 @@ class BanksList extends Component {
           dataField: "registered_at",
           text: "Registered At",
           sort: true,
-          formatter: (cellContent, bank) => (
-            <>
-              <span>
-                {new Date(bank.registered_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),filter: textFilter(),
+          formatter: (cellContent, bank) => {
+            const date = new Date(bank.registered_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+        
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}-${month}-${year}`}
+                </p>
+            );
+        },filter: textFilter(),
         },
         {
           dataField: "menu",

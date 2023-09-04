@@ -316,7 +316,7 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < labsMof.length; i++) {
       if (labsMof[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
-          label: `(Name: ${labsMof[i].name}) - (Type: ${labsMof[i].type}) - (City: ${labsMof[i].city})`,
+          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
           value: labsMof[i].id,
         });
       }
@@ -342,7 +342,7 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < listDonation.length; i++) {
       if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
         DonationAppointmentList.push({
-          label: `${listDonation[i].id} - (Lab: ${listDonation[i].lab_name}) - (Type: ${listDonation[i].lab_type}) - (City: ${listDonation[i].lab_city})`,
+          label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
           value: `${listDonation[i].id}`,
         });
       }
@@ -747,6 +747,39 @@ class OutPaymentsForm extends Component {
                             />
                           </FormGroup>
 
+                          <FormGroup className="mb-0">
+                            <Label htmlFor="cardnumberInput">
+                              Payment Method
+                              <span
+                                style={{ color: "#f46a6a" }}
+                                className="font-size-18"
+                              >
+                                *
+                              </span>
+                            </Label>
+                            <select
+                              name="payment_method"
+                              component="select"
+                              onChange={e =>
+                                this.setState({
+                                  payment_method: e.target.value,
+                                })
+                              }
+                              defaultValue={this.state.payment_method}
+                              className="form-select"
+                            >
+                              <option
+                                value=""
+                              >
+                                --- Please select the Payment Type
+                                ---
+                              </option>
+                              <option value="Cheque">Cheque</option>
+                              <option value="Card">Online</option>
+
+                            </select>
+                          </FormGroup>
+
                           <FormGroup className="mt-4 mb-0">
                             <Label htmlFor="cardnameInput">
                               Cheque/TT #
@@ -984,38 +1017,7 @@ class OutPaymentsForm extends Component {
                             />
                           </FormGroup>
 
-                          <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
-                              Payment Method
-                              <span
-                                style={{ color: "#f46a6a" }}
-                                className="font-size-18"
-                              >
-                                *
-                              </span>
-                            </Label>
-                            <select
-                              name="payment_method"
-                              component="select"
-                              onChange={e =>
-                                this.setState({
-                                  payment_method: e.target.value,
-                                })
-                              }
-                              defaultValue={this.state.payment_method}
-                              className="form-select"
-                            >
-                              <option
-                                value=""
-                              >
-                                --- Please select the Payment Type
-                                ---
-                              </option>
-                              <option value="Cheque">Cheque</option>
-                              <option value="Card">Online</option>
-
-                            </select>
-                          </FormGroup>
+                          
 
                           {/* <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput">

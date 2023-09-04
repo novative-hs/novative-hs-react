@@ -412,8 +412,8 @@ class AdvertisementsList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Quality Advertisement"
-                                          : "Add Quality Advertisement"}
+                                          ? "Edit Advertisement"
+                                          : "Add Advertisement"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik

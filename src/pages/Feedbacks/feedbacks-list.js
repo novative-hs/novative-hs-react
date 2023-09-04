@@ -116,6 +116,8 @@ class FeedbacksList extends Component {
     console.log(onGetLabProfile(this.state.user_id));
     this.setState({ labProfile }); 
     console.log("state",labProfile)
+    console.log("state tyoeeee", typeof labProfile)
+
   }
  
 
@@ -149,6 +151,8 @@ class FeedbacksList extends Component {
     const { SearchBar } = Search;
 
     const { feedbacks, labProfile } = this.props;
+    console.log("type render", typeof labProfile)
+
 
     const { onGetFeedbacks, onGetLabProfile } = this.props;
     const feedback = this.state.feedback;
@@ -168,6 +172,7 @@ class FeedbacksList extends Component {
     ];
 
     return (
+      
       console.log("hello",this.props.labProfile.type),
       <React.Fragment>
         <div className="page-content">

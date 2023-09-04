@@ -22,6 +22,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 
@@ -56,29 +57,81 @@ class LabsLists extends Component {
             <>
               <strong>{labsList.id}</strong>
             </>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "name",
-          text: "Lab Name",
+          text: "Lab Name/Type",
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <span>
-                  <Link
-                    to="#"
-                    onClick={e => this.openPatientModal(e, labsList)}
-                  >
-                   {labsList.name}
-                  </Link>
-              </span>
+              <span>{labsList.name}</span>{" - "}
+              <span>{labsList.type}</span>
+
             </>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
+          // formatter: (cellContent, labsList) => (
+          //   <>
+          //     <span>
+          //         <Link
+          //           to="#"
+          //           onClick={e => this.openPatientModal(e, labsList)}
+          //         >
+          //          {labsList.name}
+          //         </Link>
+          //     </span>
+          //   </>
+          // ),
+        },
+        {
+          dataField: "landline",
+          text: "Phone",
+          sort: true,
+          formatter: (cellContent, labsList) => (
+            <>
+              <span>{labsList.landline}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "email",
+          text: "Email",
+          sort: true,
+          formatter: (cellContent, labsList) => (
+            <>
+              <span>{labsList.email}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "city",
+          text: "City",
+          sort: true,
+          formatter: (cellContent, labsList) => (
+            <>
+              <span>{labsList.city}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "address",
+          text: "City",
+          sort: true,
+          formatter: (cellContent, labsList) => (
+            <>
+              <span>{labsList.address}</span>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "current_amount",
           text: "Current Amount",
           sort: true,
+          formatter: (cellContent, labsList) => (
+            <p className="text-end">
+            {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "account_no",
@@ -88,7 +141,7 @@ class LabsLists extends Component {
             <Link to={`/account-statements-lab/${labsList.account_id}`}>
                                     Account statement
                                   </Link>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
           
         },
       ],
@@ -219,6 +272,7 @@ class LabsLists extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()} // Enable filtering for the entire table
                                     />
                                       <Modal
                                       isOpen={this.state.PatientModal}

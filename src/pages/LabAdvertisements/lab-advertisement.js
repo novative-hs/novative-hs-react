@@ -133,9 +133,9 @@ class AdvertisementsList extends Component {
                 </span>
               )}
 
-              {labAdvertisement.request_status == "Declined" && (
+              {labAdvertisement.request_status == "Recreated" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  {labAdvertisement.request_status}
+                  Declined
                 </span>
               )}
             </>

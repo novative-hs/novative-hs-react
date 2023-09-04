@@ -22,6 +22,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 
@@ -65,21 +66,71 @@ class donors extends Component {
           sort: true,
           formatter: (cellContent, donors) => (
             <>
-              <span>
-                  <Link
-                    to="#"
-                    onClick={e => this.openPatientModal(e, donors)}
-                  >
-                   {donors.name}
-                  </Link>
-              </span>
+              <strong>{donors.name}</strong>
             </>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
+          // formatter: (cellContent, donors) => (
+          //   <>
+          //     <span>
+          //         <Link
+          //           to="#"
+          //           onClick={e => this.openPatientModal(e, donors)}
+          //         >
+          //          {donors.name}
+          //         </Link>
+          //     </span>
+          //   </>
+          // ),
+        },
+        {
+          dataField: "phone",
+          text: "Phone",
+          sort: true,
+          formatter: (cellContent, donors) => (
+            <>
+              <strong>{donors.phone}</strong>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "email",
+          text: "Email",
+          sort: true,
+          formatter: (cellContent, donors) => (
+            <>
+              <strong>{donors.email}</strong>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "city",
+          text: "City",
+          sort: true,
+          formatter: (cellContent, donors) => (
+            <>
+              <strong>{donors.city}</strong>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
+        },
+        {
+          dataField: "type",
+          text: "Type",
+          sort: true,
+          formatter: (cellContent, donors) => (
+            <>
+              <strong>{donors.type}</strong>
+            </>
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "current_amount",
           text: "Current Amount",
           sort: true,
+          formatter: (cellContent, donors) => (
+            <p className="text-end">
+            {donors.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "account_no",
@@ -89,8 +140,7 @@ class donors extends Component {
             <Link to={`/account-statement-donor/${donors.account_id}`}>
                                     Account statement
                                   </Link>
-          ),
-          
+          ),filter: textFilter(), // Add a text filter for this column
         },
       ],
     };
@@ -220,6 +270,7 @@ class donors extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()} // Enable filtering for the entire table
                                     />
                                       <Modal
                                       isOpen={this.state.PatientModal}

@@ -101,14 +101,30 @@ class AccountStatements extends Component {
     const tableHeaders = [
       {
         dataField: 'clearence_datetime',
-        text: 'Clearence DateTime',
+        text: 'Clearence Date',
         sort: true,
         footer: '', // Empty footer for this column
-        formatter: (cellContent, bankStatement) => (
-          <>
-            <strong>{bankStatement.clearence_datetime}</strong>
-          </>
-        ), filter: textFilter(), // Add a text filter for this column
+        formatter: (cellContent, bankStatement) => {
+            const date = new Date(bankStatement.clearence_datetime);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+            // Format hours and minutes with leading zeros
+            const hours = ('0' + date.getHours()).slice(-2);
+            const minutes = ('0' + date.getMinutes()).slice(-2);
+
+            // Determine AM/PM
+            const ampm = date.getHours() >= 12 ? 'pm' : 'am';
+
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}-${month}-${year} ${hours}:${minutes}${ampm}`}
+                </p>
+            );
+        },
+        filter: textFilter(),
       },
       {
         dataField: 'account_name',
@@ -116,22 +132,31 @@ class AccountStatements extends Component {
         footer: '', // Empty footer for this column
         formatter: (cellContent, bankStatement) => (
           <>
-            <strong>{bankStatement.account_name}{", "}
-              {bankStatement.account_no}{", "}
-              {bankStatement.mif_id
-                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id}</span>
-                : bankStatement.mof_id
-                  ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id}</span>
-                  : <span><span style={{ color: 'red' }}>BTD ID: </span> {bankStatement.btd_id}</span>}</strong>
+            <strong>
+              {/* {bankStatement.account_name}{", "}
+              {bankStatement.account_no}{", "} */}
+              {bankStatement.mif_id && bankStatement.lab_name
+                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
+                : bankStatement.mif_id && bankStatement.donor_name
+                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Donor Name: </span> {bankStatement.donor_name}</span>
+                : bankStatement.mif_id && bankStatement.title
+                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Adv Title: </span> {bankStatement.title}</span>
+                : bankStatement.mof_id && bankStatement.lab_name
+                ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
+                : bankStatement.mof_id && bankStatement.business_name
+                ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.business_name}</span>
+                :<span><span style={{ color: 'red' }}>BTD ID: </span> {bankStatement.btd_id}</span>
+              }</strong>
           </>
         ), filter: textFilter(), // Add a text filter for this column // Add a text filter for this column
       },
       {
         dataField: 'Status',
-        text: 'Payment Status',
+        text: 'Payment Mode',
         footer: '', // Empty footer for this column
         formatter: (cellContent, bankStatement) => (
           <>
+            <strong>{bankStatement.payment_method}</strong>{", "}
             <strong>{bankStatement.Status}</strong>
           </>
         ), filter: textFilter(), // Add a text filter for this column
@@ -143,7 +168,15 @@ class AccountStatements extends Component {
         footerdataField: 'total_Credit',
         formatter: (cellContent, bankStatement) => (
           <>
-            <strong>{bankStatement.credit}</strong>
+          {bankStatement.credit == 0 ? (
+            <p className="d-none">
+              {bankStatement.credit}
+            </p>
+          ) : (
+            <p className="text-end">
+              {bankStatement.credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </p>
+          )}
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },
@@ -153,8 +186,17 @@ class AccountStatements extends Component {
         footer: 'Total Debit', // Footer label for this column
         footerdataField: 'totalDebit',
         formatter: (cellContent, bankStatement) => (
-          <>
-            <strong>{bankStatement.Debit}</strong>
+          <>             
+         {bankStatement.Debit == 0 ? (
+            <p className="d-none">
+              {bankStatement.Debit}
+            </p>
+
+          ) : (
+            <p className="text-end">
+              {bankStatement.Debit}
+            </p>
+          )}
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },
@@ -164,8 +206,8 @@ class AccountStatements extends Component {
         footer: 'Total Balance', // Footer label for this column
         footerdataField: 'account_balance',
         formatter: (cellContent, bankStatement) => (
-          <>
-            <strong>{bankStatement.account_balance}</strong>
+          <>              <div className="text-end">
+            <strong>{bankStatement.account_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },

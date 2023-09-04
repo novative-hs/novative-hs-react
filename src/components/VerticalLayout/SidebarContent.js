@@ -3,6 +3,7 @@ import React, { Component } from "react";
 
 //Simple bar
 import SimpleBar from "simplebar-react";
+import 'simplebar-react/dist/simplebar.min.css';
 
 // MetisMenu
 import MetisMenu from "metismenujs";
@@ -61,7 +62,7 @@ class SidebarContent extends Component {
           if (currentPosition > window.innerHeight) {
             if (this.refDiv.current)
               this.refDiv.current.getScrollElement().scrollTop =
-                currentPosition - 300;
+                currentPosition - 10;
           }
         }
       }
@@ -238,7 +239,7 @@ class SidebarContent extends Component {
         {/* Finance officer  */}
         {this.state.account_type &&
           this.state.account_type == "finance-officer" && (
-            <SimpleBar className="h-100" ref={this.refDiv}>
+            <SimpleBar style={{ maxHeight: 500 }}>
               <div id="sidebar-menu">
                 <ul className="metismenu list-unstyled" id="side-menu">
                 <li>
@@ -345,7 +346,7 @@ class SidebarContent extends Component {
                   <ul className="sub-menu" aria-expanded="false">
                     <li>
                       <Link to="/all-labs-list">
-                        <span>{this.props.t("All Labs List")}</span>
+                        <span>{this.props.t("Labs Payable List")}</span>
                       </Link>
                     </li>
                   </ul>
@@ -356,7 +357,7 @@ class SidebarContent extends Component {
           )}
         {/* Finance Admin  */}
         {this.state.account_type && this.state.account_type == "finance-admin" && (
-          <SimpleBar className="h-100" ref={this.refDiv}>
+          <SimpleBar style={{ maxHeight: 500 }}>
             <div id="sidebar-menu">
               <ul className="metismenu list-unstyled" id="side-menu">
                 <li>
@@ -418,7 +419,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to="/bank-account-statements/:id">
                     <i className="bx bx-receipt" />
-                    <span>{this.props.t("Account Statements")}</span>
+                    <span>{this.props.t("Bank Statements")}</span>
                   </Link>
                 </li>
                 <li>
@@ -484,12 +485,6 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Pending Appointments")}</span>
                   </Link>
                 </li>
-                {/* <li>
-                  <Link to={"/csr-notes-list"}>
-                    <i className="mdi mdi-chat-remove" />
-                    <span>{this.props.t("Notes")}</span>
-                  </Link>
-                </li> */}
               </ul>
             </div>
           </SimpleBar>
@@ -535,12 +530,6 @@ class SidebarContent extends Component {
             <SimpleBar className="h-100" ref={this.refDiv}>
               <div id="sidebar-menu">
                 <ul className="metismenu list-unstyled" id="side-menu">
-                  {/* <li>
-                  <Link to="/dashboard-auditor">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Dashboard")}</span>
-                  </Link>
-                </li> */}
 
                   <li className="menu-title">
                     {this.props.t("Registration Admin")}
@@ -568,11 +557,6 @@ class SidebarContent extends Component {
                           {this.props.t("Unapproved")}
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link to={"/referrellab"}>
-                          {this.props.t("Pending Referrel Fee")}
-                        </Link>
-                      </li> */}
                     </ul>
                   </li>
                   <li>
@@ -648,19 +632,6 @@ class SidebarContent extends Component {
                       </li>
                     </ul>
                   </li>
-                  {/* <li>
-                    <Link to="/pending-labs">
-                      <i className="mdi mdi-book-clock" />
-                      <span>{this.props.t("Pending Labs")}</span>
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link to="/approved-labs">
-                      <i className="mdi mdi-book-check" />
-                      <span>{this.props.t("Approved Labs")}</span>
-                    </Link>
-                  </li> */}
                 </ul>
               </div>
             </SimpleBar>
@@ -686,11 +657,6 @@ class SidebarContent extends Component {
                           {this.props.t("Advertisements Labhazir")}
                         </Link>
                       </li>
-                      {/* <li>
-                        <Link to={"/advertisement-price-list"}>
-                          {this.props.t("Advertisement Price List")}
-                        </Link>
-                      </li> */}
                       <li>
                         <Link to="/#" className="has-arrow">
                           <span>{this.props.t("Lab Requests")}</span>
@@ -928,7 +894,7 @@ class SidebarContent extends Component {
 
         {/* Lab */}
         {this.state.account_type && this.state.account_type == "labowner" && (
-          <SimpleBar className="h-100" ref={this.refDiv}>
+          <SimpleBar style={{ maxHeight: 550 }}>
             <div id="sidebar-menu">
               <ul className="metismenu list-unstyled" id="side-menu">
                 <li>
@@ -1043,18 +1009,6 @@ class SidebarContent extends Component {
             </div>
           </SimpleBar>
         )}
-
-        {/* Sidebar for Corporate 
-        {this.props.location &&
-        this.props.location.pathname.includes("dashboard-corporate") ? (
-          <SimpleBar className="h-100" ref={this.refDiv}>
-            <div id="sidebar-menu">
-              <ul className="metismenu list-unstyled" id="side-menu">
-                <li className="menu-title">{this.props.t("Corporate")}</li>
-              </ul>
-            </div>
-          </SimpleBar>
-        ) : null} */}
       </React.Fragment>
     );
   }

@@ -130,13 +130,20 @@ class BanksList extends Component {
           dataField: "creating_at",
           text: "Created At",
           sort: true,
-          formatter: (cellContent, bankaccount) => (
-            <>
-              <span>
-                {new Date(bankaccount.creating_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ), filter: textFilter(),
+          formatter: (cellContent, bankaccount) => {
+            const date = new Date(bankaccount.creating_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+        
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}-${month}-${year}`}
+                </p>
+            );
+        },
+        filter: textFilter(),
         },
         {
           dataField: "status",
@@ -777,7 +784,7 @@ class BanksList extends Component {
                                                   {/* Certificate Type field */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Status Type
+                                                      Account No
                                                       <span className="text-danger font-size-12">
                                                         *
                                                       </span>

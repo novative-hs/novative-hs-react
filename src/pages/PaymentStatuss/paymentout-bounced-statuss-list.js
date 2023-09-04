@@ -148,7 +148,20 @@ class paymentCreatedList extends Component {
             sort: true,
             formatter: (cellContent, paymentBouncedStatus) => (
               <>
-                <strong>{paymentBouncedStatus.cheque_no}</strong>
+                <span>
+                  <Link
+                    to={{
+                      pathname:
+                        process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
+                    }}
+                    target="_blank"
+                  >
+                                  <strong>{paymentBouncedStatus.cheque_no}</strong>
+  
+                  </Link>
+  
+                </span>
+  
               </>
             ),filter: textFilter(),
           },
@@ -195,34 +208,36 @@ class paymentCreatedList extends Component {
             formatter: (cellContent, paymentBouncedStatus) => {
               const date = new Date(paymentBouncedStatus.cleared_at);
               const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              const month = monthNames[date.getMonth()];
+              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+          
               return (
                   <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
+                      {`${day}-${month}-${year}`}
                   </p>
               );
-          },filter: textFilter(),
           },
-          {
-            dataField: "deposit_copy",
-            text: "Deposite Copy",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
-                  }}
-                  target="_blank"
-                >
-                  View
-                </Link>
-              </>
-            ),
+          filter: textFilter(),
           },
+          // {
+          //   dataField: "deposit_copy",
+          //   text: "Deposite Copy",
+          //   sort: true,
+          //   formatter: (cellContent, paymentBouncedStatus) => (
+          //     <>
+          //       <Link
+          //         to={{
+          //           pathname:
+          //             process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
+          //         }}
+          //         target="_blank"
+          //       >
+          //         View
+          //       </Link>
+          //     </>
+          //   ),
+          // },
           {
             dataField: "menu",
             isDummyField: true,

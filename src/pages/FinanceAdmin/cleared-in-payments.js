@@ -143,7 +143,6 @@ class PendingB2BClients extends Component {
               {paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
           ),filter: textFilter(),
           },
-          
           {
             dataField: "bank",
             text: "Bank/Account#",
@@ -151,33 +150,44 @@ class PendingB2BClients extends Component {
             formatter: (cellContent, paymentStatus) => (
               <>
                 <span>
-                  <span>
-                    {paymentStatus.bank_name},{" "}
-                    {paymentStatus.account_no}
-                  </span>
+                  <Link
+                    to={{
+                      pathname:
+                        process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
+                    }}
+                    target="_blank"
+                  >
+                    <span>
+                      {paymentStatus.bank_name},{" "}
+                      {paymentStatus.account_no}
+                    </span>
+                  </Link>
+  
                 </span>
+  
               </>
-            ),filter: textFilter(),
+            ),
+            filter: textFilter(),
           },
-          {
-            dataField: "deposit_slip",
-            text: "Deposit Slip",
-            sort: true,
-            formatter: (cellContent, approvedInPayment) => (
-              <>
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL +
-                      approvedInPayment.deposit_slip,
-                  }}
-                  target="_blank"
-                >
-                  View Slip
-                </Link>
-              </>
-            ),filter: textFilter(),
-          },
+          // {
+          //   dataField: "deposit_slip",
+          //   text: "Deposit Slip",
+          //   sort: true,
+          //   formatter: (cellContent, approvedInPayment) => (
+          //     <>
+          //       <Link
+          //         to={{
+          //           pathname:
+          //             process.env.REACT_APP_BACKENDURL +
+          //             approvedInPayment.deposit_slip,
+          //         }}
+          //         target="_blank"
+          //       >
+          //         View Slip
+          //       </Link>
+          //     </>
+          //   ),filter: textFilter(),
+          // },
           // {
           //   dataField: "is_settled",
           //   text: "Is Settled",
@@ -198,12 +208,13 @@ class PendingB2BClients extends Component {
             formatter: (cellContent, paymentStatus) => {
               const date = new Date(paymentStatus.cleared_at);
               const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              const month = monthNames[date.getMonth()];
+              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+          
               return (
                   <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
+                      {`${day}-${month}-${year}`}
                   </p>
               );
           },

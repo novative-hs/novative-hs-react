@@ -15,7 +15,7 @@ import logoLightSvg from "../../assets/images/logo-light.svg";
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
 import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
-
+import { getPatientProfile } from "store/labmarket/actions";
 //i18n
 import { withTranslation } from "react-i18next";
 import { DropdownItem } from "reactstrap";
@@ -32,6 +32,7 @@ class Header extends Component {
       open: false,
       count: 0,
       carts: [],
+      patientProfile: [],
       isDropdownOpen: false,
       cart: "",
       user_id: localStorage.getItem("authUser")
@@ -66,7 +67,12 @@ class Header extends Component {
       this.setState({ finalUrl });
       console.log('Final URL:', this.state.finalUrl);
     }
-
+    const { patientProfile, getPatientProfile } = this.props;
+    getPatientProfile(this.state.user_id);
+    this.setState({
+      patientProfile
+    });
+    console.log("state", patientProfile);
     // Call the asynchronous function initially
     this.getData();
 
@@ -164,12 +170,22 @@ class Header extends Component {
   };
   render() {
     const { carts } = this.props;
+    const { patientProfile } = this.props;
+    const { getPatientProfile } = this.props;
     const totalLength = carts.length + this.state.count;
     console.log("total array length", totalLength)
     const { isDropdownOpen } = this.state;
     // const isLargeScreen = window.innerWidth > 992;
     const isSmallScreen = window.innerWidth < 490;
+    const openModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    };
 
+    const closeModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "none";
+    };
     return (
       <React.Fragment>
         <header id="page-topbaar">
@@ -216,7 +232,8 @@ class Header extends Component {
             {isSmallScreen && this.state.user_type == "patient" && window.location.pathname == "/nearby-labs" ? (
               <button
                 type="button"
-                className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                className="
+                btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                 style={{ left: '12px', top: '6px', display: 'none' }} // Hide the button
                 data-toggle="collapse"
                 onClick={this.toggleMenu}
@@ -294,13 +311,13 @@ class Header extends Component {
                     <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                   </Link> */}
                 </div>
-              ) : this.state.user_type == "patient" ? (
-                <div className="dropdown d-lg-inline-block ms-4 mt-2">
+              ) : this.state.user_type === "patient" ? (
+                <div className="dropdown d-lg-inline-block ms-4 mt-6">
                     <Link
                       // to={"/profile"}
                       to={
                         this.props.match.params.uuid
-                          ? `/profile/${this.props.match.params.uuid}`
+                          ? `/profile/${this.state.filnalurl}/${this.props.match.params.uuid}`
                           : `/profile`
                       }
                       className="dropdown-content me-2 text-light"
@@ -313,7 +330,7 @@ class Header extends Component {
                     <Link
                       to={
                         this.props.match.params.uuid
-                          ? `/cart/${this.props.match.params.uuid}`
+                          ? `/cart/${this.state.filnalurl}/${this.props.match.params.uuid}`
                           : `/cart`
                       }
                       className="dropdown-content me-2 text-light"
@@ -321,14 +338,15 @@ class Header extends Component {
                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
                       {!isEmpty(this.props.carts) &&
-
-                        this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                       }
                     </Link>
-                    
                     <button
                       className="btn header-items noti-icon right-bar-toggle"
-                      style={{ position: 'relative' }}
+                      style={{ position: 'relative', 
+                      marginRight: '0',
+                      padding: '0',
+                    }}
                       onClick={this.toggleDropdown}
                     >
                       <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
@@ -364,9 +382,56 @@ class Header extends Component {
                             </Link>
                           </li>
                           <li>
+                            <a onClick={openModal} className="dropdown-content me-2 text-light">
+                              <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "}
+                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                                Wallet                  </span>
+                              <hr style={{ margin: '0 0' }} />
+                            </a>
+                      <div id="modal" className="modal mt-4" style={{ display: "none" }}>
+                        <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
+                            </div>
+
+
+                            <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
+                              {/* {this.state.patient_name.split(" ")[0]} */}
+                              Rs. {this.props.patientProfile.available_credit}
+                              {/* <div>
+                                <p>
+                                You have received this money in case of refund which you can use only for testing.
+                                </p>
+                              </div> */}
+                            </div>
+                            <div className="my-0" style={{ textAlign: 'center' }}>
+                              <span className="text-danger">
+                                <i className="mdi mdi-information"></i>{" "}
+                                You have received this money in case of refund.
+                              </span><br></br>
+                              <span className="text-danger">
+                                Which you can use only for testing.
+                              </span>
+                            </div>
+
+                            <div className="modal-footer">
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={closeModal}
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                          <li>
                             <Link to="/logout" className="dropdown-content text-light">
                               <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
-                              <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                              <span className="pt-4 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
                                 Log Out                    
                               </span>
                             </Link>
@@ -406,10 +471,12 @@ class Header extends Component {
                         this.props.carts.cart_quantity + this.state.count
                       }
                     </Link>
-                    
                     <button
                       className="btn header-items noti-icon right-bar-toggle"
-                      style={{ position: 'relative' }}
+                      style={{ position: 'relative', 
+                      marginRight: '0',
+                      padding: '0',
+                    }}
                       onClick={this.toggleDropdown}
                     >
                       <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
@@ -445,9 +512,56 @@ class Header extends Component {
                             </Link>
                           </li>
                           <li>
+                            <a onClick={openModal} className="dropdown-content me-2 text-light">
+                              <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "}
+                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                                Wallet                  </span>
+                              <hr style={{ margin: '0 0' }} />
+                            </a>
+                      <div id="modal" className="modal mt-4" style={{ display: "none" }}>
+                        <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
+                            </div>
+
+
+                            <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
+                              {/* {this.state.patient_name.split(" ")[0]} */}
+                              Rs. {this.props.patientProfile.available_credit}
+                              {/* <div>
+                                <p>
+                                You have received this money in case of refund which you can use only for testing.
+                                </p>
+                              </div> */}
+                            </div>
+                            <div className="my-0" style={{ textAlign: 'center' }}>
+                              <span className="text-danger">
+                                <i className="mdi mdi-information"></i>{" "}
+                                You have received this money in case of refund.
+                              </span><br></br>
+                              <span className="text-danger">
+                                Which you can use only for testing.
+                              </span>
+                            </div>
+
+                            <div className="modal-footer">
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={closeModal}
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                          <li>
                             <Link to="/logout" className="dropdown-content text-light">
                               <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
-                              <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                              <span className="pt-4 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
                                 Log Out                    
                               </span>
                             </Link>
@@ -628,18 +742,22 @@ Header.propTypes = {
   toggleRightSidebar: PropTypes.func,
   carts: PropTypes.array,
   getCarts: PropTypes.func,
+  patientProfile: PropTypes.array,
+  getPatientProfile: PropTypes.func,
 };
 
 const mapStateToProps = state => {
   const { layoutType } = state.Layout;
   const { carts } = state.carts;
-  return { layoutType, carts };
+  const patientProfile = state.LabMarket.patientProfile; // Corrected assignment
+  return { layoutType, carts, patientProfile }; // Added patientProfile to the returned object
 };
+
 
 // export default connect(mapStatetoProps, { toggleRightSidebar })(
 //   withTranslation()(Header)
 // );
 
 export default withRouter(
-  connect(mapStateToProps, { getCarts, toggleRightSidebar })(withTranslation()(Header))
+  connect(mapStateToProps, { getCarts,getPatientProfile, toggleRightSidebar })(withTranslation()(Header))
 );

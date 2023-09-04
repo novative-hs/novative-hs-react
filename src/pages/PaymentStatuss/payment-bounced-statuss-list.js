@@ -26,7 +26,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -72,14 +72,14 @@ class PaymentStatussList extends Component {
           ),
         },
         {
-        text: "MIF ID",
-        dataField: "id",
-        sort: true,
-        hidden: false,
-        formatter: (cellContent, paymentBouncedInStatus) => (
+          text: "MIF ID",
+          dataField: "id",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, paymentBouncedInStatus) => (
             <>{paymentBouncedInStatus.id}</>
-        ),filter: textFilter(),
-    },
+          ), filter: textFilter(),
+        },
         {
           dataField: "invoice_id",
           text: "invoice ID",
@@ -89,7 +89,7 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentBouncedInStatus.invoice_id}</strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "payment_for",
@@ -99,7 +99,7 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentBouncedInStatus.payment_for}</strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "lab_name",
@@ -115,7 +115,7 @@ class PaymentStatussList extends Component {
                 </span>
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "payment_method",
@@ -125,50 +125,58 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentBouncedInStatus.payment_method}</strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "amount",
           text: "Amount",
           sort: true,
           formatter: (cellContent, paymentBouncedInStatus) => (
-              <>
+            <>
               <div className="text-end">
-                  <strong>{paymentBouncedInStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-              </>
-          ),filter: textFilter(),
-      },
+                <strong>{paymentBouncedInStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+          ), filter: textFilter(),
+        },
         {
           dataField: "deposited_at",
           text: "Deposited Date",
           sort: true,
-          formatter: (cellContent, paymentBouncedInStatus) => (
-            <p className="text-muted mb-0">
-            {new Date(paymentBouncedInStatus.deposited_at).toLocaleDateString("en-US", {
-                dateStyle: "short",
-                timeZone: "UTC",
-                }).replace(/\//g, " - ")}</p>),filter: textFilter(),
+          formatter: (cellContent, paymentBouncedInStatus) => {
+            const date = new Date(paymentBouncedInStatus.deposited_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+            return (
+              <p className="text-muted mb-0">
+                {`${day}-${month}-${year}`}
+              </p>
+            );
+          },
+          filter: textFilter(),
         },
         {
           dataField: "cheque_no",
           text: "Cheque/Ref#",
           sort: true,
           formatter: (cellContent, paymentBouncedInStatus) => (
-              <>
-                  {paymentBouncedInStatus.cheque_no && (
-                      <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                          {paymentBouncedInStatus.cheque_no}
-                      </span>
-                  )}
+            <>
+              {paymentBouncedInStatus.cheque_no && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {paymentBouncedInStatus.cheque_no}
+                </span>
+              )}
 
-                  {paymentBouncedInStatus.cheque_no && (
-                      <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                          {paymentBouncedInStatus.refered_no}
-                      </span>
-                  )}
-              </>
-          ),filter: textFilter(),
-      },
+              {paymentBouncedInStatus.cheque_no && (
+                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                  {paymentBouncedInStatus.refered_no}
+                </span>
+              )}
+            </>
+          ), filter: textFilter(),
+        },
         {
           dataField: "bank",
           text: "Bank/Account#",
@@ -176,15 +184,26 @@ class PaymentStatussList extends Component {
           formatter: (cellContent, paymentBouncedInStatus) => (
             <>
               <span>
-                <span>
-                  {paymentBouncedInStatus.bank_name},{" "}
-                  {paymentBouncedInStatus.account_no}
-                </span>
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.deposit_slip,
+                  }}
+                  target="_blank"
+                >
+                  <span>
+                    {paymentBouncedInStatus.bank_name},{" "}
+                    {paymentBouncedInStatus.account_no}
+                  </span>
+                </Link>
+
               </span>
+
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
-       
+
         // {
         //   dataField: "is_settled",
         //   text: "Is Settled",
@@ -200,38 +219,38 @@ class PaymentStatussList extends Component {
           text: "Cleared Date",
           sort: true,
           formatter: (cellContent, paymentBouncedInStatus) => {
-              const date = new Date(paymentBouncedInStatus.cleared_at);
-              const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
-                  </p>
-              );
+            const date = new Date(paymentBouncedInStatus.cleared_at);
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Adding 1 to get the correct month
+            const year = date.getFullYear();
+
+            return (
+              <p className="text-muted mb-0">
+                {`${day}/${month}/${year}`}
+              </p>
+            );
           },
           filter: textFilter(),
-      },  
-        {
-          dataField: "deposit_slip",
-          text: "Deposite Slip",
-          sort: true,
-          formatter: (cellContent, paymentBouncedInStatus) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL +
-                    paymentBouncedInStatus.deposit_slip,
-                }}
-                target="_blank"
-              >
-                View Slip
-              </Link>
-            </>
-          ),
         },
+        // {
+        //   dataField: "deposit_slip",
+        //   text: "Deposite Slip",
+        //   sort: true,
+        //   formatter: (cellContent, paymentBouncedInStatus) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname:
+        //             process.env.REACT_APP_BACKENDURL +
+        //             paymentBouncedInStatus.deposit_slip,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         View Slip
+        //       </Link>
+        //     </>
+        //   ),
+        // },
         // {
         //   dataField: "payment_status",
         //   text: "Status",
@@ -391,15 +410,15 @@ class PaymentStatussList extends Component {
       this.props.history.push('/payment-status');
     }
     if (selectedValue === 'Pending Clearence') {
-        this.props.history.push('/payment-in-pending-clearence-status');
+      this.props.history.push('/payment-in-pending-clearence-status');
     }
     if (selectedValue === 'Cleared') {
-    this.props.history.push('/clear-status');
+      this.props.history.push('/clear-status');
     }
     if (selectedValue === 'Bounced') {
-    this.props.history.push('/bounced-status');
+      this.props.history.push('/bounced-status');
     }
-}
+  }
 
   render() {
     const { SearchBar } = Search;
@@ -498,17 +517,17 @@ class PaymentStatussList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                <div className="ms-2 mb-4">
-                                                                <div>
+                                  <div className="ms-2 mb-4">
+                                    <div>
                                       <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Money In Form Statuss</strong>
+                                        <strong>Money In Form Statuss</strong>
                                       </Label>
                                       <select
                                         className="form-control select2"
                                         title="main_lab_appointments"
                                         name="main_lab_appointments"
                                         onChange={this.handleSelectChange}
-                                        
+
                                       >
                                         <option value="Bounced">Bounced</option>
                                         <option value="Created">Created</option>
@@ -531,7 +550,7 @@ class PaymentStatussList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      filter={ filterFactory()}
+                                      filter={filterFactory()}
                                     />
 
                                     <Modal
@@ -2023,7 +2042,7 @@ class PaymentStatussList extends Component {
                                                                     this.state.paymentBouncedInStatus
                                                                       .refered_no
                                                                   }
-                                                                 
+
                                                                   onChange={e => {
                                                                     this.setState({
                                                                       paymentBouncedInStatus: {
@@ -2066,7 +2085,7 @@ class PaymentStatussList extends Component {
                                                                       ? " is-invalid"
                                                                       : "")
                                                                   }
-                                                                  
+
                                                                 />
                                                               </div>
 

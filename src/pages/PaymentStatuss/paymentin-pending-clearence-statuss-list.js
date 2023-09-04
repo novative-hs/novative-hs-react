@@ -24,7 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -52,7 +52,7 @@ class PaymentStatussList extends Component {
       paymentStatuss: [],
       paymentStatus: "",
       modal: false,
-      payment_status:"Pending Clearance",
+      payment_status: "Pending Clearance",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -73,9 +73,9 @@ class PaymentStatussList extends Component {
           sort: true,
           hidden: false,
           formatter: (cellContent, paymentStatus) => (
-              <>{paymentStatus.id}</>
-          ),filter: textFilter(),
-      },
+            <>{paymentStatus.id}</>
+          ), filter: textFilter(),
+        },
         {
           dataField: "invoice_id",
           text: "invoice ID",
@@ -85,7 +85,7 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentStatus.invoice_id}</strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "payment_for",
@@ -95,23 +95,23 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentStatus.payment_for}</strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "lab_name",
           text: "Client Name",
           sort: true,
-        formatter: (cellContent, paymentStatus) => (
-          <>
-            <span>
+          formatter: (cellContent, paymentStatus) => (
+            <>
               <span>
-                {paymentStatus.lab_name}{" "}
-                {paymentStatus.donor_name}
-                {paymentStatus.advertisement_title}
+                <span>
+                  {paymentStatus.lab_name}{" "}
+                  {paymentStatus.donor_name}
+                  {paymentStatus.advertisement_title}
+                </span>
               </span>
-            </span>
-          </>
-        ),filter: textFilter(),
+            </>
+          ), filter: textFilter(),
         },
         {
           dataField: "payment_method",
@@ -121,39 +121,58 @@ class PaymentStatussList extends Component {
             <>
               <strong>{paymentStatus.payment_method}</strong>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "cheque_no",
           text: "Cheque/Ref#",
           sort: true,
           formatter: (cellContent, paymentStatus) => (
-              <>
+            <>
+              {paymentStatus.deposit_slip && paymentStatus.cheque_no
+                ? <span><Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
+                  }}
+                  target="_blank"
+                >
                   {paymentStatus.cheque_no && (
-                      <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                          {paymentStatus.cheque_no}
-                      </span>
+                    <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                      {paymentStatus.cheque_no}
+                    </span>
                   )}
-
-                  {paymentStatus.cheque_no && (
+                </Link></span>
+                : paymentStatus.deposit_slip && paymentStatus.refered_n0
+                  ? <span><Link
+                    to={{
+                      pathname:
+                        process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
+                    }}
+                    target="_blank"
+                  >
+                    {paymentStatus.refered_no && (
                       <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                          {paymentStatus.refered_no}
+                        {paymentStatus.refered_no}
                       </span>
-                  )}
-              </>
-          ),filter: textFilter(),
-      },
+                    )}
+                  </Link></span>
+                  : <span>--</span>
+              }
+            </>
+          ), filter: textFilter(),
+        },
         {
           dataField: "amount",
           text: "Amount",
           sort: true,
           formatter: (cellContent, paymentStatus) => (
-              <>
+            <>
               <div className="text-end">
-                  <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-              </>
-          ),filter: textFilter(),
-      },
+                <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+          ), filter: textFilter(),
+        },
         {
           dataField: "bank",
           text: "Bank/Account#",
@@ -161,51 +180,63 @@ class PaymentStatussList extends Component {
           formatter: (cellContent, paymentStatus) => (
             <>
               <span>
-                <span>
-                  {paymentStatus.bank_name},{" "}
-                  {paymentStatus.account_no}
-                </span>
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
+                  }}
+                  target="_blank"
+                >
+                  <span>
+                    {paymentStatus.bank_name},{" "}
+                    {paymentStatus.account_no}
+                  </span>
+                </Link>
+
               </span>
+
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "deposited_at",
           text: "Deposite Date",
           sort: true,
           formatter: (cellContent, paymentStatus) => {
-              const date = new Date(paymentStatus.deposited_at);
-              const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
-                  </p>
-              );
+            const date = new Date(paymentStatus.deposited_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+            return (
+              <p className="text-muted mb-0">
+                {`${day}-${month}-${year}`}
+              </p>
+            );
           },
           filter: textFilter(),
-      },  
-        {
-          dataField: "deposit_slip",
-          text: "Deposite Slip",
-          sort: true,
-          formatter: (cellContent, approvedInPayment) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL +
-                    approvedInPayment.deposit_slip,
-                }}
-                target="_blank"
-              >
-                View Slip
-              </Link>
-            </>
-          ),
         },
+        // {
+        //   dataField: "deposit_slip",
+        //   text: "Deposite Slip",
+        //   sort: true,
+        //   formatter: (cellContent, paymentStatus) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname:
+        //             process.env.REACT_APP_BACKENDURL +
+        //             paymentStatus.deposit_slip,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         View Slip
+        //       </Link>
+        //     </>
+        //   ),
+        // },
         // {
         //   dataField: "payment_status",
         //   text: "Status",
@@ -218,7 +249,7 @@ class PaymentStatussList extends Component {
           text: "Action",
           formatter: (cellContent, paymentStatus) => (
             <div className="d-flex gap-3">
-            
+
               <button
                 type="submit"
                 className="btn btn-primary save-user"
@@ -227,7 +258,7 @@ class PaymentStatussList extends Component {
               >
                 Update
               </button>
-              
+
             </div>
           ),
         },
@@ -315,15 +346,15 @@ class PaymentStatussList extends Component {
       this.props.history.push('/payment-status');
     }
     if (selectedValue === 'Pending Clearence') {
-        this.props.history.push('/payment-in-pending-clearence-status');
+      this.props.history.push('/payment-in-pending-clearence-status');
     }
     if (selectedValue === 'Cleared') {
-    this.props.history.push('/clear-status');
+      this.props.history.push('/clear-status');
     }
     if (selectedValue === 'Bounced') {
-    this.props.history.push('/bounced-status');
+      this.props.history.push('/bounced-status');
     }
-}
+  }
 
   render() {
     const { SearchBar } = Search;
@@ -354,7 +385,7 @@ class PaymentStatussList extends Component {
     return (
       <React.Fragment>
         <div className="page-content">
-        <MetaTags>
+          <MetaTags>
             <title>MIF List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
@@ -384,10 +415,10 @@ class PaymentStatussList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                <div className="ms-2 mb-4">
-                                                                <div>
+                                  <div className="ms-2 mb-4">
+                                    <div>
                                       <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Money In Form Statuss</strong>
+                                        <strong>Money In Form Statuss</strong>
                                       </Label>
                                       <select
                                         className="form-control select2"
@@ -395,7 +426,7 @@ class PaymentStatussList extends Component {
                                         name="main_lab_appointments"
                                         onChange={this.handleSelectChange}
 
-                                        
+
                                       >
                                         <option value="Pending Clearence">Pending Clearence</option>
                                         <option value="Created">Created</option>
@@ -418,7 +449,7 @@ class PaymentStatussList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      filter={ filterFactory()}
+                                      filter={filterFactory()}
                                     />
 
                                     <Modal
@@ -457,30 +488,30 @@ class PaymentStatussList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            
 
-                                           
+
+
                                           })}
                                           onSubmit={values => {
                                             const updatePaymentInStatus =
                                             {
                                               id: paymentStatus.id,
-                                             
+
                                               is_cleared: values.is_cleared,
                                               cleared_at: values.cleared_at,
 
-                                             
+
                                             };
 
-                                          // update PaymentStatus
-                                          onUpdatePaymentInStatus(
-                                            updatePaymentInStatus
-                                          );
-                                          setTimeout(() => {
-                                            onGetDepositStatuss(
-                                              this.state.user_id
+                                            // update PaymentStatus
+                                            onUpdatePaymentInStatus(
+                                              updatePaymentInStatus
                                             );
-                                          }, 1000);
+                                            setTimeout(() => {
+                                              onGetDepositStatuss(
+                                                this.state.user_id
+                                              );
+                                            }, 1000);
                                             this.toggle();
                                           }}
                                         >
@@ -550,7 +581,7 @@ class PaymentStatussList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.is_cleared &&
-                                                        touched.is_cleared
+                                                          touched.is_cleared
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -562,7 +593,7 @@ class PaymentStatussList extends Component {
                                                             //   paymentStatus.deposit_bank,
                                                             // // deposited_at: paymentStatus.deposit_bank,
                                                             cleared_at: paymentStatus.cleared_at,
-                                                            is_cleared :
+                                                            is_cleared:
                                                               e.target.value,
                                                           },
                                                         });
@@ -578,13 +609,13 @@ class PaymentStatussList extends Component {
                                                         --- Please select type ---
                                                       </option>
                                                       <option value="Yes">
-                                                      Yes
+                                                        Yes
                                                       </option>
                                                       <option value="No">
-                                                      No
+                                                        No
                                                       </option>
-                                                     
-                                                      
+
+
                                                     </Field>
                                                     <ErrorMessage
                                                       name="is_cleared"
@@ -594,42 +625,42 @@ class PaymentStatussList extends Component {
                                                   </div>
 
                                                   {this.state.paymentStatus.is_cleared == "Yes" ? (
-                                                  <div className="mb-3">
+                                                    <div className="mb-3">
 
-                                                  <Label htmlFor="cardnumberInput">
-                                                  Please select clearence date and time
-                                                                  <span
-                                                                    style={{ color: "#f46a6a" }}
-                                                                    className="font-size-18"
-                                                                  >
-                                                                    *
-                                                                  </span>
-                                                                </Label>
-                                                                <input
-                                                                  name="cleared_at"
-                                                                  type="datetime-local"
-                                                                  max={new Date(
-                                                                    new Date().toString().split("GMT")[0] + " UTC"
-                                                                  )
-                                                                    .toISOString()
-                                                                    .slice(0, -8)}
-                                                                  className="form-control"
-                                                                  onChange={e => {
-                                                                    this.setState({
-                                                                      paymentStatus: {
-                                                                        id: paymentStatus.id,
-                                                                        // deposit_bank:
-                                                                        //   paymentStatus.deposit_bank,
-                                                                        // // deposited_at: paymentStatus.deposit_bank,
-                                                                        is_cleared: paymentStatus.is_cleared,
-                                                                        cleared_at :
-                                                                          e.target.value,
-                                                                      },
-                                                                    });
-                                                                  }}
-                                                                />
-                                                  </div>
-                                                  ): null}
+                                                      <Label htmlFor="cardnumberInput">
+                                                        Please select clearence date and time
+                                                        <span
+                                                          style={{ color: "#f46a6a" }}
+                                                          className="font-size-18"
+                                                        >
+                                                          *
+                                                        </span>
+                                                      </Label>
+                                                      <input
+                                                        name="cleared_at"
+                                                        type="datetime-local"
+                                                        max={new Date(
+                                                          new Date().toString().split("GMT")[0] + " UTC"
+                                                        )
+                                                          .toISOString()
+                                                          .slice(0, -8)}
+                                                        className="form-control"
+                                                        onChange={e => {
+                                                          this.setState({
+                                                            paymentStatus: {
+                                                              id: paymentStatus.id,
+                                                              // deposit_bank:
+                                                              //   paymentStatus.deposit_bank,
+                                                              // // deposited_at: paymentStatus.deposit_bank,
+                                                              is_cleared: paymentStatus.is_cleared,
+                                                              cleared_at:
+                                                                e.target.value,
+                                                            },
+                                                          });
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  ) : null}
                                                   {/* Certificate Type field */}
                                                   {/* <div className="mb-3">
                                                     <Label className="form-label">
@@ -689,7 +720,7 @@ class PaymentStatussList extends Component {
                                                     />
                                                   </div> */}
 
-                                                 
+
                                                 </Col>
                                               </Row>
                                               <Row>

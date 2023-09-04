@@ -68,6 +68,15 @@ class LabAdvertisementRequestsList extends Component {
           ),
         },
         {
+          text: "Lab Name",
+          dataField: "lab_name",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.lab_name}</>
+          ),
+        },
+        {
           dataField: "poster",
           text: "Adv Image",
           formatter: (cellContent, labAdvertisementRequest) => (
@@ -109,25 +118,25 @@ class LabAdvertisementRequestsList extends Component {
           text: "Status",
           sort: true,
         },
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, labAdvertisementRequest) => (
-            <div className="d-flex gap-3">
-              <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={e =>
-                    this.handleLabAdvertisementRequestClick(e, labAdvertisementRequest)
-                  }
-                ></i>
-              </Link>
-            </div>
-          ),
-        },
+        // {
+        //   dataField: "menu",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Action",
+        //   formatter: (cellContent, labAdvertisementRequest) => (
+        //     <div className="d-flex gap-3">
+        //       <Link className="text-success" to="#">
+        //         <i
+        //           className="mdi mdi-pencil font-size-18"
+        //           id="edittooltip"
+        //           onClick={e =>
+        //             this.handleLabAdvertisementRequestClick(e, labAdvertisementRequest)
+        //           }
+        //         ></i>
+        //       </Link>
+        //     </div>
+        //   ),
+        // },
       ],
     };
     this.handleLabAdvertisementRequestClick =

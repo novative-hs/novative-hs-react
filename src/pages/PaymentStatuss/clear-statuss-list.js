@@ -160,13 +160,24 @@ class PaymentStatussList extends Component {
           formatter: (cellContent, paymentStatus) => (
             <>
               <span>
-                <span>
-                  {paymentStatus.bank_name},{" "}
-                  {paymentStatus.account_no}
-                </span>
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
+                  }}
+                  target="_blank"
+                >
+                  <span>
+                    {paymentStatus.bank_name},{" "}
+                    {paymentStatus.account_no}
+                  </span>
+                </Link>
+
               </span>
+
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         
         // {
@@ -183,39 +194,40 @@ class PaymentStatussList extends Component {
           dataField: "cleared_at",
           text: "Cleared Date",
           sort: true,
-          formatter: (cellContent, paymentStatus) => {
-              const date = new Date(paymentStatus.cleared_at);
-              const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
-                  </p>
-              );
-          },
-          filter: textFilter(),
-      },  
-        {
-          dataField: "deposit_slip",
-          text: "Deposit Slip",
-          sort: true,
-          formatter: (cellContent, approvedInPayment) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL +
-                    approvedInPayment.deposit_slip,
-                }}
-                target="_blank"
-              >
-                View Slip
-              </Link>
-            </>
-          ),
+          formatter: (cellContent, approvedInPayment) => {
+            const date = new Date(approvedInPayment.cleared_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+        
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}-${month}-${year}`}
+                </p>
+            );
         },
+        filter: textFilter(),
+      },  
+        // {
+        //   dataField: "deposit_slip",
+        //   text: "Deposit Slip",
+        //   sort: true,
+        //   formatter: (cellContent, approvedInPayment) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname:
+        //             process.env.REACT_APP_BACKENDURL +
+        //             approvedInPayment.deposit_slip,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         View Slip
+        //       </Link>
+        //     </>
+        //   ),
+        // },
         // {
         //   dataField: "payment_status",
         //   text: "Status",

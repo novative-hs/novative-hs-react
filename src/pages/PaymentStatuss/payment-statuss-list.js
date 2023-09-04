@@ -25,7 +25,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -67,7 +67,7 @@ class PaymentStatussList extends Component {
                     hidden: false,
                     formatter: (cellContent, paymentStatus) => (
                         <>{paymentStatus.id}</>
-                    ),filter: textFilter(),
+                    ), filter: textFilter(),
                 },
                 {
                     dataField: "invoice_id",
@@ -78,7 +78,7 @@ class PaymentStatussList extends Component {
                         <>
                             <strong>{paymentStatus.invoice_id}</strong>
                         </>
-                    ),filter: textFilter(),
+                    ), filter: textFilter(),
                 },
                 {
                     dataField: "payment_for",
@@ -88,7 +88,7 @@ class PaymentStatussList extends Component {
                         <>
                             <strong>{paymentStatus.payment_for}</strong>
                         </>
-                    ),filter: textFilter(),
+                    ), filter: textFilter(),
                 },
                 {
                     dataField: "lab_name",
@@ -102,9 +102,9 @@ class PaymentStatussList extends Component {
                                 {paymentStatus.advertisement_title}
                             </span>
                         </>
-                    ),filter: textFilter(),
+                    ), filter: textFilter(),
                 },
-                
+
                 {
                     dataField: "payment_method",
                     text: "Payment Method",
@@ -113,54 +113,53 @@ class PaymentStatussList extends Component {
                         <>
                             <strong>{paymentStatus.payment_method}</strong>
                         </>
-                    ),filter: textFilter(),
+                    ), filter: textFilter(),
                 },
-                // {
-                //     dataField: "cheque_no",
-                //     text: "Cheque/Ref#",
-                //     sort: true,
-                //     formatter: (cellContent, paymentStatus) => (
-                //         <>
-                //             {paymentStatus.cheque_no && (
-                //                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                //                     {paymentStatus.cheque_no}
-                //                 </span>
-                //             )}
-
-                //             {paymentStatus.cheque_no && (
-                //                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                //                     {paymentStatus.refered_no}
-                //                 </span>
-                //             )}
-                //         </>
-                //     ),filter: textFilter(),
-                // },
                 {
                     dataField: "cheque_no",
                     text: "Cheque/Ref#",
                     sort: true,
                     formatter: (cellContent, paymentStatus) => (
                         <>
-                            {paymentStatus.cheque_no && (
-                                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                                    {paymentStatus.cheque_no}
-                                </span>
-                            )}
-                
-                            {paymentStatus.refered_no && (
-                                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                                    {paymentStatus.refered_no}
-                                </span>
-                            )}
+                            {paymentStatus.cheque_image && paymentStatus.cheque_no
+                                ? <span><Link
+                                    to={{
+                                        pathname:
+                                            process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                                    }}
+                                    target="_blank"
+                                >
+                                    {paymentStatus.cheque_no && (
+                                        <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                                            {paymentStatus.cheque_no}
+                                        </span>
+                                    )}
+                                </Link></span>
+                                : paymentStatus.cheque_image && paymentStatus.refered_n0
+                                    ? <span><Link
+                                        to={{
+                                            pathname:
+                                                process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                                        }}
+                                        target="_blank"
+                                    >
+                                        {paymentStatus.refered_no && (
+                                            <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                                                {paymentStatus.refered_no}
+                                            </span>
+                                        )}
+                                    </Link></span>
+                                    : <span>--</span>
+                            }
                         </>
                     ),
                     filter: textFilter({
                         placeholder: "Filter Cheque/Ref#",
-                        getFilter: (filter) => ({ 
+                        getFilter: (filter) => ({
                             // Custom filter logic for both fields
                             comparator: (filterValue, cellValue, row) => {
                                 return (
-                                    row.cheque_no.includes(filterValue) || 
+                                    row.cheque_no.includes(filterValue) ||
                                     row.refered_no.includes(filterValue)
                                 );
                             },
@@ -173,12 +172,12 @@ class PaymentStatussList extends Component {
                     sort: true,
                     formatter: (cellContent, paymentStatus) => (
                         <>
-                        <div className="text-end">
-                            <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+                            <div className="text-end">
+                                <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
                         </>
-                    ),filter: textFilter(),
+                    ), filter: textFilter(),
                 },
-              
+
                 // {
                 // dataField: "bank",
                 // text: "Cheque/Reffer#",
@@ -201,17 +200,18 @@ class PaymentStatussList extends Component {
                     formatter: (cellContent, paymentStatus) => {
                         const date = new Date(paymentStatus.paid_at);
                         const day = date.getDate();
-                        const month = date.getMonth() + 1; // Adding 1 to get the correct month
-                        const year = date.getFullYear();
-                        
+                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        const month = monthNames[date.getMonth()];
+                        const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
                         return (
                             <p className="text-muted mb-0">
-                                {`${day}/${month}/${year}`}
+                                {`${day}-${month}-${year}`}
                             </p>
                         );
                     },
                     filter: textFilter(),
-                },                
+                },
                 // {
                 // dataField: "bankaccount_id",
                 // text: "Deposit Bank",
@@ -236,24 +236,24 @@ class PaymentStatussList extends Component {
                 // </>
                 // ),
                 // },
-                {
-                    dataField: "cheque_image",
-                    text: "Cheque Copy",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            <Link
-                                to={{
-                                    pathname:
-                                        process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
-                                }}
-                                target="_blank"
-                            >
-                                View
-                            </Link>
-                        </>
-                    ),
-                },
+                // {
+                //     dataField: "cheque_image",
+                //     text: "Cheque Copy",
+                //     sort: true,
+                //     formatter: (cellContent, paymentStatus) => (
+                //         <>
+                //             <Link
+                //                 to={{
+                //                     pathname:
+                //                         process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                //                 }}
+                //                 target="_blank"
+                //             >
+                //                 View
+                //             </Link>
+                //         </>
+                //     ),
+                // },
                 // {
                 //     dataField: "payment_status",
                 //     text: "Status",
@@ -389,16 +389,16 @@ class PaymentStatussList extends Component {
         const selectedValue = event.target.value;
         // Perform navigation based on the selected value
         if (selectedValue === 'Created') {
-          this.props.history.push('/payment-status');
+            this.props.history.push('/payment-status');
         }
         if (selectedValue === 'Pending Clearence') {
             this.props.history.push('/payment-in-pending-clearence-status');
         }
         if (selectedValue === 'Cleared') {
-        this.props.history.push('/clear-status');
+            this.props.history.push('/clear-status');
         }
         if (selectedValue === 'Bounced') {
-        this.props.history.push('/bounced-status');
+            this.props.history.push('/bounced-status');
         }
     }
 
@@ -439,8 +439,8 @@ class PaymentStatussList extends Component {
             // }
             if (!flag) {
                 bankaccountList.push({
-                  label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
-                  value: `${bankAccounts[i].id}`,
+                    label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
+                    value: `${bankAccounts[i].id}`,
                 });
             }
         }
@@ -477,26 +477,26 @@ class PaymentStatussList extends Component {
                                                     {toolkitprops => (
                                                         <React.Fragment>
                                                             <Row className="mb-2">
-                                                            <Col sm="4">
-    <div className="ms-2 mb-4">
-        <div>
-            <Label for="main_lab_appointments" className="form-label">
-                <strong>Money In Form Statuses</strong>
-            </Label>
-            <select
-                className="form-control select2"
-                title="main_lab_appointments"
-                name="main_lab_appointments"
-                onChange={this.handleSelectChange}
-            >
-                <option value="Created">Created</option>
-                <option value="Pending Clearence">Pending Clearence</option>
-                <option value="Cleared">Cleared</option>
-                <option value="Bounced">Bounced</option>
-            </select>
-        </div>
-    </div>
-</Col>
+                                                                <Col sm="4">
+                                                                    <div className="ms-2 mb-4">
+                                                                        <div>
+                                                                            <Label for="main_lab_appointments" className="form-label">
+                                                                                <strong>Money In Form Statuses</strong>
+                                                                            </Label>
+                                                                            <select
+                                                                                className="form-control select2"
+                                                                                title="main_lab_appointments"
+                                                                                name="main_lab_appointments"
+                                                                                onChange={this.handleSelectChange}
+                                                                            >
+                                                                                <option value="Created">Created</option>
+                                                                                <option value="Pending Clearence">Pending Clearence</option>
+                                                                                <option value="Cleared">Cleared</option>
+                                                                                <option value="Bounced">Bounced</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </Col>
 
                                                             </Row>
                                                             <Row className="mb-4">
@@ -512,7 +512,7 @@ class PaymentStatussList extends Component {
                                                                             headerWrapperClasses={"table-light"}
                                                                             responsive
                                                                             ref={this.node}
-                                                                            filter={ filterFactory() }
+                                                                            filter={filterFactory()}
                                                                         />
 
                                                                         <Modal
@@ -552,7 +552,7 @@ class PaymentStatussList extends Component {
                                                                                                 this.state.paymentStatus
                                                                                                     .payment_status) ||
                                                                                             "",
-                                                                                       
+
                                                                                     }}
                                                                                     validationSchema={Yup.object().shape({
                                                                                         hiddentEditFlag: Yup.boolean(),
@@ -583,7 +583,7 @@ class PaymentStatussList extends Component {
                                                                                         {
                                                                                             id: paymentStatus.id,
                                                                                             verified_by:
-                                                                                            values.verified_by,
+                                                                                                values.verified_by,
                                                                                             bankaccount_id: values.bankaccount_id,
                                                                                             deposit_slip: values.deposit_slip,
                                                                                             payment_status:
@@ -694,10 +694,10 @@ class PaymentStatussList extends Component {
                                                                                                         <Label htmlFor="expirydateInput">
                                                                                                             Deposit Slip
                                                                                                             <span
-                                                                                                            style={{ color: "#f46a6a" }}
-                                                                                                            className="font-size-18"
+                                                                                                                style={{ color: "#f46a6a" }}
+                                                                                                                className="font-size-18"
                                                                                                             >
-                                                                                                            *
+                                                                                                                *
                                                                                                             </span>
                                                                                                         </Label>
                                                                                                         <Input
@@ -706,64 +706,78 @@ class PaymentStatussList extends Component {
                                                                                                             type="file"
                                                                                                             multiple={false}
                                                                                                             accept=".jpg,.jpeg,.png,.pdf"
+                                                                                                            // onChange={e => {
+                                                                                                            //     this.setState({
+                                                                                                            //         deposit_slip:
+                                                                                                            //             e.target.files[0],
+                                                                                                            //     });
+                                                                                                            // }}
                                                                                                             onChange={e => {
-                                                                                                            this.setState({
-                                                                                                                deposit_slip:
-                                                                                                                e.target.files[0],
-                                                                                                            });
+                                                                                                                this.setState({
+                                                                                                                    paymentStatus: {
+                                                                                                                        id: paymentStatus.id,
+                                                                                                                        payment_status:
+                                                                                                                            paymentStatus.payment_status,
+                                                                                                                        deposit_at: paymentStatus.deposit_at,
+                                                                                                                        verified_by: paymentStatus.verified_by,
+
+                                                                                                                        deposit_slip:
+                                                                                                                            e.target.files[0],
+                                                                                                                    },
+                                                                                                                });
                                                                                                             }}
-                                                                                                            // className="form-control is-invalid"
-                                                                                                            // className={
-                                                                                                            // "form-control" +
-                                                                                                            // (this.state.deposit_slip.length >
-                                                                                                            //     0 && !this.state.cheque_image
-                                                                                                            //     ? " is-invalid"
-                                                                                                            //     : "")
-                                                                                                            // }
+                                                                                                        // className="form-control is-invalid"
+                                                                                                        // className={
+                                                                                                        // "form-control" +
+                                                                                                        // (this.state.deposit_slip.length >
+                                                                                                        //     0 && !this.state.cheque_image
+                                                                                                        //     ? " is-invalid"
+                                                                                                        //     : "")
+                                                                                                        // }
                                                                                                         />
                                                                                                     </div>
 
                                                                                                     <div className="mb-3">
                                                                                                         <Label className="form-label">
-                                                                                                        Varified By
-                                                                                                        <span className="text-danger font-size-12">
-                                                                                                            *
-                                                                                                        </span>
+                                                                                                            Varified By
+                                                                                                            <span className="text-danger font-size-12">
+                                                                                                                *
+                                                                                                            </span>
                                                                                                         </Label>
                                                                                                         <Field
-                                                                                                        name="verified_by"
-                                                                                                        type="text"
-                                                                                                        value={
-                                                                                                            this.state
-                                                                                                            .paymentStatus
-                                                                                                            .verified_by
-                                                                                                        }
-                                                                                                        onChange={e => {
-                                                                                                            this.setState({
-                                                                                                            paymentStatus: {
-                                                                                                                id: paymentStatus.id,
-                                                                                                                payment_status:
-                                                                                                                paymentStatus.payment_status,
-                                                                                                                deposit_at: paymentStatus.deposit_at,
-                                                                                                                deposit_slip: paymentStatus.deposit_slip,
+                                                                                                            name="verified_by"
+                                                                                                            type="text"
+                                                                                                            value={
+                                                                                                                this.state
+                                                                                                                    .paymentStatus
+                                                                                                                    .verified_by
+                                                                                                            }
+                                                                                                            onChange={e => {
+                                                                                                                this.setState({
+                                                                                                                    paymentStatus: {
+                                                                                                                        id: paymentStatus.id,
+                                                                                                                        payment_status:
+                                                                                                                            paymentStatus.payment_status,
+                                                                                                                        deposit_at: paymentStatus.deposit_at,
+                                                                                                                        deposit_slip: paymentStatus.deposit_slip,
 
-                                                                                                                verified_by:
-                                                                                                                e.target.value,
-                                                                                                            },
-                                                                                                            });
-                                                                                                        }}
-                                                                                                        className={
-                                                                                                            "form-control" +
-                                                                                                            (errors.verified_by &&
-                                                                                                            touched.verified_by
-                                                                                                            ? " is-invalid"
-                                                                                                            : "")
-                                                                                                        }
+                                                                                                                        verified_by:
+                                                                                                                            e.target.value,
+                                                                                                                    },
+                                                                                                                });
+                                                                                                            }}
+                                                                                                            className={
+                                                                                                                "form-control" +
+                                                                                                                (errors.verified_by &&
+                                                                                                                    touched.verified_by
+                                                                                                                    ? " is-invalid"
+                                                                                                                    : "")
+                                                                                                            }
                                                                                                         />
                                                                                                         <ErrorMessage
-                                                                                                        name="verified_by"
-                                                                                                        component="div"
-                                                                                                        className="invalid-feedback"
+                                                                                                            name="verified_by"
+                                                                                                            component="div"
+                                                                                                            className="invalid-feedback"
                                                                                                         />
                                                                                                     </div>
 

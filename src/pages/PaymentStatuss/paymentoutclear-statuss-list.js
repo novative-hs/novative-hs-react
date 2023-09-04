@@ -132,6 +132,29 @@ class PaymentStatussList extends Component {
                   <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>            </>
           ),filter: textFilter(),
         },
+        {
+          dataField: "cheque_no",
+          text: "Cheque/Online Ref#",
+          sort: true,
+          formatter: (cellContent, paymentStatus) => (
+            <>
+              <span>
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_copy,
+                  }}
+                  target="_blank"
+                >
+                                <strong>{paymentStatus.cheque_no}</strong>
+
+                </Link>
+
+              </span>
+
+            </>
+          ),filter: textFilter(),
+        },
         // {
         //   dataField: "deposited_at",
         //   text: "Deposited Date",
@@ -168,39 +191,40 @@ class PaymentStatussList extends Component {
           dataField: "cleared_at",
           text: "Cleared Date",
           sort: true,
-          formatter: (cellContent, paymentStatuss) => {
-              const date = new Date(paymentStatuss.cleared_at);
-              const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
-                  </p>
-              );
-          },
-          filter: textFilter(),
+          formatter: (cellContent, approvedInPayment) => {
+            const date = new Date(approvedInPayment.cleared_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+        
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}-${month}-${year}`}
+                </p>
+            );
         },
-        {
-          dataField: "deposit_slip",
-          text: "Slip",
-          sort: true,
-          formatter: (cellContent, approvedInPayment) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL +
-                    approvedInPayment.deposit_slip,
-                }}
-                target="_blank"
-              >
-                View Slip
-              </Link>
-            </>
-          ),
+        filter: textFilter(),
         },
+        // {
+        //   dataField: "deposit_slip",
+        //   text: "Slip",
+        //   sort: true,
+        //   formatter: (cellContent, approvedInPayment) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname:
+        //             process.env.REACT_APP_BACKENDURL +
+        //             approvedInPayment.deposit_slip,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         View Slip
+        //       </Link>
+        //     </>
+        //   ),
+        // },
         // {
         //   dataField: "status",
         //   text: "Status",

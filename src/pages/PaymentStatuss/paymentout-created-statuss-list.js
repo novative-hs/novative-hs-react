@@ -109,22 +109,46 @@ class PathologistsList extends Component {
             ),filter: textFilter(),
         },
         {
+          dataField: "cheque_no",
+          text: "Cheque/Online Ref#",
+          sort: true,
+          formatter: (cellContent, paymentOutStatus) => (
+            <>
+              <span>
+                <Link
+                  to={{
+                    pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentOutStatus.deposit_copy,
+                  }}
+                  target="_blank"
+                >
+                                <strong>{paymentOutStatus.cheque_no}</strong>
+
+                </Link>
+
+              </span>
+
+            </>
+          ),filter: textFilter(),
+        },
+        {
           dataField: "payment_at",
           text: "Deposite Date",
           sort: true,
           formatter: (cellContent, paymentCreatedStatus) => {
-              const date = new Date(paymentCreatedStatus.payment_at);
-              const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
-              
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
-                  </p>
-              );
-          },
-          filter: textFilter(),
+            const date = new Date(paymentCreatedStatus.payment_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+        
+            return (
+                <p className="text-muted mb-0">
+                    {`${day}-${month}-${year}`}
+                </p>
+            );
+        },
+        filter: textFilter(),
         },
         {
           dataField: "amount",
@@ -158,24 +182,24 @@ class PathologistsList extends Component {
         //   text: "Status",
         //   sort: true,
         // },
-        {
-          dataField: "deposit_copy",
-          text: "Deposite Copy",
-          sort: true,
-          formatter: (cellContent, paymentCreatedStatus) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.deposit_copy,
-                }}
-                target="_blank"
-              >
-                View
-              </Link>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "deposit_copy",
+        //   text: "Deposite Copy",
+        //   sort: true,
+        //   formatter: (cellContent, paymentCreatedStatus) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname:
+        //             process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.deposit_copy,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         View
+        //       </Link>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "menu",
           isDummyField: true,

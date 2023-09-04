@@ -87,6 +87,7 @@ class NearbyLabs extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).patient_name
         : "",
       position: "right",
+      count: 0,
       ratingvalues: [],
       regionWiseAdvertisement: [],
       isMenuOpened: false,
@@ -1409,9 +1410,8 @@ class NearbyLabs extends Component {
                   </Link>
 
                 </div>
-              ) : this.state.user_type == "patient" ? (
-                <Header />
-
+              ) :this.state.user_type == "patient" ? (
+                  <Header />
               ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (

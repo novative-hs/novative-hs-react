@@ -250,7 +250,7 @@ class LabAdvertisementRequestsList extends Component {
         declined_reason: arg.declined_reason,
         posted_at: arg.posted_at,
         posted_till: arg.posted_till,
-        description: arg.description,
+        declined_reason: arg.declined_reason,
 
       },
       isEdit: true,
@@ -381,10 +381,10 @@ class LabAdvertisementRequestsList extends Component {
                                                   .posted_at) ||
                                               "",
                                           
-                                            description:
+                                            declined_reason:
                                               (this.state &&
                                                 this.state.labAdvertisementRequest
-                                                  .description) ||
+                                                  .declined_reason) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -403,7 +403,7 @@ class LabAdvertisementRequestsList extends Component {
                                                     declined_reason: values.declined_reason,
                                                     posted_at: values.posted_at,
                                                     posted_till: values.posted_till, 
-                                                    description: values.description,                                                   
+                                                    declined_reason: values.declined_reason,                                                   
                                                     // responded_at:
                                                     //   values.responded_at,
                                                   };
@@ -535,7 +535,7 @@ class LabAdvertisementRequestsList extends Component {
                                                       />
                                                     </div>
                                                   )} */}
-                                                   {this.state.labAdvertisementRequest
+                                                   {/* {this.state.labAdvertisementRequest
                                                     .request_status ===
                                                     "Recreated" && (
                                                     <div className="mb-3">
@@ -559,15 +559,15 @@ class LabAdvertisementRequestsList extends Component {
                                                             labAdvertisementRequest.request_status,
                                                             declined_reason: labAdvertisementRequest.declined_reason,
                                                             posted_till: labAdvertisementRequest.posted_till,
-                                                            description: labAdvertisementRequest.description,
+                                                            declined_reason: labAdvertisementRequest.declined_reason,
                                                             posted_at:
                                                               e.target.value,
                                                           })
                                                         }
                                                       />
                                                     </div>
-                                                  )}
-                                                   {this.state.labAdvertisementRequest
+                                                  )} */}
+                                                   {/* {this.state.labAdvertisementRequest
                                                     .request_status ===
                                                     "Recreated" && (
                                                     <div className="mb-3">
@@ -591,7 +591,7 @@ class LabAdvertisementRequestsList extends Component {
                                                             labAdvertisementRequest.request_status,
                                                             declined_reason: labAdvertisementRequest.declined_reason,
                                                             posted_at: labAdvertisementRequest.posted_at,
-                                                            description: labAdvertisementRequest.description,
+                                                            declined_reason: labAdvertisementRequest.declined_reason,
                                                             posted_till:
                                                               e.target.value,
                                                           })
@@ -599,7 +599,7 @@ class LabAdvertisementRequestsList extends Component {
                                                       />
                                                     </div>
 
-                                                  )}
+                                                  )} */}
                                                    {this.state.labAdvertisementRequest
                                                     .request_status ===
                                                     "Recreated" && (
@@ -616,7 +616,7 @@ class LabAdvertisementRequestsList extends Component {
                                                         value={
                                                           this.state
                                                             .labAdvertisementRequest
-                                                            .description
+                                                            .declined_reason
                                                         }
                                                         onChange={e => {
                                                           this.setState({
@@ -628,7 +628,7 @@ class LabAdvertisementRequestsList extends Component {
                                                                 declined_reason: labAdvertisementRequest.declined_reason,
                                                                 posted_at: labAdvertisementRequest.posted_at,
                                                                 posted_till: labAdvertisementRequest.posted_till,
-                                                                description:
+                                                                declined_reason:
                                                                 e.target.value,
                                                                  
                                                               },
@@ -636,14 +636,14 @@ class LabAdvertisementRequestsList extends Component {
                                                         }}
                                                         className={
                                                           "form-control" +
-                                                          (errors.description &&
-                                                          touched.description
+                                                          (errors.declined_reason &&
+                                                          touched.declined_reason
                                                             ? " is-invalid"
                                                             : "")
                                                         }
                                                       />
                                                       <ErrorMessage
-                                                        name="description"
+                                                        name="declined_reason"
                                                         component="div"
                                                         className="invalid-feedback"
                                                       />
