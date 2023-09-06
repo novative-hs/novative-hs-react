@@ -194,7 +194,7 @@ class AccountStatements extends Component {
 
           ) : (
             <p className="text-end">
-              {bankStatement.Debit}
+              {bankStatement.Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </p>
           )}
           </>
