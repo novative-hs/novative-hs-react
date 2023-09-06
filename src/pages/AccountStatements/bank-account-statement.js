@@ -168,15 +168,15 @@ class AccountStatements extends Component {
         footerdataField: 'total_Credit',
         formatter: (cellContent, bankStatement) => (
           <>
-          {bankStatement.credit == 0 ? (
+          {/* {bankStatement.credit == 0 ? (
             <p className="d-none">
               {bankStatement.credit}
             </p>
-          ) : (
+          ) : ( */}
             <p className="text-end">
               {bankStatement.credit}
             </p>
-          )}
+          {/* )} */}
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },
@@ -187,16 +187,16 @@ class AccountStatements extends Component {
         footerdataField: 'totalDebit',
         formatter: (cellContent, bankStatement) => (
           <>             
-         {bankStatement.Debit == 0 ? (
+         {/* {bankStatement.Debit == 0 ? (
             <p className="d-none">
               {bankStatement.Debit}
             </p>
 
-          ) : (
+          ) : ( */}
             <p className="text-end">
               {bankStatement.Debit}
             </p>
-          )}
+          {/* )} */}
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },
