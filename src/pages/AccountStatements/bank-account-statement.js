@@ -174,7 +174,7 @@ class AccountStatements extends Component {
             </p>
           ) : (
             <p className="text-end">
-              {bankStatement.credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {bankStatement.credit}
             </p>
           )}
           </>
@@ -194,7 +194,7 @@ class AccountStatements extends Component {
 
           ) : (
             <p className="text-end">
-              {bankStatement.Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {bankStatement.Debit}
             </p>
           )}
           </>
