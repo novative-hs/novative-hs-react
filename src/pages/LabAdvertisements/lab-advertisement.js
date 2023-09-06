@@ -133,9 +133,19 @@ class AdvertisementsList extends Component {
                 </span>
               )}
 
+              {/* {labAdvertisement.request_status == "Recreated" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  Recreated
+                </span>
+              )} */}
               {labAdvertisement.request_status == "Recreated" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  Declined
+                  <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, labAdvertisement)}
+                  >
+                    {labAdvertisement.request_status}
+                  </Link>
                 </span>
               )}
             </>
@@ -217,6 +227,7 @@ class AdvertisementsList extends Component {
     this.toggle = this.toggle.bind(this);
     this.handleAdvertisementClicks = this.handleAdvertisementClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
   }
 
   // The code for converting "image source" (url) to "Base64"
@@ -269,7 +280,20 @@ class AdvertisementsList extends Component {
       modal: !prevState.modal,
     }));
   }
-
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      declined_reason: arg.declined_reason,
+    });
+  };
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   handleAdvertisementClicks = () => {
     this.setState({
       labAdvertisement: "",
@@ -477,7 +501,42 @@ class AdvertisementsList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
-
+                                    <Modal
+                                      isOpen={this.state.PatientModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglePatientModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <Label className="form-label">
+                                                    Reason
+                                                  </Label>
+                                                  <div className="mb-9">
+                                                    <textarea
+                                                      name="declined-reason"
+                                                      rows="3" // Set the number of rows
+                                                      cols="30" // Set the number of columns
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                      value={this.state.declined_reason}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}

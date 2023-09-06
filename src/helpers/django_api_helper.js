@@ -2517,10 +2517,6 @@ export const getLabAdvertisementRequests = id =>
 export const updateLabAdvertisementRequest = advertisement => {
   let formData = new FormData();
    formData.append("id", advertisement.id);
-
-  formData.append("description", advertisement.description);
-  formData.append("posted_at", advertisement.posted_at);
-  formData.append("posted_till", advertisement.posted_till);
   formData.append("request_status", advertisement.request_status);
   formData.append("declined_reason", advertisement.declined_reason);
   formData.append("responded_at", advertisement.responded_at);

@@ -248,9 +248,6 @@ class LabAdvertisementRequestsList extends Component {
         id: arg.id,
         request_status:arg.request_status,
         declined_reason: arg.declined_reason,
-        posted_at: arg.posted_at,
-        posted_till: arg.posted_till,
-        declined_reason: arg.declined_reason,
 
       },
       isEdit: true,
@@ -370,22 +367,6 @@ class LabAdvertisementRequestsList extends Component {
                                                 this.state.labAdvertisementRequest
                                                   .declined_reason) ||
                                               "",
-                                            posted_till:
-                                              (this.state &&
-                                                this.state.labAdvertisementRequest
-                                                  .posted_till) ||
-                                              "",
-                                            posted_at:
-                                              (this.state &&
-                                                this.state.labAdvertisementRequest
-                                                  .posted_at) ||
-                                              "",
-                                          
-                                            declined_reason:
-                                              (this.state &&
-                                                this.state.labAdvertisementRequest
-                                                  .declined_reason) ||
-                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -400,9 +381,6 @@ class LabAdvertisementRequestsList extends Component {
                                                     id: labAdvertisementRequest.id,
                                                     
                                                     request_status: values.request_status,
-                                                    declined_reason: values.declined_reason,
-                                                    posted_at: values.posted_at,
-                                                    posted_till: values.posted_till, 
                                                     declined_reason: values.declined_reason,                                                   
                                                     // responded_at:
                                                     //   values.responded_at,
@@ -625,9 +603,6 @@ class LabAdvertisementRequestsList extends Component {
                                                                 id: labAdvertisementRequest.id,
                                                                 request_status:
                                                                 labAdvertisementRequest.request_status,
-                                                                declined_reason: labAdvertisementRequest.declined_reason,
-                                                                posted_at: labAdvertisementRequest.posted_at,
-                                                                posted_till: labAdvertisementRequest.posted_till,
                                                                 declined_reason:
                                                                 e.target.value,
                                                                  
