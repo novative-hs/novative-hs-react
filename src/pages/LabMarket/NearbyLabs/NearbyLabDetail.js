@@ -144,7 +144,11 @@ class NearbyLabDetail extends Component {
                       </li>
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
-                          <Link to={"/test-appointments"} className="dropdown-item">
+                          <Link to={
+                            this.props.match.params.guest_id
+                              ? `/test-appointments/${this.props.match.params.guest_id}`
+                              : `/test-appointments`
+                          } className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
                             <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -248,7 +252,11 @@ class NearbyLabDetail extends Component {
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
-                          to={"/test-appointments"}
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/test-appointments/${this.props.match.params.guest_id}`
+                              : `/test-appointments`
+                          }
                           className="dropdown-item"
                         >
                           {/* {this.props.t("My Appointments")} */}
@@ -297,9 +305,9 @@ class NearbyLabDetail extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}`
-                              : `/nearby-labs/`
+                            this.props.match.params.guest_id
+                              ? `/labs/${this.props.match.params.guest_id}`
+                              : `/labs`
                           }
                           className="dropdown-item"
                         >
@@ -314,8 +322,8 @@ class NearbyLabDetail extends Component {
                     </Link> */}
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-test/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-test/${this.props.match.params.guest_id}`
                               : `/nearby-test/`
                           }
                           className="dropdown-item"
@@ -327,8 +335,8 @@ class NearbyLabDetail extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-profiles/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-profiles/${this.props.match.params.guest_id}`
                               : `/nearby-profiles/`
                           }
                           className="dropdown-item"
@@ -340,13 +348,26 @@ class NearbyLabDetail extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-packages/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-packages/${this.props.match.params.guest_id}`
                               : `/nearby-packages/`
                           }
                           className="dropdown-item"
                         >
                           <span className="pt-4 font-size-12">Packages</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/nearby-radiology/${this.props.match.params.guest_id}`
+                              : `/nearby-radiology/`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Radiology</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -379,43 +400,44 @@ class NearbyLabDetail extends Component {
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
-                          <Link
-                            to={"/test-appointments"}
-                            className="dropdown-item"
-                          >
+                          <Link to={
+                            this.props.match.params.guest_id
+                              ? `/test-appointments/${this.props.match.params.guest_id}`
+                              : `/test-appointments`
+                          } className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">
-                              My Appointments
-                            </span>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
                           </Link>
                         </li>
                         /* <li className="nav-item dropdown">
-                         <Link
-                          to="/#"
-                          onClick={e => {
-                            e.preventDefault();
-                            this.setState({ appState: !this.state.appState });
-                          }}
-                          className="nav-link dropdown-toggle arrow-none"
-                        >
-                          <i className="bx bx-test-tube me-2" />
-                          {this.props.t("Appointments")}{" "}
-                          <div className="arrow-down" />
-                        </Link>
-                        <div
-                          className={classname("dropdown-menu", {
-                            show: this.state.appState,
-                          })}
-                        >
-                          <Link
-                            to={"/test-appointments"}
-                            className="dropdown-item"
+                           <Link
+                            to="/#"
+                            onClick={e => {
+                              e.preventDefault();
+                              this.setState({ appState: !this.state.appState });
+                            }}
+                            className="nav-link dropdown-toggle arrow-none"
                           >
-                            {this.props.t("Test Appointments")}
+                            <i className="bx bx-test-tube me-2" />
+                            {this.props.t("Appointments")}{" "}
+                            <div className="arrow-down" />
                           </Link>
-                        </div>
-                        </li> */
+                          <div
+                            className={classname("dropdown-menu", {
+                              show: this.state.appState,
+                            })}
+                          >
+                            <Link
+                              to={"/test-appointments"}
+                              className="dropdown-item"
+                            >
+                              {this.props.t("Test Appointments")}
+                            </Link>
+                          </div>
+                          </li> */
                       )}
+
                     </ul>
                   </Collapse>
                 ) :
@@ -493,7 +515,11 @@ class NearbyLabDetail extends Component {
                         </li>
                         {this.state.user_id && this.state.user_type == "patient" && (
                           <li className="nav-item">
-                            <Link to={"/test-appointments"} className="dropdown-item">
+                            <Link to={
+                            this.props.match.params.guest_id
+                              ? `/test-appointments/${this.props.match.params.guest_id}`
+                              : `/test-appointments`
+                          }className="dropdown-item">
                               {/* {this.props.t("My Appointments")} */}
                               <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -727,8 +753,8 @@ class NearbyLabDetail extends Component {
                                 {this.props.success.offered_tests === true && (
                                   <Link
                                     to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
+                                      this.props.match.params.guest_id
+                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
                                         : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
                                     }
                                     className="linklist btn btn-primary btn-md"
@@ -754,8 +780,8 @@ class NearbyLabDetail extends Component {
                                   true && (
                                     <Link
                                       to={
-                                        this.props.match.params.uuid
-                                          ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
+                                        this.props.match.params.guest_id
+                                          ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
                                           : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
                                       }
                                       className="linklist btn btn-primary btn-md"
@@ -782,8 +808,8 @@ class NearbyLabDetail extends Component {
                                   true && (
                                     <Link
                                       to={
-                                        this.props.match.params.uuid
-                                          ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
+                                        this.props.match.params.guest_id
+                                          ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
                                           : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
                                       }
                                       className="linklist btn btn-primary btn-md"
@@ -809,8 +835,8 @@ class NearbyLabDetail extends Component {
                                 {this.props.success.pathologists === true && (
                                   <Link
                                     to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
+                                      this.props.match.params.guest_id
+                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
                                         : `/${this.props.match.params.lab_account_id}/lab-pathologists`
                                     }
                                     className="linklist btn btn-primary btn-md"
@@ -1111,8 +1137,8 @@ class NearbyLabDetail extends Component {
                       {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-labs/${this.props.match.params.guest_id}`
                               : `/nearby-labs/`
                           }
                           className="btn btn-secondary"

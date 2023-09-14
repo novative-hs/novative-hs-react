@@ -99,6 +99,61 @@ class AccountStatements extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Lab" breadcrumbItem="Account Statements" />
+            {isEmpty(this.props.accountStatements) && (
+            <Row>
+                <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
+                  </strong>
+                  </span>
+                  <div>
+                    <strong>
+                      Credit: Lab need to Pay LabHazir. <br></br>
+                      Debit: LabHazir need to Pay Lab.
+                    </strong>
+                  </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
+                    </strong>
+                  </span>
+                  </div>
+                </div>
+                <Col lg="12">
+                  <Card>
+                    <CardBody>
+                      <div className="table-responsive">
+                        <Table>
+                          <thead className="table-light">
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">ID</th>
+                              <th scope="col">Patient Name</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Total Without Discount</th>
+                              <th scope="col">Home Sampling Amount</th>
+                              <th scope="col">Discount By Lab</th>
+                              <th scope="col">Discount By LabHazir</th>
+                              <th scope="col">Payable After Discount</th>
+                              <th scope="col">Counter Discount By Lab</th>
+                              <th scope="col">Margin of Lab</th>
+                              <th scope="col">Referrel Fee of LabHazir</th>
+                              {/* <th scope="col">Payment Received By LabHazir</th> */}
+                              <th scope="col">Payment Received By Lab</th>
+                              <th scope="col">Payment Received By LabHazir</th>
+                              <th scope="col">Credit</th>
+                              <th scope="col">Debit</th>
+                              <th scope="col">Balance</th>
+                              {/* <th scope="col">Is Settled</th> */}
+                            </tr>
+                          </thead>
+                          </Table>
+                          </div>
+                          </CardBody>
+                          </Card>
+                          </Col>
+                          </Row>
+            )}
             {!isEmpty(this.props.accountStatements) && (
               <Row>
                 <div> <span className="text-danger font-size-12">

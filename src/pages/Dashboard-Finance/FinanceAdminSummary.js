@@ -73,7 +73,7 @@ class FinanceAdminSummary extends Component {
                       <Col xs="6">
                         <div className="mt-2">
                           <Link
-                            to={"/financeadmin-profile"}
+                            to={"/financeofficer-profile"}
                             className="btn btn-primary btn-sm"
                           >
                             View Profile{" "}

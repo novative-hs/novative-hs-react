@@ -290,8 +290,8 @@ class Header extends Component {
                   <Link
                     to={
                       this.props.match.params.uuid
-                        ? `/register/${this.props.match.params.uuid}`
-                        : `/register`
+                        ? `/register/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                        : `/register/${this.props.match.params.guest_id}`
                     }
                     className="btn header-items noti-icon right-bar-toggle"
                   >
@@ -316,8 +316,10 @@ class Header extends Component {
                     <Link
                       // to={"/profile"}
                       to={
-                        this.props.match.params.uuid
-                          ? `/profile/${this.state.filnalurl}/${this.props.match.params.uuid}`
+                        this.props.match.params.guest_id
+                          ? `/profile/${this.props.match.params.guest_id}`
+                          : this.props.match.params.uuid
+                          ? `/profile/${this.props.match.params.uuid}`
                           : `/profile`
                       }
                       className="dropdown-content me-2 text-light"
@@ -329,10 +331,13 @@ class Header extends Component {
                     </Link>{" "}
                     <Link
                       to={
-                        this.props.match.params.uuid
-                          ? `/cart/${this.state.filnalurl}/${this.props.match.params.uuid}`
+                        this.props.match.params.guest_id
+                          ? `/cart/${this.props.match.params.guest_id}`
+                          : this.props.match.params.uuid
+                          ? `/cart/${this.props.match.params.uuid}`
                           : `/cart`
                       }
+                      
                       className="dropdown-content me-2 text-light"
                     >
                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
@@ -397,7 +402,6 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
 
 
                             <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
-                              {/* {this.state.patient_name.split(" ")[0]} */}
                               Rs. {this.props.patientProfile.available_credit}
                               {/* <div>
                                 <p>
@@ -527,7 +531,6 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
 
 
                             <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
-                              {/* {this.state.patient_name.split(" ")[0]} */}
                               Rs. {this.props.patientProfile.available_credit}
                               {/* <div>
                                 <p>

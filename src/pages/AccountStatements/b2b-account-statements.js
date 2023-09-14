@@ -95,6 +95,36 @@ class AccountStatements extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="B2B" breadcrumbItem="Account Statements" />
+            {isEmpty(this.props.b2baccountStatements) && (
+            <Row>
+                <Col lg="12">
+                  <Card>
+                    <CardBody>
+                      <div className="table-responsive">
+                        <Table>
+                          <thead className="table-light">
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">ID</th>
+                              <th scope="col">Patient Name</th>
+                              <th scope="col">Lab Name</th>
+                              <th scope="col">Status</th>
+                              {/* <th scope="col">Amount</th> */}
+                              <th scope="col">Referral Fee of Lab Hazir</th>
+                              <th scope="col">Referral Fee of B2B (%)</th>
+                              <th scope="col">Credit</th>
+                              <th scope="col">Debit</th>
+                              <th scope="col">Balance</th>
+
+                              {/* <th scope="col">Is Settled</th> */}
+                            </tr>
+                          </thead>
+                          </Table>
+                          </div>
+                          </CardBody>
+                          </Card>
+                          </Col>
+                          </Row> )}
             {!isEmpty(this.props.b2baccountStatements) && (
               <Row>
                 <Col lg="12">

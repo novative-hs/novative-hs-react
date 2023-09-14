@@ -54,6 +54,8 @@ class Register extends Component {
       console.log("whsuqi", this.props.match.params.uuid);
     }
     console.log("uuid", this.props.match.params.uuid)
+    console.log("guest_id", this.props.match.params.guest_id)
+
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
     while (elem.attributes.length > 0) {
@@ -117,7 +119,7 @@ class Register extends Component {
     const isLargeScreen = window.innerWidth > 470;
     if (this.props.userID) {
       if (this.props.userAccountType == "patient") {
-        if (!this.props.match.params.uuid) {
+        if (!this.props.match.params.uuid && !this.props.match.params.guest_id) {
           return (
             <Redirect
               to={{
@@ -126,7 +128,8 @@ class Register extends Component {
               }}
             />
           );
-        } else {
+        } 
+        else if (this.props.match.params.guest_id && this.props.match.params.uuid) {
           return (
             <Redirect
               to={{
@@ -134,7 +137,23 @@ class Register extends Component {
                   "/patient-information/" +
                   this.props.userID +
                   "/" +
+                  this.props.match.params.guest_id +
+                  "/" +
                   this.props.match.params.uuid,
+                state: { redirectState: null }, // sending state so that lab page doesn't redirect back to register
+              }}
+              />
+          )
+            }
+        else {
+          return (
+            <Redirect
+              to={{
+                pathname:
+                  "/patient-information/" +
+                  this.props.userID +
+                  "/" +
+                  this.props.match.params.guest_id,
                 state: { redirectState: null }, // sending state so that lab page doesn't redirect back to register
               }}
             />

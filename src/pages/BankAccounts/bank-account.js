@@ -50,6 +50,7 @@ class DonorPayment extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+        complaintSuccess:"",
       bank_id: "",
       account_no: "",
       categorey: "",
@@ -90,14 +91,44 @@ class DonorPayment extends Component {
         status: this.state.status,
       },
     });
-
-    // API call to get the checkout items
     const { onAddBankAccountData } = this.props;
     setTimeout(() => {
       console.log(
         onAddBankAccountData(this.state.bankAccount, this.state.user_id)
       );
     }, 2000);
+     // If no error messages then show wait message
+     setTimeout(() => {
+      if (this.state.bankAccount) {
+        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+        this.setState({
+          complaintSuccess:
+            "Bank Account Added Successfully",
+        });
+      }
+    }, 1000);
+    setTimeout(() => {
+      this.setState({
+        complaintSuccess: "",
+        bank_id: "",
+      account_no: "",
+      categorey: "",
+      account_type:"",
+      currency: "",
+      city: "",
+      address: "",
+      branch_no: "",
+      opening_balance: "",
+      creating_at: "",
+      status: "",
+      });
+    }, 4000);
+    setTimeout(() => {
+      if (this.state.bankAccount) {
+        this.props.history.push("/bankaccounts-list");
+      }
+    }, 3000)
+    
   };
 
   componentDidMount() {
@@ -160,6 +191,11 @@ class DonorPayment extends Component {
           <Container fluid>
             {/* Render Breadcrumb */}
             <Breadcrumbs title="Add" breadcrumbItem="Bank Account" />
+            {this.state.complaintSuccess && (
+              <Alert color="success" className="col-md-8">
+                {this.state.complaintSuccess}
+              </Alert>
+            )}
             <Formik>
               <div className="checkout-tabs">
                 <Row>
@@ -603,7 +639,6 @@ class DonorPayment extends Component {
                           <button
                             component={Link}
                             onClick={this.handleProceedClick}
-                            to="/donor-appointment"
                             className="btn btn-success mb-4"
                           >
                             <i className="mdi mdi-truck-fast me-1" /> Create{" "}

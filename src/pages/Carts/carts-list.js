@@ -719,9 +719,9 @@ class CartList extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}`
-                              : `/nearby-labs/`
+                            this.props.match.params.guest_id
+                              ? `/labs/${this.props.match.params.guest_id}`
+                              : `/labs`
                           }
                           className="dropdown-item"
                         >
@@ -736,8 +736,8 @@ class CartList extends Component {
                     </Link> */}
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-test/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-test/${this.props.match.params.guest_id}`
                               : `/nearby-test/`
                           }
                           className="dropdown-item"
@@ -749,8 +749,8 @@ class CartList extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-profiles/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-profiles/${this.props.match.params.guest_id}`
                               : `/nearby-profiles/`
                           }
                           className="dropdown-item"
@@ -762,8 +762,8 @@ class CartList extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-packages/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-packages/${this.props.match.params.guest_id}`
                               : `/nearby-packages/`
                           }
                           className="dropdown-item"
@@ -775,8 +775,8 @@ class CartList extends Component {
                       <li className="nav-item">
                         <Link
                           to={
-                            this.props.match.params.uuid
-                              ? `/nearby-radiology/${this.props.match.params.uuid}`
+                            this.props.match.params.guest_id
+                              ? `/nearby-radiology/${this.props.match.params.guest_id}`
                               : `/nearby-radiology/`
                           }
                           className="dropdown-item"
@@ -814,7 +814,11 @@ class CartList extends Component {
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
-                          <Link to={"/test-appointments"} className="dropdown-item">
+                          <Link to={
+                            this.props.match.params.guest_id
+                              ? `/test-appointments/${this.props.match.params.guest_id}`
+                              : `/test-appointments`
+                          } className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
                             <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -1068,8 +1072,8 @@ class CartList extends Component {
                 <Link
                   // to={"/profile"}
                   to={
-                    this.props.match.params.uuid
-                      ? `/profile/${this.props.match.params.uuid}`
+                    this.props.match.params.guest_id
+                      ? `/profile/${this.props.match.params.guest_id}`
                       : `/profile`
                   }
                   className="dropdown-content me-2 text-light"

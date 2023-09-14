@@ -113,17 +113,14 @@ class DonationAppointmentsList extends Component {
   }
 
   componentDidMount() {
-    // const { labs, onGetlabs } = this.props;
-    // if (labs && !labs.length) {
-    //   onGetlabs();
+    // const { allDonationAppointment, onGetAllDonationAppointments } = this.props;
+    // if (allDonationAppointment && !allDonationAppointment.length) {
+    //   onGetAllDonationAppointments(this.props.match.params.id);
+    //   console.log("lab id print here", onGetAllDonationAppointments(this.props.match.params.id))
     // }
-    // this.setState({ labs });
-
+    // this.setState({ allDonationAppointment });
     const { allDonationAppointment, onGetAllDonationAppointments } = this.props;
-    if (allDonationAppointment && !allDonationAppointment.length) {
-      onGetAllDonationAppointments(this.props.match.params.id);
-      console.log("lab id print here", onGetAllDonationAppointments(this.props.match.params.id))
-    }
+    onGetAllDonationAppointments(this.props.match.params.id);
     this.setState({ allDonationAppointment });
   }
 

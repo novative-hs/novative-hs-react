@@ -253,12 +253,12 @@ import allDonationAppointments from "pages/FinanceAdmin/all-donation-appointment
 
 // All general public routes will be listed here
 const publicRoutes = [
-  { path: "/register/:uuid?", component: Register },
+  { path: "/register/:guest_id?/:uuid?", component: Register },
   { path: "/logout", component: Logout },
   { path: "/login/:guest_id?/:uuid?", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/:token/confirm-password", component: ConfirmPwd },
-  { path: "/patient-information/:id/:uuid?", component: PatientInformation },
+  { path: "/patient-information/:id/:guest_id?/:uuid?", component: PatientInformation },
   { path: "/b2bclient-information/:id", component: B2bClientInformation },
   { path: "/donor-information/:id", component: DonorInformation },
   { path: "/lab-information/:id", component: LabInformation },
@@ -643,11 +643,11 @@ const hrAdminAuthProtectedRoutes = [
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:uuid?", component: DashboardPatient },
   {
-    path: "/test-appointments",
+    path: "/test-appointments/:uuid?",
     component: TestAppointmentsList,
   },
   {
-    path: "/profile",
+    path: "/profile/:guest_id?",
     component: PatientProfile,
   },
   {

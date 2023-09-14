@@ -42,6 +42,7 @@ class DonorPayment extends Component {
     super(props);
     this.state = {
       createBanks: [],
+      complaintSuccess:"",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -75,12 +76,35 @@ class DonorPayment extends Component {
     });
 
     // API call to get the checkout items
-    const { onAddCreateBankData } = this.props;
-    setTimeout(() => {
+    const { onAddCreateBankData } = this.props;setTimeout(() => {
       console.log(
         onAddCreateBankData(this.state.createBank, this.state.user_id)
       );
-    }, 2000);
+    }, 1000);
+        // If no error messages then show wait message
+        setTimeout(() => {
+          if (this.state.createBank) {
+            this.setState({
+              complaintSuccess:
+                "Bank Added Successfully",
+            });
+          }
+        }, 1000);
+        setTimeout(() => {
+          this.setState({
+            complaintSuccess: "",
+            phone: "",
+            name: "",
+            email: "",
+            registered_at: "",
+            registered_by: "",
+          });
+        }, 5000);
+        setTimeout(() => {
+          if (this.state.createBank) {
+            this.props.history.push("/banks-list");
+          }
+        }, 3000)
   };
 
 
@@ -120,6 +144,11 @@ class DonorPayment extends Component {
                         Please fill the required fields.
                       </Alert>
                     ) : null}
+                    {this.state.complaintSuccess && (
+              <Alert color="success" className="col-md-8">
+                {this.state.complaintSuccess}
+              </Alert>
+            )}
 
                     <Card>
                       <CardBody>
@@ -161,7 +190,7 @@ class DonorPayment extends Component {
                           </FormGroup>
                           <FormGroup className="mb-4" row>
                             <Label
-                              htmlFor="name"
+                              htmlFor="phone"
                               md="2"
                               className="col-form-label"
                             >
@@ -197,7 +226,7 @@ class DonorPayment extends Component {
                           </FormGroup>
                           <FormGroup className="mb-4" row>
                             <Label
-                              htmlFor="name"
+                              htmlFor="email"
                               md="2"
                               className="col-form-label"
                             >
@@ -232,7 +261,7 @@ class DonorPayment extends Component {
                           </FormGroup>
                           <FormGroup className="mb-4" row>
                             <Label
-                              htmlFor="name"
+                              htmlFor="registered_by"
                               md="2"
                               className="col-form-label"
                             >

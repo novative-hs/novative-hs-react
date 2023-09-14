@@ -151,15 +151,16 @@ class Login extends Component {
                                   } else if (success.account_type === "samplecollector") {
                                     this.props.history.push("/dashboard-samplecollector");
                                   }
-                                } else {
-                                  if (success.account_type === "patient") {
-                                    this.props.history.push(
-                                      this.props.match.params.uuid
-                                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                                        : `/nearby-labs`
-                                    );
-                                    console.log(this.props.match.params.uuid);
-                                  } else if (success.account_type === "labowner") {
+                                } 
+                                if (isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
+                                  this.props.history.push(
+                                    this.props.match.params.uuid
+                                      ? `/nearby-labs/${this.props.match.params.uuid}`
+                                      : `/nearby-labs`
+                                  );
+                                  console.log(this.props.match.params.uuid);
+                                } 
+                                  else if (success.account_type === "labowner") {
                                     this.props.history.push("/dashboard-lab");
                                   } else if (success.account_type === "b2b-admin") {
                                     this.props.history.push("/b2b-clients-list");
@@ -188,7 +189,6 @@ class Login extends Component {
                                   } else if (success.account_type === "donor") {
                                     this.props.history.push("/donor-profile");
                                   }
-                                }
 
 
                               }, 1000);
@@ -294,7 +294,11 @@ class Login extends Component {
                                     <p>
                                       Do not have an account?{" "}
                                       <Link
-                                        to={this.props.match.params.uuid ? `/register/${this.props.match.params.uuid}` : "/register"}
+                                        to={
+                                          this.props.match.params.uuid
+                        ? `/register/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                        : `/register/${this.props.match.params.guest_id}`
+                                        }
                                         className="fw-medium text-primary"
                                       >
                                         Register

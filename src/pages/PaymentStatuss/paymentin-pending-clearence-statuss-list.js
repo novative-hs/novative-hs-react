@@ -486,10 +486,14 @@ class PaymentStatussList extends Component {
                                               "",
 
                                           }}
-                                          validationSchema={Yup.object().shape({
-                                            hiddentEditFlag: Yup.boolean(),
 
-
+                                            validationSchema={Yup.object().shape({
+                                              is_cleared: Yup.string().required('Is Cleared is required'),
+                                              cleared_at: Yup.string().when('is_cleared', {
+                                                is: 'Yes',
+                                                then: Yup.string().required('Cleared At is required'),
+                                                otherwise: Yup.string(),
+                                              }),
 
                                           })}
                                           onSubmit={values => {
@@ -644,7 +648,6 @@ class PaymentStatussList extends Component {
                                                         )
                                                           .toISOString()
                                                           .slice(0, -8)}
-                                                        className="form-control"
                                                         onChange={e => {
                                                           this.setState({
                                                             paymentStatus: {
@@ -658,6 +661,18 @@ class PaymentStatussList extends Component {
                                                             },
                                                           });
                                                         }}
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.is_cleared &&
+                                                          touched.is_cleared
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                      />
+                                                      <ErrorMessage
+                                                        name="is_cleared"
+                                                        component="div"
+                                                        className="invalid-feedback"
                                                       />
                                                     </div>
                                                   ) : null}

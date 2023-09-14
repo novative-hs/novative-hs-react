@@ -78,6 +78,16 @@ class BanksList extends Component {
 
         },
         {
+        dataField: "account_type",
+        text: "Account Type",
+        sort: true,
+        formatter: (cellContent, bankaccount) => (
+          // <Link to={`/bank-account-statements/${bankaccount.id}`}>
+          <> {bankaccount.account_type}</>
+          // </Link>
+        ), filter: textFilter(),
+      },
+        {
           dataField: "categorey",
           text: "Catagorey",
           sort: true,

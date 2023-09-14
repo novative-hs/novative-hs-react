@@ -175,8 +175,8 @@ class PaymentStatussList extends Component {
             <>
               {bankTransfer.transfer_type == "Interbank Transfer" ? (
                  <span>
-                  {bankTransfer.bank_name},{" "}
-                  {bankTransfer.account_no}
+                  {bankTransfer.from_bank_name},{" "}
+                  {bankTransfer.from_account_no}
                  </span>
               ) : (
                 <span>

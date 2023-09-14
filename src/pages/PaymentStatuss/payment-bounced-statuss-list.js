@@ -1382,7 +1382,7 @@ class PaymentStatussList extends Component {
                           </p> */}
                                                     <FormGroup className="mb-0">
                                                       <Label htmlFor="cardnumberInput">
-                                                        Payment To
+                                                        Payment From
                                                         <span
                                                           style={{ color: "#f46a6a" }}
                                                           className="font-size-18"

@@ -39,6 +39,7 @@ class PatientInformation extends Component {
 
   componentDidMount() {
     console.log("uuid", this.props.match.params.uuid)
+    console.log("guest_id", this.props.match.params.guest_id)
     console.log("id", this.props.match.params.id)
     console.log("user type", this.state.user_type)
     this.props.addPatientInformationFailed("");
@@ -151,19 +152,19 @@ class PatientInformation extends Component {
                                   setTimeout(() => {
                                     this.props.history.push(
                                       this.props.match.params.uuid
-                                        ? `/login/${this.props.match.params.uuid}`
-                                        : `/login`
+                                        ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/login/${this.props.match.params.guest_id}`
                                     );
-                                  }, 4000); // 4000 milliseconds = 4 seconds
+                                  }, 3000); // 4000 milliseconds = 4 seconds
                                 } else if (
                                   this.props.patient &&
                                   this.state.user_id &&
                                   this.state.user_type === "b2bclient"
                                 ) {
-                                  console.log(this.props.match.params.uuid);
+                                  console.log(this.props.match.params.guest_id);
                                   this.props.history.push(
-                                    this.props.match.params.uuid
-                                      ? `/labs/${this.props.match.params.uuid}/${this.props.match.params.id}`
+                                    this.props.match.params.guest_id
+                                      ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.id}`
                                       : `/labs`
                                   );
                                 }

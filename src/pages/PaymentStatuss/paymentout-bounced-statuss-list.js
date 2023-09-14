@@ -775,7 +775,7 @@ class paymentCreatedList extends Component {
                                                   <div>
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput">
-                              Payment For
+                              Payment To
                               <span
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"

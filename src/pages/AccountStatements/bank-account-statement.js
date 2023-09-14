@@ -72,7 +72,7 @@ class AccountStatements extends Component {
     }));
   }
 
-  render() {    
+  render() {
     const { SearchBar } = Search;
     const { bankStatements } = this.props;
     const bankStatement = this.state.bankStatement;
@@ -105,24 +105,24 @@ class AccountStatements extends Component {
         sort: true,
         footer: '', // Empty footer for this column
         formatter: (cellContent, bankStatement) => {
-            const date = new Date(bankStatement.clearence_datetime);
-            const day = date.getDate();
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const month = monthNames[date.getMonth()];
-            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+          const date = new Date(bankStatement.clearence_datetime);
+          const day = date.getDate();
+          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const month = monthNames[date.getMonth()];
+          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
 
-            // Format hours and minutes with leading zeros
-            const hours = ('0' + date.getHours()).slice(-2);
-            const minutes = ('0' + date.getMinutes()).slice(-2);
+          // Format hours and minutes with leading zeros
+          const hours = ('0' + date.getHours()).slice(-2);
+          const minutes = ('0' + date.getMinutes()).slice(-2);
 
-            // Determine AM/PM
-            const ampm = date.getHours() >= 12 ? 'pm' : 'am';
+          // Determine AM/PM
+          const ampm = date.getHours() >= 12 ? 'pm' : 'am';
 
-            return (
-                <p className="text-muted mb-0">
-                    {`${day}-${month}-${year} ${hours}:${minutes}${ampm}`}
-                </p>
-            );
+          return (
+            <p className="text-muted mb-0">
+              {`${day}-${month}-${year} ${hours}:${minutes}${ampm}`}
+            </p>
+          );
         },
         filter: textFilter(),
       },
@@ -138,14 +138,14 @@ class AccountStatements extends Component {
               {bankStatement.mif_id && bankStatement.lab_name
                 ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
                 : bankStatement.mif_id && bankStatement.donor_name
-                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Donor Name: </span> {bankStatement.donor_name}</span>
-                : bankStatement.mif_id && bankStatement.title
-                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Adv Title: </span> {bankStatement.title}</span>
-                : bankStatement.mof_id && bankStatement.lab_name
-                ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
-                : bankStatement.mof_id && bankStatement.business_name
-                ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.business_name}</span>
-                :<span><span style={{ color: 'red' }}>BTD ID: </span> {bankStatement.btd_id}</span>
+                  ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Donor Name: </span> {bankStatement.donor_name}</span>
+                  : bankStatement.mif_id && bankStatement.title
+                    ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Adv Title: </span> {bankStatement.title}</span>
+                    : bankStatement.mof_id && bankStatement.lab_name
+                      ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
+                      : bankStatement.mof_id && bankStatement.business_name
+                        ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.business_name}</span>
+                        : <span><span style={{ color: 'red' }}>BTD ID: </span> {bankStatement.btd_id}</span>
               }</strong>
           </>
         ), filter: textFilter(), // Add a text filter for this column // Add a text filter for this column
@@ -168,15 +168,16 @@ class AccountStatements extends Component {
         footerdataField: 'total_Credit',
         formatter: (cellContent, bankStatement) => (
           <>
-          {/* {bankStatement.credit == 0 ? (
-            <p className="d-none">
-              {bankStatement.credit}
-            </p>
-          ) : ( */}
-            <p className="text-end">
-              {bankStatement.credit}
-            </p>
-          {/* )} */}
+            {bankStatement.credit == 0 ? (
+              <p className="d-none">
+                {bankStatement.credit}
+              </p>
+            ) : (
+              <div className="text-end">
+                <strong>{bankStatement.credit}</strong>
+              </div>
+
+            )}
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },
@@ -186,17 +187,18 @@ class AccountStatements extends Component {
         footer: 'Total Debit', // Footer label for this column
         footerdataField: 'totalDebit',
         formatter: (cellContent, bankStatement) => (
-          <>             
-         {/* {bankStatement.Debit == 0 ? (
-            <p className="d-none">
-              {bankStatement.Debit}
-            </p>
+          <>
+            {bankStatement.Debit == 0 ? (
+              <p className="d-none">
+                {bankStatement.Debit}
+              </p>
 
-          ) : ( */}
-            <p className="text-end">
-              {bankStatement.Debit}
-            </p>
-          {/* )} */}
+            ) : (
+              <div className="text-end">
+                <strong>{bankStatement.Debit}</strong>
+              </div>
+
+            )}
           </>
         ), filter: textFilter(), // Add a text filter for this column
       },
@@ -250,46 +252,46 @@ class AccountStatements extends Component {
                   <CardBody>
                     <Row className="mb-2">
                       <Col sm="4">
-                      <Row className="mb-2">
-                      <Col sm="8">
+                        <Row className="mb-2">
+                          <Col sm="8">
 
-                        {bankStatement.bankaccount_id ? (
-                          <div className="mb-3">
-                            <Label className="col-form-label">Bank Account Name and Number</Label>
+                            {bankStatement.bankaccount_id ? (
+                              <div className="mb-3">
+                                <Label className="col-form-label">Bank Account Name and Number</Label>
 
-                            <Field
-                              name="bankaccount_id"
-                              as="select"
-                              defaultValue={bankStatement.bankaccount_id}
-                              className="form-control"
-                              readOnly={true}
-                              multiple={false}
-                              onChange={(e) => {
-                                const selectedAccountId = e.target.value;
-                                this.props.history.push(`/bank-account-statements/${selectedAccountId}`);
-                              }}
-                            >
-                              <option key={bankStatement.bankaccount_id} value={bankStatement.bankaccount_id}>
-                                {bankStatement.account_no}
-                              </option>
-                            </Field>
-                          </div>
-                        ) : (
-                          <div className="mb-3 select2-container">
-                            <Label className="col-form-label">Bank Account Name and Number</Label>
+                                <Field
+                                  name="bankaccount_id"
+                                  as="select"
+                                  defaultValue={bankStatement.bankaccount_id}
+                                  className="form-control"
+                                  readOnly={true}
+                                  multiple={false}
+                                  onChange={(e) => {
+                                    const selectedAccountId = e.target.value;
+                                    this.props.history.push(`/bank-account-statements/${selectedAccountId}`);
+                                  }}
+                                >
+                                  <option key={bankStatement.bankaccount_id} value={bankStatement.bankaccount_id}>
+                                    {bankStatement.account_no}
+                                  </option>
+                                </Field>
+                              </div>
+                            ) : (
+                              <div className="mb-3 select2-container">
+                                <Label className="col-form-label">Bank Account Name and Number</Label>
 
-                            <Select
-                              name="bankaccount_id"
-                              component="Select"
-                              onChange={(selectedOption) => {
-                                const selectedAccountId = selectedOption.value;
-                                this.props.history.push(`/bank-account-statements/${selectedAccountId}`);
-                              }}
-                              options={bankaccountList}
-                              placeholder="Select Bank Account..."
-                            />
-                          </div>
-                        )}</Col></Row>
+                                <Select
+                                  name="bankaccount_id"
+                                  component="Select"
+                                  onChange={(selectedOption) => {
+                                    const selectedAccountId = selectedOption.value;
+                                    this.props.history.push(`/bank-account-statements/${selectedAccountId}`);
+                                  }}
+                                  options={bankaccountList}
+                                  placeholder="Select Bank Account..."
+                                />
+                              </div>
+                            )}</Col></Row>
                       </Col>
                     </Row>
 
