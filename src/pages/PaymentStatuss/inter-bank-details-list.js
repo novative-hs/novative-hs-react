@@ -317,8 +317,9 @@ class PaymentStatussList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, bankTransfer) => (
+            <>
+            {bankTransfer.status == "Cleared" && (
             <div className="d-flex gap-3">
-             
               <button
                 type="submit"
                 className="btn btn-primary save-user"
@@ -329,6 +330,8 @@ class PaymentStatussList extends Component {
               </button>
 
             </div>
+            
+        )}</>
           ),
         },
       ],
