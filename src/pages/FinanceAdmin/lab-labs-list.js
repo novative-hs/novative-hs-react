@@ -242,7 +242,7 @@ class PendingB2BClients extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending B2B Clients | Lab Hazir</title>
+            <title>Labs List | Lab Hazir</title>
           </MetaTags>
 
           <ApproveUnapproveModal
@@ -253,7 +253,7 @@ class PendingB2BClients extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B Clients" breadcrumbItem="Pending" />
+            <Breadcrumbs title="B2B Clients" breadcrumbItem="Labs List" />
             <Row>
               <Col lg="12">
                 <Card>

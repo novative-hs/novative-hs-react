@@ -31,11 +31,13 @@ class B2bProfile extends Component {
     super(props);
     this.state = {
       btnText: "Copy",
+      btnText1: "Copy",
       business_name: "",
       business_logo: "",
       email: "",
       landline: "",
       website_url: "",
+      access_token:"",
       isProfileUpdated: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -80,6 +82,7 @@ class B2bProfile extends Component {
         email: this.props.success.email,
         landline: this.props.success.landline,
         website_url: this.props.success.website_url,
+        access_token: this.props.success.access_token,
       });
     }, 1000);
   }
@@ -110,6 +113,7 @@ class B2bProfile extends Component {
                     email: (this.state && this.state.email) || "",
                     landline: (this.state && this.state.landline) || "",
                     website_url: (this.state && this.state.website_url) || "",
+                    access_token: (this.state && this.state.access_token) || "",
                   }}
                   validationSchema={Yup.object().shape({
                     business_name: Yup.string()
@@ -325,7 +329,10 @@ class B2bProfile extends Component {
                         />
                       </div>
 
-                      <div>
+                      <div className="mb-3">
+                      <Label for="uuid" className="form-label">
+                          Personalized Link
+                        </Label>
                         <input
                           value={
                             "https://www.labhazir.com/nearby-labs/" +
@@ -345,13 +352,36 @@ class B2bProfile extends Component {
                             );
                             this.setState({ btnText: "Copied" });
                           }}
+                          style={{ marginTop: '10px' }} // Add margin to the button element
                         >
                           {this.state.btnText}
                         </button>
-                        {/* 
-                        {this.state.copied ? (
-                          <span style={{ color: "red" }}>Copied.</span>
-                        ) : null} */}
+                      </div>
+                      <div className="mb-3">
+                      <Label for="access_token" className="form-label">
+                          Authorization Token (for API Integration)
+                        </Label>
+                        <input
+                          value={
+                            this.props.success.access_token
+                          }
+                          className="form-control"
+                          readOnly={true}
+                        />
+
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                                this.props.success.access_token
+                            );
+                            this.setState({ btnText1: "Copied" });
+                          }}
+                          style={{ marginTop: '10px' }} // Add margin to the button element
+                        >
+                          {this.state.btnText1}
+                        </button>
                       </div>
 
                       <div className="text-center mt-4">

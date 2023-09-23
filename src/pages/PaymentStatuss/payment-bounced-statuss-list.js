@@ -1380,7 +1380,7 @@ class PaymentStatussList extends Component {
                             Fill the Cheque payment only if your payment method
                             is Cheque
                           </p> */}
-                                                    <FormGroup className="mb-0">
+                                                    {/* <FormGroup className="mb-0">
                                                       <Label htmlFor="cardnumberInput">
                                                         Payment From
                                                         <span
@@ -1411,9 +1411,9 @@ class PaymentStatussList extends Component {
                                                         <option value="Donor">Donor</option>
                                                       </select>
 
-                                                    </FormGroup>
+                                                    </FormGroup> */}
 
-                                                    {this.state.payment_for == "Lab" ? (
+                                                    {/* {this.state.payment_for == "Lab" ? (
                                                       paymentBouncedInStatus.lab_id ? (
                                                         <div className="mb-3">
                                                           <Label className="form-label">
@@ -1481,9 +1481,9 @@ class PaymentStatussList extends Component {
                                                             Please select your Lab
                                                           </div>
                                                         </div>)
-                                                    ) : null}
+                                                    ) : null} */}
 
-                                                    {this.state.payment_for == "Donor" ? (
+                                                    {/* {this.state.payment_for == "Donor" ? (
                                                       paymentBouncedInStatus.donor_id ? (
                                                         <div className="mb-3">
                                                           <Label className="form-label">
@@ -1553,7 +1553,7 @@ class PaymentStatussList extends Component {
                                                         </div>
                                                       )
 
-                                                    ) : null}
+                                                    ) : null} */}
 
                                                     <div className="mb-3">
                                                       <Label className="form-label">

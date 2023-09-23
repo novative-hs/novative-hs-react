@@ -324,13 +324,13 @@ class PaymentStatussList extends Component {
       <React.Fragment>
         <div className="page-content">
         <MetaTags>
-            <title>MIF List | Lab Hazir</title>
+            <title>MOF List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="List"
-              breadcrumbItem="MIF Cleared"
+              breadcrumbItem="MOF Cleared"
             />
             <Row>
               <Col lg="12">

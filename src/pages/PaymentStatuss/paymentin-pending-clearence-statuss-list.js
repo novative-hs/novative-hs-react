@@ -461,7 +461,7 @@ class PaymentStatussList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit MIF Deposited"
+                                          ? "Edit MIF"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>

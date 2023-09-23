@@ -99,7 +99,7 @@ class AccountStatements extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B" breadcrumbItem="Account Statements" />
+            <Breadcrumbs title="Donor" breadcrumbItem="Account Statements" />
             {isEmpty(this.props.donoraccountStatements) && (
               <Row>
                 <Col lg="12">

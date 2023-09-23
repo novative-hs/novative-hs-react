@@ -276,13 +276,13 @@ class BanksList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Payments In with Status | Lab Hazir</title>
+            <title>Banks List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Payments In"
-              breadcrumbItem="Status List"
+              title="Banks List"
+              breadcrumbItem="Banks List"
             />
             <Row>
               <Col lg="12">
@@ -340,7 +340,7 @@ class BanksList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Quality Certificate"
+                                          ? "Edit Bank Details"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>
