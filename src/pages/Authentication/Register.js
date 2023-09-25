@@ -484,6 +484,9 @@ class Register extends Component {
                                       <option value="donor">
                                         Donor
                                       </option>
+                                      <option value="corporate">
+                                      Corporate
+                                      </option>
                                       {/* <option value="corporate">Corporate</option> */}
                                     </Field>
                                   </div>
@@ -532,6 +535,9 @@ class Register extends Component {
                                       </option>
                                       <option value="donor">
                                         Donor
+                                      </option>
+                                      <option value="corporate">
+                                      Corporate
                                       </option>
                                       {/* <option value="corporate">Corporate</option> */}
                                     </Field>

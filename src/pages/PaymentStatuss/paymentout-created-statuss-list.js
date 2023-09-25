@@ -428,9 +428,12 @@ class PathologistsList extends Component {
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: paymentCreatedStatuss.length, // replace later with size(paymentCreatedStatuss),
+      totalSize: this.props.paymentCreatedStatuss.length, // Replace with the actual data length
       custom: true,
     };
+    
+    // Check if there are items in the paymentCreatedStatuss array
+    const hasData = paymentCreatedStatuss && paymentCreatedStatuss.length > 0;
 
     const defaultSorted = [
       {
@@ -1236,13 +1239,15 @@ class PathologistsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
+                              {hasData && (
+                                <Row className="align-items-md-center mt-30">
+                                  <Col className="pagination pagination-rounded justify-content-end mb-2">
+                                    <PaginationListStandalone
+                                      {...paginationProps}
+                                    />
+                                  </Col>
+                                </Row>
+                              )}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>

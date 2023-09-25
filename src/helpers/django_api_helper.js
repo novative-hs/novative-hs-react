@@ -286,7 +286,6 @@ export const postCorporateInformation = (id, corporate) => {
   formData.append("landline", corporate.landline);
   formData.append("address", corporate.address);
   formData.append("city", corporate.city);
-  formData.append("district", corporate.district);
 
   return axios
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {

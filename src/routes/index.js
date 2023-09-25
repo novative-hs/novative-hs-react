@@ -41,6 +41,8 @@ import DashboardB2b from "../pages/Dashboard-B2b/index";
 // import DashboardFinanceOfficer from "pages/Dashboard-FinanceOfficer/StackedColumnChart";
 import FinanceOfficerProfile from "../pages/Authentication/StaffProfile";
 import DashboardFinance from "../pages/Dashboard-Finance/index"
+import DashboardCorporate from "../pages/Dashboard-Corporate/index"
+
 //Finance Admin
 import DashboardFinanceAdmin from "pages/Dashboard-FinanceAdmin";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
@@ -731,8 +733,12 @@ const patientPublicRoutes = [
 
 const corporateAuthProtectedRoutes = [
   {
-    path: "/dashboard-corporate/:id/profile",
+    path: "/corporate-profile",
     component: CorporateProfile,
+  },
+  {
+    path: "/dashboard-corporate",
+    component: DashboardCorporate,
   },
 ];
 

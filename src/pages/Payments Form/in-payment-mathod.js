@@ -1132,7 +1132,7 @@ class InPaymentsForm extends Component {
                                   to="/dashboard-financeofficer"
                                   className="btn btn-success mb-4"
                                 >
-                                  <i className="mdi mdi-truck-fast me-1" /> Save{" "}
+                                  <i className="mdi mdi-truck-fast me-1" /> Created{" "}
                                 </button>
                               </div>
                             </Col>

@@ -29,7 +29,6 @@ class CorporateInformation extends Component {
       landline: "",
       address: "",
       city: "",
-      district: "",
     };
   }
 
@@ -109,8 +108,6 @@ class CorporateInformation extends Component {
                                 (this.state && this.state.landline) || "",
                               address: (this.state && this.state.address) || "",
                               city: (this.state && this.state.city) || "",
-                              district:
-                                (this.state && this.state.district) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -170,14 +167,7 @@ class CorporateInformation extends Component {
                                   /^[a-zA-Z][a-zA-Z ]+$/,
                                   "Please enter only alphabets and spaces"
                                 ),
-                              district: Yup.string()
-                                .trim()
-                                .required("Please enter your district")
-                                .max(255, "Please enter maximum 255 characters")
-                                .matches(
-                                  /^[a-zA-Z][a-zA-Z ]+$/,
-                                  "Please enter only alphabets and spaces"
-                                ),
+                              
                             })}
                             onSubmit={values => {
                               this.props.addCorporateInformation(
@@ -193,7 +183,7 @@ class CorporateInformation extends Component {
                                 {/* Name field */}
                                 <div className="mb-3">
                                   <Label for="name" className="form-label">
-                                    Name
+                                    Corporation Name
                                   </Label>
                                   <Field
                                     id="name"
@@ -413,36 +403,7 @@ class CorporateInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
-
-                                {/* District field */}
-                                <div className="mb-3">
-                                  <Label for="district" className="form-label">
-                                    District
-                                  </Label>
-                                  <Field
-                                    id="district"
-                                    name="district"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({
-                                        district: e.target.value,
-                                      })
-                                    }
-                                    value={this.state.district}
-                                    className={
-                                      "form-control" +
-                                      (errors.district && touched.district
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="district"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-
+                               
                                 <div className="mt-3 d-grid">
                                   <button
                                     className="btn btn-primary btn-block"

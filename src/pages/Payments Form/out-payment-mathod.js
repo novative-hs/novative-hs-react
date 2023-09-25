@@ -1085,7 +1085,7 @@ class OutPaymentsForm extends Component {
                                   to="/dashboard-financeofficer"
                                   className="btn btn-success mb-4"
                                 >
-                                  <i className="mdi mdi-truck-fast me-1" /> Save{" "}
+                                  <i className="mdi mdi-truck-fast me-1" /> Created{" "}
                                 </button>
                               </div>
                             </Col>
@@ -1097,7 +1097,7 @@ class OutPaymentsForm extends Component {
                               // disabled={this.state.carts.length == 0}
                               >
                                 <i className="mdi mdi-truck-fast me-1" />
-                                submit
+                                Pending Clearance
                               </button>
                             </Col>
                           </Row>

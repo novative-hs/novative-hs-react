@@ -188,7 +188,8 @@ class Login extends Component {
                                     this.props.history.push("/add-staff");
                                   } else if (success.account_type === "donor") {
                                     this.props.history.push("/donor-profile");
-                                  }
+                                  } else if (success.account_type === "corporate") {
+                                    this.props.history.push("/dashboard-corporate");}
 
 
                               }, 1000);

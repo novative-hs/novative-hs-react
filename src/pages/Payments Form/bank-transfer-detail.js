@@ -115,7 +115,7 @@ class BankTransfersForm extends Component {
         deposit_copy: this.state.deposit_copy,
         payment_copy: this.state.payment_copy,
         deposit_datetime: this.state.deposit_datetime,
-        status: "Cleared",
+        status: "Approved",
         comments: this.state.comments,
       },
     });
@@ -149,7 +149,7 @@ class BankTransfersForm extends Component {
         deposit_copy: this.state.deposit_copy,
         payment_copy: this.state.payment_copy,
         deposit_datetime: this.state.deposit_datetime,
-        status: "Pending Clearance",
+        status: "Cleared",
         comments: this.state.comments,
       },
     });
@@ -412,6 +412,43 @@ class BankTransfersForm extends Component {
                                  --- Please select the Mode Type
                                  ---
                                </option>
+                               <option value="Cheque">Cheque</option>
+                               <option value="Online">Online</option>
+                               <option value="Bank Form">Bank Form</option>
+
+                             </select>
+ 
+                           </FormGroup>
+                          ) : null}
+                          {this.state.transfer_type == "Deposit" || this.state.transfer_type == "Withdraw" ? (
+                             <FormGroup className="mb-0">
+                             <Label htmlFor="cardnumberInput">
+                               Mode
+                               <span
+                                 style={{ color: "#f46a6a" }}
+                                 className="font-size-18"
+                               >
+                                 *
+                               </span>
+                             </Label>
+                             <select
+                               name="mode"
+                               component="select"
+                               onChange={e =>
+                                 this.setState({
+                                   mode: e.target.value,
+                                 })
+                               }
+                               defaultValue={this.state.mode}
+                               className="form-select"
+                             >
+                               <option
+                                 value=""
+                               >
+                                 --- Please select the Mode Type
+                                 ---
+                               </option>
+                               <option value="Cheque">Cash</option>
                                <option value="Cheque">Cheque</option>
                                <option value="Online">Online</option>
                                <option value="Bank Form">Bank Form</option>
@@ -932,7 +969,7 @@ class BankTransfersForm extends Component {
                                   to="/dashboard-financeofficer"
                                   className="btn btn-success mb-4"
                                 >
-                                  <i className="mdi mdi-truck-fast me-1" /> Save{" "}
+                                  <i className="mdi mdi-truck-fast me-1" /> Cleared{" "}
                                 </button>
                               </div>
                             </Col>
@@ -944,7 +981,7 @@ class BankTransfersForm extends Component {
                               // disabled={this.state.carts.length == 0}
                               >
                                 <i className="mdi mdi-truck-fast me-1" />
-                                submit
+                                Approved
                               </button>
                             </Col>
                           </Row>

@@ -371,9 +371,12 @@ class PaymentStatussList extends Component {
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: paymentStatuss.length, // replace later with size(paymentStatuss),
+      totalSize: this.props.paymentStatuss.length, // Replace with the actual data length
       custom: true,
     };
+    
+    // Check if there are items in the paymentStatuss array
+    const hasData = paymentStatuss && paymentStatuss.length > 0;
 
     const defaultSorted = [
       {
@@ -758,13 +761,15 @@ class PaymentStatussList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
+                              {hasData && (
+                                <Row className="align-items-md-center mt-30">
+                                  <Col className="pagination pagination-rounded justify-content-end mb-2">
+                                    <PaginationListStandalone
+                                      {...paginationProps}
+                                    />
+                                  </Col>
+                                </Row>
+                              )}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>
