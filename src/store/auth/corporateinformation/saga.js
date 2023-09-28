@@ -1,14 +1,26 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 
 //Account Redux states
-import { ADD_CORPORATE_INFORMATION } from "./actionTypes";
+import { ADD_CORPORATE_INFORMATION, GET_TERRITORIES_LIST } from "./actionTypes";
 import {
+  getTerritoriesListSuccess,
+  getTerritoriesListFail,
   addCorporateInformationSuccessful,
   addCorporateInformationFailed,
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { postCorporateInformation } from "../../../helpers/django_api_helper";
+import { postCorporateInformation,   getTerritoriesList,
+} from "../../../helpers/django_api_helper";
+
+function* fetchTerritoriesList(object) {
+  try {
+    const response = yield call(getTerritoriesList, object.payload);
+    yield put(getTerritoriesListSuccess(response));
+  } catch (error) {
+    yield put(getTerritoriesListFail(error));
+  }
+}
 
 // Is user register successfull then direct plot user in redux.
 function* addCorporateInformation({ payload: { corporate, id } }) {
@@ -27,6 +39,7 @@ function* addCorporateInformation({ payload: { corporate, id } }) {
 
 function* CorporateInformationSaga() {
   yield takeEvery(ADD_CORPORATE_INFORMATION, addCorporateInformation);
+  yield takeEvery(GET_TERRITORIES_LIST,fetchTerritoriesList);
 }
 
 export default CorporateInformationSaga;

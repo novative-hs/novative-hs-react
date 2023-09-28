@@ -375,7 +375,7 @@ class InPaymentsForm extends Component {
     for (let i = 0; i < advertisements.length; i++) {
       if (advertisements[i].lab_office === this.props.staffProfiles.territory_office) {
         advertisementList.push({
-          label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name})`,
+          label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name}) - (Price: ${advertisements[i].amount})`,
           value: `${advertisements[i].id}`,
         });
       }

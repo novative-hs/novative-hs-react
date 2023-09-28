@@ -100,23 +100,23 @@ class paymentCreatedList extends Component {
               </>
             ),filter: textFilter(),
           },
-          {
-            dataField: "payment_for",
-            text: "Payment To",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => {
-              const date = new Date(paymentBouncedStatus.payment_for);
-              const day = date.getDate();
-              const month = date.getMonth() + 1; // Adding 1 to get the correct month
-              const year = date.getFullYear();
+          // {
+          //   dataField: "payment_for",
+          //   text: "Payment To",
+          //   sort: true,
+          //   formatter: (cellContent, paymentBouncedStatus) => {
+          //     const date = new Date(paymentBouncedStatus.payment_for);
+          //     const day = date.getDate();
+          //     const month = date.getMonth() + 1; // Adding 1 to get the correct month
+          //     const year = date.getFullYear();
               
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}/${month}/${year}`}
-                  </p>
-              );
-          },filter: textFilter(),
-          },
+          //     return (
+          //         <p className="text-muted mb-0">
+          //             {`${day}/${month}/${year}`}
+          //         </p>
+          //     );
+          // },filter: textFilter(),
+          // },
           {
             dataField: "lab_name",
             text: "Client Name",
@@ -175,21 +175,21 @@ class paymentCreatedList extends Component {
               </>
             ),filter: textFilter(),
           },
-          {
-            dataField: "bank",
-            text: "Bank/Account#",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <span>
-                  <span>
-                    {paymentBouncedStatus.bank_name},{" "}
-                    {paymentBouncedStatus.account_no}
-                  </span>
-                </span>
-              </>
-            ),filter: textFilter(),
-          },
+          // {
+          //   dataField: "bank",
+          //   text: "Bank/Account#",
+          //   sort: true,
+          //   formatter: (cellContent, paymentBouncedStatus) => (
+          //     <>
+          //       <span>
+          //         <span>
+          //           {paymentBouncedStatus.bank_name},{" "}
+          //           {paymentBouncedStatus.account_no}
+          //         </span>
+          //       </span>
+          //     </>
+          //   ),filter: textFilter(),
+          // },
          
           {
             dataField: "is_cleared",

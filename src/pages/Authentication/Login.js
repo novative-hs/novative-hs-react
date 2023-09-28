@@ -189,7 +189,8 @@ class Login extends Component {
                                   } else if (success.account_type === "donor") {
                                     this.props.history.push("/donor-profile");
                                   } else if (success.account_type === "corporate") {
-                                    this.props.history.push("/dashboard-corporate");}
+                                    this.props.history.push("/dashboard-corporate");
+                                  }
 
 
                               }, 1000);

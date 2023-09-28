@@ -351,6 +351,13 @@ class SidebarContent extends Component {
                     </li>
                   </ul>
                 </li>
+                <li>
+                      <Link to= "/accepted-lab-advertisements"
+                      >
+                        <i className="bx bx-image-add"/>
+                        <span>{this.props.t("Advertisement List")}</span>
+                      </Link>
+                    </li>
                 </ul>
               </div>
             </SimpleBar>
@@ -1005,6 +1012,22 @@ class SidebarContent extends Component {
                     {this.props.t("Advertisements")}
                   </Link>
                 </li>
+              </ul>
+            </div>
+          </SimpleBar>
+        )}
+        {/* Corporate */}
+        {this.state.account_type && this.state.account_type == "corporate" && (
+          <SimpleBar style={{ maxHeight: 500 }}>
+            <div id="sidebar-menu">
+              <ul className="metismenu list-unstyled" id="side-menu">
+                <li>
+                  <Link to="/dashboard-corporate">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Dashboard")}</span>
+                  </Link>
+                </li>
+
               </ul>
             </div>
           </SimpleBar>

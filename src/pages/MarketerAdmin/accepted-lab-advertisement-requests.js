@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import {
   Card,
   CardBody,
@@ -56,6 +57,9 @@ class LabAdvertisementRequestsList extends Component {
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : "",
+      account_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
       labAdvertisementRequestListColumns: [
         {
@@ -118,25 +122,32 @@ class LabAdvertisementRequestsList extends Component {
           text: "Status",
           sort: true,
         },
-        // {
-        //   dataField: "menu",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Action",
-        //   formatter: (cellContent, labAdvertisementRequest) => (
-        //     <div className="d-flex gap-3">
-        //       <Link className="text-success" to="#">
-        //         <i
-        //           className="mdi mdi-pencil font-size-18"
-        //           id="edittooltip"
-        //           onClick={e =>
-        //             this.handleLabAdvertisementRequestClick(e, labAdvertisementRequest)
-        //           }
-        //         ></i>
-        //       </Link>
-        //     </div>
-        //   ),
-        // },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <div>
+              {this.state.account_type === "marketer-admin" && (
+               <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/comments-list/${labAdvertisementRequest.id}`}
+                ></Link>
+              </Tooltip>
+              )}
+              {this.state.account_type === "finance-officer" && (
+               <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/chat-list/${labAdvertisementRequest.id}`}
+                ></Link>
+              </Tooltip>
+              )}
+            </div>
+          ),
+        },
       ],
     };
     this.handleLabAdvertisementRequestClick =
@@ -264,13 +275,13 @@ class LabAdvertisementRequestsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending Lab Advertisements List | Lab Hazir</title>
+            <title>Lab Advertisements List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Lab Advertisement Request"
-              breadcrumbItem="Pending List"
+              title="Lab Advertisement"
+              breadcrumbItem="Lab Advertisements List"
             />
             <Row>
               <Col lg="12">

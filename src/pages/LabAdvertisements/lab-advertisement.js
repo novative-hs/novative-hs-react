@@ -132,12 +132,6 @@ class AdvertisementsList extends Component {
                   {labAdvertisement.request_status}
                 </span>
               )}
-
-              {/* {labAdvertisement.request_status == "Recreated" && (
-                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  Recreated
-                </span>
-              )} */}
               {labAdvertisement.request_status == "Recreated" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                   <Link
@@ -204,6 +198,7 @@ class AdvertisementsList extends Component {
           text: "Action",
           formatter: (cellContent, labAdvertisement) => (
             <div className="d-flex gap-3">
+              {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced"&& ( 
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -211,6 +206,8 @@ class AdvertisementsList extends Component {
                   onClick={e => this.handleAdvertisementClick(e, labAdvertisement)}
                 ></i>
               </Link>
+              )}
+              {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced" && ( 
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -218,6 +215,7 @@ class AdvertisementsList extends Component {
                   onClick={() => this.onClickDelete(labAdvertisement)}
                 ></i>
               </Link>
+              )}
             </div>
           ),
         },
@@ -416,15 +414,6 @@ class AdvertisementsList extends Component {
         order: "desc", // desc or asc
       },
     ];
-    // const advertisementNumberOfDaysList = [];
-    //     for (let i = 0; i < this.props.advertisementPriceLists.length; i++) {
-    //       advertisementNumberOfDaysList.push({
-    //         label: this.props.advertisementPriceLists[i].number_of_days,
-    //         value: this.props.advertisementPriceLists[i].number_of_days,
-
-    //       });
-    //     }
-
     return (
       <React.Fragment>
         <DeleteModal
@@ -573,46 +562,10 @@ class AdvertisementsList extends Component {
                                             km:
                                               (this.state.labAdvertisement && this.state.labAdvertisement.km) ||
                                               "",
-                                            // number_of_days:
-                                            //   (this.state &&
-                                            //     this.state.number_of_days) ||
-                                            //   "",
-                                            // amount:
-                                            //   (this.state &&
-                                            //     this.state.amount) ||
-                                            //   "",
 
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            // name: Yup.string()
-                                            //   .trim()
-                                            //   .matches(
-                                            //     /^[a-zA-Z][a-zA-Z ]+$/,
-                                            //     "Please enter only alphabets and spaces"
-                                            //   )
-                                            //   .required("Please enter name"),
-                                            // name: Yup.string().when(
-                                            //   "region_type",
-                                            //   {
-                                            //     is: val => val === "Others",
-                                            //     then: Yup.string()
-                                            //       .trim()
-                                            //       .required("Please enter test name")
-                                            //       .min(
-                                            //         3,
-                                            //         "Please enter at least 3 characters"
-                                            //       )
-                                            //       .max(
-                                            //         255,
-                                            //         "Please enter maximum 255 characters"
-                                            //       )
-                                            //       .matches(
-                                            //         /^[a-zA-Z][a-zA-Z ]+$/,
-                                            //         "Please enter only alphabets and spaces"
-                                            //       ),
-                                            //   }
-                                            // ),
 
                                             poster: Yup.string().when(
                                               "hiddenEditFlag",
@@ -656,11 +609,6 @@ class AdvertisementsList extends Component {
                                                     posted_till:
                                                       values.posted_till,
                                                     km: values.km,
-                                                    // number_of_days: values.number_of_days,
-                                                    // amount: values.amount,
-
-
-
                                                   };
 
                                                   // update Advertisement
@@ -676,20 +624,13 @@ class AdvertisementsList extends Component {
                                               } else {
                                                 const updateLabAdvertisement = {
                                                   id: labAdvertisement.id,
-
                                                   title: values.title,
                                                   poster:
-                                                    this.state.advertisementImg,
-
+                                                    values.advertisementImg,
                                                   posted_at: values.posted_at,
                                                   posted_till:
                                                     values.posted_till,
                                                   km: values.km,
-                                                  // number_of_days: values.number_of_days,
-                                                  // amount: values.amount,
-
-
-
                                                 };
 
                                                 // update Advertisement
@@ -702,36 +643,6 @@ class AdvertisementsList extends Component {
                                                   );
                                                 }, 1000);
                                               }
-                                            } else {
-                                              const newAdvertisement = {
-                                                id:
-                                                  Math.floor(
-                                                    Math.random() * (30 - 20)
-                                                  ) + 20,
-
-                                                title: values.title,
-                                                poster:
-                                                  this.state.advertisementImg,
-
-                                                posted_at: values.posted_at,
-                                                posted_till: values.posted_till,
-                                                km: values.km,
-                                                // number_of_days: values.number_of_days,
-                                                // amount: values.amount,
-
-
-                                              };
-
-                                              // save new Advertisement
-                                              onAddNewLabAdvertisement(
-                                                newAdvertisement,
-                                                this.state.user_id
-                                              );
-                                              setTimeout(() => {
-                                                onGetLabAdvertisements(
-                                                  this.state.user_id
-                                                );
-                                              }, 1000);
                                             }
                                             this.toggle();
                                           }}
@@ -746,58 +657,6 @@ class AdvertisementsList extends Component {
                                                     name="hiddenEditFlag"
                                                     value={isEdit}
                                                   />
-
-                                                  {/* Advertisement Title field
-                                                  {this.state.labAdvertisement
-                                                    .region_type ===
-                                                    "Others" && (
-                                                  
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Advertisement title
-                                                    </Label>
-                                                    <Field
-                                                      name="name"
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .labAdvertisement
-                                                          .name
-                                                      }
-                                                      onChange={e => {
-                                                        
-                                                          this.setState({
-                                                            labAdvertisement:
-                                                              {
-                                                                id: labAdvertisement.id,
-                                                                region_type: labAdvertisement.region_type,
-                                                                name: e.target
-                                                                  .value,
-                                                                type: labAdvertisement.type,
-                                                                poster:
-                                                                  labAdvertisement.poster,
-                                                                expiry_date: labAdvertisement.expiry_date,
-                                                              },
-                                                          });
-                                                        } 
-                                                      }
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.name &&
-                                                        touched.name
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                               
-                                                    )} */}
-                                                  {/* Region Type field */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Title
@@ -820,10 +679,6 @@ class AdvertisementsList extends Component {
                                                             posted_till:
                                                               labAdvertisement.posted_till,
                                                             km: labAdvertisement.km,
-                                                            // number_of_days:
-                                                            //   labAdvertisement.number_of_days,
-                                                            // amount: labAdvertisement.amount,
-
                                                           },
                                                         });
                                                       }}
@@ -877,15 +732,6 @@ class AdvertisementsList extends Component {
                                                       />
                                                     </div>
                                                   ) : null}
-
-
-
-                                                  {/* {labAdvertisement.request_status != "Accepted" && 
-                                                    labAdvertisement.payment_status != "Approved" ? (
-                                                     
-                                                  ) : null} */}
-
-
                                                   {/* Advertisement posted date field */}
 
                                                   <div className="mb-3">

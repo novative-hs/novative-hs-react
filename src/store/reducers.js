@@ -156,7 +156,7 @@ import bankaccountStatements from "./bank-account-statements/reducer";
 
 import staff from "./staff/reducer";
 import audits from "./auditor/reducer";
-
+import msgs from "./chat-box/reducer";
 // admins
 import registrationAdmin from "./registration-admin/reducer";
 import financeAdmin from "./finance-admin/reducer";
@@ -188,6 +188,7 @@ const rootReducer = combineReducers({
   B2bClientInformation,
   DonorInformation,
   financeAdmin,
+  msgs,
   bankaccounts,
   DonorProfile,
   LabInformation,

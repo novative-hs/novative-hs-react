@@ -109,6 +109,7 @@ import TestDescriptions from "pages/Test-Description/test-descriptions-list";
 import AdvInvoiceDetail from "pages/advInvoice/adv-invoice-detail";
 
 
+
 // B2B Reffered
 import B2bReferredPatient from "pages/B2bReferredPatients/referred-patients-list";
 import B2bLabShare from "pages/B2bLabShares/lab-shares-list";
@@ -192,6 +193,7 @@ import b2bList from "pages/FinanceAdmin/b2bclients-list";
 import discountLab from "pages/MarketerAdmin/discount-lab";
 import LabAdvertisementRequests from "pages/MarketerAdmin/pending-lab-advertisement-requests";
 import LabAdvertisementRequestsAccepted from "pages/MarketerAdmin/accepted-lab-advertisement-requests";
+import LabAdvertisementRequestsAcceptedMA from "pages/MarketerAdmin/accepted-lab-advertisement-requests";
 
 // Discount of Labhazir to lab
 // import DiscountLabHazirToLab from "pages/MarketerAdmin/discount-labhazir-to-lab";
@@ -214,6 +216,7 @@ import csrComplaints from "pages/Complaints/csr-complaints";
 import NotesList from "pages/Complaints/notes-list";
 import NotesLists from "pages/Complaints/notes-list";
 import labnotes from "pages/Complaints/notes-list";
+import MsgsList from "pages/Complaints/msg-box";
 
 import AssignedAudits from "pages/Auditor/assigned-audits";
 import LabAudits from "pages/Dashboard-Lab/lab-audits";
@@ -251,6 +254,8 @@ import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir
 import { invoiceList } from "common/data";
 import labsListPendingFee from "store/labs-list-pending/reducer";
 import allDonationAppointments from "pages/FinanceAdmin/all-donation-appointments";
+import msgBox from "pages/Complaints/msg-box";
+import msgBoxFo from "pages/Complaints/msg-box";
 
 
 // All general public routes will be listed here
@@ -422,8 +427,9 @@ const financeOfficerAuthProtectedRoutes = [
   { path: "/dashboard-finance", component: DashboardFinance},
   { path: "/financeofficer-profile", component: FinanceOfficerProfile },
   { path: "/in-payment", component: InPayments },
-  
+  { path: "/accepted-lab-advertisements", component: LabAdvertisementRequestsAcceptedMA},
   { path: "/out-payment", component: OutPayments },
+  { path: "/chat-list/:id", component: msgBoxFo },
   {
     path: "/payment-status",
     component: PaymentStatussList,
@@ -579,6 +585,7 @@ const marketerAdminAuthProtectedRoutes = [
   { path: "/advertisement-price-list", component: AdvertisementPriceLists },
   { path: "/discount-labhazir", component: DiscountLabHazir },
   { path: "/labs-list", component: labsList},
+  { path: "/comments-list/:id", component: msgBox },
   {
     path: "/discountlab/:id",component: DiscountLab,
   },

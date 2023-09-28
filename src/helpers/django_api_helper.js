@@ -285,7 +285,7 @@ export const postCorporateInformation = (id, corporate) => {
   formData.append("phone", corporate.phone);
   formData.append("landline", corporate.landline);
   formData.append("address", corporate.address);
-  formData.append("city", corporate.city);
+  formData.append("city_id", corporate.city_id);
 
   return axios
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
@@ -481,6 +481,21 @@ formData.append("appointment_id", note.appointment_id);
 
 console.log("heeeeeee",note, id)
 return axios.post(`${url.ADD_NEW_NOTE}/${id}`, formData, {
+  headers: getHeader(authHeader()),
+});
+};
+export const getMsgs = id =>
+get(`${url.GET_MSGS}/${id}`, {
+  headers: getHeader(authHeader()),
+});
+
+export const addNewMsg = (msg, id) => {
+let formData = new FormData();
+formData.append("msg", msg.msg);
+formData.append("advertisement_id", msg.advertisement_id);
+
+console.log("heeeeeee",msg, id)
+return axios.post(`${url.ADD_NEW_MSG}/${id}`, formData, {
   headers: getHeader(authHeader()),
 });
 };

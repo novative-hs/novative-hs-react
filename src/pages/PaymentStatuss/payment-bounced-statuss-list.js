@@ -91,16 +91,16 @@ class PaymentStatussList extends Component {
             </>
           ), filter: textFilter(),
         },
-        {
-          dataField: "payment_for",
-          text: "Payment From",
-          sort: true,
-          formatter: (cellContent, paymentBouncedInStatus) => (
-            <>
-              <strong>{paymentBouncedInStatus.payment_for}</strong>
-            </>
-          ), filter: textFilter(),
-        },
+        // {
+        //   dataField: "payment_for",
+        //   text: "Payment From",
+        //   sort: true,
+        //   formatter: (cellContent, paymentBouncedInStatus) => (
+        //     <>
+        //       <strong>{paymentBouncedInStatus.payment_for}</strong>
+        //     </>
+        //   ), filter: textFilter(),
+        // },
         {
           dataField: "lab_name",
           text: "Client Name",
@@ -157,52 +157,52 @@ class PaymentStatussList extends Component {
           },
           filter: textFilter(),
         },
-        {
-          dataField: "cheque_no",
-          text: "Cheque/Ref#",
-          sort: true,
-          formatter: (cellContent, paymentBouncedInStatus) => (
-            <>
-              {paymentBouncedInStatus.cheque_no && (
-                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                  {paymentBouncedInStatus.cheque_no}
-                </span>
-              )}
+        // {
+        //   dataField: "cheque_no",
+        //   text: "Cheque/Ref#",
+        //   sort: true,
+        //   formatter: (cellContent, paymentBouncedInStatus) => (
+        //     <>
+        //       {paymentBouncedInStatus.cheque_no && (
+        //         <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+        //           {paymentBouncedInStatus.cheque_no}
+        //         </span>
+        //       )}
 
-              {paymentBouncedInStatus.cheque_no && (
-                <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                  {paymentBouncedInStatus.refered_no}
-                </span>
-              )}
-            </>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "bank",
-          text: "Bank/Account#",
-          sort: true,
-          formatter: (cellContent, paymentBouncedInStatus) => (
-            <>
-              <span>
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.deposit_slip,
-                  }}
-                  target="_blank"
-                >
-                  <span>
-                    {paymentBouncedInStatus.bank_name},{" "}
-                    {paymentBouncedInStatus.account_no}
-                  </span>
-                </Link>
+        //       {paymentBouncedInStatus.cheque_no && (
+        //         <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+        //           {paymentBouncedInStatus.refered_no}
+        //         </span>
+        //       )}
+        //     </>
+        //   ), filter: textFilter(),
+        // },
+        // // {
+        //   dataField: "bank",
+        //   text: "Bank/Account#",
+        //   sort: true,
+        //   formatter: (cellContent, paymentBouncedInStatus) => (
+        //     <>
+        //       <span>
+        //         <Link
+        //           to={{
+        //             pathname:
+        //               process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.deposit_slip,
+        //           }}
+        //           target="_blank"
+        //         >
+        //           <span>
+        //             {paymentBouncedInStatus.bank_name},{" "}
+        //             {paymentBouncedInStatus.account_no}
+        //           </span>
+        //         </Link>
 
-              </span>
+        //       </span>
 
-            </>
-          ),
-          filter: textFilter(),
-        },
+        //     </>
+        //   ),
+        //   filter: textFilter(),
+        // },
 
         // {
         //   dataField: "is_settled",
@@ -497,7 +497,7 @@ class PaymentStatussList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="List"
-              breadcrumbItem="MIF Created"
+              breadcrumbItem="MIF Bounced"
             />
             <Row>
               <Col lg="12">

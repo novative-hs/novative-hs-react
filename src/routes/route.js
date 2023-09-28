@@ -135,9 +135,8 @@ const AppRoute = ({
           <Redirect
             to={{
               pathname:
-                "/dashboard-corporate" +
-                JSON.parse(localStorage.getItem("authUser")).user_id,
-              state: { from: props.location },
+                "/dashboard-corporate" ,
+                state: { from: props.location },
             }}
           />
         );

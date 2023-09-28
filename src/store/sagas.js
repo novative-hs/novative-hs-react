@@ -42,7 +42,7 @@ import sampleCollectorsSaga from "./sample-collectors/saga";
 import sampleCollectorDatasSaga from "./sample-collector-test-appointments/saga";
 import qualityCertificatesSaga from "./quality-certificates/saga";
 import paymentStatussSaga from "./payment-statuss/saga";
-
+import msgsSaga from "./chat-box/saga";
 import advertisementsSaga from "./advertisements/saga";
 import advertisementLivesSaga from "./advertisement-live/saga";
 
@@ -106,6 +106,7 @@ export default function* rootSaga() {
     fork(LabInformationSaga),
     fork(CorporateInformationSaga),
     fork(AuthSaga),
+    fork(msgsSaga),
     fork(outPaymentSaga),
     fork(createBankSaga),
     fork(bankAccountSaga),

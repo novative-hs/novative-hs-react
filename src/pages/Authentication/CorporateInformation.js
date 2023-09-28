@@ -4,12 +4,14 @@ import { Alert, Col, Container, Row, Label, Input } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Select from "react-select";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
 import { Redirect, Link } from "react-router-dom";
 
 // action
 import {
+  getTerritoriesList,
   addCorporateInformation,
   addCorporateInformationFailed,
 } from "../../store/actions";
@@ -28,18 +30,28 @@ class CorporateInformation extends Component {
       phone: "",
       landline: "",
       address: "",
-      city: "",
+      city_id: "",
     };
   }
 
   componentDidMount() {
     this.props.addCorporateInformationFailed("");
+    this.props.getTerritoriesList();
   }
 
   render() {
     // Redirect to register page if getting access directly from url
     if (typeof this.props.location.state == "undefined") {
       return <Redirect to={"/register"} />;
+    }
+
+    // list of city from territories
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
     }
 
     return (
@@ -68,7 +80,7 @@ class CorporateInformation extends Component {
                         </div>
 
                         <div className="mt-4">
-                          {this.props.corporate && this.props.corporate ? (
+                          {/* {this.props.corporate && this.props.corporate ? (
                             <Alert
                               color="success"
                               style={{ marginTop: "13px" }}
@@ -86,6 +98,25 @@ class CorporateInformation extends Component {
                               </Link>{" "}
                               to your account.
                             </Alert>
+                          ) : null} */}
+
+                          {this.props.corporate && this.props.corporate ? (
+                            <Alert
+                              color="success"
+                              style={{ marginTop: "13px" }}
+                            >
+                              The verification link is sent to your email,
+                              please verify your account first in order to
+                              login.{" "}
+                            </Alert>
+                          ) : null}
+                          {this.props.corporate && this.props.corporate ? (
+                            // Redirecting back to the login page
+                            setTimeout(() => {
+                              if (this.props.corporate) {
+                                this.props.history.push("/login");
+                              }
+                            }, 2000)
                           ) : null}
 
                           {this.props.addCorporateError &&
@@ -107,7 +138,7 @@ class CorporateInformation extends Component {
                               landline:
                                 (this.state && this.state.landline) || "",
                               address: (this.state && this.state.address) || "",
-                              city: (this.state && this.state.city) || "",
+                              city_id: (this.state && this.state.city_id) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -158,14 +189,6 @@ class CorporateInformation extends Component {
                                 .max(
                                   255,
                                   "Please enter maximum 255 characters"
-                                ),
-                              city: Yup.string()
-                                .trim()
-                                .required("Please enter your city")
-                                .max(255, "Please enter maximum 255 characters")
-                                .matches(
-                                  /^[a-zA-Z][a-zA-Z ]+$/,
-                                  "Please enter only alphabets and spaces"
                                 ),
                               
                             })}
@@ -379,30 +402,53 @@ class CorporateInformation extends Component {
 
                                 {/* City field */}
                                 <div className="mb-3">
-                                  <Label for="city" className="form-label">
+
+
+                                  <Label for="city_id" className="form-label">
                                     City
                                   </Label>
-                                  <Field
-                                    id="city"
-                                    name="city"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ city: e.target.value })
+                                  <Select
+                                    name="city_id"
+                                    component="Select"
+                                    onChange={selectedGroup =>
+                                      this.setState({
+                                        city_id: selectedGroup.value,
+                                      })
                                     }
-                                    value={this.state.city}
                                     className={
-                                      "form-control" +
-                                      (errors.city && touched.city
+                                      "defautSelectParent" +
+                                      (errors.city_id && touched.city_id
                                         ? " is-invalid"
                                         : "")
                                     }
+                                    styles={{
+                                      control: (base, state) => ({
+                                        ...base,
+                                        borderColor:
+                                          errors.city_id && touched.city_id
+                                            ? "#f46a6a"
+                                            : "#ced4da",
+                                      }),
+                                    }}
+                                    options={
+                                      cityList
+                                    }
+                                    defaultValue={{
+                                      label:
+                                        this.state.city,
+                                      value:
+                                        this.state.id,
+                                    }}
+
                                   />
+
                                   <ErrorMessage
-                                    name="city"
+                                    name="city_id"
                                     component="div"
                                     className="invalid-feedback"
                                   />
                                 </div>
+
                                
                                 <div className="mt-3 d-grid">
                                   <button
@@ -431,20 +477,30 @@ class CorporateInformation extends Component {
 }
 
 CorporateInformation.propTypes = {
+  history: PropTypes.any,
   match: PropTypes.object,
   location: PropTypes.object,
   addCorporateInformation: PropTypes.func,
   addCorporateInformationFailed: PropTypes.any,
   addCorporateError: PropTypes.any,
   corporate: PropTypes.any,
+  getTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
+
 };
 
 const mapStateToProps = state => {
-  const { corporate, addCorporateError, loading } = state.CorporateInformation;
-  return { corporate, addCorporateError, loading };
+  return {
+    territoriesList: state.CorporateInformation.territoriesList,
+    corporate: state.CorporateInformation.corporate,
+    addCorporateError: state.CorporateInformation.addCorporateError,
+    loading: state.CorporateInformation.loading
+  };
 };
 
+
 export default connect(mapStateToProps, {
+  getTerritoriesList,
   addCorporateInformation,
   addCorporateInformationFailed,
 })(CorporateInformation);

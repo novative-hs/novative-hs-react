@@ -57,89 +57,9 @@ class FinanceAdminSummary extends Component {
                 </Col>
               </Row>
             </div>
-            <CardBody className="pt-4">
-              <Row>
-                <Col sm="12">
-                  <div className="pt-4">
-                    <Row>
-                      <Col xs="6">
-                        <h5 className="font-size-15 text-truncate">
-                          {this.state.name}
-                        </h5>
-                        <p className="text-muted mb-0 text-truncate">
-                          {this.state.email}
-                        </p>
-                      </Col>
-                      <Col xs="6">
-                        <div className="mt-2">
-                          <Link
-                            to={"/activity-log-finance-admin"}
-                            className="btn btn-primary btn-sm"
-                          >
-                            Activity Log{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                      </Col>
-                      {/* <Col xs="6">
-                        <div className="mt-2">
-                          <Link
-                            to={"/financeadmin-profile"}
-                            className="btn btn-primary btn-sm"
-                          >
-                            View Profile{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                      </Col> */}
-                    </Row>
-                  </div>
-                </Col>
-              </Row>
-            </CardBody>
           </Card>
         </Col>
 
-        {/* Revenue and Appointment Details */}
-        {/* <Col xl="8">
-          <Row>
-            <Col md="12">
-              <Card className="mini-stats-wid">
-                <CardBody>
-                  <div className="d-flex">
-                    <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Assigned Audits</p>
-                      <h4 className="mb-0">0</h4>
-                    </div>
-                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-list-check font-size-24"} />
-                      </span>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-
-            <Col md="12">
-              <Card className="mini-stats-wid">
-                <CardBody>
-                  <div className="d-flex">
-                    <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Completed Audits</p>
-                      <h4 className="mb-0">0</h4>
-                    </div>
-                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-list-check font-size-24"} />
-                      </span>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Col> */}
       </React.Fragment>
     );
   }

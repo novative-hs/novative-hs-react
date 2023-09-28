@@ -201,7 +201,8 @@ export const UPDATE_CSR_APPOINTMENTS = `${API_ENDPOINT}/api/staff/csr-admin-appo
 
 export const ADD_NEW_NOTE =`${API_ENDPOINT}/api/staff/add-note`;
 export const GET_NOTES = `${API_ENDPOINT}/api/staff/add-note`;
-
+export const ADD_NEW_MSG =`${API_ENDPOINT}/api/marketer-admin/add-message`;
+export const GET_MSGS = `${API_ENDPOINT}/api/marketer-admin/add-message`;
 // TEST DESCRIPTION
 export const GET_TEST_DESCRIPTIONS = `${API_ENDPOINT}/api/medicaltest/test`;
 

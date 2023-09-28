@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
+import Tooltip from "@material-ui/core/Tooltip";
 import { withRouter, Link } from "react-router-dom";
 import {
   Card,
@@ -134,6 +135,12 @@ class LabAdvertisementRequestsList extends Component {
                   }
                 ></i>
               </Link>
+              <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/comments-list/${labAdvertisementRequest.id}`}
+                ></Link>
+              </Tooltip>
             </div>
           ),
         },
