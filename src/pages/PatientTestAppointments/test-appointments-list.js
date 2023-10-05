@@ -561,7 +561,6 @@ class TestAppointmentsList extends Component {
             )}
           </Tooltip>
 
-
             <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i
@@ -871,7 +870,10 @@ class TestAppointmentsList extends Component {
                                       >
                                         <span></span>
                                       </ModalHeader>
+
                                       <ModalBody>
+                                      <h3 style={{ color: 'blue' }}>To be Done By Lab</h3><br></br>
+
                                         <Formik>
                                           <Form>
                                             <Row>

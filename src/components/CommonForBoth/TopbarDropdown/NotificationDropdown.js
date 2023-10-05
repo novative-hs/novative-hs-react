@@ -126,10 +126,10 @@ class NotificationDropdown extends Component {
                   <h6 className="m-0"> {this.props.t("Notifications")} </h6>
                 </Col>
                 <div className="col-auto">
-                  <a href="#" className="small">
+                  {/* <a href="#" className="small">
                     {" "}
                     View All
-                  </a>
+                  </a> */}
                 </div>
               </Row>
             </div>

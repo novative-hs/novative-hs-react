@@ -353,40 +353,40 @@ class NearbyProfiles extends Component {
     this.setState({ page });
   };
 
-  handleBlur = () => {
-    // Calling API when focus is out of test name and setting nearby tests array
-    const { onGetNearbyProfiles } = this.props;
-
-    var latitude;
-    var longitude;
-
-    if (this.state.search_type == "Current Location") {
-      latitude = this.state.currentLatitude;
-      longitude = this.state.currentLongitude;
-    } else {
-      latitude = "";
-      longitude = "";
-    }
-
-    if (this)
+  onchangename = (selectedGroup) => {
+    this.setState({ test_name: selectedGroup.value }, () => {
+      // Calling API when focus is out of test name and setting nearby tests array
+      const { onGetNearbyProfiles } = this.props;
+      var latitude;
+      var longitude;
+  
+      if (this.state.search_type === "Current Location") {
+        latitude = this.state.currentLatitude;
+        longitude = this.state.currentLongitude;
+      } else {
+        latitude = "";
+        longitude = "";
+      }
+  
       var data = {
         latitude: latitude,
         longitude: longitude,
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
-        test_name: this.state.test_name,
+        test_name: this.state.test_name, // Now using the ID of the selected profile
         LabType: this.state.LabType,
         km: this.state.km,
       };
-
-    onGetNearbyProfiles(data);
-
-    setTimeout(() => {
-      this.setState({ nearbyProfiles: this.props.nearbyProfiles });
-    }, 1000);
+  
+      onGetNearbyProfiles(data);
+  
+      setTimeout(() => {
+        this.setState({ nearbyProfiles: this.props.nearbyProfiles });
+      }, 1000);
+    });
   };
-
+  
   onChangeKm = e => {
     this.setState({ km: e.target.value });
 
@@ -606,13 +606,18 @@ class NearbyProfiles extends Component {
     const { page, totalPage } = this.state;
     const { Profiles } = this.props;
 
-    const profileList = [];
-    for (let i = 0; i < this.props.Profiles.length; i++) {
-      profileList.push({
-        label: this.props.Profiles[i].name,
-        value: this.props.Profiles[i].id,
-      });
-    }
+    // const profileList = [];
+    // for (let i = 0; i < this.props.Profiles.length; i++) {
+    //   profileList.push({
+    //     label: this.props.Profiles[i].name,
+    //     value: this.props.Profiles[i].id,
+    //   });
+    // }
+    const profileList = this.props.Profiles.map((profile) => ({
+      label: profile.name,
+      value: profile.id, // Use the profile ID as the value
+    }));
+    
 
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
@@ -1332,26 +1337,14 @@ class NearbyProfiles extends Component {
                               Search By Profile Name
                             </Label>
                             <Select
-                              name="profile"
-                              component="Select"
-
-                              onChange={selectedGroup =>
-                                this.setState({
-                                  test_name: selectedGroup.value,
-                                })
-                              }
-                              onBlur={this.handleBlur}
-                              value={this.state.test_name}
-                              className="defautSelectParent"
-                              options={
-                                profileList
-                              }
-                              defaultValue={{
-                                label:
-                                  Profiles.test_name,
-                                value:
-                                  Profiles.test_name,
-                              }}
+                               name="profile"
+                               component="Select"
+                               onChange={this.onchangename}
+                               value={profileList.find(
+                                 (item) => item.value === this.state.test_name
+                               )} // Use find to match the selected value in the options
+                               className="defautSelectParent"
+                               options={profileList}
                             />
                           </div>
                         </Col>
@@ -1611,7 +1604,7 @@ class NearbyProfiles extends Component {
                     <Row>
                       <Col lg="12">
                         <div className=" mb-5">
-                          <h4 className="text-uppercase">Sorry, no result found.</h4>
+                        Loading.....
                         </div>
                       </Col>
                     </Row>

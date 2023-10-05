@@ -118,6 +118,18 @@ class AccountStatements extends Component {
                     </strong>
                   </span>
                   </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: Account Statement formula is: if have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.
+                    </strong>
+                  </span>
+                  </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: Account Statement formula is: if have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir)
+                    </strong>
+                  </span>
+                  </div>
                 </div>
                 <Col lg="12">
                   <Card>
@@ -173,13 +185,24 @@ class AccountStatements extends Component {
                     </strong>
                   </span>
                   </div>
+                  <div>
+                    <span className="font-size-12">
+                      <strong><span className="text-danger">Note:</span></strong> <strong>Account Statement formula is: if have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.</strong>
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-size-12">
+                      <strong><span className="text-danger">Note:</span></strong> <strong>Account Statement formula is: if have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir).</strong>
+                    </span>
+                  </div>
+
                 </div>
                 <Col lg="12">
                   <Card>
                     <CardBody>
                       <div className="table-responsive">
                         <Table>
-                          <thead className="table-light">
+                          <thead style={{ position: 'flex'}}className="table-light">
                             <tr>
                               <th scope="col">Date</th>
                               <th scope="col">ID</th>
@@ -1242,6 +1265,13 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
+                                          {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
                                         </p>
                                       </td>
                                       <td>
@@ -1253,13 +1283,7 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {accountStatement.payment_method == "Donation" ? (
-                                            <span>
-                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}
+                                          
                                         </p>
                                       </td>
                                       <td>

@@ -102,6 +102,13 @@ class AccountStatements extends Component {
             <Breadcrumbs title="Donor" breadcrumbItem="Account Statements" />
             {isEmpty(this.props.donoraccountStatements) && (
               <Row>
+                <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: Only payments with the Cleared and Approved status will show here.
+
+                  </strong>
+                  </span>
+                </div>
                 <Col lg="12">
                   <Card>
                     <CardBody>
@@ -109,9 +116,9 @@ class AccountStatements extends Component {
                         <Table>
                           <thead className="table-light">
                             <tr>
-                              <th scope="col">Date</th>
-                              <th scope="col">ID</th>
-                              <th scope="col">Status</th>
+                              <th scope="col">Date Time</th>
+                              {/* <th scope="col">ID</th> */}
+                              <th scope="col">Description</th>
                               <th scope="col">Credit</th>
                               <th scope="col">Debit</th>
                               <th scope="col">Balance</th>
@@ -134,9 +141,9 @@ class AccountStatements extends Component {
                         <Table>
                           <thead className="table-light">
                             <tr>
-                              <th scope="col">Date</th>
-                              <th scope="col">ID</th>
-                              <th scope="col">Status</th>
+                              <th scope="col">Date Time</th>
+                              {/* <th scope="col">ID</th> */}
+                              <th scope="col">Description</th>
                               <th scope="col">Credit</th>
                               <th scope="col">Debit</th>
                               <th scope="col">Balance</th>
@@ -158,23 +165,10 @@ class AccountStatements extends Component {
                                       </p>
                                     </td>
                                     <td>
-                                      <h5 className="font-size-14 text-truncate">
-                                        <strong>{donoraccountStatement.paymentin}</strong>
-                                      </h5>
-                                    </td>
-                                    <td>
-                                      {/* <p className="float-end"> */}
-                                      {donoraccountStatement.Status == "Not Paid" ? (
-                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                                          {donoraccountStatement.PaidMethod},{" "}
-                                          {donoraccountStatement.Status}
+                                        <span>
+                                          {<span><span style={{ color: 'red' }}>MIF ID: </span> {donoraccountStatement.paymentin} , <span style={{ color: 'red' }}>Payment Method: </span> {donoraccountStatement.PaidMethod}</span>}{" "}
+                                          {/* {donoraccountStatement.Status} */}
                                         </span>
-                                      ) : (
-                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary" >
-                                          {donoraccountStatement.PaidMethod},{" "}
-                                          {donoraccountStatement.Status}
-                                        </span>
-                                      )}
                                       {/* </p> */}
                                     </td>
                                      <td>
@@ -238,24 +232,16 @@ class AccountStatements extends Component {
 
                                       </p>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                       <h5 className="font-size-14 text-truncate">
                                         <strong>{donoraccountStatement.paymentin}</strong>
                                       </h5>
-                                    </td>
+                                    </td> */}
                                     <td>
-                                      {/* <p className="float-end"> */}
-                                      {donoraccountStatement.Status == "Not Paid" ? (
-                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                                          {donoraccountStatement.PaidMethod},{" "}
-                                          {donoraccountStatement.Status}
+                                        <span>
+                                          {<span><span style={{ color: 'red' }}>INVOICE ID: </span> {donoraccountStatement.paymentin} , <span style={{ color: 'red' }}>Payment Method: </span> {donoraccountStatement.PaidMethod}</span>}{" "}
+                                          {/* {donoraccountStatement.Status} */}
                                         </span>
-                                      ) : (
-                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-success" >
-                                          {donoraccountStatement.PaidMethod},{" "}
-                                          {donoraccountStatement.Status}
-                                        </span>
-                                      )}
                                       {/* </p> */}
                                     </td>
                                      <td>
@@ -299,29 +285,13 @@ class AccountStatements extends Component {
                                     </td>
                                   </tr>
                                 )}
-
-
-
                               </>
                             )
                             )}
                             <tr className="bg-success bg-soft">
-                              <td colSpan="3" className="border-0 text-end">
+                              <td colSpan="2" className="border-0 text-end">
                                 <strong>Total</strong>
                               </td>
-                              {/* <td className="border-10">
-                                {
-                                  this.props.donoraccountStatements.slice(-1).pop().total_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                              <td className="border-10">
-                                {
-                                  this.props.donoraccountStatements.slice(-1).pop().total_labhazir_share.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                }
-                              </td>
-                              <td className="border-10"> */}
-
-                              {/* </td> */}
                               <td className="border-10">
                                 {
                                   this.props.donoraccountStatements.slice(-1).pop().total_Credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")

@@ -1285,7 +1285,7 @@ class TestsOffered extends Component {
                     <Row>
                       <Col lg="12">
                         <div className=" mb-5">
-                          <h4 className="text-uppercase">Sorry, no result found.</h4>
+                        Loading.....
                         </div>
                       </Col>
                     </Row>

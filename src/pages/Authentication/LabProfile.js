@@ -469,7 +469,7 @@ class LabProfile extends Component {
                         />
                       </div>
                       {/* Province field */}
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <Label for="type" className="form-label">
                           Province
                         </Label>
@@ -494,9 +494,9 @@ class LabProfile extends Component {
                             Islamabad Capital Territory
                           </option>
                         </Field>
-                      </div>
+                      </div> */}
                       {/* District field */}
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <Label for="district" className="form-label">
                           District
                         </Label>
@@ -544,9 +544,9 @@ class LabProfile extends Component {
                           component="div"
                           className="invalid-feedback"
                         />
-                      </div>
+                      </div> */}
                       {/* City field */}
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <Label for="city" className="form-label">
                           City
                         </Label>
@@ -591,7 +591,7 @@ class LabProfile extends Component {
                           component="div"
                           className="invalid-feedback"
                         />
-                      </div>
+                      </div> */}
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
                           Update Profile

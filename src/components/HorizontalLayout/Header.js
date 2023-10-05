@@ -5,6 +5,8 @@ import "react-drawer/lib/react-drawer.css";
 
 import { connect } from "react-redux";
 import { isEmpty, map, size } from "lodash";
+import Tooltip from "@material-ui/core/Tooltip";
+
 
 import { withRouter, Link } from "react-router-dom";
 // Import menuDropdown
@@ -103,8 +105,6 @@ class Header extends Component {
 
     this.setState({ carts: cartsData });
   };
-    
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
     if (
@@ -117,26 +117,15 @@ class Header extends Component {
   toggleSearch = () => {
     this.setState({ isSearch: !this.state.isSearch });
   };
-
   handlePageClick = page => {
     this.setState({ page });
   };
-
-
-  /**
-   * Toggle sidebar
-   */
   toggleMenu() {
     this.props.openLeftMenuCallBack();
   }
-
-  /**
-   * Toggles the sidebar
-   */
   toggleRightbar() {
     this.props.toggleRightSidebar();
   }
-
   toggleFullscreen() {
     if (
       !document.fullscreenElement &&
@@ -261,6 +250,7 @@ class Header extends Component {
               otherwise show logout and cart links to the user with patient account and is logged in */}
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
+                  <Tooltip title="Cart">
                   <Link
                     to={
                       this.props.match.params.uuid
@@ -275,6 +265,8 @@ class Header extends Component {
                         totalLength + this.state.count
                       }
                   </Link>
+                  </Tooltip>
+                  <Tooltip title="Login">
                   <Link
                     to={
                       this.props.match.params.uuid
@@ -286,7 +278,8 @@ class Header extends Component {
                     <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
                     <span className="pt-4 font-size-12">Login</span>
                   </Link>
-
+                  </Tooltip>
+                  <Tooltip title="Sign Up">
                   <Link
                     to={
                       this.props.match.params.uuid
@@ -298,6 +291,7 @@ class Header extends Component {
                     <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
                     <span className="pt-4 font-size-12">Sign up</span>
                   </Link>
+                  </Tooltip>
 
                   {/* <Link
                     // to="/contact-us"
@@ -313,6 +307,7 @@ class Header extends Component {
                 </div>
               ) : this.state.user_type === "patient" ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-6">
+                  <Tooltip title="Patient Profile">
                     <Link
                       // to={"/profile"}
                       to={
@@ -328,7 +323,9 @@ class Header extends Component {
                       <span className="pt-4 font-size-12">
                         {this.state.patient_name.split(" ")[0]}                    
                       </span>
-                    </Link>{" "}
+                    </Link>
+                    </Tooltip>{" "}
+                    <Tooltip title="Cart">
                     <Link
                       to={
                         this.props.match.params.guest_id
@@ -346,6 +343,8 @@ class Header extends Component {
 this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                       }
                     </Link>
+                    </Tooltip>
+                    <Tooltip title="More">
                     <button
                       className="btn header-items noti-icon right-bar-toggle"
                       style={{ position: 'relative', 
@@ -356,6 +355,7 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                     >
                       <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
                     </button>
+                    </Tooltip>
 
                     {isDropdownOpen && (
                       <div style={{

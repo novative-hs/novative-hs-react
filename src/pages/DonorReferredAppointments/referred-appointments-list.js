@@ -117,24 +117,28 @@ class ReferredPatientsList extends Component {
           dataField: "booked_at",
           text: "Booked at",
           sort: true,
-          formatter: (cellContent, donorReferredAppointment) => (
-            <>
-              <span>
-                {new Date(donorReferredAppointment.booked_at).toLocaleString(
-                  "en-US"
-                )}
-              </span>
-            </>
-          ),
+          formatter: (cellContent, donorReferredAppointment) => {
+            const date = new Date(donorReferredAppointment.booked_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+            return (
+              <p className="text-muted mb-0">
+                {`${day}-${month}-${year}`}
+              </p>
+            );
+          },
         },
-        {
-          dataField: "payment_method",
-          text: "Payment method",
-          sort: true,
-        },
+        // {
+        //   dataField: "payment_method",
+        //   text: "Payment method",
+        //   sort: true,
+        // },
         {
           dataField: "payment_status",
-          text: "Payment status",
+          text: "Payments status",
           sort: true,
           formatter: (cellContent, donorReferredAppointment) => (
             <>
@@ -152,7 +156,7 @@ class ReferredPatientsList extends Component {
         },
         {
           dataField: "status",
-          text: "Status",
+          text: "Appointments Status",
           sort: true,
           formatter: (cellContent, donorReferredAppointment) => (
             <>
@@ -290,7 +294,7 @@ class ReferredPatientsList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B Referreds" breadcrumbItem=" List" />
+            <Breadcrumbs title="Appointments" breadcrumbItem="Tracibility" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -354,9 +358,10 @@ class ReferredPatientsList extends Component {
                                         toggle={this.toggleLabModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Lab Details</span>
                                       </ModalHeader>
                                       <ModalBody>
+
                                         <Formik>
                                           <Form>
                                             <Row>
@@ -413,10 +418,12 @@ class ReferredPatientsList extends Component {
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
                                         tag="h4"
+                                        Patient Details
                                       >
-                                        <span></span>
+                                        <span> Patient Details</span>
                                       </ModalHeader>
                                       <ModalBody>
+
                                         <Formik>
                                           <Form>
                                             <Row>
@@ -456,7 +463,7 @@ class ReferredPatientsList extends Component {
                                                   </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Address
@@ -473,7 +480,7 @@ class ReferredPatientsList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -492,7 +499,7 @@ class ReferredPatientsList extends Component {
                                                     />
                                                   </div>
                                                 </div>
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Schedule time by Patient
@@ -508,26 +515,35 @@ class ReferredPatientsList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
-                                                <div className="mb-3 row">
+                                                </div> */}
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                    Booked At
-                                                    </Label>
+                                                    <Label className="form-label">Booked At</Label>
                                                   </div>
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
                                                       value={
                                                         this.state.booked_at
+                                                          ? new Date(this.state.booked_at).toLocaleString([], {
+                                                              year: 'numeric',
+                                                              month: 'numeric',
+                                                              day: 'numeric',
+                                                              hour: '2-digit',
+                                                              minute: '2-digit',
+                                                              second: '2-digit',
+                                                              timeZoneName: 'short',
+                                                            })
+                                                          : '' // Provide a default value if this.state.booked_at is null or undefined
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
-                                                {/* <div className="mb-3 row">
+
+                                                <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Mobile No.
@@ -560,8 +576,8 @@ class ReferredPatientsList extends Component {
                                                     >
                                                       {this.state.btnText}
                                                     </button>
-                                                  </div> */}
-                                                {/* </div> */}
+                                                  </div>
+                                                </div>
                                               </Col>
                                             </Row>
                                           </Form>

@@ -160,6 +160,15 @@ class Login extends Component {
                                   );
                                   console.log(this.props.match.params.uuid);
                                 } 
+                                if (!isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
+                                  this.props.history.push(
+                                    this.props.match.params.uuid
+                                      ? `/nearby-labs/${this.props.match.params.uuid}`
+                                      : `/nearby-labs`
+                                  );
+                                  console.log(this.props.match.params.uuid);
+                                } 
+                                
                                   else if (success.account_type === "labowner") {
                                     this.props.history.push("/dashboard-lab");
                                   } else if (success.account_type === "b2b-admin") {
@@ -187,7 +196,7 @@ class Login extends Component {
                                   } else if (success.account_type === "hr-admin") {
                                     this.props.history.push("/add-staff");
                                   } else if (success.account_type === "donor") {
-                                    this.props.history.push("/donor-profile");
+                                    this.props.history.push("/dashboard-donor");
                                   } else if (success.account_type === "corporate") {
                                     this.props.history.push("/dashboard-corporate");
                                   }

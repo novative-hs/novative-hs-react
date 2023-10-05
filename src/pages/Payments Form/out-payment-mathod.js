@@ -426,6 +426,13 @@ class OutPaymentsForm extends Component {
               <div className="checkout-tabs">
                 {this.state.successMessage && <div>{this.state.successMessage}</div>}
                 <Row>
+                <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: There will be that Labs, Donors and B2b Clients whose terriotory will match this staff.
+                  </strong>
+                  </span>
+                  <br></br>
+                </div>
                   <Col lg="1" sm="1">
                   </Col>
                   <Col lg="10" sm="9">

@@ -356,7 +356,8 @@ class nearbyRadiology extends Component {
     this.setState({ page });
   };
 
-  handleBlur = () => {
+  onchangename = (selectedGroup) => {
+    this.setState({ test_name: selectedGroup.value });
     // Calling API when focus is out of test name and setting nearby tests array
     const { onGetNearbyRadiology } = this.props;
 
@@ -1335,14 +1336,7 @@ class nearbyRadiology extends Component {
                             <Select
                               name="profile"
                               component="Select"
-
-                              onChange={selectedGroup =>
-                                this.setState({
-                                  test_name: selectedGroup.value,
-                                })
-                              }
-                              onBlur={this.handleBlur}
-                              value={this.state.test_name}
+                              onChange={this.onchangename}
                               className="defautSelectParent"
                               options={
                                 radiologyList
@@ -1658,7 +1652,7 @@ class nearbyRadiology extends Component {
                     <Row>
                       <Col lg="12">
                         <div className=" mb-5">
-                          <h4 className="text-uppercase">Sorry, no result found.</h4>
+                        Loading.....
                         </div>
                       </Col>
                     </Row>

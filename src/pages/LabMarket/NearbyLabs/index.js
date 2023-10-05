@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import { Formik, Field, Form } from "formik";
+import Tooltip from "@material-ui/core/Tooltip";
+
 // import ScrollButton from "components/Common/Scrollbutton";
 import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
@@ -1377,6 +1379,7 @@ class NearbyLabs extends Component {
             <div className="d-flex">
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
+                  <Tooltip title="Cart">
                   <Link
                     to={
                       this.props.match.params.uuid
@@ -1392,6 +1395,8 @@ class NearbyLabs extends Component {
                           this.props.carts.slice(-1).pop().cart_quantity+this.state.count
                           } */}
                   </Link>
+                  </Tooltip>
+                  <Tooltip title="Login">
                   <Link
                     to={
                       this.props.match.params.uuid
@@ -1403,7 +1408,8 @@ class NearbyLabs extends Component {
                     <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
                     <span className="pt-4 font-size-12">Login</span>
                   </Link>
-
+                  </Tooltip>
+                  <Tooltip title="Sign up">
                   <Link
                     to={
                       this.props.match.params.uuid
@@ -1415,7 +1421,8 @@ class NearbyLabs extends Component {
                     <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
                     <span className="pt-4 font-size-12">Sign up</span>
                   </Link>
-
+</Tooltip>
+<Tooltip title="Help and Support">
                   <Link
                     // to="/contact-us"
                     to={
@@ -1427,7 +1434,7 @@ class NearbyLabs extends Component {
                   >
                     <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                   </Link>
-
+</Tooltip>
                 </div>
               ) :this.state.user_type == "patient" ? (
                   <Header />

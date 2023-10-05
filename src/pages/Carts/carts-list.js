@@ -1222,10 +1222,10 @@ class CartList extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>Carts List | Lab Hazir</title>
+            <title>Cart List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
-        <Breadcrumbs title="Carts" breadcrumbItem="Carts List" />
+        <Breadcrumbs title="Cart" breadcrumbItem="Cart List" />
         <Row>
           <Col lg="12">
             <Card>

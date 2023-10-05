@@ -176,7 +176,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to={"/donor-appointment"}>
                     <i className="bx bx-receipt" />
-                    <span>{this.props.t("Donor Appointments")}</span>
+                    <span>{this.props.t("Appointments Tracibility")}</span>
                   </Link>
                 </li>
                 {/* Donor payment Method */}

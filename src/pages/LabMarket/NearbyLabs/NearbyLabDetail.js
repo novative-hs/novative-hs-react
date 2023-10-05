@@ -1130,8 +1130,7 @@ class NearbyLabDetail extends Component {
                           }
                           className="btn btn-secondary"
                         >
-                          <i className="bx bxs-shopping-bags me-1" /> Continue
-                          Shopping{" "}
+                          <i className="bx bxs-shopping-bags me-1" /> Continue Browsing {" "}
                         </Link>
                       )}
                       {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
@@ -1144,7 +1143,7 @@ class NearbyLabDetail extends Component {
                           className="btn btn-secondary"
                         >
                           <i className="bx bxs-shopping-bags me-1" /> Continue
-                          Shopping{" "}
+                          Browsing {" "}
                         </Link>
                       )}
                       {(this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") && (
@@ -1157,7 +1156,7 @@ class NearbyLabDetail extends Component {
                           className="btn btn-secondary"
                         >
                           <i className="bx bxs-shopping-bags me-1" /> Continue
-                          Shopping{" "}
+                          Browsing {" "}
                         </Link>
                       )}
                       {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") && (
@@ -1170,7 +1169,7 @@ class NearbyLabDetail extends Component {
                           className="btn btn-secondary"
                         >
                           <i className="bx bxs-shopping-bags me-1" /> Continue
-                          Shopping{" "}
+                          Browsing{" "}
                         </Link>
                       )}
 

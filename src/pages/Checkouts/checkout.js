@@ -73,6 +73,7 @@ class Checkout extends Component {
       is_state_sampling_availed: "",
       payment_method: "",
       card_number: "",
+      donation:"",
       name_on_card: "",
       expiry_date: "",
       cvv_code: "",
@@ -201,6 +202,7 @@ class Checkout extends Component {
             is_state_sampling_availed: this.state.is_state_sampling_availed,
             payment_method: this.state.payment_method,
             card_number: this.state.card_number,
+            donation: this.state.donation,
             name_on_card: this.state.name_on_card,
             expiry_date: this.state.expiry_date,
             cvv_code: this.state.cvv_code,
@@ -227,6 +229,7 @@ class Checkout extends Component {
             is_state_sampling_availed: this.state.is_state_sampling_availed,
             payment_method: this.state.payment_method,
             card_number: this.state.card_number,
+            donation: this.state.donation,
             name_on_card: this.state.name_on_card,
             expiry_date: this.state.expiry_date,
             cvv_code: this.state.cvv_code,
@@ -298,7 +301,21 @@ class Checkout extends Component {
           this.state.name_on_card &&
           this.state.expiry_date &&
           this.state.cvv_code
-        ) {
+        ) 
+        {
+          this.setState({ isRequiredFilled: true });
+          return true;
+        } else {
+          this.setState({ isRequiredFilled: false });
+          this.toggleTab("3"); // Redirect to Tab "3" if card information is missing
+          return false;
+        }
+      }
+      if (this.state.payment_method == "Donation") {
+        if (
+          this.state.donation 
+        ) 
+        {
           this.setState({ isRequiredFilled: true });
           return true;
         } else {
@@ -573,7 +590,18 @@ class Checkout extends Component {
               this.toggleTab('4');
             }, 2000);
           }
-        } else {
+        }
+        if(this.state.payment_method === 'Donation') {
+          const {
+          donation,
+          } = this.state;
+          if (donation){
+            setTimeout(() => {
+              this.toggleTab('4');
+            }, 2000);
+          }
+        }
+        else {
           setTimeout(() => {
             this.toggleTab('4');
           }, 2000);
@@ -1321,29 +1349,37 @@ class Checkout extends Component {
                                         </Col>
                                       </FormGroup>
 
-                                      <FormGroup className="mb-4" row>
-                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                          Urgent Sampling
-                                          <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
-                                        </Label>
-                                        <Col md="10">
-                                          <select
-                                            className="form-control select2"
-                                            title="state-sampling"
-                                            name="is_state_sampling_availed"
-                                            onChange={this.handleStateSamplingChange}
-                                          >
-                                            <option value="">Please Select</option>
-                                            <option value="No">No</option>
-                                            <option value="Yes">Yes</option>
-                                          </select>
-                                          <span className="text-primary font-size-12">
-                                            <strong>
-                                              Note: Please choose whether you want to avail Urgent sampling service, this will include extra charges.
-                                            </strong>
-                                          </span>
-                                        </Col>
-                                      </FormGroup>
+                                      {this.state.homeSampledTests.map((homeSampledTest, key) => {
+                                        // Check if sampling charges and fees exist
+                                        if (homeSampledTest.state_sampling_charges !== 0) {
+                                          return (
+                                            <FormGroup className="mb-4" row key={key}>
+                                              <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                                Urgent Sampling
+                                                <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
+                                              </Label>
+                                              <Col md="10">
+                                                <select
+                                                  className="form-control select2"
+                                                  title="state-sampling"
+                                                  name="is_state_sampling_availed"
+                                                  onChange={this.handleStateSamplingChange}
+                                                >
+                                                  <option value="">Please Select</option>
+                                                  <option value="No">No</option>
+                                                  <option value="Yes">Yes</option>
+                                                </select>
+                                                <span className="text-primary font-size-12">
+                                                  <strong>
+                                                    Note: Please choose whether you want to avail Urgent sampling service, this will include extra charges.
+                                                  </strong>
+                                                </span>
+                                              </Col>
+                                            </FormGroup>
+                                          );
+                                        }
+                                      })}
+
                                     </>
                                   )}
 
@@ -1450,84 +1486,8 @@ class Checkout extends Component {
                                         )}
                                       </Tbody>
                                     </Table>
-                                    // <Table>
-                                    //   <thead className="table-light">
-                                    //     <tr>
-                                    //       <th style={{ fontSize: "4px" }}>Home Sampling Offered</th>
-                                    //       <th style={{ fontSize: "4px" }}>Test name</th>
-                                    //       <th style={{ fontSize: "4px" }}>Lab name</th>
-                                    //     </tr>
-                                    //   </thead>
-                                    //   <tbody>
-                                    //     {this.state.homeSampledTests.map((homeSampledTest, key) => (
-                                    //       <tr key={"_homeSampledTest_" + key}>
-                                    //         <td style={{ fontSize: "4px" }}>{homeSampledTest.is_home_sampling_available}</td>
-                                    //         <td style={{ fontSize: "4px" }}>
-                                    //           <h6>
-                                    //             <a href="/ecommerce-product-details/1" className="text-dark">
-                                    //               {homeSampledTest.test_name}
-                                    //             </a>
-                                    //           </h6>
-                                    //         </td>
-                                    //         <td style={{ fontSize: "4px" }}>{homeSampledTest.lab_name}</td>
-                                    //       </tr>
-                                    //     ))}
-                                    //   </tbody>
-                                    // </Table>
+
                                   )}
-                                  {/* {this.state.is_home_sampling_availed === "Yes" ? (
-                                     <div className="table-responsive">
-                                     <Table className="table">
-                                       <thead className="table-light">
-                                         <tr>
-                                           <th>Home Sampling Offered</th>
-                                           <th>Test name</th>
-                                           <th>Lab name</th>
-                                         </tr>
-                                       </thead>
-                                       <tbody>
-                                         {this.state.homeSampledTests.map((homeSampledTest, key) => (
-                                           <tr key={"_homeSampledTest_" + key}>
-                                             <td>{homeSampledTest.is_home_sampling_available}</td>
-                                             <td>
-                                               <h5>
-                                                 <a href="/ecommerce-product-details/1" className="text-dark">
-                                                   {homeSampledTest.test_name}
-                                                 </a>
-                                               </h5>
-                                             </td>
-                                             <td>{homeSampledTest.lab_name}</td>
-                                           </tr>
-                                         ))}
-                                       </tbody>
-                                     </Table>
-                                   </div>
-                                  ) :  <div className="table-responsive">
-                                  <Table className="table">
-                                    <thead className="table-light">
-                                      <tr>
-                                        <th>Home Sampling Offered</th>
-                                        <th>Test name</th>
-                                        <th>Lab name</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {this.state.homeSampledTests.map((homeSampledTest, key) => (
-                                        <tr key={"_homeSampledTest_" + key}>
-                                          <td>{homeSampledTest.is_home_sampling_available}</td>
-                                          <td>
-                                            <h5>
-                                              <a href="/ecommerce-product-details/1" className="text-dark">
-                                                {homeSampledTest.test_name}
-                                              </a>
-                                            </h5>
-                                          </td>
-                                          <td>{homeSampledTest.lab_name}</td>
-                                        </tr>
-                                      ))}
-                                    </tbody>
-                                  </Table>
-                                </div>} */}
 
                                   {this.state.is_state_sampling_availed === "Yes" && (
                                     <Table responsive>
@@ -1747,6 +1707,7 @@ class Checkout extends Component {
                                             type="checkbox"
                                             required={true}
                                             // checked={false}
+                                            onChange={this.handlePaymentMethodChange}
                                             checked={this.state.isChecked}
                                           />
                                           <b>
@@ -1897,7 +1858,7 @@ class Checkout extends Component {
                                 <div className="container">
                                   <div className="table-responsive" style={{ overflowX: "auto" }}>
                                     <table className="table">
-                                      <thead  style={{ backgroundColor: "blue", color: "#fff" }}>
+                                      <thead style={{ backgroundColor: "blue", color: "#fff" }}>
                                         <tr>
                                           <th scope="col" style={{ width: "20%" }} className="text-start">
                                             Test Name
@@ -2106,8 +2067,6 @@ class Checkout extends Component {
                                           Add Payment method
                                         </a>
                                       </div>
-
-                                      {/* Rest of your component code */}
                                     </div>
                                   </CardBody>
                                 </Card>

@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { Collapse } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
 // import ScrollButton from "components/Common/Scrollbutton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import {
   Alert,
@@ -319,7 +320,8 @@ class NearbyTests extends Component {
     this.setState({ page });
   };
 
-  handleBlur = () => {
+  onchangename = e => {
+    this.setState({ test_name: e.target.value });
     // Calling API when focus is out of test name and setting nearby tests array
     const { onGetNearbyTests } = this.props;
 
@@ -694,7 +696,7 @@ handleAddToCart = cart => {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">
+                      <li className="nav-item">\
                         <Link
                           to={
                             this.props.match.params.guest_id
@@ -1295,12 +1297,13 @@ handleAddToCart = cart => {
                               className="form-control"
                               name="test_name"
                               placeholder="Search Test..."
-                              onChange={e =>
-                                this.setState({
-                                  test_name: e.target.value,
-                                })
-                              }
-                              onBlur={this.handleBlur}
+                              // onChange={e =>
+                              //   this.setState({
+                              //     test_name: e.target.value,
+                              //   })
+                              // }
+                              onChange={e => this.onchangename(e)}
+                              // onBlur={this.handleBlur}
                               value={this.state.test_name}
                             />
                           </div>
@@ -1607,7 +1610,7 @@ handleAddToCart = cart => {
                     <Row>
                       <Col lg="12">
                         <div className=" mb-5">
-                          <h4 className="text-uppercase">Loading.....</h4>
+                        Loading.....
                         </div>
                       </Col>
                     </Row>

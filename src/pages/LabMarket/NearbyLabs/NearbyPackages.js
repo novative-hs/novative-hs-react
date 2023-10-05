@@ -356,40 +356,40 @@ class NearbyPackage extends Component {
     this.setState({ page });
   };
 
-  handleBlur = () => {
-    // Calling API when focus is out of test name and setting nearby tests array
-    const { onGetNearbyPackages } = this.props;
-
-    var latitude;
-    var longitude;
-
-    if (this.state.search_type == "Current Location") {
-      latitude = this.state.currentLatitude;
-      longitude = this.state.currentLongitude;
-    } else {
-      latitude = "";
-      longitude = "";
-    }
-
-    if (this)
+  onchangename = (selectedGroup) => {
+    this.setState({ test_name: selectedGroup.value }, () => {
+      // Calling API when focus is out of test name and setting nearby tests array
+      const { onGetNearbyPackages } = this.props;
+      var latitude;
+      var longitude;
+  
+      if (this.state.search_type === "Current Location") {
+        latitude = this.state.currentLatitude;
+        longitude = this.state.currentLongitude;
+      } else {
+        latitude = "";
+        longitude = "";
+      }
+  
       var data = {
         latitude: latitude,
         longitude: longitude,
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
-        test_name: this.state.test_name,
+        test_name: this.state.test_name, // Now using the ID of the selected profile
         LabType: this.state.LabType,
         km: this.state.km,
       };
-
-    onGetNearbyPackages(data);
-
-    setTimeout(() => {
-      this.setState({ nearbyPackages: this.props.nearbyPackages });
-    }, 1000);
+  
+      onGetNearbyPackages(data);
+  
+      setTimeout(() => {
+        this.setState({ nearbyPackages: this.props.nearbyPackages });
+      }, 1000);
+    });
   };
-
+  
   onChangeAddress = e => {
     // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
     var cityBounds = new google.maps.LatLngBounds(
@@ -580,13 +580,18 @@ class NearbyPackage extends Component {
     const { page, totalPage } = this.state;
     const { Packages } = this.props;
 
-    const packageList = [];
-    for (let i = 0; i < this.props.Packages.length; i++) {
-      packageList.push({
-        label: this.props.Packages[i].name,
-        value: this.props.Packages[i].id,
-      });
-    }
+    // const packageList = [];
+    // for (let i = 0; i < this.props.Packages.length; i++) {
+    //   packageList.push({
+    //     label: this.props.Packages[i].name,
+    //     value: this.props.Packages[i].id,
+    //   });
+    // }
+    const packageList = this.props.Packages.map((pkg) => ({
+      label: pkg.name,
+      value: pkg.id,
+    }));
+    
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -1152,7 +1157,7 @@ class NearbyPackage extends Component {
             <title>Search by Packages | Lab Hazir - Dashboard</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search byPackages" />
+            <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Search By Packages" />
             <Row>
               <Modal
                 isOpen={this.state.DescriptionModal}
@@ -1302,24 +1307,12 @@ class NearbyPackage extends Component {
                             <Select
                               name="profile"
                               component="Select"
-
-                              onChange={selectedGroup =>
-                                this.setState({
-                                  test_name: selectedGroup.value,
-                                })
-                              }
-                              onBlur={this.handleBlur}
-                              value={this.state.test_name}
+                              onChange={this.onchangename}
+                              value={packageList.find(
+                                (item) => item.value === this.state.test_name
+                              )} // Use find to match the selected value in the options
                               className="defautSelectParent"
-                              options={
-                                packageList
-                              }
-                              defaultValue={{
-                                label:
-                                  Packages.test_name,
-                                value:
-                                  Packages.test_name,
-                              }}
+                              options={packageList}
                             />
                           </div>
                         </Col>
@@ -1625,7 +1618,7 @@ class NearbyPackage extends Component {
                     <Row>
                       <Col lg="12">
                         <div className=" mb-5">
-                          <h4 className="text-uppercase">Sorry, no result found.</h4>
+                        Loading.....
                         </div>
                       </Col>
                     </Row>

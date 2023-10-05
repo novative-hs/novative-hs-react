@@ -125,10 +125,7 @@ class Navbar extends Component {
                     </li>
                     <li className="nav-item">
                       <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-packages/${this.props.match.params.guest_id}`
-                            : `/nearby-packages`
+                         to={"/nearby-radiology"
                         }
                         className="dropdown-item"
                       >
