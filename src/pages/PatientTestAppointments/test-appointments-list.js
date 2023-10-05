@@ -868,11 +868,10 @@ class TestAppointmentsList extends Component {
                                         toggle={this.toggleReshedualModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>To be Done By Lab</span>
                                       </ModalHeader>
 
                                       <ModalBody>
-                                      <h3 style={{ color: 'blue' }}>To be Done By Lab</h3><br></br>
 
                                         <Formik>
                                           <Form>
