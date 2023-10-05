@@ -2601,6 +2601,13 @@ export const getAdvInvoice = id =>
   });
 
 
+//------------ Get Medical Test List-------------
+export const onlyMedicalTestList = ()=>
+get(`${url.GET_ONLY_MEDICAL_LIST}`, {
+  headers: getHeader(authHeader()),
+});
+
+
 //------------ Get CSR Central Territories List-------------
 export const getCsrCentralList = ()=>
 get(`${url.GET_CSR_CENTRAL_TERRITORY_LIST}`, {

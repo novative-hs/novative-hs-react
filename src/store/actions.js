@@ -89,6 +89,8 @@ export * from "./discount-labhazir-to-lab/actions";
 // territories-list
 export * from "./territories-list/actions";
 
+// only medical test -list
+export * from "./only-medical-tests-list/actions";
 
 // csr territories list
 export * from "./csr-territory-list/actions";

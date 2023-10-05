@@ -1259,7 +1259,7 @@ class NearbyProfiles extends Component {
                           <div className="mb-3 row">
                             <div className="col-md-6">
                               <Label className="form-label">
-                                Test Description
+                                Profile Description
                               </Label>
                             </div>
                             <textarea
@@ -1453,7 +1453,7 @@ class NearbyProfiles extends Component {
                                 onClick={e => this.openPatientModal(e, nearbyProfile)}
                               >
                                 <span>
-                                  Test Description
+                                  Profile Description
                                 </span>
                               </Link>
                             </div>

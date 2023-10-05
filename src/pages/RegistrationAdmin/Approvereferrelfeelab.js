@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import Select from "react-select";
 
 import {
   Card,
@@ -24,6 +25,8 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import { onlyMedicalTestList } from "store/only-medical-tests-list/actions";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -48,6 +51,8 @@ class ReferrelLabFee extends Component {
     this.state = {
       referrelFeeLabs: [],
       referrelFeeLab: "",
+      onlyMedicalTestList: [],
+      selectedTest: null,
       modal: false,
       confirmModal: false,
       isEditAll: true,
@@ -72,16 +77,6 @@ class ReferrelLabFee extends Component {
             dataField: "test_name",
             text: "Test Name",
             sort: true,
-            // headerStyle: () => {
-            //   return { width: "30%" };
-            // } 
-            formatter: (cellContent, referrelFeeLab) => (
-              <>
-              <div className="text-start">
-                   {referrelFeeLab.test_name}
-              </div>
-              </>
-            ),
           },
           {
             dataField: "test_categories",
@@ -277,11 +272,25 @@ class ReferrelLabFee extends Component {
     // }
     // this.setState({ labs });
 
+    const { onlyMedicalTestList, ononlyMedicalTestList} = this.props;
+
+    if (onlyMedicalTestList && !onlyMedicalTestList.length) {
+      console.log(ononlyMedicalTestList(this.state.user_id));
+    }
+
+
     const { referrelFeeLabs, ongetPutReferrelFeeLabs } = this.props;
     // if (referrelFeeLabs && !referrelFeeLabs.length) {
       ongetPutReferrelFeeLabs(this.state.user_id);
     
     this.setState({ referrelFeeLabs });
+
+    
+  }
+
+
+  onChangeTest = selectedGroup => {
+    this.setState({ selectedTest: selectedGroup });
   }
 
   toggle() {
@@ -389,6 +398,8 @@ class ReferrelLabFee extends Component {
     this.toggle();
   };
 
+  
+
   render() {
     const { SearchBar } = Search;
 
@@ -410,6 +421,20 @@ class ReferrelLabFee extends Component {
         order: "desc", // desc or asc
       },
     ];
+
+    // const testList = [];
+    // for (let i = 0; i < this.props.onlyMedicalTestList.length; i++) {
+    //   testList.push({
+    //     label: this.props.onlyMedicalTestList[i].name,
+    //     value: this.props.onlyMedicalTestList[i].name,
+    //   });
+    // }
+
+    const testList = this.props.onlyMedicalTestList.map(test => ({
+      label: test.name,
+      value: test.name,
+      // isDisabled: this.state.selectedTest && test.name !== this.state.selectedTest.value,
+    }));
 
     const {
       ongetPutReferrelFeeLabs,
@@ -450,7 +475,7 @@ class ReferrelLabFee extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="4">
+                                {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
@@ -459,7 +484,37 @@ class ReferrelLabFee extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
-                                </Col>
+                                </Col> */}
+
+                                <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By Test
+                              </Label>
+                              {/* <Select
+                                name="test_name"
+                                component="Select"
+                                onChange={this.onChangeTest}
+                                className="defautSelectParent is-invalid"
+                                options={testList}
+                                placeholder="Test Name"
+                              /> */}
+                              <Select
+                                  name="test_name"
+                                  component="Select"
+                                  onChange={this.onChangeTest}
+                                  className="defautSelectParent is-invalid"
+                                  options={testList}
+                                  placeholder="Test Name"
+                                />
+                            </div>
+                          </Col>
                                 {/* <Col sm="8">
                                   <div className="text-sm-end">
                                     <Button
@@ -483,11 +538,23 @@ class ReferrelLabFee extends Component {
                                       classes={
                                         "table align-middle table-condensed table-hover"
                                       }
+                                      // bordered={false}
+                                      // striped={false}
+                                      // headerWrapperClasses={"table-light"}
+                                      // responsive
+                                      // ref={this.node}
+                                      // filter={filterFactory()}
                                       bordered={false}
                                       striped={false}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+                                      data={referrelFeeLabs.filter(referrelFeeLab =>
+                                        this.state.selectedTest
+                                          ? referrelFeeLab.test_name === this.state.selectedTest.value
+                                          : true
+                                      )}
                                     />
 
                                     <Modal
@@ -650,10 +717,14 @@ ReferrelLabFee.propTypes = {
   ongetPutReferrelFeeLabs: PropTypes.func,
   onupdateReferrelFeeLab: PropTypes.func,
   onupdateReferrelAllFeeLab: PropTypes.func,
+  ononlyMedicalTestList: PropTypes.func,
+  onlyMedicalTestList: PropTypes.array,
 };
 
-const mapStateToProps = ({ referrelFeeLabs }) => ({
+const mapStateToProps = ({ referrelFeeLabs, onlyMedicalTestList }) => ({
   referrelFeeLabs: referrelFeeLabs.referrelFeeLabs,
+  onlyMedicalTestList: onlyMedicalTestList.onlyMedicalTestList,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -662,6 +733,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(updateReferrelFeeLab(referrelFeeLab)),
   onupdateReferrelAllFeeLab: referrelFeeLab =>
     dispatch(updateReferrelAllFeeLab(referrelFeeLab)),
+  
+  ononlyMedicalTestList: id => dispatch(onlyMedicalTestList(id)),
 });
 
 export default connect(

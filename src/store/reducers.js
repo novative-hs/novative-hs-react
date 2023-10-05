@@ -91,6 +91,10 @@ import discountLabs from "./discount-lab/reducer";
 // Territories List
 import territoriesList from "./territories-list/reducer";
 
+
+// Territories List
+import onlyMedicalTestList from "./only-medical-tests-list/reducer";
+
 // CSR  Territories List
 import csrTerritoryList from "./csr-territory-list/reducer";
 
@@ -242,6 +246,7 @@ const rootReducer = combineReducers({
   discountLabHazirs,
   labsList,
   territoriesList,
+  onlyMedicalTestList,
   csrTerritoryList,
   auditorTerritoryList,
   discountLabs,

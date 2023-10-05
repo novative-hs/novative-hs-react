@@ -95,6 +95,7 @@ class NearbyLabs extends Component {
       isMenuOpened: false,
       nearbyLabs: [],
       territoriesList: [],
+      
       advLives: [],
       patientProfile: [],
       advLive: "",

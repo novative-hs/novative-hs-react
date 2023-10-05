@@ -130,6 +130,9 @@ export const GET_FEEDBACKS = `${API_ENDPOINT}/api/lab/feedback-list`;
 // TERRITORIES LIST
 export const GET_TERRITORIES_LIST = `${API_ENDPOINT}/api/territories/district-city-list`;
 
+// TERRITORIES LIST
+export const GET_ONLY_MEDICAL_LIST = `${API_ENDPOINT}/api/medicaltest/only-medical-tests`;
+
 // CSR CENTRAL TERRITORIES LIST
 export const GET_CSR_CENTRAL_TERRITORY_LIST = `${API_ENDPOINT}/api/staff/csr-central-list`;
 // CSR SOUTH TERRITORIES LIST

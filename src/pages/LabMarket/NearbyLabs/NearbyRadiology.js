@@ -1256,7 +1256,7 @@ class nearbyRadiology extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-6">
                                                     <Label className="form-label">
-                                                    Test Description
+                                                    Radiology Description
                                                     </Label>
                                                   </div>
                                                   <textarea
@@ -1472,7 +1472,7 @@ class nearbyRadiology extends Component {
                                 onClick={e => this.openPatientModal(e, nearbyRadiology)}
                               >
                                 <span>
-                                Test Description
+                                Radiology Description
                                 </span>
                               </Link>
                             </div>

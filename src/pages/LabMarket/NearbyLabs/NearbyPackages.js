@@ -1227,7 +1227,7 @@ class NearbyPackage extends Component {
                           <div className="mb-3 row">
                             <div className="col-md-6">
                               <Label className="form-label">
-                                Test Description
+                                Package Description
                               </Label>
                             </div>
                             <textarea
@@ -1438,7 +1438,7 @@ class NearbyPackage extends Component {
                                 onClick={e => this.openPatientModal(e, nearbyPackage)}
                               >
                                 <span>
-                                  Test Description
+                                  Package Description
                                 </span>
                               </Link>
                             </div>
