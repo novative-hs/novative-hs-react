@@ -692,7 +692,7 @@ const patientPublicRoutes = [
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
   { path: "/chat-box", component: ChatBox },
-  { path: "/terms", component: TermsConditions},
+  { path: "/terms-conditions", component: TermsConditions},
   { path: "/nearby-labs/:uuid?/:guest_id?", component: NearbyLabs },
   {
     path: "/labs/:guest_id?/:uuid?",
