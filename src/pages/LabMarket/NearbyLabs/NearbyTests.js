@@ -104,26 +104,11 @@ class NearbyTests extends Component {
   }
 
 
-  componentDidMount() {
+  async componentDidMount() {
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
-      console.log(onGetTerritoriesList(this.state.user_id));
+      await onGetTerritoriesList(this.state.user_id);
     }
-    // let matchingMenuItem = null;
-    // const ul = document.getElementById("navigation");
-    // const items = ul.getElementsByTagName("a");
-    // for (let i = 0; i < items.length; ++i) {
-    //   if (this.props.location.pathname === items[i].pathname) {
-    //     matchingMenuItem = items[i];
-    //     break;
-    //   }
-    // }
-    // if (matchingMenuItem) {
-    //   this.activateParentDropdown(matchingMenuItem);
-    // }
-    const { advertisementLives, onGetAdvertisementLives } = this.props;
-    onGetAdvertisementLives(this.state.user_id);
-    this.setState({ advertisementLives });
   
     let latitude;
     let longitude;
@@ -131,67 +116,54 @@ class NearbyTests extends Component {
     const url = window.location.href;
     const queryString = url.substring(url.indexOf('&') + 1);
     const params = new URLSearchParams(queryString);
-    console.log("print params in app", url, queryString, params)
   
     const latitudeFromUrl = params.get('lat');
     const longitudeFromUrl = params.get('lon');
   
-    console.log('Latitude:', latitudeFromUrl);
-    console.log('Longitude:', longitudeFromUrl);
-  
-    // Check if latitude and longitude values are present in URL parameters
     if (latitudeFromUrl && longitudeFromUrl) {
-      // Use latitude and longitude from URL
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
-      console.log("print lat log in app", latitude, longitude);
-  
-      // Call the dependent code here or pass the latitude and longitude values as arguments
       this.handleLocationUpdate(latitude, longitude);
     } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        console.log("web", latitude, longitude);
-  
-        // Call the dependent code here or pass the latitude and longitude values as arguments
-        this.handleLocationUpdate(latitude, longitude);
+      await new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          resolve();
+        });
       });
+      this.handleLocationUpdate(latitude, longitude);
     }
+  
     setTimeout(() => {
       this.setState({ loading: false });
-    }, 10000); // Set loading state to false after 1 mint
+    }, 7000); // Set loading state to false after 7 seconds
   
     console.log("url with ln and log", window.location.href);
   }
   
-  handleLocationUpdate(latitude, longitude) {
+  async handleLocationUpdate(latitude, longitude) {
     const { onGetNearbyTests } = this.props;
-
-    setTimeout(() => {
-      this.setState({ currentLatitude: latitude });
-      this.setState({ currentLongitude: longitude });
-
-      var data = {
-        latitude: this.state.currentLatitude,
-        longitude: this.state.currentLongitude,
-        search_type: this.state.search_type,
-        address: this.state.address,
-        city: this.state.city,
-        test_name: this.state.test_name,
-        km: this.state.km,
-        LabType: this.state.LabType,
-      };
-
-      if (this.state.currentLatitude && this.state.currentLongitude) {
-        onGetNearbyTests(data);
-
-        setTimeout(() => {
-          this.setState({ nearbyTests: this.props.nearbyTests });
-        }, 1000);
-      }
-    }, 1000);
+    this.setState({ currentLatitude: latitude, currentLongitude: longitude });
+  
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+      km: this.state.km,
+      LabType: this.state.LabType,
+    };
+  
+    if (this.state.currentLatitude && this.state.currentLongitude) {
+      await onGetNearbyTests(data);
+      this.setState({ nearbyTests: this.props.nearbyTests });
+    }
   }
+  
+  
   openDescriptionModal = (e, arg) => {
     this.setState({
       DescriptionModal: true,
