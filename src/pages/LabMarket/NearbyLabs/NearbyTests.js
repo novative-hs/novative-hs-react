@@ -160,7 +160,7 @@ class NearbyTests extends Component {
     }
     setTimeout(() => {
       this.setState({ loading: false });
-    }, 7000); // Set loading state to false after 7 seconds
+    }, 10000); // Set loading state to false after 1 mint
   
     console.log("url with ln and log", window.location.href);
   }
