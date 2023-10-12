@@ -269,8 +269,7 @@ class Register extends Component {
                               username:
                                 (this.state && this.state.username) || "",
                               // email: (this.state && this.state.email) || "",
-                              password:
-                                (this.state && this.state.password) || "",
+                              password: "",
                               password2:
                                 (this.state && this.state.password2) || "",
                               account_type:
@@ -290,6 +289,11 @@ class Register extends Component {
                               //   .email("Please enter valid email"),
                               password: Yup.string().required(
                                 "Please enter your password"
+                                
+                              )
+                              .matches(
+                                /^(?=.*\d).{8,}$/, // Regex to enforce at least 8 characters in password
+                                "Password must contain at least 8 characters and one numeric digit."
                               ),
                               password2: Yup.string()
                                 .required("Please re-enter your password")
@@ -397,24 +401,14 @@ class Register extends Component {
                                   <Label className="form-label">Password</Label>
                                   <div>
                                     <div className="input-group auth-pass-inputgroup">
-                                      <Field
-                                        name="password"
-                                        type="password"
-                                        placeholder="Enter password"
-                                        autoComplete="on"
-                                        onFocus={() => {
-                                          this.setState({
-                                            passwordFieldError: null,
-                                          });
-                                        }}
-                                        className={
-                                          "form-control" +
-                                          ((errors.password && touched.password) || this.state.passwordFieldError
-                                            ? " is-invalid"
-                                            : "")
-                                        }
-                                      />
-                                      <button
+                                    <Field
+                                      name="password"
+                                      type="password"
+                                      placeholder="Enter password"
+                                      autoComplete="on"
+                                      className={`form-control ${errors.password && touched.password ? 'is-invalid' : ''}`}
+                                    />
+                                     <button
                                         className="btn btn-light"
                                         type="button"
                                         id="password-addon"
@@ -422,15 +416,11 @@ class Register extends Component {
                                       >
                                         <i id="eye-icon" className="mdi mdi-eye-outline"></i>
                                       </button>
-                                    </div>
-                                    <ErrorMessage
-                                      name="password"
-                                      component="div"
-                                      className="invalid-feedback"
-                                    />
-
-                                    <div className="invalid-feedback">
-                                      {this.state.passwordFieldError}
+                                    {errors.password && touched.password && (
+                                      <div className="invalid-feedback">
+                                        Password must contain at least 8 characters and one numeric digit.
+                                      </div>
+                                    )}
                                     </div>
                                   </div>
                                   <div className="mt-2">
@@ -461,8 +451,6 @@ class Register extends Component {
                                     />
                                   </div>
                                 </div>
-
-
                                 {isLargeScreen ? (
                                   <div className="mb-3">
                                     <Label

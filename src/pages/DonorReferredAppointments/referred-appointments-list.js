@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+
 
 import {
   Card,
@@ -52,7 +54,7 @@ class ReferredPatientsList extends Component {
             <>
               <strong>{patientTestAppointment.order_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "donated_by",
@@ -81,7 +83,7 @@ class ReferredPatientsList extends Component {
               </Tooltip>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "lab_name",
@@ -105,12 +107,18 @@ class ReferredPatientsList extends Component {
               </Tooltip>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
           },
         {
           dataField: "dues",
           text: "Payment",
           sort: true,
+          formatter: (cellContent, donorReferredAppointment) => (
+            <>
+              <div className="text-end">
+                <strong>{donorReferredAppointment.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+          ), filter: textFilter(),
         },
 
         {
@@ -129,7 +137,7 @@ class ReferredPatientsList extends Component {
                 {`${day}-${month}-${year}`}
               </p>
             );
-          },
+          },filter: textFilter(),
         },
         // {
         //   dataField: "payment_method",
@@ -152,7 +160,7 @@ class ReferredPatientsList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "status",
@@ -184,7 +192,7 @@ class ReferredPatientsList extends Component {
                 </span>
               ) : null}
             </>
-          ),
+          ),filter: textFilter(),
         },
       ],
     };
@@ -294,7 +302,7 @@ class ReferredPatientsList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Appointments" breadcrumbItem="Tracibility" />
+            <Breadcrumbs title="Appointments" breadcrumbItem="Tracability" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -336,14 +344,15 @@ class ReferredPatientsList extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={
-                                        "table align-middle table-nowrap table-hover"
-                                      }
+                                      // classes={
+                                      //   "table align-middle table-nowrap table-hover"
+                                      // }
                                       bordered={false}
                                       striped={false}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
                                     />
                                     <Modal
                                       isOpen={this.state.modal}

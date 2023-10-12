@@ -33,9 +33,11 @@ class LabSettings extends Component {
       phone: "",
       opening_time: "",
       closing_time: "",
+      opening_day: "",
+      closing_day: "",
       home_sampling_charges: "",
       state_sampling_charges: "",
-      state_sampling_time:"",
+      state_sampling_time: "",
       health_dept_certified: "",
       health_dept_certificate: "",
       registration_no: "",
@@ -110,6 +112,8 @@ class LabSettings extends Component {
         is_247_opened: this.props.success.is_247_opened,
         opening_time: this.props.success.opening_time,
         closing_time: this.props.success.closing_time,
+        opening_day: this.props.success.opening_day,
+        closing_day: this.props.success.closing_day,
         phone: this.props.success.phone,
         type: this.props.success.type,
         complaint_handling_email: this.props.success.complaint_handling_email,
@@ -150,6 +154,8 @@ class LabSettings extends Component {
                       (this.state && this.state.is_247_opened) || "Yes",
                     opening_time: (this.state && this.state.opening_time) || "",
                     closing_time: (this.state && this.state.closing_time) || "",
+                    opening_day: (this.state && this.state.opening_day) || "",
+                    closing_day: (this.state && this.state.closing_day) || "",
                     health_dept_certified:
                       (this.state && this.state.health_dept_certified) || "",
                     home_sampling_charges:
@@ -186,15 +192,15 @@ class LabSettings extends Component {
                         0,
                         "Please enter a number greater than or equal to 0"
                       ),
-                      state_sampling_time: Yup.number(
-                        "Please enter number only"
-                      )
-                        .positive()
-                        .integer()
-                        .min(
-                          0,
-                          "Please enter a number greater than or equal to 0"
-                        ),
+                    state_sampling_time: Yup.number(
+                      "Please enter number only"
+                    )
+                      .positive()
+                      .integer()
+                      .min(
+                        0,
+                        "Please enter a number greater than or equal to 0"
+                      ),
                     home_sampling_charges: Yup.number(
                       "Please enter number only"
                     )
@@ -252,6 +258,8 @@ class LabSettings extends Component {
                       if (values.is_247_opened == "Yes") {
                         values.opening_time = "00:00:00";
                         values.closing_time = "00:00:00";
+                        values.opening_day = "Monday";
+                        values.closing_day = "Monday";
                       }
 
                       // To show success message of update
@@ -352,6 +360,84 @@ class LabSettings extends Component {
                                   }}
                                   defaultValue={this.state.closing_time}
                                 />
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+                      {this.state.is_247_opened == "No" && (
+                        <Row>
+                          <Col md={6} lg={6}>
+                            <div className="mb-3 row">
+                              <label
+                                htmlFor="opening_day"
+                                className="col-md-3 col-form-label"
+                              >
+                               From
+                              </label>
+                              <div className="col-md-9">
+
+                                <Field
+                                  name="opening_day"
+                                  component="select"
+                                  defaultValue={this.state.opening_day} // Set the default value
+                                  onChange={(e) => {
+                                    this.setState({
+                                      opening_day: e.target.value, // Update the state when the value changes
+                                    });
+                                  }}
+                                  className={
+                                    "form-control" +
+                                    (errors.opening_day && touched.opening_day ? " is-invalid" : "")
+                                  }
+                                >
+                                  <option value="">**Select Day**</option>
+                                  <option value="Monday">Monday</option>
+                                  <option value="Tuesday">Tuesday</option>
+                                  <option value="Wednesday">Wednesday</option>
+                                  <option value="Thursday">Thursday</option>
+                                  <option value="Friday">Friday</option>
+                                  <option value="Saturday">Saturday</option>
+                                  <option value="Sunday">Sunday</option>
+                                </Field>
+
+                              </div>
+                            </div>
+                          </Col>
+
+                          <Col md={6} lg={6}>
+                            <div className="mb-4 row">
+                              <label
+                                htmlFor="closing_day"
+                                className="col-md-3 col-form-label"
+                              >
+                                To
+                              </label>
+                              <div className="col-md-9">
+                                <Field
+                                  name="closing_day"
+                                  component="select"
+                                  defaultValue={this.state.closing_day} // Set the default value
+                                  onChange={(e) => {
+                                    this.setState({
+                                      closing_day: e.target.value, // Update the state when the value changes
+                                    });
+                                  }}
+                                  className={
+                                    "form-control" +
+                                    (errors.closing_day && touched.closing_day ? " is-invalid" : "")
+                                  }
+                                >
+                                  <option value="">**Select Day**</option>
+                                  <option value="Monday">Monday</option>
+                                  <option value="Tuesday">Tuesday</option>
+                                  <option value="Wednesday">Wednesday</option>
+                                  <option value="Thursday">Thursday</option>
+                                  <option value="Friday">Friday</option>
+                                  <option value="Saturday">Saturday</option>
+                                  <option value="Sunday">Sunday</option>
+                                </Field>
+
                               </div>
                             </div>
                           </Col>
@@ -551,7 +637,7 @@ class LabSettings extends Component {
                                 {typeof this.props.success
                                   .health_dept_certified === "string" &&
                                   this.props.success.health_dept_certified !==
-                                    "" && (
+                                  "" && (
                                     <div className="mt-2">
                                       <strong>Currently: </strong>{" "}
                                       <Link
@@ -588,7 +674,7 @@ class LabSettings extends Component {
                               className={
                                 "form-control" +
                                 (errors.registration_no &&
-                                touched.registration_no
+                                  touched.registration_no
                                   ? " is-invalid"
                                   : "")
                               }
@@ -668,7 +754,7 @@ class LabSettings extends Component {
                           className={
                             "form-control" +
                             (errors.complaint_handling_email &&
-                            touched.complaint_handling_email
+                              touched.complaint_handling_email
                               ? " is-invalid"
                               : "")
                           }
@@ -701,7 +787,7 @@ class LabSettings extends Component {
                           className={
                             "form-control" +
                             (errors.complaint_handling_phone &&
-                            touched.complaint_handling_phone
+                              touched.complaint_handling_phone
                               ? " is-invalid"
                               : "")
                           }
@@ -734,7 +820,7 @@ class LabSettings extends Component {
                           className={
                             "form-control" +
                             (errors.home_sampling_charges &&
-                            touched.home_sampling_charges
+                              touched.home_sampling_charges
                               ? " is-invalid"
                               : "")
                           }
@@ -765,7 +851,7 @@ class LabSettings extends Component {
                           className={
                             "form-control" +
                             (errors.state_sampling_charges &&
-                            touched.state_sampling_charges
+                              touched.state_sampling_charges
                               ? " is-invalid"
                               : "")
                           }
@@ -796,7 +882,7 @@ class LabSettings extends Component {
                           className={
                             "form-control" +
                             (errors.state_sampling_time &&
-                            touched.state_sampling_time
+                              touched.state_sampling_time
                               ? " is-invalid"
                               : "")
                           }

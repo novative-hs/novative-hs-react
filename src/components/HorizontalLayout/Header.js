@@ -48,6 +48,7 @@ class Header extends Component {
         : "",
       position: "right",
     };
+    this.dropdownRef = React.createRef();
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.toggleSearch = this.toggleSearch.bind(this);
@@ -58,6 +59,7 @@ class Header extends Component {
     console.log(this.state.user_type)
   }
   componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
     const url = window.location.href;
     const queryString = url.includes('&') ? url.substring(url.indexOf('&') + 1) : '';
     const params = new URLSearchParams(queryString);
@@ -85,6 +87,7 @@ class Header extends Component {
   componentWillUnmount() {
     // Clear the interval when the component is unmounted to prevent memory leaks
     clearInterval(this.interval);
+    document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
   getData = async () => {
@@ -156,6 +159,11 @@ class Header extends Component {
     this.setState((prevState) => ({
       isDropdownOpen: !prevState.isDropdownOpen,
     }));
+  };
+  handleClickOutside = (event) => {
+    if (this.dropdownRef.current && !this.dropdownRef.current.contains(event.target)) {
+      this.setState({ isDropdownOpen: false });
+    }
   };
   render() {
     const { carts } = this.props;
@@ -358,7 +366,8 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                     </Tooltip>
 
                     {isDropdownOpen && (
-                      <div style={{
+                      <div ref={this.dropdownRef}
+                      style={{
                         position: 'absolute',
                         top: '50px', // Adjust this value to set the distance between the button and the dropdown
                         right: '20px',

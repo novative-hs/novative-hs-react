@@ -21,6 +21,7 @@ import { getB2bProfile } from "store/auth/b2bprofile/actions";
 
 // actions
 import { getPatientProfile } from "store/auth/patientprofile/actions";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class ProfileMenu extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class ProfileMenu extends Component {
           toggle={this.toggle}
           className="d-inline-block"
         >
+          <Tooltip title="Account">
           <DropdownToggle
             className="btn header-item"
             id="page-header-user-dropdown"
@@ -59,6 +61,8 @@ class ProfileMenu extends Component {
           >
             <i className="mdi mdi-account-circle font-size-24 d-xl-inline-block" />
           </DropdownToggle>
+          </Tooltip>
+
 
           <DropdownMenu className="dropdown-menu-end">
             {this.state.account_type && this.state.account_type == "labowner" && (
@@ -67,7 +71,6 @@ class ProfileMenu extends Component {
                 {this.props.t("Lab Profile")}
               </DropdownItem>
             )}
-
             {this.state.account_type && this.state.account_type == "b2bclient" && (
               <DropdownItem tag="a" href={"/b2b-profile"}>
                 <i className="mdi mdi-account font-size-16 align-middle ms-1" />{" "}

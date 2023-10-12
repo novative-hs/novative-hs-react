@@ -356,8 +356,16 @@ class TestsList extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
+                              <div> 
+                                  <span className="text-danger font-size-12">
+                  <strong>
+                    Note: The Tests, Profile and Packages already added will not be displayed here.
+.
+                  </strong>
+                  </span>
+                  </div>
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                                  <div className="search-box ms-2 mb-2 mt-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
@@ -365,6 +373,7 @@ class TestsList extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
+                                  
                                 </Col>
                               </Row>
                               <Row className="mb-4">

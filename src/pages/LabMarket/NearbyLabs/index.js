@@ -4,7 +4,6 @@ import Select from "react-select";
 import { Formik, Field, Form } from "formik";
 import Tooltip from "@material-ui/core/Tooltip";
 
-// import ScrollButton from "components/Common/Scrollbutton";
 import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
@@ -73,6 +72,7 @@ import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 
 import { CITIES } from "helpers/global_variables_helper";
 import offeredTestsList from "pages/OfferedTests/offered-tests-list";
+import ScrollButton from "components/Common/Scrollbutton";
 
 
 class NearbyLabs extends Component {
@@ -113,6 +113,7 @@ class NearbyLabs extends Component {
       currentLongitude: "",
       autoplay: true,
       discountData: [],
+      loading: true, // Add loading state property
       filters: {
         discount: [],
         price: { min: 0, max: 500 },
@@ -135,6 +136,11 @@ class NearbyLabs extends Component {
   };
 
   componentDidMount() {
+    console.log("guest_id", this.props.match.params.guest_id);
+    console.log("uuid", this.props.match.params.uuid);
+    console.log("id", this.props.match.params.id);
+    console.log("fid", this.props.match.params.filnalurl);
+    console.log("type", this.state.user_type);
     const { territoriesList, onGetTerritoriesList, onGetAdvLive, onGetNearbyLabs, onGetRegionWiseAdvertisement } = this.props;
 
     if (territoriesList && !territoriesList.length) {
@@ -196,8 +202,6 @@ class NearbyLabs extends Component {
           this.setState({ advLives: this.props.advLives });
         }, 500);
       }
-
-
       // near by labs
       if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
@@ -244,6 +248,7 @@ class NearbyLabs extends Component {
 
       if ((!this.state.user_id) && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
+        print("guest welcome", guest_id)
         const nearbyLabsLocationDetails = {
           latitude,
           longitude,
@@ -423,14 +428,10 @@ class NearbyLabs extends Component {
         }
       });
     }
-
-    // console.log("url with ln and log", window.location.href);
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 7000); // Set loading state to false after 7 seconds
   }
-
-
-
-
-
   // handleLocationUpdate(latitude, longitude) {
   //   const { onGetAdvLive, onGetNearbyLabs, onGetRegionWiseAdvertisement } = this.props;
 
@@ -872,6 +873,8 @@ class NearbyLabs extends Component {
       const modal = document.getElementById("modal");
       modal.style.display = "none";
     };
+    const { loading } = this.state;
+
 
     return (
       <React.Fragment>
@@ -1788,6 +1791,23 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} to {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )} */}
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -1902,6 +1922,23 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )} */}
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -2043,6 +2080,23 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day}
+                                </span>
+                              </div>
+                            )}
+
+                            {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -2170,7 +2224,23 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
 
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )} */}
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
@@ -2214,7 +2284,7 @@ class NearbyLabs extends Component {
                   </Row>
                 )}
 
-                {/* <ScrollButton /> */}
+                <ScrollButton />
               </Row>
             </Container>
           </div>
@@ -2428,6 +2498,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2542,6 +2619,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2683,6 +2767,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2810,6 +2901,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2854,6 +2952,7 @@ class NearbyLabs extends Component {
                     </Col>
                   </Row>
                 )}
+                <ScrollButton/>
               </Col>
               <Col lg="3">
                 {!isEmpty(this.props.advLives) &&
@@ -3287,6 +3386,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -3401,7 +3507,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
                           <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-email"></i>{" "}
@@ -3542,7 +3654,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
                           <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-phone"></i>{" "}
@@ -3669,6 +3787,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -3713,7 +3838,7 @@ class NearbyLabs extends Component {
                 </Row>
               )}
 
-              {/* <ScrollButton /> */}
+              <ScrollButton />
             </Row></div>
         ) : isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
           <div>
@@ -3922,6 +4047,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -4036,6 +4168,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -4177,7 +4316,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
                           <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-phone"></i>{" "}
@@ -4304,6 +4449,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -4347,8 +4499,7 @@ class NearbyLabs extends Component {
                   </Col>
                 </Row>
               )}
-
-              {/* <ScrollButton /> */}
+              <ScrollButton />
             </Row></div>
         ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && isEmpty(this.state.user_type) ? (
           <div>
@@ -4615,6 +4766,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -4721,6 +4879,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -4854,6 +5019,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -4973,6 +5145,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5016,6 +5195,7 @@ class NearbyLabs extends Component {
                     </Col>
                   </Row>
                 )}
+                <ScrollButton/>
               </Col>
             </Row></div>
         ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && this.state.user_type === "patient" ? (
@@ -5397,6 +5577,23 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )} */}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5503,6 +5700,22 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
+
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )} */}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5636,6 +5849,13 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5755,6 +5975,22 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
+                              {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
+
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )} */}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5786,18 +6022,24 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {isEmpty(nearbyLabs) && (
-                  <Row>
-                    <Col lg="12">
-                      <div className=" mb-5">
-                        <h4 className="text-uppercase">
-                          {/* <i className="bx bx-loader-circle"></i>{" "} */}
-                          Loading.....
-                        </h4>
-                      </div>
-                    </Col>
-                  </Row>
-                )}
+                 {loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : isEmpty(nearbyLabs) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                         Sorry Dont have data.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null}
+                <ScrollButton/>
               </Col>
             </Row></div>
         ) : null}

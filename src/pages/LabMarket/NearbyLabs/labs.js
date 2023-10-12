@@ -87,6 +87,7 @@ class NearbyLabs extends Component {
       currentLatitude: "",
       currentLongitude: "",
       discountData: [],
+      loading: true, // Add loading state property
       filters: {
         discount: [],
         price: { min: 0, max: 500 },
@@ -121,29 +122,29 @@ class NearbyLabs extends Component {
     const { advLives, onGetAdvLive } = this.props;
     onGetAdvLive(this.state.user_id);
     this.setState({ advLives });
-  
+
     let latitude;
     let longitude;
-  
+
     const url = window.location.href;
     const queryString = url.substring(url.indexOf('&') + 1);
     const params = new URLSearchParams(queryString);
     console.log("print params in app", url, queryString, params)
-  
+
     const latitudeFromUrl = params.get('lat');
     const longitudeFromUrl = params.get('lon');
-  
+
     console.log('Latitude:', latitudeFromUrl);
     console.log('Longitude:', longitudeFromUrl);
-  
+
     // Check if latitude and longitude values are present in URL parameters
     if (latitudeFromUrl && longitudeFromUrl) {
       // Use latitude and longitude from URL
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
       console.log("print lat log in app", latitude, longitude);
-  
-  
+
+
       // Call the dependent code here or pass the latitude and longitude values as arguments
       this.handleLocationUpdate(latitude, longitude);
     } else {
@@ -151,11 +152,14 @@ class NearbyLabs extends Component {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
         console.log("web", latitude, longitude);
-  
+
         // Call the dependent code here or pass the latitude and longitude values as arguments
         this.handleLocationUpdate(latitude, longitude);
       });
     }
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 7000); // Set loading state to false after 7 seconds
   }
   handleLocationUpdate(latitude, longitude) {
     const { onGetNearbyLabs } = this.props;
@@ -186,7 +190,7 @@ class NearbyLabs extends Component {
       // console.log(lastSegment);
       // this.props.match.params.guest_id = lastSegment
       // console.log("yaha ani chahi hai guid", this.props.match.params.guest_id, this.props.match.params.filnalurl)
-    
+
       if (this.state.currentLatitude && this.state.currentLongitude) {
         // const guest_id = locationDetails.guest_id
         // console.log("differ:",guest_id)
@@ -522,6 +526,8 @@ class NearbyLabs extends Component {
         value: this.props.territoriesList[i].city,
       });
     }
+    const { loading } = this.state;
+
 
     return (
       <React.Fragment>
@@ -602,8 +608,8 @@ class NearbyLabs extends Component {
                         >
                           <span className="pt-4 font-size-12">Radiology</span>
                           {/* {this.props.t("Packages")} */}
-                        {/* </Link>
-                      </li> */} 
+                      {/* </Link>
+                      </li> */}
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
                           <Link to={
@@ -835,14 +841,14 @@ class NearbyLabs extends Component {
                     </ul>
                   </Collapse>
 
-                ) : 
-                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient"? (
+                ) :
+                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ? (
                   <Collapse
                     isOpen={this.props.menuOpen}
                     className="navbar-collapse"
                     id="topnav-menu-content"
                   >
-                   <ul className="navbar-nav">
+                    <ul className="navbar-nav">
                       <li className="nav-item">
                         <Link
                           to={
@@ -945,7 +951,7 @@ class NearbyLabs extends Component {
                             this.props.match.params.guest_id
                               ? `/test-appointments/${this.props.match.params.guest_id}`
                               : `/test-appointments`
-                          }className="dropdown-item">
+                          } className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
                             <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -981,95 +987,95 @@ class NearbyLabs extends Component {
 
                     </ul>
                   </Collapse>
-                ) : 
-                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
-                  <Collapse
-                  isOpen={this.state.isMenuOpened}
-                  className="navbar-collapse"
-                  id="topnav-menu-content"
-                >
-                  <ul className="navbar-nav">
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/labs`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Labs</span>
-                      </Link>
-                    </li>
+                ) :
+                  this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
+                    <Collapse
+                      isOpen={this.state.isMenuOpened}
+                      className="navbar-collapse"
+                      id="topnav-menu-content"
+                    >
+                      <ul className="navbar-nav">
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/labs`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
 
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-test`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Tests</span>
-                        {/* {this.props.t("Tests")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-profiles`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Profiles</span>
-                        {/* {this.props.t("Profiles")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-packages`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Packages</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>
-                  <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-radiology`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Radiology</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>   
-                    {this.state.user_id && this.state.user_type == "patient" && (
-                      <li className="nav-item">
-                        <Link to={
-                            this.props.match.params.guest_id
-                              ? `/test-appointments/${this.props.match.params.guest_id}`
-                              : `/test-appointments`
-                          } className="dropdown-item">
-                          {/* {this.props.t("My Appointments")} */}
-                          <span className="pt-4 font-size-12">My Appointments</span>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-test`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Tests</span>
+                            {/* {this.props.t("Tests")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-profiles`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Profiles</span>
+                            {/* {this.props.t("Profiles")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-packages`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Packages</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-radiology`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        {this.state.user_id && this.state.user_type == "patient" && (
+                          <li className="nav-item">
+                            <Link to={
+                              this.props.match.params.guest_id
+                                ? `/test-appointments/${this.props.match.params.guest_id}`
+                                : `/test-appointments`
+                            } className="dropdown-item">
+                              {/* {this.props.t("My Appointments")} */}
+                              <span className="pt-4 font-size-12">My Appointments</span>
 
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </Collapse>
-                ) : null}
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </Collapse>
+                  ) : null}
 
             </nav>
           </div>
@@ -1392,6 +1398,14 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
+                              </span>
+                            </div>
+                          )}
 
                           {/* <div className="my-0">
                                 <span className="text-muted me-2">
@@ -1519,6 +1533,14 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
+                              </span>
+                            </div>
+                          )}
 
                           {/* <div className="my-0">
                                 <span className="text-muted me-2">
@@ -1564,7 +1586,7 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-              {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient")&&
+              {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") &&
                 nearbyLabs.map((nearbyLab, key) => (
                   <Col xl="4" sm="6" key={"_col_" + key}>
                     <Card
@@ -1660,6 +1682,14 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
+                              </span>
+                            </div>
+                          )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -1692,26 +1722,26 @@ class NearbyLabs extends Component {
                   </Col>
                 ))}
               {!isEmpty(nearbyLabs) && (this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") &&
-                  nearbyLabs.map((nearbyLab, key) => (
-                    <Col xl="4" sm="6" key={"_col_" + key}>
-                      <Card
-                        onClick={() =>
-                          history.push(
+                nearbyLabs.map((nearbyLab, key) => (
+                  <Col xl="4" sm="6" key={"_col_" + key}>
+                    <Card
+                      onClick={() =>
+                        history.push(
+                          this.props.match.params.guest_id
+                            ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-lab-detail/${nearbyLab.account_id}`
+                        )
+                      }
+                    >
+                      <CardBody>
+                        <Link
+                          to={
                             this.props.match.params.guest_id
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
-                          )
-                        }
-                      >
-                        <CardBody>
-                          <Link
-                            to={
-                              this.props.match.params.guest_id
-                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/nearby-lab-detail/${nearbyLab.account_id}`
-                            }
-                          >
-                            {/* <div className="product-img position-relative">
+                          }
+                        >
+                          {/* <div className="product-img position-relative">
                             <img
                               src={
                                 process.env.REACT_APP_BACKENDURL +
@@ -1722,115 +1752,128 @@ class NearbyLabs extends Component {
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div> */}
-                            <div style={{
-                              width: '200px',
-                              height: '100px',
-                            }}>
-                              <img
-                                src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
-                                alt="Lab Logo"
-                                className=" text-end"
-                                style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
-                              />
-                            </div>
-
-
-
-                          </Link>
-
-                          <div className="mt-4 text-center">
-                            <h5 className="mb-3 text-truncate">
-                              <Link
-                                to={
-                                  this.props.match.params.guest_id
-                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyLab.account_id}`
-                                }
-                                className="text-dark"
-                              >
-                                {nearbyLab.name}{" "}
-                              </Link>
-                            </h5>
-
-                            {nearbyLab.opening_time &&
-                              nearbyLab.closing_time &&
-                              nearbyLab.is_247_opened && (
-                                <div className="my-0">
-                                  <span className=" text-success me-2">
-                                    <i className="mdi mdi-timer text-success"></i>{" "}
-                                    <strong>Open for 24 Hours</strong>
-                                  </span>
-                                </div>
-                              )}
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-google-maps"></i>{" "}
-                                {nearbyLab.address}
-                              </span>
-                            </div>
-
-                            {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
-                                  {nearbyLab.opening_time}
-                                </span>
-                              </div>
-                            )}
-
-                            {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
-                                  {nearbyLab.closing_time}
-                                </span>
-                              </div>
-                            )}
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-phone"></i>{" "}
-                                {nearbyLab.landline}
-                              </span>
-                            </div>
-                            {nearbyLab.female_collectors == "Yes" && (
-                              <div className="my-0">
-                                <span className="text-danger" >
-                                  <i className="mdi mdi-account-question"></i>{" "}
-                                  Lab has female sample collectors
-                                </span>
-                              </div>
-                            )}
-                            <div className="my-0 mt-2">
-                              <StarRatings
-                                rating={nearbyLab.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
+                          <div style={{
+                            width: '200px',
+                            height: '100px',
+                          }}>
+                            <img
+                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                            />
                           </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
-              {isEmpty(nearbyLabs) && (
-                <Row>
-                  <Col lg="12">
-                    <div className=" mb-5">
-                      <h4 className="text-uppercase">
-                        {/* <i className="bx bx-loader-circle"></i>{" "} */}
-                        Loading.....
-                      </h4>
-                    </div>
+
+
+
+                        </Link>
+
+                        <div className="mt-4 text-center">
+                          <h5 className="mb-3 text-truncate">
+                            <Link
+                              to={
+                                this.props.match.params.guest_id
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}`
+                              }
+                              className="text-dark"
+                            >
+                              {nearbyLab.name}{" "}
+                            </Link>
+                          </h5>
+
+                          {nearbyLab.opening_time &&
+                            nearbyLab.closing_time &&
+                            nearbyLab.is_247_opened && (
+                              <div className="my-0">
+                                <span className=" text-success me-2">
+                                  <i className="mdi mdi-timer text-success"></i>{" "}
+                                  <strong>Open for 24 Hours</strong>
+                                </span>
+                              </div>
+                            )}
+
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                          </div>
+
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_time}
+                              </span>
+                            </div>
+                          )}
+
+                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.closing_time}
+                              </span>
+                            </div>
+                          )}
+                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-timer"></i>{" "}
+                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
+                              </span>
+                            </div>
+                          )}
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-phone"></i>{" "}
+                              {nearbyLab.landline}
+                            </span>
+                          </div>
+                          {nearbyLab.female_collectors == "Yes" && (
+                            <div className="my-0">
+                              <span className="text-danger" >
+                                <i className="mdi mdi-account-question"></i>{" "}
+                                Lab has female sample collectors
+                              </span>
+                            </div>
+                          )}
+                          <div className="my-0 mt-2">
+                            <StarRatings
+                              rating={nearbyLab.rating}
+                              starRatedColor="#F1B44C"
+                              starEmptyColor="#2D363F"
+                              numberOfStars={5}
+                              name="rating"
+                              starDimension="14px"
+                              starSpacing="3px"
+                            />
+                          </div>
+                        </div>
+                      </CardBody>
+                    </Card>
                   </Col>
-                </Row>
-              )}
-              
+                ))}
+                {loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : isEmpty(nearbyLabs) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                         Sorry Dont have data.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null}
+
+
               {/* <ScrollButton /> */}
             </Row>
 
@@ -1866,6 +1909,7 @@ class NearbyLabs extends Component {
                 </Row> */}
             {/* </Col> */}
           </Container>
+
         </div>
       </React.Fragment>
     );

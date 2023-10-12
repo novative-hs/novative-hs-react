@@ -32,7 +32,7 @@ class Disclaimer extends Component {
                   <div className="p-3">
                     <div className="w-100">
                       <div>
-                        <p  className="text-muted font-size-14"><span className="text-primary"><strong>Lab Hazir</strong></span> is a online market place that connects patients with different laboratories for testing for wellness monitoring 
+                        <p  className="text-muted font-size-14"><span className="text-primary"><strong>Lab Hazir</strong></span> is an online market place that connects patients with different laboratories for testing for wellness monitoring 
                         and does not guarantee a state of health. Results provided to you are for informational purposes only and not intended to replace the care of a medical practitioner. 
                         We do not diagnose, treat or cure medical conditions. <br/><br/>
                         <span className="text-primary"><strong>Lab Hazir</strong></span> does not replace the care of a medical practitioner or counselor and does not recommend self-diagnosis or self-medication. 

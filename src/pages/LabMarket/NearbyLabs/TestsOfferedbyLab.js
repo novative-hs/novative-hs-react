@@ -66,6 +66,7 @@ class TestsOffered extends Component {
       success: "",
       error: "",
       applied: true,
+      loading: true, // Add loading state property
       page: 1,
       // count: 0,
       totalPage: 5, //replace this with total pages of data
@@ -83,6 +84,9 @@ class TestsOffered extends Component {
       ongetOfferedTestsReferrel();
       this.setState({ offeredTests: this.props.offeredTests });
     }
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 7000); // Set loading state to false after 7 seconds
   }
   // incrementCart = () =>{
   //   this.setState({count: this.state.count + 1})
@@ -269,6 +273,7 @@ class TestsOffered extends Component {
   };
 
   render() {
+    const { loading } = this.state;
     const isLargeScreen = window.innerWidth < 490;
 
     const { page, totalPage } = this.state;
@@ -1280,16 +1285,24 @@ class TestsOffered extends Component {
                       </Col>
                     </Row>
                   ) : null
-                ) : (
-                  isEmpty(this.props.offeredTests) ? (
+                ) : null}
+                 {loading ? (
                     <Row>
                       <Col lg="12">
-                        <div className=" mb-5">
-                        Loading.....
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
                         </div>
                       </Col>
                     </Row>
-                  ) : null)}
+                  ) : isEmpty(this.props.offeredTests) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                         Sorry Dont have data.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null}
               </Row>
 
               {/* <Row>

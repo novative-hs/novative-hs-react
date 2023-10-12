@@ -41,7 +41,7 @@ function* loginUser({ payload: { user, history } }) {
       yield put(apiError(message));
     }
   } catch (error) {
-    yield put(apiError("Sorry! You have provided invalid credentials."));
+    yield put(apiError("Sorry! You have provided invalid Password."));
   }
 }
 

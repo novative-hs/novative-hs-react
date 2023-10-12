@@ -36,7 +36,7 @@ class AboutUs extends Component {
                         
                         <p className="text-muted font-size-14">Our clients are comprised of people who are in need of laboratory testing, they like the convenience of our service and open market place to choose the lab. Lab Hazir ensures that our clients get as much information as they need to make the best testing choice. </p>
                         
-                        <p className="text-muted font-size-14">Through our website and help section defining the basic info about each test, we strive to offer the most complete information. From pricing, to incubation periods, general disease information, and testing requirements, </p>
+                        <p className="text-muted font-size-14">Through our website and help section defining the basic info about each test, we strive to offer the most complete information. From pricing, to incubation periods, general disease information and testing requirements. </p>
 
                         <p className="text-muted font-size-14">Early detection of any disease is important so that treatment may begin as soon as possible and to assist with delaying the onset of serious complications.  Whether you want to take a preventive approach or need to monitor an existing condition, take this time explore the best lab on Lab Hazir that suits your needs.</p>
                       </div>

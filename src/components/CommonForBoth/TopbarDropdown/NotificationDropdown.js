@@ -25,6 +25,7 @@ import avatar4 from "../../../assets/images/users/avatar-4.jpg";
 //i18n
 import { withTranslation } from "react-i18next";
 import { getNotification } from "store/activtylog/actions";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class NotificationDropdown extends Component {
   constructor(props) {
@@ -90,6 +91,7 @@ class NotificationDropdown extends Component {
           className="dropdown d-inline-block"
           tag="li"
         >
+          <Tooltip title="Notifications">
           <DropdownToggle
             className="btn header-item noti-icon"
             tag="button"
@@ -111,14 +113,8 @@ class NotificationDropdown extends Component {
             )}
             </Col>
                   ))}
-                   {/* {isEmpty(this.props.notification) && (
-              <div>
-              <i className="bx bx-bell bx-tada" />
-              <span className="badge bg-danger rounded-pill">0</span>
-              </div>
-                  )} */}
           </DropdownToggle>
-
+          </Tooltip>
           <DropdownMenu className="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0">
             <div className="p-3">
               <Row className="align-items-center">
@@ -126,16 +122,12 @@ class NotificationDropdown extends Component {
                   <h6 className="m-0"> {this.props.t("Notifications")} </h6>
                 </Col>
                 <div className="col-auto">
-                  {/* <a href="#" className="small">
-                    {" "}
-                    View All
-                  </a> */}
                 </div>
               </Row>
             </div>
 
             <SimpleBar style={{ height: "230px" }}>
-              <Link to="" className="text-reset notification-item">
+              <Link to="/pending-test-appointments" className="text-reset notification-item">
                 {!isEmpty(this.props.notification) &&
                   this.props.notification.map((notification, key) => (
                     <Col key={"col" + key}>
@@ -188,8 +180,6 @@ class NotificationDropdown extends Component {
                                               </>
                     </Col>
                   ))}
-
-                {/* </div> */}
               </Link>
             </SimpleBar>
           </DropdownMenu>

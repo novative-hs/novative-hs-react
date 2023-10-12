@@ -801,6 +801,8 @@ export const updateLabSettings = (labSettings, id) => {
   formData.append("is_247_opened", labSettings.is_247_opened);
   formData.append("opening_time", labSettings.opening_time);
   formData.append("closing_time", labSettings.closing_time);
+  formData.append("opening_day", labSettings.opening_day);
+  formData.append("closing_day", labSettings.closing_day);
   formData.append("health_dept_certified", labSettings.health_dept_certified);
   formData.append("registration_no", labSettings.registration_no);
   formData.append("license_no", labSettings.license_no);

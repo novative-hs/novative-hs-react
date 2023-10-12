@@ -134,6 +134,23 @@ class AccountStatements extends Component {
                           </Row>)}
             {!isEmpty(this.props.donoraccountStatements) && (
               <Row>
+                 <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: Only payments with the Cleared and Approved status will show here.
+
+                  </strong>
+                  </span>
+                </div>
+                <div>
+                    <span className="font-size-12">
+                      <strong><span className="text-danger">Note:</span></strong> <strong>MIF Payments Means: (Payment Credited in Account) </strong>
+                    </span>
+                  </div>
+                <div>
+                    <span className="font-size-12">
+                      <strong><span className="text-danger">Note:</span></strong> <strong>INVOICE Payments Means: (Payment Debited in Account) </strong>
+                    </span>
+                  </div>
                 <Col lg="12">
                   <Card>
                     <CardBody>

@@ -19,6 +19,7 @@ import { withTranslation } from "react-i18next";
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
 import NotificationDropdown from "components/CommonForBoth/TopbarDropdown/NotificationDropdown";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class Header extends Component {
   constructor(props) {
@@ -81,6 +82,7 @@ class Header extends Component {
         <header id="page-topbar">
           <div className="navbar-header">
             <div className="d-flex">
+              <Tooltip title="Account">
               <button
                 type="button"
                 onClick={this.toggleMenu}
@@ -89,9 +91,11 @@ class Header extends Component {
               >
                 <i className="fa fa-fw fa-bars"></i>
               </button>
+              </Tooltip>
             </div>
             <div className="d-flex">
               <div className="dropdown d-none d-lg-inline-block ms-1">
+                <Tooltip title="Full Screen">
                 <button
                   type="button"
                   onClick={this.toggleFullscreen}
@@ -100,9 +104,12 @@ class Header extends Component {
                 >
                   <i className="bx bx-fullscreen"></i>
                 </button>
+                </Tooltip>
               </div>
               {this.state.account_type && this.state.account_type == "labowner" && (
+                <Tooltip title="Notifications">
               <NotificationDropdown />
+              </Tooltip>
               )}
               <ProfileMenu />
               

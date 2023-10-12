@@ -264,7 +264,7 @@ class Checkout extends Component {
         if (this.props.checkedoutData) {
           this.setState({
             checkoutSuccess:
-              "Order has been placed successfully! Thank you for choosing Labhazir.",
+              "Order has been placed successfully, check your Email!  Thank you for choosing Labhazir.",
           });
         }
       }, 1000);
@@ -1067,6 +1067,11 @@ class Checkout extends Component {
                                           this.setState({ appointment_requested_at: e.target.value })
                                         }
                                       />
+                                      <span className="text-danger font-size-12">
+                                      <strong><span className="text-danger">Note:</span></strong> <strong>
+                                          You will receive Confirmation Email for this time when Lab will confirm.
+                                        </strong>
+                                      </span>
                                     </Col>
                                   </FormGroup>
                                 </Form>
@@ -1351,7 +1356,7 @@ class Checkout extends Component {
 
                                       {this.state.homeSampledTests.map((homeSampledTest, key) => {
                                         // Check if sampling charges and fees exist
-                                        if (homeSampledTest.state_sampling_charges !== 0) {
+                                        if (homeSampledTest.state_sampling_charges > 0) {
                                           return (
                                             <FormGroup className="mb-4" row key={key}>
                                               <Label htmlFor="patient-name" md="2" className="col-form-label">
@@ -1489,7 +1494,7 @@ class Checkout extends Component {
 
                                   )}
 
-                                  {this.state.is_state_sampling_availed === "Yes" && (
+                                  {/* {this.state.is_state_sampling_availed === "Yes" && (
                                     <Table responsive>
                                       <thead className="table-light">
                                         <tr>
@@ -1524,7 +1529,63 @@ class Checkout extends Component {
                                         })}
                                       </tbody>
                                     </Table>
-                                  )}
+                                  )} */}
+                                   {this.state.is_state_sampling_availed ==
+                                "Yes" && (
+                                  <Table>
+                                    <Thead className="table-light">
+                                      <Tr>
+                                        <Th scope="col">Lab name</Th>
+                                        <Th scope="col">Urgent Sampling Time</Th>
+                                        <Th scope="col">
+                                          Urgent Sampling Charges
+                                        </Th>
+                                      </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                      {this.state.homeSampledTests.map(
+                                        (homeSampledTest, key) => {
+                                          // Check if sampling charges and fees exist
+                                          if (
+                                            homeSampledTest.state_sampling_charges &&
+                                            homeSampledTest.state_sampling_time
+                                          ) {
+                                            return (
+                                              <Tr key={"homeSampledTest" + key}>
+                                                <Td>
+                                                  <p className="font-size-14 float-start">
+                                                    {homeSampledTest.lab_name}
+                                                  </p>
+                                                </Td>
+                                                <Td>
+                                                  <h5 className="font-size-14 float-start">
+                                                    <a
+                                                      href="/ecommerce-product-details/1"
+                                                      className="text-dark"
+                                                    >
+                                                      {
+                                                        homeSampledTest.state_sampling_time
+                                                      }{" "}
+                                                      hours
+                                                    </a>
+                                                  </h5>
+                                                </Td>
+                                                <Td>
+                                                  <p className="font-size-14 float-start">
+                                                    {
+                                                      homeSampledTest.state_sampling_charges
+                                                    }
+                                                  </p>
+                                                </Td>
+                                              </Tr>
+                                            );
+                                          } else {
+                                            return null; // Skip rendering if sampling charges and fees are missing
+                                          }
+                                        }
+                                      )}
+                                    </Tbody>
+                                  </Table>)}
 
                                   <Row className="mt-4">
                                     <Col sm="6"></Col>

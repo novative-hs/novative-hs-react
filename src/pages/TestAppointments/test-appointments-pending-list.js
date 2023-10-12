@@ -850,7 +850,7 @@ class TestAppointmentsPendingList extends Component {
                                                     <Label
                                                       for="estimated_sample_collection_at"
                                                     >
-                                                      Sampling time by Lab
+                                                      Please select date and time for sample collection
                                                     </Label>
                                                     <input
                                                       type="datetime-local"

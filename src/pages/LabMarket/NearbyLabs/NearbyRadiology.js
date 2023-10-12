@@ -83,6 +83,7 @@ class nearbyRadiology extends Component {
       success: "",
       error: "",
       discountData: [],
+      loading: true, // Add loading state property
       filters: {
         discount: [],
         price: { min: 0, max: 500 },
@@ -148,6 +149,9 @@ class nearbyRadiology extends Component {
         this.handleLocationUpdate(latitude, longitude);
       });
     }
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 7000); // Set loading state to false after 7 seconds
 
   }
 
@@ -627,6 +631,8 @@ class nearbyRadiology extends Component {
         value: this.props.territoriesList[i].city,
       });
     }
+    const { loading } = this.state;
+
     
     return (
       <React.Fragment>
@@ -1647,16 +1653,25 @@ class nearbyRadiology extends Component {
                       </Col>
                     </Row>
                   ) : null
-                ) : (
-                  isEmpty(this.props.nearbyRadiology) ? (
+                ) : null}
+                {loading ? (
                     <Row>
                       <Col lg="12">
-                        <div className=" mb-5">
-                        Loading.....
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
                         </div>
                       </Col>
                     </Row>
-                  ) : null)}
+                  ) : isEmpty(this.props.nearbyRadiology) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                         Sorry Dont have data.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null}
+
               </Row>
 
               {/* <Row>

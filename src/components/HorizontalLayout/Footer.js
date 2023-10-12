@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
+// import terms from "../../../src/pdf/";
+
 
 const Footer = () => {
   const isLargeScreen = window.innerWidth > 768;
@@ -49,11 +51,15 @@ const Footer = () => {
               </div>
             </Col>
             <Col md={2}>
-              <div className="text-sm-end d-none d-sm-block">
+              {/* <div className="text-sm-end d-none d-sm-block">
                 <Link to="/terms-conditions">
                   <span>Terms</span>
                 </Link>
-              </div>
+              </div> */}
+              <div>
+  <p><a href="/pdf/termsandconditions.pdf">Terms and Conditions<terms/></a></p>
+</div>
+
             </Col>
             <Col md={1}>
               <div className="text-sm-end d-none d-sm-block">

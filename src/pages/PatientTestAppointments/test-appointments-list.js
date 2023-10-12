@@ -33,6 +33,8 @@ import RatingTooltip from "react-rating-tooltip";
 import { getPatientTestAppointmentsList } from "store/patient-test-appointments/actions";
 import { addNewPatientFeedback } from "store/patient-feedback/actions";
 import { updateTestAppointment } from "store/test-appointments/actions";
+import DeleteModal from "components/Common/DeleteModal";
+
 
 import "assets/scss/table.scss";
 

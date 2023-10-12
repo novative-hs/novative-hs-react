@@ -176,16 +176,16 @@ class SidebarContent extends Component {
                 <li>
                   <Link to={"/donor-appointment"}>
                     <i className="bx bx-receipt" />
-                    <span>{this.props.t("Appointments Tracibility")}</span>
+                    <span>{this.props.t("Appointments Tracability")}</span>
                   </Link>
                 </li>
                 {/* Donor payment Method */}
-                <li>
+                {/* <li>
                   <Link to={"/donor-payment"}>
                     <i className="far fa-money-bill-alt" />
                     <span>{this.props.t("Payment Method")}</span>
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </SimpleBar>
@@ -927,6 +927,31 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
+                 {/* Test Appointment Links */}
+                 <li>
+                  <Link to="/#" className="has-arrow">
+                    <i className="bx bx-test-tube" />
+                    <span>{this.props.t("Test Appointments")}</span>
+                  </Link>
+                  <ul className="sub-menu" aria-expanded="false">
+                    <li>
+                      <Link to={"/pending-test-appointments"}>
+                        {this.props.t("Pending")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/in-process-test-appointments"}>
+                        {this.props.t("In Process")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/completed-test-appointments"}>
+                        {this.props.t("Completed")}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+
                 <li className="menu-title">{this.props.t("Lab")}</li>
 
                 {/* Offered Test Links */}
@@ -967,30 +992,7 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
-                {/* Test Appointment Links */}
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <i className="bx bx-test-tube" />
-                    <span>{this.props.t("Test Appointments")}</span>
-                  </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link to={"/pending-test-appointments"}>
-                        {this.props.t("Pending")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={"/in-process-test-appointments"}>
-                        {this.props.t("In Process")}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={"/completed-test-appointments"}>
-                        {this.props.t("Completed")}
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+               
                 {/* Feedbacks Links */}
                 <li>
                   <Link to="feedbacks">

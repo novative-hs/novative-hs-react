@@ -151,7 +151,7 @@ import Patient from "pages/Dashboard-Csr/patients-list";
 import Disclaimer from "pages/Public/disclaimer";
 import AboutUs from "pages/Public/about-us";
 // import ChatBox from "pages/Public/chat";
-import TermsConditions from "pdf/LabHazir - Terms & Conditions.pdf";
+// import TermsConditions from "pdf/LabHazir - Terms & Conditions.pdf";
 import ChangePassword from "pages/Authentication/ChangePassword";
 import DashboardAuditor from "pages/Dashboard-Auditor";
 import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
@@ -692,7 +692,7 @@ const patientPublicRoutes = [
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
   { path: "/chat-box", component: ChatBox },
-  { path: "/terms-conditions", component: TermsConditions},
+  // { path: "/terms-conditions", component: TermsConditions},
   { path: "/nearby-labs/:uuid?/:guest_id?", component: NearbyLabs },
   {
     path: "/labs/:guest_id?/:uuid?",

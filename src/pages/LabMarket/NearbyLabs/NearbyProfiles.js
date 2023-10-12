@@ -83,6 +83,7 @@ class NearbyProfiles extends Component {
       success: "",
       error: "",
       discountData: [],
+      loading: true, // Add loading state property
       filters: {
         discount: [],
         price: { min: 0, max: 500 },
@@ -147,6 +148,9 @@ class NearbyProfiles extends Component {
         this.handleLocationUpdate(latitude, longitude);
       });
     }
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 7000); // Set loading state to false after 7 seconds
   }
 
   handleLocationUpdate(latitude, longitude) {
@@ -601,6 +605,7 @@ class NearbyProfiles extends Component {
   };
 
   render() {
+    const { loading } = this.state;
     const isLargeScreen = window.innerWidth < 490;
 
     const { page, totalPage } = this.state;
@@ -1599,16 +1604,24 @@ class NearbyProfiles extends Component {
                       </Col>
                     </Row>
                   ) : null
-                ) : (
-                  isEmpty(this.props.nearbyProfiles) ? (
+                ) : null}
+                {loading ? (
                     <Row>
                       <Col lg="12">
-                        <div className=" mb-5">
-                        Loading.....
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
                         </div>
                       </Col>
                     </Row>
-                  ) : null)}
+                  ) : isEmpty(this.props.nearbyProfiles) ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                         Sorry Dont have data.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : null}
               </Row>
 
               {/* <Row>
