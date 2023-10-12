@@ -107,11 +107,25 @@ class NearbyTests extends Component {
   async componentDidMount() {
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
-      await onGetTerritoriesList(this.state.user_id);
+      console.log(await onGetTerritoriesList(this.state.user_id));
     }
   
     let latitude;
     let longitude;
+  
+    const updateLocation = async () => {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log("web", latitude, longitude);
+        this.handleLocationUpdate(latitude, longitude);
+      } catch (error) {
+        console.error("Error getting location:", error);
+      }
+    };
   
     const url = window.location.href;
     const queryString = url.substring(url.indexOf('&') + 1);
@@ -123,23 +137,27 @@ class NearbyTests extends Component {
     if (latitudeFromUrl && longitudeFromUrl) {
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
+      console.log("print lat log in app", latitude, longitude);
       this.handleLocationUpdate(latitude, longitude);
     } else {
-      await new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition((position) => {
-          latitude = position.coords.latitude;
-          longitude = position.coords.longitude;
-          resolve();
-        });
-      });
-      this.handleLocationUpdate(latitude, longitude);
+      await updateLocation();
     }
+  
+    // Call updateLocation function every 2 seconds
+    this.interval = setInterval(async () => {
+      await updateLocation();
+    }, 2000);
   
     setTimeout(() => {
       this.setState({ loading: false });
     }, 7000); // Set loading state to false after 7 seconds
   
     console.log("url with ln and log", window.location.href);
+  }
+  
+  componentWillUnmount() {
+    // Clear the interval when the component is unmounted to prevent memory leaks
+    clearInterval(this.interval);
   }
   
   async handleLocationUpdate(latitude, longitude) {
