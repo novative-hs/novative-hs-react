@@ -1241,25 +1241,27 @@ class NearbyLabs extends Component {
                         <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
-                              for="LabType"
+                              for="LabType2"
                               className="form-label"
                               style={{
                                 fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                               }}
-                            >Search By Kilometers</Label>
-                            <div>
-                              <Input
-                                defaultValue={this.state.km}
-                                onChange={(e) => this.onChangeKm(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search By Km..."
-                              />
-                              {/* <div className="input-group-sm">
-                                <span className="input-group-text">Km</span>
-                              </div> */}
-                            </div>
+                            >
+                              Search Types
+                            </Label>
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={this.state.search_type}
+                              className="form-select"
+                            >
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="City">Search By City</option>
+                              <option value="Custom Address">Custom Address</option>
+                            </Field>
                           </div>
                         </Col>
                         <Col xs="4" sm="4" md="3" lg="3">
@@ -1268,7 +1270,7 @@ class NearbyLabs extends Component {
                               for="LabType2"
                               className="form-label"
                               style={{
-                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                               }}
                             >
                               Search By Labs Type
@@ -1286,29 +1288,101 @@ class NearbyLabs extends Component {
                             </Field>
                           </div>
                         </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType1"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                              }}
-                            >
-                              Search By City
-                            </Label>
-                            <Select
-                              name="city"
-                              component="Select"
-                              onChange={this.onChangeCity}
-                              className="defautSelectParent is-invalid"
-                              options={cityList}
-                              placeholder="City..."
-                            />
-                          </div>
-                        </Col>
-                      </Row>
+                        {this.state.search_type === "Current Location" && (
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
 
+                                />
+                              </div>
+                            </div>
+                          </Col>)}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+
+                                />
+                              </div>
+                            </div>
+                          </Col>)}
+                        {/* City field */}
+                        {this.state.search_type === "City" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={this.onChangeCity}
+                                className="defautSelectParent is-invalid"
+                                options={cityList}
+                                placeholder="City..."
+                              />
+                            </div>
+                          </Col>)}
+                        {/* Custom Address field */}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By Custom Address
+                              </Label>
+                              <Input
+                                defaultValue={this.state.address}
+                                onChange={e => this.onChangeAddress(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search Location..."
+                              />
+                            </div>
+                          </Col>)}
+                      </Row>
                     </Form>
                   )}
                 </Formik>
@@ -1855,23 +1929,23 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-                {loading ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px' }}>
-                          Please Wait.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : isEmpty(nearbyLabs) ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                         Sorry No Result Found.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null}
+              {loading ? (
+                <Row>
+                  <Col lg="12">
+                    <div className="mb-5" style={{ fontSize: '24px' }}>
+                      Please Wait.....
+                    </div>
+                  </Col>
+                </Row>
+              ) : isEmpty(nearbyLabs) ? (
+                <Row>
+                  <Col lg="12">
+                    <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                      Sorry No Result Found.....
+                    </div>
+                  </Col>
+                </Row>
+              ) : null}
 
 
               {/* <ScrollButton /> */}
