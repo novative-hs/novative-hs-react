@@ -1638,7 +1638,7 @@ class NearbyTests extends Component {
                     <Row>
                       <Col lg="12">
                         <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                         Sorry Dont have data.....
+                         Sorry No Result Found.....
                         </div>
                       </Col>
                     </Row>

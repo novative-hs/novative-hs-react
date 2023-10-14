@@ -86,7 +86,7 @@ class TestsOffered extends Component {
     }
     setTimeout(() => {
       this.setState({ loading: false });
-    }, 7000); // Set loading state to false after 7 seconds
+    }, 70000); // Set loading state to false after 7 seconds
   }
   // incrementCart = () =>{
   //   this.setState({count: this.state.count + 1})
@@ -1298,7 +1298,7 @@ class TestsOffered extends Component {
                     <Row>
                       <Col lg="12">
                         <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                         Sorry Dont have data.....
+                         Sorry No Result Found.....
                         </div>
                       </Col>
                     </Row>
