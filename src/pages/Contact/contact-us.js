@@ -128,7 +128,7 @@ class Contact extends Component {
                 Call / Email HelpLine</span>
               <hr style={{ margin: '0 0' }} />
             </a>
-            <div id="modal" className="modal mt-4 " style={{ display: 'none', position: 'absolute', left: '90%', top: '23%', transform: 'translateX(-50%)' }}>
+            <div id="modal" className="modal mt-4 " style={{ display: 'none', position: 'absolute', left: '88%', top: '24%', transform: 'translateX(-50%)' }}>
               <div className="modal-dialog" style={{ width: '300px', height: '300px' }}>
                 <div className="modal-content">
                   <div className="modal-header">
