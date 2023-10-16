@@ -3188,10 +3188,10 @@ class NearbyLabs extends Component {
                 <ScrollButton />
               </Col>
               <Col lg="3">
-              <span className="mb-2" style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px'}}>Advertisements</span>
+                <span style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px'}}>Advertisements</span>
                 {!isEmpty(this.props.advLives) &&
                   this.props.advLives.map((advLive, key) => (
-                    <Col lg="9" key={"col" + key}>
+                    <Col className="mt-3" lg="9" key={"col" + key}>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -3242,15 +3242,15 @@ class NearbyLabs extends Component {
                               ) : (
                                 <div>No media found.</div>
                               )}
-                            </div></Link>
-                       
+                            </div>
+                          </Link>
                     </Col>
                   ))}
                 {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
                   <>
                     {regionWiseAdvertisement.nearby_adv_list.map(
                       (nearby_adv_list, key) => (
-                        <Col lg="9" key={"col" + key}>
+                        <Col className="mt-3" lg="9" key={"col" + key}>
                           {!isEmpty(regionWiseAdvertisement) && (
                                 <Link
                                   to={
