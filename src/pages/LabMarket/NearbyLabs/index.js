@@ -817,7 +817,7 @@ class NearbyLabs extends Component {
 
   render() {
     const { isDropdownOpen } = this.state;
-    const isLargeScreen = window.innerWidth < 490;
+    const isSmallScreen = window.innerWidth < 490;
     const sliderStyles = {
       maxWidth: '100%',
       maxHeight: '100%', // Adjust the height as per your requirements
@@ -1337,7 +1337,7 @@ class NearbyLabs extends Component {
             <div className="d-flex">
               <div className="navbar-brand-box">
 
-                {!isLargeScreen ? (
+                {!isSmallScreen ? (
 
                   <Link
                     to={
@@ -1357,7 +1357,7 @@ class NearbyLabs extends Component {
 
                 ) : null}
               </div>
-              {isLargeScreen ? (
+              {isSmallScreen ? (
 
                 <button
                   type="button"
@@ -1583,7 +1583,7 @@ class NearbyLabs extends Component {
             </div>
           </div>
         </header>
-        {!isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
+        {!isSmallScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
           <div className="page-content">
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -2370,7 +2370,7 @@ class NearbyLabs extends Component {
               </Row>
             </Container>
           </div>
-        ) : !isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) ? (
+        ) : !isSmallScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) ? (
           <div className="page-content">
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -3188,11 +3188,10 @@ class NearbyLabs extends Component {
                 <ScrollButton />
               </Col>
               <Col lg="3">
+              <span className="mb-2" style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px'}}>Advertisements</span>
                 {!isEmpty(this.props.advLives) &&
                   this.props.advLives.map((advLive, key) => (
                     <Col lg="9" key={"col" + key}>
-                      <Card>
-                        <CardBody>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -3244,8 +3243,7 @@ class NearbyLabs extends Component {
                                 <div>No media found.</div>
                               )}
                             </div></Link>
-                        </CardBody>
-                      </Card>
+                       
                     </Col>
                   ))}
                 {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
@@ -3254,8 +3252,6 @@ class NearbyLabs extends Component {
                       (nearby_adv_list, key) => (
                         <Col lg="9" key={"col" + key}>
                           {!isEmpty(regionWiseAdvertisement) && (
-                            <Card>
-                              <CardBody>
                                 <Link
                                   to={
                                     this.props.match.params.uuid
@@ -3287,8 +3283,6 @@ class NearbyLabs extends Component {
                                     />
                                   </div>
                                 </Link>
-                              </CardBody>
-                            </Card>
                           )}
                         </Col>
                       )
@@ -3297,7 +3291,7 @@ class NearbyLabs extends Component {
                 ))}
               </Col>
             </Row></div>
-        ) : isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) && this.state.user_type === "patient" ? (
+        ) : isSmallScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) && this.state.user_type === "patient" ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -4225,7 +4219,7 @@ class NearbyLabs extends Component {
 
               <ScrollButton />
             </Row></div>
-        ) : isLargeScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
+        ) : isSmallScreen && isEmpty(this.props.advLives) && isEmpty(regionWiseAdvertisement) ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -5038,7 +5032,7 @@ class NearbyLabs extends Component {
               ) : null}
               <ScrollButton />
             </Row></div>
-        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && isEmpty(this.state.user_type) ? (
+        ) : isSmallScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && isEmpty(this.state.user_type) ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
@@ -5887,7 +5881,7 @@ class NearbyLabs extends Component {
                 <ScrollButton />
               </Col>
             </Row></div>
-        ) : isLargeScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && this.state.user_type === "patient" ? (
+        ) : isSmallScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && this.state.user_type === "patient" ? (
           <div>
             <MetaTags>
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
