@@ -29,8 +29,8 @@ import {
 } from "store/inpayments/actions";
 import {
   getTerritoriesList
-  } from "store/territories-list/actions";
-  
+} from "store/territories-list/actions";
+
 
 class Contact extends Component {
   constructor(props) {
@@ -39,8 +39,8 @@ class Contact extends Component {
     this.state = {
       territoriesList: [],
       complaint: "",
-      lab_id:"",
-      labhazir_complainee:"",
+      lab_id: "",
+      labhazir_complainee: "",
       name: "",
       email: "",
       city: "",
@@ -56,7 +56,7 @@ class Contact extends Component {
     this.setState({ complaint: selectedGroup.value });
   };
   componentDidMount() {
-      const { territoriesList, onGetTerritoriesList } = this.props;
+    const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
@@ -66,7 +66,8 @@ class Contact extends Component {
     }
     this.setState({ labs });
   }
-  
+
+
 
   render() {
     const complaint = this.state.complaint;
@@ -92,9 +93,20 @@ class Contact extends Component {
       });
     }
 
+    const openModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    };
+
+    const closeModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "none";
+    };
+
     return (
       <React.Fragment>
         <div className="page-content">
+         
           <MetaTags>
             <title> Lab Hazir | Contact Form</title>
           </MetaTags>
@@ -105,6 +117,54 @@ class Contact extends Component {
                 {this.state.complaintSuccess}
               </Alert>
             )}
+             <Button
+            color="primary"
+            className="font-16 btn-block btn btn-primary float-end"
+
+          >
+            <a onClick={openModal}>
+              {/* <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "} */}
+              <span className="pt-4 font-size-14" style={{ fontWeight: 'bold', }}>
+                Call / Email HelpLine</span>
+              <hr style={{ margin: '0 0' }} />
+            </a>
+            <div id="modal" className="modal mt-4 " style={{ display: 'none', position: 'absolute', left: '90%', top: '23%', transform: 'translateX(-50%)' }}>
+              <div className="modal-dialog" style={{ width: '300px', height: '300px' }}>
+                <div className="modal-content">
+                  <div className="modal-header">
+                  </div>
+                  <div className="my-0" style={{ textAlign: 'start'}}>
+                    <span className="text-danger" style={{ marginLeft: '50px' }}>
+                      <i className="mdi mdi-phone" style={{ fontSize: '12px',backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
+                      <span style={{ borderRadius: '5px', padding: '2px', fontSize: '18px'}}>0321 8543111</span>
+                    </span><br />
+                    <span className="text-danger" style={{ marginLeft: '50px' }}>
+                      <i className="mdi mdi-mail" style={{ fontSize: '12px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
+                      <span style={{ borderRadius: '5px', padding: '2px', fontSize: '18px', marginRight: '5px' }}>labhazir@gmail.com</span><br />
+                    </span>
+                    <span className="text-danger" style={{ marginLeft: '50px' }}>
+                      <i className="mdi mdi-mail" style={{ fontSize: '12px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
+                      <span style={{ borderRadius: '5px', padding: '2px', fontSize: '18px' }}>info@labhazir.com</span>
+                    </span>
+                  </div>
+
+                  <div className="modal-header">
+                    <h5 className="modal-title" style={{ textAlign: 'center', fontSize: '12px', margin: '0 auto' }}>Available 24/7 for your convenience and peace of mind.</h5>
+                  </div>
+
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={closeModal}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Button>
 
             <Row>
               <Col lg="12">
@@ -150,7 +210,7 @@ class Contact extends Component {
                       })}
                       onSubmit={values => {
                         onAddNewComplaint(values);
-                        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
                         // If no error messages then show wait message
                         setTimeout(() => {
@@ -230,9 +290,9 @@ class Contact extends Component {
                               </div>
                             </Col>
                             {this.state.complainee == "Lab" ? (
-                              
+
                               complaint.lab_id ? (
-                                
+
                                 <div className="mb-3">
                                   <Label className="form-label">lab name</Label>
                                   <Field
@@ -282,45 +342,45 @@ class Contact extends Component {
                                     Please select lab
                                   </div>
 
-                                
-                                </div>
-                                
-                              )
-                              
-                            ) : null}
-                              {/* City field */}
-                                <div className="mb-3">
-                                  <Label for="city" className="form-label">
-                                    City
-                                  </Label>
-                                  <Select
-                                    name="city"
-                                    component="Select"
-                                    onChange={selectedGroup =>
-                                      this.setState({
-                                        city: selectedGroup.value,
-                                      })
-                                    }
-                                    placeholder="Select City..."
-                                    className="defautSelectParent"
-                                    options={
-                                      cityList
-                                    }
-                                    defaultValue={{
-                                      label:
-                                      this.state.city,
-                                      value:
-                                      this.state.office,                                       
-                                    }}
-                                  
-                                  />
 
-                                  <ErrorMessage
-                                    name="city"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div> 
+                                </div>
+
+                              )
+
+                            ) : null}
+                            {/* City field */}
+                            <div className="mb-3">
+                              <Label for="city" className="form-label">
+                                City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={selectedGroup =>
+                                  this.setState({
+                                    city: selectedGroup.value,
+                                  })
+                                }
+                                placeholder="Select City..."
+                                className="defautSelectParent"
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                    this.state.city,
+                                  value:
+                                    this.state.office,
+                                }}
+
+                              />
+
+                              <ErrorMessage
+                                name="city"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+                            </div>
                             {this.state.complainee === "LabHazir" && (
                               <div className="mb-3">
                                 <Label
@@ -401,7 +461,7 @@ class Contact extends Component {
                                   className="invalid-feedback"
                                 />
                               </div>
-                                           
+
                             </Col>
                           </Row>
 
@@ -526,10 +586,10 @@ Contact.propTypes = {
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
 };
-const mapStateToProps = ({ complaints, territoriesList}) => ({
+const mapStateToProps = ({ complaints, territoriesList }) => ({
   complaint: complaints.complaint,
   labs: complaints.labs,
-  territoriesList:territoriesList.territoriesList,
+  territoriesList: territoriesList.territoriesList,
 });
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddNewComplaint: complaint => dispatch(addNewComplaint(complaint)),
