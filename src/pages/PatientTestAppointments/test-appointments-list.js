@@ -1208,7 +1208,7 @@ class TestAppointmentsList extends Component {
                                                   </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -1224,7 +1224,7 @@ class TestAppointmentsList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">

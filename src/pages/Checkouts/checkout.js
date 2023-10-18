@@ -73,7 +73,7 @@ class Checkout extends Component {
       is_state_sampling_availed: "",
       payment_method: "",
       card_number: "",
-      donation:"",
+      donation: "",
       name_on_card: "",
       expiry_date: "",
       cvv_code: "",
@@ -194,8 +194,8 @@ class Checkout extends Component {
             patient_gender: this.state.patient_gender,
             patient_phone: this.state.patient_phone,
             // relationsip_with_patient: this.state.relationsip_with_patient,
-            // patient_address: this.state.patient_address,
-            city_id: this.state.city_id,
+            patient_address: this.state.patient_address,
+            // city_id: this.state.city_id,
             // patient_district: this.state.patient_district,
             appointment_requested_at: this.state.appointment_requested_at,
             is_home_sampling_availed: this.state.is_home_sampling_availed,
@@ -221,8 +221,8 @@ class Checkout extends Component {
             patient_gender: this.state.patient_gender,
             patient_phone: this.state.patient_phone,
             // relationsip_with_patient: this.state.relationsip_with_patient,
-            // patient_address: this.state.patient_address,
-            city_id: this.state.city_id,
+            patient_address: this.state.patient_address,
+            // city_id: this.state.city_id,
             // patient_district: this.state.patient_district,
             appointment_requested_at: this.state.appointment_requested_at,
             is_home_sampling_availed: this.state.is_home_sampling_availed,
@@ -289,7 +289,7 @@ class Checkout extends Component {
     if (
       this.state.patient_name &&
       // this.state.patient_address &&
-      this.state.city_id &&
+      // this.state.city_id &&
       // this.state.patient_district &&
       this.state.patient_age &&
       this.state.appointment_requested_at
@@ -301,8 +301,7 @@ class Checkout extends Component {
           this.state.name_on_card &&
           this.state.expiry_date &&
           this.state.cvv_code
-        ) 
-        {
+        ) {
           this.setState({ isRequiredFilled: true });
           return true;
         } else {
@@ -311,11 +310,23 @@ class Checkout extends Component {
           return false;
         }
       }
+      // Check if patient's address information is filled in case of home sampling avail
+      if (this.state.is_home_sampling_availed == "Yes") {
+        if (
+          this.state.patient_address
+        ) {
+          this.setState({ isRequiredFilled: true });
+          return true;
+        } else {
+          this.setState({ isRequiredFilled: false });
+          this.toggleTab("2"); // Redirect to Tab "3" if card information is missing
+          return false;
+        }
+      }
       if (this.state.payment_method == "Donation") {
         if (
-          this.state.donation 
-        ) 
-        {
+          this.state.donation
+        ) {
           this.setState({ isRequiredFilled: true });
           return true;
         } else {
@@ -356,7 +367,7 @@ class Checkout extends Component {
 
           // relationsip_with_patient: this.state.relationsip_with_patient,
           // patient_address: this.state.patient_address,
-          city_id: this.state.city_id,
+          // city_id: this.state.city_id,
           // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
           // payment_method: this.state.payment_method,
@@ -365,6 +376,7 @@ class Checkout extends Component {
           // expiry_date: this.state.expiry_date,
           // cvv_code: this.state.cvv_code,
         },
+        
       });
 
       // API call to get the checkout items
@@ -405,7 +417,7 @@ class Checkout extends Component {
 
           // relationsip_with_patient: this.state.relationsip_with_patient,
           // patient_address: this.state.patient_address,
-          city_id: this.state.city_id,
+          // city_id: this.state.city_id,
           // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
           // payment_method: this.state.payment_method,
@@ -444,7 +456,7 @@ class Checkout extends Component {
     if (
       this.state.patient_name &&
       // this.state.patient_address &&
-      this.state.city_id &&
+      // this.state.city_id &&
       // this.state.patient_district &&
       this.state.patient_age &&
       this.state.appointment_requested_at
@@ -591,11 +603,11 @@ class Checkout extends Component {
             }, 2000);
           }
         }
-        if(this.state.payment_method === 'Donation') {
+        if (this.state.payment_method === 'Donation') {
           const {
-          donation,
+            donation,
           } = this.state;
-          if (donation){
+          if (donation) {
             setTimeout(() => {
               this.toggleTab('4');
             }, 2000);
@@ -611,11 +623,93 @@ class Checkout extends Component {
     );
   };
 
+  onChangeAddress = e => {
+    // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
+    var cityBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(this.state.latitude, this.state.longitude)
+    );
 
+    const options = {
+      bounds: cityBounds,
+      types: ["establishment"],
+      componentRestrictions: { country: "pk" },
+    };
 
+    var searchBox = new window.google.maps.places.SearchBox(e.target, options);
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+      if (places.length > 0) {
+        const formattedAddress = places[0].formatted_address;
+        this.setState({ patient_address: formattedAddress });
+      }
+    });
 
+    // Update patient_address state when the user types in the input field
+    this.setState({ patient_address: e.target.value });
+  };
 
+  handleLocatorIconClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const geocoder = new window.google.maps.Geocoder();
+
+        const latlng = {
+          lat: latitude,
+          lng: longitude
+        };
+
+        geocoder.geocode({ location: latlng }, (results, status) => {
+          if (status === "OK") {
+            if (results[0]) {
+              const formattedAddress = results[0].formatted_address;
+              this.setState({ patient_address: formattedAddress }, () => {
+                // Call the function to update patient address
+                this.onChangeAddress({ target: { value: formattedAddress } });
+              });
+            } else {
+              alert("No results found");
+            }
+          } else {
+            alert("Geocoder failed due to: " + status);
+          }
+        });
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+  handleCancelIconClick = () => {
+    // Handle cancel icon click logic here
+    // Clear the input field
+    this.setState({ patient_address: "" });
+  };
   render() {
+    const iconStyle = {
+      position: 'absolute',
+      top: '50%',
+      right: '10px', // Adjust this value to move the icon horizontally
+      transform: 'translateY(-50%)',
+      cursor: 'pointer',
+      color: 'blue', // Icon color
+      fontSize: '16px',
+      marginLeft: '6px'
+    };
+    const closeiconStyle = {
+      position: 'absolute',
+      top: '50%',
+      right: '10px', // Adjust this value to move the icon horizontally
+      transform: 'translateY(-50%)',
+      cursor: 'pointer',
+      color: 'red', // Icon color
+      fontSize: '16px'
+    };
+
+    const inputGroupStyle = {
+      position: 'relative',
+    };
+
     // list of city from territories
     const isLargeScreen = window.innerWidth > 645;
     const cityList = [];
@@ -1021,7 +1115,7 @@ class Checkout extends Component {
                                     </Col>
                                   </FormGroup>
 
-                                  <FormGroup className="mb-4" row>
+                                  {/* <FormGroup className="mb-4" row>
                                     <Label htmlFor="patient-name" md="2" className="col-form-label">
                                       City
                                       <span style={{ color: "#f46a6a" }} className="font-size-18">
@@ -1044,7 +1138,7 @@ class Checkout extends Component {
                                         placeholder="Select City..."
                                       />
                                     </Col>
-                                  </FormGroup>
+                                  </FormGroup> */}
 
                                   <FormGroup className="mb-4" row>
                                     <Label md="12" className="col-form-label">
@@ -1068,7 +1162,7 @@ class Checkout extends Component {
                                         }
                                       />
                                       <span className="text-danger font-size-12">
-                                      <strong><span className="text-danger">Note:</span></strong> <strong>
+                                        <strong><span className="text-danger">Note:</span></strong> <strong>
                                           You will receive Confirmation Email for this time when Lab will confirm.
                                         </strong>
                                       </span>
@@ -1340,17 +1434,26 @@ class Checkout extends Component {
                                           <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
                                         </Label>
                                         <Col md="10">
-                                          <Input
-                                            type="text"
-                                            className="form-control"
-                                            name="patient_address"
-                                            placeholder="Enter your complete address"
-                                            onChange={(e) =>
-                                              this.setState({
-                                                patient_address: e.target.value,
-                                              })
-                                            }
-                                          />
+                                          <div style={inputGroupStyle}>
+                                            <Input
+                                              // defaultValue={this.state.patient_address}
+                                              onChange={e => this.onChangeAddress(e)}
+                                              id="pac-input"
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Search Location..."
+                                              value={this.state.patient_address}
+                                            />
+                                            {this.state.patient_address ? (
+                                              <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+                                                <i className="mdi mdi-close-circle"></i>
+                                              </span>
+                                            ) : (
+                                              <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+                                                <i className="bx bx-target-lock"><span style={{ color: "black", marginLeft: "4px" }}>Current Location</span></i>
+                                              </span>
+                                            )}
+                                          </div>
                                         </Col>
                                       </FormGroup>
 
@@ -1530,62 +1633,62 @@ class Checkout extends Component {
                                       </tbody>
                                     </Table>
                                   )} */}
-                                   {this.state.is_state_sampling_availed ==
-                                "Yes" && (
-                                  <Table>
-                                    <Thead className="table-light">
-                                      <Tr>
-                                        <Th scope="col">Lab name</Th>
-                                        <Th scope="col">Urgent Sampling Time</Th>
-                                        <Th scope="col">
-                                          Urgent Sampling Charges
-                                        </Th>
-                                      </Tr>
-                                    </Thead>
-                                    <Tbody>
-                                      {this.state.homeSampledTests.map(
-                                        (homeSampledTest, key) => {
-                                          // Check if sampling charges and fees exist
-                                          if (
-                                            homeSampledTest.state_sampling_charges &&
-                                            homeSampledTest.state_sampling_time
-                                          ) {
-                                            return (
-                                              <Tr key={"homeSampledTest" + key}>
-                                                <Td>
-                                                  <p className="font-size-14 float-start">
-                                                    {homeSampledTest.lab_name}
-                                                  </p>
-                                                </Td>
-                                                <Td>
-                                                  <h5 className="font-size-14 float-start">
-                                                    <a
-                                                      href="/ecommerce-product-details/1"
-                                                      className="text-dark"
-                                                    >
-                                                      {
-                                                        homeSampledTest.state_sampling_time
-                                                      }{" "}
-                                                      hours
-                                                    </a>
-                                                  </h5>
-                                                </Td>
-                                                <Td>
-                                                  <p className="font-size-14 float-start">
-                                                    {
-                                                      homeSampledTest.state_sampling_charges
-                                                    }
-                                                  </p>
-                                                </Td>
-                                              </Tr>
-                                            );
-                                          } else {
-                                            return null; // Skip rendering if sampling charges and fees are missing
-                                          }
-                                        }
-                                      )}
-                                    </Tbody>
-                                  </Table>)}
+                                  {this.state.is_state_sampling_availed ==
+                                    "Yes" && (
+                                      <Table>
+                                        <Thead className="table-light">
+                                          <Tr>
+                                            <Th scope="col">Lab name</Th>
+                                            <Th scope="col">Urgent Sampling Time</Th>
+                                            <Th scope="col">
+                                              Urgent Sampling Charges
+                                            </Th>
+                                          </Tr>
+                                        </Thead>
+                                        <Tbody>
+                                          {this.state.homeSampledTests.map(
+                                            (homeSampledTest, key) => {
+                                              // Check if sampling charges and fees exist
+                                              if (
+                                                homeSampledTest.state_sampling_charges &&
+                                                homeSampledTest.state_sampling_time
+                                              ) {
+                                                return (
+                                                  <Tr key={"homeSampledTest" + key}>
+                                                    <Td>
+                                                      <p className="font-size-14 float-start">
+                                                        {homeSampledTest.lab_name}
+                                                      </p>
+                                                    </Td>
+                                                    <Td>
+                                                      <h5 className="font-size-14 float-start">
+                                                        <a
+                                                          href="/ecommerce-product-details/1"
+                                                          className="text-dark"
+                                                        >
+                                                          {
+                                                            homeSampledTest.state_sampling_time
+                                                          }{" "}
+                                                          hours
+                                                        </a>
+                                                      </h5>
+                                                    </Td>
+                                                    <Td>
+                                                      <p className="font-size-14 float-start">
+                                                        {
+                                                          homeSampledTest.state_sampling_charges
+                                                        }
+                                                      </p>
+                                                    </Td>
+                                                  </Tr>
+                                                );
+                                              } else {
+                                                return null; // Skip rendering if sampling charges and fees are missing
+                                              }
+                                            }
+                                          )}
+                                        </Tbody>
+                                      </Table>)}
 
                                   <Row className="mt-4">
                                     <Col sm="6"></Col>
