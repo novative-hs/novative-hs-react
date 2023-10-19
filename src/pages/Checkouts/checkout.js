@@ -310,19 +310,7 @@ class Checkout extends Component {
           return false;
         }
       }
-      // Check if patient's address information is filled in case of home sampling avail
-      if (this.state.is_home_sampling_availed == "Yes") {
-        if (
-          this.state.patient_address
-        ) {
-          this.setState({ isRequiredFilled: true });
-          return true;
-        } else {
-          this.setState({ isRequiredFilled: false });
-          this.toggleTab("2"); // Redirect to Tab "3" if card information is missing
-          return false;
-        }
-      }
+      
       if (this.state.payment_method == "Donation") {
         if (
           this.state.donation
@@ -344,8 +332,8 @@ class Checkout extends Component {
         return false;
       }
       // // If patient's payment method is not Card (Cash) then set isRequiredFilled to true
-      this.setState({ isRequiredFilled: true });
-      return true;
+      // this.setState({ isRequiredFilled: true });
+      // return true;
     } else {
       this.setState({ isRequiredFilled: false });
       return false;
@@ -376,7 +364,6 @@ class Checkout extends Component {
           // expiry_date: this.state.expiry_date,
           // cvv_code: this.state.cvv_code,
         },
-        
       });
 
       // API call to get the checkout items
