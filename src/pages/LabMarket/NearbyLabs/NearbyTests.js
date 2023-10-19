@@ -94,7 +94,7 @@ class NearbyTests extends Component {
         price: { min: 0, max: 500 },
       },
       page: 1,
-      // totalPage: 1, //replace this with total pages of data
+      totalPage: 4, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
@@ -418,7 +418,6 @@ class NearbyTests extends Component {
   };
 
   onChangepage = async (e, pageNumber) => {
-    e.preventDefault();
     this.setState({ page: pageNumber }); // Update the page in the state
     // Call nearby labs API only if the search type changes to current location
 
@@ -641,19 +640,15 @@ class NearbyTests extends Component {
     }
   }
   calculateTotalPage = (items) => {
-  const itemsPerPage = Math.min(100, items.length); // Number of items to display per page, up to a maximum of 50
+    const itemsPerPage = 10; // Number of items to display per page
     const totalItems = items.length;
-    console.log("total pahe number", totalItems)
     return Math.ceil(totalItems / itemsPerPage);
   };
 
   render() {
-    // const { nearbyTests } = this.props;
-    const totalPage = !isEmpty(this.props.nearbyTests) ? this.calculateTotalPage(this.props.nearbyTests) : 1;
-    console.log("total pahe number", totalPage)
     const { loading } = this.state;
     const isLargeScreen = window.innerWidth < 490;
-    const { page } = this.state;
+    const { page, totalPage } = this.state;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -1731,39 +1726,39 @@ class NearbyTests extends Component {
                     </Col>
                   </Row>
                 ) : null}
-                {!isEmpty(this.props.nearbyTests) ? (
+                {!isEmpty(this.props.nearbyTests)?(
                   <Row>
-                    <Col lg="12">
-                      <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                        <PaginationItem disabled={page === 1}>
-                          <PaginationLink
-                            previous
-                            href="#"
-                            onClick={(e) => this.onChangepage(e, page - 1)}
+                  <Col lg="12">
+                    <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+                      <PaginationItem disabled={page === 1}>
+                        <PaginationLink
+                          previous
+                          href="#"
+                          onClick={(e) => this.onChangepage(e, page - 1)}
                           />
-                        </PaginationItem>
-                        {Array.from({ length: totalPage }, (_, i) => {
-                          const pageNumber = i + 1;
-                          return (
-                            <PaginationItem key={i} active={pageNumber === this.state.page}>
-                              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
-                                {pageNumber}
-                              </PaginationLink>
-                            </PaginationItem>
-                          );
-                        })}
-                        <PaginationItem disabled={page === totalPage}>
+                      </PaginationItem>
+                    {Array.from({ length: totalPage }, (_, i) => (
+                        <PaginationItem active={i + 1 === page} key={i}>
                           <PaginationLink
-                            next
+                            onClick={(e) => this.onChangepage(e, i + 1)}
                             href="#"
-                            onClick={(e) => this.onChangepage(e, page + 1)}
-                          />
+                          >
+                            {i + 1}
+                          </PaginationLink>
                         </PaginationItem>
-                      </Pagination>
-                    </Col>
-                  </Row>
-                ) : null}
-
+                      ))}
+                      <PaginationItem disabled={page === totalPage}>
+                        <PaginationLink
+                          next
+                          href="#"
+                          onClick={(e) => this.onChangepage(e, page + 1)}
+                        />
+                      </PaginationItem>
+                    </Pagination>
+                  </Col>
+                </Row>
+                ): null}
+                
                 {/* <ScrollButton /> */}
               </Row>
             </Row>
