@@ -923,6 +923,7 @@ export const getNearbyTests = data => {
   formData.append("longitude", data.longitude);
   formData.append("search_type", data.search_type);
   formData.append("km", data.km);
+  formData.append("page", data.page);
   formData.append("LabType", data.LabType);
   formData.append("address", data.address);
   formData.append("city", data.city);
