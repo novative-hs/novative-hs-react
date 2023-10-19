@@ -83,6 +83,7 @@ class NearbyTests extends Component {
       currentLongitude: "",
       location: "",
       km: "30",
+      page: "1",
       LabType: "Main",
       success: "",
       error: "",
@@ -93,14 +94,14 @@ class NearbyTests extends Component {
         price: { min: 0, max: 500 },
       },
       page: 1,
-      totalPage: 5, //replace this with total pages of data
+      // totalPage: 1, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
     console.log("guest_id", this.props.match.params.guest_id);
     console.log("uuid", this.props.match.params.uuid);
     console.log("id", this.props.match.params.id);
-    console.log("fid", this.props.match.params.filnalurl);  
+    console.log("fid", this.props.match.params.filnalurl);
   }
 
 
@@ -109,28 +110,28 @@ class NearbyTests extends Component {
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
-  
+
     let latitude;
     let longitude;
-  
+
     const url = window.location.href;
     const queryString = url.substring(url.indexOf('&') + 1);
     const params = new URLSearchParams(queryString);
     console.log("print params in app", url, queryString, params)
-  
+
     const latitudeFromUrl = params.get('lat');
     const longitudeFromUrl = params.get('lon');
-  
+
     console.log('Latitude:', latitudeFromUrl);
     console.log('Longitude:', longitudeFromUrl);
-  
+
     // Check if latitude and longitude values are present in URL parameters
     if (latitudeFromUrl && longitudeFromUrl) {
       // Use latitude and longitude from URL
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
       console.log("print lat log in app", latitude, longitude);
-  
+
       // Call the dependent code here or pass the latitude and longitude values as arguments
       this.handleLocationUpdate(latitude, longitude);
     } else {
@@ -138,18 +139,18 @@ class NearbyTests extends Component {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
         console.log("web", latitude, longitude);
-  
+
         // Call the dependent code here or pass the latitude and longitude values as arguments
         this.handleLocationUpdate(latitude, longitude);
       });
     }
     setTimeout(() => {
       this.setState({ loading: false });
-    }, 70000); // Set loading state to false after 7 seconds
-  
+    }, 7000); // Set loading state to false after 7 seconds
+
     console.log("url with ln and log", window.location.href);
   }
-  
+
   handleLocationUpdate(latitude, longitude) {
     const { onGetNearbyTests } = this.props;
 
@@ -165,6 +166,7 @@ class NearbyTests extends Component {
         city: this.state.city,
         test_name: this.state.test_name,
         km: this.state.km,
+        page: this.state.page,
         LabType: this.state.LabType,
       };
 
@@ -305,10 +307,6 @@ class NearbyTests extends Component {
     this.setState({ nearbyTests: filteredProducts });
   };
 
-  handlePageClick = page => {
-    this.setState({ page });
-  };
-
   onchangename = e => {
     this.setState({ test_name: e.target.value });
     // Calling API when focus is out of test name and setting nearby tests array
@@ -335,6 +333,7 @@ class NearbyTests extends Component {
         test_name: this.state.test_name,
         LabType: this.state.LabType,
         km: this.state.km,
+        page: this.state.page,
       };
 
     onGetNearbyTests(data);
@@ -374,6 +373,8 @@ class NearbyTests extends Component {
           test_name: this.state.test_name,
           LabType: this.state.LabType,
           km: this.state.km,
+          page: this.state.page,
+
         };
 
         onGetNearbyTests(data);
@@ -399,6 +400,38 @@ class NearbyTests extends Component {
       longitude: this.state.currentLongitude,
       search_type: this.state.search_type,
       km: e.target.value,
+      page: this.state.page,
+      LabType: this.state.LabType,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+
+    };
+    // region wise advertisement
+    onGetNearbyTests(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyTests: this.props.nearbyTests });
+    }, 1000);
+  };
+
+  onChangepage = async (e, pageNumber) => {
+    e.preventDefault();
+    this.setState({ page: pageNumber }); // Update the page in the state
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyTests } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      page: pageNumber, // Use the updated page number
+      km: this.state.km,
       LabType: this.state.LabType,
       address: this.state.address,
       city: this.state.city,
@@ -434,6 +467,7 @@ class NearbyTests extends Component {
         test_name: this.state.test_name,
         LabType: this.state.LabType,
         km: this.state.km,
+        page: this.state.page,
       };
 
       onGetNearbyTests(data);
@@ -459,6 +493,7 @@ class NearbyTests extends Component {
       test_name: this.state.test_name,
       LabType: this.state.LabType,
       km: this.state.km,
+      page: this.state.page,
     };
 
     onGetNearbyTests(data);
@@ -510,44 +545,45 @@ class NearbyTests extends Component {
       search_type: this.state.search_type,
       LabType: e.target.value,
       km: this.state.km,
+      page: this.state.page,
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
     };
-     // region wise advertisement
-     onGetNearbyTests(data);
-     // onGetAdvLive(locationDetails);
-     // onGetRegionWiseAdvertisement(locationDetails);
- 
-     setTimeout(() => {
-       this.setState({ nearbyTests: this.props.nearbyTests });
-     }, 1000);
+    // region wise advertisement
+    onGetNearbyTests(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyTests: this.props.nearbyTests });
+    }, 1000);
   };
 
-handleAddToCart = cart => {
-  const { onAddToCart } = this.props;
+  handleAddToCart = cart => {
+    const { onAddToCart } = this.props;
 
-  if (!this.state.user_id) {
-    this.setState({ guest_id: this.props.match.params.guest_id });
-    cart.guest_id = this.props.match.params.guest_id;
-    onAddToCart(cart, cart.guest_id);
+    if (!this.state.user_id) {
+      this.setState({ guest_id: this.props.match.params.guest_id });
+      cart.guest_id = this.props.match.params.guest_id;
+      onAddToCart(cart, cart.guest_id);
 
-    console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
-  } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-    onAddToCart(cart, this.state.user_id);
-  } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-    onAddToCart(cart, this.props.match.params.guest_id);
-  } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
-    onAddToCart(cart, this.props.match.params.uuid);
-  }
+      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
+    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+      onAddToCart(cart, this.state.user_id);
+    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+      onAddToCart(cart, this.props.match.params.guest_id);
+    } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+      onAddToCart(cart, this.props.match.params.uuid);
+    }
 
-  setTimeout(() => {
-    this.setState({
-      success: "Item added Successfully",
-      error: this.props.error
-    });
-  }, 100);
-};
+    setTimeout(() => {
+      this.setState({
+        success: "Item added Successfully",
+        error: this.props.error
+      });
+    }, 100);
+  };
 
   // activateParentDropdown = item => {
   //   item.classList.add("active");
@@ -575,9 +611,9 @@ handleAddToCart = cart => {
   //   }
   //   return false;
   // };
-  handlePageClick = page => {
-    this.setState({ page });
-  };
+  // handlePageClick = e => {
+  //   this.setState({ page: e.target.value });
+  // };
   toggleFullscreen() {
     if (
       !document.fullscreenElement &&
@@ -604,11 +640,20 @@ handleAddToCart = cart => {
       }
     }
   }
+  calculateTotalPage = (items) => {
+    const itemsPerPage = Math.min(50, items.length); // Number of items to display per page, up to a maximum of 50
+    const totalItems = items.length;
+    console.log("total pahe number", totalItems)
+    return Math.ceil(totalItems / itemsPerPage);
+  };
 
   render() {
+    // const { nearbyTests } = this.props;
+    const totalPage = !isEmpty(this.props.nearbyTests) ? this.calculateTotalPage(this.props.nearbyTests) : 1;
+    console.log("total pahe number", totalPage)
     const { loading } = this.state;
     const isLargeScreen = window.innerWidth < 490;
-    const { page, totalPage } = this.state;
+    const { page } = this.state;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -626,7 +671,7 @@ handleAddToCart = cart => {
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
-               {this.state.user_id && this.state.user_type ==="CSR" && this.state.user_type !== "b2bclient"
+              {this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient"
                 ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
@@ -714,7 +759,7 @@ handleAddToCart = cart => {
                       )}
                     </ul>
                   </Collapse>
-                ): null}
+                ) : null}
               {!this.state.user_id
                 ? (
                   <Collapse
@@ -723,35 +768,35 @@ handleAddToCart = cart => {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                    {this.props.match.params.filnalurl ? (
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                              : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
-                    ) : (
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/labs/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
-                    )}
+                      {this.props.match.params.filnalurl ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                      ) : (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/labs/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                      )}
 
-{this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -862,7 +907,7 @@ handleAddToCart = cart => {
                         </li>
                       ) : null}
 
-               
+
                       {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
@@ -932,8 +977,8 @@ handleAddToCart = cart => {
                     </ul>
                   </Collapse>
 
-                ) : 
-                this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type !== "b2bclient" ? (
+                ) :
+                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ? (
                   <Collapse
                     isOpen={this.props.menuOpen}
                     className="navbar-collapse"
@@ -1078,95 +1123,95 @@ handleAddToCart = cart => {
 
                     </ul>
                   </Collapse>
-                ) : 
-                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
-                  <Collapse
-                  isOpen={this.state.isMenuOpened}
-                  className="navbar-collapse"
-                  id="topnav-menu-content"
-                >
-                  <ul className="navbar-nav">
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/labs`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Labs</span>
-                      </Link>
-                    </li>
+                ) :
+                  this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
+                    <Collapse
+                      isOpen={this.state.isMenuOpened}
+                      className="navbar-collapse"
+                      id="topnav-menu-content"
+                    >
+                      <ul className="navbar-nav">
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/labs`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
 
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-test`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Tests</span>
-                        {/* {this.props.t("Tests")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-profiles`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Profiles</span>
-                        {/* {this.props.t("Profiles")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-packages`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Packages</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>
-                  <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-radiology`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Radiology</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>   
-                    {this.state.user_id && this.state.user_type == "patient" && (
-                      <li className="nav-item">
-                        <Link to={
-                            this.props.match.params.guest_id
-                              ? `/test-appointments/${this.props.match.params.guest_id}`
-                              : `/test-appointments`
-                          }className="dropdown-item">
-                          {/* {this.props.t("My Appointments")} */}
-                          <span className="pt-4 font-size-12">My Appointments</span>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-test`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Tests</span>
+                            {/* {this.props.t("Tests")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-profiles`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Profiles</span>
+                            {/* {this.props.t("Profiles")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-packages`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Packages</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-radiology`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        {this.state.user_id && this.state.user_type == "patient" && (
+                          <li className="nav-item">
+                            <Link to={
+                              this.props.match.params.guest_id
+                                ? `/test-appointments/${this.props.match.params.guest_id}`
+                                : `/test-appointments`
+                            } className="dropdown-item">
+                              {/* {this.props.t("My Appointments")} */}
+                              <span className="pt-4 font-size-12">My Appointments</span>
 
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </Collapse>
-                ) : null}
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </Collapse>
+                  ) : null}
 
             </nav>
           </div>
@@ -1270,7 +1315,7 @@ handleAddToCart = cart => {
                     >
                       {/* Type field */}
                       <Row>
-                      <Col xs="4" sm="4" md="2" lg="2">
+                        <Col xs="4" sm="4" md="2" lg="2">
                           <div className="mb-3">
                             <Label
                               for="LabType1"
@@ -1282,168 +1327,168 @@ handleAddToCart = cart => {
                               Search By Test Name
                             </Label>
                             <div className="mb-3">
-                            <Input
-                              type="text"
-                              className="form-control"
-                              name="test_name"
-                              placeholder="Search Test..."
-                              // onChange={e =>
-                              //   this.setState({
-                              //     test_name: e.target.value,
-                              //   })
-                              // }
-                              onChange={e => this.onchangename(e)}
-                              // onBlur={this.handleBlur}
-                              value={this.state.test_name}
-                            />
-                          </div>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                name="test_name"
+                                placeholder="Search Test..."
+                                // onChange={e =>
+                                //   this.setState({
+                                //     test_name: e.target.value,
+                                //   })
+                                // }
+                                onChange={e => this.onchangename(e)}
+                                // onBlur={this.handleBlur}
+                                value={this.state.test_name}
+                              />
+                            </div>
                           </div>
                         </Col>
-                          <Col xs="4" sm="4" md="2" lg="2">
+                        <Col xs="4q" sm="4" md="2" lg="2">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >
+                              Search Types
+                            </Label>
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={this.state.search_type}
+                              className="form-select"
+                            >
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="City">Search By City</option>
+                              <option value="Custom Address">Custom Address</option>
+                            </Field>
+                          </div>
+                        </Col>
+                        <Col xs="4" sm="4" md="2" lg="2">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >
+                              Search By Labs Type
+                            </Label>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={(e) => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                            >
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points</option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
+                        </Col>
+                        {this.state.search_type === "Current Location" && (
+                          <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
-                                for="LabType2"
+                                for="LabType"
                                 className="form-label"
                                 style={{
                                   fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                                 }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="4" sm="4" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          {this.state.search_type === "Current Location" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="4" sm="4" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {/* City field */}
-                          {this.state.search_type === "City" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By City
-                                </Label>
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder="City..."
-                                />
-                              </div>
-                            </Col>)}
-                          {/* Custom Address field */}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="4" sm="4" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By Custom Address
-                                </Label>
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
                                 <Input
-                                  defaultValue={this.state.address}
-                                  onChange={e => this.onChangeAddress(e)}
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
                                   id="pac-input"
                                   type="text"
                                   className="form-control"
-                                  placeholder="Search Location..."
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+
                                 />
                               </div>
-                            </Col>)}
-                        </Row>
+                            </div>
+                          </Col>)}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+
+                                />
+                              </div>
+                            </div>
+                          </Col>)}
+                        {/* City field */}
+                        {this.state.search_type === "City" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={this.onChangeCity}
+                                className="defautSelectParent is-invalid"
+                                options={cityList}
+                                placeholder="City..."
+                              />
+                            </div>
+                          </Col>)}
+                        {/* Custom Address field */}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By Custom Address
+                              </Label>
+                              <Input
+                                defaultValue={this.state.address}
+                                onChange={e => this.onChangeAddress(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search Location..."
+                              />
+                            </div>
+                          </Col>)}
+                      </Row>
 
                     </Form>
                   )}
@@ -1562,85 +1607,85 @@ handleAddToCart = cart => {
                             </div>
                             <div className="my-0">
                               {" "}
-                              
-                           <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyTest.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
+
+                              <div className="my-0 mt-2">
+                                <StarRatings
+                                  rating={nearbyTest.rating}
+                                  starRatedColor="#F1B44C"
+                                  starEmptyColor="#2D363F"
+                                  numberOfStars={5}
+                                  name="rating"
+                                  starDimension="14px"
+                                  starSpacing="3px"
+                                />
+                              </div>
                             </div>
                             <div className="my-0">
                               {" "}
                               {!this.state.user_id ? (
                                 <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
-                                }
-                                
-                                className="text-dark"
-                              >
-                                <span className="text-primary">
-                                  {nearbyTest.lab_name}{" "}
-                                  
-                                </span>
-                              </Link>
-                              ):null}
-                              {(this.state.user_id) && (this.state.user_type ==="CSR") && (this.state.user_type !=="b2bclient") && (
-                       <Link
-                       to={
-                         this.props.match.params.guest_id
-                           ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
-                           : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
-                       }
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
+                                  }
 
-                       className="text-dark"
-                     >
-                       <span className="text-primary">
-                         {nearbyTest.lab_name}{" "}
+                                  className="text-dark"
+                                >
+                                  <span className="text-primary">
+                                    {nearbyTest.lab_name}{" "}
 
-                       </span>
-                     </Link>
-                      )}
-                            {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type !=="b2bclient") && (
-                       <Link
-                       to={
-                         this.props.match.params.uuid
-                           ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                           : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
-                       }
+                                  </span>
+                                </Link>
+                              ) : null}
+                              {(this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") && (
+                                <Link
+                                  to={
+                                    this.props.match.params.guest_id
+                                      ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
+                                      : `/nearby-lab-detail/${nearbyTest.lab_account_id}`
+                                  }
 
-                       className="text-dark"
-                     >
-                       <span className="text-primary">
-                         {nearbyTest.lab_name}{" "}
+                                  className="text-dark"
+                                >
+                                  <span className="text-primary">
+                                    {nearbyTest.lab_name}{" "}
 
-                       </span>
-                     </Link>
-                      )}
-                      {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type ==="b2bclient") && (
-                       <Link
-                       to={
-                         this.props.match.params.guest_id
-                           ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                           : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
-                       }
+                                  </span>
+                                </Link>
+                              )}
+                              {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
+                                  }
 
-                       className="text-dark"
-                     >
-                       <span className="text-primary">
-                         {nearbyTest.lab_name}{" "}
+                                  className="text-dark"
+                                >
+                                  <span className="text-primary">
+                                    {nearbyTest.lab_name}{" "}
 
-                       </span>
-                     </Link>
-                      )}
+                                  </span>
+                                </Link>
+                              )}
+                              {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") && (
+                                <Link
+                                  to={
+                                    this.props.match.params.guest_id
+                                      ? `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                      : `/nearby-lab-detail/${nearbyTest.lab_account_id}/${this.props.match.params.guest_id}`
+                                  }
+
+                                  className="text-dark"
+                                >
+                                  <span className="text-primary">
+                                    {nearbyTest.lab_name}{" "}
+
+                                  </span>
+                                </Link>
+                              )}
                             </div>
                             <Button
                               type="button"
@@ -1656,7 +1701,7 @@ handleAddToCart = cart => {
                     </Col>
                   ))}
 
-{isLargeScreen ? (
+                {isLargeScreen ? (
                   isEmpty(this.props.nearbyTests) ? (
                     <Row className="vh-100">
                       <Col lg="12">
@@ -1669,23 +1714,57 @@ handleAddToCart = cart => {
                     </Row>
                   ) : null
                 ) : null}
-                 {loading ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px' }}>
-                          Please Wait.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : isEmpty(this.props.nearbyTests) ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                         Sorry No Result Found.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null}
+                {loading ? (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px' }}>
+                        Please Wait.....
+                      </div>
+                    </Col>
+                  </Row>
+                ) : isEmpty(this.props.nearbyTests) ? (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                        Sorry No Result Found.....
+                      </div>
+                    </Col>
+                  </Row>
+                ) : null}
+                {!isEmpty(this.props.nearbyTests) ? (
+                  <Row>
+                    <Col lg="12">
+                      <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+                        <PaginationItem disabled={page === 1}>
+                          <PaginationLink
+                            previous
+                            href="#"
+                            onClick={(e) => this.onChangepage(e, page - 1)}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPage }, (_, i) => {
+                          const pageNumber = i + 1;
+                          return (
+                            <PaginationItem key={i} active={pageNumber === this.state.page}>
+                              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+                                {pageNumber}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        })}
+                        <PaginationItem disabled={page === totalPage}>
+                          <PaginationLink
+                            next
+                            href="#"
+                            onClick={(e) => this.onChangepage(e, page + 1)}
+                          />
+                        </PaginationItem>
+                      </Pagination>
+                    </Col>
+                  </Row>
+                ) : null}
+
+                {/* <ScrollButton /> */}
               </Row>
             </Row>
           </Container>
