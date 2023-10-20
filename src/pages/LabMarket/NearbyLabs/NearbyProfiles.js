@@ -79,6 +79,7 @@ class NearbyProfiles extends Component {
       currentLongitude: "",
       location: "",
       km: "30",
+      page: "1",
       LabType: "Main",
       success: "",
       error: "",
@@ -89,7 +90,6 @@ class NearbyProfiles extends Component {
         price: { min: 0, max: 500 },
       },
       page: 1,
-      totalPage: 5, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
@@ -170,6 +170,7 @@ class NearbyProfiles extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
+        page: this.state.page,
         test_name: this.state.test_name,
         km: this.state.km,
         LabType: this.state.LabType,
@@ -378,6 +379,7 @@ class NearbyProfiles extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
+        page: this.state.page,
         test_name: this.state.test_name, // Now using the ID of the selected profile
         LabType: this.state.LabType,
         km: this.state.km,
@@ -405,6 +407,37 @@ class NearbyProfiles extends Component {
       longitude: this.state.currentLongitude,
       search_type: this.state.search_type,
       km: e.target.value,
+      page: this.state.page,
+      LabType: this.state.LabType,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+
+    };
+    // region wise advertisement
+    onGetNearbyProfiles(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyProfiles: this.props.nearbyProfiles });
+    }, 1000);
+  };
+  onChangepage = async (e, pageNumber) => {
+    e.preventDefault();
+    this.setState({ page: pageNumber }); // Update the page in the state
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyProfiles } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      page: pageNumber, // Use the updated page number
+      km: this.state.km,
       LabType: this.state.LabType,
       address: this.state.address,
       city: this.state.city,
@@ -436,6 +469,7 @@ class NearbyProfiles extends Component {
       search_type: this.state.search_type,
       LabType: e.target.value,
       km: this.state.km,
+      page: this.state.page,
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
@@ -482,6 +516,7 @@ class NearbyProfiles extends Component {
           test_name: this.state.test_name,
           LabType: this.state.LabType,
           km: this.state.km,
+          page: this.state.page,
         };
 
         onGetNearbyProfiles(data);
@@ -512,6 +547,7 @@ class NearbyProfiles extends Component {
         test_name: this.state.test_name,
         LabType: this.state.LabType,
         km: this.state.km,
+        page: this.state.page,
       };
 
       onGetNearbyProfiles(data);
@@ -537,6 +573,7 @@ class NearbyProfiles extends Component {
       test_name: this.state.test_name,
       LabType: this.state.LabType,
       km: this.state.km,
+      page: this.state.page,
     };
 
     onGetNearbyProfiles(data);
@@ -603,12 +640,20 @@ class NearbyProfiles extends Component {
       });
     }, 100);
   };
+  calculateTotalPage = (items) => {
+    const itemsPerPage = Math.min(5, items.length); // Number of items to display per page, up to a maximum of 50
+      const totalItems = items.length;
+      console.log("total pahe number", totalItems)
+      return Math.ceil(totalItems / itemsPerPage);
+    };
 
   render() {
+    const totalPage = !isEmpty(this.props.nearbyProfiles) ? this.calculateTotalPage(this.props.nearbyProfiles) : 1;
+    console.log("total pahe number", totalPage)
     const { loading } = this.state;
     const isLargeScreen = window.innerWidth < 490;
 
-    const { page, totalPage } = this.state;
+    const { page} = this.state;
     const { Profiles } = this.props;
 
     // const profileList = [];
@@ -1330,7 +1375,7 @@ class NearbyProfiles extends Component {
                     >
                       {/* Type field */}
                       <Row>
-                        <Col xs="4" sm="4" md="3" lg="3">
+                      <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
                               for="LabType1"
@@ -1353,39 +1398,39 @@ class NearbyProfiles extends Component {
                             />
                           </div>
                         </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
+                        <Col xs="4q" sm="4" md="2" lg="2">
                           <div className="mb-3">
                             <Label
-                              for="LabType1"
+                              for="LabType2"
                               className="form-label"
                               style={{
-                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                               }}
                             >
-                              Search By Kilo Meters
+                              Search Types
                             </Label>
-                            <div className="input-group">
-                              <Input
-                                defaultValue={this.state.km}
-                                onChange={e => this.onChangeKm(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search By Km..."
-                              />
-                              <div className="input-group-append">
-                                <span className="input-group-text">Km</span>
-                              </div>
-                            </div>
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={this.state.search_type}
+                              className="form-select"
+                            >
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="City">Search By City</option>
+                              <option value="Custom Address">Custom Address</option>
+                            </Field>
                           </div>
                         </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
+                        <Col xs="4" sm="4" md="2" lg="2">
                           <div className="mb-3">
                             <Label
-                              for="LabType1"
+                              for="LabType2"
                               className="form-label"
                               style={{
-                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                               }}
                             >
                               Search By Labs Type
@@ -1393,39 +1438,112 @@ class NearbyProfiles extends Component {
                             <Field
                               name="LabType"
                               component="select"
-                              onChange={e => this.onChangeType(e)}
+                              onChange={(e) => this.onChangeType(e)}
                               value={this.state.LabType}
                               className="form-select"
                             >
                               <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points
-                              </option>
+                              <option value="Collection">Collection Points</option>
                               <option value="Others">Both</option>
                             </Field>
                           </div>
                         </Col>
-                        <Col xs="6" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType1"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
-                              }}
-                            >
-                              Search By City
-                            </Label>
-                            <Select
-                              name="city "
-                              comp onent="Select"
-                              onChange={this.onChangeCity}
-                              className="defautSelectParent is-invalid"
-                              options={cityList}
-                              placeholder="City..."
-                            />
-                          </div>
-                        </Col>
+                        {this.state.search_type === "Current Location" && (
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+
+                                />
+                              </div>
+                            </div>
+                          </Col>)}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+
+                                />
+                              </div>
+                            </div>
+                          </Col>)}
+                        {/* City field */}
+                        {this.state.search_type === "City" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={this.onChangeCity}
+                                className="defautSelectParent is-invalid"
+                                options={cityList}
+                                placeholder="City..."
+                              />
+                            </div>
+                          </Col>)}
+                        {/* Custom Address field */}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By Custom Address
+                              </Label>
+                              <Input
+                                defaultValue={this.state.address}
+                                onChange={e => this.onChangeAddress(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Search Location..."
+                              />
+                            </div>
+                          </Col>)}
                       </Row>
+
                     </Form>
                   )}
                 </Formik>
@@ -1624,37 +1742,39 @@ class NearbyProfiles extends Component {
                   ) : null}
               </Row>
 
-              {/* <Row>
-                <Col lg="12">
-                  <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                    <PaginationItem disabled={page === 1}>
-                      <PaginationLink
-                        previous
-                        href="#"
-                        onClick={() => this.handlePageClick(page - 1)}
-                      />
-                    </PaginationItem>
-                    {map(Array(totalPage), (item, i) => (
-                      <PaginationItem active={i + 1 === page} key={i}>
-                        <PaginationLink
-                          onClick={() => this.handlePageClick(i + 1)}
-                          href="#"
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))}
-                    <PaginationItem disabled={page === totalPage}>
-                      <PaginationLink
-                        next
-                        href="#"
-                        onClick={() => this.handlePageClick(page + 1)}
-                      />
-                    </PaginationItem>
-                  </Pagination>
-                </Col>
-              </Row> */}
-              {/* </Col> */}
+             
+              {!isEmpty(this.props.nearbyProfiles) ? (
+                  <Row>
+                    <Col lg="12">
+                      <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+                        <PaginationItem disabled={page === 1}>
+                          <PaginationLink
+                            previous
+                            href="#"
+                            onClick={(e) => this.onChangepage(e, page - 1)}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPage }, (_, i) => {
+                          const pageNumber = i + 1;
+                          return (
+                            <PaginationItem key={i} active={pageNumber === this.state.page}>
+                              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+                                {pageNumber}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        })}
+                        <PaginationItem disabled={page === totalPage}>
+                          <PaginationLink
+                            next
+                            href="#"
+                            onClick={(e) => this.onChangepage(e, page + 1)}
+                          />
+                        </PaginationItem>
+                      </Pagination>
+                    </Col>
+                  </Row>
+                ) : null}
               {/* <ScrollButton /> */}
 
             </Row>

@@ -3188,62 +3188,62 @@ class NearbyLabs extends Component {
                 <ScrollButton />
               </Col>
               <Col lg="3">
-                <span style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px' }}>Advertisements</span>
+                <span style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px'}}>Advertisements</span>
                 {!isEmpty(this.props.advLives) &&
                   this.props.advLives.map((advLive, key) => (
                     <Col className="mt-3" lg="9" key={"col" + key}>
-                      <Link
-                        to={
-                          this.props.match.params.uuid
-                            ? `/nearby-tests-discountedlh/${this.state.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-tests-discountedlh/${this.state.guest_id}`
-                        }
-                      >
-                        <div>
-                          {advLive.poster ? (
-                            advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL + advLive.poster
-                                }
-                                alt="Advertisement"
-                                style={{
-                                  maxWidth: "100%",
-                                  maxHeight: "100%",
-                                  objectFit: "cover",
-                                }}
-                                className="img-fluid mx-auto d-block"
-                              />
-                            ) : (
-                              <video
-                                width="100%"
-                                height="100%"
-                                controls
-                                autoPlay={this.state.autoplay}
-                                loop
-                              >
-                                <source
-                                  src={process.env.REACT_APP_BACKENDURL + advLive.poster}
-                                  type="video/mp4"
-                                />
-                                Your browser does not support the video tag.
-                              </video>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-tests-discountedlh/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-tests-discountedlh/${this.state.guest_id}`
+                            }
+                          >
+                            <div>
+                              {advLive.poster ? (
+                                advLive.poster.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                                  <img
+                                    src={
+                                      process.env.REACT_APP_BACKENDURL + advLive.poster
+                                    }
+                                    alt="Advertisement"
+                                    style={{
+                                      maxWidth: "100%",
+                                      maxHeight: "100%",
+                                      objectFit: "cover",
+                                    }}
+                                    className="img-fluid mx-auto d-block"
+                                  />
+                                ) : (
+                                  <video
+                                    width="100%"
+                                    height="100%"
+                                    controls
+                                    autoPlay={this.state.autoplay}
+                                    loop
+                                  >
+                                    <source
+                                      src={process.env.REACT_APP_BACKENDURL + advLive.poster}
+                                      type="video/mp4"
+                                    />
+                                    Your browser does not support the video tag.
+                                  </video>
 
-                              // <video width="100%" height="100%" controls autoPlay>
-                              // <source
-                              // src={
-                              // process.env.REACT_APP_BACKENDURL + advLive.poster
-                              // }
-                              // type="video/mp4"
-                              // />
-                              // Your browser does not support the video tag.
-                              // </video>
-                            )
-                          ) : (
-                            <div>No media found.</div>
-                          )}
-                        </div>
-                      </Link>
+                                  // <video width="100%" height="100%" controls autoPlay>
+                                  // <source
+                                  // src={
+                                  // process.env.REACT_APP_BACKENDURL + advLive.poster
+                                  // }
+                                  // type="video/mp4"
+                                  // />
+                                  // Your browser does not support the video tag.
+                                  // </video>
+                                )
+                              ) : (
+                                <div>No media found.</div>
+                              )}
+                            </div>
+                          </Link>
                     </Col>
                   ))}
                 {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
@@ -3252,14 +3252,14 @@ class NearbyLabs extends Component {
                       (nearby_adv_list, key) => (
                         <Col className="mt-3" lg="9" key={"col" + key}>
                           {!isEmpty(regionWiseAdvertisement) && (
-                            <Link
-                              to={
-                                this.props.match.params.uuid
-                                  ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
-                                  : `/nearby-lab-detail/${nearby_adv_list.account_id}`
-                              }
-                            >
-                              {/* <div className="product-img position-relative">
+                                <Link
+                                  to={
+                                    this.props.match.params.uuid
+                                      ? `/nearby-lab-detail/${nearby_adv_list.account_id}/${this.props.match.params.uuid}`
+                                      : `/nearby-lab-detail/${nearby_adv_list.account_id}`
+                                  }
+                                >
+                                  {/* <div className="product-img position-relative">
                                   <img
                                     src={
                                       process.env.REACT_APP_BACKENDURL +
@@ -3273,16 +3273,16 @@ class NearbyLabs extends Component {
                                     }}
                                     className="img-fluid mx-auto d-block" />
                                 </div> */}
-                              <div>
-                                <img
-                                  src={process.env.REACT_APP_BACKENDURL +
-                                    nearby_adv_list.poster}
-                                  alt="Lab Advertisement"
-                                  // className=" text-end"
-                                  style={{ maxWidth: '100%', maxHeight: '100%', objectFit: "cover" }}
-                                />
-                              </div>
-                            </Link>
+                                  <div>
+                                    <img
+                                      src={process.env.REACT_APP_BACKENDURL +
+                                        nearby_adv_list.poster}
+                                      alt="Lab Advertisement"
+                                      // className=" text-end"
+                                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: "cover" }}
+                                    />
+                                  </div>
+                                </Link>
                           )}
                         </Col>
                       )
