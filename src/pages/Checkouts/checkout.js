@@ -84,6 +84,8 @@ class Checkout extends Component {
       activeTab: "1",
       selectedGroup: null,
       checkoutSuccess: "",
+      ageFormat: 'years', // default to years
+
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
@@ -310,7 +312,7 @@ class Checkout extends Component {
           return false;
         }
       }
-      
+
       if (this.state.payment_method == "Donation") {
         if (
           this.state.donation
@@ -672,6 +674,18 @@ class Checkout extends Component {
     // Clear the input field
     this.setState({ patient_address: "" });
   };
+  handleAgeChange = (e) => {
+    this.setState({
+      patient_age: e.target.value,
+    });
+  };
+
+  handleAgeFormatChange = (e) => {
+    this.setState({
+      ageFormat: e.target.value,
+    });
+  };
+
   render() {
     const iconStyle = {
       position: 'absolute',
@@ -1050,29 +1064,34 @@ class Checkout extends Component {
                                   <FormGroup className="mb-4" row>
                                     <Label md="2" className="col-form-label">
                                       Patient Age
-                                      <span
-                                        style={{ color: "#f46a6a" }}
-                                        className="font-size-18"
-                                      >
+                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
                                         *
                                       </span>
                                     </Label>
-                                    <Col md={10}>
+                                    <Col md={8}>
                                       <input
                                         type="number"
                                         className="form-control"
                                         name="patient_age"
                                         min="0"
-                                        max="150"
-                                        placeholder="Enter your age"
-                                        onChange={e =>
-                                          this.setState({
-                                            patient_age: e.target.value,
-                                          })
-                                        }
+                                        placeholder="Enter age"
+                                        onChange={this.handleAgeChange}
                                       />
                                     </Col>
+                                    <Col md={2} className="text-danger">
+                                      <select
+                                        className="form-select"
+                                        onChange={this.handleAgeFormatChange}
+                                        value={this.state.ageFormat}
+                                        style={{ color: 'red' }}
+                                      >
+                                        <option value="years">Years</option>
+                                        <option value="months">Months</option>
+                                      </select>
+                                    </Col>
+
                                   </FormGroup>
+
 
                                   <FormGroup className="mb-4" row>
                                     <Label md="2" className="col-form-label">
