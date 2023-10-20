@@ -945,6 +945,7 @@ export const getNearbyTestsDiscounted = data => {
   formData.append("longitude", data.longitude);
   formData.append("search_type", data.search_type);
   formData.append("km", data.km);
+  formData.append("page", data.page);
   formData.append("LabType", data.LabType);
   formData.append("address", data.address);
   formData.append("city", data.city);
@@ -969,6 +970,7 @@ export const getNearbyProfiles = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("km", data.km);
+  formData.append("page", data.page);
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("donorSetting: ", data);
@@ -997,6 +999,7 @@ export const getNearbyPackages = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("km", data.km);
+  formData.append("page", data.page);
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("packages: ", data);
@@ -1032,6 +1035,7 @@ export const getNearbyRadiology = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("km", data.km);
+  formData.append("page", data.page);
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("radiology: ", data);
