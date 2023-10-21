@@ -7,6 +7,9 @@ import {
   GET_OFFERED_TESTS,
   GET_LAB_PROFILE,
   GET_OFFEREDTEST_REFERRELFEE,
+  GET_OFFEREDPROFILE_REFERRELFEE,
+  GET_OFFEREDPACKAGE_REFERRELFEE,
+  GET_OFFEREDRADIOLOGY_REFERRELFEE,
   ADD_NEW_OFFERED_TEST,
   ADD_NEW_OFFERED_MAINTEST,
   DELETE_OFFERED_TEST,
@@ -24,6 +27,12 @@ import {
   getOfferedTestsFail,
   getOfferedTestsReferrelSuccess,
   getOfferedTestsReferrelFail,
+  getOfferedProfilesReferrelSuccess,
+  getOfferedProfilesReferrelFail,
+  getOfferedPackagesReferrelSuccess,
+  getOfferedPackagesReferrelFail,
+  getOfferedRadiologysReferrelSuccess,
+  getOfferedRadiologysReferrelFail,
   addOfferedTestFail,
   addOfferedTestSuccess,
   addOfferedMainTestFail,
@@ -40,6 +49,9 @@ import {
   getTests,
   getOfferedTests,
   getOfferedTestsReferrel,
+  getOfferedProfilesReferrel,
+  getOfferedPackagesReferrel,
+  getOfferedRadiologysReferrel,
   getLabProfile,
   addNewOfferedTest,
   addNewOfferedMainTest,
@@ -89,6 +101,30 @@ function* fetchOfferedTestsReferrel(object) {
     yield put(getOfferedTestsReferrelSuccess(response));
   } catch (error) {
     yield put(getOfferedTestsReferrelFail(error));
+  }
+}
+function* fetchOfferedProfilesReferrel(object) {
+  try {
+    const response = yield call(getOfferedProfilesReferrel, object.payload);
+    yield put(getOfferedProfilesReferrelSuccess(response));
+  } catch (error) {
+    yield put(getOfferedProfilesReferrelFail(error));
+  }
+}
+function* fetchOfferedPackagesReferrel(object) {
+  try {
+    const response = yield call(getOfferedPackagesReferrel, object.payload);
+    yield put(getOfferedPackagesReferrelSuccess(response));
+  } catch (error) {
+    yield put(getOfferedPackagesReferrelFail(error));
+  }
+}
+function* fetchOfferedRadiologysReferrel(object) {
+  try {
+    const response = yield call(getOfferedRadiologysReferrel, object.payload);
+    yield put(getOfferedRadiologysReferrelSuccess(response));
+  } catch (error) {
+    yield put(getOfferedRadiologysReferrelFail(error));
   }
 }
 
@@ -141,6 +177,9 @@ function* offeredTestsSaga() {
   yield takeEvery(GET_OFFERED_TESTS, fetchOfferedTests);
   yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);
   yield takeEvery(GET_OFFEREDTEST_REFERRELFEE, fetchOfferedTestsReferrel);
+  yield takeEvery(GET_OFFEREDPROFILE_REFERRELFEE, fetchOfferedProfilesReferrel);
+  yield takeEvery(GET_OFFEREDPACKAGE_REFERRELFEE, fetchOfferedPackagesReferrel);
+  yield takeEvery(GET_OFFEREDRADIOLOGY_REFERRELFEE, fetchOfferedRadiologysReferrel);
   yield takeEvery(ADD_NEW_OFFERED_TEST, onAddNewOfferedTest);
   yield takeEvery(ADD_NEW_OFFERED_MAINTEST, onAddNewOfferedMainTest);
   yield takeEvery(UPDATE_OFFERED_TEST, onUpdateOfferedTest);

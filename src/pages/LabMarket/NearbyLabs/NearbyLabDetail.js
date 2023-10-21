@@ -48,6 +48,9 @@ class NearbyLabDetail extends Component {
       phone: "",
       email: "",
       offered_tests: "",
+      offered_profiles: "",
+      offered_packages: "",
+      offered_radiologies: "",
       pathologists: "",
       quality_certificates: "",
       sample_collectors: "",
@@ -516,10 +519,10 @@ class NearbyLabDetail extends Component {
                         {this.state.user_id && this.state.user_type == "patient" && (
                           <li className="nav-item">
                             <Link to={
-                            this.props.match.params.guest_id
-                              ? `/test-appointments/${this.props.match.params.guest_id}`
-                              : `/test-appointments`
-                          }className="dropdown-item">
+                              this.props.match.params.guest_id
+                                ? `/test-appointments/${this.props.match.params.guest_id}`
+                                : `/test-appointments`
+                            } className="dropdown-item">
                               {/* {this.props.t("My Appointments")} */}
                               <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -608,8 +611,8 @@ class NearbyLabDetail extends Component {
                         </Row>
                         {!this.state.user_id ? (
                           <Row className="mt-4">
-                            <div className=" mb-3">
-                              <Col sm="6">
+                            <div className="mb-2 row">
+                              <Col sm="2" style={{ width: '141px'}}>
                                 {this.props.success.offered_tests === true && (
                                   <Link
                                     to={
@@ -617,25 +620,104 @@ class NearbyLabDetail extends Component {
                                         ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                                         : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
                                     }
-                                    className=" linklist btn btn-primary btn-md"
+                                    className="linklist btn btn-primary btn-md"
+                                    style={{ fontSize: '12px' }} // Set your desired font size here
+
                                   >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
+                                    <i className="mdi mdi-arrow-right btn-block" />Offered Tests{" "}
                                   </Link>
                                 )}
                                 {this.props.success.offered_tests === false && (
                                   <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
+                                    to="#" className="linklist btn btn-secondary btn-md"
+                                    style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
                                   >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
+                                    <i className="mdi mdi-arrow-right " /> Offered Tests{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                              <Col sm="2" style={{ width: '153px', marginLeft: "-22px" }}>
+                                {this.props.success.offered_profiles === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                    style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.offered_profiles === false && (
+                                  <Link
+                                    to="#" 
+                                    className="linklist btn btn-secondary btn-md"
+                                    style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                              <Col sm="3" style={{ width: '172px', marginLeft: "-22px" }}>
+                                {this.props.success.offered_packages === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                    style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />Offered Packages
+                                  </Link>
+                                )}
+                                {this.props.success.offered_packages === false && (
+                                  <Link
+                                    to="#" 
+                                    className="linklist btn btn-secondary btn-md"
+                                    style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" /> Offered Packages{" "}
                                   </Link>
                                 )}
                               </Col>
                             </div>
-                            <div className="mb-3">
-                              <Col sm="6">
+                            <div className="mb-2 row">
+                              <Col sm="3" >
+                                {this.props.success.offered_radiologies === true && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                    }
+                                    className="linklist btn btn-primary btn-md"
+                                    style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />Offered Radiology{" "}
+                                  </Link>
+                                )}
+                                {this.props.success.offered_radiologies === false && (
+                                  <Link
+                                    to="#" 
+                                    className="linklist btn btn-secondary btn-md"
+                                    style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" /> Offered Radiology{" "}
+                                  </Link>
+                                )}
+                              </Col>
+                              <Col sm="3" style={{ marginLeft: "-20px" }}>
                                 {this.props.success.quality_certificates ===
                                   true && (
                                     <Link
@@ -655,15 +737,18 @@ class NearbyLabDetail extends Component {
                                     <Link
                                       to="#"
                                       className=" linklist btn btn-secondary btn-md"
+                                      style={{pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
                                     >
                                       <i className="mdi mdi-arrow-right btn-block" />{" "}
                                       Quality-Certificates{" "}
                                     </Link>
                                   )}
                               </Col>
+
                             </div>
-                            <div className="mb-3">
-                              <Col sm="6">
+                            <div className="mb-2 row">
+                              <Col sm="3" >
                                 {this.props.success.sample_collectors ===
                                   true && (
                                     <Link
@@ -683,15 +768,15 @@ class NearbyLabDetail extends Component {
                                     <Link
                                       to="#"
                                       className=" linklist btn btn-secondary btn-md"
+                                      style={{pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
                                     >
                                       <i className="mdi mdi-arrow-right btn-block" />{" "}
                                       Sample-Collectors{" "}
                                     </Link>
                                   )}
                               </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
+                              <Col sm="3" style={{ marginLeft: "-20px" }}>
                                 {this.props.success.pathologists === true && (
                                   <Link
                                     to={
@@ -709,406 +794,608 @@ class NearbyLabDetail extends Component {
                                   <Link
                                     to="#"
                                     className=" linklist btn btn-secondary btn-md"
+                                    style={{pointerEvents: 'none', // Disable mouse events
+                                  }} // Set your desired font size here
                                   >
                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
                                     Pathologists{" "}
                                   </Link>
                                 )}
                               </Col>
-                            </div>
 
-                            {/* <Col sm="6">
-    <Link
-      to={
-        this.props.match.params.uuid
-          ? `/nearby-labs/${this.props.match.params.uuid}`
-          : `/nearby-labs`
-      }
-      className="btn btn-secondary"
-    >
-      <i className="bx bxs-shopping-bags me-1" />{" "}
-      Continue Shopping{" "}
-    </Link>
-  </Col>
-  <Col sm="6">
-    <div className="text-sm-end mt-2 mt-sm-0">
-      <Link
-        to={{
-          pathname: `http://maps.google.com/?q=${this.props.success.address}`,
-        }}
-        className="btn btn-success mb-2 mt-2"
-        target="_blank"
-      >
-        <i className="bx bxs-navigation" /> Navigate to
-        the Lab
-      </Link>
-    </div>
-  </Col> */}
+                            </div>
                           </Row>
                         ) : null}
                         {(this.state.user_id) && (this.state.user_type !== "CSR") && this.state.user_type !== "b2bclient" ? (
-                          <Row className="mt-4">
-                            <div className=" mb-3">
-                              <Col sm="6">
-                                {this.props.success.offered_tests === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.guest_id
-                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
-                                    }
-                                    className="linklist btn btn-primary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_tests === false && (
-                                  <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.quality_certificates ===
-                                  true && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
-                                          : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
-                                      }
-                                      className="linklist btn btn-primary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Quality-Certificates{" "}
-                                    </Link>
-                                  )}
-                                {this.props.success.quality_certificates ===
-                                  false && (
-                                    <Link
-                                      to="#"
-                                      className=" linklist btn btn-secondary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Quality-Certificates{" "}
-                                    </Link>
-                                  )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.sample_collectors ===
-                                  true && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
-                                          : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
-                                      }
-                                      className="linklist btn btn-primary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Sample-Collectors{" "}
-                                    </Link>
-                                  )}
-                                {this.props.success.sample_collectors ===
-                                  false && (
-                                    <Link
-                                      to="#"
-                                      className=" linklist btn btn-secondary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Sample-Collectors{" "}
-                                    </Link>
-                                  )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.pathologists === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.guest_id
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists`
-                                    }
-                                    className="linklist btn btn-primary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.pathologists === false && (
-                                  <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
+                           <Row className="mt-4">
+                           <div className="mb-2 row">
+                             <Col sm="2" style={{ width: '141px'}}>
+                               {this.props.success.offered_tests === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
 
-                            {/* <Col sm="6">
-                           <Link
-                             to={
-                               this.props.match.params.uuid
-                                 ? `/nearby-labs/${this.props.match.params.uuid}`
-                                 : `/nearby-labs`
-                             }
-                             className="btn btn-secondary"
-                           >
-                             <i className="bx bxs-shopping-bags me-1" />{" "}
-                             Continue Shopping{" "}
-                           </Link>
-                         </Col>
-                         <Col sm="6">
-                           <div className="text-sm-end mt-2 mt-sm-0">
-                             <Link
-                               to={{
-                                 pathname: `http://maps.google.com/?q=${this.props.success.address}`,
-                               }}
-                               className="btn btn-success mb-2 mt-2"
-                               target="_blank"
-                             >
-                               <i className="bx bxs-navigation" /> Navigate to
-                               the Lab
-                             </Link>
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Tests{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_tests === false && (
+                                 <Link
+                                   to="#" className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right " /> Offered Tests{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="2" style={{ width: '153px', marginLeft: "-22px" }}>
+                               {this.props.success.offered_profiles === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_profiles === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="3" style={{ width: '172px', marginLeft: "-22px" }}>
+                               {this.props.success.offered_packages === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Packages
+                                 </Link>
+                               )}
+                               {this.props.success.offered_packages === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" /> Offered Packages{" "}
+                                 </Link>
+                               )}
+                             </Col>
                            </div>
-                         </Col> */}
-                          </Row>
+                           <div className="mb-2 row">
+                             <Col sm="3" >
+                               {this.props.success.offered_radiologies === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Radiology{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_radiologies === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" /> Offered Radiology{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="3" style={{ marginLeft: "-20px" }}>
+                               {this.props.success.quality_certificates ===
+                                 true && (
+                                   <Link
+                                     to={
+                                       this.props.match.params.uuid
+                                         ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                     }
+                                     className="linklist btn btn-primary btn-md"
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Quality-Certificates{" "}
+                                   </Link>
+                                 )}
+                               {this.props.success.quality_certificates ===
+                                 false && (
+                                   <Link
+                                     to="#"
+                                     className=" linklist btn btn-secondary btn-md"
+                                     style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Quality-Certificates{" "}
+                                   </Link>
+                                 )}
+                             </Col>
+
+                           </div>
+                           <div className="mb-2 row">
+                             <Col sm="3" >
+                               {this.props.success.sample_collectors ===
+                                 true && (
+                                   <Link
+                                     to={
+                                       this.props.match.params.uuid
+                                         ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                     }
+                                     className="linklist btn btn-primary btn-md"
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Sample-Collectors{" "}
+                                   </Link>
+                                 )}
+                               {this.props.success.sample_collectors ===
+                                 false && (
+                                   <Link
+                                     to="#"
+                                     className=" linklist btn btn-secondary btn-md"
+                                     style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Sample-Collectors{" "}
+                                   </Link>
+                                 )}
+                             </Col>
+                             <Col sm="3" style={{ marginLeft: "-20px" }}>
+                               {this.props.success.pathologists === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                   Pathologists{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.pathologists === false && (
+                                 <Link
+                                   to="#"
+                                   className=" linklist btn btn-secondary btn-md"
+                                   style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                   Pathologists{" "}
+                                 </Link>
+                               )}
+                             </Col>
+
+                           </div>
+                         </Row>
                         ) : null}
                         {(this.state.user_id) && (this.state.user_type === "CSR") && this.state.user_type !== "b2bclient" ? (
-                          <Row className="mt-4">
-                            <div className=" mb-3">
-                              <Col sm="6">
-                                {this.props.success.offered_tests === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.guest_id
-                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
-                                    }
-                                    className=" linklist btn btn-primary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_tests === false && (
-                                  <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.quality_certificates ===
-                                  true && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
-                                          : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
-                                      }
-                                      className="linklist btn btn-primary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Quality-Certificates{" "}
-                                    </Link>
-                                  )}
-                                {this.props.success.quality_certificates ===
-                                  false && (
-                                    <Link
-                                      to="#"
-                                      className=" linklist btn btn-secondary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Quality-Certificates{" "}
-                                    </Link>
-                                  )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.sample_collectors ===
-                                  true && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
-                                          : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
-                                      }
-                                      className="linklist btn btn-primary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Sample-Collectors{" "}
-                                    </Link>
-                                  )}
-                                {this.props.success.sample_collectors ===
-                                  false && (
-                                    <Link
-                                      to="#"
-                                      className=" linklist btn btn-secondary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Sample-Collectors{" "}
-                                    </Link>
-                                  )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.pathologists === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.guest_id
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists`
-                                    }
-                                    className="linklist btn btn-primary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.pathologists === false && (
-                                  <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                          </Row>
+                           <Row className="mt-4">
+                           <div className="mb-2 row">
+                             <Col sm="2" style={{ width: '141px'}}>
+                               {this.props.success.offered_tests === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Tests{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_tests === false && (
+                                 <Link
+                                   to="#" className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right " /> Offered Tests{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="2" style={{ width: '153px', marginLeft: "-22px" }}>
+                               {this.props.success.offered_profiles === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_profiles === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="3" style={{ width: '172px', marginLeft: "-22px" }}>
+                               {this.props.success.offered_packages === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Packages
+                                 </Link>
+                               )}
+                               {this.props.success.offered_packages === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" /> Offered Packages{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                           </div>
+                           <div className="mb-2 row">
+                             <Col sm="3" >
+                               {this.props.success.offered_radiologies === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Radiology{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_radiologies === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" /> Offered Radiology{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="3" style={{ marginLeft: "-20px" }}>
+                               {this.props.success.quality_certificates ===
+                                 true && (
+                                   <Link
+                                     to={
+                                       this.props.match.params.uuid
+                                         ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                     }
+                                     className="linklist btn btn-primary btn-md"
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Quality-Certificates{" "}
+                                   </Link>
+                                 )}
+                               {this.props.success.quality_certificates ===
+                                 false && (
+                                   <Link
+                                     to="#"
+                                     className=" linklist btn btn-secondary btn-md"
+                                     style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Quality-Certificates{" "}
+                                   </Link>
+                                 )}
+                             </Col>
+
+                           </div>
+                           <div className="mb-2 row">
+                             <Col sm="3" >
+                               {this.props.success.sample_collectors ===
+                                 true && (
+                                   <Link
+                                     to={
+                                       this.props.match.params.uuid
+                                         ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                     }
+                                     className="linklist btn btn-primary btn-md"
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Sample-Collectors{" "}
+                                   </Link>
+                                 )}
+                               {this.props.success.sample_collectors ===
+                                 false && (
+                                   <Link
+                                     to="#"
+                                     className=" linklist btn btn-secondary btn-md"
+                                     style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Sample-Collectors{" "}
+                                   </Link>
+                                 )}
+                             </Col>
+                             <Col sm="3" style={{ marginLeft: "-20px" }}>
+                               {this.props.success.pathologists === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                   Pathologists{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.pathologists === false && (
+                                 <Link
+                                   to="#"
+                                   className=" linklist btn btn-secondary btn-md"
+                                   style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                   Pathologists{" "}
+                                 </Link>
+                               )}
+                             </Col>
+
+                           </div>
+                         </Row>
                         ) : null}
                         {(this.state.user_id) && (this.state.user_type !== "CSR") && this.state.user_type === "b2bclient" ? (
-                          <Row className="mt-4">
-                            <div className=" mb-3">
-                              <Col sm="6">
-                                {this.props.success.offered_tests === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.guest_id
-                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
-                                    }
-                                    className=" linklist btn btn-primary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_tests === false && (
-                                  <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.quality_certificates ===
-                                  true && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                          : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
-                                      }
-                                      className="linklist btn btn-primary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Quality-Certificates{" "}
-                                    </Link>
-                                  )}
-                                {this.props.success.quality_certificates ===
-                                  false && (
-                                    <Link
-                                      to="#"
-                                      className=" linklist btn btn-secondary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Quality-Certificates{" "}
-                                    </Link>
-                                  )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.sample_collectors ===
-                                  true && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                          : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
-                                      }
-                                      className="linklist btn btn-primary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Sample-Collectors{" "}
-                                    </Link>
-                                  )}
-                                {this.props.success.sample_collectors ===
-                                  false && (
-                                    <Link
-                                      to="#"
-                                      className=" linklist btn btn-secondary btn-md"
-                                    >
-                                      <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                      Sample-Collectors{" "}
-                                    </Link>
-                                  )}
-                              </Col>
-                            </div>
-                            <div className="mb-3">
-                              <Col sm="6">
-                                {this.props.success.pathologists === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.guest_id
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists`
-                                    }
-                                    className="linklist btn btn-primary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.pathologists === false && (
-                                  <Link
-                                    to="#"
-                                    className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                          </Row>
+                           <Row className="mt-4">
+                           <div className="mb-2 row">
+                             <Col sm="2" style={{ width: '141px'}}>
+                               {this.props.success.offered_tests === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Tests{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_tests === false && (
+                                 <Link
+                                   to="#" className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right " /> Offered Tests{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="2" style={{ width: '153px', marginLeft: "-22px" }}>
+                               {this.props.success.offered_profiles === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_profiles === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Profiles{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="3" style={{ width: '172px', marginLeft: "-22px" }}>
+                               {this.props.success.offered_packages === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Packages
+                                 </Link>
+                               )}
+                               {this.props.success.offered_packages === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" /> Offered Packages{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                           </div>
+                           <div className="mb-2 row">
+                             <Col sm="3" >
+                               {this.props.success.offered_radiologies === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                   style={{ fontSize: '12px' }} // Set your desired font size here
+
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />Offered Radiology{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.offered_radiologies === false && (
+                                 <Link
+                                   to="#" 
+                                   className="linklist btn btn-secondary btn-md"
+                                   style={{ fontSize: '12px',pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" /> Offered Radiology{" "}
+                                 </Link>
+                               )}
+                             </Col>
+                             <Col sm="3" style={{ marginLeft: "-20px" }}>
+                               {this.props.success.quality_certificates ===
+                                 true && (
+                                   <Link
+                                     to={
+                                       this.props.match.params.uuid
+                                         ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                     }
+                                     className="linklist btn btn-primary btn-md"
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Quality-Certificates{" "}
+                                   </Link>
+                                 )}
+                               {this.props.success.quality_certificates ===
+                                 false && (
+                                   <Link
+                                     to="#"
+                                     className=" linklist btn btn-secondary btn-md"
+                                     style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Quality-Certificates{" "}
+                                   </Link>
+                                 )}
+                             </Col>
+
+                           </div>
+                           <div className="mb-2 row">
+                             <Col sm="3" >
+                               {this.props.success.sample_collectors ===
+                                 true && (
+                                   <Link
+                                     to={
+                                       this.props.match.params.uuid
+                                         ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                     }
+                                     className="linklist btn btn-primary btn-md"
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Sample-Collectors{" "}
+                                   </Link>
+                                 )}
+                               {this.props.success.sample_collectors ===
+                                 false && (
+                                   <Link
+                                     to="#"
+                                     className=" linklist btn btn-secondary btn-md"
+                                     style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                   >
+                                     <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                     Sample-Collectors{" "}
+                                   </Link>
+                                 )}
+                             </Col>
+                             <Col sm="3" style={{ marginLeft: "-20px" }}>
+                               {this.props.success.pathologists === true && (
+                                 <Link
+                                   to={
+                                     this.props.match.params.uuid
+                                       ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                   }
+                                   className="linklist btn btn-primary btn-md"
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                   Pathologists{" "}
+                                 </Link>
+                               )}
+                               {this.props.success.pathologists === false && (
+                                 <Link
+                                   to="#"
+                                   className=" linklist btn btn-secondary btn-md"
+                                   style={{pointerEvents: 'none', // Disable mouse events
+                                 }} // Set your desired font size here
+                                 >
+                                   <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                   Pathologists{" "}
+                                 </Link>
+                               )}
+                             </Col>
+
+                           </div>
+                         </Row>
                         ) : null}
                       </div>
                     </CardBody>

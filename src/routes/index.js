@@ -256,6 +256,9 @@ import labsListPendingFee from "store/labs-list-pending/reducer";
 import allDonationAppointments from "pages/FinanceAdmin/all-donation-appointments";
 import msgBox from "pages/Complaints/msg-box";
 import msgBoxFo from "pages/Complaints/msg-box";
+import ProfilesOfferedbyLab from "pages/LabMarket/NearbyLabs/ProfilesOfferedbyLab";
+import PackagesOfferedbyLab from "pages/LabMarket/NearbyLabs/PackagesOfferedbyLab";
+import RadiologyOfferedbyLab from "pages/LabMarket/NearbyLabs/RadiologyOfferedbyLab"
 
 
 // All general public routes will be listed here
@@ -722,6 +725,18 @@ const patientPublicRoutes = [
   {
     path: "/:lab_account_id/offered-test-by-lab/:guest_id?/:uuid?",
     component: TestsOfferedbyLab,
+  },
+  {
+    path: "/:lab_account_id/offered-profile-by-lab/:guest_id?/:uuid?",
+    component: ProfilesOfferedbyLab,
+  },
+  {
+    path: "/:lab_account_id/offered-package-by-lab/:guest_id?/:uuid?",
+    component: PackagesOfferedbyLab,
+  },
+  {
+    path: "/:lab_account_id/offered-radiology-by-lab/:guest_id?/:uuid?",
+    component: RadiologyOfferedbyLab,
   },
   {
     path: "/:lab_account_id/lab-quality-certificates/:guest_id?/:uuid?",

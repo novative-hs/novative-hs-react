@@ -7,6 +7,12 @@ import {
   GET_OFFERED_TESTS_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
+  GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS,
+  GET_OFFEREDPROFILE_REFERRELFEE_FAIL,
+  GET_OFFEREDPACKAGE_REFERRELFEE_SUCCESS,
+  GET_OFFEREDPACKAGE_REFERRELFEE_FAIL,
+  GET_OFFEREDRADIOLOGY_REFERRELFEE_SUCCESS,
+  GET_OFFEREDRADIOLOGY_REFERRELFEE_FAIL,
   GET_LAB_PROFILE_SUCCESS,
   GET_LAB_PROFILE_FAIL,
   ADD_OFFERED_TEST_SUCCESS,
@@ -87,7 +93,39 @@ const tests = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    case GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
 
+    case GET_OFFEREDPROFILE_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      }; 
+    case GET_OFFEREDPACKAGE_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
+
+    case GET_OFFEREDPACKAGE_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };  
+    case GET_OFFEREDRADIOLOGY_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
+
+    case GET_OFFEREDRADIOLOGY_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case ADD_OFFERED_TEST_SUCCESS:
       return {
         ...state,

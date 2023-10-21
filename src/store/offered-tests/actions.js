@@ -11,6 +11,15 @@ import {
   GET_OFFEREDTEST_REFERRELFEE,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
+  GET_OFFEREDPROFILE_REFERRELFEE,
+  GET_OFFEREDPROFILE_REFERRELFEE_FAIL,
+  GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS,
+  GET_OFFEREDPACKAGE_REFERRELFEE,
+  GET_OFFEREDPACKAGE_REFERRELFEE_FAIL,
+  GET_OFFEREDPACKAGE_REFERRELFEE_SUCCESS,
+  GET_OFFEREDRADIOLOGY_REFERRELFEE,
+  GET_OFFEREDRADIOLOGY_REFERRELFEE_FAIL,
+  GET_OFFEREDRADIOLOGY_REFERRELFEE_SUCCESS,
   GET_LAB_PROFILE,
   GET_LAB_PROFILE_FAIL,
   GET_LAB_PROFILE_SUCCESS,
@@ -102,6 +111,48 @@ export const getOfferedTestsReferrelSuccess = offeredTests => ({
 
 export const getOfferedTestsReferrelFail = error => ({
   type: GET_OFFEREDTEST_REFERRELFEE_FAIL,
+  payload: error,
+});
+export const getOfferedProfilesReferrel = id => ({
+  type: GET_OFFEREDPROFILE_REFERRELFEE,
+  payload: id,
+});
+
+export const getOfferedProfilesReferrelSuccess = offeredTests => ({
+  type: GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getOfferedProfilesReferrelFail = error => ({
+  type: GET_OFFEREDPROFILE_REFERRELFEE_FAIL,
+  payload: error,
+});
+export const getOfferedPackagesReferrel = id => ({
+  type: GET_OFFEREDPACKAGE_REFERRELFEE,
+  payload: id,
+});
+
+export const getOfferedPackagesReferrelSuccess = offeredTests => ({
+  type: GET_OFFEREDPACKAGE_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getOfferedPackagesReferrelFail = error => ({
+  type: GET_OFFEREDPACKAGE_REFERRELFEE_FAIL,
+  payload: error,
+});
+export const getOfferedRadiologysReferrel = id => ({
+  type: GET_OFFEREDRADIOLOGY_REFERRELFEE,
+  payload: id,
+});
+
+export const getOfferedRadiologysReferrelSuccess = offeredTests => ({
+  type: GET_OFFEREDRADIOLOGY_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getOfferedRadiologysReferrelFail = error => ({
+  type: GET_OFFEREDRADIOLOGY_REFERRELFEE_FAIL,
   payload: error,
 });
 

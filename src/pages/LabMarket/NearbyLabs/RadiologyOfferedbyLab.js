@@ -42,7 +42,7 @@ import "nouislider/distribute/nouislider.css";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { any } from "prop-types";
 
-import { getOfferedTestsReferrel } from "store/offered-tests/actions";
+import { getOfferedRadiologysReferrel } from "store/offered-tests/actions";
 import { addToCart } from "store/actions";
 
 class TestsOffered extends Component {
@@ -65,7 +65,6 @@ class TestsOffered extends Component {
       cart: "",
       success: "",
       error: "",
-      testtype: "test",
       applied: true,
       loading: true, // Add loading state property
       page: 1,
@@ -1369,7 +1368,7 @@ const mapStateToProps = ({ offeredTests, carts }) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   ongetOfferedTestsReferrel: () =>
-    dispatch(getOfferedTestsReferrel(ownProps.match.params.lab_account_id)),
+    dispatch(getOfferedRadiologysReferrel(ownProps.match.params.lab_account_id)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
 });
 

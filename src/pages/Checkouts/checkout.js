@@ -109,8 +109,10 @@ class Checkout extends Component {
 
   handleStateSamplingChange = e => {
     this.setState({
-      is_state_sampling_availed: e.target.value,
+      is_state_sampling_availed: "Yes",
+      is_home_sampling_availed: "No",
     });
+
 
     // API call to get the checkout items
     const { onGetCheckoutItems } = this.props;
@@ -146,7 +148,8 @@ class Checkout extends Component {
 
   handleHomeSamplingChange = e => {
     this.setState({
-      is_home_sampling_availed: e.target.value,
+      is_home_sampling_availed: "Yes",
+      is_state_sampling_availed: "No",
     });
 
     // API call to get the checkout items
@@ -1414,23 +1417,45 @@ class Checkout extends Component {
                             <div className="container">
                               <div className="row">
                                 <div className="col-md-12">
-                                  <CardTitle className="h4">Home Sampled Tests</CardTitle>
-                                  <p className="card-title-desc">
-                                    Please choose whether you want to avail home sampling services for the following tests
-                                  </p>
+                                  <CardTitle className="h4">Tests and Home Sampling Information</CardTitle>
+                                  <span className="text-danger font-size-12">
+                                      <strong><span className="text-danger">Note:</span></strong> <strong>
+                                      Please choose if you want to avail Home / Urgent sampling services for the following tests
+                                      </strong>
+                                    </span>
+                                  <div className="d-flex" style={{ marginBottom: '20px', marginTop: '20px' }}>
+                                    <div className="form-check form-check-inline font-size-16">
+                                      <Input
+                                        type="radio"
+                                        value="Cash"
+                                        name="payment_method"
+                                        id="customRadioInline1"
+                                        className="form-check-input"
+                                        onChange={this.handleHomeSamplingChange}
+                                      />
+                                      <Label className="form-check-label font-size-13" htmlFor="customRadioInline1">
+                                        <i className="fas fa-shipping-fast me-2"style={{ color: 'red' }} />
+                                        Home Sampling Service
+                                      </Label>
+                                    </div>
+                                    {this.state.homeSampledTests.find(homeSampledTest => homeSampledTest.state_sampling_charges > 0) ? (
+                                      <div className="form-check form-check-inline font-size-16">
+                                        <Input
+                                          type="radio"
+                                          value="Cash"
+                                          name="payment_method"
+                                          id="customRadioInline2"
+                                          className="form-check-input"
+                                          onChange={this.handleStateSamplingChange}
+                                        />
+                                        <Label className="form-check-label font-size-13" htmlFor="customRadioInline2">
+                                          <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
+                                          Urgent Sampling Service
+                                        </Label>
+                                      </div>
+                                    ) : null}
+                                  </div>
 
-                                  <FormGroup className="mb-4">
-                                    <select
-                                      className="form-control select2"
-                                      title="home-sampling"
-                                      name="is_home_sampling_availed"
-                                      onChange={this.handleHomeSamplingChange}
-                                    >
-                                      <option value="">Please Select</option>
-                                      <option value="Yes">Yes</option>
-                                      <option value="No">No</option>
-                                    </select>
-                                  </FormGroup>
 
                                   {this.state.is_home_sampling_availed === "Yes" && (
                                     <>
@@ -1463,66 +1488,101 @@ class Checkout extends Component {
                                         </Col>
                                       </FormGroup>
 
-                                      {this.state.homeSampledTests.map((homeSampledTest, key) => {
-                                        // Check if sampling charges and fees exist
-                                        if (homeSampledTest.state_sampling_charges > 0) {
-                                          return (
-                                            <FormGroup className="mb-4" row key={key}>
-                                              <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                                Urgent Sampling
-                                                <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
-                                              </Label>
-                                              <Col md="10">
-                                                <select
-                                                  className="form-control select2"
-                                                  title="state-sampling"
-                                                  name="is_state_sampling_availed"
-                                                  onChange={this.handleStateSamplingChange}
-                                                >
-                                                  <option value="">Please Select</option>
-                                                  <option value="No">No</option>
-                                                  <option value="Yes">Yes</option>
-                                                </select>
-                                                <span className="text-primary font-size-12">
-                                                  <strong>
-                                                    Note: Please choose whether you want to avail Urgent sampling service, this will include extra charges.
-                                                  </strong>
-                                                </span>
-                                              </Col>
-                                            </FormGroup>
-                                          );
-                                        }
-                                      })}
-
                                     </>
                                   )}
+                                  {this.state.is_state_sampling_availed === "Yes" && (
+                                     <>
+                                     <FormGroup className="mb-4" row>
+                                       <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                         Address
+                                         <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
+                                       </Label>
+                                       <Col md="10">
+                                         <div style={inputGroupStyle}>
+                                           <Input
+                                             // defaultValue={this.state.patient_address}
+                                             onChange={e => this.onChangeAddress(e)}
+                                             id="pac-input"
+                                             type="text"
+                                             className="form-control"
+                                             placeholder="Search Location..."
+                                             value={this.state.patient_address}
+                                           />
+                                           {this.state.patient_address ? (
+                                             <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+                                               <i className="mdi mdi-close-circle"></i>
+                                             </span>
+                                           ) : (
+                                             <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+                                               <i className="bx bx-target-lock"><span style={{ color: "black", marginLeft: "4px" }}>Current Location</span></i>
+                                             </span>
+                                           )}
+                                         </div>
+                                       </Col>
+                                     </FormGroup>
+
+                                     <FormGroup className="mb-4" row>
+                                      <Col md="2"></Col>
+                                     <Col md="10">
+                                    <Card className="bg-primary bg-soft rounded" >
+                                      {this.state.homeSampledTests.map((homeSampledTest, key) => {
+                                        if (homeSampledTest.state_sampling_charges && homeSampledTest.state_sampling_time) {
+                                          return (
+                                            <div key={"homeSampledTest" + key}>
+                                              <div className="row font-size-12" style={{ margin: '5px' }}>
+                                                <Col sm="4" >
+                                                  <span className="text-primary">Lab Name: </span>
+                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                    {homeSampledTest.lab_name}
+                                                  </span></Col>
+                                                <Col sm="4" >
+                                                  <span className="text-primary">Urgent Sampling Time: </span>
+                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                    {homeSampledTest.state_sampling_time}h
+                                                  </span></Col>
+                                                <Col sm="4" >
+                                                  <span className="text-primary">Urgent Sampling Charges : </span>
+                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                    {homeSampledTest.state_sampling_charges}
+                                                  </span></Col>
+
+                                                <style>
+                                                  {`
+                                                  .blinking-text {
+                                                    animation: blinking 1s infinite;
+                                                    color: red; /* Your desired text color */
+                                                    background-color: black; /* Your desired background color */
+                                                  }
+
+                                                  @keyframes blinking {
+                                                    0% {
+                                                      opacity: 1;
+                                                    }
+                                                    50% {
+                                                      opacity: 0;
+                                                    }
+                                                    100% {
+                                                      opacity: 1;
+                                                    }
+                                                  }
+                                                `}
+                                                </style>
+                                              </div>
+                                            </div>
+                                          );
+                                        } else {
+                                          return null; // Skip rendering if sampling charges and fees are missing
+                                        }
+                                      })}
+                                    </Card></Col>
+                                    </FormGroup>
+                                    </>
+
+                                  )}
+
 
                                   {/* <div className="table-responsive"> */}
                                   {isLargeScreen ? (
-                                    // <Table>
-                                    //   <thead className="table-light">
-                                    //     <tr>
-                                    //       <th>Home Sampling Offered</th>
-                                    //       <th>Test name</th>
-                                    //       <th>Lab name</th>
-                                    //     </tr>
-                                    //   </thead>
-                                    //   <tbody>
-                                    //     {this.state.homeSampledTests.map((homeSampledTest, key) => (
-                                    //       <tr key={"_homeSampledTest_" + key}>
-                                    //         <td>{homeSampledTest.is_home_sampling_available}</td>
-                                    //         <td>
-                                    //           <h6>
-                                    //             <a href="/ecommerce-product-details/1" className="text-dark">
-                                    //               {homeSampledTest.test_name}
-                                    //             </a>
-                                    //           </h6>
-                                    //         </td>
-                                    //         <td>{homeSampledTest.lab_name}</td>
-                                    //       </tr>
-                                    //     ))}
-                                    //   </tbody>
-                                    // </Table>
                                     <Table>
                                       <Thead className="table-light">
                                         <Tr>
@@ -1602,99 +1662,6 @@ class Checkout extends Component {
                                     </Table>
 
                                   )}
-
-                                  {/* {this.state.is_state_sampling_availed === "Yes" && (
-                                    <Table responsive>
-                                      <thead className="table-light">
-                                        <tr>
-                                          <th scope="col">Lab name</th>
-                                          <th scope="col">Urgent Sampling Time</th>
-                                          <th scope="col">Urgent Sampling Charges</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {this.state.homeSampledTests.map((homeSampledTest, key) => {
-                                          // Check if sampling charges and fees exist
-                                          if (
-                                            homeSampledTest.state_sampling_charges &&
-                                            homeSampledTest.state_sampling_time
-                                          ) {
-                                            return (
-                                              <tr key={"_homeSampledTest_" + key}>
-                                                <td>{homeSampledTest.lab_name}</td>
-                                                <td>
-                                                  <h5>
-                                                    <a href="/ecommerce-product-details/1" className="text-dark">
-                                                      {homeSampledTest.state_sampling_time} hours
-                                                    </a>
-                                                  </h5>
-                                                </td>
-                                                <td>{homeSampledTest.state_sampling_charges}</td>
-                                              </tr>
-                                            );
-                                          } else {
-                                            return null; // Skip rendering if sampling charges and fees are missing
-                                          }
-                                        })}
-                                      </tbody>
-                                    </Table>
-                                  )} */}
-                                  {this.state.is_state_sampling_availed ==
-                                    "Yes" && (
-                                      <Table>
-                                        <Thead className="table-light">
-                                          <Tr>
-                                            <Th scope="col">Lab name</Th>
-                                            <Th scope="col">Urgent Sampling Time</Th>
-                                            <Th scope="col">
-                                              Urgent Sampling Charges
-                                            </Th>
-                                          </Tr>
-                                        </Thead>
-                                        <Tbody>
-                                          {this.state.homeSampledTests.map(
-                                            (homeSampledTest, key) => {
-                                              // Check if sampling charges and fees exist
-                                              if (
-                                                homeSampledTest.state_sampling_charges &&
-                                                homeSampledTest.state_sampling_time
-                                              ) {
-                                                return (
-                                                  <Tr key={"homeSampledTest" + key}>
-                                                    <Td>
-                                                      <p className="font-size-14 float-start">
-                                                        {homeSampledTest.lab_name}
-                                                      </p>
-                                                    </Td>
-                                                    <Td>
-                                                      <h5 className="font-size-14 float-start">
-                                                        <a
-                                                          href="/ecommerce-product-details/1"
-                                                          className="text-dark"
-                                                        >
-                                                          {
-                                                            homeSampledTest.state_sampling_time
-                                                          }{" "}
-                                                          hours
-                                                        </a>
-                                                      </h5>
-                                                    </Td>
-                                                    <Td>
-                                                      <p className="font-size-14 float-start">
-                                                        {
-                                                          homeSampledTest.state_sampling_charges
-                                                        }
-                                                      </p>
-                                                    </Td>
-                                                  </Tr>
-                                                );
-                                              } else {
-                                                return null; // Skip rendering if sampling charges and fees are missing
-                                              }
-                                            }
-                                          )}
-                                        </Tbody>
-                                      </Table>)}
 
                                   <Row className="mt-4">
                                     <Col sm="6"></Col>
@@ -2079,7 +2046,17 @@ class Checkout extends Component {
                                         ))}
                                       </tbody>
                                       <tfoot>
-                                        {this.state.checkoutItems.map(
+                                      {/* {this.state.checkoutItems.length > 0 && (
+                                        <>
+                                          {this.state.checkoutItems.slice(-1).map((checkoutItem, key) => (
+                                            <tr key={"_checkoutItem_" + key}>
+                                              <td colSpan="4">
+                                              </td>
+                                            </tr>
+                                          ))}
+                                        </>
+                                      )} */}
+                                        {this.state.checkoutItems.slice(-1).map(
                                           (checkoutItem, key) => (
                                             <>
                                               {checkoutItem.lab_home_sampling_charges !=
@@ -2087,7 +2064,7 @@ class Checkout extends Component {
                                                   <tr key={"_checkoutItem_" + key}>
                                                     <td colSpan="4">
                                                       {this.state
-                                                        .is_home_sampling_availed ==
+                                                        .is_home_sampling_availed !=
                                                         "Yes" &&
                                                         this.state
                                                           .is_state_sampling_availed ==
@@ -2095,8 +2072,7 @@ class Checkout extends Component {
                                                           <div className="bg-primary bg-soft p-3 rounded">
                                                             <h5 className="font-size-14 text-primary mb-0">
                                                               <i className="fas fa-shipping-fast me-2" />{" "}
-                                                              Sum of Home Sampling +
-                                                              Urgent Sampling
+                                                              Sum of Urgent Sampling
                                                               Charges{" "}
                                                               {/* {
                      checkoutItem.lab_name

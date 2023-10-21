@@ -368,6 +368,18 @@ export const getOfferedTestsReferrel = id =>
   get(`${url.GET_OFFEREDTEST_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
+export const getOfferedProfilesReferrel = id =>
+  get(`${url.GET_OFFEREDPROFILE_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getOfferedPackagesReferrel = id =>
+  get(`${url.GET_OFFEREDPACKAGE_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getOfferedRadiologysReferrel = id =>
+  get(`${url.GET_OFFEREDRADIOLOGY_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 export const addNewOfferedTest = (offeredTest, id) => {
   let formData = new FormData();
@@ -968,9 +980,9 @@ export const getNearbyProfiles = data => {
   formData.append("longitude", data.longitude);
   formData.append("search_type", data.search_type);
   formData.append("address", data.address);
+  formData.append("page", data.page);
   formData.append("city", data.city);
   formData.append("km", data.km);
-  formData.append("page", data.page);
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("donorSetting: ", data);
@@ -1240,9 +1252,9 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("patient_phone", checkoutData.patient_phone);
   formData.append("patient_gender", checkoutData.patient_gender);
   formData.append("patient_address", checkoutData.patient_address);
-  formData.append("city_id", checkoutData.city_id);
-  formData.append("patient_city", checkoutData.patient_city);
-  formData.append("patient_district", checkoutData.patient_district);
+  // formData.append("city_id", checkoutData.city_id);
+  // formData.append("patient_city", checkoutData.patient_city);
+  // formData.append("patient_district", checkoutData.patient_district);
   // formData.append(
   //   "relationsip_with_patient",
   //   checkoutData.relationsip_with_patient
@@ -1265,7 +1277,7 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("expiry_date", checkoutData.expiry_date);
   formData.append("cvv_code", checkoutData.cvv_code);
 
-  console.log("add different data with state sampling", checkoutData);
+  console.log("add different with address data with home sampling", checkoutData);
 
   return axios.post(`${url.ADD_CHECKOUT_DATA}/${id}`, formData, {
     headers: getHeader(authHeader()),
