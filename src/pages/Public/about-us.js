@@ -32,7 +32,7 @@ class AboutUs extends Component {
                   <div className="p-3">
                     <div className="w-100">
                       <div>
-                        <p  className="text-muted font-size-14"><span className="text-primary"><strong>Lab Hazir</strong></span>, founded in <span className="text-primary">2022</span>, is a privately held business that is comprised of advanced degreed business professionals who wanted to offer direct to consumer access to pathology lab testing in a fast, discreet, and affordable way.</p>
+                        <p  className="text-muted font-size-14"><span className="text-primary"><strong>Lab Hazir</strong></span>, founded in <span className="text-primary">2022</span>, is a privately held business that is comprised of advanced degreed business professionals who wanted to offer direct to consumer access to pathology lab testing in a fast, discrete, and affordable way.</p>
                         
                         <p className="text-muted font-size-14">Our clients are comprised of people who are in need of laboratory testing, they like the convenience of our service and open market place to choose the lab. Lab Hazir ensures that our clients get as much information as they need to make the best testing choice. </p>
                         

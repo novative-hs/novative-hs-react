@@ -837,10 +837,10 @@ class TestsOffered extends Component {
      
         <div className="page-content">
           <MetaTags>
-            <title>Tests Offered | Lab Hazir</title>
+            <title>Profiles Offered | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Nearby Labs" breadcrumbItem="Tests Offered" />
+            <Breadcrumbs title="Nearby Profiles" breadcrumbItem="Tests Offered" />
 
             {this.state.success ? (
               <Alert color="success" className="col-md-4">
