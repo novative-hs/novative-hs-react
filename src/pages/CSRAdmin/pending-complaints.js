@@ -286,7 +286,7 @@ class PendingComplaints extends Component {
     const { onAssignComplaint, onGetPendingComplaints } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 100,
       totalSize: pendingComplaints.length, // replace later with size(pendingComplaints),
       custom: true,
     };

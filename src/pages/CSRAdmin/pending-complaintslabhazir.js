@@ -254,7 +254,7 @@ class PendingComplaintsLabhazir extends Component {
     const { onAssignComplaint, onGetPendingComplaintsLabhazir } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 100,
       totalSize: pendingComplaintsLabhazir.length, // replace later with size(pendingComplaintsLabhazir),
       custom: true,
     };

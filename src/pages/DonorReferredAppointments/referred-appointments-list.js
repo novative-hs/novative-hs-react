@@ -302,7 +302,7 @@ class ReferredPatientsList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Appointments" breadcrumbItem="Tracability" />
+            <Breadcrumbs title="Appointments" breadcrumbItem="Traceability" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -552,7 +552,7 @@ class ReferredPatientsList extends Component {
                                                 </div> */}
 
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Mobile No.
@@ -586,7 +586,7 @@ class ReferredPatientsList extends Component {
                                                       {this.state.btnText}
                                                     </button>
                                                   </div>
-                                                </div>
+                                                </div> */}
                                               </Col>
                                             </Row>
                                           </Form>

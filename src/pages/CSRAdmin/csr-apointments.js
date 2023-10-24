@@ -300,8 +300,8 @@ class csrAppointments extends Component {
     const csrAppointment = this.state.csrAppointment;
 
     const pageOptions = {
-      sizePerPage: 10,
-      totalSize: 100, // replace later with size(csrAppointments),
+      sizePerPage: 100,
+      totalSize: csrAppointments.length, // replace later with size(csrAppointments),
       custom: true,
     };
 

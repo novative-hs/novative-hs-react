@@ -440,7 +440,7 @@ class TestAppointmentsPendingList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="Test Appointments"
-              breadcrumbItem="Pending List"
+              breadcrumbItem="Pending Appointments List"
             />
             <Row>
               <Col lg="12">
@@ -566,7 +566,7 @@ class TestAppointmentsPendingList extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Patient Information</span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
@@ -610,7 +610,7 @@ class TestAppointmentsPendingList extends Component {
                                                   </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -626,7 +626,7 @@ class TestAppointmentsPendingList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">

@@ -31,11 +31,11 @@ class SampleCollectorSummary extends Component {
 
     setTimeout(() => {
       this.setState({
-        name: this.props.success.name,
-        phone: this.props.success.phone,
-        photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
-        samplesCollected: this.props.success.samples_collected,
-        samplesInprocess: this.props.success.samples_inprocess,
+        // name: this.props.success.name,
+        // phone: this.props.success.phone,
+        // photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
+        // samplesCollected: this.props.success.samples_collected,
+        // samplesInprocess: this.props.success.samples_inprocess,
       });
     }, 1500);
   }

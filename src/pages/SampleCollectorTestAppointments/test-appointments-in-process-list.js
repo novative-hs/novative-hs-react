@@ -537,8 +537,25 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .patient_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
                                                 </div>
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Schedule time by patient
@@ -555,9 +572,9 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -573,7 +590,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">

@@ -1604,10 +1604,15 @@ class Checkout extends Component {
                                               </p>
 
                                               <Td>
-                                              <p className="font-size-14 float-start">
-
+                                                <h5 className="font-size-14 float-start">
+                                                  <a
+                                                    href="/ecommerce-product-details/1"
+                                                    className="text-dark"
+                                                  >
                                                     {homeSampledTest.test_name}{" "}
-                                                  </p></Td>
+                                                  </a>
+                                                </h5>
+                                              </Td>
                                               <p className="font-size-14 float-start">
                                                 <Td>{homeSampledTest.lab_name}</Td>
                                               </p>
@@ -2221,7 +2226,7 @@ class Checkout extends Component {
                                     className="btn text-muted d-none d-sm-inline-block btn-link"
                                   >
                                     <i className="mdi mdi-arrow-left me-1" /> Back
-                                    to Cart List{" "}
+                                    to Cart{" "}
                                   </Link>
                                 </Col>
                                 <Col sm="6">

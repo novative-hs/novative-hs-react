@@ -65,10 +65,10 @@ class TestsList extends Component {
           dataField: "name",
           text: "Test name",
           sort: true,
-          headerStyle: {
-            width: "330px",
-            textAlign: "left",
-          },
+          // headerStyle: {
+          //   width: "330px",
+          //   textAlign: "left",
+          // },
           formatter: (cellContent, testsList) => (
             <>
               {testsList.type == "Test" ? (

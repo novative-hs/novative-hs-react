@@ -176,7 +176,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to={"/donor-appointment"}>
                     <i className="bx bx-receipt" />
-                    <span>{this.props.t("Appointments Tracability")}</span>
+                    <span>{this.props.t("Appointments Traceability")}</span>
                   </Link>
                 </li>
                 {/* Donor payment Method */}
@@ -697,13 +697,13 @@ class SidebarContent extends Component {
                   <ul className="sub-menu" aria-expanded="false">
                     <li>
                     <Link to={"/discount-labhazir"}>
-                      {this.props.t("Against Test")}
+                      {this.props.t("For Test")}
                     </Link>
                   </li>
 
                     <li>
                       <Link to={"/labs-list"}>
-                        {this.props.t("Against Lab")}
+                        {this.props.t("For Lab")}
                       </Link>
                     </li>
                   </ul>

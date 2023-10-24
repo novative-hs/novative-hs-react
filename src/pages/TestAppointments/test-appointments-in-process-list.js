@@ -866,7 +866,7 @@ class TestAppointmentsInProcessList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="Test Appointments"
-              breadcrumbItem="In Process List"
+              breadcrumbItem="In Process Appointments List"
             />
             <Row>
               <Col lg="12">
@@ -936,7 +936,7 @@ class TestAppointmentsInProcessList extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Patient Information</span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
@@ -997,7 +997,7 @@ class TestAppointmentsInProcessList extends Component {
                                                   </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -1013,7 +1013,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
@@ -1717,7 +1717,7 @@ class TestAppointmentsInProcessList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Status
+                                                      Update Status
                                                     </Label>
                                                     <Field
                                                       name="status"
@@ -1798,7 +1798,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       </option> */}
 
                                                       <option value="Confirmed">
-                                                        Confirmed
+                                                        Confirmed 
                                                       </option>
 
                                                       <option value="Sample Collected">
@@ -1819,7 +1819,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       {testAppointment.reschedule_count <
                                                         2 && (
                                                           <option value="Rescheduled">
-                                                            Rescheduled
+                                                            To Reschedule
                                                           </option>
                                                         )}
 
@@ -1828,7 +1828,7 @@ class TestAppointmentsInProcessList extends Component {
                                                         testAppointment.status !==
                                                         "Rescheduled" && (
                                                           <option value="Result Uploaded">
-                                                            Result Uploaded
+                                                            To Upload Result
                                                           </option>
                                                         )}
                                                     </Field>

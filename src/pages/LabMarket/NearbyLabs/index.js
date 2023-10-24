@@ -95,7 +95,7 @@ class NearbyLabs extends Component {
       isMenuOpened: false,
       nearbyLabs: [],
       territoriesList: [],
-
+      
       advLives: [],
       patientProfile: [],
       advLive: "",
@@ -105,7 +105,6 @@ class NearbyLabs extends Component {
       search_type: "Current Location",
       km: "30",
       LabType: "Main",
-      SearchType: "",
       city: "",
       latitude: "",
       longitude: "",
@@ -114,7 +113,6 @@ class NearbyLabs extends Component {
       currentLongitude: "",
       autoplay: true,
       discountData: [],
-      loading: true, // Add loading state property
       filters: {
         discount: [],
         price: { min: 0, max: 500 },
@@ -249,7 +247,6 @@ class NearbyLabs extends Component {
 
       if ((!this.state.user_id) && !this.props.match.params.guest_id) {
         const guest_id = uuidv4();
-        print("guest welcome", guest_id)
         const nearbyLabsLocationDetails = {
           latitude,
           longitude,
@@ -303,135 +300,267 @@ class NearbyLabs extends Component {
           this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
         }, 500);
       }
-    } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        console.log("web", latitude, longitude);
-
-        this.setState({ currentLatitude: latitude });
-        this.setState({ currentLongitude: longitude });
-
-        const advLiveLocationDetails = {
+    } 
+    else {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          console.log("web", latitude, longitude);
+          
+          this.setState({ currentLatitude: latitude });
+          this.setState({ currentLongitude: longitude });
+          
+          const advLiveLocationDetails = {
           latitude,
           longitude,
           search_type: this.state.search_type,
           address: this.state.address,
           city: this.state.city,
-        };
-
-        if (latitude && longitude) {
+          };
+          
+          if (latitude && longitude) {
           onGetAdvLive(advLiveLocationDetails);
           setTimeout(() => {
-            this.setState({ advLives: this.props.advLives });
+          this.setState({ advLives: this.props.advLives });
           }, 500);
-        }
-
-
-        // near by labs
-        if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
+          }
+          
+          // near by labs
+          if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
           const guest_id = uuidv4();
           const nearbyLabsLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-            km: this.state.km,
-            LabType: this.state.LabType,
-            guest_id,
-          };
-          console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
-          this.setState({ guest_id });
-          console.log("differ:", this.state.guest_id)
-          console.log(window.location.href);
-          if (latitude && longitude) {
-            onGetNearbyLabs(nearbyLabsLocationDetails);
-            setTimeout(() => {
-              this.setState({ nearbyLabs: this.props.nearbyLabs });
-            }, 500);
-          }
-        }
-
-        // near by labs
-        if (this.state.user_id || this.state.user_type === "b2bclient") {
-          const nearbyLabsLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-            km: this.state.km,
-            LabType: this.state.LabType,
-          };
-          if (latitude && longitude) {
-            onGetNearbyLabs(nearbyLabsLocationDetails);
-            setTimeout(() => {
-              this.setState({ nearbyLabs: this.props.nearbyLabs });
-            }, 500);
-          }
-        }
-
-        if ((!this.state.user_id) && !this.props.match.params.guest_id) {
-          const guest_id = uuidv4();
-          const nearbyLabsLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-            km: this.state.km,
-            LabType: this.state.LabType,
-            guest_id,
-          };
-          console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
-          this.setState({ guest_id });
-          console.log("differ:", this.state.guest_id)
-          console.log(window.location.href);
-          if (latitude && longitude) {
-            onGetNearbyLabs(nearbyLabsLocationDetails);
-            setTimeout(() => {
-              this.setState({ nearbyLabs: this.props.nearbyLabs });
-            }, 500);
-          }
-        }
-        if (this.state.user_id) {
-          const nearbyLabsLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-            km: this.state.km,
-            LabType: this.state.LabType,
-          };
-          if (latitude && longitude) {
-            onGetNearbyLabs(nearbyLabsLocationDetails);
-            setTimeout(() => {
-              this.setState({ nearbyLabs: this.props.nearbyLabs });
-            }, 500);
-          }
-        }
-
-        // region Wise Advertisement 
-        const regionWiseAdvLocationDetails = {
           latitude,
           longitude,
           search_type: this.state.search_type,
           address: this.state.address,
           city: this.state.city,
-        };
-        if (latitude && longitude) {
+          km: this.state.km,
+          LabType: this.state.LabType,
+          guest_id,
+          };
+          console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+          this.setState({ guest_id });
+          console.log("differ:", this.state.guest_id)
+          console.log(window.location.href);
+          if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+          }
+          }
+          
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+          const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          };
+          if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+          }
+          }
+          
+          if ((!this.state.user_id) && !this.props.match.params.guest_id) {
+          const guest_id = uuidv4();
+          
+          const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          guest_id,
+          };
+          console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+          this.setState({ guest_id });
+          console.log("differ:", this.state.guest_id)
+          console.log(window.location.href);
+          if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+          }
+          }
+          if (this.state.user_id) {
+          const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          };
+          if (latitude && longitude) {
+          onGetNearbyLabs(nearbyLabsLocationDetails);
+          setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 500);
+          }
+          }
+          
+          // region Wise Advertisement 
+          const regionWiseAdvLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          };
+          if (latitude && longitude) {
           onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
           setTimeout(() => {
-            this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
+          this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
           }, 500);
+          }
+           setTimeout(() => {
+        this.setState({ loading: false });
+      }, 7000);
+          },() => {
+      // Location access denied by the user
+      console.log("Location access denied by the user.");
+      const denialMessage = "For accurate results, please allow location access.";
+      alert(denialMessage); // You can use an alert, or create a message element in your UI.
+      // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
+
+      // Example:
+      this.setState({ latitude: null, longitude: null });
+      const advLiveLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        };
+        onGetAdvLive(advLiveLocationDetails);
+        setTimeout(() => {
+        this.setState({ advLives: this.props.advLives });
+        }, 500);
+        // near by labs
+        if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
+        const guest_id = uuidv4();
+        const nearbyLabsLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        km: this.state.km,
+        LabType: this.state.LabType,
+        guest_id,
+        };
+        console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+        this.setState({ guest_id });
+        console.log("differ:", this.state.guest_id)
+        console.log(window.location.href);
+        if (latitude && longitude) {
+        onGetNearbyLabs(nearbyLabsLocationDetails);
+        setTimeout(() => {
+        this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 500);
         }
-      });
-    }
-    setTimeout(() => {
+        }
+        
+        // near by labs
+        if (this.state.user_id || this.state.user_type === "b2bclient") {
+        const nearbyLabsLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        km: this.state.km,
+        LabType: this.state.LabType,
+        };
+        if (latitude && longitude) {
+        onGetNearbyLabs(nearbyLabsLocationDetails);
+        setTimeout(() => {
+        this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 500);
+        }
+        }
+        
+        if ((!this.state.user_id) && !this.props.match.params.guest_id) {
+        const guest_id = uuidv4();
+        
+        const nearbyLabsLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        km: this.state.km,
+        LabType: this.state.LabType,
+        guest_id,
+        };
+        console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+        this.setState({ guest_id });
+        console.log("differ:", this.state.guest_id)
+        console.log(window.location.href);
+        onGetNearbyLabs(nearbyLabsLocationDetails);
+        setTimeout(() => {
+        this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 500);
+        }
+        if (this.state.user_id) {
+        const nearbyLabsLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        km: this.state.km,
+        LabType: this.state.LabType,
+        };
+        onGetNearbyLabs(nearbyLabsLocationDetails);
+        setTimeout(() => {
+        this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 500);
+        }
+        
+        // region Wise Advertisement 
+        const regionWiseAdvLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        };
+        onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
+        setTimeout(() => {
+        this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
+        }, 500);
+        setTimeout(() => {
       this.setState({ loading: false });
-    }, 7000); // Set loading state to false after 7 seconds
+    }, 7000);
+
+      // Set loading state to false after 7 seconds (if you want to maintain the same timing)
+      setTimeout(() => {
+        this.setState({ loading: false });
+      }, 7000);
+    }
+  );
+} else {
+  // Geolocation is not supported by the browser
+  console.log("Geolocation is not supported by the browser.");
+  // Handle this scenario as needed, e.g., display an error message or provide alternative functionality.
+}
+
+      
+    }
   }
   // handleLocationUpdate(latitude, longitude) {
   //   const { onGetAdvLive, onGetNearbyLabs, onGetRegionWiseAdvertisement } = this.props;
@@ -834,7 +963,7 @@ class NearbyLabs extends Component {
     };
 
     const customDots = dots => (
-      <ul style={{ marginBottom: "0", textAlign: "center" }}>
+      <ul style={{ marginBottom: "0", textAlign: "center"}}>
         {dots.map((dot, index) => (
           <li
             key={index}
@@ -874,8 +1003,6 @@ class NearbyLabs extends Component {
       const modal = document.getElementById("modal");
       modal.style.display = "none";
     };
-    const { loading } = this.state;
-
 
     return (
       <React.Fragment>
@@ -965,7 +1092,7 @@ class NearbyLabs extends Component {
                               ? `/test-appointments/${this.props.match.params.uuid}`
                               : `/test-appointments`
                           }
-                            className="dropdown-item">
+                          className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
                             <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -1220,13 +1347,13 @@ class NearbyLabs extends Component {
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
                           <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/test-appointments/${this.props.match.params.uuid}`
-                                : `/test-appointments`
-                            }
-                            className="dropdown-item">
-
+                          to={
+                            this.props.match.params.uuid
+                              ? `/test-appointments/${this.props.match.params.uuid}`
+                              : `/test-appointments`
+                          }
+                          className="dropdown-item">
+                            
                             <span className="pt-4 font-size-12">My Appointments</span>
 
                           </Link>
@@ -1315,10 +1442,10 @@ class NearbyLabs extends Component {
                         {this.state.user_id && this.state.user_type == "patient" && (
                           <li className="nav-item">
                             <Link to={
-                              this.props.match.params.uuid
-                                ? `/test-appointments/${this.props.match.params.uuid}`
-                                : `/test-appointments`
-                            } className="dropdown-item">
+                            this.props.match.params.uuid
+                              ? `/test-appointments/${this.props.match.params.uuid}`
+                              : `/test-appointments`
+                          } className="dropdown-item">
                               {/* {this.props.t("My Appointments")} */}
                               <span className="pt-4 font-size-12">My Appointments</span>
 
@@ -1385,64 +1512,64 @@ class NearbyLabs extends Component {
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Tooltip title="Cart">
-                    <Link
-                      to={
-                        this.props.match.params.uuid
-                          ? `/cart/${this.state.guest_id}/${this.props.match.params.uuid}`
-                          : `/cart/${this.state.guest_id}`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle d-none"
-                    >
-                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/cart/${this.state.guest_id}/${this.props.match.params.uuid}`
+                        : `/cart/${this.state.guest_id}`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle d-none"
+                  >
+                    <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                      {/* {!isEmpty(this.props.carts) &&
+                    {/* {!isEmpty(this.props.carts) &&
                         
                           this.props.carts.slice(-1).pop().cart_quantity+this.state.count
                           } */}
-                    </Link>
+                  </Link>
                   </Tooltip>
                   <Tooltip title="Login">
-                    <Link
-                      to={
-                        this.props.match.params.uuid
-                          ? `/login/${this.state.guest_id}/${this.props.match.params.uuid}`
-                          : `/login/${this.state.guest_id}`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle"
-                    >
-                      <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">Login</span>
-                    </Link>
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/login/${this.state.guest_id}/${this.props.match.params.uuid}`
+                        : `/login/${this.state.guest_id}`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
+                    <span className="pt-4 font-size-12">Login</span>
+                  </Link>
                   </Tooltip>
                   <Tooltip title="Sign up">
-                    <Link
-                      to={
-                        this.props.match.params.uuid
-                          ? `/register/${this.state.guest_id}/${this.props.match.params.uuid}`
-                          : `/register/${this.state.guest_id}`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle"
-                    >
-                      <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">Sign up</span>
-                    </Link>
-                  </Tooltip>
-                  <Tooltip title="Help and Support">
-                    <Link
-                      // to="/contact-us"
-                      to={
-                        this.props.match.params.uuid
-                          ? `/contact-us/${this.props.match.params.uuid}`
-                          : `/contact-us`
-                      }
-                      className="btn header-items noti-icon right-bar-toggle"
-                    >
-                      <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
-                    </Link>
-                  </Tooltip>
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/register/${this.state.guest_id}/${this.props.match.params.uuid}`
+                        : `/register/${this.state.guest_id}`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
+                    <span className="pt-4 font-size-12">Sign up</span>
+                  </Link>
+</Tooltip>
+<Tooltip title="Help and Support">
+                  <Link
+                    // to="/contact-us"
+                    to={
+                      this.props.match.params.uuid
+                        ? `/contact-us/${this.props.match.params.uuid}`
+                        : `/contact-us`
+                    }
+                    className="btn header-items noti-icon right-bar-toggle"
+                  >
+                    <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
+                  </Link>
+</Tooltip>
                 </div>
-              ) : this.state.user_type == "patient" ? (
-                <Header />
+              ) :this.state.user_type == "patient" ? (
+                  <Header />
               ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (
@@ -1623,29 +1750,27 @@ class NearbyLabs extends Component {
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
-                                for="LabType2"
+                                for="LabType"
                                 className="form-label"
                                 style={{
                                   fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                                 }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
+                              >Search By Kilometers</Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={(e) => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+
+                                />
+                              </div>
                             </div>
                           </Col>
+
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
@@ -1670,107 +1795,33 @@ class NearbyLabs extends Component {
                               </Field>
                             </div>
                           </Col>
-                          {this.state.search_type === "Current Location" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {/* City field */}
-                          {this.state.search_type === "City" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By City
-                                </Label>
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder="City..."
-                                />
-                              </div>
-                            </Col>)}
-                          {/* Custom Address field */}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By Custom Address
-                                </Label>
-                                <Input
-                                  defaultValue={this.state.address}
-                                  onChange={e => this.onChangeAddress(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Search Location..."
-                                />
-                              </div>
-                            </Col>)}
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType1"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                }}
+                              >
+                                Search By City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={this.onChangeCity}
+                                className="defautSelectParent is-invalid"
+                                options={cityList}
+                                placeholder="City..."
+                              />
+                            </div>
+                          </Col>
                         </Row>
 
                       </Form>
                     )}
                   </Formik>
                 </Row>
-
 
                 {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
                   nearbyLabs.map((nearbyLab, key) => (
@@ -2301,7 +2352,7 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
-                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-timer"></i>{" "}
@@ -2348,23 +2399,18 @@ class NearbyLabs extends Component {
                       </Card>
                     </Col>
                   ))}
-                {loading ? (
+                {isEmpty(nearbyLabs) && (
                   <Row>
                     <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
+                      <div className=" mb-5">
+                        <h4 className="text-uppercase">
+                          {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                          Loading.....
+                        </h4>
                       </div>
                     </Col>
                   </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
+                )}
 
                 <ScrollButton />
               </Row>
@@ -2406,7 +2452,7 @@ class NearbyLabs extends Component {
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
                         {/* Type field */}
-                        {/* <Row>
+                        <Row>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
@@ -2476,152 +2522,6 @@ class NearbyLabs extends Component {
                               />
                             </div>
                           </Col>
-                        </Row> */}
-                        <Row>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          {this.state.search_type === "Current Location" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {/* City field */}
-                          {this.state.search_type === "City" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By City
-                                </Label>
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder="City..."
-                                />
-                              </div>
-                            </Col>)}
-                          {/* Custom Address field */}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By Custom Address
-                                </Label>
-                                <Input
-                                  defaultValue={this.state.address}
-                                  onChange={e => this.onChangeAddress(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Search Location..."
-                                />
-                              </div>
-                            </Col>)}
                         </Row>
 
                       </Form>
@@ -2727,12 +2627,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2848,12 +2748,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2996,12 +2896,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -3130,12 +3030,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -3168,24 +3068,19 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {loading ? (
+                {isEmpty(nearbyLabs) && (
                   <Row>
                     <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
+                      <div className=" mb-5">
+                        <h4 className="text-uppercase">
+                          {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                          Loading.....
+                        </h4>
                       </div>
                     </Col>
                   </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
-                <ScrollButton />
+                )}
+                <ScrollButton/>
               </Col>
               <Col lg="3">
                 <span style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px'}}>Advertisements</span>
@@ -3297,7 +3192,7 @@ class NearbyLabs extends Component {
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "80px", marginLeft: "20px", marginRight: "20px" }}>
-              <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#CFE0F6" }}>
+            <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#CFE0F6" }}>
                 <CardBody>
                   <h4>Categories</h4>
                   <p className={"font-size-10"}>Sehatmand Pakistan, Khushhaal Pakistan: Aapki Sehat, Hamari Zimmedari!</p>
@@ -3377,7 +3272,7 @@ class NearbyLabs extends Component {
 
                     </Col>
 
-                    {/* Column 2 */}
+                                        {/* Column 2 */}
 
 
                     <Col>
@@ -3408,7 +3303,7 @@ class NearbyLabs extends Component {
                         <p className="font-size-10 mt-1" style={{ color: "black" }}>Appointments</p>
                       </Link>
                     </Col>
-
+                   
                   </Row>
                 </CardBody>
               </Card>
@@ -3440,7 +3335,7 @@ class NearbyLabs extends Component {
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
                       {/* Type field */}
-                      {/* <Row>
+                      <Row>
                         <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
@@ -3510,154 +3405,7 @@ class NearbyLabs extends Component {
                             />
                           </div>
                         </Col>
-                      </Row> */}
-                      <Row>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              Search Types
-                            </Label>
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">
-                                Current Location
-                              </option>
-                              <option value="City">Search By City</option>
-                              <option value="Custom Address">Custom Address</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              Search By Labs Type
-                            </Label>
-                            <Field
-                              name="LabType"
-                              component="select"
-                              onChange={(e) => this.onChangeType(e)}
-                              value={this.state.LabType}
-                              className="form-select"
-                            >
-                              <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
-                              <option value="Others">Both</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        {this.state.search_type === "Current Location" && (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >Search By Kilometers</Label>
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                  placeholder="Search By Km..."
-
-                                />
-                              </div>
-                            </div>
-                          </Col>)}
-                        {this.state.search_type === "Custom Address" && (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >Search By Kilometers</Label>
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                  placeholder="Search By Km..."
-
-                                />
-                              </div>
-                            </div>
-                          </Col>)}
-                        {/* City field */}
-                        {this.state.search_type === "City" && (
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By City
-                              </Label>
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={cityList}
-                                placeholder="City..."
-                              />
-                            </div>
-                          </Col>)}
-                        {/* Custom Address field */}
-                        {this.state.search_type === "Custom Address" && (
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By Custom Address
-                              </Label>
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          </Col>)}
                       </Row>
-
 
                     </Form>
                   )}
@@ -3761,12 +3509,12 @@ class NearbyLabs extends Component {
                             </div>
                           )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -3881,13 +3629,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
                           <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-email"></i>{" "}
@@ -4028,13 +3776,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
                           <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-phone"></i>{" "}
@@ -4162,12 +3910,12 @@ class NearbyLabs extends Component {
                             </div>
                           )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -4199,23 +3947,18 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-              {loading ? (
+              {isEmpty(nearbyLabs) && (
                 <Row>
                   <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px' }}>
-                      Please Wait.....
+                    <div className=" mb-5">
+                      <h4 className="text-uppercase">
+                        {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                        Loading.....
+                      </h4>
                     </div>
                   </Col>
                 </Row>
-              ) : isEmpty(nearbyLabs) ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                      Sorry No Result Found.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : null}
+              )}
 
               <ScrollButton />
             </Row></div>
@@ -4253,7 +3996,7 @@ class NearbyLabs extends Component {
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
                       {/* Type field */}
-                      {/* <Row>
+                      <Row>
                         <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
@@ -4323,154 +4066,7 @@ class NearbyLabs extends Component {
                             />
                           </div>
                         </Col>
-                      </Row> */}
-                      <Row>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              Search Types
-                            </Label>
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">
-                                Current Location
-                              </option>
-                              <option value="City">Search By City</option>
-                              <option value="Custom Address">Custom Address</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              Search By Labs Type
-                            </Label>
-                            <Field
-                              name="LabType"
-                              component="select"
-                              onChange={(e) => this.onChangeType(e)}
-                              value={this.state.LabType}
-                              className="form-select"
-                            >
-                              <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
-                              <option value="Others">Both</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        {this.state.search_type === "Current Location" && (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >Search By Kilometers</Label>
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                  placeholder="Search By Km..."
-
-                                />
-                              </div>
-                            </div>
-                          </Col>)}
-                        {this.state.search_type === "Custom Address" && (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >Search By Kilometers</Label>
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                  placeholder="Search By Km..."
-
-                                />
-                              </div>
-                            </div>
-                          </Col>)}
-                        {/* City field */}
-                        {this.state.search_type === "City" && (
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By City
-                              </Label>
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={cityList}
-                                placeholder="City..."
-                              />
-                            </div>
-                          </Col>)}
-                        {/* Custom Address field */}
-                        {this.state.search_type === "Custom Address" && (
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By Custom Address
-                              </Label>
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          </Col>)}
                       </Row>
-
 
                     </Form>
                   )}
@@ -4574,12 +4170,12 @@ class NearbyLabs extends Component {
                             </div>
                           )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -4695,12 +4291,12 @@ class NearbyLabs extends Component {
                             </div>
                           )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -4842,13 +4438,13 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+{!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
                           <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-phone"></i>{" "}
@@ -4976,12 +4572,12 @@ class NearbyLabs extends Component {
                             </div>
                           )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                            </div>
-                          )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                           <div className="my-0">
                             <span className="text-muted me-2">
@@ -5013,23 +4609,18 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-              {loading ? (
+              {isEmpty(nearbyLabs) && (
                 <Row>
                   <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px' }}>
-                      Please Wait.....
+                    <div className=" mb-5">
+                      <h4 className="text-uppercase">
+                        {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                        Loading.....
+                      </h4>
                     </div>
                   </Col>
                 </Row>
-              ) : isEmpty(nearbyLabs) ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                      Sorry No Result Found.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : null}
+              )}
               <ScrollButton />
             </Row></div>
         ) : isSmallScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && isEmpty(this.state.user_type) ? (
@@ -5133,7 +4724,7 @@ class NearbyLabs extends Component {
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
                         {/* Type field */}
-                        {/* <Row>
+                        <Row>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
@@ -5200,154 +4791,7 @@ class NearbyLabs extends Component {
                                 placeholder="City..." />
                             </div>
                           </Col>
-                        </Row> */}
-                        <Row>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          {this.state.search_type === "Current Location" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {/* City field */}
-                          {this.state.search_type === "City" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By City
-                                </Label>
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder="City..."
-                                />
-                              </div>
-                            </Col>)}
-                          {/* Custom Address field */}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By Custom Address
-                                </Label>
-                                <Input
-                                  defaultValue={this.state.address}
-                                  onChange={e => this.onChangeAddress(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Search Location..."
-                                />
-                              </div>
-                            </Col>)}
                         </Row>
-
 
                       </Form>
                     )}
@@ -5445,12 +4889,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5558,12 +5002,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5698,12 +5142,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5824,12 +5268,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -5861,24 +5305,19 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {loading ? (
+                {isEmpty(nearbyLabs) && (
                   <Row>
                     <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
+                      <div className=" mb-5">
+                        <h4 className="text-uppercase">
+                          {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                          Loading.....
+                        </h4>
                       </div>
                     </Col>
                   </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
-                <ScrollButton />
+                )}
+                <ScrollButton/>
               </Col>
             </Row></div>
         ) : isSmallScreen && (!isEmpty(this.props.advLives) || !isEmpty(regionWiseAdvertisement)) && this.state.user_type === "patient" ? (
@@ -6033,7 +5472,7 @@ class NearbyLabs extends Component {
 
                     </Col>
 
-                    {/* Column 2 */}
+                                        {/* Column 2 */}
 
 
                     <Col>
@@ -6064,7 +5503,7 @@ class NearbyLabs extends Component {
                         <p className="font-size-10 mt-1" style={{ color: "black" }}>Appointments</p>
                       </Link>
                     </Col>
-
+                   
                   </Row>
                 </CardBody>
               </Card>
@@ -6096,7 +5535,7 @@ class NearbyLabs extends Component {
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
                         {/* Type field */}
-                        {/* <Row>
+                        <Row>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
@@ -6163,154 +5602,7 @@ class NearbyLabs extends Component {
                                 placeholder="City..." />
                             </div>
                           </Col>
-                        </Row> */}
-                        <Row>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          {this.state.search_type === "Current Location" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >Search By Kilometers</Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }} // Set input font size to 14 pixels
-                                    placeholder="Search By Km..."
-
-                                  />
-                                </div>
-                              </div>
-                            </Col>)}
-                          {/* City field */}
-                          {this.state.search_type === "City" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By City
-                                </Label>
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder="City..."
-                                />
-                              </div>
-                            </Col>)}
-                          {/* Custom Address field */}
-                          {this.state.search_type === "Custom Address" && (
-                            <Col xs="4" sm="4" md="3" lg="3">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  Search By Custom Address
-                                </Label>
-                                <Input
-                                  defaultValue={this.state.address}
-                                  onChange={e => this.onChangeAddress(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Search Location..."
-                                />
-                              </div>
-                            </Col>)}
                         </Row>
-
 
                       </Form>
                     )}
@@ -6408,15 +5700,15 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}
-                                  </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
 
-                              {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-timer"></i>{" "}
@@ -6531,14 +5823,14 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
-                              {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-timer"></i>{" "}
@@ -6680,12 +5972,12 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -6806,14 +6098,14 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
-                                </div>
-                              )}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                              </div>
+                            )}
 
-                              {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
+                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-timer"></i>{" "}
@@ -6852,24 +6144,19 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {loading ? (
+                {isEmpty(nearbyLabs) && (
                   <Row>
                     <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
+                      <div className=" mb-5">
+                        <h4 className="text-uppercase">
+                          {/* <i className="bx bx-loader-circle"></i>{" "} */}
+                          Loading.....
+                        </h4>
                       </div>
                     </Col>
                   </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
-                <ScrollButton />
+                )}
+                <ScrollButton/>
               </Col>
             </Row></div>
         ) : null}

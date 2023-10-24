@@ -589,13 +589,13 @@ class AdvertisementsList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            // name: Yup.string()
-                                            //   .trim()
-                                            //   .matches(
-                                            //     /^[a-zA-Z][a-zA-Z ]+$/,
-                                            //     "Please enter only alphabets and spaces"
-                                            //   )
-                                            //   .required("Please enter name"),
+                                            title: Yup.string()
+                                              .trim()
+                                              .matches(
+                                                /^[a-zA-Z][a-zA-Z ]+$/,
+                                                "Please enter only alphabets and spaces"
+                                              )
+                                              .required("Please enter name"),
                                             // name: Yup.string().when(
                                             //   "region_type",
                                             //   {
@@ -617,6 +617,13 @@ class AdvertisementsList extends Component {
                                             //       ),
                                             //   }
                                             // ),
+                                            title: Yup.string().trim()
+                                            .matches(
+                                              /^[a-zA-Z][a-zA-Z ]+$/,
+                                              "Please enter only alphabets and spaces"
+                                            ).required(
+                                                  "Please enter title it is necessary"
+                                                ),
 
                                             poster: Yup.string().when(
                                               "hiddenEditFlag",
@@ -624,7 +631,7 @@ class AdvertisementsList extends Component {
                                                 is: hiddenEditFlag =>
                                                   hiddenEditFlag == false, //just an e.g. you can return a function
                                                 then: Yup.string().required(
-                                                  "Please upload poster"
+                                                  "Please upload poster it is necessary"
                                                 ),
                                               }
                                             ),
@@ -809,6 +816,7 @@ class AdvertisementsList extends Component {
                                                     <Field
                                                       name="title"
                                                       type="text"
+                                                      required="true"
                                                       className="form-control"
                                                       onChange={e => {
                                                         this.setState({
@@ -859,6 +867,7 @@ class AdvertisementsList extends Component {
                                                       <Input
                                                         id="formFile"
                                                         name="poster"
+                                                        required="true"
                                                         placeholder="Choose image"
                                                         type="file"
                                                         multiple={false}
@@ -898,6 +907,7 @@ class AdvertisementsList extends Component {
                                                     </Label>
                                                     <input
                                                       name="posted_at"
+                                                      required="true"
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
@@ -922,6 +932,7 @@ class AdvertisementsList extends Component {
                                                     </Label>
                                                     <input
                                                       name="posted_till"
+                                                      required="true"
                                                       type="datetime-local"
                                                       min={new Date(
                                                         new Date().toString().split("GMT")[0] +
@@ -944,11 +955,12 @@ class AdvertisementsList extends Component {
 
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Km
+                                                      Km <span className="text-danger">(Area coverd by your advertisement)</span>
                                                     </Label>
                                                     <Field
                                                       name="km"
                                                       type="number"
+                                                      required="true"
                                                       step="05"
                                                       min="05"
                                                       max="2200"

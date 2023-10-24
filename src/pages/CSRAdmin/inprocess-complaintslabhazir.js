@@ -250,7 +250,7 @@ class InProcessComplaintsLabhazir extends Component {
     const { onAssignComplaint, onGetInProcessComplaintsLabhazir } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 100,
       totalSize: inProcessComplaintsLabhazir.length, // replace later with size(inProcessComplaintsLabhazir),
       custom: true,
     };

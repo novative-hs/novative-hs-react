@@ -759,7 +759,7 @@ class TestAppointmentsCompletedList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="Test Appointments"
-              breadcrumbItem="Completed List"
+              breadcrumbItem="Completed Appointments List"
             />
             <Row>
               <Col lg="12">

@@ -276,7 +276,7 @@ class InProcessComplaints extends Component {
     const { onAssignComplaint, onGetInProcessComplaints } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 100,
       totalSize: inProcessComplaints.length, // replace later with size(inProcessComplaints),
       custom: true,
     };

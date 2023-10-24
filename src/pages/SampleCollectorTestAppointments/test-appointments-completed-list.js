@@ -79,20 +79,20 @@ class TestAppointmentsCompletedList extends Component {
         //     </>
         //   ),
         // },
-        {
-          dataField: "appointment_requested_at",
-          text: "Sampling time by Patient",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              <span>
-                {new Date(
-                  testAppointment.appointment_requested_at
-                ).toLocaleString("en-US")}
-              </span>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "appointment_requested_at",
+        //   text: "Sampling time by Patient",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //         {new Date(
+        //           testAppointment.appointment_requested_at
+        //         ).toLocaleString("en-US")}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "estimated_sample_collection_at",
           text: "Sampling time by Lab",
@@ -356,9 +356,26 @@ class TestAppointmentsCompletedList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .patient_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -374,7 +391,7 @@ class TestAppointmentsCompletedList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">

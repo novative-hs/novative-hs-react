@@ -27,7 +27,7 @@ import {
 } from "reactstrap";
 
 import { isEmpty, map, size } from "lodash";
-// import ScrollButton from "components/Common/Scrollbutton";
+import ScrollButton from "components/Common/Scrollbutton";
 
 //Import Star Ratings
 import StarRatings from "react-star-ratings";
