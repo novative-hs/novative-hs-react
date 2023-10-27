@@ -84,7 +84,7 @@ class ApprovedLabs extends Component {
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              <span className="float-end">
+              <span className="float-start">
                   <Link
                     to="#"
                     onMouseEnter={e => this.openPatientModal(e, approvedLab)}
@@ -102,7 +102,7 @@ class ApprovedLabs extends Component {
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              <span>
+              <span className="float-start">
                 {approvedLab.address}
               </span>
             </>
@@ -120,7 +120,14 @@ class ApprovedLabs extends Component {
                 <span>No</span>
               )}
             </>
-          ),filter: textFilter(),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "pathologists",
@@ -134,7 +141,14 @@ class ApprovedLabs extends Component {
                 <span>No</span>
               )}
             </>
-          ),filter: textFilter(),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "sample_collectors",
@@ -148,7 +162,14 @@ class ApprovedLabs extends Component {
                 <span>No</span>
               )}
             </>
-          ),filter: textFilter(),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "quality_certificates",
@@ -162,7 +183,14 @@ class ApprovedLabs extends Component {
                 <span>No</span>
               )}
             </>
-          ),filter: textFilter(),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'true': 'Yes',
+              'false': 'No',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "registered_at",
