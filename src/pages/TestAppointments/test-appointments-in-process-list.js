@@ -131,17 +131,23 @@ class TestAppointmentsInProcessList extends Component {
         //     </>
         //   ),
         // },
+        
         {
           dataField: "is_home_sampling_availed",
-          text: "Home sampling",
+          text: "Home sampling / Urgent Sampling",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              {testAppointment.is_home_sampling_availed == true ? (
+              {testAppointment.is_home_sampling_availed == true || testAppointment.is_state_sampling_availed == true  ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>
               )}
+              {/* {testAppointment.is_state_sampling_availed == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )} */}
             </>
           ),
           filter: selectFilter({
@@ -719,6 +725,8 @@ class TestAppointmentsInProcessList extends Component {
         patient_unique_id: testAppointment.patient_unique_id,
         status: testAppointment.status,
         reschedule_reason: testAppointment.reschedule_reason,
+        estimated_sample_collection_at:
+              testAppointment.estimated_sample_collection_at,
         reason: testAppointment.reason,
         reschedule_count: testAppointment.reschedule_count,
         rescheduled_at: testAppointment.rescheduled_at,
@@ -1105,23 +1113,6 @@ class TestAppointmentsInProcessList extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                    reschedule_reason
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.reschedule_reason
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
@@ -1139,6 +1130,26 @@ class TestAppointmentsInProcessList extends Component {
                                                     />
                                                   </div>
                                                 </div>
+                                                {this.state.testAppointment
+                                                    .reschedule_reason ==
+                                                    "Other" &&
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Reason
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reason
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -1167,159 +1178,19 @@ class TestAppointmentsInProcessList extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.rescheduled_at
+                                                        new Date(this.state.rescheduled_at).toLocaleString('en-US')
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
                                                   </div>
                                                 </div>
-
                                               </Col>
                                             </Row>
                                           </Form>
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
-                                    {/* 
-                                    <Modal
-                                      isOpen={this.state.PaymentModal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePaymentModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik
-                                          enableReinitialize={true}
-                                          initialValues={{
-                                            amount_received:
-                                              (testAppointment &&
-                                                testAppointment.amount_received) ||
-                                              "",
-                                            conflict_reason:
-                                              (testAppointment &&
-                                                testAppointment.conflict_reason) ||
-                                              "",
-                                          
-                                          }}
-                                          validationSchema={Yup.object().shape({
-
-                                          })}
-                                          onSubmit={values => {
-                                            if (this.state.testAppointment)  {
-                                              const updatePaymentInfo = {
-                                                id: testAppointment.id,
-                                                amount_received:
-                                                  values.amount_received,
-                                                conflict_reason:
-                                                  values.conflict_reason,
-                                                
-                                                process: "inprocess",
-                                              };
-
-                                              // update TestAppointment
-                                              onUpdatePaymentInfo(
-                                                updatePaymentInfo 
-                                              );
-                                            }
-
-                                            setTimeout(() => {
-                                              onGetTestAppointmentsInProcessList(
-                                                this.state.user_id
-                                              );
-                                            }, 1000);
-
-                                            this.toggle();
-                                          }}
-                                        >
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                    amount_received
-                                                    </Label>
-                                                    <input
-                                                      name="amount_received"
-                                                      type="text"
-                                                      // readOnly={true}
-                                                      value={
-                                                        testAppointment.amount_received
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          testAppointment: {
-                                                            id: testAppointment.id,
-                                                            conflict_reason:
-                                                              testAppointment.conflict_reason,
-                                                            amount_received:
-                                                              e.target.value,
-                                                           
-                                                          },
-                                                        });
-                                                      }}
-                                                      className="form-control"
-                                                    />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                    conflict_reason
-                                                    </Label>
-                                                    <input
-                                                      name="conflict_reason"
-                                                      type="text"
-                                                      // readOnly={true}
-                                                      value={
-                                                        testAppointment.conflict_reason
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          testAppointment: {
-                                                            id: testAppointment.id,
-                                                            amount_received:
-                                                              testAppointment.amount_received,
-                                                            conflict_reason:
-                                                              e.target.value,
-                                                           
-                                                          },
-                                                        });
-                                                      }}
-                                                      className="form-control"
-                                                    />
-                                                  </div>
-
-                                                  
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                      onClick={
-                                                        this.handleAPICall
-                                                      }
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal> */}
-
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
@@ -1338,34 +1209,10 @@ class TestAppointmentsInProcessList extends Component {
                                               (testAppointment &&
                                                 testAppointment.patient_id) ||
                                               "",
-                                            // patient_name:
-                                            //   (testAppointment &&
-                                            //     testAppointment.patient_name) ||
-                                            //   "",
-                                            // patient_age:
-                                            //   (testAppointment &&
-                                            //     testAppointment.patient_age) ||
-                                            //   "",
-                                            // patient_gender:
-                                            //   (testAppointment &&
-                                            //     testAppointment.patient_gender) ||
-                                            //   "",
-                                            // booked_at:
-                                            //   (testAppointment &&
-                                            //     testAppointment.booked_at) ||
-                                            //   "",
-                                            // appointment_requested_at:
-                                            //   (testAppointment &&
-                                            //     testAppointment.appointment_requested_at) ||
-                                            //   "",
                                             estimated_sample_collection_at:
                                               (testAppointment &&
                                                 testAppointment.estimated_sample_collection_at) ||
                                               "",
-                                            // estimated_result_uploading_at:
-                                            //   (testAppointment &&
-                                            //     testAppointment.estimated_result_uploading_at) ||
-                                            //   "",
                                             patient_unique_id:
                                               (testAppointment &&
                                                 testAppointment.patient_unique_id) ||
@@ -1448,6 +1295,8 @@ class TestAppointmentsInProcessList extends Component {
                                                 id: testAppointment.id,
                                                 reschedule_reason:
                                                   values.reschedule_reason,
+                                                estimated_sample_collection_at:
+                                                  values.estimated_sample_collection_at,
                                                 reason: values.reason,
                                                 rescheduledBy: "Lab",
                                                 status: "Rescheduled",
@@ -1696,6 +1545,8 @@ class TestAppointmentsInProcessList extends Component {
                                                               testAppointment.status,
                                                             reschedule_reason:
                                                               testAppointment.reschedule_reason,
+                                                            estimated_sample_collection_at:
+                                                                testAppointment.estimated_sample_collection_at,
                                                             reschedule_count:
                                                               testAppointment.reschedule_count,
                                                             reason:
@@ -1744,6 +1595,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                 e.target.value,
                                                               reschedule_reason:
                                                                 testAppointment.reschedule_reason,
+                                                              estimated_sample_collection_at:
+                                                                testAppointment.estimated_sample_collection_at,
                                                               reschedule_count:
                                                                 testAppointment.reschedule_count,
                                                               reason:
@@ -1771,6 +1624,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                 testAppointment.is_home_sampling_availed,
                                                               status:
                                                                 e.target.value,
+                                                              estimated_sample_collection_at:
+                                                                testAppointment.estimated_sample_collection_at,
                                                               reschedule_reason:
                                                                 testAppointment.reschedule_reason,
                                                               reschedule_count:
@@ -1804,17 +1659,6 @@ class TestAppointmentsInProcessList extends Component {
                                                       <option value="Sample Collected">
                                                         Sample Collected
                                                       </option>
-
-
-                                                      {/* <option value="Sample Declined">
-                                                        Sample Declined
-                                                      </option>
-                                                      <option value="Sample Insufficient">
-                                                        Sample Insufficient
-                                                      </option>
-                                                      <option value="Sample Spilled">
-                                                        Sample Spilled
-                                                      </option> */}
 
                                                       {testAppointment.reschedule_count <
                                                         2 && (
@@ -1864,6 +1708,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                 reschedule_reason:
                                                                   e.target
                                                                     .value,
+                                                                estimated_sample_collection_at:
+                                                                  testAppointment.estimated_sample_collection_at,
                                                                 reschedule_count:
                                                                   testAppointment.reschedule_count,
                                                                 reason:
@@ -1916,7 +1762,82 @@ class TestAppointmentsInProcessList extends Component {
                                                         />
                                                       </div>
                                                     )}
-
+                                                   {this.state.testAppointment
+                                                    .status == "Rescheduled" &&
+                                                    testAppointment.reschedule_count <
+                                                    2 && (
+                                                      <div className="mb-3">
+                                                    <Label
+                                                      for="estimated_sample_collection_at"
+                                                    >
+                                                      Please select date and time for sample collection
+                                                    </Label>
+                                                    <input
+                                                      type="datetime-local"
+                                                      id="estimated_sample_collection_at"
+                                                      name="estimated_sample_collection_at"
+                                                      value={
+                                                        testAppointment.estimated_sample_collection_at
+                                                      }
+                                                      min={new Date(
+                                                        new Date()
+                                                          .toString()
+                                                          .split("GMT")[0] +
+                                                        " UTC"
+                                                      )
+                                                        .toISOString()
+                                                        .slice(0, -8)}
+                                                        onChange={e => {
+                                                          this.setState({
+                                                            isRescheduled: true,
+                                                            testAppointment: {
+                                                              id: testAppointment.id,
+                                                              payment_status:
+                                                                testAppointment.payment_status,
+                                                              patient_unique_id:
+                                                                testAppointment.patient_unique_id,
+                                                              is_home_sampling_availed:
+                                                                testAppointment.is_home_sampling_availed,
+                                                              status:
+                                                                testAppointment.status,
+                                                              reschedule_reason:
+                                                                testAppointment.reschedule_reason,
+                                                              estimated_sample_collection_at:
+                                                                e.target
+                                                                  .value,
+                                                              reschedule_count:
+                                                                testAppointment.reschedule_count,
+                                                              reason:
+                                                                testAppointment.reason,
+                                                              result_type:
+                                                                testAppointment.result_type,
+                                                              url: testAppointment.url,
+                                                              result:
+                                                                this.state
+                                                                  .resultFile,
+                                                              assigned_to:
+                                                                testAppointment.assigned_to,
+                                                            },
+                                                          });
+                                                        }}
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.estimated_sample_collection_at &&
+                                                            touched.estimated_sample_collection_at
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        readOnly={false}
+                                                        multiple={false}
+                                                    />
+                                                    <ErrorMessage
+                                                      name="estimated_sample_collection_at"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                    )}
+                                                    
                                                   {this.state.testAppointment
                                                     .reschedule_reason ==
                                                     "Other" &&
@@ -2003,6 +1924,49 @@ class TestAppointmentsInProcessList extends Component {
                                                               is_home_sampling_availed: testAppointment.is_home_sampling_availed,
                                                               status: testAppointment.status,
                                                               reschedule_reason: testAppointment.reschedule_reason,
+                                                              estimated_sample_collection_at:
+                                                                  testAppointment.estimated_sample_collection_at,
+                                                              reschedule_count: testAppointment.reschedule_count,
+                                                              reason: testAppointment.reason,
+                                                              result_type: testAppointment.result_type,
+                                                              url: testAppointment.url,
+                                                              result: this.state.resultFile,
+                                                              assigned_to: selectedGroup.value,
+                                                            },
+                                                          });
+                                                        }}
+                                                        className="defautSelectParent"
+                                                        options={sampleCollectorList}
+                                                        defaultValue={{
+                                                          label: testAppointment.collector_name,
+                                                          value: testAppointment.assigned_to,
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  ) : null}
+                                                  {this.state.testAppointment.is_state_sampling_availed === true &&
+                                                    (this.state.testAppointment.status === "Sample Collected" ||
+                                                      this.state.testAppointment.status === "Confirmed" ||
+                                                      this.state.testAppointment.status === "Rescheduled") ? (
+                                                    <div className="mb-3">
+                                                      <Label>
+                                                        Assigned to (Sample Collector)
+                                                      </Label>
+                                                      <Select
+                                                        name="assigned_to"
+                                                        component="Select"
+                                                        placeholder="Select home sample collector..."
+                                                        onChange={selectedGroup => {
+                                                          this.setState({
+                                                            testAppointment: {
+                                                              id: testAppointment.id,
+                                                              payment_status: testAppointment.payment_status,
+                                                              patient_unique_id: testAppointment.patient_unique_id,
+                                                              is_home_sampling_availed: testAppointment.is_home_sampling_availed,
+                                                              status: testAppointment.status,
+                                                              reschedule_reason: testAppointment.reschedule_reason,
+                                                              estimated_sample_collection_at:
+                                                                  testAppointment.estimated_sample_collection_at,
                                                               reschedule_count: testAppointment.reschedule_count,
                                                               reason: testAppointment.reason,
                                                               result_type: testAppointment.result_type,
@@ -2051,6 +2015,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                   testAppointment.reschedule_count,
                                                                 reason:
                                                                   testAppointment.reason,
+                                                                estimated_sample_collection_at:
+                                                                  testAppointment.estimated_sample_collection_at,
                                                                 result_type:
                                                                   e.target.value,
                                                                 url: testAppointment.url,
@@ -2113,6 +2079,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                   testAppointment.reschedule_count,
                                                                 reason:
                                                                   testAppointment.reason,
+                                                                estimated_sample_collection_at:
+                                                                  testAppointment.estimated_sample_collection_at,
                                                                 result_type:
                                                                   testAppointment.result_type,
                                                                 url: e.target

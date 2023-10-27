@@ -665,7 +665,7 @@ class NearbyProfiles extends Component {
     // }
     const profileList = this.props.Profiles.map((profile) => ({
       label: profile.name,
-      value: profile.id, // Use the profile ID as the value
+      value: profile.name, // Use the profile ID as the value
     }));
     
 

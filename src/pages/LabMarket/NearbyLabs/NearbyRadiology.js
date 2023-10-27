@@ -666,7 +666,7 @@ class nearbyRadiology extends Component {
     for (let i = 0; i < this.props.Radiology.length; i++) {
       radiologyList.push({
         label: this.props.Radiology[i].name,
-        value: this.props.Radiology[i].id,
+        value: this.props.Radiology[i].name,
       });
     }
     const cityList = [];

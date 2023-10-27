@@ -524,6 +524,36 @@ class NearbyPackage extends Component {
       }, 1000);
     }, 1000);
   };
+  onChangeType = e => {
+    this.setState({ LabType: e.target.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyPackages } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var data = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      LabType: e.target.value,
+      km: this.state.km,
+      address: this.state.address,
+      city: this.state.city,
+      test_name: this.state.test_name,
+      page: this.state.page,
+
+    };
+    // region wise advertisement
+    onGetNearbyPackages(data);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
+
+    setTimeout(() => {
+      this.setState({ nearbyPackages: this.props.nearbyPackages });
+    }, 1000);
+  };
 
   handleAddToCart = cart => {
     const { onAddToCart } = this.props;
@@ -642,7 +672,7 @@ class NearbyPackage extends Component {
     // }
     const packageList = this.props.Packages.map((pkg) => ({
       label: pkg.name,
-      value: pkg.id,
+      value: pkg.name,
     }));
     
     const cityList = [];

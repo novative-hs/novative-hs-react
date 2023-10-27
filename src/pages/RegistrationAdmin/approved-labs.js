@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import {
   Card,
   CardBody,
@@ -54,12 +55,36 @@ class ApprovedLabs extends Component {
           formatter: (cellContent, approvedLab) => <>{approvedLab.id}</>,
         },
         {
+          dataField: "city",
+          text: "City",
+          sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span>
+                {approvedLab.city}
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "district",
+          text: "District",
+          sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span>
+                {approvedLab.district}
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
           dataField: "name",
           text: "Lab Name",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              <span>
+              <span className="float-end">
                   <Link
                     to="#"
                     onMouseEnter={e => this.openPatientModal(e, approvedLab)}
@@ -69,23 +94,76 @@ class ApprovedLabs extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "address",
           text: "Address",
           sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span>
+                {approvedLab.address}
+              </span>
+            </>
+          ),filter: textFilter(),
         },
         {
-          dataField: "city",
-          text: "City",
+          dataField: "offered_tests",
+          text: "Offered Test",
           sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              {approvedLab.offered_tests == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )}
+            </>
+          ),filter: textFilter(),
         },
-        // {
-        //   dataField: "shared_percentage",
-        //   text: "Referee Fee (%)",
-        //   sort: true,
-        // },
+        {
+          dataField: "pathologists",
+          text: "Pathologists",
+          sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              {approvedLab.pathologists == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )}
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "sample_collectors",
+          text: "Home Sample Collectors",
+          sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              {approvedLab.sample_collectors == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )}
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "quality_certificates",
+          text: "Quality Certificate",
+          sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              {approvedLab.quality_certificates == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )}
+            </>
+          ),filter: textFilter(),
+        },
         {
           dataField: "registered_at",
           text: "Registered at",
@@ -96,7 +174,7 @@ class ApprovedLabs extends Component {
                 {new Date(approvedLab.registered_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "done_at",
@@ -108,7 +186,7 @@ class ApprovedLabs extends Component {
                 {new Date(approvedLab.done_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "is_blocked",
@@ -201,7 +279,7 @@ class ApprovedLabs extends Component {
     const { onGetApprovedLabs } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 100,
       totalSize: approvedLabs.length, // replace later with size(approvedLabs),
       custom: true,
     };
@@ -266,6 +344,8 @@ class ApprovedLabs extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+
                                     />
                                     {this.state.isHovered && (
                                     <Modal
@@ -284,7 +364,7 @@ class ApprovedLabs extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Lab Address
@@ -300,8 +380,8 @@ class ApprovedLabs extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
-                                                <div className="mb-3 row">
+                                                </div> */}
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -317,7 +397,7 @@ class ApprovedLabs extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">

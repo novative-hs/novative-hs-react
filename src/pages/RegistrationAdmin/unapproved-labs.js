@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import {
   Card,
   CardBody,
@@ -56,16 +57,31 @@ class UnapprovedLabs extends Component {
           dataField: "name",
           text: "Lab name",
           sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+                {approvedLab.name}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "address",
           text: "Address",
           sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+                {approvedLab.address}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "city",
           text: "City",
           sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+                {approvedLab.city}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -77,7 +93,7 @@ class UnapprovedLabs extends Component {
                 {new Date(approvedLab.registered_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "done_at",
@@ -89,7 +105,7 @@ class UnapprovedLabs extends Component {
                 {new Date(approvedLab.done_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "data",
@@ -220,6 +236,8 @@ class UnapprovedLabs extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+
                                     />
                                     <Modal
                                       isOpen={this.state.modal}

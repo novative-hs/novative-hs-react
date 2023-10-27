@@ -27,6 +27,7 @@ import {
   ModalHeader,
   Col,
   Container,
+  Input,
   Pagination,
   PaginationItem,
   PaginationLink,
@@ -68,7 +69,7 @@ class TestsOffered extends Component {
       applied: true,
       loading: true, // Add loading state property
       page: 1,
-      // count: 0,
+      searchQuery: "", // New state property for search query
       totalPage: 5, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
@@ -280,6 +281,10 @@ class TestsOffered extends Component {
     const { offeredTests } = this.props.offeredTests;
     const { carts } = this.props;
     const offeredTest = this.state.offeredTest;
+    const { searchQuery } = this.state;
+    const filteredTests = this.props.offeredTests.filter((test) =>
+      test.test_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
       <React.Fragment>
@@ -852,6 +857,29 @@ class TestsOffered extends Component {
               </Alert>
             ) : null}
 
+<Col xs="4" sm="4" md="2" lg="2">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Profile Name
+                            </Label>
+                            <div className="mb-3">
+                              <Input
+                                type="text"
+                                placeholder="Search tests..."
+                                className="form-control"
+                                value={searchQuery}
+                                onChange={(e) => this.setState({ searchQuery: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+
             <Row>
               <Modal
                 isOpen={this.state.DescriptionModal}
@@ -949,12 +977,9 @@ class TestsOffered extends Component {
                   </Formik>
                 </ModalBody>
               </Modal>
-             
-
-              <Row>
-                {!isEmpty(this.props.offeredTests) &&
-                  this.props.offeredTests.map((offeredTest, key) => (
-                    <Col xl="4" sm="6" key={"_col_" + key}>
+              {filteredTests.length > 0 ? (
+                filteredTests.map((offeredTest, key) => (
+                  <Col xl="4" sm="6" key={"_col_" + key}>
                       <Card>
                         <CardBody>
                           {/* <div className="product-img position-relative">
@@ -1272,7 +1297,14 @@ class TestsOffered extends Component {
                         </CardBody>
                       </Card>
                     </Col>
-                  ))}
+                ))
+              ) : (
+                <Col lg="12">
+                  <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                    Sorry, no matching tests found.
+                  </div>
+                </Col>
+              )}
                 {isLargeScreen ? (
                   isEmpty(this.props.offeredTests) ? (
                     <Row className="vh-100">
@@ -1303,7 +1335,6 @@ class TestsOffered extends Component {
                       </Col>
                     </Row>
                   ) : null}
-              </Row>
 
               {/* <Row>
                 <Col lg="12">

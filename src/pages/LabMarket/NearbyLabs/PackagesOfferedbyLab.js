@@ -27,6 +27,7 @@ import {
   ModalHeader,
   Col,
   Container,
+  Input,
   Pagination,
   PaginationItem,
   PaginationLink,
@@ -68,7 +69,7 @@ class TestsOffered extends Component {
       applied: true,
       loading: true, // Add loading state property
       page: 1,
-      // count: 0,
+      searchQuery: "", // New state property for search query
       totalPage: 5, //replace this with total pages of data
     };
     this.toggleTab = this.toggleTab.bind(this);
@@ -280,6 +281,10 @@ class TestsOffered extends Component {
     const { offeredTests } = this.props.offeredTests;
     const { carts } = this.props;
     const offeredTest = this.state.offeredTest;
+    const { searchQuery } = this.state;
+    const filteredTests = this.props.offeredTests.filter((test) =>
+      test.test_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
       <React.Fragment>
@@ -852,6 +857,29 @@ class TestsOffered extends Component {
               </Alert>
             ) : null}
 
+<Col xs="4" sm="4" md="2" lg="2">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType1"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '6px' : '12px',
+                              }}
+                            >
+                              Search By Package Name
+                            </Label>
+                            <div className="mb-3">
+                              <Input
+                                type="text"
+                                placeholder="Search tests..."
+                                className="form-control"
+                                value={searchQuery}
+                                onChange={(e) => this.setState({ searchQuery: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+
             <Row>
               <Modal
                 isOpen={this.state.DescriptionModal}
@@ -949,330 +977,335 @@ class TestsOffered extends Component {
                   </Formik>
                 </ModalBody>
               </Modal>
-             
 
-              <Row>
-                {!isEmpty(this.props.offeredTests) &&
-                  this.props.offeredTests.map((offeredTest, key) => (
-                    <Col xl="4" sm="6" key={"_col_" + key}>
-                      <Card>
-                        <CardBody>
-                          {/* <div className="product-img position-relative">
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                "/media/" +
-                                offeredTest.lab_logo
-                              }
-                              alt="Lab Logo"
-                              style={{
-                                width: "300px",
-                                height: "200px",
-                                objectFit: "cover",
-                              }}
-                              className="img-fluid mx-auto d-block"
-                            />
-                          </div> */}
+              {filteredTests.length > 0 ? (
+                filteredTests.map((offeredTest, key) => (
+                  <Col xl="4" sm="6" key={"_col_" + key}>
+                  <Card>
+                    <CardBody>
+                      {/* <div className="product-img position-relative">
+                        <img
+                          src={
+                            process.env.REACT_APP_BACKENDURL +
+                            "/media/" +
+                            offeredTest.lab_logo
+                          }
+                          alt="Lab Logo"
+                          style={{
+                            width: "300px",
+                            height: "200px",
+                            objectFit: "cover",
+                          }}
+                          className="img-fluid mx-auto d-block"
+                        />
+                      </div> */}
 
-                          {/* <div className="mt-4 text-center">
-                            <h5 className="mb-2 text-truncate">
-                              {offeredTest.test_name}{" "}
-                            </h5> */}
-                          
-                            {/* 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-hand-holding-medical"></i>{" "}
-                                {offeredTest.test_type}
-                              </span>
-                            </div>
+                      {/* <div className="mt-4 text-center">
+                        <h5 className="mb-2 text-truncate">
+                          {offeredTest.test_name}{" "}
+                        </h5> */}
+                      
+                        {/* 
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-hand-holding-medical"></i>{" "}
+                            {offeredTest.test_type}
+                          </span>
+                        </div>
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {/* {offeredTest.price
-                                  .toString()
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                                {offeredTest.price} Rs
-                              </span>
-                            </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                {/* {offeredTest.price
-                                  .toString()
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                                {offeredTest.discount} % Discount By Lab
-                              </span>
-                            </div>
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2"> */}
-                            {/* <i className="fas fa-money-bill"></i>{" "} */}
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-money-bill"></i>{" "}
                             {/* {offeredTest.price
-                                  .toString()
-                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
-                            {/* {offeredTest.discount_by_labhazir} % Discount By LabHazir
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                            {offeredTest.price} Rs
+                          </span>
+                        </div>
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-money-bill"></i>{" "}
+                            {/* {offeredTest.price
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                            {offeredTest.discount} % Discount By Lab
+                          </span>
+                        </div>
+                        {/* <div className="my-0">
+                          <span className="text-muted me-2"> */}
+                        {/* <i className="fas fa-money-bill"></i>{" "} */}
+                        {/* {offeredTest.price
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "} */}
+                        {/* {offeredTest.discount_by_labhazir} % Discount By LabHazir
 
-                              </span>
-                            </div> 
+                          </span>
+                        </div> 
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-hand-holding-medical"></i>{" "}
-                                Offered by {offeredTest.lab_name}
-                              </span>
-                            </div>
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-hand-holding-medical"></i>{" "}
+                            Offered by {offeredTest.lab_name}
+                          </span>
+                        </div>
 
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-home"></i> Home Sampling:{" "}
-                                {offeredTest.is_home_sampling_available}
-                              </span>
-                            </div> */}
+                        {/* <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-home"></i> Home Sampling:{" "}
+                            {offeredTest.is_home_sampling_available}
+                          </span>
+                        </div> */}
 
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-medal"></i> EQA
-                                Participation:{" "}
-                                {offeredTest.is_eqa_participation}
-                              </span>
-                            </div> */}
+                        {/* <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-medal"></i> EQA
+                            Participation:{" "}
+                            {offeredTest.is_eqa_participation}
+                          </span>
+                        </div> */}
 
-                            {/* <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Test Performed:{" "}
-                                {offeredTest.is_test_performed}
-                              </span>
-                          </div>
+                        {/* <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-vial"></i> Test Performed:{" "}
+                            {offeredTest.is_test_performed}
+                          </span>
+                      </div>
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-stopwatch"></i> Reporting
-                                Time: {offeredTest.duration_required}{" "}
-                                {offeredTest.duration_type}
-                              </span>
-                            </div>
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-stopwatch"></i> Reporting
+                            Time: {offeredTest.duration_required}{" "}
+                            {offeredTest.duration_type}
+                          </span>
+                        </div>
 
-                            <div className="mt-3 text-center">
-                              <Link
-                                to="#"
-                                onClick={e =>
-                                  this.openDescriptionModal(e, offeredTest)
-                                }
-                              >
-                                <span>Test Description</span>
-                              </Link>
-                            </div>
-                            <Button
-                              type="button"
-                              color="primary"
-                              className="btn mt-3 me-1"
-                              onClick={() => this.handleAddToCart(offeredTest)}
+                        <div className="mt-3 text-center">
+                          <Link
+                            to="#"
+                            onClick={e =>
+                              this.openDescriptionModal(e, offeredTest)
+                            }
+                          >
+                            <span>Test Description</span>
+                          </Link>
+                        </div>
+                        <Button
+                          type="button"
+                          color="primary"
+                          className="btn mt-3 me-1"
+                          onClick={() => this.handleAddToCart(offeredTest)}
+                        >
+                          <i className="bx bx-cart me-2" /> Add to cart
+                        </Button>
+                      </div> */}
+                       <div className="mt-4 text-center">
+                        <h5 className="mb-2 text-truncate">
+                          {offeredTest.test_name}
+                        </h5>
+                        {offeredTest.test_type != "Test" && (
+                          // <div className="mb-3">
+                            <Link
+                              to="#"
+                              onClick={e =>
+                                this.openPatientModal(e, offeredTest)
+                              }
                             >
-                              <i className="bx bx-cart me-2" /> Add to cart
-                            </Button>
-                          </div> */}
-                           <div className="mt-4 text-center">
-                            <h5 className="mb-2 text-truncate">
-                              {offeredTest.test_name}
-                            </h5>
-                            {offeredTest.test_type != "Test" && (
-                              // <div className="mb-3">
-                                <Link
-                                  to="#"
-                                  onClick={e =>
-                                    this.openPatientModal(e, offeredTest)
-                                  }
-                                >
-                                  <span>Test Description</span>
-                                </Link>
-                              // </div>
-                            )}
-                            {offeredTest.test_type == "Test" && (
-                              // <div className="mb-3">
-                                <Link
-                                  to="#"
-                                  onClick={e =>
-                                    this.openDescriptionModal(e, offeredTest)
-                                  }
-                                >
-                                  <span>Test Description</span>
-                                </Link>
-                              // </div>
-                            )}
-                           
-                           {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01) && (
-                              <div className="my-0">
-                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                                <span className="text-muted me-2">
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                              </div>
-                            )}
-                            {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
-                              <div className="my-0">
-                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                                <span className="text-muted me-2">
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                              </div>
-                            )}
-                            {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01) && (
-                              <div className="my-0">
-                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                                <span className="text-muted me-2">
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                              </div>
-                            )}
-                            {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                </span>
-                              </div>
-                            )}
-                            {offeredTest.discount>=0.01 && (
-                              <div className="my-0">
-                              <span className="text-danger" >
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Discount Lab: {(offeredTest.discount*100).toFixed()} % 
-                              </span>
-                            </div>
-                            )}
-                            {(offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01 && (
-                              <div className="my-0">
-                                <span className="text-success" >
-                                  <i className="fas fa-money-bill"></i>{" "}
-                                  Discount LabHazir: {((offeredTest.all_discount_by_labhazir * 100) + (offeredTest.discount_by_labhazir * 100)).toFixed()} %
-                                </span>
+                              <span>Test Description</span>
+                            </Link>
+                          // </div>
+                        )}
+                        {offeredTest.test_type == "Test" && (
+                          // <div className="mb-3">
+                            <Link
+                              to="#"
+                              onClick={e =>
+                                this.openDescriptionModal(e, offeredTest)
+                              }
+                            >
+                              <span>Test Description</span>
+                            </Link>
+                          // </div>
+                        )}
+                       
+                       {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01) && (
+                          <div className="my-0">
+                            <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                            <span className="text-muted me-2">
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                          </div>
+                        )}
+                        {(offeredTest.discount >= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
+                          <div className="my-0">
+                            <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                            <span className="text-muted me-2">
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                          </div>
+                        )}
+                        {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01) && (
+                          <div className="my-0">
+                            <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {offeredTest.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                            <span className="text-muted me-2">
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {((offeredTest.price - (offeredTest.discount + offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) * offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                          </div>
+                        )}
+                        {(offeredTest.discount <= 0.01) && ((offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) <= 0.01) && (
+                          <div className="my-0">
+                            <span className="text-muted me-2">
+                              {/* <i className="fas fa-money-bill"></i>{" "} */}
+                              Rs {((offeredTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            </span>
+                          </div>
+                        )}
+                        {offeredTest.discount>=0.01 && (
+                          <div className="my-0">
+                          <span className="text-danger" >
+                            <i className="fas fa-money-bill"></i>{" "}
+                            Discount Lab: {(offeredTest.discount*100).toFixed()} % 
+                          </span>
+                        </div>
+                        )}
+                        {(offeredTest.all_discount_by_labhazir + offeredTest.discount_by_labhazir) >= 0.01 && (
+                          <div className="my-0">
+                            <span className="text-success" >
+                              <i className="fas fa-money-bill"></i>{" "}
+                              Discount LabHazir: {((offeredTest.all_discount_by_labhazir * 100) + (offeredTest.discount_by_labhazir * 100)).toFixed()} %
+                            </span>
 
-                              </div>
-                            )}
-                        
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-stopwatch"></i> Reporting
-                                Time: {offeredTest.duration_required}{" "}
-                                {offeredTest.duration_type}
-                              </span>
-                            </div>
+                          </div>
+                        )}
+                    
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-stopwatch"></i> Reporting
+                            Time: {offeredTest.duration_required}{" "}
+                            {offeredTest.duration_type}
+                          </span>
+                        </div>
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-home"></i> Home Sampling:{" "}
-                                {offeredTest.is_home_sampling_available}
-                              </span>
-                            </div>
-                            <div className="my-0">
-                              {" "}
-                              {!this.state.user_id ? (
-                                <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
-                                }
-                                
-                                className="text-dark"
-                              >
-                                <span className="text-primary">
-                                  {offeredTest.lab_name}{" "}
-                                  
-                                </span>
-                              </Link>
-                              ):null}
-                              {(this.state.user_id) && (this.state.user_type ==="CSR") && (this.state.user_type !=="b2bclient") && (
-                       <Link
-                       to={
-                         this.props.match.params.guest_id
-                           ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
-                           : `/nearby-lab-detail/${offeredTest.lab_account_id}`
-                       }
-
-                       className="text-dark"
-                     >
-                       <span className="text-primary">
-                         {offeredTest.lab_name}{" "}
-
-                       </span>
-                     </Link>
-                      )}
-                            {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type !=="b2bclient") && (
-                       <Link
-                       to={
-                         this.props.match.params.uuid
-                           ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                           : `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
-                       }
-
-                       className="text-dark"
-                     >
-                       <span className="text-primary">
-                         {offeredTest.lab_name}{" "}
-
-                       </span>
-                     </Link>
-                      )}
-                      {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type ==="b2bclient") && (
-                       <Link
-                       to={
-                         this.props.match.params.guest_id
-                           ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                           : `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
-                       }
-
-                       className="text-dark"
-                     >
-                       <span className="text-primary">
-                         {offeredTest.lab_name}{" "}
-
-                       </span>
-                     </Link>
-                      )}
+                        <div className="my-0">
+                          <span className="text-muted me-2">
+                            <i className="fas fa-home"></i> Home Sampling:{" "}
+                            {offeredTest.is_home_sampling_available}
+                          </span>
+                        </div>
+                        <div className="my-0">
+                          {" "}
+                          {!this.state.user_id ? (
+                            <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
+                            }
                             
-                           <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={offeredTest.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                              {/* <span className="text-muted me-2">
-                                <i className="fas fa-vial"></i> Lab:{" "}
-                                {offeredTest.lab_name}
-                              </span> */}
-                            </div>
-                            <Button
-                              type="button"
-                              color="primary"
-                              className="btn mt-3 me-1"
-                              onClick={() => this.handleAddToCart(offeredTest)}
-                            >
-                              <i className="bx bx-cart me-2" /> Add to cart
-                            </Button>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
+                            className="text-dark"
+                          >
+                            <span className="text-primary">
+                              {offeredTest.lab_name}{" "}
+                              
+                            </span>
+                          </Link>
+                          ):null}
+                          {(this.state.user_id) && (this.state.user_type ==="CSR") && (this.state.user_type !=="b2bclient") && (
+                   <Link
+                   to={
+                     this.props.match.params.guest_id
+                       ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
+                       : `/nearby-lab-detail/${offeredTest.lab_account_id}`
+                   }
+
+                   className="text-dark"
+                 >
+                   <span className="text-primary">
+                     {offeredTest.lab_name}{" "}
+
+                   </span>
+                 </Link>
+                  )}
+                        {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type !=="b2bclient") && (
+                   <Link
+                   to={
+                     this.props.match.params.uuid
+                       ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                       : `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
+                   }
+
+                   className="text-dark"
+                 >
+                   <span className="text-primary">
+                     {offeredTest.lab_name}{" "}
+
+                   </span>
+                 </Link>
+                  )}
+                  {(this.state.user_id) && (this.state.user_type !=="CSR") && (this.state.user_type ==="b2bclient") && (
+                   <Link
+                   to={
+                     this.props.match.params.guest_id
+                       ? `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                       : `/nearby-lab-detail/${offeredTest.lab_account_id}/${this.props.match.params.guest_id}`
+                   }
+
+                   className="text-dark"
+                 >
+                   <span className="text-primary">
+                     {offeredTest.lab_name}{" "}
+
+                   </span>
+                 </Link>
+                  )}
+                        
+                       <div className="my-0 mt-2">
+                        <StarRatings
+                          rating={offeredTest.rating}
+                          starRatedColor="#F1B44C"
+                          starEmptyColor="#2D363F"
+                          numberOfStars={5}
+                          name="rating"
+                          starDimension="14px"
+                          starSpacing="3px"
+                        />
+                      </div>
+                          {/* <span className="text-muted me-2">
+                            <i className="fas fa-vial"></i> Lab:{" "}
+                            {offeredTest.lab_name}
+                          </span> */}
+                        </div>
+                        <Button
+                          type="button"
+                          color="primary"
+                          className="btn mt-3 me-1"
+                          onClick={() => this.handleAddToCart(offeredTest)}
+                        >
+                          <i className="bx bx-cart me-2" /> Add to cart
+                        </Button>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
+                ))
+              ) : (
+                <Col lg="12">
+                  <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                    Sorry, no matching tests found.
+                  </div>
+                </Col>
+              )}
                 {isLargeScreen ? (
                   isEmpty(this.props.offeredTests) ? (
                     <Row className="vh-100">
@@ -1303,7 +1336,6 @@ class TestsOffered extends Component {
                       </Col>
                     </Row>
                   ) : null}
-              </Row>
 
               {/* <Row>
                 <Col lg="12">

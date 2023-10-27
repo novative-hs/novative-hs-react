@@ -156,7 +156,7 @@ class TestAppointmentsPendingList extends Component {
         },
         {
           dataField: "is_state_sampling_availed",
-          text: "Stat sampling",
+          text: "Urgent sampling",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>

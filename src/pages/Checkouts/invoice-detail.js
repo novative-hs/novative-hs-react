@@ -70,24 +70,28 @@ class InvoiceDetail extends Component {
                           <address>
                             <strong>Patient Detail:</strong>
                             <br />
-                            {this.props.invoiceDetail[0].patient_name}
+                            <span className="text-danger">Name:</span> {this.props.invoiceDetail[0].patient_name}
                             <br />
-                            {this.props.invoiceDetail[0].patient_phone}
+                            <span className="text-danger">Phone:</span> {this.props.invoiceDetail[0].patient_phone}
                             <br />
-                            {this.props.invoiceDetail[0].patient_email}
+                            <span className="text-danger">Email:</span> {this.props.invoiceDetail[0].patient_email}
+                            <br />
+                            <span className="text-danger">Age:</span> {this.props.invoiceDetail[0].patient_age}
                           </address>
                         </Col>
                         <Col sm="4" className="mt-3">
                           <address>
                             <strong>Lab Detail:</strong>
                             <br />
-                            NTN # {this.props.invoiceDetail[0].lab_ntn}
+                            <span className="text-danger">NTN #</span> {this.props.invoiceDetail[0].lab_ntn}
                             <br />
-                            {this.props.invoiceDetail[0].lab_name}
+                            <span className="text-danger">Lab Name:</span> {this.props.invoiceDetail[0].lab_name}
                             <br />
-                            {this.props.invoiceDetail[0].lab_email}
+                            <span className="text-danger">Lab Email:</span> {this.props.invoiceDetail[0].lab_email}
                             <br />
-                            {this.props.invoiceDetail[0].lab_address}
+                            <span className="text-danger">Lab Address:</span> {this.props.invoiceDetail[0].lab_address}
+                            <br />
+                            <span className="text-danger">Sample Collected Date Time by Lab:</span> {new Date(this.props.invoiceDetail[0].estimated_sample_collection_at).toLocaleString("en-US")}
                           </address>
                         </Col>
                         <Col sm="4" className="mt-3 text-sm-end">
@@ -120,7 +124,7 @@ class InvoiceDetail extends Component {
                         <Col sm="4" className="mt-3">
                           <address>
                             <strong>Order Detail:</strong>
-                            <br />
+                            <br /><span className="text-danger">Invoice Generated Date Time: </span> 
                             {new Date(
                               this.props.invoiceDetail[0].invoice_generated_at
                             ).toLocaleString("en-US")}

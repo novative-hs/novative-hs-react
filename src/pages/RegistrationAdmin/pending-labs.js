@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import {
   Card,
   CardBody,
@@ -73,12 +74,18 @@ class PendingLabs extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "address",
           text: "Address",
-          sort: true,     
+          sort: true,   
+          formatter: (cellContent, pendingLab) => (
+            <>
+                   {pendingLab.address}
+                  
+            </>
+          ),filter: textFilter(),  
         },
         // {
         //   dataField: "city",
@@ -110,12 +117,18 @@ class PendingLabs extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "landline",
           text: "Lab Phone No",
           sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+                   {pendingLab.landline}
+                  
+            </>
+          ),filter: textFilter(),  
         },
         // {
         //   dataField: "registered_at",
@@ -346,6 +359,8 @@ class PendingLabs extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+
                                     />
                                       <Modal
                                       isOpen={this.state.LabModal}
