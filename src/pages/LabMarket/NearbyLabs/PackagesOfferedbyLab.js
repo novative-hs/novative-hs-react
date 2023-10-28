@@ -1102,7 +1102,10 @@ class TestsOffered extends Component {
                       </div> */}
                        <div className="mt-4 text-center">
                         <h5 className="mb-2 text-truncate">
-                          {offeredTest.test_name}
+                          {/* {offeredTest.test_name} */}
+                          <Tooltip title={offeredTest.test_name}>
+                              <span> {offeredTest.test_name} </span>
+                          </Tooltip>
                         </h5>
                         {offeredTest.test_type != "Test" && (
                           // <div className="mb-3">
