@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { Collapse } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
 import ScrollButton from "components/Common/Scrollbutton";
+import Tooltip from "@material-ui/core/Tooltip";
+
 
 import {
   Alert,
@@ -1547,7 +1549,9 @@ class NearbyTests extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
-                              {nearbyTest.test_name}
+                            <Tooltip title={nearbyTest.test_name}>
+                              <span> {nearbyTest.test_name} </span>
+                              </Tooltip>
                             </h5>
                             {/* <div className="mt-3 text-center"> */}
                             <Link

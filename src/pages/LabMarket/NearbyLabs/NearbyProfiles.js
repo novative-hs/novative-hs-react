@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import {
   Alert,
   Button,
@@ -1567,8 +1569,11 @@ class NearbyProfiles extends Component {
                       <Card>
                         <CardBody>
                           <div className="mt-4 text-center">
+                          
                             <h5 className="mb-2 text-truncate">
-                              {nearbyProfile.test_name}{" "}
+                            <Tooltip title={nearbyProfile.test_name}>
+                              <span> {nearbyProfile.test_name} </span>
+                              </Tooltip>
                             </h5>
                             <div className="my-0">
                               <Link

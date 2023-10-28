@@ -10,6 +10,7 @@ import logo from "../../../assets/images/logo.svg";
 import logoLight from "../../../assets/images/logo-light.png";
 import logoLightSvg from "../../../assets/images/logo-light.svg";
 import StarRatings from "react-star-ratings";
+import Tooltip from "@material-ui/core/Tooltip";
 
 //i18n
 import { withTranslation } from "react-i18next";
@@ -1098,8 +1099,10 @@ class TestsOffered extends Component {
                             </Button>
                           </div> */}
                            <div className="mt-4 text-center">
-                            <h5 className="mb-2 text-truncate">
-                              {offeredTest.test_name}
+                           <h5 className="mb-2 text-truncate">
+                            <Tooltip title={offeredTest.test_name}>
+                              <span> {offeredTest.test_name} </span>
+                              </Tooltip>
                             </h5>
                             {offeredTest.test_type != "Test" && (
                               // <div className="mb-3">

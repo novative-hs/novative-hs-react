@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import {
   Alert,
   Button,
@@ -1586,7 +1588,9 @@ class NearbyPackage extends Component {
 
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
-                              {nearbyPackage.test_name}{" "}
+                            <Tooltip title={nearbyPackage.test_name}>
+                              <span> {nearbyPackage.test_name} </span>
+                              </Tooltip>
                             </h5>
                             <div className="my-0">
                               <Link

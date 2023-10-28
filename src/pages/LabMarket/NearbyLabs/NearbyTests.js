@@ -1514,7 +1514,9 @@ class NearbyTests extends Component {
                         <CardBody>
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
-                              {nearbyTest.test_name}
+                            <Tooltip title={nearbyTest.test_name}>
+                              <span> {nearbyTest.test_name} </span>
+                              </Tooltip>
                             </h5>
                             <Link
                               to="#"

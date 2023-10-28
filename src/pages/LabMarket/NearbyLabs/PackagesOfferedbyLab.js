@@ -10,6 +10,8 @@ import logo from "../../../assets/images/logo.svg";
 import logoLight from "../../../assets/images/logo-light.png";
 import logoLightSvg from "../../../assets/images/logo-light.svg";
 import StarRatings from "react-star-ratings";
+import Tooltip from "@material-ui/core/Tooltip";
+
 
 //i18n
 import { withTranslation } from "react-i18next";
