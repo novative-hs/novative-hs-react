@@ -2737,6 +2737,25 @@ class NearbyLabs extends Component {
                         {/* Type field */}
                         {/* Type field */}
                         <Row>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Lab Name</Label>
+                            <Select
+                              type="text"
+                              value={labNames.find((option) => option.value === this.state.name)}
+                              onChange={this.onChangeLabName}
+                              options={labNames}
+                              placeholder="Lab Name..."
+                            />
+
+                          </div>
+                        </Col>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
@@ -3789,6 +3808,25 @@ class NearbyLabs extends Component {
                       {/* Type field */}
                       {/* Type field */}
                       <Row>
+                      <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Lab Name</Label>
+                            <Select
+                              type="text"
+                              value={labNames.find((option) => option.value === this.state.name)}
+                              onChange={this.onChangeLabName}
+                              options={labNames}
+                              placeholder="Lab Name..."
+                            />
+
+                          </div>
+                        </Col>
                         <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
@@ -4573,6 +4611,25 @@ class NearbyLabs extends Component {
                       {/* Type field */}
                       {/* Type field */}
                       <Row>
+                      <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Lab Name</Label>
+                            <Select
+                              type="text"
+                              value={labNames.find((option) => option.value === this.state.name)}
+                              onChange={this.onChangeLabName}
+                              options={labNames}
+                              placeholder="Lab Name..."
+                            />
+
+                          </div>
+                        </Col>
                         <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
@@ -5438,6 +5495,25 @@ class NearbyLabs extends Component {
                         {/* Type field */}
                         {/* Type field */}
                         <Row>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Lab Name</Label>
+                            <Select
+                              type="text"
+                              value={labNames.find((option) => option.value === this.state.name)}
+                              onChange={this.onChangeLabName}
+                              options={labNames}
+                              placeholder="Lab Name..."
+                            />
+
+                          </div>
+                        </Col>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
@@ -6463,6 +6539,25 @@ class NearbyLabs extends Component {
                         {/* Type field */}
                         {/* Type field */}
                         <Row>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div className="mb-3">
+                            <Label
+                              for="LabType"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              }}
+                            >Search By Lab Name</Label>
+                            <Select
+                              type="text"
+                              value={labNames.find((option) => option.value === this.state.name)}
+                              onChange={this.onChangeLabName}
+                              options={labNames}
+                              placeholder="Lab Name..."
+                            />
+
+                          </div>
+                        </Col>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
