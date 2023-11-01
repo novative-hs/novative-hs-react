@@ -134,6 +134,9 @@ export const GET_FEEDBACKS = `${API_ENDPOINT}/api/lab/feedback-list`;
 export const GET_TERRITORIES_LIST = `${API_ENDPOINT}/api/territories/district-city-list`;
 
 // TERRITORIES LIST
+export const GET_LAB_NAMES_LIST = `${API_ENDPOINT}/api/lab/lab-names`;
+
+// MEDICAL LIST
 export const GET_ONLY_MEDICAL_LIST = `${API_ENDPOINT}/api/medicaltest/only-medical-tests`;
 
 // CSR CENTRAL TERRITORIES LIST

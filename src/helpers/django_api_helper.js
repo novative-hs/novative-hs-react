@@ -918,6 +918,7 @@ export const getNearbyLabs = locationDetails => {
   formData.append("longitude", locationDetails.longitude);
   formData.append("search_type", locationDetails.search_type);
   formData.append("km", locationDetails.km);
+  formData.append("name", locationDetails.name);
   formData.append("LabType", locationDetails.LabType);
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
@@ -2045,10 +2046,24 @@ export const updateDiscountAllLabHazirToLab = data => {
 //   get(`${url.GET_REFERREL_FEES}/${id}`, {
 //     headers: getHeader(authHeader()),
 //   });
-export const getPutReferrelFeeLabs = () =>
-  get(`${url.GET_PUT_REFERREL_FEES}`, {
+// export const getPutReferrelFeeLabs = () =>
+//   get(`${url.GET_PUT_REFERREL_FEES}`, {
+//     headers: getHeader(authHeader()),
+//   });
+// Get Nearby Labs
+
+export const getPutReferrelFeeLabs = data => {
+  let formData = new FormData();
+
+  formData.append("test_name", data.test_name);
+
+  console.log("In registration admin: ", data)
+
+
+  return axios.post(`${url.GET_PUT_REFERREL_FEES}`, formData, {
     headers: getHeader(authHeader()),
   });
+};
 export const getReferrelFeeLabs = () =>
   get(`${url.GET_REFERREL_FEES}`, {
     headers: getHeader(authHeader()),
@@ -2620,6 +2635,12 @@ export const getAdvInvoice = id =>
 //------------ Get Territories List-------------
   export const getTerritoriesList = ()=>
   get(`${url.GET_TERRITORIES_LIST}`, {
+    headers: getHeader(authHeader()),
+  });
+
+//------------ Get Names List-------------
+  export const getLabNamesList = ()=>
+  get(`${url.GET_LAB_NAMES_LIST}`, {
     headers: getHeader(authHeader()),
   });
 

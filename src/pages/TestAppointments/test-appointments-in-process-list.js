@@ -138,16 +138,16 @@ class TestAppointmentsInProcessList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              {testAppointment.is_home_sampling_availed == true || testAppointment.is_state_sampling_availed == true  ? (
+              {testAppointment.is_home_sampling_availed == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )}/ 
+              {testAppointment.is_state_sampling_availed == true ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>
               )}
-              {/* {testAppointment.is_state_sampling_availed == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )} */}
             </>
           ),
           filter: selectFilter({
@@ -328,72 +328,47 @@ class TestAppointmentsInProcessList extends Component {
             <>
               <span>
                 <span>
-                  {testAppointment.is_home_sampling_availed &&
-                    !testAppointment.collector_name && (
+                  {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
+                    !testAppointment.collector_name ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                         Not assigned
                       </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collector_name && (
+                    ):(
                       <span>{testAppointment.collector_name}</span>
                     )}
-
-                  {!testAppointment.is_home_sampling_availed && (
-                    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                      Not availed
-                    </span>
-                  )}
-                  {testAppointment.is_home_sampling_availed &&
-                    !testAppointment.collection_status && (
+                  {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
+                    !testAppointment.collection_status ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                         Pending
                       </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Assigned" && (
+                    ): testAppointment.collection_status == "Assigned" ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
                         {testAppointment.collection_status}
                       </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "On way" && (
+                    ): testAppointment.collection_status == "On way" ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
                         {testAppointment.collection_status}
                       </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Reached" && (
+                    ): testAppointment.collection_status == "Reached" ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                         {testAppointment.collection_status}
                       </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Patient Unavailable" && (
+                    ): testAppointment.collection_status == "Patient Unavailable" ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                         {testAppointment.collection_status}
                       </span>
-                    )}
-
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Sample+Payment Collected" && (
+                    ): testAppointment.collection_status == "Sample+Payment Collected" ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                         {testAppointment.collection_status}
                       </span>
-                    )}
-                  {testAppointment.is_home_sampling_availed &&
-                    testAppointment.collection_status == "Sample+Payment Delivered" && (
+                    ): testAppointment.collection_status == "Sample+Payment Delivered" && (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                         {testAppointment.collection_status}
                       </span>
                     )}
 
-                  {!testAppointment.is_home_sampling_availed && (
+                  {!testAppointment.is_home_sampling_availed &&
+                   !testAppointment.is_state_sampling_availed && (
                     <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
                       Not availed
                     </span>
@@ -731,6 +706,7 @@ class TestAppointmentsInProcessList extends Component {
         reschedule_count: testAppointment.reschedule_count,
         rescheduled_at: testAppointment.rescheduled_at,
         is_home_sampling_availed: testAppointment.is_home_sampling_availed,
+        is_state_sampling_availed: testAppointment.is_state_sampling_availed,
         result_type: "File",
         url: "",
         result: "",
@@ -750,7 +726,7 @@ class TestAppointmentsInProcessList extends Component {
       patient_unique_id: arg.patient_unique_id,
       patient_gender: arg.patient_gender,
       patient_age: arg.patient_age,
-      patient_address: arg.patient_address,
+      // patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
       booked_at: arg.booked_at,
@@ -985,7 +961,7 @@ class TestAppointmentsInProcessList extends Component {
                                                     />
                                                   </div>
                                                 </div>
-
+{/* 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
@@ -1003,7 +979,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -1541,6 +1517,8 @@ class TestAppointmentsInProcessList extends Component {
                                                               e.target.value,
                                                             is_home_sampling_availed:
                                                               testAppointment.is_home_sampling_availed,
+                                                            is_state_sampling_availed:
+                                                              testAppointment.is_state_sampling_availed,
                                                             status:
                                                               testAppointment.status,
                                                             reschedule_reason:
@@ -1591,6 +1569,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                 testAppointment.patient_unique_id,
                                                               is_home_sampling_availed:
                                                                 testAppointment.is_home_sampling_availed,
+                                                              is_state_sampling_availed:
+                                                                testAppointment.is_state_sampling_availed,
                                                               status:
                                                                 e.target.value,
                                                               reschedule_reason:
@@ -1622,6 +1602,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                 testAppointment.patient_unique_id,
                                                               is_home_sampling_availed:
                                                                 testAppointment.is_home_sampling_availed,
+                                                              is_state_sampling_availed:
+                                                                testAppointment.is_state_sampling_availed,
                                                               status:
                                                                 e.target.value,
                                                               estimated_sample_collection_at:
@@ -1703,6 +1685,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                   testAppointment.patient_unique_id,
                                                                 is_home_sampling_availed:
                                                                   testAppointment.is_home_sampling_availed,
+                                                                is_state_sampling_availed:
+                                                                  testAppointment.is_state_sampling_availed,
                                                                 status:
                                                                   testAppointment.status,
                                                                 reschedule_reason:
@@ -1798,6 +1782,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                 testAppointment.patient_unique_id,
                                                               is_home_sampling_availed:
                                                                 testAppointment.is_home_sampling_availed,
+                                                              is_state_sampling_availed:
+                                                                testAppointment.is_state_sampling_availed,
                                                               status:
                                                                 testAppointment.status,
                                                               reschedule_reason:
@@ -1867,6 +1853,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                   testAppointment.patient_unique_id,
                                                                 is_home_sampling_availed:
                                                                   testAppointment.is_home_sampling_availed,
+                                                                is_state_sampling_availed:
+                                                                  testAppointment.is_state_sampling_availed,
                                                                 status:
                                                                   testAppointment.status,
                                                                 reschedule_reason:
@@ -1903,7 +1891,7 @@ class TestAppointmentsInProcessList extends Component {
                                                       </div>
                                                     )}
 
-                                                  {this.state.testAppointment.is_home_sampling_availed === true &&
+                                                  {(this.state.testAppointment.is_state_sampling_availed || this.state.testAppointment.is_home_sampling_availed) &&
                                                     (this.state.testAppointment.status === "Sample Collected" ||
                                                       this.state.testAppointment.status === "Confirmed" ||
                                                       this.state.testAppointment.status === "Rescheduled") ? (
@@ -1921,47 +1909,7 @@ class TestAppointmentsInProcessList extends Component {
                                                               id: testAppointment.id,
                                                               payment_status: testAppointment.payment_status,
                                                               patient_unique_id: testAppointment.patient_unique_id,
-                                                              is_home_sampling_availed: testAppointment.is_home_sampling_availed,
-                                                              status: testAppointment.status,
-                                                              reschedule_reason: testAppointment.reschedule_reason,
-                                                              estimated_sample_collection_at:
-                                                                  testAppointment.estimated_sample_collection_at,
-                                                              reschedule_count: testAppointment.reschedule_count,
-                                                              reason: testAppointment.reason,
-                                                              result_type: testAppointment.result_type,
-                                                              url: testAppointment.url,
-                                                              result: this.state.resultFile,
-                                                              assigned_to: selectedGroup.value,
-                                                            },
-                                                          });
-                                                        }}
-                                                        className="defautSelectParent"
-                                                        options={sampleCollectorList}
-                                                        defaultValue={{
-                                                          label: testAppointment.collector_name,
-                                                          value: testAppointment.assigned_to,
-                                                        }}
-                                                      />
-                                                    </div>
-                                                  ) : null}
-                                                  {this.state.testAppointment.is_state_sampling_availed === true &&
-                                                    (this.state.testAppointment.status === "Sample Collected" ||
-                                                      this.state.testAppointment.status === "Confirmed" ||
-                                                      this.state.testAppointment.status === "Rescheduled") ? (
-                                                    <div className="mb-3">
-                                                      <Label>
-                                                        Assigned to (Sample Collector)
-                                                      </Label>
-                                                      <Select
-                                                        name="assigned_to"
-                                                        component="Select"
-                                                        placeholder="Select home sample collector..."
-                                                        onChange={selectedGroup => {
-                                                          this.setState({
-                                                            testAppointment: {
-                                                              id: testAppointment.id,
-                                                              payment_status: testAppointment.payment_status,
-                                                              patient_unique_id: testAppointment.patient_unique_id,
+                                                              is_state_sampling_availed: testAppointment.is_state_sampling_availed,
                                                               is_home_sampling_availed: testAppointment.is_home_sampling_availed,
                                                               status: testAppointment.status,
                                                               reschedule_reason: testAppointment.reschedule_reason,
@@ -2007,6 +1955,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                   testAppointment.patient_unique_id,
                                                                 is_home_sampling_availed:
                                                                   testAppointment.is_home_sampling_availed,
+                                                                is_state_sampling_availed:
+                                                                  testAppointment.is_state_sampling_availed,
                                                                 status:
                                                                   testAppointment.status,
                                                                 reschedule_reason:
@@ -2071,6 +2021,8 @@ class TestAppointmentsInProcessList extends Component {
                                                                   testAppointment.patient_unique_id,
                                                                 is_home_sampling_availed:
                                                                   testAppointment.is_home_sampling_availed,
+                                                                is_state_sampling_availed:
+                                                                  testAppointment.is_state_sampling_availed,
                                                                 status:
                                                                   testAppointment.status,
                                                                 reschedule_reason:

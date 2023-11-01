@@ -93,15 +93,15 @@ class PatientProfile extends Component {
                     phone: (this.state && this.state.phone) || "",
                   }}
                   validationSchema={Yup.object().shape({
-                    name: Yup.string()
-                      .trim()
-                      .required("Please enter your name")
-                      .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters")
-                      .matches(
-                        /^[a-zA-Z][a-zA-Z ]+$/,
-                        "Please enter only alphabets and spaces"
-                      ),
+                    // name: Yup.string()
+                    //   .trim()
+                    //   .required("Please enter your name")
+                    //   .min(3, "Please enter at least 3 characters")
+                    //   .max(255, "Please enter maximum 255 characters")
+                    //   .matches(
+                    //     /^[a-zA-Z][a-zA-Z ]+$/,
+                    //     "Please enter only alphabets and spaces"
+                    //   ),
                     phone: Yup.string()
                       .required("Please enter your phone no.")
                       .max(255, "Please enter maximum 255 characters")
@@ -134,29 +134,49 @@ class PatientProfile extends Component {
                       {/* Name field */}
                       <div className="mb-3">
                         <Label for="name" className="form-label">
-                          Name
+                        Name
                         </Label>
                         <Field
                           id="name"
                           name="name"
                           type="text"
-                          readOnly={true}
+                          onChange={e =>
+                            this.setState({ name: e.target.value })
+                          }
                           value={this.state.name}
-                          className="form-control"
+                          className={
+                            "form-control" +
+                            (errors.name && touched.name ? " is-invalid" : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="name"
+                          component="div"
+                          className="invalid-feedback"
                         />
                       </div>
 
-                      {/* Email field */}
                       <div className="mb-3">
                         <Label for="email" className="form-label">
-                          Email
+                        Email
                         </Label>
                         <Field
+                          id="email"
                           name="email"
                           type="text"
-                          readOnly={true}
+                          onChange={e =>
+                            this.setState({ email: e.target.value })
+                          }
                           value={this.state.email}
-                          className="form-control"
+                          className={
+                            "form-control" +
+                            (errors.email && touched.email ? " is-invalid" : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="invalid-feedback"
                         />
                       </div>
 

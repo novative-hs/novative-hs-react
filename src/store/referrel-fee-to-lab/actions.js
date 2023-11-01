@@ -12,9 +12,9 @@ import {
   UPDATE_REFERREL_ALL_FEE_SUCCESS,
   UPDATE_REFERREL_ALL_FEE_FAIL,
 } from "./actionTypes";
-export const getPutReferrelFeeLabs = id => ({
+export const getPutReferrelFeeLabs = (test_name) => ({
   type: GET_PUT_REFERREL_FEES,
-  payload: id,
+  payload: {test_name},
 });
 
 export const getPutReferrelFeeLabsSuccess = ReferrelFeeLabs => ({

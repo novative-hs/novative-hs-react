@@ -38,10 +38,62 @@ class ChangePassword extends Component {
     };
   }
 
+  
+  togglePasswordVisibility = () => {
+    const passwordInput = document.querySelector('input[name="new_password"]');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon.className = 'mdi mdi-eye-outline';
+    }
+  };
+  togglePassword2Visibility = () => {
+    const passwordInput = document.querySelector('input[name="new_password2"]');
+    const eyeIcon2 = document.getElementById('eye-icon2');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon2.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon2.className = 'mdi mdi-eye-outline';
+    }
+  };
+
   render() {
+
+    // Define a custom validation function
+const checkOldPassword = (value) => {
+  // Replace this with your actual logic to check if the old password is correct
+  const isOldPasswordCorrect = checkOldPasswordFunction(value);
+
+  return isOldPasswordCorrect;
+};
+
+// Define your validation schema
+const validationSchema = Yup.object().shape({
+  old_password: Yup.string()
+    .required("Please enter your old password")
+    .test("old-password-match", "Old password is incorrect", checkOldPassword),
+  new_password: Yup.string().required("Please enter your new password"),
+  new_password2: Yup.string()
+    .required("Please re-enter your new password")
+    .when("new_password", {
+      is: (val) => val && val.length > 0,
+      then: Yup.string().oneOf(
+        [Yup.ref("new_password")],
+        "Passwords must match"
+      ),
+    }),
+});
     // const { onAddNewComplaint } = this.props;
 
     return (
+      
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
@@ -86,6 +138,7 @@ class ChangePassword extends Component {
                             ),
                           }),
                       })}
+                  
                       onSubmit={values => {
                         this.props.userChangePassword(values);
                         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
@@ -147,10 +200,11 @@ class ChangePassword extends Component {
 
                           <div className="mb-3">
                             <Label className="form-label">New Password</Label>
-                            <div>
+                         
+                            <div className="input-group">
                               <Field
                                 name="new_password"
-                                type="password"
+                                type={this.state.showPassword ? "text" : "password"}
                                 placeholder="Enter your new password"
                                 autoComplete="on"
                                 onFocus={() => {
@@ -165,25 +219,47 @@ class ChangePassword extends Component {
                                     : "")
                                 }
                               />
-                              <ErrorMessage
-                                name="new_password"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </div>
+                              <div className="input-group-append">
+                                <button
+                                  className="btn btn-light"
+                                  type="button"
+                                  id="password-addon"
+                                  onClick={this.togglePasswordVisibility}
+                                >
+                                  <i id="eye-icon" className="mdi mdi-eye-outline"></i>
+                                </button>
+                              </div>
+                            <ErrorMessage
+                              name="new_password"
+                              component="div"
+                              className="invalid-feedback"
+                            />
+                          </div>
                             <div className="mt-2">
-                              <Field
-                                name="new_password2"
-                                type="password"
-                                placeholder="Re-enter your new password"
-                                autoComplete="on"
-                                className={
-                                  "form-control" +
-                                  (errors.new_password2 && touched.new_password2
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
+                              <div className="input-group">
+                                <Field
+                                  name="new_password2"
+                                  type={this.state.showPassword ? "text" : "password"}
+                                  placeholder="Re-enter your new password"
+                                  autoComplete="on"
+                                  className={
+                                    "form-control" +
+                                    (errors.new_password2 && touched.new_password2
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <div className="input-group-append">
+                                  <button
+                                    className="btn btn-light"
+                                    type="button"
+                                    id="password-addon"
+                                    onClick={this.togglePassword2Visibility}
+                                  >
+                                    <i id="eye-icon2" className="mdi mdi-eye-outline"></i>
+                                  </button>
+                                </div>
+                              </div>
                               <ErrorMessage
                                 name="new_password2"
                                 component="div"

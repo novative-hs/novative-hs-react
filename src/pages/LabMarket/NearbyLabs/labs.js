@@ -53,6 +53,7 @@ import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
+import { getLabNamesList } from "store/lab-names/actions";
 
 import offeredTestsList from "pages/OfferedTests/offered-tests-list";
 
@@ -74,6 +75,12 @@ class NearbyLabs extends Component {
       nearbyLabs: [],
       advLives: [],
       territoriesList: [],
+      labNamesList: [],
+      selectedLabName: "", // State to store the selected lab name
+      filteredLabs: [], // State to store the filtered labs
+      labNameInput: '',      // Store the lab name input by the user
+      filteredLabNames: [], 
+      name: "",
       advLive: "",
       activeTab: "1",
       address: "",
@@ -105,6 +112,11 @@ class NearbyLabs extends Component {
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
+    }
+    const { labNamesList, onGetLabNamesList} = this.props;
+
+    if (labNamesList && !labNamesList.length) {
+      console.log(onGetLabNamesList(this.state.user_id));
     }
     let matchingMenuItem = null;
     const ul = document.getElementById("navigation");
@@ -182,7 +194,9 @@ class NearbyLabs extends Component {
         address: this.state.address,
         city: this.state.city,
         km: this.state.km,
-        LabType: this.state.LabType
+        LabType: this.state.LabType,
+        name: this.state.name,
+
       };
 
       // const url = "http://localhost:3000/labs/?lat=33.605039&lon=73.0249898/f06628c0-1e5a-4a5a-8321-8e1aa2149ec1";
@@ -348,6 +362,8 @@ class NearbyLabs extends Component {
         city: this.state.city,
         LabType: this.state.LabType,
         km: this.state.km,
+        name: this.state.name,
+
       };
 
       onGetNearbyLabs(locationDetails);
@@ -376,6 +392,8 @@ class NearbyLabs extends Component {
         city: this.state.city,
         LabType: this.state.LabType,
         km: this.state.km,
+        name: this.state.name,
+
       };
 
       onGetNearbyLabs(locationDetails);
@@ -403,6 +421,8 @@ class NearbyLabs extends Component {
       LabType: this.state.LabType,
       address: this.state.address,
       city: this.state.city,
+      name: this.state.name,
+
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -412,6 +432,34 @@ class NearbyLabs extends Component {
     setTimeout(() => {
       this.setState({ nearbyLabs: this.props.nearbyLabs });
     }, 1000);
+  };
+  onChangeLabName = (selectedOption) => {
+    this.setState({ name: selectedOption.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyLabs } = this.props;
+    // const { onGetAdvLive } = this.props;
+    // const { onGetRegionWiseAdvertisement } = this.props;
+
+    var locationDetails = {
+      latitude: this.state.currentLatitude,
+      longitude: this.state.currentLongitude,
+      search_type: this.state.search_type,
+      name: selectedOption.value,
+      LabType: this.state.LabType,
+      km: this.state.km,
+      address: this.state.address,
+      city: this.state.city,
+    };
+      // region wise advertisement
+      onGetNearbyLabs(locationDetails);
+      // onGetAdvLive(locationDetails);
+      // onGetRegionWiseAdvertisement(locationDetails);
+
+      setTimeout(() => {
+        this.setState({ nearbyLabs: this.props.nearbyLabs });
+      }, 1000);
   };
   onChangeType = e => {
     this.setState({ LabType: e.target.value });
@@ -430,6 +478,8 @@ class NearbyLabs extends Component {
       km: this.state.km,
       address: this.state.address,
       city: this.state.city,
+      name: this.state.name,
+
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -455,6 +505,8 @@ class NearbyLabs extends Component {
       city: selectedGroup.value,
       LabType: this.state.LabType,
       km: this.state.km,
+      name: this.state.name,
+
     };
 
     onGetNearbyLabs(locationDetails);
@@ -517,6 +569,7 @@ class NearbyLabs extends Component {
   };
 
   render() {
+    const { labNameInput, filteredLabNames } = this.state;
     const { history } = this.props;
     const { discountData, nearbyLabs, page, totalPage } = this.state;
     const cityList = [];
@@ -524,6 +577,13 @@ class NearbyLabs extends Component {
       cityList.push({
         label: this.props.territoriesList[i].city,
         value: this.props.territoriesList[i].city,
+      });
+    }
+    const labNames = [];
+    for (let i = 0; i < this.props.labNamesList.length; i++) {
+      labNames.push({
+        label: this.props.labNamesList[i],
+        value: this.props.labNamesList[i],
       });
     }
     const { loading } = this.state;
@@ -1221,6 +1281,8 @@ class NearbyLabs extends Component {
                       (this.state && this.state.search_type) ||
                       "Current Location",
                     city: (this.state && this.state.city) || "",
+                    name: (this.state && this.state.name) ||
+                        "",
                     location: (this.state && this.state.location) || "",
                   }}
                   validationSchema={Yup.object().shape({
@@ -1238,6 +1300,25 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       <Row>
+                      <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                }}
+                              >Search By Lab Name</Label>
+                           <Select
+                                type="text"
+                                value={labNames.find((option) => option.value === this.state.name)}
+                                onChange={this.onChangeLabName}
+                                options={labNames}
+                                placeholder="Lab Name..."
+                              />
+
+                            </div>
+                          </Col>
                         <Col xs="4" sm="4" md="3" lg="3">
                           <div className="mb-3">
                             <Label
@@ -1970,12 +2051,17 @@ NearbyLabs.propTypes = {
   t: PropTypes.any,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  onGetLabNamesList: PropTypes.func,
+  labNamesList: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
   nearbyLabs: state.LabMarket.nearbyLabs,
   advLives: state.LabMarket.advLives,
   territoriesList: state.territoriesList.territoriesList,
+  onGetLabNamesList: PropTypes.func,
+  labNamesList: PropTypes.array,
+  labNamesList: state.labNamesList.labNamesList,
 
 });
 
@@ -1983,6 +2069,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyLabs: locationDetails => dispatch(getNearbyLabs(locationDetails)),
   onGetAdvLive: id => dispatch(getAdvLive(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetLabNamesList: id => dispatch(getLabNamesList(id)),
 
 });
 

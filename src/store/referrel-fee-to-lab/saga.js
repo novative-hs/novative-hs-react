@@ -38,9 +38,10 @@ function* fetchReferrelFeeLabs(object) {
 }
 function* fetchPutReferrelFeeLabs(object) {
   try {
-    const response = yield call(getPutReferrelFeeLabs, object.payload);
-    console.log("ReferrelFeeLab saga: ", response);
-    yield put(getPutReferrelFeeLabsSuccess(response));
+    const response = yield call(getPutReferrelFeeLabs, 
+      object.payload.test_name,
+      );
+    yield put(getPutReferrelFeeLabsSuccess(response.data));
   } catch (error) {
     yield put(getPutReferrelFeeLabsFail(error));
   }

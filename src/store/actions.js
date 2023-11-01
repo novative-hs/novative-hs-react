@@ -89,6 +89,9 @@ export * from "./discount-labhazir-to-lab/actions";
 // territories-list
 export * from "./territories-list/actions";
 
+// Lab Name list
+export * from "./lab-names/actions";
+
 // only medical test -list
 export * from "./only-medical-tests-list/actions";
 

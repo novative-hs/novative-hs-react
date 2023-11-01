@@ -54,6 +54,7 @@ import discountLabHazirToLabsSaga from "./discount-labhazir-to-lab/saga";
 import referrelFeeLabsSaga from "./referrel-fee-to-lab/saga";
 import labsListSaga from "./labs-list/saga";
 import TerritoriesListSaga from "./territories-list/saga";
+import LabNamesListSaga from "./lab-names/saga";
 import onlyMedicalTestListSaga from "./only-medical-tests-list/saga";
 import csrTerritoryListSaga from "./csr-territory-list/saga";
 import auditorTerritoryListSaga from "./auditor-territory-list/saga";
@@ -121,6 +122,7 @@ export default function* rootSaga() {
     fork(DonorProfileSaga),
     fork(referrelFeeLabsSaga),
     fork(LabSettingsSaga),
+    fork(LabNamesListSaga),
     fork(PatientProfileSaga),
     fork(StaffProfileSaga),
     fork(SampleCollectorProfileSaga),

@@ -1,22 +1,25 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { isEmpty, map } from "lodash";
 import Select from "react-select";
 
 import {
   Card,
+  Input,
   CardBody,
   Col,
   Container,
-  Button,
   Row,
+  Table,
+  Label,
   Modal,
   ModalHeader,
   ModalBody,
-  Label,
 } from "reactstrap";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 import paginationFactory, {
   PaginationProvider,
@@ -25,24 +28,23 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
-import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import { onlyMedicalTestList } from "store/only-medical-tests-list/actions";
-
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-
 import {
   getPutReferrelFeeLabs,
   updateReferrelFeeLab,
   updateReferrelAllFeeLab,
 } from "store/referrel-fee-to-lab/actions";
-import { isEmpty, size } from "lodash";
+import "assets/scss/table.scss";
 import ConfirmModal from "components/Common/ConfirmModal";
 
 import "assets/scss/table.scss";
+// import { color } from "html2canvas/dist/types/css/types/color";
 
 class ReferrelLabFee extends Component {
   constructor(props) {
@@ -56,254 +58,70 @@ class ReferrelLabFee extends Component {
       modal: false,
       confirmModal: false,
       isEditAll: true,
+      test_name: "",
       id: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      referrelFeeLabColumns: [
-        {
-            text: "id",
-            dataField: "id",
-            sort: true,
-            hidden: true,
-            formatter: (cellContent, referrelFeeLabs) => <>{referrelFeeLabs.id}</>,
-          },
-          {
-            dataField: "test_id",
-            text: "Test ID",
-            sort: true,
-          },
-          {
-            dataField: "test_name",
-            text: "Test Name",
-            sort: true,
-          },
-          {
-            dataField: "test_categories",
-            text: "Test Categories",
-            sort: true,
-            // headerStyle: () => {
-            //   return { width: "30%" };
-            // } 
-            formatter: (cellContent, referrelFeeLab) => (
-              <>
-              <div className="text-start">
-                   {referrelFeeLab.test_categories}
-              </div>
-              </>
-            ),
-          },
-          {
-            dataField: "lab_city",
-            text: "Lab City",
-            sort: true,
-            // headerStyle: () => {
-            //   return { width: "30%" };
-            // } 
-            formatter: (cellContent, referrelFeeLab) => (
-              <>
-              <div className="text-start">
-                   {referrelFeeLab.lab_city}
-              </div>
-              </>
-            ),
-          },
-          {
-            dataField: "lab_name",
-            text: "Lab Name",
-            sort: true,
-            formatter: (cellContent, referrelFeeLab) => (
-              <>
-              <div className="text-start">
-                   {/* {referrelFeeLab.lab_name} */}
-                   <Link to={`/shared-percentage-approved-Fee/${referrelFeeLab.lab_id}`}>
-                        {referrelFeeLab.lab_name}
-                   </Link>
-              </div>
-              </>
-            ),
-          },
-         
-
-          // {
-          //   dataField: "duration_required",
-          //   text: "Turn Around Time",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "duration_type",
-          //   text: "Duration type",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "sample_type",
-          //   text: "Sample Type",
-          //   sort: true,
-          // },
-          {
-            dataField: "price",
-            text: "Test Price",
-            sort: true,
-            formatter: (cellContent, referrelFeeLab) => (
-              <>
-              <div className="text-end">
-                   {referrelFeeLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              </div>
-              </>
-            ),
-          },
-         
-          // {
-          //   dataField: "is_eqa_participation",
-          //   text: "EQA participation",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "is_home_sampling_available",
-          //   text: "Home sampling",
-          //   sort: true,
-          // },
-          // {
-          //   dataField: "is_test_performed",
-          //   text: "Test Performed",
-          //   sort: true,
-          // },
-        {
-          dataField: "shared_percentage",
-          text: "Referrel (%)",
-          sort: true,
-          formatter: (cellContent, referrelFeeLab) => (
-            <>
-              {(               
-                              <div className="text-center">
-                              {(referrelFeeLab.shared_percentage * 100).toFixed()}%</div>
-
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "shared_percentage",
-          text: "Referrel Value",
-          sort: true,
-          formatter: (cellContent, referrelFeeLab) => (
-            <>
-              {(              <div className="text-end">
-
-                {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}</div>
-
-              )}
-            </>
-          ),
-        },
-        // {
-        //   dataField: "start_date_by_labhazir",
-        //   text: "Start Date",
-        //   sort: true,
-        //   formatter: (cellContent, test) => (
-        //     <>
-        //       {!test.start_date_by_labhazir ? (
-        //         <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-        //           Date not set
-        //         </span>
-        //       ) : (
-        //         <span>{new Date(test.start_date_by_labhazir).toLocaleString("en-US")}</span>
-        //       )}
-        //     </>
-        //   ),
-        // },
-        // {
-        //   dataField: "end_date_by_labhazir",
-        //   text: "End Date",
-        //   sort: true,
-        //   formatter: (cellContent, test) => (
-        //     <>
-        //       {!test.end_date_by_labhazir ? (
-        //         <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-        //           Date not set
-        //         </span>
-        //       ) : (
-        //         <span>{new Date(test.end_date_by_labhazir).toLocaleString("en-US")}</span>
-        //       )}
-        //     </>
-        //   ),
-        // },
-      {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, referrelFeeLab) => (
-            <div className="float-middle">
-              <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={() => this.handleEditBtnClick(referrelFeeLab)}
-                ></i>
-              </Link>
-            </div>
-          ),
-        },
-      ],
+      showNoResultMessage: false,
     };
-    this.handleEditBtnClick = this.handleEditBtnClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    // this.handleEditAllBtnClick = this.handleEditAllBtnClick.bind(this);
-    this.handleEditAllBtnClicks = this.handleEditAllBtnClicks.bind(this);
-
+    console.log("test name in the state", this.state.test_name)
   }
 
-//   componentDidMount() {
-//     const { ongetPutReferrelFeeLabs } = this.props;
-//     setTimeout(() => {
-//       console.log(ongetPutReferrelFeeLabs());
-
-//       setTimeout(() => {
-//         this.setState({ referrelFeeLabs: this.props.referrelFeeLabs });
-//       }, 1000);
-//     }, 1000);
-//   }
-
   componentDidMount() {
-    // const { labs, onGetlabs } = this.props;
-    // if (labs && !labs.length) {
-    //   onGetlabs();
-    // }
-    // this.setState({ labs });
-
-    const { onlyMedicalTestList, ononlyMedicalTestList} = this.props;
+    const { onlyMedicalTestList, ononlyMedicalTestList } = this.props;
 
     if (onlyMedicalTestList && !onlyMedicalTestList.length) {
       console.log(ononlyMedicalTestList(this.state.user_id));
     }
-
-
+    console.log("uuuuuuid", this.props.match.params.uuid)
     const { referrelFeeLabs, ongetPutReferrelFeeLabs } = this.props;
-    // if (referrelFeeLabs && !referrelFeeLabs.length) {
-      ongetPutReferrelFeeLabs(this.state.user_id);
-    
+    ongetPutReferrelFeeLabs(this.state.user_id);
     this.setState({ referrelFeeLabs });
-
-    
+    console.log("guest", this.props.match.params.guest_id)
   }
+  handleBlur = () => {
+    // Reset the showNoResultMessage state to false before performing the search
+    this.setState({ showNoResultMessage: false });
 
+    // Calling API when focus is out of the text name and setting nearby tests array
+    const { ongetPutReferrelFeeLabs } = this.props;
+    const data = {
+      test_name: this.state.test_name,
+    };
 
-  onChangeTest = selectedGroup => {
-    this.setState({ selectedTest: selectedGroup });
-  }
+    ongetPutReferrelFeeLabs(data);
 
+    setTimeout(() => {
+      // Update the referrelFeeLabs state with the search results
+      this.setState({ referrelFeeLabs: this.props.referrelFeeLabs }, () => {
+        // Check if the referrelFeeLabs array is empty after the search
+        if (isEmpty(this.props.referrelFeeLabs)) {
+          // Show the "Sorry no result found" message immediately
+          this.setState({ showNoResultMessage: true });
+        }
+      });
+    }, 200);
+  };
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
+
+  onChangeTest = selectedOption => {
+    this.setState({ test_name: selectedOption ? selectedOption.value : "" });
+  };
+
+
+
   handleEditAllBtnClicks = () => {
     this.setState({ referrelFeeLab: "", isEdit: false, lab_id: "" });
     this.toggle();
   };
   handleEditAllBtnClick = () => {
-    this.setState({ isEditAll: true, referrelFeeLab: ""});
+    this.setState({ isEditAll: true, referrelFeeLab: "" });
 
     this.toggle();
   };
@@ -339,39 +157,9 @@ class ReferrelLabFee extends Component {
       }, 1000);
     }
 
-    // if (this.state.isEditAll) {
-    //   onupdateReferrelAllFeeLab(this.state.referrelFeeLab);
-
-    //   ongetPutReferrelFeeLabs();
-
-    //   setTimeout(() => {
-    //     this.setState({ referrelFeeLabs: this.props.user_id});
-    //   }, 1000);
-    // } else {
-    //   onupdateReferrelFeeLab(this.state.referrelFeeLab);
-
-    //   ongetPutReferrelFeeLabs();
-
-    //   setTimeout(() => {
-    //     this.setState({ referrelFeeLabs: this.props.user_id });
-    //   }, 1000);
-    // }
-
     this.toggle();
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { referrelFeeLabs } = this.props;
-    if (
-      !isEmpty(referrelFeeLabs) &&
-      size(prevProps.referrelFeeLabs) !== size(referrelFeeLabs)
-    ) {
-      this.setState({
-        referrelFeeLabs: {},
-        isEdit: false,
-      });
-    }
-  }
 
   onPaginationPageChange = page => {
     if (
@@ -398,19 +186,15 @@ class ReferrelLabFee extends Component {
     this.toggle();
   };
 
-  
-
   render() {
     const { SearchBar } = Search;
 
     const { referrelFeeLabs } = this.props;
-
     const { isEdit, deleteModal } = this.state;
-
     const referrelFeeLab = this.state.referrelFeeLab;
 
     const pageOptions = {
-      sizePerPage: 100,
+      sizePerPage: 10,
       totalSize: referrelFeeLabs.length, // replace later with size(referrelFeeLabs),
       custom: true,
     };
@@ -421,16 +205,7 @@ class ReferrelLabFee extends Component {
         order: "desc", // desc or asc
       },
     ];
-
-    // const testList = [];
-    // for (let i = 0; i < this.props.onlyMedicalTestList.length; i++) {
-    //   testList.push({
-    //     label: this.props.onlyMedicalTestList[i].name,
-    //     value: this.props.onlyMedicalTestList[i].name,
-    //   });
-    // }
-
-    const testList = this.props.onlyMedicalTestList.map(test => ({
+    const testList = this.props.onlyMedicalTestList.map((test) => ({
       label: test.name,
       value: test.name,
       // isDisabled: this.state.selectedTest && test.name !== this.state.selectedTest.value,
@@ -449,260 +224,111 @@ class ReferrelLabFee extends Component {
             <title>Lab Hazir | Referrel Fee Lab Hazir</title>
           </MetaTags>
           <ConfirmModal
-          show={this.state.confirmModal}
-          onCloseClick={() => this.setState({ confirmModal: false })}
+            show={this.state.confirmModal}
+            onCloseClick={() => this.setState({ confirmModal: false })}
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Referrel Fee" breadcrumbItem="Lab Hazir" />
-            <Row>
-              <Col lg="12">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.referrelFeeLabColumns}
-                      data={referrelFeeLabs}
-                    >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.referrelFeeLabColumns}
-                          data={referrelFeeLabs}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-2">
-                                {/* <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col> */}
-
-                                <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By Test
-                              </Label>
-                              {/* <Select
-                                name="test_name"
-                                component="Select"
-                                onChange={this.onChangeTest}
-                                className="defautSelectParent is-invalid"
-                                options={testList}
-                                placeholder="Test Name"
-                              /> */}
-                              <Select
-                                  name="test_name"
-                                  component="Select"
-                                  onChange={this.onChangeTest}
-                                  className="defautSelectParent is-invalid"
-                                  options={testList}
-                                  placeholder="Test Name"
-                                />
-                            </div>
-                          </Col>
-                                {/* <Col sm="8">
-                                  <div className="text-sm-end">
-                                    <Button
-                                      color="primary"
-                                      className="font-18 btn-block btn btn-success"
-                                      onClick={this.handleEditAllBtnClick}
-                                    >
-                                      <i className="mdi mdi-pencil" /> Referrel Fee
-                                      All
-                                    </Button>
-                                  </div>
-                                </Col> */}
-                              </Row>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={
-                                        "table align-middle table-condensed table-hover"
-                                      }
-                                      // bordered={false}
-                                      // striped={false}
-                                      // headerWrapperClasses={"table-light"}
-                                      // responsive
-                                      // ref={this.node}
-                                      // filter={filterFactory()}
-                                      bordered={false}
-                                      striped={false}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                      filter={filterFactory()}
-                                      data={referrelFeeLabs.filter(referrelFeeLab =>
-                                        this.state.selectedTest
-                                          ? referrelFeeLab.test_name === this.state.selectedTest.value
-                                          : true
-                                      )}
-                                    />
-
-                                    <Modal
-                                      isOpen={this.state.modal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.toggle}
-                                        tag="h4"
-                                      >
-                                        {!this.state.isEditAll
-                                          ? "Referrel on one test"
-                                          : "Referrel on all tests"}
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik
-                                          enableReinitialize={true}
-                                          initialValues={{
-                                            hiddenEditFlag: isEdit,
-                                            shared_percentage:
-                                              (referrelFeeLab &&
-                                                referrelFeeLab.shared_percentage) ||
-                                              "",
-                                          }}
-                                          validationSchema={Yup.object().shape({
-                                            shared_percentage: Yup.number().required(
-                                              "Please enter Referrel Fee from 0 to 1.0"
-                                            ),
-                                          })}
-                                          onSubmit={values => {
-                                            if (this.state.isEditAll) {
-                                              onupdateReferrelAllFeeLab(
-                                                this.state.referrelFeeLab
-                                              );
-                                            } else {
-                                              onupdateReferrelFeeLab(
-                                                this.state.referrelFeeLab
-                                              );
-                                            }
-
-                                            setTimeout(() => {
-                                              ongetPutReferrelFeeLabs(
-                                                this.state.user_id
-                                              );
-
-                                              setTimeout(() => {
-                                                this.setState({
-                                                  referrelFeeLabs:
-                                                    this.props
-                                                      .referrelFeeLabs,
-                                                });
-                                              }, 1000);
-                                            }, 1000);
-
-                                            this.toggle();
-                                          }}
-                                        >
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Referrel Fee
-                                                    </Label>
-                                                    <Field
-                                                      name="shared_percentage"
-                                                      type="number"
-                                                      step="0.01"
-                                                      min="0.01"
-                                                      max="1.00"
-                                                      value={
-                                                        this.state
-                                                          .referrelFeeLab
-                                                          .shared_percentage
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          referrelFeeLab: {
-                                                            id: this.state
-                                                              .referrelFeeLab
-                                                              .id,
-                                                            shared_percentage:
-                                                              e.target.value,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.shared_percentage &&
-                                                        touched.shared_percentage
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="shared_percentage"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                      // onClick={
-                                                      //   this.handleAPICall
-                                                      // }
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
-                      )}
-                    </PaginationProvider>
-                  </CardBody>
-                </Card>
+            <Breadcrumbs title="referrelFeeLabs" breadcrumbItem=" List" />
+            <Row className="mb-2 g-0">
+              <Col sm="2" lg="2">
+                <div>
+                  <Label
+                    for="LabType1"
+                    className="form-label"
+                    style={{
+                      fontSize: window.innerWidth <= 576 ? "6px" : "12px",
+                    }}
+                  >
+                    Search By Test Name
+                  </Label>
+                  <Select
+                    name="test_name"
+                    component="Select"
+                    onChange={this.onChangeTest}
+                    value={testList.find(item => item.value === this.state.test_name)}
+                    className="defautSelectParent"
+                    options={testList}
+                    style={{
+                      minWidth: "300px", // Set the width for the Select component
+                      // other styles if needed
+                    }}
+                  />
+                </div>
+              </Col>
+              <Col sm="2" lg="2" style={{ marginTop: "28px", marginRight: "40px" }}>
+                <div>
+                  <button
+                    onClick={this.handleBlur}
+                    className="bx bx-search-alt"
+                    style={{
+                      fontSize: "32px",
+                      color: "white",
+                      background: "blue",
+                      border: "none",
+                      // marginLeft: "5px", // Add space between the input and the button
+                    }}
+                  />
+                </div>
               </Col>
             </Row>
+
+            <Card >
+              <CardBody>
+                <div className="table-responsive">
+                  <Table className="table-nowrap">
+                    <thead>
+                      <tr>
+                        <th className="text-start">Test ID</th>
+                        <th className="text-start">Test Name</th>
+                        <th className="text-start">Test Categories</th>
+                        <th className="text-start">Lab City</th>
+                        <th className="text-start">Lab Name</th>
+                        <th className="text-end">Price</th>
+                        <th className="text-start">Is EQA Participation</th>
+                        <th className="text-start">Is Home Sampling Available</th>
+                        <th className="text-start">Is Test Performed</th>
+                        <th className="text-end">Shared Percentage %</th>
+                        <th className="text-end">Shared Percentage </th>
+
+                      </tr>
+                    </thead>
+                    {!isEmpty(referrelFeeLabs) &&
+                      referrelFeeLabs.map((referrelFeeLab, key) => (
+                        <tr key={"_row_" + key}>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.test_id}</td>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.test_name}</td>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.test_categories}</td>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.lab_city}</td>
+                          <td className="text-end text-primary py-2 pl-3 pr-4">
+                            {referrelFeeLab.lab_name}</td>
+                          <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
+                            {referrelFeeLab.price}
+                          </div></td>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.is_eqa_participation}</td>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.is_home_sampling_available}</td>
+                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.is_test_performed}</td>
+                          <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
+                            {(referrelFeeLab.shared_percentage * 100).toFixed()}%</div></td>
+                          <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
+                            {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}</div></td>
+                        </tr>
+                      ))}
+                    {this.state.showNoResultMessage && (
+                      <Row>
+                        <div className=" mb-5">
+                          <h4 className="text-uppercase">
+                            Sorry no result found.
+                          </h4>
+                        </div>
+                      </Row>
+                    )}
+                  </Table>
+                </div>
+              </CardBody>
+            </Card>
+
+
           </Container>
         </div>
       </React.Fragment>
@@ -728,12 +354,12 @@ const mapStateToProps = ({ referrelFeeLabs, onlyMedicalTestList }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  ongetPutReferrelFeeLabs: () => dispatch(getPutReferrelFeeLabs()),
+  ongetPutReferrelFeeLabs: (data) => dispatch(getPutReferrelFeeLabs(data)),
   onupdateReferrelFeeLab: referrelFeeLab =>
     dispatch(updateReferrelFeeLab(referrelFeeLab)),
   onupdateReferrelAllFeeLab: referrelFeeLab =>
     dispatch(updateReferrelAllFeeLab(referrelFeeLab)),
-  
+
   ononlyMedicalTestList: id => dispatch(onlyMedicalTestList(id)),
 });
 

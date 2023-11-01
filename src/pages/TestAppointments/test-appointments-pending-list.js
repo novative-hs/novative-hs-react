@@ -301,7 +301,7 @@ class TestAppointmentsPendingList extends Component {
       PatientModal: true,
       patient_age: arg.patient_age,
       patient_gender: arg.patient_gender,
-      patient_address: arg.patient_address,
+      // patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
     });
@@ -591,7 +591,7 @@ class TestAppointmentsPendingList extends Component {
                                                   </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Address
@@ -608,7 +608,7 @@ class TestAppointmentsPendingList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
 
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">

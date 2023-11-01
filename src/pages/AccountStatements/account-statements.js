@@ -168,11 +168,12 @@ class AccountStatements extends Component {
             )}
             {!isEmpty(this.props.accountStatements) && (
               <Row>
-                <div> <span className="text-danger font-size-12">
+                <div> 
+                  {/* <span className="text-danger font-size-12">
                   <strong>
-                    Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
+                    Note: Discount By Lab, Sum of Counter Discount and Discount offered Lab.
                   </strong>
-                  </span>
+                  </span> */}
                   <div>
                     <strong>
                       Credit: Lab need to Pay LabHazir. <br></br>
@@ -187,12 +188,12 @@ class AccountStatements extends Component {
                   </div>
                   <div>
                     <span className="font-size-12">
-                      <strong><span className="text-danger">Note:</span></strong> <strong>Account Statement formula is: if have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.</strong>
+                      <strong><span className="text-danger">Account Statement formula is: </span></strong> <strong>If have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.</strong>
                     </span>
                   </div>
                   <div>
                     <span className="font-size-12">
-                      <strong><span className="text-danger">Note:</span></strong> <strong>Account Statement formula is: if have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir).</strong>
+                      <strong><span className="text-danger">Account Statement formula is: </span></strong> <strong>If have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir).</strong>
                     </span>
                   </div>
 

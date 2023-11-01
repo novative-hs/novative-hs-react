@@ -136,36 +136,103 @@ class TestsOffered extends Component {
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
   };
-  handleAddToCart = cart => {
+
+handleAddToCart = (cart) => {
     const { onAddToCart } = this.props;
-
+  
     if (!this.state.user_id) {
-      // this.props.history.push("/login");
+      // Check if the item is already in the cart
+      if (cart.guest_id === this.props.match.params.guest_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+  
       this.setState({ guest_id: this.props.match.params.guest_id });
-      cart.guest_id = this.props.match.params.guest_id
+      cart.guest_id = this.props.match.params.guest_id;
       onAddToCart(cart, cart.guest_id);
-
-      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id)
-    } 
-    if(this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+  
+      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
+    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+      // Check if the item is already in the cart
+      if (cart.user_id === this.state.user_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+  
       onAddToCart(cart, this.state.user_id);
-    }
-    if(this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      // cart.patient_id = this.props.match.params.guest_id
+    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+      // Check if the item is already in the cart
+      if (cart.guest_id === this.props.match.params.guest_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+  
       onAddToCart(cart, this.props.match.params.guest_id);
-    }
-    if(this.state.user_id && this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
-      // cart.patient_id = this.props.match.params.guest_id
+    } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+      // Check if the item is already in the cart
+      if (cart.user_id === this.state.user_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+  
       onAddToCart(cart, this.props.match.params.uuid);
     }
-
-    setTimeout(() => {
-      this.setState({
-        success: "Item added Successfully",
-        error: this.props.error
-      });
-    }, 1000);
+  
+    this.showSuccessMessage("Item added Successfully");
   };
+  
+  showErrorMessage = (message) => {
+    this.showPopup(message, "red");
+  };
+  
+  showSuccessMessage = (message) => {
+    this.showPopup(message, "green");
+  };
+  
+  showPopup = (message, textColor) => {
+    // Create and style the popup
+    const popup = document.createElement("div");
+    popup.style.display = "none";
+    popup.style.position = "fixed";
+    popup.style.top = "0";
+    popup.style.left = "0";
+    popup.style.width = "100%";
+    popup.style.height = "100%";
+    popup.style.background = "rgba(0, 0, 0, 0.5)";
+    popup.style.zIndex = "1000";
+  
+    const popupContent = document.createElement("div");
+    popupContent.style.position = "absolute";
+    popupContent.style.top = "50%";
+    popupContent.style.left = "50%";
+    popupContent.style.transform = "translate(-50%, -50%)";
+    popupContent.style.background = "#fff";
+    popupContent.style.padding = "20px";
+    popupContent.style.borderRadius = "5px";
+    popupContent.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
+  
+    const messageElement = document.createElement("div");
+    messageElement.style.fontSize = "18px";
+    messageElement.style.textAlign = "center";
+    messageElement.style.color = textColor; // Set the text color
+  
+    // Set the message
+    messageElement.textContent = message;
+  
+    // Append elements to the DOM
+    popupContent.appendChild(messageElement);
+    popup.appendChild(popupContent);
+    document.body.appendChild(popup);
+  
+    // Show the popup
+    popup.style.display = "block";
+  
+    // Hide the popup after a certain duration (e.g., 3 seconds)
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 1000); // 3000 milliseconds = 3 seconds
+  };
+
   activateParentDropdown = item => {
     item.classList.add("active");
     const parent = item.parentElement;

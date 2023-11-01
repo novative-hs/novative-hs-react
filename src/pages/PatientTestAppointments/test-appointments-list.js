@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import * as Yup from "yup";
+import { isEmpty, size } from "lodash";
+
 import {
   Alert,
   Card,
@@ -569,7 +571,22 @@ class TestAppointmentsList extends Component {
               </span>
             )}
           </Tooltip>
-
+           
+            
+            {patientTestAppointment.status == "Pending" && (
+              <Link
+            className="text-warning font-size-12"
+            to="#"
+            onClick={e =>
+              this.opencancelModal(
+                e,
+                patientTestAppointment
+              )
+            }
+          >
+            <i className="bx bx-no-entry font-size-14"></i>
+            </Link>
+           )} 
             <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i
@@ -599,6 +616,7 @@ class TestAppointmentsList extends Component {
       this.handlePatientFeedbackClick.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
     this.togglePatientModal2 = this.togglePatientModal2.bind(this);
+    this.togglecancelModal = this.togglecancelModal.bind(this);
     this.toggleReshedualModal = this.toggleReshedualModal.bind(this);
 
     // this.handlePatientFeedbackClicks = this.handlePatientFeedbackClicks.bind(this);
@@ -610,7 +628,15 @@ class TestAppointmentsList extends Component {
     onGetPatientTestAppointmentsList(this.state.user_id);
     this.setState({ patientTestAppointments });
   }
-
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { patientTestAppointments } = this.props;
+    if (
+      !isEmpty(patientTestAppointments) &&
+      size(prevProps.patientTestAppointments) !== size(patientTestAppointments)
+    ) {
+      this.setState({ patientTestAppointments: {}, isEdit: false });
+    }
+  }
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -643,6 +669,17 @@ class TestAppointmentsList extends Component {
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
+  };
+  opencancelModal = (e, arg) => {
+    this.setState({
+      cancelModal: true,
+    });
+  };
+
+  togglecancelModal = () => {
+    this.setState(prevState => ({
+      cancelModal: !prevState.cancelModal,
+    }));
   };
 
   openPatientModal2 = (e, arg) => {
@@ -743,6 +780,8 @@ class TestAppointmentsList extends Component {
 
   render() {
     const { SearchBar } = Search;
+    const { isEdit, deleteModal } = this.state;
+
 
     const { patientTestAppointments } = this.props;
     const feedback = this.state.feedback;
@@ -1141,6 +1180,106 @@ class TestAppointmentsList extends Component {
                                                     />
                                                   </div>
                                                 </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col>
+                                                  <div className="text-end">
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                    >
+                                                      Save
+                                                    </button>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          )}
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                    <Modal
+                                      isOpen={this.state.cancelModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.togglecancelModal}
+                                        tag="h4"
+                                      >
+                                        {!!isEdit
+                                          ? "Edit Pending Appointment"
+                                          : "Cancel Appointment"}
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                            hiddenEditFlag: isEdit,
+                                            appointment_option:
+                                              (this.state &&
+                                                this.state
+                                                  .appointment_option) ||
+                                              "",
+                                          }}
+                                          validationSchema={Yup.object().shape({
+                                            hiddentEditFlag: Yup.boolean(),
+                                          })}
+                                          onSubmit={values => {
+                                            const data = {
+                                              id: this.state.id,
+                                              appointment_option:
+                                                values.appointment_option,
+                                            };
+
+                                            // update PaymentStatus
+                                            this.ptops.onUpdateTestAppointment(
+                                              data
+                                            );
+                                            this.toggle();
+                                          }}
+                                        >
+                                          {({ errors, status, touched }) => (
+                                            <Form>
+                                              <Row>
+                                                <Col className="col-12">
+                                                  <Field
+                                                    type="hidden"
+                                                    className="form-control"
+                                                    name="hiddenEditFlag"
+                                                    value={isEdit}
+                                                  />
+                                                  <div className="mb-3">
+                                                    <Label
+                                                      for="appointment_option"
+                                                      className="form-label"
+                                                    >
+                                                      Select
+                                                    </Label>
+                                                    <Field
+                                                      name="appointment_option"
+                                                      component="select"
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          appointment_option:
+                                                            e.target.value,
+                                                        })
+                                                      }
+                                                      value={
+                                                        this.state
+                                                          .appointment_option
+                                                      }
+                                                      className="form-select"
+                                                    >
+                                                      <option value="">
+                                                        --- Please Select---
+                                                      </option>
+                                                      <option value="Cancel">
+                                                        Cancel
+                                                      </option>
+                                                    </Field>
+                                                  </div>
+                                                </Col>
+
                                               </Row>
                                               <Row>
                                                 <Col>
