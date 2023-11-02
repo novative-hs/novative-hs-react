@@ -814,8 +814,8 @@ class NearbyLabDetail extends Component {
                                  <Link
                                    to={
                                      this.props.match.params.uuid
-                                       ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                       : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                       ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
                                    }
                                    className="linklist btn btn-primary btn-md"
                                    style={{ fontSize: '12px' }} // Set your desired font size here
@@ -839,8 +839,8 @@ class NearbyLabDetail extends Component {
                                  <Link
                                    to={
                                      this.props.match.params.uuid
-                                       ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                       : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                       ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab`
                                    }
                                    className="linklist btn btn-primary btn-md"
                                    style={{ fontSize: '12px' }} // Set your desired font size here
@@ -865,8 +865,8 @@ class NearbyLabDetail extends Component {
                                  <Link
                                    to={
                                      this.props.match.params.uuid
-                                       ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                       : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                       ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-package-by-lab`
                                    }
                                    className="linklist btn btn-primary btn-md"
                                    style={{ fontSize: '12px' }} // Set your desired font size here
@@ -893,8 +893,8 @@ class NearbyLabDetail extends Component {
                                  <Link
                                    to={
                                      this.props.match.params.uuid
-                                       ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                       : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                       ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab`
                                    }
                                    className="linklist btn btn-primary btn-md"
                                    style={{ fontSize: '12px' }} // Set your desired font size here
@@ -920,8 +920,8 @@ class NearbyLabDetail extends Component {
                                    <Link
                                      to={
                                        this.props.match.params.uuid
-                                         ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                         : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                         ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
                                      }
                                      className="linklist btn btn-primary btn-md"
                                    >
@@ -951,8 +951,8 @@ class NearbyLabDetail extends Component {
                                    <Link
                                      to={
                                        this.props.match.params.uuid
-                                         ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                         : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                         ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
+                                         : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
                                      }
                                      className="linklist btn btn-primary btn-md"
                                    >
@@ -978,8 +978,8 @@ class NearbyLabDetail extends Component {
                                  <Link
                                    to={
                                      this.props.match.params.uuid
-                                       ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                       : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                       ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
+                                       : `/${this.props.match.params.lab_account_id}/lab-pathologists`
                                    }
                                    className="linklist btn btn-primary btn-md"
                                  >
@@ -1412,7 +1412,7 @@ class NearbyLabDetail extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}`
+                              ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                               : `/nearby-labs/${this.props.match.params.guest_id}`
                           }
                           className="btn btn-secondary"
