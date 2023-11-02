@@ -144,21 +144,30 @@ class TestAppointmentsList extends Component {
         // },
         {
           dataField: "is_home_sampling_availed",
-          text: "Home Sampling/ Lab Name",
+          text: "Home sampling / Urgent Sampling",
           sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
+          formatter: (cellContent, testAppointment) => (
             <>
-              {patientTestAppointment.is_home_sampling_availed == true ? (
+              {testAppointment.is_home_sampling_availed == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )}/ 
+              {testAppointment.is_state_sampling_availed == true ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>
               )}
-              <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-              {patientTestAppointment.lab_name}
-              </span>
-
             </>
           ),
+          // filter: selectFilter({
+          //   options: {
+          //     '': 'All',
+          //     'true': 'Yes',
+          //     'false': 'No',
+          //   },
+          //   defaultValue: 'All',
+          // }),
         },
         {
           dataField: "estimated_sample_collection_at",
