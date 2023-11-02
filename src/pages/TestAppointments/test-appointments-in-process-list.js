@@ -1154,7 +1154,9 @@ class TestAppointmentsInProcessList extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        new Date(this.state.rescheduled_at).toLocaleString('en-US')
+                                                        this.state.rescheduled_at !== null
+                                                          ? new Date(this.state.rescheduled_at).toLocaleString('en-US')
+                                                          : null
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

@@ -1042,6 +1042,26 @@ class TestAppointmentsCompletedList extends Component {
                                                   />
                                                 </div>
                                               </div>
+                                              {this.state.testAppointment
+                                                    .reschedule_reason ==
+                                                    "Other" &&
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Reason
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.reason
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>}
 
                                               <div className="mb-3 row">
                                                 <div className="col-md-3">
@@ -1061,23 +1081,24 @@ class TestAppointmentsCompletedList extends Component {
                                                 </div>
                                               </div>
                                               <div className="mb-3 row">
-                                                <div className="col-md-3">
-                                                  <Label className="form-label">
-                                                    Reschedule time
-                                                  </Label>
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Reschedule time
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.rescheduled_at !== null
+                                                          ? new Date(this.state.rescheduled_at).toLocaleString('en-US')
+                                                          : null
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
                                                 </div>
-                                                <div className="col-md-9">
-                                                  <input
-                                                    type="text"
-                                                    value={
-                                                      this.state.rescheduled_at
-                                                    }
-                                                    className="form-control"
-                                                    readOnly={true}
-                                                  />
-                                                </div>
-                                              </div>
-
                                             </Col>
                                           </Row>
                                         </Form>
