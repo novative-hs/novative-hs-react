@@ -215,62 +215,53 @@ class TestAppointmentsList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collection_status && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Pending
-                  </span>
-                )}
+             <span>
+                  {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
+                    !testAppointment.collector_name ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        Not assigned
+                      </span>
+                    ):(
+                      <span>{testAppointment.collector_name}</span>
+                    )}
+                  {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
+                    !testAppointment.collection_status ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        Pending
+                      </span>
+                    ): testAppointment.collection_status == "Assigned" ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
+                        {testAppointment.collection_status}
+                      </span>
+                    ): testAppointment.collection_status == "On way" ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+                        {testAppointment.collection_status}
+                      </span>
+                    ): testAppointment.collection_status == "Reached" ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+                        {testAppointment.collection_status}
+                      </span>
+                    ): testAppointment.collection_status == "Patient Unavailable" ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        {testAppointment.collection_status}
+                      </span>
+                    ): testAppointment.collection_status == "Sample+Payment Collected" ? (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                        {testAppointment.collection_status}
+                      </span>
+                    ): testAppointment.collection_status == "Sample+Payment Delivered" && (
+                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                        {testAppointment.collection_status}
+                      </span>
+                    )}
 
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Assigned" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "On way" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Reached" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status == "Patient Unavailable" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status ==
-                  "Sample+Payment Collected" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collection_status ==
-                  "Sample+Payment Delivered" && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                    {testAppointment.collection_status}
-                  </span>
-                )}
-
-              {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
+                  {!testAppointment.is_home_sampling_availed &&
+                   !testAppointment.is_state_sampling_availed && (
+                    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+                      Not availed
+                    </span>
+                  )}
                 </span>
-              )}
             </>
           ),
         },
