@@ -20,6 +20,9 @@ class ForgetPasswordPage extends Component {
     super(props);
     this.state = {};
   }
+  handleLoginClick = () => {
+    window.location.href = "/login";
+  };
 
   render() {
     return (
@@ -114,17 +117,18 @@ class ForgetPasswordPage extends Component {
                             </Formik>
                           </div>
                           <div className="mt-5 text-center">
-                            <p>
-                              Go back to{" "}
-                              <Link
-                                to="login"
-                                className="fw-medium text-primary"
-                              >
-                                Login
-                              </Link>{" "}
-                            </p>
-                            <p>© {new Date().getFullYear()} Lab Hazir</p>
-                          </div>
+        <p>
+          Go back to{" "}
+          <span
+            className="fw-medium text-primary"
+            onClick={this.handleLoginClick}
+            style={{ cursor: "pointer" }}
+          >
+            Login
+          </span>{" "}
+        </p>
+        <p>© {new Date().getFullYear()} Lab Hazir</p>
+      </div>
                         </div>
                       </div>
                     </div>
