@@ -869,8 +869,9 @@ class TestAppointmentsPendingList extends Component {
                                                           testAppointment: {
                                                             id: testAppointment.id,
                                                             estimated_sample_collection_at:
-                                                              e.target.value +
-                                                              ":00Z",
+                                                              e.target.value 
+                                                              // +
+                                                              // ":00Z",
                                                             // estimated_result_uploading_at:
                                                             //   testAppointment.estimated_result_uploading_at,
                                                           },
