@@ -100,11 +100,7 @@ class DonorProfile extends Component {
                       .trim()
                       .required("Please enter your name")
                       .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters")
-                      .matches(
-                        /^[a-zA-Z][a-zA-Z ]+$/,
-                        "Please enter only alphabets and spaces"
-                      ),
+                      .max(255, "Please enter maximum 255 characters"),
                     email: Yup.string()
                       .required("Please enter your email")
                       .email("Please enter valid email")

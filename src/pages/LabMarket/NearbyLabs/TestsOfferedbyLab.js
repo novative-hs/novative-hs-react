@@ -653,13 +653,26 @@ handleAddToCart = (cart) => {
                   </Card>
                 </Col>
                 ))
-              ) : (
-                <Col lg="12">
-                  <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                    Sorry, no matching tests found.
-                  </div>
-                </Col>
-              )}
+              ) : loading && !isEmpty(this.props.offeredTests) ? (
+                // Loading state
+                <Row>
+                  <Col lg="12">
+                    <div className="mb-5" style={{ fontSize: "24px" }}>
+                      Please Wait.....
+                    </div>
+                  </Col>
+                </Row>
+              ) : !loading && isEmpty(this.props.offeredTests) ? (
+                // No results found
+                <Row>
+                  <Col lg="12">
+                    <div className="mb-5" style={{ fontSize: "24px", color: "red" }}>
+                      Sorry No Result Found.....
+                    </div>
+                  </Col>
+                </Row>
+              ) : null
+              }
               {isLargeScreen ? (
                   isEmpty(this.props.offeredTests) ? (
                     <Row className="vh-100">
@@ -673,23 +686,7 @@ handleAddToCart = (cart) => {
                     </Row>
                   ) : null
                 ) : null}
-                 {loading && !isEmpty(this.props.offeredTests) ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px' }}>
-                          Please Wait.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : !loading && isEmpty(this.props.offeredTests) ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                         Sorry No Result Found.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null}
+                 
              
             </Row>
           </Container>

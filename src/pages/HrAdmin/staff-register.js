@@ -137,11 +137,7 @@ class StaffRegister extends Component {
                         validationSchema={Yup.object().shape({
                           username: Yup.string()
                             .trim()
-                            .required("Please enter your username")
-                            .matches(
-                              /^\S*$/,
-                              "Please do not include whitespaces"
-                            ),
+                            .required("Please enter your username"),
                           // email: Yup.string()
                           //   .required("Please enter your email")
                           //   .email("Please enter valid email"),

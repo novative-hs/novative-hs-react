@@ -64,6 +64,18 @@ class ChangePassword extends Component {
     }
   };
 
+  togglePassword3Visibility = () => {
+    const passwordInput = document.querySelector('input[name="old_password"]');
+    const eyeIcon3 = document.getElementById('eye-icon3');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon3.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon3.className = 'mdi mdi-eye-outline';
+    }
+  };
   render() {
 
     // Define a custom validation function
@@ -164,39 +176,48 @@ const validationSchema = Yup.object().shape({
                     >
                       {({ errors, status, touched }) => (
                         <Form className="form-horizontal">
-                          <div className="mb-3">
-                            <Label className="form-label">Old Password</Label>
-                            <div>
-                              <Field
-                                name="old_password"
-                                type="password"
-                                placeholder="Enter your old password"
-                                autoComplete="on"
-                                onFocus={() => {
-                                  this.setState({
-                                    passwordFieldError: null,
-                                  });
-                                }}
-                                className={
-                                  "form-control" +
-                                  ((errors.old_password &&
-                                    touched.old_password) ||
-                                  this.state.passwordFieldError
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="old_password"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-
-                              <div className="invalid-feedback">
-                                {this.state.passwordFieldError}
-                              </div>
-                            </div>
+                        <div className="mb-3">
+                        <Label className="form-label">Old Password</Label>
+                        <div className="input-group">
+                          <Field
+                            name="old_password"
+                            type={this.state.passwordVisibility ? "text" : "password"} // Toggle between text and password
+                            placeholder="Enter your old password"
+                            autoComplete="on"
+                            onFocus={() => {
+                              this.setState({
+                                passwordFieldError: null,
+                              });
+                            }}
+                            className={
+                              "form-control" +
+                              ((errors.old_password &&
+                                touched.old_password) ||
+                              this.state.passwordFieldError
+                                ? " is-invalid"
+                                : "")
+                            }
+                          />
+                          <div className="input-group-append">
+                            <button
+                              className="btn btn-light"
+                              type="button"
+                              id="password-addon"
+                              onClick={this.togglePassword3Visibility}
+                            >
+                              <i id="eye-icon3" className="mdi mdi-eye-outline"></i>
+                            </button>
                           </div>
+                        </div>
+                        <ErrorMessage
+                          name="old_password"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                        <div className="invalid-feedback">
+                          {this.state.passwordFieldError}
+                        </div>
+                      </div>
 
                           <div className="mb-3">
                             <Label className="form-label">New Password</Label>

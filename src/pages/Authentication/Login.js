@@ -307,8 +307,8 @@ class Login extends Component {
                                       <Link
                                         to={
                                           this.props.match.params.uuid
-                        ? `/register/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                        : `/register/${this.props.match.params.guest_id}`
+                                            ? `/register/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/register/${this.props.match.params.guest_id}`
                                         }
                                         className="fw-medium text-primary"
                                       >

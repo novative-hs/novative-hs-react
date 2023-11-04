@@ -2149,75 +2149,78 @@ class Checkout extends Component {
                                 </div>
 
                               </CardBody>
-                              {!isEmpty(this.state.payment_method) &&
+                              {!isEmpty(this.state.payment_method) && (
+                            <Card className="shadow-none border mb-0">
+                              <CardBody className="text-center">
+                                <CardTitle className="mb-1">
+                                  <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                  Payment method
+                                </CardTitle>
 
-                                <Card className="shadow-none border mb-0">
-                                  <CardBody className="text-center">
-                                    <CardTitle className="mb-1">
-                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                      Payment method
-                                    </CardTitle>
+                                {this.state.payment_method !== "card" && (
+                                  <div>
+                                    <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                      <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
+                                    </p>
+                                  </div>
+                                )}
 
-                                    {this.state.payment_method !== "card" && (
-                                      <div>
-                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                          <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
-                                        </p>
-                                      </div>
-                                    )}
+                                {this.state.payment_method === "Card" && (
+                                  <div>
+                                    <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                      <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
+                                    </p>
+                                  </div>
+                                )}
 
-                                    {this.state.payment_method === "Card" && (
-                                      <div>
-                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                          {/* <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span> */}
-                                          <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
-                                        </p>
-                                      </div>
-                                    )}
+                          {this.state.payment_method === "Donation" && (
+                            <div>
+                              <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'green', backgroundColor: 'yellow' }}>
+                                Sub Total After Donation= Rs. 0
+                              </p>
+                            </div>
+                          )}
 
-                                    <div>
-                                      <div className="table-responsive">
-                                        <a
-                                          href="#"
-                                          onClick={this.handleClickAddPayment}
-                                          style={{ textDecoration: 'none', color: 'inherit' }}
-                                        >
-                                          <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                          Update Payment method
-                                        </a>
-                                      </div>
+                                <div>
+                                  <div className="table-responsive">
+                                    <a
+                                      href="#"
+                                      onClick={this.handleClickAddPayment}
+                                      style={{ textDecoration: 'none', color: 'inherit' }}
+                                    >
+                                      <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                      Update Payment method
+                                    </a>
+                                  </div>
 
-                                      {/* Rest of your component code */}
-                                    </div>
-                                  </CardBody>
-                                </Card>
+                                  {/* Rest of your component code */}
+                                </div>
+                              </CardBody>
+                            </Card>
+                          )}
 
-                              }
-
-                              {isEmpty(this.state.payment_method) &&
-
-                                <Card className="shadow-none border mb-0">
-                                  <CardBody className="text-center">
-                                    <CardTitle className="mb-1">
-                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                      Payment method
-                                    </CardTitle>
-                                    <div>
-                                      <div className="table-responsive">
-                                        <a
-                                          href="#"
-                                          onClick={this.handleClickAddPayment}
-                                          style={{ textDecoration: 'none', color: 'inherit' }}
-                                        >
-                                          <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                          Add Payment method
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </CardBody>
-                                </Card>
-
-                              }
+                          {isEmpty(this.state.payment_method) && (
+                            <Card className="shadow-none border mb-0">
+                              <CardBody className="text-center">
+                                <CardTitle className="mb-1">
+                                  <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                  Payment method
+                                </CardTitle>
+                                <div>
+                                  <div className="table-responsive">
+                                    <a
+                                      href="#"
+                                      onClick={this.handleClickAddPayment}
+                                      style={{ textDecoration: 'none', color: 'inherit' }}
+                                    >
+                                      <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                      Add Payment method
+                                    </a>
+                                  </div>
+                                </div>
+                              </CardBody>
+                            </Card>
+                          )}
 
                               <Row className="mt-4">
                                 <Col sm="6">

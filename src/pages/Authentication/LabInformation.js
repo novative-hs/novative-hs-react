@@ -379,11 +379,8 @@ class LabInformation extends Component {
                                     .max(
                                       255,
                                       "Please enter maximum 255 characters"
-                                    )
-                                    .matches(
-                                      /^[a-zA-Z][a-zA-Z ]+$/,
-                                      "Please enter only alphabets and spaces"
                                     ),
+                                   
                                 }
                               ),
 
@@ -422,11 +419,8 @@ class LabInformation extends Component {
                                     .max(
                                       255,
                                       "Please enter maximum 255 characters"
-                                    )
-                                    .matches(
-                                      /^[a-zA-Z][a-zA-Z ]+$/,
-                                      "Please enter only alphabets and spaces"
                                     ),
+                                   
                                 }
                               ),
                               marketer_cnic: Yup.string().when(
