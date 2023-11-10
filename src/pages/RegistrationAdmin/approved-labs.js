@@ -282,7 +282,7 @@ class ApprovedLabs extends Component {
     const { onGetApprovedLabs } = this.props;
 
     const pageOptions = {
-      sizePerPage: 1000,
+      sizePerPage: 100,
       totalSize: approvedLabs.length, // replace later with size(approvedLabs),
       custom: true,
     };
