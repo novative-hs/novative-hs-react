@@ -1029,6 +1029,12 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to="/corporate-profile">
+                    <i className="mdi mdi-cog" />
+                    <span>{this.props.t("Update Profile")}</span>
+                  </Link>
+                </li>
 
               </ul>
             </div>

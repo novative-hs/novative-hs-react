@@ -803,7 +803,6 @@ class AdvertisementsList extends Component {
 
                                                   <div className="mb-3">
 
-
                           <Label for="city_id" className="form-label">
                             City
                           </Label>

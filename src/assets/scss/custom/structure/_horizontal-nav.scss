@@ -37,6 +37,7 @@
             color: $menu-item-color;
             &.active, &:hover{
                 color: $menu-item-active-color;
+                font-weight: bold;
             }
         }
         
@@ -51,6 +52,7 @@
               >a {
                     color: $menu-item-active-color;
                     background-color: transparent;
+                    // font-weight: bold;
                 }
             }
         }

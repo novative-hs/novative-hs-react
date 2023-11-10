@@ -280,13 +280,13 @@ export const postCorporateInformation = (id, corporate) => {
   let formData = new FormData();
   formData.append("name", corporate.name);
   formData.append("logo", corporate.logo);
-  formData.append("owner_name", corporate.owner_name);
+  formData.append("national_taxation_no", corporate.national_taxation_no);
   formData.append("email", corporate.email);
   formData.append("phone", corporate.phone);
   formData.append("landline", corporate.landline);
   formData.append("address", corporate.address);
   formData.append("city_id", corporate.city_id);
-
+  formData.append("website_url", corporate.website_url);
   return axios
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -923,7 +923,7 @@ export const getNearbyLabs = locationDetails => {
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
   formData.append("guest_id", locationDetails.guest_id);
-
+  formData.append("locationAccessAllowed", locationDetails.locationAccessAllowed);
   console.log("In near by lsbd: ", locationDetails)
 
 
@@ -1069,21 +1069,37 @@ export const getCorporateProfile = id =>
 
 export const updateCorporateProfile = (corporateProfile, id) => {
   let formData = new FormData();
-  formData.append("account_id", id);
-  formData.append("unique_id", uid);
+  // formData.append("account_id", id);
+  // formData.append("unique_id", uid);
   formData.append("name", corporateProfile.name);
   formData.append("logo", corporateProfile.logo);
-  formData.append("owner_name", corporateProfile.owner_name);
   formData.append("email", corporateProfile.email);
   formData.append("phone", corporateProfile.phone);
   formData.append("landline", corporateProfile.landline);
   formData.append("address", corporateProfile.address);
   formData.append("city", corporateProfile.city);
-  formData.append("district", corporateProfile.district);
+  formData.append("payment_terms", corporateProfile.payment_terms);
+  formData.append("national_taxation_no", corporateProfile.national_taxation_no);
+  console.log("corporate profile update or not", corporateProfile, id);
+
   return axios.put(`${url.UPDATE_CORPORATE_PROFILE}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
+
+// export const updateB2bProfile = (b2bProfile, id) => {
+//   let formData = new FormData();
+//   // formData.append("account_id", id);
+//   formData.append("business_name", b2bProfile.business_name);
+//   formData.append("email", b2bProfile.email);
+//   formData.append("landline", b2bProfile.landline);
+//   formData.append("website_url", b2bProfile.website_url);
+//   formData.append("business_logo", b2bProfile.business_logo)
+
+//   return axios.put(`${url.UPDATE_B2B_PROFILE}/${id}`, formData, {
+//     headers: getHeader(authHeader()),
+//   });
+// };
 
 // ----------------- Patient Feedback -----------------
 export const addNewPatientFeedback = patientFeedback => {

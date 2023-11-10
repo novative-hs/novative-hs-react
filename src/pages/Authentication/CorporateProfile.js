@@ -15,9 +15,9 @@ import {
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-// Redux
+// Redux  
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
@@ -35,14 +35,17 @@ class CorporateProfile extends Component {
     this.state = {
       name: "",
       logo: "",
-      owner_name: "",
+      national_taxation_no: "",
       email: "",
       phone: "",
       landline: "",
       address: "",
-      city: "",
-      district: "",
+      // city: "",
+      payment_terms: "",
       isProfileUpdated: false,
+      user_id: localStorage.getItem("authUser")
+      ? JSON.parse(localStorage.getItem("authUser")).user_id
+      : "",
     };
   }
 
@@ -74,19 +77,19 @@ class CorporateProfile extends Component {
   };
 
   componentDidMount() {
-    this.props.getCorporateProfile(this.props.match.params.id);
+    this.props.getCorporateProfile(this.state.user_id);
 
     setTimeout(() => {
       this.setState({
         name: this.props.success.name,
         logo: process.env.REACT_APP_BACKENDURL + this.props.success.logo,
-        owner_name: this.props.success.owner_name,
+        national_taxation_no: this.props.success.national_taxation_no,
         email: this.props.success.email,
         phone: this.props.success.phone,
         landline: this.props.success.landline,
         address: this.props.success.address,
-        city: this.props.success.city,
-        district: this.props.success.district,
+        // city: this.props.success.city,
+        payment_terms: this.props.success.payment_terms,
       });
     }, 1000);
   }
@@ -136,13 +139,13 @@ class CorporateProfile extends Component {
                   initialValues={{
                     name: (this.state && this.state.name) || "",
                     logo: (this.state && this.state.logo) || "",
-                    owner_name: (this.state && this.state.owner_name) || "",
+                    national_taxation_no: (this.state && this.state.national_taxation_no) || "",
                     email: (this.state && this.state.email) || "",
                     phone: (this.state && this.state.phone) || "",
                     landline: (this.state && this.state.landline) || "",
                     address: (this.state && this.state.address) || "",
-                    city: (this.state && this.state.city) || "",
-                    district: (this.state && this.state.district) || "",
+                    // city: (this.state && this.state.city) || "",
+                    payment_terms: (this.state && this.state.payment_terms) || "",
                   }}
                   validationSchema={Yup.object().shape({
                     name: Yup.string()
@@ -152,11 +155,11 @@ class CorporateProfile extends Component {
                       .max(255, "Please enter maximum 255 characters"),
                       
                     logo: Yup.mixed().required("Please upload your lab logo"),
-                    owner_name: Yup.string()
-                      .trim()
-                      .required("Please enter lab owner name")
-                      .min(3, "Please enter at least 3 characters")
-                      .max(255, "Please enter maximum 255 characters"),
+                    // owner_name: Yup.string()
+                    //   .trim()
+                    //   .required("Please enter lab owner name")
+                    //   .min(3, "Please enter at least 3 characters")
+                    //   .max(255, "Please enter maximum 255 characters"),
                      
                     email: Yup.string()
                       .required("Please enter your email")
@@ -180,22 +183,22 @@ class CorporateProfile extends Component {
                       .trim()
                       .required("Please enter your full address")
                       .max(255, "Please enter maximum 255 characters"),
-                    city: Yup.string()
-                      .trim()
-                      .required("Please enter your city")
-                      .max(255, "Please enter maximum 255 characters")
-                      .matches(
-                        /^[a-zA-Z][a-zA-Z ]+$/,
-                        "Please enter only alphabets and spaces"
-                      ),
-                    district: Yup.string()
-                      .trim()
-                      .required("Please enter your district")
-                      .max(255, "Please enter maximum 255 characters")
-                      .matches(
-                        /^[a-zA-Z][a-zA-Z ]+$/,
-                        "Please enter only alphabets and spaces"
-                      ),
+                    // city: Yup.string()
+                    //   .trim()
+                    //   .required("Please enter your city")
+                    //   .max(255, "Please enter maximum 255 characters")
+                    //   .matches(
+                    //     /^[a-zA-Z][a-zA-Z ]+$/,
+                    //     "Please enter only alphabets and spaces"
+                    //   ),
+                    // district: Yup.string()
+                    //   .trim()
+                    //   .required("Please enter your district")
+                    //   .max(255, "Please enter maximum 255 characters")
+                    //   .matches(
+                    //     /^[a-zA-Z][a-zA-Z ]+$/,
+                    //     "Please enter only alphabets and spaces"
+                    //   ),
                   })}
                   onSubmit={values => {
                     // if no file was selected for logo then get current image from url and convert to file
@@ -207,29 +210,25 @@ class CorporateProfile extends Component {
                         );
                         values.logo = fileData;
 
-                        this.props.updateCorporateProfile(
-                          values,
-                          this.props.match.params.id
-                        );
+                        this.props.updateCorporateProfile(values, this.state.user_id);
+                        console.log("update howa yah nahi 11", this.props.updateCorporateProfile(values, this.state.user_id))
                       });
                     }
 
                     // Otherwise just call update method
                     else {
-                      this.props.updateCorporateProfile(
-                        values,
-                        this.props.match.params.id
-                      );
+                      this.props.updateCorporateProfile(values, this.state.user_id);
+                      console.log("update howa yah nahi", this.props.updateCorporateProfile(values, this.state.user_id))
                     }
 
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
+                    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+
 
                     // To get updated profile again
                     setTimeout(() => {
-                      this.props.getCorporateProfile(
-                        this.props.match.params.id
-                      );
+                      this.props.getCorporateProfile(this.state.user_id);
                     }, 1000);
 
                     // To display updated logo
@@ -251,10 +250,11 @@ class CorporateProfile extends Component {
                 >
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
+
                       {/* Name field */}
                       <div className="mb-3">
                         <Label for="name" className="form-label">
-                          Name
+                          Corporate Name
                         </Label>
                         <Field
                           id="name"
@@ -275,59 +275,61 @@ class CorporateProfile extends Component {
                           className="invalid-feedback"
                         />
                       </div>
+                      
                       {/* Logo field */}
                       <div className="mb-3">
                         <Label for="name" className="form-label">
-                          Logo
+                          Logo (Choose file only if you want to change logo)
                         </Label>
-                        <Input
-                          id="formFile"
-                          name="logo"
-                          type="file"
-                          multiple={false}
-                          accept=".jpg,.jpeg,.png"
-                          onChange={e =>
-                            this.setState({ logo: e.target.files[0] })
-                          }
-                          className={
-                            "form-control" +
-                            (errors.logo && touched.logo ? " is-invalid" : "")
-                          }
-                        />
+                        <Row>
+                          <Col md={8} lg={8}>
+                            <Input
+                              id="formFile"
+                              name="logo"
+                              type="file"
+                              multiple={false}
+                              accept=".jpg,.jpeg,.png"
+                              onChange={e =>
+                                this.setState({
+                                  logo: e.target.files[0],
+                                })
+                              }
+                              className="form-control"
+                            />
+                          </Col>
 
-                        <ErrorMessage
-                          name="logo"
-                          component="div"
-                          className="invalid-feedback"
-                        />
+                          <Col md={4} lg={4}>
+                            <div className="mt-2">
+                              <strong>Currently: </strong>{" "}
+                              <Link
+                                to={{
+                                  pathname:
+                                    process.env.REACT_APP_BACKENDURL +
+                                    this.props.success.logo,
+                                }}
+                                target="_blank"
+                              >
+                                Logo
+                              </Link>
+                            </div>
+                          </Col>
+                        </Row>
                       </div>
 
                       {/* Owner name field */}
                       <div className="mb-3">
-                        <Label for="owner_name" className="form-label">
-                          Owner name
+                        <Label
+                          for="national_taxation_no"
+                          className="form-label"
+                        >
+                          Lab NTN #
                         </Label>
                         <Field
-                          id="owner_name"
-                          name="owner_name"
+                          id="national_taxation_no"
+                          name="national_taxation_no"
+                          className="form-control"
                           type="text"
-                          onChange={e =>
-                            this.setState({
-                              owner_name: e.target.value,
-                            })
-                          }
-                          value={this.state.owner_name}
-                          className={
-                            "form-control" +
-                            (errors.owner_name && touched.owner_name
-                              ? " is-invalid"
-                              : "")
-                          }
-                        />
-                        <ErrorMessage
-                          name="owner_name"
-                          component="div"
-                          className="invalid-feedback"
+                          readOnly={true}
                         />
                       </div>
 
@@ -436,33 +438,33 @@ class CorporateProfile extends Component {
                         />
                       </div>
 
-                      {/* City field */}
+                      {/* Payment Terms */}
                       <div className="mb-3">
-                        <Label for="city" className="form-label">
-                          City
+                        <Label
+                          for="payment_terms"
+                          className="form-label"
+                        >
+                          What is your Payments Terms?
                         </Label>
                         <Field
-                          id="city"
-                          name="city"
-                          type="text"
+                          name="payment_terms"
+                          component="select"
+                          defaultValue="No"
                           onChange={e =>
-                            this.setState({ city: e.target.value })
+                            this.setState({
+                              payment_terms: e.target.value,
+                            })
                           }
-                          value={this.state.city}
-                          className={
-                            "form-control" +
-                            (errors.city && touched.city ? " is-invalid" : "")
-                          }
-                        />
-                        <ErrorMessage
-                          name="city"
-                          component="div"
-                          className="invalid-feedback"
-                        />
+                          value={this.state.payment_terms}
+                          className="form-select"
+                        >
+                          <option value="Payment by Patient to Lab">Payment by Patient to Lab</option>
+                          <option value="Payment by Coorporate to LH">Payment by Coorporate to LH</option>
+                        </Field>
                       </div>
 
                       {/* District field */}
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <Label for="district" className="form-label">
                           District
                         </Label>
@@ -488,7 +490,7 @@ class CorporateProfile extends Component {
                           component="div"
                           className="invalid-feedback"
                         />
-                      </div>
+                      </div> */}
                       <div className="text-center mt-4">
                         <Button type="submit" color="danger">
                           Update Profile

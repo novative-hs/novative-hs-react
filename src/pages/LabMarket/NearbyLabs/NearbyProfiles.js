@@ -714,8 +714,25 @@ class NearbyProfiles extends Component {
       console.log("total pahe number", totalItems)
       return Math.ceil(totalItems / itemsPerPage);
     };
+  
+  
+shouldHighlightTestsLink() {
+  const { location } = this.props;
+  const currentURL = location.pathname;
+
+  // Check if the URL contains "nearby-test"
+  return currentURL.includes('/nearby-profiles/');
+}
 
   render() {
+    const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
+
+    const linkStyles = {
+      color: isTestsLinkHighlighted ? '#556ee6' : 'black', // Text color
+      // backgroundColor: isTestsLinkHighlighted ? '#ffcc00' : 'transparent', // Background color
+      fontWeight: isTestsLinkHighlighted ? 'bold' : 'normal',
+    };
+
     const totalPage = !isEmpty(this.props.nearbyProfiles) ? this.calculateTotalPage(this.props.nearbyProfiles) : 1;
     console.log("total pahe number", totalPage)
     const { loading } = this.state;
@@ -796,7 +813,8 @@ class NearbyProfiles extends Component {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12">Profiles</span>
+                         <span className="pt-4 font-size-12" style={linkStyles}>Profiles</span>  
+                          
                           {/* {this.props.t("Profiles")} */}
                         </Link>
                       </li>
@@ -915,7 +933,7 @@ class NearbyProfiles extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Profiles</span>
+                           <span className="pt-4 font-size-12" style={linkStyles}>Profiles</span>  
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -928,7 +946,7 @@ class NearbyProfiles extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Profiles</span>
+                           <span className="pt-4 font-size-12" style={linkStyles}>Profiles</span>  
                           </Link>
                         </li>
                       ) : null}
@@ -1107,7 +1125,7 @@ class NearbyProfiles extends Component {
                           className="dropdown-item"
                         >
                           {/* {this.props.t("Profiles")} */}
-                          <span className="pt-4 font-size-12">Profiles</span>
+                         <span className="pt-4 font-size-12" style={linkStyles}>Profiles</span>  
                         </Link>
                       </li>
                       <li className="nav-item">
@@ -1248,7 +1266,7 @@ class NearbyProfiles extends Component {
                         }
                         className="dropdown-item"
                       >
-                        <span className="pt-4 font-size-12">Profiles</span>
+                       <span className="pt-4 font-size-12" style={linkStyles}>Profiles</span>  
                         {/* {this.props.t("Profiles")} */}
                       </Link>
                     </li>

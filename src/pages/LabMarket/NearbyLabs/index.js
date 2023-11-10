@@ -172,6 +172,7 @@ class NearbyLabs extends Component {
       patientProfile,
     });
     console.log("state", patientProfile);
+   
 
     let latitude;
     let longitude;
@@ -213,6 +214,7 @@ class NearbyLabs extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
+
       };
 
       if (latitude && longitude) {
@@ -235,6 +237,7 @@ class NearbyLabs extends Component {
           city: this.state.city,
           km: this.state.km,
           LabType: this.state.LabType,
+          locationAccessAllowed: this.state.locationAccessAllowed,
           guest_id,
         };
         console.log(
@@ -262,6 +265,7 @@ class NearbyLabs extends Component {
           address: this.state.address,
           city: this.state.city,
           km: this.state.km,
+          locationAccessAllowed: this.state.locationAccessAllowed,
           LabType: this.state.LabType,
         };
         if (latitude && longitude) {
@@ -282,6 +286,7 @@ class NearbyLabs extends Component {
           city: this.state.city,
           km: this.state.km,
           LabType: this.state.LabType,
+          locationAccessAllowed: this.state.locationAccessAllowed,
           guest_id,
         };
         console.log(
@@ -308,6 +313,8 @@ class NearbyLabs extends Component {
           city: this.state.city,
           km: this.state.km,
           LabType: this.state.LabType,
+          locationAccessAllowed: this.state.locationAccessAllowed,
+
         };
         if (latitude && longitude) {
           onGetNearbyLabs(nearbyLabsLocationDetails);
@@ -324,6 +331,7 @@ class NearbyLabs extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
+
       };
       if (latitude && longitude) {
         onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
@@ -351,6 +359,7 @@ class NearbyLabs extends Component {
             search_type: this.state.search_type,
             address: this.state.address,
             city: this.state.city,
+
           };
 
           if (latitude && longitude) {
@@ -372,6 +381,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               guest_id,
             };
             console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
@@ -397,6 +407,8 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+
             };
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
@@ -418,6 +430,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               guest_id,
             };
             console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
@@ -440,6 +453,7 @@ class NearbyLabs extends Component {
               city: this.state.city,
               km: this.state.km,
               LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               name: this.state.name,
             };
             if (latitude && longitude) {
@@ -457,6 +471,7 @@ class NearbyLabs extends Component {
             search_type: this.state.search_type,
             address: this.state.address,
             city: this.state.city,
+
           };
           if (latitude && longitude) {
             onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
@@ -480,6 +495,7 @@ class NearbyLabs extends Component {
             search_type: this.state.search_type,
             address: this.state.address,
             city: this.state.city,
+
           };
           onGetAdvLive(advLiveLocationDetails);
           setTimeout(() => {
@@ -497,6 +513,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               guest_id,
             };
             console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
@@ -521,6 +538,7 @@ class NearbyLabs extends Component {
               city: this.state.city,
               km: this.state.km,
               LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               name: this.state.name,
             };
             if (latitude && longitude) {
@@ -543,6 +561,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               guest_id,
             };
             console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
@@ -563,6 +582,7 @@ class NearbyLabs extends Component {
               city: this.state.city,
               km: this.state.km,
               LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
               name: this.state.name,
             };
             onGetNearbyLabs(nearbyLabsLocationDetails);
@@ -811,7 +831,7 @@ class NearbyLabs extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         name: this.state.name,
-
+        locationAccessAllowed: this.state.locationAccessAllowed,
       };
 
       onGetNearbyLabs(locationDetails);
@@ -849,6 +869,7 @@ class NearbyLabs extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         name: this.state.name,
+        locationAccessAllowed: this.state.locationAccessAllowed,
       };
       // region wise advertisement
       onGetNearbyLabs(locationDetails);
@@ -883,6 +904,7 @@ class NearbyLabs extends Component {
       address: this.state.address,
       city: this.state.city,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -911,6 +933,7 @@ class NearbyLabs extends Component {
       km: this.state.km,
       address: this.state.address,
       city: this.state.city,
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -947,6 +970,7 @@ class NearbyLabs extends Component {
       address: this.state.address,
       city: this.state.city,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -974,6 +998,7 @@ class NearbyLabs extends Component {
       LabType: this.state.LabType,
       km: this.state.km,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
 
     onGetNearbyLabs(locationDetails);
@@ -1062,7 +1087,7 @@ class NearbyLabs extends Component {
     );
 
     const { history } = this.props;
-    const { patientProfile } = this.props;
+    const { patientProfile} = this.props;
     const {
       discountData,
       nearbyLabs,
@@ -1070,7 +1095,7 @@ class NearbyLabs extends Component {
       totalPage,
       regionWiseAdvertisement,
     } = this.state;
-    const { onGetPatientProfile } = this.props;
+    const { onGetPatientProfile} = this.props;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({

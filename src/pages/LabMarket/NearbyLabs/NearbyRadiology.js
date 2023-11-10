@@ -721,7 +721,22 @@ class nearbyRadiology extends Component {
       return Math.ceil(totalItems / itemsPerPage);
     };
 
+shouldHighlightTestsLink() {
+  const { location } = this.props;
+  const currentURL = location.pathname;
+
+  // Check if the URL contains "nearby-test"
+  return currentURL.includes('/nearby-radiology/');
+}
   render() {
+    const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
+
+    const linkStyles = {
+      color: isTestsLinkHighlighted ? '#556ee6' : 'black', // Text color
+      // backgroundColor: isTestsLinkHighlighted ? '#ffcc00' : 'transparent', // Background color
+      fontWeight: isTestsLinkHighlighted ? 'bold' : 'normal',
+    };
+
     const totalPage = !isEmpty(this.props.nearbyRadiology) ? this.calculateTotalPage(this.props.nearbyRadiology) : 1;
     console.log("total pahe number", totalPage)
     const isLargeScreen = window.innerWidth < 490;
@@ -823,7 +838,8 @@ class nearbyRadiology extends Component {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12">Radiology</span>
+                          <span className="pt-4 font-size-12" style={linkStyles}>Radiology</span>  
+
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -972,7 +988,8 @@ class nearbyRadiology extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Radiology</span>
+                            <span className="pt-4 font-size-12" style={linkStyles}>Radiology</span>  
+
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -985,7 +1002,8 @@ class nearbyRadiology extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Radiology</span>
+                            <span className="pt-4 font-size-12" style={linkStyles}>Radiology</span>  
+
                           </Link>
                         </li>
                       ) : null}
@@ -1133,7 +1151,8 @@ class nearbyRadiology extends Component {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12">Radiology</span>
+                          <span className="pt-4 font-size-12" style={linkStyles}>Radiology</span>  
+
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -1275,7 +1294,8 @@ class nearbyRadiology extends Component {
                         }
                         className="dropdown-item"
                       >
-                        <span className="pt-4 font-size-12">Radiology</span>
+                        <span className="pt-4 font-size-12" style={linkStyles}>Radiology</span>  
+
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>   

@@ -25,12 +25,13 @@ class CorporateInformation extends Component {
     this.state = {
       name: "",
       logo: "",
-      owner_name: "",
+      national_taxation_no: "",
       email: "",
       phone: "",
       landline: "",
       address: "",
       city_id: "",
+      website_url: "",
     };
   }
 
@@ -120,7 +121,7 @@ class CorporateInformation extends Component {
                           ) : null}
 
                           {this.props.addCorporateError &&
-                          this.props.addCorporateError ? (
+                            this.props.addCorporateError ? (
                             <Alert color="danger" style={{ marginTop: "13px" }}>
                               {this.props.addCorporateError}
                             </Alert>
@@ -131,14 +132,15 @@ class CorporateInformation extends Component {
                             initialValues={{
                               name: (this.state && this.state.name) || "",
                               logo: (this.state && this.state.logo) || "",
-                              owner_name:
-                                (this.state && this.state.owner_name) || "",
+                              national_taxation_no:
+                                (this.state && this.state.national_taxation_no) || "",
                               email: (this.state && this.state.email) || "",
                               phone: (this.state && this.state.phone) || "",
                               landline:
                                 (this.state && this.state.landline) || "",
                               address: (this.state && this.state.address) || "",
                               city_id: (this.state && this.state.city_id) || "",
+                              website_url: (this.state && this.state.website_url) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -146,19 +148,19 @@ class CorporateInformation extends Component {
                                 .required("Please enter your name")
                                 .min(3, "Please enter at least 3 characters")
                                 .max(255, "Please enter maximum 255 characters"),
-                               
+
                               logo: Yup.mixed().required(
                                 "Please upload your corporate logo"
                               ),
-                              owner_name: Yup.string()
-                                .trim()
-                                .required("Please enter corporate owner name")
-                                .min(3, "Please enter at least 3 characters")
-                                .max(255, "Please enter maximum 255 characters")
-                                .matches(
-                                  /^[a-zA-Z][a-zA-Z ]+$/,
-                                  "Please enter only alphabets and spaces"
-                                ),
+                              // owner_name: Yup.string()
+                              //   .trim()
+                              //   .required("Please enter corporate owner name")
+                              //   .min(3, "Please enter at least 3 characters")
+                              //   .max(255, "Please enter maximum 255 characters")
+                              //   .matches(
+                              //     /^[a-zA-Z][a-zA-Z ]+$/,
+                              //     "Please enter only alphabets and spaces"
+                              //   ),
                               email: Yup.string()
                                 .required("Please enter your email")
                                 .email("Please enter valid email")
@@ -187,218 +189,256 @@ class CorporateInformation extends Component {
                                   255,
                                   "Please enter maximum 255 characters"
                                 ),
-                              
+                              website_url: Yup.string()
+                                .required("Please enter website url")
+                                .url("Please enter a valid url"),
+
                             })}
-                            onSubmit={values => {
+                            onSubmit={(values, { setSubmitting }) => {
+                              const cityIdArray = Array.isArray(values.city_id) ? values.city_id : [values.city_id];
                               this.props.addCorporateInformation(
                                 values,
-                                this.props.match.params.id
+                                this.props.match.params.id,
+                                cityIdArray
                               );
-                              window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-
+                              window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                              setSubmitting(false); // This line is important to manually set submitting to false after form submission
                             }}
                           >
-                            {({ errors, status, touched }) => (
-                              <Form className="form-horizontal">
-                                {/* Name field */}
-                                <div className="mb-3">
-                                  <Label for="name" className="form-label">
-                                    Corporation Name
-                                  </Label>
-                                  <Field
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ name: e.target.value })
-                                    }
-                                    value={this.state.name}
-                                    className={
-                                      "form-control" +
-                                      (errors.name && touched.name
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="name"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                          {({ errors, status, touched }) => (
+                            <Form className="form-horizontal">
+                              {/* Name field */}
+                              <div className="mb-3">
+                                <Label for="name" className="form-label">
+                                  Corporation Name
+                                </Label>
+                                <Field
+                                  id="name"
+                                  name="name"
+                                  type="text"
+                                  onChange={e =>
+                                    this.setState({ name: e.target.value })
+                                  }
+                                  value={this.state.name}
+                                  className={
+                                    "form-control" +
+                                    (errors.name && touched.name
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="name"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
-                                {/* Logo field */}
-                                <div className="mb-3">
-                                  <Label for="name" className="form-label">
-                                    Logo
-                                  </Label>
-                                  <Input
-                                    id="formFile"
-                                    name="logo"
-                                    type="file"
-                                    multiple={false}
-                                    accept=".jpg,.jpeg,.png"
-                                    onChange={e =>
-                                      this.setState({ logo: e.target.files[0] })
-                                    }
-                                    className={
-                                      "form-control" +
-                                      (errors.logo && touched.logo
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
+                              {/* Logo field */}
+                              <div className="mb-3">
+                                <Label for="name" className="form-label">
+                                  Logo
+                                </Label>
+                                <Input
+                                  id="formFile"
+                                  name="logo"
+                                  type="file"
+                                  multiple={false}
+                                  accept=".jpg,.jpeg,.png"
+                                  onChange={e =>
+                                    this.setState({ logo: e.target.files[0] })
+                                  }
+                                  className={
+                                    "form-control" +
+                                    (errors.logo && touched.logo
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
 
-                                  <ErrorMessage
-                                    name="logo"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                                <ErrorMessage
+                                  name="logo"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
-                                {/* Owner name field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="owner_name"
-                                    className="form-label"
-                                  >
-                                    Owner name
-                                  </Label>
-                                  <Field
-                                    id="owner_name"
-                                    name="owner_name"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({
-                                        owner_name: e.target.value,
-                                      })
-                                    }
-                                    value={this.state.owner_name}
-                                    className={
-                                      "form-control" +
-                                      (errors.owner_name && touched.owner_name
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="owner_name"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              {/* Owner name field */}
+                              {/* <div className="mb-3">
+                                <Label
+                                  for="owner_name"
+                                  className="form-label"
+                                >
+                                  Owner name
+                                </Label>
+                                <Field
+                                  id="owner_name"
+                                  name="owner_name"
+                                  type="text"
+                                  onChange={e =>
+                                    this.setState({
+                                      owner_name: e.target.value,
+                                    })
+                                  }
+                                  value={this.state.owner_name}
+                                  className={
+                                    "form-control" +
+                                    (errors.owner_name && touched.owner_name
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="owner_name"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div> */}
+                              <div className="mb-3">
+                                      <Label
+                                        for="national_taxation_no"
+                                        className="form-label"
+                                      >
+                                        Corporate NTN # (National Taxation Number)
+                                      </Label>
+                                      <Field
+                                        id="national_taxation_no"
+                                        name="national_taxation_no"
+                                        placeholder="Please enter your national taxation no."
+                                        type="text"
+                                        onChange={e =>
+                                          this.setState({
+                                            national_taxation_no:
+                                              e.target.value,
+                                          })
+                                        }
+                                        value={this.state.national_taxation_no}
+                                        className={
+                                          "form-control" +
+                                          (errors.national_taxation_no &&
+                                            touched.national_taxation_no
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="national_taxation_no"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
 
-                                {/* Email field */}
-                                <div className="mb-3">
-                                  <Label for="email" className="form-label">
-                                    Email
-                                  </Label>
-                                  <Field
-                                    name="email"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ email: e.target.value })
-                                    }
-                                    value={this.state.email}
-                                    className={
-                                      "form-control" +
-                                      (errors.email && touched.email
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="email"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              {/* Email field */}
+                              <div className="mb-3">
+                                <Label for="email" className="form-label">
+                                  Email
+                                </Label>
+                                <Field
+                                  name="email"
+                                  type="text"
+                                  onChange={e =>
+                                    this.setState({ email: e.target.value })
+                                  }
+                                  value={this.state.email}
+                                  className={
+                                    "form-control" +
+                                    (errors.email && touched.email
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="email"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
-                                {/* Phone field */}
-                                <div className="mb-3">
-                                  <Label for="phone" className="form-label">
-                                    Phone
-                                  </Label>
-                                  <Field
-                                    id="phone"
-                                    name="phone"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ phone: e.target.value })
-                                    }
-                                    value={this.state.phone}
-                                    className={
-                                      "form-control" +
-                                      (errors.phone && touched.phone
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="phone"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              {/* Phone field */}
+                              <div className="mb-3">
+                                <Label for="phone" className="form-label">
+                                  Phone
+                                </Label>
+                                <Field
+                                  id="phone"
+                                  name="phone"
+                                  type="text"
+                                  onChange={e =>
+                                    this.setState({ phone: e.target.value })
+                                  }
+                                  value={this.state.phone}
+                                  className={
+                                    "form-control" +
+                                    (errors.phone && touched.phone
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="phone"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
-                                {/* Landline field */}
-                                <div className="mb-3">
-                                  <Label for="landline" className="form-label">
-                                    Landline
-                                  </Label>
-                                  <Field
-                                    id="landline"
-                                    name="landline"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({
-                                        landline: e.target.value,
-                                      })
-                                    }
-                                    value={this.state.landline}
-                                    className={
-                                      "form-control" +
-                                      (errors.landline && touched.landline
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="landline"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              {/* Landline field */}
+                              <div className="mb-3">
+                                <Label for="landline" className="form-label">
+                                  Landline
+                                </Label>
+                                <Field
+                                  id="landline"
+                                  name="landline"
+                                  type="text"
+                                  onChange={e =>
+                                    this.setState({
+                                      landline: e.target.value,
+                                    })
+                                  }
+                                  value={this.state.landline}
+                                  className={
+                                    "form-control" +
+                                    (errors.landline && touched.landline
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="landline"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
-                                {/* Address field */}
-                                <div className="mb-3">
-                                  <Label for="address" className="form-label">
-                                    Complete address
-                                  </Label>
-                                  <Field
-                                    id="address"
-                                    name="address"
-                                    type="text"
-                                    onChange={e =>
-                                      this.setState({ address: e.target.value })
-                                    }
-                                    value={this.state.address}
-                                    className={
-                                      "form-control" +
-                                      (errors.address && touched.address
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="address"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              {/* Address field */}
+                              <div className="mb-3">
+                                <Label for="address" className="form-label">
+                                  Complete address
+                                </Label>
+                                <Field
+                                  id="address"
+                                  name="address"
+                                  type="text"
+                                  onChange={e =>
+                                    this.setState({ address: e.target.value })
+                                  }
+                                  value={this.state.address}
+                                  className={
+                                    "form-control" +
+                                    (errors.address && touched.address
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="address"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
 
-                                {/* City field */}
-                                <div className="mb-3">
+                              {/* City field */}
+                              {/* <div className="mb-3">
 
 
                                   <Label for="city_id" className="form-label">
@@ -444,31 +484,110 @@ class CorporateInformation extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
+                                </div> */}
+                              <div>
+
+                                <Label for="city_id" className="form-label">
+                                  City
+                                </Label>
+                                <Select
+                                  name="city_id"
+                                  component="Select"
+                                  isMulti={true}
+                                  onChange={selectedGroups =>
+                                    this.setState({
+                                      city_id: selectedGroups.map(group => group.value),
+                                    })
+                                  }
+                                  className={
+                                    "defautSelectParent" +
+                                    (errors.city_id && touched.city_id
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  styles={{
+                                    control: (base, state) => ({
+                                      ...base,
+                                      borderColor:
+                                        errors.city_id && touched.city_id
+                                          ? "#f46a6a"
+                                          : "#ced4da",
+                                    }),
+                                  }}
+                                  options={
+                                    cityList
+                                  }
+                                  // defaultValue={{
+                                  //   label:
+                                  //   this.state.city,
+                                  //   value:
+                                  //   this.state.id,                                       
+                                  // }}
+                                  placeholder="Select City..."
+                                />
+
+                                <ErrorMessage
+                                  name="city_id"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
+
+                               {/* {URL Field} */}
+                               <div className="mb-3">
+                                  <Label
+                                    for="website_url"
+                                    className="form-label"
+                                  >
+                                    Website URL
+                                  </Label>
+                                  <Field
+                                    id="website_url"
+                                    name="website_url"
+                                    placeholder="Enter Website URL (https://)"
+                                    type="text"
+                                    onChange={e =>
+                                      this.setState({
+                                        website_url: e.target.value,
+                                      })
+                                    }
+                                    value={this.state.website_url}
+                                    className={
+                                      "form-control" +
+                                      (errors.website_url && touched.website_url
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="website_url"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
                                 </div>
 
-                               
-                                <div className="mt-3 d-grid">
-                                  <button
-                                    className="btn btn-primary btn-block"
-                                    type="submit"
-                                  >
-                                    {" "}
-                                    Complete Registration{" "}
-                                  </button>
-                                </div>
-                              </Form>
-                            )}
-                          </Formik>
-                        </div>
+                              <div className="mt-3 d-grid">
+                                <button
+                                  className="btn btn-primary btn-block"
+                                  type="submit"
+                                >
+                                  {" "}
+                                  Complete Registration{" "}
+                                </button>
+                              </div>
+                            </Form>
+                          )}
+                        </Formik>
                       </div>
                     </div>
                   </div>
                 </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </React.Fragment>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      </React.Fragment >
     );
   }
 }
