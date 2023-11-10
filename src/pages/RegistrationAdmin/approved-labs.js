@@ -43,6 +43,7 @@ class ApprovedLabs extends Component {
       isHovered: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       approvedLab: "",
+      filteredApprovedLabs: [], // Add a new state property for filtered data
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -58,14 +59,14 @@ class ApprovedLabs extends Component {
         {
           text: "id",
           dataField: "id",
-          sort: true,
+          // sort: true,
           hidden: true,
           formatter: (cellContent, approvedLab) => <>{approvedLab.id}</>,
         },
         {
           dataField: "city",
           text: "City",
-          sort: true,
+          // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
               <span>
@@ -77,7 +78,7 @@ class ApprovedLabs extends Component {
         {
           dataField: "district",
           text: "District",
-          sort: true,
+          // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
               <span>
@@ -89,7 +90,7 @@ class ApprovedLabs extends Component {
         {
           dataField: "name",
           text: "Lab Name",
-          sort: true,
+          // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
               <span className="float-start" style={{ fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -105,19 +106,6 @@ class ApprovedLabs extends Component {
           ),
           filter: textFilter(),
         },
-        
-        {
-          dataField: "address",
-          text: "Address",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-start">
-                {approvedLab.address}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
         {
           dataField: "offered_tests",
           text: "Offered Tests",
@@ -128,11 +116,14 @@ class ApprovedLabs extends Component {
                 {approvedLab.offered_tests}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
+                
+               
         {
           dataField: "pathologists",
-          text: "Offered Tests",
+          text: "Pathologist",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -144,7 +135,7 @@ class ApprovedLabs extends Component {
         },
         {
           dataField: "sample_collectors",
-          text: "Offered Tests",
+          text: "Sample Collector",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -156,7 +147,7 @@ class ApprovedLabs extends Component {
         },
         {
           dataField: "quality_certificates",
-          text: "Offered Tests",
+          text: "Quality Certificate",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -169,28 +160,37 @@ class ApprovedLabs extends Component {
         
         {
           dataField: "registered_at",
-          text: "Registered at",
-          sort: true,
+          text: "Registeration",
+          // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
               <span>
-                {new Date(approvedLab.registered_at).toLocaleString("en-US")}
+                {new Date(approvedLab.registered_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",}).replace(/\//g, '-')}
               </span>
             </>
           ),filter: textFilter(),
         },
         {
           dataField: "done_at",
-          text: "Approved at",
-          sort: true,
+          text: "Approvel",
+          // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
               <span>
-                {new Date(approvedLab.done_at).toLocaleString("en-US")}
+                {new Date(approvedLab.done_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                }).replace(/\//g, '-')}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
+        
         // {
         //   dataField: "is_blocked",
         //   text: "Blocked",
@@ -220,6 +220,8 @@ class ApprovedLabs extends Component {
     const { approvedLabs, onGetApprovedLabs } = this.props;
     onGetApprovedLabs(this.state.user_id);
     this.setState({ approvedLabs });
+    this.setState({ approvedLabs, filteredApprovedLabs: approvedLabs });
+
   }
 
   toggle() {
@@ -273,9 +275,30 @@ class ApprovedLabs extends Component {
     }
   };
 
+  // Update this method to store filtered data in state
+  handleFilterChange = (filterObj) => {
+    const { approvedLabs } = this.props;
+
+    // Convert filter values to lowercase for case-insensitive comparison
+    const cityFilter = filterObj.city.toLowerCase();
+    const districtFilter = filterObj.district.toLowerCase();
+
+    const filteredData = approvedLabs.filter((lab) => {
+      // Convert lab values to lowercase for case-insensitive comparison
+      const labCity = lab.city.toLowerCase();
+      const labDistrict = lab.district.toLowerCase();
+
+      return labCity.includes(cityFilter) && labDistrict.includes(districtFilter);
+      // Add more conditions as needed for other filters
+    });
+
+    this.setState({ filteredApprovedLabs: filteredData });
+  };
+
+
   render() {
     const { SearchBar } = Search;
-    const { isHovered } = this.state;
+    const { isHovered, filteredApprovedLabs } = this.state; // Use filtered data
 
     const { approvedLabs } = this.props;
     const data = this.state.data;
@@ -293,6 +316,7 @@ class ApprovedLabs extends Component {
         order: "desc", // desc or asc
       },
     ];
+    const iconStyle = { color: 'red' }; // Customize the color here
 
     return (
       <React.Fragment>
@@ -348,6 +372,7 @@ class ApprovedLabs extends Component {
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
+                                      sort={{ sortCaret: (order, column) => order === 'desc' ? <i className="fa fa-arrow-up" style={iconStyle}></i> : <i className="fa fa-arrow-down" style={iconStyle}></i>  }} // Customize sort caret icons
 
                                     />
                                     {this.state.isHovered && (
@@ -401,6 +426,23 @@ class ApprovedLabs extends Component {
                                                     />
                                                   </div>
                                                 </div> */}
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -464,6 +506,11 @@ class ApprovedLabs extends Component {
                                   </div>
                                 </Col>
                               </Row>
+                              <Row className="mb-2">
+              <Col sm="4">
+              <span>Total Rows after Filters: {filteredApprovedLabs.length}</span>
+              </Col>
+            </Row>
                               <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
