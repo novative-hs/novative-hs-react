@@ -48,6 +48,14 @@ class ApprovedLabs extends Component {
         : "",
       approvedLabListColumns: [
         {
+          text: "S#", // Column header for row numbers
+          formatter: (cellContent, approvedLab, rowIndex) => (
+            <>
+              <span>{rowIndex + 1}</span>
+            </>
+          ),
+        },
+        {
           text: "id",
           dataField: "id",
           sort: true,
@@ -84,18 +92,20 @@ class ApprovedLabs extends Component {
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              <span className="float-start">
-                  <Link
-                    to="#"
-                    onMouseEnter={e => this.openPatientModal(e, approvedLab)}
-                    onPointerLeave={this.handleMouseExit()}
-                  >
-                   {approvedLab.name}
-                  </Link>
+              <span className="float-start" style={{ fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <Link
+                  to="#"
+                  onMouseEnter={e => this.openPatientModal(e, approvedLab)}
+                  onPointerLeave={this.handleMouseExit()}
+                >
+                  {approvedLab.name}
+                </Link>
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
+        
         {
           dataField: "address",
           text: "Address",
@@ -110,88 +120,53 @@ class ApprovedLabs extends Component {
         },
         {
           dataField: "offered_tests",
-          text: "Offered Test",
+          text: "Offered Tests",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              {approvedLab.offered_tests == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
+              <span className="float-end">
+                {approvedLab.offered_tests}
+              </span>
             </>
-          ),filter: selectFilter({
-            options: {
-              '': 'All',
-              'true': 'Yes',
-              'false': 'No',
-            },
-            defaultValue: 'All',
-          }),
+          ),filter: textFilter(),
         },
         {
           dataField: "pathologists",
-          text: "Pathologists",
+          text: "Offered Tests",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              {approvedLab.pathologists == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
+              <span className="float-end">
+                {approvedLab.pathologists}
+              </span>
             </>
-          ),filter: selectFilter({
-            options: {
-              '': 'All',
-              'true': 'Yes',
-              'false': 'No',
-            },
-            defaultValue: 'All',
-          }),
+          ),filter: textFilter(),
         },
         {
           dataField: "sample_collectors",
-          text: "Home Sample Collectors",
+          text: "Offered Tests",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              {approvedLab.sample_collectors == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
+              <span className="float-end">
+                {approvedLab.sample_collectors}
+              </span>
             </>
-          ),filter: selectFilter({
-            options: {
-              '': 'All',
-              'true': 'Yes',
-              'false': 'No',
-            },
-            defaultValue: 'All',
-          }),
+          ),filter: textFilter(),
         },
         {
           dataField: "quality_certificates",
-          text: "Quality Certificate",
+          text: "Offered Tests",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              {approvedLab.quality_certificates == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
+              <span className="float-end">
+                {approvedLab.quality_certificates}
+              </span>
             </>
-          ),filter: selectFilter({
-            options: {
-              '': 'All',
-              'true': 'Yes',
-              'false': 'No',
-            },
-            defaultValue: 'All',
-          }),
+          ),filter: textFilter(),
         },
+        
         {
           dataField: "registered_at",
           text: "Registered at",
@@ -307,7 +282,7 @@ class ApprovedLabs extends Component {
     const { onGetApprovedLabs } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 1000,
       totalSize: approvedLabs.length, // replace later with size(approvedLabs),
       custom: true,
     };
