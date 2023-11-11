@@ -43,7 +43,6 @@ class ApprovedLabs extends Component {
       isHovered: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       approvedLab: "",
-      filteredApprovedLabs: [], // Add a new state property for filtered data
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -73,7 +72,7 @@ class ApprovedLabs extends Component {
                 {approvedLab.city}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "district",
@@ -85,7 +84,7 @@ class ApprovedLabs extends Component {
                 {approvedLab.district}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "name",
@@ -93,7 +92,15 @@ class ApprovedLabs extends Component {
           // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
-              <span className="float-start" style={{ fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <span style={{
+                width: '200px', // Set your desired width here
+                fontSize: '14px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
                 <Link
                   to="#"
                   onMouseEnter={e => this.openPatientModal(e, approvedLab)}
@@ -114,10 +121,10 @@ class ApprovedLabs extends Component {
             <>
               <span className="float-end">
                 {approvedLab.type == "Main Lab" ? (
-                <span>Main</span>
-              ) : (
-                <span>Collection</span>
-              )}
+                  <span>Main</span>
+                ) : (
+                  <span>Collection</span>
+                )}
               </span>
             </>
           ),
@@ -143,8 +150,6 @@ class ApprovedLabs extends Component {
           ),
           filter: textFilter(),
         },
-                
-               
         {
           dataField: "pathologists",
           text: "Pathologist",
@@ -155,7 +160,7 @@ class ApprovedLabs extends Component {
                 {approvedLab.pathologists}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "sample_collectors",
@@ -167,7 +172,7 @@ class ApprovedLabs extends Component {
                 {approvedLab.sample_collectors}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "quality_certificates",
@@ -179,9 +184,9 @@ class ApprovedLabs extends Component {
                 {approvedLab.quality_certificates}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
-        
+
         {
           dataField: "registered_at",
           text: "Registeration",
@@ -192,10 +197,11 @@ class ApprovedLabs extends Component {
                 {new Date(approvedLab.registered_at).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "2-digit",
-                  day: "2-digit",}).replace(/\//g, '-')}
+                  day: "2-digit",
+                }).replace(/\//g, '-')}
               </span>
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
         },
         {
           dataField: "done_at",
@@ -214,7 +220,7 @@ class ApprovedLabs extends Component {
           ),
           filter: textFilter(),
         },
-        
+
         // {
         //   dataField: "is_blocked",
         //   text: "Blocked",
@@ -241,11 +247,8 @@ class ApprovedLabs extends Component {
   }
 
   componentDidMount() {
-    const { approvedLabs, onGetApprovedLabs } = this.props;
+    const { onGetApprovedLabs } = this.props;
     onGetApprovedLabs(this.state.user_id);
-    this.setState({ approvedLabs });
-    this.setState({ approvedLabs, filteredApprovedLabs: approvedLabs });
-
   }
 
   toggle() {
@@ -258,6 +261,7 @@ class ApprovedLabs extends Component {
     this.setState({
       PatientModal: true,
       lab_address: arg.lab_address,
+      lab_name: arg.lab_name,
       lab_city: arg.lab_city,
       lab_phone: arg.lab_phone,
       lab_email: arg.lab_email,
@@ -269,7 +273,7 @@ class ApprovedLabs extends Component {
       PatientModal: false,
       isHovered: false,
     });
-  };  
+  };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -299,37 +303,14 @@ class ApprovedLabs extends Component {
     }
   };
 
-  // Update this method to store filtered data in state
-  handleFilterChange = (filterObj) => {
-    const { approvedLabs } = this.props;
-
-    // Convert filter values to lowercase for case-insensitive comparison
-    const cityFilter = filterObj.city.toLowerCase();
-    const districtFilter = filterObj.district.toLowerCase();
-
-    const filteredData = approvedLabs.filter((lab) => {
-      // Convert lab values to lowercase for case-insensitive comparison
-      const labCity = lab.city.toLowerCase();
-      const labDistrict = lab.district.toLowerCase();
-
-      return labCity.includes(cityFilter) && labDistrict.includes(districtFilter);
-      // Add more conditions as needed for other filters
-    });
-
-    this.setState({ filteredApprovedLabs: filteredData });
-  };
-
-
   render() {
     const { SearchBar } = Search;
-    const { isHovered, filteredApprovedLabs } = this.state; // Use filtered data
-
     const { approvedLabs } = this.props;
     const data = this.state.data;
     const { onGetApprovedLabs } = this.props;
 
     const pageOptions = {
-      sizePerPage: 100,
+      sizePerPage: 10,
       totalSize: approvedLabs.length, // replace later with size(approvedLabs),
       custom: true,
     };
@@ -389,34 +370,34 @@ class ApprovedLabs extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-condensed table-hover"}
+                                      classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
-                                      sort={{ sortCaret: (order, column) => order === 'desc' ? <i className="fa fa-arrow-up" style={iconStyle}></i> : <i className="fa fa-arrow-down" style={iconStyle}></i>  }} // Customize sort caret icons
+                                      sort={{ sortCaret: (order, column) => order === 'desc' ? <i className="fa fa-arrow-up" style={iconStyle}></i> : <i className="fa fa-arrow-down" style={iconStyle}></i> }} // Customize sort caret icons
 
                                     />
                                     {this.state.isHovered && (
-                                    <Modal
-                                      isOpen={this.state.PatientModal}
-                                      className={this.props.className}
-                                      onPointerLeave={this.handleMouseExit}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
+                                      <Modal
+                                        isOpen={this.state.PatientModal}
+                                        className={this.props.className}
+                                        onPointerLeave={this.handleMouseExit}
                                       >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                {/* <div className="mb-3 row">
+                                        <ModalHeader
+                                          toggle={this.togglePatientModal}
+                                          tag="h4"
+                                        >
+                                          <span></span>
+                                        </ModalHeader>
+                                        <ModalBody>
+                                          <Formik>
+                                            <Form>
+                                              <Row>
+                                                <Col className="col-12">
+                                                  {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Lab Address
@@ -433,7 +414,7 @@ class ApprovedLabs extends Component {
                                                     />
                                                   </div>
                                                 </div> */}
-                                                {/* <div className="mb-3 row">
+                                                  {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -450,91 +431,104 @@ class ApprovedLabs extends Component {
                                                     />
                                                   </div>
                                                 </div> */}
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Name
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.lab_name
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
                                                   </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.lab_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      email
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.lab_email
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Contact No.
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.lab_phone
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Address
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.lab_address
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
                                                   </div>
 
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .lab_phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        email
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.lab_email
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
                                                   </div>
-                                                </div>
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                  </Modal>
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Contact No.
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.lab_phone
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
+
+                                                    <div className="col-md-3">
+                                                      <button
+                                                        type="button"
+                                                        className="btn btn-secondary"
+                                                        onClick={() => {
+                                                          navigator.clipboard.writeText(
+                                                            this.state
+                                                              .lab_phone
+                                                          );
+                                                          this.setState({
+                                                            btnText: "Copied",
+                                                          });
+                                                        }}
+                                                      >
+                                                        {this.state.btnText}
+                                                      </button>
+                                                    </div>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          </Formik>
+                                        </ModalBody>
+                                      </Modal>
                                     )}
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="mb-2">
-              <Col sm="4">
-              <span>Total Rows after Filters: {filteredApprovedLabs.length}</span>
-              </Col>
-            </Row>
+
                               <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
