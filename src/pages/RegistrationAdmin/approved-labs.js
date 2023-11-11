@@ -113,17 +113,21 @@ class ApprovedLabs extends Component {
           formatter: (cellContent, approvedLab) => (
             <>
               <span className="float-end">
-                {approvedLab.type}
+                {approvedLab.type == "Main Lab" ? (
+                <span>Main</span>
+              ) : (
+                <span>Collection</span>
+              )}
               </span>
             </>
           ),
           filter: selectFilter({
             options: {
               // '': 'All',
-              'Main Lab': 'Main Lab',
-              'Collection Point': 'Collection Point',
+              'Main Lab': 'Main',
+              'Collection Point': 'Collection',
             },
-            defaultValue: 'Main Lab',
+            // defaultValue: 'Main Lab',
           }),
         },
         {
