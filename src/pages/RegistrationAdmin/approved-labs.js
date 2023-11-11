@@ -107,6 +107,26 @@ class ApprovedLabs extends Component {
           filter: textFilter(),
         },
         {
+          dataField: "type",
+          text: "Lab Type",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span className="float-end">
+                {approvedLab.type}
+              </span>
+            </>
+          ),
+          filter: selectFilter({
+            options: {
+              // '': 'All',
+              'Main Lab': 'Main Lab',
+              'Collection Point': 'Collection Point',
+            },
+            defaultValue: 'Main Lab',
+          }),
+        },
+        {
           dataField: "offered_tests",
           text: "Offered Tests",
           sort: true,
