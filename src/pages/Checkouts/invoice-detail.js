@@ -7,7 +7,7 @@ import { isEmpty, map } from "lodash";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import logo from "../../assets/images/logo-dark.png";
-import jsPDF from 'jspdf';
+// import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 
@@ -32,28 +32,28 @@ class InvoiceDetail extends Component {
     window.print();
   };
 
-  // sendInvoice = () => {
-  //   const message = `Here's the invoice I received from Lab Hazir:
-  //   ${window.location.href}`;
-  
-  //   const url = `https://web.whatsapp.com/send?text=${encodeURIComponent(
-  //     message
-  //   )}`;
-  
-  //   window.open(url);
-  // };
   sendInvoice = () => {
-    const { node } = this;
-
-    if (node && node.current) {
-      html2canvas(node.current).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
-        pdf.save('LabHazir_Invoice.pdf');
-      });
-    }
+    const message = `Here's the invoice I received from Lab Hazir:
+    ${window.location.href}`;
+  
+    const url = `https://web.whatsapp.com/send?text=${encodeURIComponent(
+      message
+    )}`;
+  
+    window.open(url);
   };
+  // sendInvoice = () => {
+  //   const { node } = this;
+
+  //   if (node && node.current) {
+  //     html2canvas(node.current).then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF('p', 'mm', 'a4');
+  //       pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+  //       pdf.save('LabHazir_Invoice.pdf');
+  //     });
+  //   }
+  // };
   
   
   
