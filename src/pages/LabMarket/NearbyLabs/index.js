@@ -1880,7 +1880,7 @@ class NearbyLabs extends Component {
               /> */}
               {/* <h5>Need Some Better?</h5>
               <h2>&ldquo;Let&apos;s find the labs,&rdquo;</h2> */}
-              <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+              <Row className="mb-3" style={{ backgroundColor: '#3B71CA', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
@@ -2719,7 +2719,7 @@ class NearbyLabs extends Component {
                 breadcrumbItem="Nearby Labs"
               /> */}
               <Col lg="9">
-                <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+                <Row className="mb-3" style={{ backgroundColor: '#3B71CA', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
@@ -3492,7 +3492,7 @@ class NearbyLabs extends Component {
                 <ScrollButton />
               </Col>
               <Col lg="3">
-                <span style={{ fontSize: '18px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '0px 20px' }}>Advertisements</span>
+                <span style={{ fontSize: '18px', backgroundColor: '#3B71CA', color: 'white', borderRadius: '5px', padding: '0px 20px' }}>Advertisements</span>
                 {!isEmpty(this.props.advLives) &&
                   this.props.advLives.map((advLive, key) => (
                     <Col className="mt-3" lg="9" key={"col" + key}>
@@ -3780,7 +3780,7 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       {/* Type field */}
-                      <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                      <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
                       <Row className="g-0">
                         <Col>
                           <div>
@@ -4537,7 +4537,7 @@ class NearbyLabs extends Component {
                     <Form className="form-horizontal">
                       {/* Type field */}
                       {/* Type field */}
-                      <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                      <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
                       <Row className="g-0">
                         <Col>
                           <div>
@@ -5373,7 +5373,7 @@ class NearbyLabs extends Component {
                       <Form className="form-horizontal">
                         {/* Type field */}
                         {/* Type field */}
-                        <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                        <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
                         <Row className="g-0">
                           <Col>
                             <div>
@@ -6354,7 +6354,7 @@ class NearbyLabs extends Component {
                       <Form className="form-horizontal">
                         {/* Type field */}
                         {/* Type field */}
-                        <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                        <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
                         <Row className="g-0">
                           <Col>
                             <div>

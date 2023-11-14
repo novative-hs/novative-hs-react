@@ -728,7 +728,7 @@ shouldHighlightTestsLink() {
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
 
     const linkStyles = {
-      color: isTestsLinkHighlighted ? '#556ee6' : 'black', // Text color
+      color: isTestsLinkHighlighted ? 'black' : 'black', // Text color
       // backgroundColor: isTestsLinkHighlighted ? '#ffcc00' : 'transparent', // Background color
       fontWeight: isTestsLinkHighlighted ? 'bold' : 'normal',
     };
