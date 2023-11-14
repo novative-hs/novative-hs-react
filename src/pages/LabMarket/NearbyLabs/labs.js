@@ -72,6 +72,7 @@ class NearbyLabs extends Component {
         : "",
       position: "right",
       ratingvalues: [],
+      locationAccessAllowed: "",
       nearbyLabs: [],
       advLives: [],
       territoriesList: [],
@@ -109,6 +110,9 @@ class NearbyLabs extends Component {
   }
 
   componentDidMount() {
+    const {
+      onGetNearbyLabs,
+    } = this.props;
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
@@ -131,9 +135,7 @@ class NearbyLabs extends Component {
       this.activateParentDropdown(matchingMenuItem);
     }
 
-    const { advLives, onGetAdvLive } = this.props;
-    onGetAdvLive(this.state.user_id);
-    this.setState({ advLives });
+    
 
     let latitude;
     let longitude;
@@ -160,14 +162,194 @@ class NearbyLabs extends Component {
       // Call the dependent code here or pass the latitude and longitude values as arguments
       this.handleLocationUpdate(latitude, longitude);
     } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        console.log("web", latitude, longitude);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          console.log("web", latitude, longitude);
 
-        // Call the dependent code here or pass the latitude and longitude values as arguments
-        this.handleLocationUpdate(latitude, longitude);
-      });
+          this.setState({ currentLatitude: latitude });
+          this.setState({ currentLongitude: longitude });
+          this.setState({ locationAccessAllowed: true });
+          console.log("locationnnnnnnnnnnnnnnnnnnn isssssssssssssssss alllllllllooooooooooooowwwwwwwwwweeeeeeeeedddddd")
+          // near by labs
+          if ((this.state.user_id || this.state.user_type === "CSR")) {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyLabs(nearbyLabsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyLabs: this.props.nearbyLabs });
+              }, 500);
+            }
+          }
+
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+            if (latitude && longitude) {
+              onGetNearbyLabs(nearbyLabsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyLabs: this.props.nearbyLabs });
+              }, 500);
+            }
+          }
+
+          if ((!this.state.user_id) || this.props.match.params.guest_id) {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyLabs(nearbyLabsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyLabs: this.props.nearbyLabs });
+              }, 500);
+            }
+          }
+          if (this.state.user_id) {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+            };
+            if (latitude && longitude) {
+              onGetNearbyLabs(nearbyLabsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyLabs: this.props.nearbyLabs });
+              }, 500);
+            }
+          }
+        }, () => {
+          // Location access denied by the user
+          console.log("Location access denied by the user.");
+          this.setState({ locationAccessAllowed: false });
+          const denialMessage = "For accurate results, please allow location access.";
+          alert(denialMessage); // You can use an alert, or create a message element in your UI.
+          // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
+
+          // Example:
+          this.setState({ latitude: null, longitude: null });
+          // near by labs
+          if ((this.state.user_id || this.state.user_type === "CSR") && this.props.match.params.guest_id) {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyLabs(nearbyLabsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyLabs: this.props.nearbyLabs });
+              }, 500);
+            }
+          }
+
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+            };
+            if (latitude && longitude) {
+              onGetNearbyLabs(nearbyLabsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyLabs: this.props.nearbyLabs });
+              }, 500);
+            }
+          }
+
+          if ((!this.state.user_id) && this.props.match.params.guest_id) {
+
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+            console.log(window.location.href);
+            onGetNearbyLabs(nearbyLabsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyLabs: this.props.nearbyLabs });
+            }, 500);
+          }
+          if (this.state.user_id) {
+            const nearbyLabsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+            };
+            onGetNearbyLabs(nearbyLabsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyLabs: this.props.nearbyLabs });
+            }, 500);
+          }
+        }
+        );
+      } else {
+        // Geolocation is not supported by the browser
+        console.log("Geolocation is not supported by the browser.");
+        // Handle this scenario as needed, e.g., display an error message or provide alternative functionality.
+      }
     }
     setTimeout(() => {
       this.setState({ loading: false });
@@ -178,15 +360,10 @@ class NearbyLabs extends Component {
     // const guest_id = uuidv4();
     // console.log("uuid in nearby lab:",this.state.user_id)
 
-
     setTimeout(() => {
-
       this.setState({ currentLatitude: latitude });
       this.setState({ currentLongitude: longitude });
       // this.setState({ guest_id: guest_id });
-
-
-
       var locationDetails = {
         latitude: this.state.currentLatitude,
         longitude: this.state.currentLongitude,
@@ -196,27 +373,11 @@ class NearbyLabs extends Component {
         km: this.state.km,
         LabType: this.state.LabType,
         name: this.state.name,
-
+        locationAccessAllowed: this.state.locationAccessAllowed,
       };
-
-      // const url = "http://localhost:3000/labs/?lat=33.605039&lon=73.0249898/f06628c0-1e5a-4a5a-8321-8e1aa2149ec1";
-      // const lastSegment = url.substring(url.lastIndexOf("/") + 1);
-      // console.log(lastSegment);
-      // this.props.match.params.guest_id = lastSegment
-      // console.log("yaha ani chahi hai guid", this.props.match.params.guest_id, this.props.match.params.filnalurl)
-
       if (this.state.currentLatitude && this.state.currentLongitude) {
-        // const guest_id = locationDetails.guest_id
-        // console.log("differ:",guest_id)
-        // this.setState({ guest_id: guest_id });
-        // locationDetails.guest_id =  this.props.match.params.guest_id
-        // console.log("differ:",locationDetails.guest_id)
-
         onGetNearbyLabs(locationDetails);
         setTimeout(() => {
-          // const guest_id = uuidv4();
-          // console.log("uuid in nearby lab:",guest_id)
-          // locationDetails.guest_id =  guest_id
           this.setState({ nearbyLabs: this.props.nearbyLabs });
           // console.log("guest id in near by labs and backend;", { nearbyLabs: this.props.nearbyLabs, guest_id })
 
@@ -363,7 +524,7 @@ class NearbyLabs extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         name: this.state.name,
-
+        locationAccessAllowed: this.state.locationAccessAllowed,
       };
 
       onGetNearbyLabs(locationDetails);
@@ -393,7 +554,7 @@ class NearbyLabs extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         name: this.state.name,
-
+        locationAccessAllowed: this.state.locationAccessAllowed,
       };
 
       onGetNearbyLabs(locationDetails);
@@ -422,7 +583,7 @@ class NearbyLabs extends Component {
       address: this.state.address,
       city: this.state.city,
       name: this.state.name,
-
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -451,6 +612,7 @@ class NearbyLabs extends Component {
       km: this.state.km,
       address: this.state.address,
       city: this.state.city,
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
       // region wise advertisement
       onGetNearbyLabs(locationDetails);
@@ -479,7 +641,7 @@ class NearbyLabs extends Component {
       address: this.state.address,
       city: this.state.city,
       name: this.state.name,
-
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
@@ -506,7 +668,7 @@ class NearbyLabs extends Component {
       LabType: this.state.LabType,
       km: this.state.km,
       name: this.state.name,
-
+      locationAccessAllowed: this.state.locationAccessAllowed,
     };
 
     onGetNearbyLabs(locationDetails);
@@ -1490,7 +1652,7 @@ shouldHighlightTestsLink() {
 
               {/* ROW FOR ADVERTISEMENT */}
               {/* <Row> */}
-              {!isEmpty(nearbyLabs) && (!this.state.user_id) &&
+              {!isEmpty(nearbyLabs) && (!this.state.user_id) && (this.props.match.params.guest_id) &&
                 nearbyLabs.map((nearbyLab, key) => (
                   <Col xl="4" sm="6" key={"_col_" + key}>
                     <Card

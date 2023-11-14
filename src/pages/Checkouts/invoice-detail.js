@@ -7,6 +7,9 @@ import { isEmpty, map } from "lodash";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import logo from "../../assets/images/logo-dark.png";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 import PropTypes from "prop-types";
 import { getInvoiceDetail } from "store/invoices/actions";
@@ -29,22 +32,36 @@ class InvoiceDetail extends Component {
     window.print();
   };
 
+  // sendInvoice = () => {
+  //   const message = `Here's the invoice I received from Lab Hazir:
+  //   ${window.location.href}`;
+  
+  //   const url = `https://web.whatsapp.com/send?text=${encodeURIComponent(
+  //     message
+  //   )}`;
+  
+  //   window.open(url);
+  // };
   sendInvoice = () => {
-    const message = `Here's the invoice I received from Lab Hazir:
-    ${window.location.href}`;
-  
-    const url = `https://web.whatsapp.com/send?text=${encodeURIComponent(
-      message
-    )}`;
-  
-    window.open(url);
+    const { node } = this;
+
+    if (node && node.current) {
+      html2canvas(node.current).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
+        pdf.save('LabHazir_Invoice.pdf');
+      });
+    }
   };
+  
+  
   
 
   render() {
     return (
       <React.Fragment>
-        <div className="page-content">
+        <div ref={this.node} className="page-content">
           <MetaTags>
             <title>Invoice Detail | Lab Hazir - Dashboard</title>
           </MetaTags>
@@ -226,7 +243,7 @@ class InvoiceDetail extends Component {
                           {/* <Link to="#" className="btn btn-primary w-md">
                             Send
                           </Link> */}
-                          <button className="btn btn-success me-1" onClick={this.sendInvoice}>Send on WhatsApp</button>
+                          <button className="btn btn-success me-1" onClick={this.sendInvoice}>Download</button>
 
                         </div>
                       </div>

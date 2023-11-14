@@ -1880,7 +1880,7 @@ class NearbyLabs extends Component {
               /> */}
               {/* <h5>Need Some Better?</h5>
               <h2>&ldquo;Let&apos;s find the labs,&rdquo;</h2> */}
-                <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+              <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
@@ -1925,10 +1925,10 @@ class NearbyLabs extends Component {
                               options={labNames}
                               placeholder=""
                               isSearchable={true}
-                                isClearable={true}
-                                components={{
-                                  ClearIndicator,
-                                }}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                             />
                           </div>
                         </Col>
@@ -3605,7 +3605,7 @@ class NearbyLabs extends Component {
               <title>Nearby Labs | Lab Hazir - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "80px", marginLeft: "20px", marginRight: "20px" }}>
-              <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: 0, padding: 0, backgroundColor: "#CFE0F6" }}>
+              <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: "10px", padding: 0, backgroundColor: "#CFE0F6" }}>
                 <CardBody>
                   <h4>Categories</h4>
                   <p className={"font-size-10"}>
@@ -3751,16 +3751,17 @@ class NearbyLabs extends Component {
                   </Row>
                 </CardBody>
               </Card>
-              <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+              <Row>
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    search_type: (this.state && this.state.search_type) || "Current Location",
+                    search_type:
+                      (this.state && this.state.search_type) ||
+                      "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) || "Main",
                     km: (this.state && this.state.km) || "30",
-                    name: (this.state && this.state.name) || "",
                   }}
                   validationSchema={Yup.object().shape({
                     city: Yup.string().when("search_type", {
@@ -3768,158 +3769,135 @@ class NearbyLabs extends Component {
                       then: Yup.string().required("Please enter your City"),
                     }),
                     location: Yup.string().when("city", {
-                      is: val => val !== "",
-                      then: Yup.string().required("Please enter your Location"),
+                      is: val => val != "",
+                      then: Yup.string().required(
+                        "Please enter your Location"
+                      ),
                     }),
                   })}
                 >
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
-                      {/* ... (unchanged) */}
-                      <Row className="mb-3" noGutters>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
-
-                            </Label>
+                      {/* Type field */}
+                      {/* Type field */}
+                      <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                      <Row className="g-0">
+                        <Col>
+                          <div>
                             <Select
                               type="text"
                               value={labNames.find((option) => option.value === this.state.name)}
                               onChange={this.onChangeLabName}
                               options={labNames}
-                              placeholder=""
+                              placeholder="Lab Name..."
                             />
+
                           </div>
                         </Col>
-                        <Col xs="3" sm="3" md="2" lg="2">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Location </span>
-                            </Label>
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={(e) => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">Current Location</option>
-                              <option value="City">By City</option>
-                              <option value="Custom Address">Custom Address</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        <Col xs="3" sm="3" md="2" lg="2">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Labs Type </span>
-                            </Label>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div>
                             <Field
                               name="LabType"
                               component="select"
-                              onChange={(e) => this.onChangeType(e)}
+                              onChange={e => this.onChangeType(e)}
                               value={this.state.LabType}
                               className="form-select"
                             >
                               <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
+                              <option value="Collection">
+                                Collection Points
+                              </option>
                               <option value="Others">Both</option>
                             </Field>
                           </div>
                         </Col>
-                        {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                          <Col xs="1" sm="2" md="1" lg="1">
+                      </Row>
+                      <Row className="g-0">
+                        <Col xs="6" sm="6" md="3" lg="3">
+                          <div className="mb-3">
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={this.state.search_type}
+                              className="form-select"
+                            >
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="City">By City</option>
+                              <option value="Custom Address">
+                                Custom Address
+                              </option>
+                            </Field>
+                          </div>
+                        </Col>
+
+                        {this.state.search_type === "Current Location" && (
+                          <Col xs="2" sm="2" md="2" lg="2">
                             <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Km </span>
-                              </Label>
                               <div className="input-group">
                                 <Input
                                   defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
+                                  onChange={e => this.onChangeKm(e)}
                                   id="pac-input"
                                   type="number"  // Change "numbers" to "number"
                                   className="form-control"
-                                  style={{ fontSize: '14px' }}
-                                  placeholder=""
+                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
                                 />
                               </div>
                             </div>
                           </Col>
                         )}
-                        {this.state.search_type === 'City' && (
-                          <Col xs="3" sm="3" md="2" lg="2">
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="2" sm="2" md="2" lg="2">
                             <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>By City </span>
-                              </Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={e => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="number"  // Change "numbers" to "number"
+                                  className="form-control"
+                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+                                />
+                              </div>
+                            </div>
+                          </Col>
+                        )}
+                        {/* City field */}
+                        {this.state.search_type === "City" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
                               <Select
                                 name="city"
                                 component="Select"
                                 onChange={this.onChangeCity}
                                 className="defautSelectParent is-invalid"
                                 options={cityList}
-                                placeholder=""
+                                placeholder="City..."
                               />
                             </div>
                           </Col>
                         )}
-                        {this.state.search_type === 'Custom Address' && (
-                          <Col xs="3" sm="3" md="2" lg="2">
+                        {/* Custom Address field */}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Custom Address </span>
-                              </Label>
                               <Input
                                 defaultValue={this.state.address}
-                                onChange={(e) => this.onChangeAddress(e)}
+                                onChange={e => this.onChangeAddress(e)}
                                 id="pac-input"
                                 type="text"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="Search Location..."
                               />
                             </div>
                           </Col>
                         )}
-                      </Row>;
-
+                      </Row>
                     </Form>
                   )}
                 </Formik>
@@ -4031,7 +4009,7 @@ class NearbyLabs extends Component {
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                {nearbyLab.opening_day} To {nearbyLab.closing_day}</span>
                             </div>
                           )}
 
@@ -4530,16 +4508,17 @@ class NearbyLabs extends Component {
                 marginRight: "20px",
               }}
             >
-              <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+              <Row>
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    search_type: (this.state && this.state.search_type) || "Current Location",
+                    search_type:
+                      (this.state && this.state.search_type) ||
+                      "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) || "Main",
                     km: (this.state && this.state.km) || "30",
-                    name: (this.state && this.state.name) || "",
                   }}
                   validationSchema={Yup.object().shape({
                     city: Yup.string().when("search_type", {
@@ -4547,158 +4526,135 @@ class NearbyLabs extends Component {
                       then: Yup.string().required("Please enter your City"),
                     }),
                     location: Yup.string().when("city", {
-                      is: val => val !== "",
-                      then: Yup.string().required("Please enter your Location"),
+                      is: val => val != "",
+                      then: Yup.string().required(
+                        "Please enter your Location"
+                      ),
                     }),
                   })}
                 >
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
-                      {/* ... (unchanged) */}
-                      <Row className="mb-3" noGutters>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
-
-                            </Label>
+                      {/* Type field */}
+                      {/* Type field */}
+                      <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                      <Row className="g-0">
+                        <Col>
+                          <div>
                             <Select
                               type="text"
                               value={labNames.find((option) => option.value === this.state.name)}
                               onChange={this.onChangeLabName}
                               options={labNames}
-                              placeholder=""
+                              placeholder="Lab Name..."
                             />
+
                           </div>
                         </Col>
-                        <Col xs="3" sm="3" md="2" lg="2">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Location </span>
-                            </Label>
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={(e) => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">Current Location</option>
-                              <option value="City">By City</option>
-                              <option value="Custom Address">Custom Address</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        <Col xs="3" sm="3" md="2" lg="2">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Labs Type </span>
-                            </Label>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div>
                             <Field
                               name="LabType"
                               component="select"
-                              onChange={(e) => this.onChangeType(e)}
+                              onChange={e => this.onChangeType(e)}
                               value={this.state.LabType}
                               className="form-select"
                             >
                               <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
+                              <option value="Collection">
+                                Collection Points
+                              </option>
                               <option value="Others">Both</option>
                             </Field>
                           </div>
                         </Col>
-                        {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                          <Col xs="1" sm="2" md="1" lg="1">
+                      </Row>
+                      <Row className="g-0">
+                        <Col xs="6" sm="6" md="3" lg="3">
+                          <div className="mb-3">
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={this.state.search_type}
+                              className="form-select"
+                            >
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="City">By City</option>
+                              <option value="Custom Address">
+                                Custom Address
+                              </option>
+                            </Field>
+                          </div>
+                        </Col>
+
+                        {this.state.search_type === "Current Location" && (
+                          <Col xs="2" sm="2" md="2" lg="2">
                             <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Km </span>
-                              </Label>
                               <div className="input-group">
                                 <Input
                                   defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
+                                  onChange={e => this.onChangeKm(e)}
                                   id="pac-input"
                                   type="number"  // Change "numbers" to "number"
                                   className="form-control"
-                                  style={{ fontSize: '14px' }}
-                                  placeholder=""
+                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
                                 />
                               </div>
                             </div>
                           </Col>
                         )}
-                        {this.state.search_type === 'City' && (
-                          <Col xs="3" sm="3" md="2" lg="2">
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="2" sm="2" md="2" lg="2">
                             <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>By City </span>
-                              </Label>
+                              <div className="input-group">
+                                <Input
+                                  defaultValue={this.state.km}
+                                  onChange={e => this.onChangeKm(e)}
+                                  id="pac-input"
+                                  type="number"  // Change "numbers" to "number"
+                                  className="form-control"
+                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                  placeholder="Search By Km..."
+                                />
+                              </div>
+                            </div>
+                          </Col>
+                        )}
+                        {/* City field */}
+                        {this.state.search_type === "City" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
                               <Select
                                 name="city"
                                 component="Select"
                                 onChange={this.onChangeCity}
                                 className="defautSelectParent is-invalid"
                                 options={cityList}
-                                placeholder=""
+                                placeholder="City..."
                               />
                             </div>
                           </Col>
                         )}
-                        {this.state.search_type === 'Custom Address' && (
-                          <Col xs="3" sm="3" md="2" lg="2">
+                        {/* Custom Address field */}
+                        {this.state.search_type === "Custom Address" && (
+                          <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Custom Address </span>
-                              </Label>
                               <Input
                                 defaultValue={this.state.address}
-                                onChange={(e) => this.onChangeAddress(e)}
+                                onChange={e => this.onChangeAddress(e)}
                                 id="pac-input"
                                 type="text"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="Search Location..."
                               />
                             </div>
                           </Col>
                         )}
-                      </Row>;
-
+                      </Row>
                     </Form>
                   )}
                 </Formik>
@@ -5388,16 +5344,17 @@ class NearbyLabs extends Component {
 
             <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
               <Col lg="9">
-                <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+                <Row>
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
-                      search_type: (this.state && this.state.search_type) || "Current Location",
+                      search_type:
+                        (this.state && this.state.search_type) ||
+                        "Current Location",
                       city: (this.state && this.state.city) || "",
                       location: (this.state && this.state.location) || "",
                       LabType: (this.state && this.state.LabType) || "Main",
                       km: (this.state && this.state.km) || "30",
-                      name: (this.state && this.state.name) || "",
                     }}
                     validationSchema={Yup.object().shape({
                       city: Yup.string().when("search_type", {
@@ -5405,158 +5362,135 @@ class NearbyLabs extends Component {
                         then: Yup.string().required("Please enter your City"),
                       }),
                       location: Yup.string().when("city", {
-                        is: val => val !== "",
-                        then: Yup.string().required("Please enter your Location"),
+                        is: val => val != "",
+                        then: Yup.string().required(
+                          "Please enter your Location"
+                        ),
                       }),
                     })}
                   >
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
-                        {/* ... (unchanged) */}
-                        <Row className="mb-3" noGutters>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
-
-                              </Label>
+                        {/* Type field */}
+                        {/* Type field */}
+                        <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                        <Row className="g-0">
+                          <Col>
+                            <div>
                               <Select
                                 type="text"
                                 value={labNames.find((option) => option.value === this.state.name)}
                                 onChange={this.onChangeLabName}
                                 options={labNames}
-                                placeholder=""
+                                placeholder="Lab Name..."
                               />
+
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Location </span>
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={(e) => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">Current Location</option>
-                                <option value="City">By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Labs Type </span>
-                              </Label>
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div>
                               <Field
                                 name="LabType"
                                 component="select"
-                                onChange={(e) => this.onChangeType(e)}
+                                onChange={e => this.onChangeType(e)}
                                 value={this.state.LabType}
                                 className="form-select"
                               >
                                 <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
+                                <option value="Collection">
+                                  Collection Points
+                                </option>
                                 <option value="Others">Both</option>
                               </Field>
                             </div>
                           </Col>
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
+                        </Row>
+                        <Row className="g-0">
+                          <Col xs="6" sm="6" md="3" lg="3">
+                            <div className="mb-3">
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">By City</option>
+                                <option value="Custom Address">
+                                  Custom Address
+                                </option>
+                              </Field>
+                            </div>
+                          </Col>
+
+                          {this.state.search_type === "Current Location" && (
+                            <Col xs="2" sm="2" md="2" lg="2">
                               <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>Km </span>
-                                </Label>
                                 <div className="input-group">
                                   <Input
                                     defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
+                                    onChange={e => this.onChangeKm(e)}
                                     id="pac-input"
                                     type="number"  // Change "numbers" to "number"
                                     className="form-control"
-                                    style={{ fontSize: '14px' }}
-                                    placeholder=""
+                                    style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                    placeholder="Search By Km..."
                                   />
                                 </div>
                               </div>
                             </Col>
                           )}
-                          {this.state.search_type === 'City' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
+                          {this.state.search_type === "Custom Address" && (
+                            <Col xs="2" sm="2" md="2" lg="2">
                               <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>By City </span>
-                                </Label>
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={e => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                    placeholder="Search By Km..."
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                          )}
+                          {/* City field */}
+                          {this.state.search_type === "City" && (
+                            <Col xs="4" sm="4" md="3" lg="3">
+                              <div className="mb-3">
                                 <Select
                                   name="city"
                                   component="Select"
                                   onChange={this.onChangeCity}
                                   className="defautSelectParent is-invalid"
                                   options={cityList}
-                                  placeholder=""
+                                  placeholder="City..."
                                 />
                               </div>
                             </Col>
                           )}
-                          {this.state.search_type === 'Custom Address' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
+                          {/* Custom Address field */}
+                          {this.state.search_type === "Custom Address" && (
+                            <Col xs="4" sm="4" md="3" lg="3">
                               <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>Custom Address </span>
-                                </Label>
                                 <Input
                                   defaultValue={this.state.address}
-                                  onChange={(e) => this.onChangeAddress(e)}
+                                  onChange={e => this.onChangeAddress(e)}
                                   id="pac-input"
                                   type="text"
                                   className="form-control"
-                                  placeholder=""
+                                  placeholder="Search Location..."
                                 />
                               </div>
                             </Col>
                           )}
-                        </Row>;
-
+                        </Row>
                       </Form>
                     )}
                   </Formik>
@@ -6240,7 +6174,7 @@ class NearbyLabs extends Component {
                 className="mini-stats-wid"
                 style={{
                   marginTop: "4px",
-                  marginBottom: 0,
+                  marginBottom: "10px",
                   padding: 0,
                   backgroundColor: "#CFE0F6",
                 }}
@@ -6391,16 +6325,17 @@ class NearbyLabs extends Component {
                 </CardBody>
               </Card>
               <Col lg="9">
-                <Row className="mb-3" style={{ backgroundColor: 'blue', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
+                <Row>
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
-                      search_type: (this.state && this.state.search_type) || "Current Location",
+                      search_type:
+                        (this.state && this.state.search_type) ||
+                        "Current Location",
                       city: (this.state && this.state.city) || "",
                       location: (this.state && this.state.location) || "",
                       LabType: (this.state && this.state.LabType) || "Main",
                       km: (this.state && this.state.km) || "30",
-                      name: (this.state && this.state.name) || "",
                     }}
                     validationSchema={Yup.object().shape({
                       city: Yup.string().when("search_type", {
@@ -6408,158 +6343,135 @@ class NearbyLabs extends Component {
                         then: Yup.string().required("Please enter your City"),
                       }),
                       location: Yup.string().when("city", {
-                        is: val => val !== "",
-                        then: Yup.string().required("Please enter your Location"),
+                        is: val => val != "",
+                        then: Yup.string().required(
+                          "Please enter your Location"
+                        ),
                       }),
                     })}
                   >
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
-                        {/* ... (unchanged) */}
-                        <Row className="mb-3" noGutters>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
-
-                              </Label>
+                        {/* Type field */}
+                        {/* Type field */}
+                        <h4 style={{ background: "blue", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                        <Row className="g-0">
+                          <Col>
+                            <div>
                               <Select
                                 type="text"
                                 value={labNames.find((option) => option.value === this.state.name)}
                                 onChange={this.onChangeLabName}
                                 options={labNames}
-                                placeholder=""
+                                placeholder="Lab Name..."
                               />
+
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Location </span>
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={(e) => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">Current Location</option>
-                                <option value="City">By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Labs Type </span>
-                              </Label>
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div>
                               <Field
                                 name="LabType"
                                 component="select"
-                                onChange={(e) => this.onChangeType(e)}
+                                onChange={e => this.onChangeType(e)}
                                 value={this.state.LabType}
                                 className="form-select"
                               >
                                 <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
+                                <option value="Collection">
+                                  Collection Points
+                                </option>
                                 <option value="Others">Both</option>
                               </Field>
                             </div>
                           </Col>
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
+                        </Row>
+                        <Row className="g-0">
+                          <Col xs="6" sm="6" md="3" lg="3">
+                            <div className="mb-3">
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">By City</option>
+                                <option value="Custom Address">
+                                  Custom Address
+                                </option>
+                              </Field>
+                            </div>
+                          </Col>
+
+                          {this.state.search_type === "Current Location" && (
+                            <Col xs="2" sm="2" md="2" lg="2">
                               <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>Km </span>
-                                </Label>
                                 <div className="input-group">
                                   <Input
                                     defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
+                                    onChange={e => this.onChangeKm(e)}
                                     id="pac-input"
                                     type="number"  // Change "numbers" to "number"
                                     className="form-control"
-                                    style={{ fontSize: '14px' }}
-                                    placeholder=""
+                                    style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                    placeholder="Search By Km..."
                                   />
                                 </div>
                               </div>
                             </Col>
                           )}
-                          {this.state.search_type === 'City' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
+                          {this.state.search_type === "Custom Address" && (
+                            <Col xs="2" sm="2" md="2" lg="2">
                               <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>By City </span>
-                                </Label>
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={e => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    style={{ fontSize: "14px" }} // Set input font size to 14 pixels
+                                    placeholder="Search By Km..."
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                          )}
+                          {/* City field */}
+                          {this.state.search_type === "City" && (
+                            <Col xs="4" sm="4" md="3" lg="3">
+                              <div className="mb-3">
                                 <Select
                                   name="city"
                                   component="Select"
                                   onChange={this.onChangeCity}
                                   className="defautSelectParent is-invalid"
                                   options={cityList}
-                                  placeholder=""
+                                  placeholder="City..."
                                 />
                               </div>
                             </Col>
                           )}
-                          {this.state.search_type === 'Custom Address' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
+                          {/* Custom Address field */}
+                          {this.state.search_type === "Custom Address" && (
+                            <Col xs="4" sm="4" md="3" lg="3">
                               <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>Custom Address </span>
-                                </Label>
                                 <Input
                                   defaultValue={this.state.address}
-                                  onChange={(e) => this.onChangeAddress(e)}
+                                  onChange={e => this.onChangeAddress(e)}
                                   id="pac-input"
                                   type="text"
                                   className="form-control"
-                                  placeholder=""
+                                  placeholder="Search Location..."
                                 />
                               </div>
                             </Col>
                           )}
-                        </Row>;
-
+                        </Row>
                       </Form>
                     )}
                   </Formik>

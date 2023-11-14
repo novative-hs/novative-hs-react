@@ -20,8 +20,6 @@ const ScrollButton = () =>{
     window.scrollTo({
       top: 0, 
       behavior: 'smooth'
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
     });
   };
   
@@ -32,8 +30,8 @@ const ScrollButton = () =>{
      <FaArrowCircleUp onClick={scrollToTop} 
      style={{
       position: 'relative',
-        bottom: '110px', // Adjust the vertical position as needed
-        right: '-550px', // Adjust the horizontal position as needed
+        bottom: '110px',
+        right: '-550px', 
         display: visible ? 'inline' : 'none'
      }} />
     </Button>

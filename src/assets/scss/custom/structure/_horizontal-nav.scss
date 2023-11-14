@@ -24,12 +24,13 @@
             position: relative;
             padding: 1rem 1.3rem;
             color: $menu-item-color;
+            // background-color:;
             i{
                 font-size: 15px;
             }
             &:focus, &:hover{
                 color: $menu-item-active-color;
-                background-color: transparent;
+                background-color: #fff;
             }
         }
         
@@ -38,6 +39,8 @@
             &.active, &:hover{
                 color: $menu-item-active-color;
                 font-weight: bold;
+                background-color: #fff;
+
             }
         }
         
@@ -51,7 +54,7 @@
             &.active{
               >a {
                     color: $menu-item-active-color;
-                    background-color: transparent;
+                    background-color: #fff;
                     // font-weight: bold;
                 }
             }
