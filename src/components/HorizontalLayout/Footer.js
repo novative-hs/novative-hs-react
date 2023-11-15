@@ -27,15 +27,15 @@ const Footer = () => {
             {/* Column 1 */}
             <Col md={3}>
               <div className="mb-2">
-              <Link
-                    to={
-                        `/nearby-labs/`
-                    }
-                  >
-                    <span>
+                <Link
+                  to={
+                    `/nearby-labs/`
+                  }
+                >
+                  <span>
                     <img src="/logo-dark.png" alt="" height="60" />
                   </span>
-                  </Link>
+                </Link>
               </div>
               <div className="mb-2">
                 {/* Add your Terms, Privacy Policy, and Disclaimer links here */}
@@ -70,22 +70,23 @@ const Footer = () => {
               <h4>Company</h4>
               <div className="mb-2">
                 {/* Add your About Us, Contact Us, Careers, and Help & Support links here */}
-                <a
-                  href="/about-us"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `/about-us/`
+                  }
+
                 >
                   About Us
-                </a>
+                </Link>
               </div>
               <div className="mb-2">
-                <a
-                  href="https://www.linkedin.com/company/labhazir/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `/contact-us/`
+                  }
                 >
                   Contact Us
-                </a>
+                </Link>
               </div>
               <div className="mb-2">
                 <a
@@ -97,13 +98,13 @@ const Footer = () => {
                 </a>
               </div>
               <div className="mb-2">
-                <a
-                  href="https://www.labhazir.com/contact-us"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `/contact-us/`
+                  }
                 >
                   Help & Support
-                </a>
+                </Link>
               </div>
             </Col>
 
@@ -112,40 +113,41 @@ const Footer = () => {
               <h4>Quick Links</h4>
               <div className="mb-2">
                 {/* Add your quick links here */}
-                <a
-                  href="https://www.labhazir.com/register/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `/register/`
+                  }
                 >
                   Become a Lab
-                </a>
+                </Link>
               </div>
               <div className="mb-2">
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `#`
+                  }
                 >
-                  How to API&apos;s Integrations
-                </a>
+                  How to API&apos;s Integrations?
+                </Link>
               </div>
               <div className="mb-2">
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `#`
+                  }
                 >
                   Corporate Customer
-                </a>
+                </Link>
               </div>
               <div className="mb-2">
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={
+                    `b2b-affiliate`
+                  }
+
                 >
                   Become an affiliate
-                </a>
+                </Link>
               </div>
             </Col>
 
@@ -170,36 +172,36 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-facebook align-middle me-2" style={{fontSize: "30px", color: "#3b5998"}} />
+                  <i className="mdi mdi-facebook align-middle me-2" style={{ fontSize: "30px", color: "#3b5998" }} />
                 </a>
                 <a
                   href="https://www.instagram.com/lab_hazir_official/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-instagram align-middle me-2" style={{fontSize: "30px", color: "#FD1D1D"}} />
+                  <i className="mdi mdi-instagram align-middle me-2" style={{ fontSize: "30px", color: "#FD1D1D" }} />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/labhazir/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-linkedin align-middle me-2" style={{fontSize: "30px", color: "#0077b5"}} />
+                  <i className="mdi mdi-linkedin align-middle me-2" style={{ fontSize: "30px", color: "#0077b5" }} />
                 </a>
                 <a
                   href="https://www.youtube.com/@LabHazir"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-youtube align-middle me-2" style={{fontSize: "30px", color: "#FF0000"}} />
+                  <i className="mdi mdi-youtube align-middle me-2" style={{ fontSize: "30px", color: "#FF0000" }} />
                 </a>
               </div>
             </Col>
             <div style={{ background: "#3B71CA", height: "30px", fontWeight: "bold" }}>
-          <Col className="text-white text-center fonr-size-12 mt-1">
-            {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
-          </Col>
-        </div>
+              <Col className="text-white text-center fonr-size-12 mt-1">
+                {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
+              </Col>
+            </div>
           </Row>
         )}
 
@@ -246,14 +248,14 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-linkedin align-middle me-2" style={{fontSize: "30px", color: "#0077b5"}} />
+                  <i className="mdi mdi-linkedin align-middle me-2" style={{ fontSize: "30px", color: "#0077b5" }} />
                 </a>
                 <a
                   href="https://www.facebook.com/labhazir"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-facebook align-middle me-2" style={{fontSize: "30px", color: "#3b5998"}} />
+                  <i className="mdi mdi-facebook align-middle me-2" style={{ fontSize: "30px", color: "#3b5998" }} />
                 </a>
               </div>
             </Col>

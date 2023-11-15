@@ -198,7 +198,7 @@ class LabsLists extends Component {
                                   </td>
                                   <td className="text-center">{lab_list.landline}</td>
                                   <td className="text-start">{lab_list.email}</td>
-                                  <td className="text-start">{lab_list.address}</td>
+                                  <td className="text-center" style={{whiteSpace: "pre-wrap"}}>{lab_list.address}</td>
                                 </tr>
                                     
                                       )

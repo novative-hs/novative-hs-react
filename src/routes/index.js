@@ -21,9 +21,11 @@ import NearbyRadiology from "pages/LabMarket/NearbyLabs/NearbyRadiology";
 
 //ContactUs
 import ContactUs from "../pages/Contact/contact-us";
+import B2bAffiliate from "../pages/LabMarket/NearbyLabs/b2baffiliate"
 import ChatBox from "../pages/Public/chat";
 // Authentication related pages
 import Login from "../pages/Authentication/Login";
+import RegisterAffiliate from "../pages/Authentication/RegisterAffiliate"
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import PatientInformation from "../pages/Authentication/PatientInformation";
@@ -45,6 +47,9 @@ import DashboardCorporate from "../pages/Dashboard-Corporate/index"
 
 //Finance Admin
 import DashboardFinanceAdmin from "pages/Dashboard-FinanceAdmin";
+
+//Finance Admin
+import DashboardMarketerAdmin from "pages/Dashboard-MarketerAdmin";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
 
 
@@ -266,6 +271,7 @@ const publicRoutes = [
   { path: "/register/:guest_id?/:uuid?", component: Register },
   { path: "/logout", component: Logout },
   { path: "/login/:guest_id?/:uuid?", component: Login },
+  { path: "/register-affiliate", component: RegisterAffiliate },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/:token/confirm-password", component: ConfirmPwd },
   { path: "/patient-information/:id/:guest_id?/:uuid?", component: PatientInformation },
@@ -584,6 +590,7 @@ const registrationAdminAuthProtectedRoutes = [
 ];
 
 const marketerAdminAuthProtectedRoutes = [
+  { path: "/dashboard-marketeradmin", component: DashboardMarketerAdmin },
   { path: "/advertisement", component: Advertisements },
   { path: "/advertisement-price-list", component: AdvertisementPriceLists },
   { path: "/discount-labhazir", component: DiscountLabHazir },
@@ -692,6 +699,9 @@ const patientAuthProtectedRoutes = [
 const patientPublicRoutes = [
   { path: "/change-password", component: ChangePassword },
   { path: "/contact-us", component: ContactUs },
+
+  { path: "/b2b-affiliate", component: B2bAffiliate },
+
   { path: "/disclaimer", component: Disclaimer },
   { path: "/about-us", component: AboutUs },
   { path: "/chat-box", component: ChatBox },

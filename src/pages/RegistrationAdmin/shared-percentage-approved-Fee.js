@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import {
   Card,
@@ -67,6 +68,13 @@ class SharedPercentageLabHazirList extends Component {
             text: "Test ID",
             dataField: "test_id",
             sort: true,
+            formatter: (cellContent, sharedPercentageApprovedFeeTests) => (
+              <>
+              <div className="text-start">
+                   {sharedPercentageApprovedFeeTests.test_id}
+              </div>
+              </>
+            ),filter: textFilter(),
           },
           {
             dataField: "test_name",
@@ -81,7 +89,7 @@ class SharedPercentageLabHazirList extends Component {
                    {sharedPercentageApprovedFeeTests.test_name}
               </div>
               </>
-            ),
+            ),filter: textFilter(),
           },
           {
             dataField: "test_categories",
@@ -96,7 +104,7 @@ class SharedPercentageLabHazirList extends Component {
                    {sharedPercentageApprovedFeeTests.test_categories}
               </div>
               </>
-            ),
+            ),filter: textFilter(),
           },
           {
             dataField: "price",
@@ -108,14 +116,20 @@ class SharedPercentageLabHazirList extends Component {
                    {sharedPercentageApprovedFeeTests.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               </div>
               </>
-            ),
+            ),filter: textFilter(),
           },
           {
             dataField: "status", 
             text: "Status",
             sort: true,
+            filter: selectFilter({
+            options: {
+              'Approved': 'Approved',
+              'Unapproved': 'Unapproved',
+            },
+            defaultValue: 'All',
+          }),
           },
-       
           {
             dataField: "shared_percentage",
             text: "Referrel (%)",
@@ -128,7 +142,7 @@ class SharedPercentageLabHazirList extends Component {
   
                 )}
               </>
-            ),
+            ),filter: textFilter(),
           },
           {
             dataField: "shared_percentage",
@@ -142,7 +156,7 @@ class SharedPercentageLabHazirList extends Component {
   
                 )}
               </>
-            ),
+            ),filter: textFilter(),
           },
 
       {
@@ -371,13 +385,15 @@ class SharedPercentageLabHazirList extends Component {
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
                                       classes={
-                                        "table align-middle table-nowrap table-hover"
+                                        // "table align-middle table-nowrap table-hover"
+                                        "table align-middle table-condensed table-hover"
                                       }
                                       bordered={false}
                                       striped={false}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
                                     />
 
                                     <Modal

@@ -99,28 +99,37 @@ class LabAudits extends Component {
                   this.props.activitylog.map((activitylog, key) => (
                      <Col  key={"_col_" + key}>
                      
-                          <div className="mt-3">
-                            {activitylog.actions =="Added" && (
+                     <div className="mt-3">
+                          {activitylog.actions === "Added" && (
                               <div>
-                              <i className="fas fa-plus-square font-size-18"></i>{" "}
-                            {activitylog.lab_name} Added <b>{activitylog.test_name}</b> on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
-                            </div>
-                            )}
-                              {activitylog.actions =="Updated" && (
+                                  <i className="fas fa-plus-square font-size-18"></i>{" "}
+                                  {activitylog.lab_name} Added <b>{activitylog.test_name}</b> on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
+                              </div>
+                          )}
+                          {(activitylog.actions === "Updated") && (
                               <div>
-                              <i className="fas fa-exchange-alt font-size-18"></i>{" "}
-                            {activitylog.lab_name} Changed <b>{activitylog.test_name} </b> {activitylog.field_name} from {activitylog.old_value} to {activitylog.new_value} on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
-                              
-                            </div>
-                            )}
-                            {activitylog.actions =="Synchronize" && (
+                                  {activitylog.field_name === "discount_by_lab" || activitylog.field_name === "Discount_For_All_Tests" ? (
+                                      <div>
+                                          <i className="fas fa-exchange-alt font-size-18"></i>{" "}
+                                          {activitylog.lab_name} Changed <b>{activitylog.test_name} </b> {activitylog.field_name} from {activitylog.old_discount_by_lab} to {activitylog.new_discount_by_lab}
+                                          <br />
+                                          Start Date: {new Date(activitylog.start_date_by_lab).toLocaleDateString("en-US")} to End Date: {new Date(activitylog.end_date_by_lab).toLocaleDateString("en-US")} on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
+                                      </div>
+                                  ) : (
+                                      <div>
+                                          <i className="fas fa-exchange-alt font-size-18"></i>{" "}
+                                          {activitylog.lab_name} Changed <b>{activitylog.test_name} </b> {activitylog.field_name} from {activitylog.old_value} to {activitylog.new_value} on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
+                                      </div>
+                                  )}
+                              </div>
+                          )}
+                          {activitylog.actions === "Synchronize" && (
                               <div>
-                              <i className="fas fa-sync-alt font-size-18"></i>{" "}
-                                {activitylog.lab_name} Synchronizes its main lab tests on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
-                              
-                            </div>
-                            )}
-                          </div>
+                                  <i className="fas fa-sync-alt font-size-18"></i>{" "}
+                                  {activitylog.lab_name} Synchronizes its main lab tests on {new Date(activitylog.created_at).toLocaleDateString("en-US")} at {new Date(activitylog.created_at).toLocaleTimeString("en-US")}.
+                              </div>
+                          )}
+                      </div>
                         
                      </Col>
                   ))}

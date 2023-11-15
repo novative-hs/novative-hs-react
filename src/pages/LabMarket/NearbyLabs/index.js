@@ -1067,6 +1067,15 @@ class NearbyLabs extends Component {
   };
 
   render() {
+    const generateLabNames = (nearbyLabs) => {
+      const labNames = nearbyLabs.map((lab) => ({
+        label: lab.name, // Replace with the actual property name in your nearbyLabs data
+        value: lab.name, // Replace with the actual property name in your nearbyLabs data
+      }));
+    
+      return labNames;
+    };
+
     const ClearIndicator = (props) => {
       return (
         <components.ClearIndicator {...props}>
@@ -1120,19 +1129,13 @@ class NearbyLabs extends Component {
       totalPage,
       regionWiseAdvertisement,
     } = this.state;
+    const labNames = generateLabNames(nearbyLabs);
     const { onGetPatientProfile } = this.props;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
         label: this.props.territoriesList[i].city,
         value: this.props.territoriesList[i].city,
-      });
-    }
-    const labNames = [];
-    for (let i = 0; i < this.props.labNamesList.length; i++) {
-      labNames.push({
-        label: this.props.labNamesList[i],
-        value: this.props.labNamesList[i],
       });
     }
 
@@ -1907,30 +1910,29 @@ class NearbyLabs extends Component {
                       {/* ... (unchanged) */}
                       <Row className="mb-3" noGutters>
                         <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
-
-                            </Label>
-                            <Select
-                              type="text"
-                              value={labNames.find((option) => option.value === this.state.name)}
-                              onChange={this.onChangeLabName}
-                              options={labNames}
-                              placeholder=""
-                              isSearchable={true}
-                              isClearable={true}
-                              components={{
-                                ClearIndicator,
-                              }}
-                            />
-                          </div>
+                        <div className="mb-3">
+                          <Label
+                            for="LabType"
+                            className="form-label"
+                            style={{
+                              fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                            }}
+                          >
+                            <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
+                          </Label>
+                          <Select
+                            type="text"
+                            value={labNames.find((option) => option.value === this.state.name)}
+                            onChange={this.onChangeLabName}
+                            options={labNames}
+                            placeholder=""
+                            isSearchable={true}
+                            isClearable={true}
+                            components={{
+                              ClearIndicator,
+                            }}
+                          />
+                        </div>
                         </Col>
                         <Col xs="3" sm="3" md="2" lg="2">
                           <div className="mb-3">
@@ -2763,6 +2765,12 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder=""
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
+                                
                               />
                             </div>
                           </Col>
@@ -3790,6 +3798,12 @@ class NearbyLabs extends Component {
                               onChange={this.onChangeLabName}
                               options={labNames}
                               placeholder="Lab Name..."
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
+                              
                             />
 
                           </div>
@@ -4547,6 +4561,11 @@ class NearbyLabs extends Component {
                               onChange={this.onChangeLabName}
                               options={labNames}
                               placeholder="Lab Name..."
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                             />
 
                           </div>
@@ -5383,6 +5402,11 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                               />
 
                             </div>
@@ -6364,6 +6388,11 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                               />
 
                             </div>

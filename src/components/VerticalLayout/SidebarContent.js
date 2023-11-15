@@ -652,6 +652,12 @@ class SidebarContent extends Component {
                   <li className="menu-title">
                     {this.props.t("Marketer Admin")}
                   </li>
+                  <li>
+                  <Link to="/dashboard-marketeradmin">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Dashboard")}</span>
+                  </Link>
+                </li>
                   {/* Advertisement*/}
                   <li>
                     <Link to="/#" className="has-arrow">

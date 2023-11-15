@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+// import Select from "react-select";
 import { Formik, Field, Form } from "formik";
 import ScrollButton from "components/Common/Scrollbutton";
 import * as Yup from "yup";
@@ -13,7 +13,7 @@ import classname from "classnames";
 import logo from "../../../assets/images/logo.svg";
 import logoLight from "../../../assets/images/logo-light.png";
 import logoLightSvg from "../../../assets/images/logo-light.svg";
-
+import Select, { components } from 'react-select';
 //i18n
 import { withTranslation } from "react-i18next";
 import "../../../components/HorizontalLayout/horizontal-navbar.scss";
@@ -171,7 +171,6 @@ class NearbyLabs extends Component {
           this.setState({ currentLatitude: latitude });
           this.setState({ currentLongitude: longitude });
           this.setState({ locationAccessAllowed: true });
-          console.log("locationnnnnnnnnnnnnnnnnnnn isssssssssssssssss alllllllllooooooooooooowwwwwwwwwweeeeeeeeedddddd")
           // near by labs
           if ((this.state.user_id || this.state.user_type === "CSR")) {
             const nearbyLabsLocationDetails = {
@@ -452,6 +451,7 @@ class NearbyLabs extends Component {
       ),
     });
   };
+  
 
   /*
   on change rating checkbox method
@@ -594,8 +594,21 @@ class NearbyLabs extends Component {
       this.setState({ nearbyLabs: this.props.nearbyLabs });
     }, 1000);
   };
+  clearSearch = () => {
+    this.setState({
+      selectedLab: null,
+      name: null, // Clear the 'name' property as well if needed
+    });
+  };
+
   onChangeLabName = (selectedOption) => {
-    this.setState({ name: selectedOption.value });
+    // Check if selectedOption is not null before accessing its properties
+    if (selectedOption && selectedOption.value) {
+      this.setState({ name: selectedOption.value });
+    } else {
+      // Handle the case where selectedOption is null or doesn't have a value property
+      this.setState({ name: '' }); // Set the name to an appropriate default value or leave it empty
+    }
 
     // Call nearby labs API only if the search type changes to current location
 
@@ -607,21 +620,21 @@ class NearbyLabs extends Component {
       latitude: this.state.currentLatitude,
       longitude: this.state.currentLongitude,
       search_type: this.state.search_type,
-      name: selectedOption.value,
+      name: selectedOption && selectedOption.value ? selectedOption.value : '', // Check if selectedOption is not null and has a value property
       LabType: this.state.LabType,
       km: this.state.km,
       address: this.state.address,
       city: this.state.city,
       locationAccessAllowed: this.state.locationAccessAllowed,
     };
-      // region wise advertisement
-      onGetNearbyLabs(locationDetails);
-      // onGetAdvLive(locationDetails);
-      // onGetRegionWiseAdvertisement(locationDetails);
+    // region wise advertisement
+    onGetNearbyLabs(locationDetails);
+    // onGetAdvLive(locationDetails);
+    // onGetRegionWiseAdvertisement(locationDetails);
 
-      setTimeout(() => {
-        this.setState({ nearbyLabs: this.props.nearbyLabs });
-      }, 1000);
+    setTimeout(() => {
+      this.setState({ nearbyLabs: this.props.nearbyLabs });
+    }, 1000);
   };
   onChangeType = e => {
     this.setState({ LabType: e.target.value });
@@ -737,6 +750,23 @@ shouldHighlightTestsLink() {
   return currentURL.includes('/labs');
 }
   render() {
+    const generateLabNames = (nearbyLabs) => {
+      const labNames = nearbyLabs.map((lab) => ({
+        label: lab.name, // Replace with the actual property name in your nearbyLabs data
+        value: lab.name, // Replace with the actual property name in your nearbyLabs data
+      }));
+    
+      return labNames;
+    };
+    
+    const ClearIndicator = (props) => {
+      return (
+        <components.ClearIndicator {...props}>
+          <span onClick={props.clearValue}>X</span>
+        </components.ClearIndicator>
+      );
+    };
+
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
 
     const linkStyles = {
@@ -748,6 +778,8 @@ shouldHighlightTestsLink() {
     const { labNameInput, filteredLabNames } = this.state;
     const { history } = this.props;
     const { discountData, nearbyLabs, page, totalPage } = this.state;
+    const labNames = generateLabNames(nearbyLabs);
+
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -755,13 +787,13 @@ shouldHighlightTestsLink() {
         value: this.props.territoriesList[i].city,
       });
     }
-    const labNames = [];
-    for (let i = 0; i < this.props.labNamesList.length; i++) {
-      labNames.push({
-        label: this.props.labNamesList[i],
-        value: this.props.labNamesList[i],
-      });
-    }
+    // const labNames = [];
+    // for (let i = 0; i < this.props.labNamesList.length; i++) {
+    //   labNames.push({
+    //     label: this.props.labNamesList[i],
+    //     value: this.props.labNamesList[i],
+    //   });
+    // }
     const { loading } = this.state;
 
 
@@ -1496,6 +1528,11 @@ shouldHighlightTestsLink() {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                               />
 
                             </div>
