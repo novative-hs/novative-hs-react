@@ -27,20 +27,20 @@ const Footer = () => {
             {/* Column 1 */}
             <Col md={3}>
               <div className="mb-2">
-                <a
-                  href="https://www.linkedin.com/company/labhazir/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>
+              <Link
+                    to={
+                        `/nearby-labs/`
+                    }
+                  >
+                    <span>
                     <img src="/logo-dark.png" alt="" height="60" />
                   </span>
-                </a>
+                  </Link>
               </div>
               <div className="mb-2">
                 {/* Add your Terms, Privacy Policy, and Disclaimer links here */}
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="/LabHazir - Terms & Conditions.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -48,7 +48,7 @@ const Footer = () => {
                 </a>{" "}
                 |{" "}
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="/LabHazir - Terms & Conditions.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -56,7 +56,7 @@ const Footer = () => {
                 </a>{" "}
                 |{" "}
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="/disclaimer"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -71,7 +71,7 @@ const Footer = () => {
               <div className="mb-2">
                 {/* Add your About Us, Contact Us, Careers, and Help & Support links here */}
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="/about-us"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -89,7 +89,7 @@ const Footer = () => {
               </div>
               <div className="mb-2">
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="https://careers.pmahealthcare.com/apply_online/?position=12"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -98,7 +98,7 @@ const Footer = () => {
               </div>
               <div className="mb-2">
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="https://www.labhazir.com/contact-us"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -113,7 +113,7 @@ const Footer = () => {
               <div className="mb-2">
                 {/* Add your quick links here */}
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="https://www.labhazir.com/register/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -122,16 +122,16 @@ const Footer = () => {
               </div>
               <div className="mb-2">
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Business to Business Clients
+                  How to API&apos;s Integrations
                 </a>
               </div>
               <div className="mb-2">
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -140,7 +140,7 @@ const Footer = () => {
               </div>
               <div className="mb-2">
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -166,40 +166,40 @@ const Footer = () => {
               <div className="mb-2">
                 {/* Add your social media links here */}
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="https://www.facebook.com/labhazir"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-facebook align-middle me-2 text-Primary" style={{fontSize: "30px"}} />
+                  <i className="mdi mdi-facebook align-middle me-2" style={{fontSize: "30px", color: "#3b5998"}} />
+                </a>
+                <a
+                  href="https://www.instagram.com/lab_hazir_official/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-instagram align-middle me-2" style={{fontSize: "30px", color: "#FD1D1D"}} />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/labhazir/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-linkedin align-middle me-2 text-Primary" style={{fontSize: "30px"}} />
+                  <i className="mdi mdi-linkedin align-middle me-2" style={{fontSize: "30px", color: "#0077b5"}} />
                 </a>
                 <a
-                  href="https://www.linkedin.com/company/labhazir/"
+                  href="https://www.youtube.com/@LabHazir"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-instagram align-middle me-2 text-Primary" style={{fontSize: "30px"}} />
-                </a>
-                <a
-                  href="https://www.linkedin.com/company/labhazir/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="mdi mdi-youtube align-middle me-2 text-Primary" style={{fontSize: "30px"}} />
+                  <i className="mdi mdi-youtube align-middle me-2" style={{fontSize: "30px", color: "#FF0000"}} />
                 </a>
               </div>
             </Col>
-          <div>
-            <Col md={4} className="text-center text-md-start">
-              {new Date().getFullYear()} © Lab Hazir (Private) Limited
-            </Col>
-          </div>
+            <div style={{ background: "#3B71CA", height: "30px", fontWeight: "bold" }}>
+          <Col className="text-white text-center fonr-size-12 mt-1">
+            {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
+          </Col>
+        </div>
           </Row>
         )}
 
@@ -246,14 +246,14 @@ const Footer = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="bx bxl-linkedin bx-tada align-middle me-2 font-size-40" />
+                  <i className="mdi mdi-linkedin align-middle me-2" style={{fontSize: "30px", color: "#0077b5"}} />
                 </a>
                 <a
-                  href="https://www.facebook.com/profile.php?id=100084984286550"
+                  href="https://www.facebook.com/labhazir"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="bx bxl-facebook bx-tada align-middle me-2 font-size-40" />
+                  <i className="mdi mdi-facebook align-middle me-2" style={{fontSize: "30px", color: "#3b5998"}} />
                 </a>
               </div>
             </Col>
