@@ -249,7 +249,16 @@ class Header extends Component {
               >
                 <i className="fa fa-fw fa-bars" />
               </button>
-            ): null}
+            ): <button
+            type="button"
+            className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+            data-toggle="collapse"
+            style={{ left: '12px', top: '6px'}}
+            onClick={this.toggleMenu}
+            data-target="#topnav-menu-content"
+          >
+            <i className="fa fa-fw fa-bars" />
+          </button>}
 
             </div>
 

@@ -18,6 +18,15 @@ const Footer = () => {
     display: "flex",
     justifyContent: "center",
   };
+  const extrasmallFixFooter = {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "#f8f9fa",
+    fontSize: "6px",
+    display: "flex",
+    justifyContent: "center",
+  };
 
   return (
     <footer className="footer">
@@ -142,7 +151,7 @@ const Footer = () => {
               <div className="mb-2">
                 <Link
                   to={
-                    `b2b-affiliate`
+                    `/b2b-affiliate/`
                   }
 
                 >
@@ -211,7 +220,7 @@ const Footer = () => {
             {/* Add your small screen footer content here */}
             <Col xs="auto" sm="auto" md="auto" lg="auto">
               <div className="text-sm-start">
-                {new Date().getFullYear()} © Lab Hazir (Private) Limited
+                {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
               </div>
             </Col>
             <Col xs="auto" sm="auto" md="auto" lg="auto">
@@ -241,31 +250,113 @@ const Footer = () => {
                 </p>
               </div>
             </Col>
-            <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-end">
+            <Row className="justify-content-center">
+              <div className="text-sm-center">
+              <a
+                  href="https://www.facebook.com/labhazir"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-facebook align-middle me-2" style={{ fontSize: "20px", color: "#3b5998" }} />
+                </a>
+                <a
+                  href="https://www.instagram.com/lab_hazir_official/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-instagram align-middle me-2" style={{ fontSize: "20px", color: "#FD1D1D" }} />
+                </a>
                 <a
                   href="https://www.linkedin.com/company/labhazir/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-linkedin align-middle me-2" style={{ fontSize: "30px", color: "#0077b5" }} />
+                  <i className="mdi mdi-linkedin align-middle me-2" style={{ fontSize: "20px", color: "#0077b5" }} />
                 </a>
                 <a
-                  href="https://www.facebook.com/labhazir"
+                  href="https://www.youtube.com/@LabHazir"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i className="mdi mdi-facebook align-middle me-2" style={{ fontSize: "30px", color: "#3b5998" }} />
+                  <i className="mdi mdi-youtube align-middle me-2" style={{ fontSize: "20px", color: "#FF0000" }} />
                 </a>
+               
               </div>
-            </Col>
+            </Row>
           </Row>
         )}
 
         {/* Footer for extra small screens */}
         {isExtraSmallScreen && (
           // You can add content for extra small screens here if needed
-          null
+          <Row style={extrasmallFixFooter} className="footer">
+            {/* Add your small screen footer content here */}
+            <Col xs="auto" sm="auto" md="auto" lg="auto">
+              <div className="text-sm-start">
+                {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
+              </div>
+            </Col>
+            <Col xs="auto" sm="auto" md="auto" lg="auto">
+              <div className="text-sm-end">
+                <Link to="/disclaimer">
+                  <span>Disclaimer</span>
+                </Link>
+              </div>
+            </Col>
+            <Col xs="auto" sm="auto" md="auto" lg="auto">
+              <div className="text-sm-end">
+                <Link to="/about-us">
+                  <span>About Us</span>
+                </Link>
+              </div>
+            </Col>
+            <Col xs="auto" sm="auto" md="auto" lg="auto">
+              <div className="text-sm-end">
+                <p>
+                  <a
+                    href="/LabHazir - Terms & Conditions.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Terms
+                  </a>
+                </p>
+              </div>
+            </Col>
+              <Row className="justify-content-center" style={{marginLeft: "60%"}}>
+              <div className="text-sm-end">
+              <a
+                  href="https://www.facebook.com/labhazir"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-facebook align-middle me-2" style={{ fontSize: "20px", color: "#3b5998" }} />
+                </a>
+                <a
+                  href="https://www.instagram.com/lab_hazir_official/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-instagram align-middle me-2" style={{ fontSize: "20px", color: "#FD1D1D" }} />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/labhazir/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-linkedin align-middle me-2" style={{ fontSize: "20px", color: "#0077b5" }} />
+                </a>
+                <a
+                  href="https://www.youtube.com/@LabHazir"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="mdi mdi-youtube align-middle me-2" style={{ fontSize: "20px", color: "#FF0000" }} />
+                </a>
+               
+              </div>
+            </Row>
+          </Row>
         )}
       </Container>
     </footer>
