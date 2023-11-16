@@ -23,7 +23,7 @@ const Footer = () => {
     bottom: 0,
     width: "100%",
     backgroundColor: "#f8f9fa",
-    fontSize: "6px",
+    fontSize: "8px",
     display: "flex",
     justifyContent: "center",
   };
@@ -219,40 +219,48 @@ const Footer = () => {
           <Row style={largFixFooter} className="footer">
             {/* Add your small screen footer content here */}
             <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-start">
+              <div className="text-sm-start" style={{ fontWeight: "bold" }}>
                 {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
               </div>
             </Col>
             <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-end">
-                <Link to="/disclaimer">
-                  <span>Disclaimer</span>
-                </Link>
-              </div>
-            </Col>
-            <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-end">
-                <Link to="/about-us">
-                  <span>About Us</span>
-                </Link>
-              </div>
-            </Col>
-            <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-end">
-                <p>
-                  <a
-                    href="/LabHazir - Terms & Conditions.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Terms
-                  </a>
-                </p>
+              <div className="mb-2" style={{ fontWeight: "bold" }}>
+                <a
+                  href="/about-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  About Us
+                </a>{" "}
+                |{" "}
+                <a
+                  href="/LabHazir - Terms & Conditions.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Terms & Conditions
+                </a>{" "}
+                |{" "}
+                <a
+                  href="/LabHazir - Terms & Conditions.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                </a>{" "}
+                |{" "}
+                <a
+                  href="/disclaimer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Disclaimer
+                </a>
               </div>
             </Col>
             <Row className="justify-content-center">
               <div className="text-sm-center">
-              <a
+                <a
                   href="https://www.facebook.com/labhazir"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -280,7 +288,7 @@ const Footer = () => {
                 >
                   <i className="mdi mdi-youtube align-middle me-2" style={{ fontSize: "20px", color: "#FF0000" }} />
                 </a>
-               
+
               </div>
             </Row>
           </Row>
@@ -292,40 +300,48 @@ const Footer = () => {
           <Row style={extrasmallFixFooter} className="footer">
             {/* Add your small screen footer content here */}
             <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-start">
+              <div className="text-sm-start" style={{ fontWeight: "bold" }}>
                 {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
               </div>
             </Col>
             <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-end">
-                <Link to="/disclaimer">
-                  <span>Disclaimer</span>
-                </Link>
+              <div className="mb-2" style={{ fontWeight: "bold" }}>
+                <a
+                  href="/about-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  About Us
+                </a>{" "}
+                |{" "}
+                <a
+                  href="/LabHazir - Terms & Conditions.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Terms & Conditions
+                </a>{" "}
+                |{" "}
+                <a
+                  href="/LabHazir - Terms & Conditions.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                </a>{" "}
+                |{" "}
+                <a
+                  href="/disclaimer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Disclaimer
+                </a>
               </div>
             </Col>
-            <Col xs="auto" sm="auto" md="auto" lg="auto">
+            <Row className="justify-content-center" style={{ marginLeft: "60%" }}>
               <div className="text-sm-end">
-                <Link to="/about-us">
-                  <span>About Us</span>
-                </Link>
-              </div>
-            </Col>
-            <Col xs="auto" sm="auto" md="auto" lg="auto">
-              <div className="text-sm-end">
-                <p>
-                  <a
-                    href="/LabHazir - Terms & Conditions.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Terms
-                  </a>
-                </p>
-              </div>
-            </Col>
-              <Row className="justify-content-center" style={{marginLeft: "60%"}}>
-              <div className="text-sm-end">
-              <a
+                <a
                   href="https://www.facebook.com/labhazir"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -353,7 +369,7 @@ const Footer = () => {
                 >
                   <i className="mdi mdi-youtube align-middle me-2" style={{ fontSize: "20px", color: "#FF0000" }} />
                 </a>
-               
+
               </div>
             </Row>
           </Row>
