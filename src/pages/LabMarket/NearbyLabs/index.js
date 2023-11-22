@@ -2913,7 +2913,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             )
-                          }
+                          } style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -2936,8 +2936,9 @@ class NearbyLabs extends Component {
                           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -2956,8 +2957,8 @@ class NearbyLabs extends Component {
                               </div>
                             </Link>
 
-                            <div className="mt-4 text-center">
-                              <h5 className="mb-3 text-truncate">
+                            <div className="text-center">
+                              <h5 className="mb-3 text-truncate" style={{fontWeight: "bold"}}>
                                 <Link
                                   to={
                                     this.props.match.params.uuid
@@ -2981,11 +2982,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
+                              <div className="my-0 text-truncate">
+                              <Tooltip title={nearbyLab.address}>
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-google-maps"></i>{" "}
                                   {nearbyLab.address}
                                 </span>
+                              </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
