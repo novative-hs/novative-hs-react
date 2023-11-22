@@ -95,9 +95,9 @@ class ApprovedLabs extends Component {
               <span style={{
                 width: '200px', // Set your desired width here
                 fontSize: '14px',
-                overflow: 'hidden',
+              
                 textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
+                whiteSpace: 'prewrap',
                 textAlign: 'left', // Align text to the left
                 display: 'block',
               }}>

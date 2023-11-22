@@ -440,7 +440,7 @@ class OutPaymentsForm extends Component {
                       <CardBody>
                         <div>
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment To
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -474,7 +474,7 @@ class OutPaymentsForm extends Component {
 
                           {this.state.payment_for == "Lab" ? (
                             <FormGroup className="mb-0">
-                              <Label htmlFor="cardnumberInput">
+                              <Label htmlFor="cardnumberInput" className="fw-bolder">
                                 What type of Transection?
                                 <span
                                   style={{ color: "#f46a6a" }}
@@ -533,7 +533,7 @@ class OutPaymentsForm extends Component {
                               </div>
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label>Lab Name</Label>
+                                <Label className="fw-bolder">Lab Name</Label>
                                 <Select
                                   name="lab_id"
                                   component="Select"
@@ -595,7 +595,7 @@ class OutPaymentsForm extends Component {
                               </div>
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label>Test Appointments</Label>
+                                <Label className="fw-bolder">Test Appointments</Label>
                                 <Select
                                   name="test_appointment_id"
                                   component="Select"
@@ -636,7 +636,7 @@ class OutPaymentsForm extends Component {
                           {this.state.payment_for == "B2BClient" ? (
                             outPayment.b2b_id ? (
                               <div className="mb-3">
-                                <Label className="form-label">
+                                <Label className="form-label" >
                                   B2BClient name
                                 </Label>
                                 <Field
@@ -665,7 +665,7 @@ class OutPaymentsForm extends Component {
                               </div>
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label>B2BClient Name</Label>
+                                <Label className="fw-bolder">B2BClient Name</Label>
                                 <Select
                                   name="b2b_id"
                                   component="Select"
@@ -731,7 +731,7 @@ class OutPaymentsForm extends Component {
 
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Amount
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -755,7 +755,7 @@ class OutPaymentsForm extends Component {
                           </FormGroup>
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment Method
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -788,7 +788,7 @@ class OutPaymentsForm extends Component {
                           </FormGroup>
 
                           <FormGroup className="mt-4 mb-0">
-                            <Label htmlFor="cardnameInput">
+                            <Label htmlFor="cardnameInput" className="fw-bolder">
                               Cheque/TT #
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -812,7 +812,7 @@ class OutPaymentsForm extends Component {
                           </FormGroup>
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment at
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -951,7 +951,7 @@ class OutPaymentsForm extends Component {
                           ) : (
                             <div className="mb-3 select2-container">
                               <Label
-                                className="col-form-label"
+                                className="col-form-label fw-bolder"
                               >
                                 Bank Account Name</Label>
 
@@ -992,7 +992,7 @@ class OutPaymentsForm extends Component {
                           )}
 
                           <FormGroup className=" mt-4 mb-0">
-                            <Label htmlFor="expirydateInput">
+                            <Label htmlFor="expirydateInput" className="fw-bolder">
                               Payment Copy
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -1060,7 +1060,7 @@ class OutPaymentsForm extends Component {
                           </FormGroup> */}
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Comments
                               <span
                                 style={{ color: "#f46a6a" }}

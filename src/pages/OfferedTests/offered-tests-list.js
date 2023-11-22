@@ -6,6 +6,7 @@ import MetaTags from "react-meta-tags";
 import axios from "axios";
 import { useParams } from 'react-router-dom'
 import { withRouter, Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 // import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import {
   Card,
@@ -90,6 +91,8 @@ class OfferedTestsList extends Component {
                                 <Link
                                 to="#"
                                 onClick={e => this.openPatientModal(e, offeredTest)}
+                                // onMouseEnter={e =>  this.openPatientModal(e, offeredTest)}
+                                // onPointerLeave={this.handleMouseExit()}
                               >
                                 <span>
                                 {offeredTest.test_name}
@@ -197,13 +200,14 @@ class OfferedTestsList extends Component {
           text: "Action",
           formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3">
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
                   onClick={() => this.handleOfferedTestClick(offeredTest)}
                 ></i>
-              </Link>
+              </Link></Tooltip>
               {/* <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -263,7 +267,13 @@ class OfferedTestsList extends Component {
       test_details: arg.test_details,
     });
   };
-  
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -532,6 +542,7 @@ class OfferedTestsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

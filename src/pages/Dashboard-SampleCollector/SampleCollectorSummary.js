@@ -17,9 +17,11 @@ class SampleCollectorSummary extends Component {
     this.state = {
       name: "",
       phone: "",
-      photo:"",
-      samplesCollected: "",
-      samplesInprocess: "",
+      photo: "",
+      samples_collected: "",
+      samples_inprocess: "",
+      monthlyRevenue: "",
+      annualRevenue: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -31,11 +33,13 @@ class SampleCollectorSummary extends Component {
 
     setTimeout(() => {
       this.setState({
-        // name: this.props.success.name,
-        // phone: this.props.success.phone,
-        // photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
-        // samplesCollected: this.props.success.samples_collected,
-        // samplesInprocess: this.props.success.samples_inprocess,
+        name: this.props.success.name,
+        phone: this.props.success.phone,
+        photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
+        samples_collected: this.props.success.samples_collected,
+        samples_inprocess: this.props.success.samples_inprocess,
+        monthlyRevenue: this.props.success.monthly_revenue,
+        annualRevenue: this.props.success.annual_revenue,
       });
     }, 1500);
   }
@@ -52,6 +56,13 @@ class SampleCollectorSummary extends Component {
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
                     <p>Lab Hazir Dashboard</p>
+                    <Link
+                            to={"/sample-collector-profile"}
+                            className="btn btn-primary btn-sm"
+                          >
+                            View Profile{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
                   </div>
                 </Col>
                 <Col xs="5" className="align-self-end">
@@ -59,41 +70,29 @@ class SampleCollectorSummary extends Component {
                 </Col>
               </Row>
             </div>
-            <CardBody className="pt-4">
-              <Row>
-                <Col sm="12">
-                  <div className="pt-4">
-                    <Row>
-                      <Col xs="6">
-                      <div className="avatar-md profile-user-wid mb-4">
+            <CardBody>
+
+                    <Row className="pt-2">
+                      <Col xs="4">
+                      <div className="avatar-md profile-user-wid">
                   <img
                     src={this.state.photo}
-                    alt=""
-                    className="img-thumbnail rounded-circle"
-                  />
+                    alt="Lab Logo"
+                    className="text-end"
+                    style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}                  />
                 </div>
-                        <h5 className="font-size-15 text-truncate">
+                        
+                      </Col>
+                      <Col xs="8">
+                      <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>
                         <p className="text-muted mb-0 text-truncate">
                           {this.state.phone}
                         </p>
                       </Col>
-                      <Col xs="6">
-                        <div className="mt-2">
-                          <Link
-                            to={"/sample-collector-profile"}
-                            className="btn btn-primary btn-sm"
-                          >
-                            View Profile{" "}
-                            <i className="mdi mdi-arrow-right ms-1" />
-                          </Link>
-                        </div>
-                      </Col>
                     </Row>
-                  </div>
-                </Col>
-              </Row>
+                  
             </CardBody>
           </Card>
         </Col>
@@ -101,17 +100,21 @@ class SampleCollectorSummary extends Component {
         {/* Revenue and Appointment Details */}
         <Col xl="8">
           <Row>
-            <Col md="12">
+            <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Samples Inprocess</p>
-                      <h4 className="mb-0">{this.state.samplesInprocess}</h4>
+                      <p className="text-muted fw-medium">
+                        Appointments Completed
+                      </p>
+                      <h4 className="mb-0">
+                        {this.state.samples_collected}
+                      </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
-                        <i className={"bx bx-list-ul font-size-24"} />
+                        <i className={"bx bx-list-check font-size-24"} />
                       </span>
                     </div>
                   </div>
@@ -119,17 +122,21 @@ class SampleCollectorSummary extends Component {
               </Card>
             </Col>
 
-            <Col md="12">
+            <Col md="6">
               <Card className="mini-stats-wid">
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Samples Collected</p>
-                      <h4 className="mb-0">{this.state.samplesCollected}</h4>
+                      <p className="text-muted fw-medium">
+                        Appointments Inprocess
+                      </p>
+                      <h4 className="mb-0">
+                        {this.state.samples_inprocess}
+                      </h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
-                        <i className={"bx bx-list-check font-size-24"} />
+                        <i className={"bx bx-copy-alt font-size-24"} />
                       </span>
                     </div>
                   </div>
@@ -158,7 +165,5 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getSampleCollectorProfile })(
-    withTranslation()(SampleCollectorSummary)
-  )
+  connect(mapStateToProps, { getSampleCollectorProfile })(withTranslation()(SampleCollectorSummary))
 );

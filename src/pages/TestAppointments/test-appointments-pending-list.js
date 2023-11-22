@@ -96,12 +96,16 @@ class TestAppointmentsPendingList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
+              <Tooltip title="Patient Info">
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, testAppointment)}
+                  // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {testAppointment.patient_name}
                 </Link>
+                </Tooltip>
               </span>
             </>
           ), filter: textFilter(),
@@ -202,6 +206,7 @@ class TestAppointmentsPendingList extends Component {
           text: "Action",
           formatter: (cellContent, testAppointment) => (
             <div className="d-flex gap-3">
+               <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -210,7 +215,7 @@ class TestAppointmentsPendingList extends Component {
                     this.handleTestAppointmentClick(testAppointment)
                   }
                 ></i>
-              </Link>
+              </Link></Tooltip>
               <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"
@@ -301,12 +306,18 @@ class TestAppointmentsPendingList extends Component {
       PatientModal: true,
       patient_age: arg.patient_age,
       patient_gender: arg.patient_gender,
-      // patient_address: arg.patient_address,
+      patient_address: arg.patient_address,
       patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
     });
   };
-
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -510,6 +521,8 @@ class TestAppointmentsPendingList extends Component {
                                       autoFocus={true}
                                       data-toggle="modal"
                                       centered
+                                      // onPointerLeave={this.handleMouseExit}
+
                                       toggle={this.toggleappointmentmodal}
                                     >
                                       <div className="modal-content">
@@ -590,8 +603,8 @@ class TestAppointmentsPendingList extends Component {
                                                     />
                                                   </div>
                                                 </div>
-
-                                                {/* <div className="mb-3 row">
+                                                {this.state.patient_address && this.state.patient_address !== "undefined" ? (
+                                                  <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Address
@@ -608,7 +621,9 @@ class TestAppointmentsPendingList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div> */}
+                                                </div>
+                                                ): null}
+
 
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">

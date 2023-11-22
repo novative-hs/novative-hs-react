@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -58,7 +58,7 @@ class DiscountLabHazirList extends Component {
       discountLabHazirListColumns: [
         {
           dataField: "id",
-          text: "Test ID (LH)",
+          text: "Test ID",
           sort: true,
           formatter: (cellContent, discountLab) => (
             <>
@@ -155,7 +155,9 @@ class DiscountLabHazirList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, discountLab) => (
+        
             <div className="d-flex gap-3">
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -163,6 +165,8 @@ class DiscountLabHazirList extends Component {
                   onClick={() => this.handleEditBtnClick(discountLab)}
                 ></i>
               </Link>
+              </Tooltip>
+
             </div>
           ),
         },
@@ -323,7 +327,7 @@ class DiscountLabHazirList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Discount" breadcrumbItem="Lab Hazir" />
+            <Breadcrumbs title="Discount" breadcrumbItem="Lab" />
             <Row>
               <Col lg="12">
                 <Card>

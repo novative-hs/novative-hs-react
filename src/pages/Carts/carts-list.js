@@ -8,7 +8,7 @@ import { Collapse } from "reactstrap";
 import logo from "../../../src/assets/images/logo.svg";
 import logoLight from "../../../src/assets/images/logo-light.png";
 import logoLightSvg from "../../../src/assets/images/logo-light.svg";
-
+import Tooltip from "@material-ui/core/Tooltip";
 
 import paginationFactory, {
   PaginationProvider,
@@ -141,6 +141,7 @@ class CartList extends Component {
           text: "Action",
           formatter: (cellContent, cart) => (
             <Col>
+            <Tooltip title="Delete">
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -148,6 +149,7 @@ class CartList extends Component {
                   onClick={() => this.onClickDelete(cart)}
                 ></i>
               </Link>
+              </Tooltip>
             </Col>
           ),
         },

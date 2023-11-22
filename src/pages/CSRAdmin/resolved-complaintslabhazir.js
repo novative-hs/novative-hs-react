@@ -79,7 +79,9 @@ class ResolvedComplaintsLabhazir extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, resolvedComplaintLabhazir)}
+                    // onClick={e => this.openPatientModal(e, resolvedComplaintLabhazir)}
+                    onMouseEnter={e => this.openPatientModal(e, resolvedComplaintLabhazir)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {resolvedComplaintLabhazir.name}
                   </Link>
@@ -103,7 +105,11 @@ class ResolvedComplaintsLabhazir extends Component {
           sort: true,
           formatter: (cellContent, complaint) => (
             <>
-              <Link to="#" onClick={e => this.openMessageModal(e, complaint)}>
+              <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMessageModal(e, complaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
                 {complaint.message.slice(0, 10) + "..."}
               </Link>{" "}
             </>
@@ -174,7 +180,13 @@ class ResolvedComplaintsLabhazir extends Component {
       phone:arg.phone,
     });
   };
-  
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+      messageModal: false,
+    });
+  };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -280,6 +292,7 @@ class ResolvedComplaintsLabhazir extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -414,6 +427,7 @@ class ResolvedComplaintsLabhazir extends Component {
                                 autoFocus={true}
                                 data-toggle="modal"
                                 centered
+                                onPointerLeave={this.handleMouseExit}
                                 toggle={this.toggleMessageModal}
                               >
                                 <div className="modal-content">

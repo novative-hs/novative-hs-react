@@ -4,7 +4,7 @@ import Select from "react-select";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -75,6 +75,7 @@ class B2bLabSharesList extends Component {
           dataField: "name",
           text: "Lab Name",
           sort: true,
+          
         },
         {
           dataField: "city",
@@ -98,6 +99,7 @@ class B2bLabSharesList extends Component {
           text: "Action",
           formatter: (cellContent, b2bLabShare) => (
             <Col>
+            <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -105,6 +107,7 @@ class B2bLabSharesList extends Component {
                   onClick={() => this.handleEditBtnClick(b2bLabShare)}
                 ></i>
               </Link>
+              </Tooltip>
             </Col>
           ),
         },

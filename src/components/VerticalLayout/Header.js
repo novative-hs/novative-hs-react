@@ -82,7 +82,7 @@ class Header extends Component {
         <header id="page-topbar">
           <div className="navbar-header">
             <div className="d-flex">
-              <Tooltip title="Account">
+              <Tooltip title="Menu">
               <button
                 type="button"
                 onClick={this.toggleMenu}

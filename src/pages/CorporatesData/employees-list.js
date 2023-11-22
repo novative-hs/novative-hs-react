@@ -15,7 +15,6 @@ import {
   ModalHeader,
   ModalBody,
   Label,
-  FormGroup,
   Input,
 } from "reactstrap";
 
@@ -25,6 +24,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -37,84 +37,71 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getBanks,
-  updateBank,
-} from "store/createbank/actions";
-
+  getCemployees,
+  updateCemployee,
+} from "store/corporatedata/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 
-class PaymentStatussList extends Component {
+class BanksList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      banks: [],
-      bank: "",
+      cemployees: [],
+      cemployee: "",
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      bankListColumns: [
+      employeesListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
-          formatter: (cellContent, bank) => (
-            <>{bank.id}</>
-          ),
+          formatter: (cellContent, cemployee) => (
+            <>{cemployee.id}</>
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
-          text: "Bank Name",
+          text: "Employee Name",
           sort: true,
-        },
-        {
-          dataField: "phone",
-          text: "Bank Phone",
-          sort: true,
-        },
-        {
-          dataField: "email",
-          text: "Email",
-          sort: true,
-        },
-        {
-          dataField: "registered_by",
-          text: "Registered By",
-          sort: true,
-        },
-        {
-          dataField: "registered_at",
-          text: "Registered At",
-          sort: true,
-          formatter: (cellContent, bank) => (
+          formatter: (cellContent, cemployee) => (
             <>
-              <span>
-                {new Date(bank.registered_at).toLocaleString("en-US")}
-              </span>
+                {cemployee.name}
             </>
-          ),
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "employee_code",
+          text: "Employee Code",
+          sort: true,
+          formatter: (cellContent, cemployee) => (
+            <>
+                {cemployee.employee_code}
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, bank) => (
+          formatter: (cellContent, cemployee) => (
             <div className="d-flex gap-3">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
                   onClick={e =>
-                    this.handlePaymentStatusClick(e, bank)
+                    this.handlePaymentStatusClick(e, cemployee)
                   }
                 ></i>
               </Link>
-
+              
             </div>
           ),
         },
@@ -123,11 +110,10 @@ class PaymentStatussList extends Component {
     this.handlePaymentStatusClick =
       this.handlePaymentStatusClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    // this.handlePaymentStatusClicks =
-    //   this.handlePaymentStatusClicks.bind(this);
+    this.handlePaymentStatusClicks =
+      this.handlePaymentStatusClicks.bind(this);
   }
-
-  // // The code for converting "image source" (url) to "Base64"
+  // The code for converting "image source" (url) to "Base64"
   // toDataURL = url =>
   //   fetch(url)
   //     .then(response => response.blob())
@@ -135,7 +121,7 @@ class PaymentStatussList extends Component {
   //       blob =>
   //         new Promise((resolve, reject) => {
   //           const reader = new FileReader();
-  //           reader.onloadend = () => resolve(reader.result);
+  //           reader.onloadend = () => resolve(reader.deposit_slip);
   //           reader.onerror = reject;
   //           reader.readAsDataURL(blob);
   //         })
@@ -153,11 +139,10 @@ class PaymentStatussList extends Component {
   //   }
   //   return new File([u8arr], filename, { type: mime });
   // };
-
   componentDidMount() {
-    const { banks, onGetBanks } = this.props;
-    onGetBanks(this.state.user_id);
-    this.setState({ banks });
+    const { cemployees, ongetCemployees } = this.props;
+    ongetCemployees(this.state.user_id);
+    this.setState({ cemployees });
   }
 
   toggle() {
@@ -166,23 +151,23 @@ class PaymentStatussList extends Component {
     }));
   }
 
-  // handlePaymentStatusClicks = () => {
-  //   this.setState({
-  //     bank: "",
-  //     deposit_slip: "",
-  //     isEdit: false,
-  //   });
-  //   this.toggle();
-  // };
+  handlePaymentStatusClicks = () => {
+    this.setState({
+      cemployee: "",
+      deposit_slip: "",
+      isEdit: false,
+    });
+    this.toggle();
+  };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { banks } = this.props;
+    const { cemployees } = this.props;
     if (
-      !isEmpty(banks) &&
-      size(prevProps.banks) !== size(banks)
+      !isEmpty(cemployees) &&
+      size(prevProps.cemployees) !== size(cemployees)
     ) {
-      this.setState({ banks: {}, isEdit: false });
+      this.setState({ cemployees: {}, isEdit: false });
     }
   }
 
@@ -209,12 +194,11 @@ class PaymentStatussList extends Component {
 
   handlePaymentStatusClick = (e, arg) => {
     this.setState({
-      bank: {
+      cemployee: {
+        id: arg.id,
+        // deposited_at: arg.deposited_at,
         name: arg.name,
-        phone: arg.phone,
-        email: arg.email,
-        registered_at: arg.registered_at,
-        deposit_by: arg.deposit_by,
+        employee_code: arg.employee_code,
       },
       isEdit: true,
     });
@@ -225,19 +209,19 @@ class PaymentStatussList extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { banks } = this.props;
+    const { cemployees } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
     const {
-      onGetBanks,
-      onUpdateBank,
+      onupdateCemployee,
+      ongetCemployees,
     } = this.props;
-    const bank = this.state.bank;
+    const cemployee = this.state.cemployee;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: banks.length, // replace later with size(banks),
+      totalSize: cemployees.length, // replace later with size(cemployees),
       custom: true,
     };
 
@@ -252,13 +236,13 @@ class PaymentStatussList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Payments In with Status | Lab Hazir</title>
+            <title>Corporate Employee List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Payments In"
-              breadcrumbItem="Status List"
+              title="Corporate Employee List"
+              breadcrumbItem="Corporate Employee List"
             />
             <Row>
               <Col lg="12">
@@ -267,14 +251,14 @@ class PaymentStatussList extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.bankListColumns}
-                      data={banks}
+                      columns={this.state.employeesListColumns}
+                      data={cemployees}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.bankListColumns}
-                          data={banks}
+                          columns={this.state.employeesListColumns}
+                          data={cemployees}
                           search
                         >
                           {toolkitprops => (
@@ -304,6 +288,7 @@ class PaymentStatussList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
 
                                     <Modal
@@ -315,7 +300,7 @@ class PaymentStatussList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Bank Information"
+                                          ? "Edit Bank Details"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>
@@ -324,77 +309,37 @@ class PaymentStatussList extends Component {
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
                                             name:
-                                              (this.state.bank &&
-                                                this.state.bank
+                                              (this.state.cemployee &&
+                                                this.state.cemployee
                                                   .name) ||
                                               "",
-                                            phone:
-                                              (this.state.bank &&
-                                                this.state.bank
-                                                  .phone) ||
-                                              "",
-                                            email:
-                                              (this.state.bank &&
-                                                this.state.bank
-                                                  .email) ||
-                                              "",
-                                            registered_at:
-                                              (this.state.bank &&
-                                                this.state.bank
-                                                  .registered_at) ||
-                                              "",
-                                            registered_by:
-                                              (this.state.bank &&
-                                                this.state.bank
-                                                  .registered_by) ||
+                                            employee_code:
+                                              (this.state.cemployee &&
+                                                this.state.cemployee
+                                                  .employee_code) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-
-
-                                            // deposit_at: Yup.string().when(
-                                            //   "hiddenEditFlag",
-                                            //   {
-                                            //     is: hiddenEditFlag =>
-                                            //       hiddenEditFlag == false, //just an e.g. you can return a function
-                                            //     then: Yup.string().required(
-                                            //       "Please upload deposit at"
-                                            //     ),
-                                            //   }
-                                            // ),
-                                            // Validation for logo based on type value
-                                            // type: Yup.string(),
-                                            // logo: Yup.mixed().test(
-                                            //   "required",
-                                            //   "Please upload logo",
-                                            // ),
-
-
                                           })}
                                           onSubmit={values => {
-                                            const updatePaymentStatus =
+                                            const updateCemployee =
                                             {
-                                              id: bank.id,
+                                              id: cemployee.id,
                                               name: values.name,
-                                              phone:
-                                                values.phone,
-                                              email:
-                                                values.email,
-                                              registered_at:
-                                                values.registered_at,
-                                              registered_by: values.registered_by,
+                                              employee_code: values.employee_code,
+                                                
                                             };
 
-                                            // update PaymentStatus
-                                            onUpdateBank(
-                                              updateBank
+                                          // update PaymentStatus
+                                          onupdateCemployee(
+                                            updateCemployee
+                                          );
+                                          setTimeout(() => {
+                                            ongetCemployees(
+                                              this.state.user_id
                                             );
-                                            setTimeout(() => {
-                                              onGetBanks(
-                                                this.state.user_id
-                                              );
-                                            }, 1000);
+                                          }, 1000);
                                             this.toggle();
                                           }}
                                         >
@@ -408,9 +353,8 @@ class PaymentStatussList extends Component {
                                                     name="hiddenEditFlag"
                                                     value={isEdit}
                                                   />
-                                                  {/* Payment Cleared Date and Time */}
 
-                                                  <div className="mb-3">
+<div className="mb-3">
                                                     <Label
                                                       className="col-form-label"
                                                     >
@@ -426,16 +370,14 @@ class PaymentStatussList extends Component {
                                                         type="text"
                                                       value={
                                                         this.state
-                                                          .bank
+                                                          .cemployee
                                                           .name}
                                                           onChange={e => {
                                                               this.setState({
-                                                                bank: {
-                                                                  id: bank.id,
-                                                                  phone:
-                                                                    bank.phone,
-                                                                  email: bank.email,
-                                                                  registered_by: bank.registered_by,
+                                                                cemployee: {
+                                                                  id: cemployee.id,
+                                                                  employee_code:
+                                                                    cemployee.employee_code,
                                                                   name:
                                                                     e.target.value,
                                                                 },
@@ -465,101 +407,33 @@ class PaymentStatussList extends Component {
                                                       </span>
                                                     </Label>
                                                       <Input
-                                                        id="phone"
-                                                        name="phone"
+                                                        id="employee_code"
+                                                        name="employee_code"
                                                         type="text"
                                                         value={
                                                           this.state
-                                                            .bank
-                                                            .phone}  
+                                                            .cemployee
+                                                            .employee_code}  
                                                             onChange={e => {
                                                               this.setState({
-                                                                bank: {
-                                                                  id: bank.id,
+                                                                cemployee: {
+                                                                  id: cemployee.id,
                                                                   name:
-                                                                    bank.name,
-                                                                  email: bank.email,
-                                                                  registered_by: bank.registered_by,
-                                                                  phone:
+                                                                    cemployee.name,
+                                                                  employee_code:
                                                                     e.target.value,
                                                                 },
                                                               });
                                                             }}
                                                             className={
                                                               "form-control" +
-                                                              (errors.phone &&
-                                                              touched.phone
+                                                              (errors.employee_code &&
+                                                              touched.employee_code
                                                                 ? " is-invalid"
                                                                 : "")
                                                             } 
                                                       />
                                                   </div>
-
-                                                  <div className="mb-3">
-                                                    <Label
-                                                      className="col-form-label"
-                                                    >
-                                                      Email
-                                                      <span
-                                                        style={{ color: "#f46a6a" }}
-                                                        className="font-size-18"
-                                                      >
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                      <Input
-                                                        name="email"
-                                                        type="text"
-                                                        value={
-                                                          this.state
-                                                            .bank
-                                                            .email} 
-                                                            
-                                                            onChange={e => {
-                                                              this.setState({
-                                                                bank: {
-                                                                  id: bank.id,
-                                                                  name:
-                                                                    bank.name,
-                                                                  phone: bank.phone,
-                                                                  registered_by: bank.registered_by,
-                                                                  email:
-                                                                    e.target.value,
-                                                                },
-                                                              });
-                                                            }}
-                                                            className={
-                                                              "form-control" +
-                                                              (errors.email &&
-                                                              touched.email
-                                                                ? " is-invalid"
-                                                                : "")
-                                                            } 
-                                                      />
-                                                  </div>
-                                                  
-                                                  <div className="mb-3">
-                                                    <Label
-                                                      className="col-form-label"
-                                                    >
-                                                      Registered By
-                                                      <span
-                                                        style={{ color: "#f46a6a" }}
-                                                        className="font-size-18"
-                                                      >
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                      <Input
-                                                        name="registered_by"
-                                                        type="text"
-                                                        value={
-                                                          this.state
-                                                            .bank
-                                                            .registered_by}                                                            
-                                                      />
-                                                  </div>
-
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -582,13 +456,6 @@ class PaymentStatussList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
                             </React.Fragment>
                           )}
                         </ToolkitProvider>
@@ -605,26 +472,25 @@ class PaymentStatussList extends Component {
   }
 }
 
-PaymentStatussList.propTypes = {
+BanksList.propTypes = {
   match: PropTypes.object,
-  banks: PropTypes.array,
+  cemployees: PropTypes.array,
   className: PropTypes.any,
-  onGetBanks: PropTypes.func,
-  onUpdateBank: PropTypes.func,
+  ongetCemployees: PropTypes.func,
+  onupdateCemployee: PropTypes.func,
 };
 
-const mapStateToProps = ({ bankAccount }) => ({
-  banks: bankAccount.banks,
+const mapStateToProps = ({ cemployeeData }) => ({
+  cemployees: cemployeeData.cemployees,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetBanks: id => dispatch(getBanks(id)),
-  onUpdateBank: bank =>
-    dispatch(updateBank(bank)),
-
+  ongetCemployees: id => dispatch(getCemployees(id)),
+  onupdateCemployee: cemployee =>
+    dispatch(updateCemployee(cemployee)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(PaymentStatussList));
+)(withRouter(BanksList));

@@ -43,6 +43,7 @@ export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 export const GET_ACTIVITY_LOG = `${API_ENDPOINT}/api/lab/activity-log`;
 export const GET_NOTIFICATION = `${API_ENDPOINT}/api/lab/notifications`;
 export const GET_ACTIVITY_LOG_FINANCE = `${API_ENDPOINT}/api/finance-officer/activity-log-finance`;
+export const GET_ACTIVITY_LOG_MARKETER = `${API_ENDPOINT}/api/marketer-admin/activity-log-marketer`;
 export const GET_PATHOLOGISTS = `${API_ENDPOINT}/api/lab/pathologist-list`;
 export const ADD_NEW_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 export const UPDATE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
@@ -237,6 +238,11 @@ export const ADD_NEW_DONOR_PAYMENT = `${API_ENDPOINT}/api/donor/donor-payment`;
 // ADD ACCOUNT
 export const ADD_NEW_CREATE_BANK = `${API_ENDPOINT}/api/finance-admin/bank`;
 export const ADD_NEW_BANK_ACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-account`;
+
+// ADD CORPORATE EMPLOYEE DATA
+export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
+export const GET_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-list`;
+export const UPDATE_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-data`;
 
 // About All Finance
 export const GET_BANK_ACCOUNTS = `${API_ENDPOINT}/api/finance-admin/bankaccount-list`;

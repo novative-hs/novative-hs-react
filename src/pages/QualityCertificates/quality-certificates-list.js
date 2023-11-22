@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import {
   Card,
   CardBody,
@@ -107,7 +109,8 @@ class QualityCertificatesList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, qualityCertificate) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -116,14 +119,15 @@ class QualityCertificatesList extends Component {
                     this.handleQualityCertificateClick(e, qualityCertificate)
                   }
                 ></i>
-              </Link>
+              </Link></Tooltip>
+              <Tooltip title="Delete">
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
                   onClick={() => this.onClickDelete(qualityCertificate)}
                 ></i>
-              </Link>
+              </Link></Tooltip>
             </div>
           ),
         },

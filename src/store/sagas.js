@@ -34,6 +34,7 @@ import offeredTestsSaga from "./offered-tests/saga";
 import pathologistsSaga from "./pathologists/saga";
 import activitylogSaga from "./activtylog/saga";
 import activitylogfinanceSaga from "./activtylogfinance/saga";
+import activitylogmarketerSaga from "./activtylogmarketer/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
 import LabsListPendingFeeSaga from "./labs-list-pending/saga";
@@ -71,6 +72,7 @@ import B2bAllClientsSaga from "./b2b-all-clients/saga";
 import patientFeedbackSaga from "./patient-feedback/saga";
 import checkoutSaga from "./checkout/saga";
 import createBankSaga from "./createbank/saga";
+import cemployeeDataSaga from "./corporatedata/saga";
 import bankAccountSaga from "./bankaccount/saga";
 import invoiceSaga from "./invoices/saga";
 import advinvoiceSaga from "./adv-invoice/saga";
@@ -111,6 +113,7 @@ export default function* rootSaga() {
     fork(msgsSaga),
     fork(outPaymentSaga),
     fork(createBankSaga),
+    fork(cemployeeDataSaga),
     fork(bankAccountSaga),
     fork(inPaymentSaga),
     fork(FinanceAdminSaga),
@@ -138,6 +141,7 @@ export default function* rootSaga() {
     fork(pathologistsSaga),
     fork(activitylogSaga),
     fork(activitylogfinanceSaga),
+    fork(activitylogmarketerSaga),
     fork(cartsSaga),
     fork(bankTransferSaga),
     fork(LabsListPendingFeeSaga),

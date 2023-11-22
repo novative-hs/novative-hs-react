@@ -60,6 +60,8 @@ class TestAppointmentsCompletedList extends Component {
                   <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, testAppointment)}
+                    // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+                    // onPointerLeave={this.handleMouseExit()}
                   >
                    {testAppointment.patient_name}
                   </Link>
@@ -204,7 +206,12 @@ class TestAppointmentsCompletedList extends Component {
       patient_phone:arg.patient_phone,
     });
   };
-  
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+  //   });
+  // };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -309,6 +316,7 @@ class TestAppointmentsCompletedList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

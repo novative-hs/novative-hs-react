@@ -13,6 +13,7 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
+import filterFactory, { textFilter} from 'react-bootstrap-table2-filter';
 
 import paginationFactory, {
   PaginationProvider,
@@ -56,7 +57,7 @@ class PendingB2BClients extends Component {
           // hidden: true,
           formatter: (cellContent, pendingB2BClient) => (
             <>{pendingB2BClient.id}</>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "name",
@@ -74,22 +75,25 @@ class PendingB2BClients extends Component {
                 {pendingB2BClient.name}
               </Link>
             </>
-          ),
+          ),filter: textFilter(),
         },
            {
           dataField: "city",
           text: "Lab City",
           sort: true,
+          filter: textFilter(),
         },
                    {
           dataField: "office",
           text: "Lab Office",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "donation_amount",
           text: "Total Donation Appointment Amount",
           sort: true,
+          filter: textFilter(),
         },
       //   {
       //     dataField: "email",
@@ -298,6 +302,7 @@ class PendingB2BClients extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
                                   </div>
                                 </Col>

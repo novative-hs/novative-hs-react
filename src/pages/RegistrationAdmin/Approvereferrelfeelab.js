@@ -1,3 +1,4 @@
+
 import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -296,18 +297,18 @@ class ReferrelLabFee extends Component {
                     {!isEmpty(referrelFeeLabs) &&
                       referrelFeeLabs.map((referrelFeeLab, key) => (
                         <tr key={"_row_" + key}>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.test_id}</td>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.test_name}</td>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.test_categories}</td>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.lab_city}</td>
-                          <td className="text-end text-primary py-2 pl-3 pr-4">
+                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.test_id}</td>
+                          <td className="text-start py-2 pl-3 pr-4" style={{whiteSpace: "pre-wrap"}}>{referrelFeeLab.test_name}</td>
+                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.test_categories}</td>
+                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.lab_city}</td>
+                          <td className="text-start py-2 pl-3 pr-4" style={{whiteSpace: "pre-wrap"}}>
                             {referrelFeeLab.lab_name}</td>
                           <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
                             {referrelFeeLab.price}
                           </div></td>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.is_eqa_participation}</td>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.is_home_sampling_available}</td>
-                          <td className="text-center py-2 pl-3 pr-4">{referrelFeeLab.is_test_performed}</td>
+                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.is_eqa_participation}</td>
+                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.is_home_sampling_available}</td>
+                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.is_test_performed}</td>
                           <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
                             {(referrelFeeLab.shared_percentage * 100).toFixed()}%</div></td>
                           <td className="text-end py-2 pl-3 pr-4"><div className="text-end">

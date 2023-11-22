@@ -83,7 +83,9 @@ class csrAppointments extends Component {
               <span>
                 <Link
                   to="#"
-                  onClick={e => this.openPatientModal(e, csrAppointment)}
+                  // onClick={e => this.openPatientModal(e, csrAppointment)}
+                  onMouseEnter={e => this.openPatientModal(e, csrAppointment)}
+                  onPointerLeave={this.handleMouseExit()}
                 >
                   {csrAppointment.patient_name}
                 </Link>
@@ -98,7 +100,11 @@ class csrAppointments extends Component {
           formatter: (cellContent, csrAppointment) => (
             <>
               <span>
-                <Link to="#" onClick={e => this.openLabModal(e, csrAppointment)}>
+                <Link to="#" 
+                // onClick={e => this.openLabModal(e, csrAppointment)}
+                onMouseEnter={e => this.openLabModal(e, csrAppointment)}
+                onPointerLeave={this.handleMouseExit()}
+                >
                   {csrAppointment.lab_name}
                 </Link>
               </span>
@@ -215,9 +221,15 @@ class csrAppointments extends Component {
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
-
       patient_phone: arg.patient_phone,
       patient_city: arg.patient_city,
+    });
+  };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+      LabModal:  false,
     });
   };
   togglePatientModal = () => {
@@ -369,6 +381,7 @@ class csrAppointments extends Component {
                                     <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleLabModal}
@@ -441,6 +454,7 @@ class csrAppointments extends Component {
                                     </Modal>
                                     <Modal
                                       isOpen={this.state.PatientModal}
+                                      onPointerLeave={this.handleMouseExit}
                                       className={this.props.className}
                                     >
                                       <ModalHeader

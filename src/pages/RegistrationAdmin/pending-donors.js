@@ -18,7 +18,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import { Tooltip } from "@material-ui/core";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -149,13 +149,16 @@ class PendingDonors extends Component {
           text: "Action",
           formatter: (cellContent, donor) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.handleApprovedEvent(donor.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link> 
+              </Tooltip>{" "}
+              <Tooltip title="Delete">
               <Link
                 className="btn btn-danger btn-rounded"
                 to="#"
@@ -163,6 +166,7 @@ class PendingDonors extends Component {
               >
                 <i className="mdi mdi-close-circle font-size-14"></i>
               </Link>
+              </Tooltip>
             </>
           ),
         },

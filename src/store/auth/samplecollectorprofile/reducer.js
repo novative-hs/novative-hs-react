@@ -25,6 +25,7 @@ const sampleCollectorProfile = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
+
     case UPDATE_SAMPLE_COLLECTOR_PROFILE_SUCCESS:
       return {
         ...state,

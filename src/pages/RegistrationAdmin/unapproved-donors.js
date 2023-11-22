@@ -18,7 +18,7 @@ import {
   getUnapprovedDonors,
   approveUnapproveDonor,
 } from "store/registration-admin/actions";
-
+import { Tooltip } from "@material-ui/core";
 import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import "assets/scss/table.scss";
 
@@ -117,13 +117,15 @@ class UnapprovedDonors extends Component {
           text: "Action",
           formatter: (cellContent, pendingDonor) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.handleApprovedEvent(pendingDonor.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link>
+              </Tooltip>
             </>
           ),
         },

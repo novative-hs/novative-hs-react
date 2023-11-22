@@ -227,7 +227,7 @@ class LabsLists extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Finance Admin" breadcrumbItem="Labs List" />
+            <Breadcrumbs title="List" breadcrumbItem="Labs List" />
             <Row>
               <Col lg="12">
                 <Card>

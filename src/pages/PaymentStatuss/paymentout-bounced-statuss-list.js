@@ -69,206 +69,7 @@ class paymentCreatedList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-        paymentBouncedStatusListColumns: [
-          {
-            text: "MOF ID",
-            dataField: "id",
-            sort: true,
-            hidden: false,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>{paymentBouncedStatus.id}</>
-            ),filter: textFilter(),
-          },
-          {
-            dataField: "invoice_id",
-            text: "Invoice ID",
-            sort: true,
-            hidden: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <strong>{paymentBouncedStatus.invoice_id}</strong>
-              </>
-            ),filter: textFilter(),
-          },
-          {
-            dataField: "payment_method",
-            text: "Payment Method",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <strong>{paymentBouncedStatus.payment_method}</strong>
-              </>
-            ),filter: textFilter(),
-          },
-          // {
-          //   dataField: "payment_for",
-          //   text: "Payment To",
-          //   sort: true,
-          //   formatter: (cellContent, paymentBouncedStatus) => {
-          //     const date = new Date(paymentBouncedStatus.payment_for);
-          //     const day = date.getDate();
-          //     const month = date.getMonth() + 1; // Adding 1 to get the correct month
-          //     const year = date.getFullYear();
-              
-          //     return (
-          //         <p className="text-muted mb-0">
-          //             {`${day}/${month}/${year}`}
-          //         </p>
-          //     );
-          // },filter: textFilter(),
-          // },
-          {
-            dataField: "lab_name",
-            text: "Client Name",
-            sort: true,
-          formatter: (cellContent, paymentBouncedStatus) => (
-            <>
-              <span>
-                <span>
-                  {paymentBouncedStatus.lab_name}{" "}
-                  {paymentBouncedStatus.b2b_id}
-                </span>
-              </span>
-            </>
-          ),filter: textFilter(),
-          },
-          {
-            dataField: "payment_at",
-            text: "Payment Date",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <strong>{paymentBouncedStatus.payment_at}</strong>
-              </>
-            ),filter: textFilter(),
-          },
-          {
-            dataField: "cheque_no",
-            text: "Cheque/Online Ref#",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <span>
-                  <Link
-                    to={{
-                      pathname:
-                        process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
-                    }}
-                    target="_blank"
-                  >
-                                  <strong>{paymentBouncedStatus.cheque_no}</strong>
-  
-                  </Link>
-  
-                </span>
-  
-              </>
-            ),filter: textFilter(),
-          },
-          {
-            dataField: "amount",
-            text: "Payment",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <strong>{paymentBouncedStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
-              </>
-            ),filter: textFilter(),
-          },
-          // {
-          //   dataField: "bank",
-          //   text: "Bank/Account#",
-          //   sort: true,
-          //   formatter: (cellContent, paymentBouncedStatus) => (
-          //     <>
-          //       <span>
-          //         <span>
-          //           {paymentBouncedStatus.bank_name},{" "}
-          //           {paymentBouncedStatus.account_no}
-          //         </span>
-          //       </span>
-          //     </>
-          //   ),filter: textFilter(),
-          // },
-         
-          {
-            dataField: "is_cleared",
-            text: "Cleared",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <>
-                <strong>{paymentBouncedStatus.is_cleared}</strong>
-              </>
-            ),filter: textFilter(),
-          },
-          {
-            dataField: "cleared_at",
-            text: "Cleared Date",
-            sort: true,
-            formatter: (cellContent, paymentBouncedStatus) => {
-              const date = new Date(paymentBouncedStatus.cleared_at);
-              const day = date.getDate();
-              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-              const month = monthNames[date.getMonth()];
-              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-          
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}-${month}-${year}`}
-                  </p>
-              );
-          },
-          filter: textFilter(),
-          },
-          // {
-          //   dataField: "deposit_copy",
-          //   text: "Deposite Copy",
-          //   sort: true,
-          //   formatter: (cellContent, paymentBouncedStatus) => (
-          //     <>
-          //       <Link
-          //         to={{
-          //           pathname:
-          //             process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
-          //         }}
-          //         target="_blank"
-          //       >
-          //         View
-          //       </Link>
-          //     </>
-          //   ),
-          // },
-          {
-            dataField: "menu",
-            isDummyField: true,
-            editable: false,
-            text: "Action",
-            formatter: (cellContent, paymentBouncedStatus) => (
-              <div className="d-flex gap-1">
-               
-                
-              <button
-                type="submit"
-                className="btn btn-primary save-user"
-                onClick={e => this.handleCreateClick(e, paymentBouncedStatus)}
 
-              >
-                Edit
-              </button>
-
-              <button
-                type="submit"
-                className="btn btn-primary save-user"
-                onClick={e => this.handleSubmitClick(e, paymentBouncedStatus)}
-
-              >
-                Update
-              </button>
-  
-              </div>
-            ),
-          },
-        ],
     };
     this.handleCreateClick = this.handleCreateClick.bind(this);
     this.handleSubmitClick = this.handleSubmitClick.bind(this);
@@ -448,6 +249,218 @@ class paymentCreatedList extends Component {
   }
 
   render() {
+   const columns= [
+      {
+        text: "MOF ID",
+        dataField: "id",
+        sort: true,
+        hidden: false,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>{paymentBouncedStatus.id}</>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "invoice_id",
+        text: "Invoice ID",
+        sort: true,
+        hidden: true,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>
+            <strong>{paymentBouncedStatus.invoice_id}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_method",
+        text: "Payment Method",
+        sort: true,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>
+            <strong>{paymentBouncedStatus.payment_method}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      // {
+      //   dataField: "payment_for",
+      //   text: "Payment To",
+      //   sort: true,
+      //   formatter: (cellContent, paymentBouncedStatus) => {
+      //     const date = new Date(paymentBouncedStatus.payment_for);
+      //     const day = date.getDate();
+      //     const month = date.getMonth() + 1; // Adding 1 to get the correct month
+      //     const year = date.getFullYear();
+          
+      //     return (
+      //         <p className="text-muted mb-0">
+      //             {`${day}/${month}/${year}`}
+      //         </p>
+      //     );
+      // },filter: textFilter(),
+      // },
+      {
+        dataField: "lab_name",
+        text: "Client Name",
+        sort: true,
+      formatter: (cellContent, paymentBouncedStatus) => (
+        <>
+          <span>
+            <span>
+              {paymentBouncedStatus.lab_name}{" "}
+              {paymentBouncedStatus.b2b_id}
+            </span>
+          </span>
+        </>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_at",
+        text: "Payment Date",
+        sort: true,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>
+            <strong>{paymentBouncedStatus.payment_at}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "cheque_no",
+        text: "Cheque/Online Ref#",
+        sort: true,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>
+            <span>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
+                }}
+                target="_blank"
+              >
+                              <strong>{paymentBouncedStatus.cheque_no}</strong>
+
+              </Link>
+
+            </span>
+
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "amount",
+        text: "Payment",
+        sort: true,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>
+            <strong>{paymentBouncedStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },
+      // {
+      //   dataField: "bank",
+      //   text: "Bank/Account#",
+      //   sort: true,
+      //   formatter: (cellContent, paymentBouncedStatus) => (
+      //     <>
+      //       <span>
+      //         <span>
+      //           {paymentBouncedStatus.bank_name},{" "}
+      //           {paymentBouncedStatus.account_no}
+      //         </span>
+      //       </span>
+      //     </>
+      //   ),filter: textFilter(),
+      // },
+     
+      {
+        dataField: "is_cleared",
+        text: "Cleared",
+        sort: true,
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <>
+            <strong>{paymentBouncedStatus.is_cleared}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "cleared_at",
+        text: "Cleared Date",
+        sort: true,
+        formatter: (cellContent, paymentBouncedStatus) => {
+          const date = new Date(paymentBouncedStatus.cleared_at);
+          const day = date.getDate();
+          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const month = monthNames[date.getMonth()];
+          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+      
+          return (
+              <p className="text-muted mb-0">
+                  {`${day}-${month}-${year}`}
+              </p>
+          );
+      },
+      filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      style: { backgroundColor: '	#F0F0F0' },
+      },
+      // {
+      //   dataField: "deposit_copy",
+      //   text: "Deposite Copy",
+      //   sort: true,
+      //   formatter: (cellContent, paymentBouncedStatus) => (
+      //     <>
+      //       <Link
+      //         to={{
+      //           pathname:
+      //             process.env.REACT_APP_BACKENDURL + paymentBouncedStatus.deposit_copy,
+      //         }}
+      //         target="_blank"
+      //       >
+      //         View
+      //       </Link>
+      //     </>
+      //   ),
+      // },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Action",
+        formatter: (cellContent, paymentBouncedStatus) => (
+          <div className="d-flex gap-1">
+           
+            
+          <button
+            type="submit"
+            className="btn btn-success save-user"
+            onClick={e => this.handleCreateClick(e, paymentBouncedStatus)}
+
+          >
+            Edit
+          </button>
+
+          <button
+            type="submit"
+            className="btn btn-success save-user"
+            onClick={e => this.handleSubmitClick(e, paymentBouncedStatus)}
+
+          >
+            Update
+          </button>
+
+          </div>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+    ];
     const { SearchBar } = Search;
     const { labs } = this.props;
 
@@ -568,9 +581,10 @@ class paymentCreatedList extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={"table align-middle"}
                                       bordered={false}
-                                      striped={true}
+                                      // striped={true}
+                                      columns={columns}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

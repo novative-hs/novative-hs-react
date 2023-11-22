@@ -95,7 +95,9 @@ class InProcessComplaints extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, inProcessComplaint)}
+                    // onClick={e => this.openPatientModal(e, inProcessComplaint)}
+                    onMouseEnter={e => this.openPatientModal(e, inProcessComplaint)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {inProcessComplaint.name}
                   </Link>
@@ -120,7 +122,11 @@ class InProcessComplaints extends Component {
           sort: true,
           formatter: (cellContent, complaint) => (
             <>
-              <Link to="#" onClick={e => this.openMessageModal(e, complaint)}>
+              <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMessageModal(e, complaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
                 {complaint.message.slice(0, 10) + "..."}
               </Link>{" "}
             </>
@@ -221,7 +227,14 @@ class InProcessComplaints extends Component {
       phone:arg.phone,
     });
   };
-  
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+      messageModal: false,
+
+    });
+  };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -369,6 +382,7 @@ class InProcessComplaints extends Component {
                                   <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -737,6 +751,7 @@ class InProcessComplaints extends Component {
                                       autoFocus={true}
                                       data-toggle="modal"
                                       centered
+                                      onPointerLeave={this.handleMouseExit}
                                       toggle={this.toggleMessageModal}
                                     >
                                       <div className="modal-content">

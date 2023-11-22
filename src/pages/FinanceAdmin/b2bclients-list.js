@@ -222,7 +222,7 @@ class B2bClientsLists extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Finance Admin" breadcrumbItem="B2b Clients List" />
+            <Breadcrumbs title="List" breadcrumbItem="B2b Clients List" />
             <Row>
               <Col lg="12">
                 <Card>

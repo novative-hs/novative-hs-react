@@ -52,6 +52,10 @@ import DashboardFinanceAdmin from "pages/Dashboard-FinanceAdmin";
 import DashboardMarketerAdmin from "pages/Dashboard-MarketerAdmin";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
 
+// Corporate
+import EmployeeData from "../pages/CorporatesData/add-employee";
+import EmployeeList from "../pages/CorporatesData/employees-list";
+
 
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
@@ -227,6 +231,7 @@ import AssignedAudits from "pages/Auditor/assigned-audits";
 import LabAudits from "pages/Dashboard-Lab/lab-audits";
 import activityLog from "pages/Dashboard-Lab/activity-log";
 import activityLogFinance from "pages/PaymentStatuss/activity-log-finance";
+import activityLogMarketer from "pages/Dashboard-MarketerAdmin/activity-log-marketer";
 import activityLogFinanceAdmin from "pages/PaymentStatuss/activity-log-finance";
 
 import AuditorCompletedAudits from "pages/Auditor/completed-audits";
@@ -597,6 +602,10 @@ const marketerAdminAuthProtectedRoutes = [
   { path: "/labs-list", component: labsList},
   { path: "/comments-list/:id", component: msgBox },
   {
+    path: "/activity-log-marketer",
+    component: activityLogMarketer,
+  },
+  {
     path: "/discountlab/:id",component: DiscountLab,
   },
   { path: "/pending-lab-advertisement-requests", component: LabAdvertisementRequests},
@@ -771,6 +780,14 @@ const corporateAuthProtectedRoutes = [
   {
     path: "/dashboard-corporate",
     component: DashboardCorporate,
+  },
+  {
+    path: "/employee-data",
+    component: EmployeeData,
+  },
+  {
+    path: "/employee-list",
+    component: EmployeeList,
   },
 ];
 

@@ -181,7 +181,7 @@ class StaffInfo extends Component {
                               </div>
 
                               <div className="mb-3">
-                                <Label className="form-label">Name</Label>
+                                <Label className="form-label">Email</Label>
                                 <Field
                                   name="email"
                                   type="text"

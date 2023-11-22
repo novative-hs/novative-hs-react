@@ -38,6 +38,7 @@ import { getCSRList, updateStaff, deleteStaff } from "store/staff/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
+import { Tooltip } from "@material-ui/core";
 
 class CSRList extends Component {
   constructor(props) {
@@ -108,7 +109,8 @@ class CSRList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, CSR) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -116,6 +118,8 @@ class CSRList extends Component {
                   onClick={e => this.handleCSRClick(e, CSR)}
                 ></i>
               </Link>
+              </Tooltip>
+              <Tooltip title="Delete">
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -123,6 +127,7 @@ class CSRList extends Component {
                   onClick={() => this.onClickDelete(CSR)}
                 ></i>
               </Link>
+              </Tooltip>
             </div>
           ),
         },

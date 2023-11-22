@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -66,7 +67,9 @@ class AssignedAudits extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, assignedAudit)}
+                    // onClick={e => this.openPatientModal(e, assignedAudit)}
+                    onMouseEnter={e => this.openPatientModal(e, assignedAudit)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {assignedAudit.lab_name}
                   </Link>
@@ -108,13 +111,15 @@ class AssignedAudits extends Component {
           text: "Action",
           formatter: (cellContent, audit) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.onClickAuditedEvent(e, audit.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link>
+              </Tooltip>
             </>
           ),
         },
@@ -132,7 +137,12 @@ class AssignedAudits extends Component {
       lab_email: arg.lab_email,
     });
   };
-  
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+    });
+  };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -271,6 +281,7 @@ class AssignedAudits extends Component {
 <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

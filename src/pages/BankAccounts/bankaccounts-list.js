@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Select from "react-select";
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -171,7 +172,8 @@ class BanksList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, bankaccount) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -181,6 +183,7 @@ class BanksList extends Component {
                   }
                 ></i>
               </Link>
+              </Tooltip>
 
             </div>
           ),

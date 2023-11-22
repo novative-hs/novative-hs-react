@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+
 import {
   Card,
   CardBody,
@@ -42,6 +43,7 @@ import {
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
+import { Tooltip } from "@material-ui/core";
 
 class NotesList extends Component {
   constructor(props) {
@@ -281,12 +283,14 @@ class NotesList extends Component {
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
+                                                    <Tooltip title="Send">
                                                     <button
                                                       type="submit"
                                                       className="btn btn-success save-user"
                                                     >
                                                       <i className="fas fa-paper-plane"></i>
                                                     </button>
+                                                    </Tooltip>
                                                   </div>
                                                 </Col>
                                               </Row>

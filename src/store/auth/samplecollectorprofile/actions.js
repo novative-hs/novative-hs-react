@@ -13,7 +13,9 @@ export const getSampleCollectorProfile = id => ({
   payload: id,
 });
 
-export const getSampleCollectorProfileSuccess = sampleCollectorProfile => ({
+export const getSampleCollectorProfileSuccess = sampleCollectorProfile => (
+  console.log("actions lab profile",sampleCollectorProfile),
+  {
   type: GET_SAMPLE_COLLECTOR_PROFILE_SUCCESS,
   payload: sampleCollectorProfile,
 });

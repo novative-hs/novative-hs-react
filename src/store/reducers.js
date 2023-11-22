@@ -45,6 +45,7 @@ import offeredTests from "./offered-tests/reducer";
 import pathologists from "./pathologists/reducer";
 import activitylog from "./activtylog/reducer";
 import activitylogfinance from "./activtylogfinance/reducer";
+import activitylogmarketer from "./activtylogmarketer/reducer";
 
 //pathologists
 import bankaccounts from "./bankaccounts/reducer";
@@ -172,11 +173,12 @@ import inPayments from "./inpayments/reducer";
 import outPayments from "./outpayments/reducer";
 import bankTransfers from "./banktransferdetails/reducer";
 
-
-
+// Bank
 import createBank from "./createbank/reducer";
 import bankAccount from "./bankaccount/reducer";
 
+// Corporate
+import cemployeeData from "./corporatedata/reducer";
 
 
 const rootReducer = combineReducers({
@@ -185,6 +187,7 @@ const rootReducer = combineReducers({
   referrelFeeLabs,
   Layout,
   createBank,
+  cemployeeData,
   Login,
   Account,
   outPayments,
@@ -232,6 +235,7 @@ const rootReducer = combineReducers({
   pathologists,
   activitylog,
   activitylogfinance,
+  activitylogmarketer,
   donorPayments,
   inPayments,
   paymentStatuss,

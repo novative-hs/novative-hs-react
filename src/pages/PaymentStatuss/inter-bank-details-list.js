@@ -56,285 +56,7 @@ class PaymentStatussList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      bankTransferListColumns: [
-        {
-          text: "BTD ID",
-          dataField: "id",
-          sort: true,
-          hidden: false,
-          formatter: (cellContent, bankTransfer) => (
-            <>{bankTransfer.id}</>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "invoice_id",
-          text: "Invoice ID",
-          sort: true,
-          hidden: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              <strong>{bankTransfer.invoice_id}</strong>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "transfer_type",
-          text: "Transfer Type",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              <strong>{bankTransfer.transfer_type}</strong>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "deposit_type",
-          text: "Deposit Type",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.transfer_type == "Deposit" ? (
-                <span>
-                <strong>{bankTransfer.deposit_type}</strong>
-                </span>
-              ) : (
-                <span>
-                {"---"}
-                </span>
-              )}
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "bank",
-          text: "Payment Mode",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.transfer_type == "Interbank Transfer" ? (
-                 <span>
-                  <strong>{bankTransfer.mode}</strong>
-                 </span>
-              ) : (
-                <span>
-                {"---"}
-                </span>
-              )}
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "amount",
-          text: "Amount",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              <div className="text-end">
-              <strong>{bankTransfer.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "cheque_no",
-          text: "Cheque/Online Ref#",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.transfer_type == "Deposit" ? (
-                 <span>
-                 {"---"}
-                 </span>
-              ) : (
-                <span>
-                <strong>{bankTransfer.cheque_no}</strong>
-                </span>
-              )}
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "bank",
-          text: "Bank/Account#",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              <span>
-                <span>
-                  {bankTransfer.bank_name},{" "}
-                  {bankTransfer.account_no}
-                </span>
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "bank",
-          text: "Bank/Account# (From)",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.transfer_type == "Interbank Transfer" ? (
-                 <span>
-                  {bankTransfer.from_bank_name},{" "}
-                  {bankTransfer.from_account_no}
-                 </span>
-              ) : (
-                <span>
-                  {"---"}
-                </span>
-              )}
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "bank",
-          text: "Deposit Copy",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-              {bankTransfer.transfer_type == "Withdraw" ? (
-                 <span>
-                  {"---"}
-                 </span>
-              ) : (
-                <span>
-                <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + bankTransfer.deposit_copy,
-                }}
-                target="_blank"
-              >
-                View
-              </Link>
-                </span>
-              )}
-            </>
-          ),
-        },
-        {
-          dataField: "bank",
-          text: "Deposit DateTime",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => {
-            if (bankTransfer.transfer_type === "Withdraw") {
-              return <span>---</span>;
-            } else {
-                const date = new Date(bankTransfer.deposit_datetime);
-                const day = date.getDate();
-                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                const month = monthNames[date.getMonth()];
-                const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-            
-                return (
-                    <p className="text-muted mb-0">
-                        {`${day}-${month}-${year}`}
-                    </p>
-                );
-            }
-          },
-          filter: textFilter()
-        },        
-        {
-          dataField: "bank",
-          text: "Payment Copy",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => (
-            <>
-                <span>
-                <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + bankTransfer.payment_copy,
-                }}
-                target="_blank"
-              >
-                View
-              </Link>
-                </span>
-            </>
-          ),
-        },
-        {
-          dataField: "bank",
-          text: "Payment DateTime",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => {
-            const date = new Date(bankTransfer.payment_datetime);
-            const day = date.getDate();
-            const month = date.getMonth() + 1; // Adding 1 to get the correct month
-            const year = date.getFullYear();
-            
-            return (
-                <p className="text-muted mb-0">
-                    {`${day}/${month}/${year}`}
-                </p>
-            );
-        },filter: textFilter(),
-        },
-        // {
-        //   dataField: "bank",
-        //   text: "Clearence DateTime",
-        //   sort: true,
-        //   formatter: (cellContent, bankTransfer) => (
-        //     <>
-        //         <span>
-        //         {new Date(bankTransfer.clearence_datetime).toLocaleString("en-US")}
 
-        //         </span>
-        //     </>
-        //   ),
-        // },
-        {
-          dataField: "bank",
-          text: "Clearence DateTime",
-          sort: true,
-          formatter: (cellContent, bankTransfer) => {
-            if (bankTransfer.clearence_datetime === "null") {
-              return <span>---</span>;
-            } else {
-              const date = new Date(bankTransfer.deposit_datetime);
-              const day = date.getDate();
-              const month = date.getMonth() + 1;
-              const year = date.getFullYear();
-              
-              return (
-                <p className="text-muted mb-0">
-                  {`${day}/${month}/${year}`}
-                </p>
-              );
-            }
-          }, filter: textFilter(),
-        },
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-        },
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, bankTransfer) => (
-            <>
-            {bankTransfer.status == "Cleared" && (
-            <div className="d-flex gap-3">
-              <button
-                type="submit"
-                className="btn btn-primary save-user"
-                onClick={e => this.handlePaymentStatusClick(e, bankTransfer)}
-
-              >
-                Update
-              </button>
-
-            </div>
-            
-        )}</>
-          ),
-        },
-      ],
     };
     this.handlePaymentStatusClick =
       this.handlePaymentStatusClick.bind(this);
@@ -436,6 +158,307 @@ class PaymentStatussList extends Component {
   
 
   render() {
+   const columns=[
+      {
+        text: "BTD ID",
+        dataField: "id",
+        sort: true,
+        hidden: false,
+        formatter: (cellContent, bankTransfer) => (
+          <>{bankTransfer.id}</>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "invoice_id",
+        text: "Invoice ID",
+        sort: true,
+        hidden: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            <strong>{bankTransfer.invoice_id}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "transfer_type",
+        text: "Transfer Type",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            <strong>{bankTransfer.transfer_type}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      
+      },
+      {
+        dataField: "deposit_type",
+        text: "Deposit Type",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            {bankTransfer.transfer_type == "Deposit" ? (
+              <span>
+              <strong>{bankTransfer.deposit_type}</strong>
+              </span>
+            ) : (
+              <span>
+              {"---"}
+              </span>
+            )}
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "bank",
+        text: "Payment Mode",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            {bankTransfer.transfer_type == "Interbank Transfer" ? (
+               <span>
+                <strong>{bankTransfer.mode}</strong>
+               </span>
+            ) : (
+              <span>
+              {"---"}
+              </span>
+            )}
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "amount",
+        text: "Amount",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            <div className="text-end">
+            <strong>{bankTransfer.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },
+      {
+        dataField: "cheque_no",
+        text: "Cheque/Online Ref#",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            {bankTransfer.transfer_type == "Deposit" ? (
+               <span>
+               {"---"}
+               </span>
+            ) : (
+              <span>
+              <strong>{bankTransfer.cheque_no}</strong>
+              </span>
+            )}
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "bank",
+        text: "Bank/Account#",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            <span>
+              <span>
+                {bankTransfer.bank_name},{" "}
+                {bankTransfer.account_no}
+              </span>
+            </span>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "bank",
+        text: "Bank/Account# (From)",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            {bankTransfer.transfer_type == "Interbank Transfer" ? (
+               <span>
+                {bankTransfer.from_bank_name},{" "}
+                {bankTransfer.from_account_no}
+               </span>
+            ) : (
+              <span>
+                {"---"}
+              </span>
+            )}
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+   
+      },
+      {
+        dataField: "bank",
+        text: "Deposit Copy",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+            {bankTransfer.transfer_type == "Withdraw" ? (
+               <span>
+                {"---"}
+               </span>
+            ) : (
+              <span>
+              <Link
+              to={{
+                pathname:
+                  process.env.REACT_APP_BACKENDURL + bankTransfer.deposit_copy,
+              }}
+              target="_blank"
+            >
+              View
+            </Link>
+              </span>
+            )}
+          </>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "bank",
+        text: "Deposit DateTime",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => {
+          if (bankTransfer.transfer_type === "Withdraw") {
+            return <span>---</span>;
+          } else {
+              const date = new Date(bankTransfer.deposit_datetime);
+              const day = date.getDate();
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              const month = monthNames[date.getMonth()];
+              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+          
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}-${month}-${year}`}
+                  </p>
+              );
+          }
+        },
+        filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },        
+      {
+        dataField: "bank",
+        text: "Payment Copy",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => (
+          <>
+              <span>
+              <Link
+              to={{
+                pathname:
+                  process.env.REACT_APP_BACKENDURL + bankTransfer.payment_copy,
+              }}
+              target="_blank"
+            >
+              View
+            </Link>
+              </span>
+          </>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "bank",
+        text: "Payment DateTime",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => {
+          const date = new Date(bankTransfer.payment_datetime);
+          const day = date.getDate();
+          const month = date.getMonth() + 1; // Adding 1 to get the correct month
+          const year = date.getFullYear();
+          
+          return (
+              <p className="text-muted mb-0">
+                  {`${day}/${month}/${year}`}
+              </p>
+          );
+      },filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      style: { backgroundColor: '	#F0F0F0' },
+      },
+      // {
+      //   dataField: "bank",
+      //   text: "Clearence DateTime",
+      //   sort: true,
+      //   formatter: (cellContent, bankTransfer) => (
+      //     <>
+      //         <span>
+      //         {new Date(bankTransfer.clearence_datetime).toLocaleString("en-US")}
+
+      //         </span>
+      //     </>
+      //   ),
+      // },
+      {
+        dataField: "bank",
+        text: "Clearence DateTime",
+        sort: true,
+        formatter: (cellContent, bankTransfer) => {
+          if (bankTransfer.clearence_datetime === "null") {
+            return <span>---</span>;
+          } else {
+            const date = new Date(bankTransfer.deposit_datetime);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            
+            return (
+              <p className="text-muted mb-0">
+                {`${day}/${month}/${year}`}
+              </p>
+            );
+          }
+        }, filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },
+      {
+        dataField: "status",
+        text: "Status",
+        sort: true,
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Action",
+        formatter: (cellContent, bankTransfer) => (
+          <>
+          {bankTransfer.status == "Cleared" && (
+          <div className="d-flex gap-3">
+            <button
+              type="submit"
+              className="btn btn-success save-user"
+              onClick={e => this.handlePaymentStatusClick(e, bankTransfer)}
+
+            >
+              Update
+            </button>
+
+          </div>
+          
+      )}</>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+    ];
     const { SearchBar } = Search;
 
     const { bankTransfers } = this.props;
@@ -515,9 +538,10 @@ class PaymentStatussList extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={"table align-middle"}
                                       bordered={false}
-                                      striped={true}
+                                      // striped={true}
+                                      columns={columns}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

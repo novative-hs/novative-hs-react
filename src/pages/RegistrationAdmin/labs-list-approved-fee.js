@@ -161,13 +161,14 @@ class LabsLists extends Component {
             <Breadcrumbs title="Shared Percentage Approved Labs" breadcrumbItem="Labs Link" />
             {!isEmpty(this.props.labsListApprovedFee) && (
               
+             
               <Row>
                 <Col lg="12">
                   <Card>
                     <CardBody>
                       <div className="py-2 mt-3">
                         <h3 className="font-size-15 font-weight-bold">
-                          Lab Shared Percentage Pending
+                          Lab Shared Percentage Approved
                         </h3>
                       </div>
                       <Table className="align-middle mb-0 table-nowrap">
@@ -191,14 +192,14 @@ class LabsLists extends Component {
 
                                 <tr key={key}>
                                   {/* <td>{key + 1}</td> */}
-                                 <td className="text-start"> <b><Link to={`/shared-percentage-approved-Fee/${lab_list.id}`}>
+                                 <td className="text-start" style={{whiteSpace: "pre-wrap"}} > <b><Link to={`/shared-percentage-approved-Fee/${lab_list.id}`}>
                                     {lab_list.name}
                                   </Link>
                                   </b>
                                   </td>
                                   <td className="text-center">{lab_list.landline}</td>
                                   <td className="text-start">{lab_list.email}</td>
-                                  <td className="text-center" style={{whiteSpace: "pre-wrap"}}>{lab_list.address}</td>
+                                  <td className="text-start" style={{whiteSpace: "pre-wrap"}}>{lab_list.address}</td>
                                 </tr>
                                     
                                       )

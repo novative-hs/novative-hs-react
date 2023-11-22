@@ -31,7 +31,6 @@ import {
   getTerritoriesList
 } from "store/territories-list/actions";
 
-
 class Contact extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +67,6 @@ class Contact extends Component {
   }
 
 
-
   render() {
     const complaint = this.state.complaint;
     const { onAddNewComplaint } = this.props;
@@ -92,16 +90,9 @@ class Contact extends Component {
         value: this.props.territoriesList[i].office,
       });
     }
-
-    const openModal = () => {
-      const modal = document.getElementById("modal");
-      modal.style.display = "block";
-    };
-
-    const closeModal = () => {
-      const modal = document.getElementById("modal");
-      modal.style.display = "none";
-    };
+    function togglePopup(){
+      document.getElementById("popup1").classList.toggle("active");
+    }
 
     return (
       <React.Fragment>
@@ -116,56 +107,110 @@ class Contact extends Component {
               <Alert color="success" className="col-md-8">
                 {this.state.complaintSuccess}
               </Alert>
-            )}
-             <Button
-            color="primary"
-            className="font-16 btn-block btn btn-primary float-end"
+            )}    
+              <Button
+                color="primary"
+                className=" btn btn-primary float-end btn-responsive"
+                style={{ position: "relative"}}
+              >
+                <a onClick={togglePopup}>
+                  <span className="pt-4" style={{ fontWeight: 'bold', }}>
+                    Call / Email HelpLine</span>
+                  <hr style={{ margin: '0 0' }} />
+                </a> 
+              </Button>
+                  <div id="popup1" className="popup">
+                    <div className='overlay1'></div>
+                        <div className="modal-header">
+                        </div>
+                          <div className="content" style={{textAlign: 'start', fontSize:"14px"}}>
+                            <span className="text-danger">
+                              <i className="mdi mdi-phone" style={{fontSize: "12px", backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px' }}></i>{" "}
+                              <span style={{ padding: '2px', fontSize:"16px"}}>0321 8543111</span>
+                            </span><br />
+                            <span className="text-danger">
+                              <i className="mdi mdi-mail" style={{fontSize: "12px", backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px' }}></i>{" "}
+                              <span style={{ padding: '2px', fontSize:"16px"}}>labhazir@gmail.com</span><br />
+                            </span>
+                            <span className="text-danger">
+                              <i className="mdi mdi-mail my-3" style={{ fontSize: "12px", backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
+                              <span style={{padding: '2px',fontSize: "16px" }}>info@labhazir.com</span>
+                            </span>
+          
+                            <div className="modal-header">
+                              <h5 className="modal-title" style={{ margin: '15px', fontSize:"12px"  }}>Available 24/7 for your convenience and peace of mind.</h5>
+                            </div>
 
-          >
-            <a onClick={openModal}>
-              {/* <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "} */}
-              <span className="pt-4 font-size-14" style={{ fontWeight: 'bold', }}>
-                Call / Email HelpLine</span>
-              <hr style={{ margin: '0 0' }} />
-            </a>
-            <div id="modal" className="modal mt-4 " style={{ display: 'none', position: 'absolute', left: '89%', top: '24%', transform: 'translateX(-50%)' }}>
-              <div className="modal-dialog" style={{ width: '300px', height: '300px' }}>
-                <div className="modal-content">
-                  <div className="modal-header">
-                  </div>
-                  <div className="my-0" style={{ textAlign: 'start'}}>
-                    <span className="text-danger" style={{ marginLeft: '50px' }}>
-                      <i className="mdi mdi-phone" style={{ fontSize: '12px',backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
-                      <span style={{ borderRadius: '5px', padding: '2px', fontSize: '18px'}}>0321 8543111</span>
-                    </span><br />
-                    <span className="text-danger" style={{ marginLeft: '50px' }}>
-                      <i className="mdi mdi-mail" style={{ fontSize: '12px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
-                      <span style={{ borderRadius: '5px', padding: '2px', fontSize: '18px', marginRight: '5px' }}>labhazir@gmail.com</span><br />
-                    </span>
-                    <span className="text-danger" style={{ marginLeft: '50px' }}>
-                      <i className="mdi mdi-mail" style={{ fontSize: '12px', backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
-                      <span style={{ borderRadius: '5px', padding: '2px', fontSize: '18px' }}>info@labhazir.com</span>
-                    </span>
-                  </div>
+                            <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={togglePopup}
+                                  >
+                                    Close
+                                  </button> 
+                            </div> 
+                          </div>
+                  </div>        
+              <style>
+                        {`
+                          .popup .overlay1 {
+                            position: fixed;
+                            top: 0px;
+                            left: 0px;
+                            width: 100vw;
+                            height: 100vh;
+                            background: rgba(0, 0, 0, 0.7);
+                            z-index: 1;
+                            display: none; /* initially hide the overlay */
+                          }
+                          .popup .content {
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%) scale(0); /* initially scale down */
+                            background: #fff;
+                            width: 310px;
+                            height: 200px;
+                            z-index: 2;
+                            text-align: center;
+                            padding: 20px;
+                            box-sizing: border-box;
+                          }
+                          .popup.active .overlay1 {
+                            display: block;
+                          }
+                          .popup.active .content {
+                            transition: 300ms ease-in-out;
+                            transform: translate(-50%, -50%) scale(1);
+                          }
 
-                  <div className="modal-header">
-                    <h5 className="modal-title" style={{ textAlign: 'center', fontSize: '12px', margin: '0 auto' }}>Available 24/7 for your convenience and peace of mind.</h5>
-                  </div>
+                          .btn-responsive {
+                            font-size: 15px;
+                          }
 
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={closeModal}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Button>
+                          @media (max-width: 1100px) {
+                            .btn-responsive {
+                              font-size: 14px;
+                              width: 42%;
+                            }
+                          }
 
+                          @media (max-width: 1000px) {
+                            .btn-responsive {
+                              font-size: 10px;
+                              width: 20%;
+                            }
+                          }
+
+                          @media (max-width: 355px) {
+                            .btn-responsive {
+                              font-size: 6px;
+                              width: 15%;
+                            }
+                          }
+                      `}
+              </style>
             <Row>
               <Col lg="12">
                 <Card>
@@ -341,7 +386,6 @@ class Contact extends Component {
                                   <div className="invalid-feedback">
                                     Please select lab
                                   </div>
-
 
                                 </div>
 

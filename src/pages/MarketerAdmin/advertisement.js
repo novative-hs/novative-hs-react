@@ -6,7 +6,7 @@ import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 // import MultiSelectCheckBox from 'react-multiselect-checkboxes';
-
+import { Tooltip } from "@material-ui/core";
 
 import {
   Card,
@@ -138,7 +138,8 @@ class AdvertisementsList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, advertisement) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -146,6 +147,8 @@ class AdvertisementsList extends Component {
                   onClick={e => this.handleAdvertisementClick(e, advertisement)}
                 ></i>
               </Link>
+              </Tooltip>
+              <Tooltip title="Delete">
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -153,6 +156,7 @@ class AdvertisementsList extends Component {
                   onClick={() => this.onClickDelete(advertisement)}
                 ></i>
               </Link>
+              </Tooltip>
             </div>
           ),
         },

@@ -83,7 +83,7 @@ class InvoiceDetail extends Component {
                       </div>
                       <hr />
                       <Row>
-                        <Col sm="4" className="mt-3">
+                      <Col sm="4" className="mt-3">
                           <address>
                             <strong>Patient Detail:</strong>
                             <br />
@@ -94,8 +94,14 @@ class InvoiceDetail extends Component {
                             <span className="text-danger">Email:</span> {this.props.invoiceDetail[0].patient_email}
                             <br />
                             <span className="text-danger">Age:</span> {this.props.invoiceDetail[0].patient_age}
+                            {this.props.invoiceDetail[0].patient_address != null ? (
+                              <div>
+                                <span className="text-danger">Address:</span> {this.props.invoiceDetail[0].patient_address}
+                              </div>
+                            ) : null}
                           </address>
                         </Col>
+
                         <Col sm="4" className="mt-3">
                           <address>
                             <strong>Lab Detail:</strong>

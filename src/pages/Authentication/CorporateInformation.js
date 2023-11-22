@@ -32,6 +32,7 @@ class CorporateInformation extends Component {
       address: "",
       city_id: "",
       website_url: "",
+      payment_terms: "",
     };
   }
 
@@ -141,6 +142,7 @@ class CorporateInformation extends Component {
                               address: (this.state && this.state.address) || "",
                               city_id: (this.state && this.state.city_id) || "",
                               website_url: (this.state && this.state.website_url) || "",
+                              payment_terms: (this.state && this.state.payment_terms) || "",
                             }}
                             validationSchema={Yup.object().shape({
                               name: Yup.string()
@@ -532,6 +534,31 @@ class CorporateInformation extends Component {
                                   className="invalid-feedback"
                                 />
                               </div>
+                                <div>
+                                  <Label
+                                    for="payment_terms"
+                                    className="form-label"
+                                  >
+                                    Payment Terms
+                                  </Label>
+                                  <Field
+                                    name="payment_terms"
+                                    component="select"
+                                    onChange={e =>
+                                      this.setState({
+                                        payment_terms:
+                                          e.target.value,
+                                      })
+                                    }
+                                    value={
+                                      this.state.payment_terms
+                                    }
+                                    className="form-select"
+                                  >
+                                    <option value="Payment by Patient to Lab">Payment by Patient to Lab</option>
+                                    <option value="Payment by Coorporate to LH">Payment by Coorporate to LH</option>
+                                  </Field>
+                                </div>
 
                                {/* {URL Field} */}
                                <div className="mb-3">
@@ -565,6 +592,7 @@ class CorporateInformation extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
+
 
                               <div className="mt-3 d-grid">
                                 <button

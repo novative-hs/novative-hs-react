@@ -17,7 +17,7 @@ import {
   ModalBody,
   Label,
 } from "reactstrap";
-
+import filterFactory, { textFilter} from 'react-bootstrap-table2-filter';
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -69,21 +69,25 @@ class DonationAppointmentsList extends Component {
           dataField: "test_appointment_id",
           text: "Test Appointment ID",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "payment_method",
           text: "Payment Method",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "status",
           text: "Payment Status",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "amount",
           text: "Amount",
           sort: true,
+          filter: textFilter(),
         },
         // {
         //   dataField: "menu",
@@ -356,6 +360,7 @@ class DonationAppointmentsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
                                   </div>
                                 </Col>

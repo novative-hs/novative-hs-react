@@ -86,7 +86,9 @@ class csrComplaints extends Component {
               <span>
                 <Link
                   to="#"
-                  onClick={e => this.openPatientModal(e, csrComplaint)}
+                  // onClick={e => this.openPatientModal(e, csrComplaint)}
+                  onMouseEnter={e => this.openPatientModal(e, csrComplaint)}
+                  onPointerLeave={this.handleMouseExit()}
                 >
                   {csrComplaint.patient_name}
                 </Link>
@@ -102,7 +104,11 @@ class csrComplaints extends Component {
           formatter: (cellContent, csrComplaint) => (
             <>
               <span>
-                <Link to="#" onClick={e => this.openLabModal(e, csrComplaint)}>
+                <Link to="#"
+                //  onClick={e => this.openLabModal(e, csrComplaint)}
+                onMouseEnter={e =>  this.openLabModal(e, csrComplaint)}
+                onPointerLeave={this.handleMouseExit()}
+                 >
                   {csrComplaint.lab_name}
                 </Link>
               </span>
@@ -251,6 +257,13 @@ class csrComplaints extends Component {
       lab_city: arg.lab_city,
     });
   };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      LabModal:  false,
+      isHovered: false,
+    });
+  };
   toggleLabModal = () => {
     this.setState(prevState => ({
       LabModal: !prevState.LabModal,
@@ -385,6 +398,7 @@ class csrComplaints extends Component {
                                     <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleLabModal}
@@ -458,6 +472,7 @@ class csrComplaints extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

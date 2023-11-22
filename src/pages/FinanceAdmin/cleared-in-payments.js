@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -50,225 +51,7 @@ class PendingB2BClients extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-        clearedInPaymentListColumns: [
-          {
-            text: "id",
-            dataField: "id",
-            sort: true,
-            hidden: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>{paymentStatus.id}</>
-            ),
-          },
-          {
-            text: "MIF ID",
-            dataField: "id",
-            sort: true,
-            hidden: false,
-            formatter: (cellContent, paymentStatus) => (
-                <>{paymentStatus.id}</>
-            ),filter: textFilter(),
-        },
-          {
-            dataField: "invoice_id",
-            text: "invoice ID",
-            sort: true,
-            hidden: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>
-                <strong>{paymentStatus.invoice_id}</strong>
-              </>
-            ),filter: textFilter(),
-          },
-          {
-            dataField: "payment_for",
-            text: "Payment From",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>{paymentStatus.payment_for}</>
-          ),filter: textFilter(),
-          },
-          {
-            dataField: "lab_name",
-            text: "Client Name",
-            sort: true,
-          formatter: (cellContent, paymentStatus) => (
-            <>
-              <span>
-                <span>
-                  {paymentStatus.lab_name}{" "}
-                  {paymentStatus.donor_name}
-                  {paymentStatus.advertisement_title}
-  
-                </span>
-              </span>
-            </>
-          ),filter: textFilter(),
-          },
-          {
-            dataField: "payment_method",
-            text: "Payment Method",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>{paymentStatus.payment_method}</>
-          ),filter: textFilter(),
-          },
-          {
-            dataField: "cheque_no",
-            text: "Cheque/Ref#",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => (
-                <>
-                    {paymentStatus.cheque_no && (
-                        <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                            {paymentStatus.cheque_no}
-                        </span>
-                    )}
-  
-                    {paymentStatus.cheque_no && (
-                        <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                            {paymentStatus.refered_no}
-                        </span>
-                    )}
-                </>
-            ),filter: textFilter(),
-        },
-        
-          {
-            dataField: "amount",
-            text: "Amount",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>              <div className="text-end">
-              {paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
-          ),filter: textFilter(),
-          },
-          {
-            dataField: "bank",
-            text: "Bank/Account#",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>
-                <span>
-                  <Link
-                    to={{
-                      pathname:
-                        process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
-                    }}
-                    target="_blank"
-                  >
-                    <span>
-                      {paymentStatus.bank_name},{" "}
-                      {paymentStatus.account_no}
-                    </span>
-                  </Link>
-  
-                </span>
-  
-              </>
-            ),
-            filter: textFilter(),
-          },
-          // {
-          //   dataField: "deposit_slip",
-          //   text: "Deposit Slip",
-          //   sort: true,
-          //   formatter: (cellContent, approvedInPayment) => (
-          //     <>
-          //       <Link
-          //         to={{
-          //           pathname:
-          //             process.env.REACT_APP_BACKENDURL +
-          //             approvedInPayment.deposit_slip,
-          //         }}
-          //         target="_blank"
-          //       >
-          //         View Slip
-          //       </Link>
-          //     </>
-          //   ),filter: textFilter(),
-          // },
-          // {
-          //   dataField: "is_settled",
-          //   text: "Is Settled",
-          //   sort: true,
-          // },
-          {
-            dataField: "verified_by",
-            text: "Deposited By",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => (
-              <>{paymentStatus.verified_by}</>
-          ),filter: textFilter(),
-          },
-          {
-            dataField: "cleared_at",
-            text: "Cleared Date",
-            sort: true,
-            formatter: (cellContent, paymentStatus) => {
-              const date = new Date(paymentStatus.cleared_at);
-              const day = date.getDate();
-              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-              const month = monthNames[date.getMonth()];
-              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-          
-              return (
-                  <p className="text-muted mb-0">
-                      {`${day}-${month}-${year}`}
-                  </p>
-              );
-          },
-          filter: textFilter(),
-          },
-          // {
-          //   dataField: "payment_status",
-          //   text: "Status",
-          //   sort: true,
-          //   formatter: (cellContent, paymentStatus) => (
-          //     <>{paymentStatus.payment_status}</>
-          // ),filter: textFilter(),
-          // },
-          // {
-          //   dataField: "menu",
-          //   isDummyField: true,
-          //   editable: false,
-          //   text: "Action",
-          //   formatter: (cellContent, paymentStatus) => (
-          //     <div className="d-flex gap-3">
-          //       <Link className="text-success" to="#">
-          //         <i
-          //           className="mdi mdi-pencil font-size-18"
-          //           id="edittooltip"
-          //           onClick={e =>
-          //             this.handlePaymentStatusClick(e, paymentStatus)
-          //           }
-          //         ></i>
-          //       </Link>
-                
-          //     </div>
-          //   ),
-          // },
-          {
-            dataField: "menu",
-            isDummyField: true,
-            editable: false,
-            text: "Action",
-            formatter: (cellContent, clearedInPayment) => (
-              <div className="d-flex gap-3">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e =>
-                      this.handlePaymentStatusClick(e, clearedInPayment)
-                    }
-                  ></i>
-                </Link>
-                
-              </div>
-            ),
-          },
-        ],
+
     };
     this.handlePaymentStatusClick =
     this.handlePaymentStatusClick.bind(this);
@@ -329,6 +112,241 @@ class PendingB2BClients extends Component {
 }
 
   render() {
+    const columns= [
+      {
+        text: "id",
+        dataField: "id",
+        sort: true,
+        hidden: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>{paymentStatus.id}</>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        text: "MIF ID",
+        dataField: "id",
+        sort: true,
+        hidden: false,
+        formatter: (cellContent, paymentStatus) => (
+            <>{paymentStatus.id}</>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+    },
+      {
+        dataField: "invoice_id",
+        text: "invoice ID",
+        sort: true,
+        hidden: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>
+            <strong>{paymentStatus.invoice_id}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_for",
+        text: "Payment From",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>{paymentStatus.payment_for}</>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "lab_name",
+        text: "Client Name",
+        sort: true,
+      formatter: (cellContent, paymentStatus) => (
+        <>
+          <span>
+            <span>
+              {paymentStatus.lab_name}{" "}
+              {paymentStatus.donor_name}
+              {paymentStatus.advertisement_title}
+
+            </span>
+          </span>
+        </>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_method",
+        text: "Payment Method",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>{paymentStatus.payment_method}</>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "cheque_no",
+        text: "Cheque/Ref#",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+            <>
+                {paymentStatus.cheque_no && (
+                    <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                        {paymentStatus.cheque_no}
+                    </span>
+                )}
+
+                {paymentStatus.cheque_no && (
+                    <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                        {paymentStatus.refered_no}
+                    </span>
+                )}
+            </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+    },
+    
+      {
+        dataField: "amount",
+        text: "Amount",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>              <div className="text-end">
+          {paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      style: { backgroundColor: '	#F0F0F0' },
+      },
+      {
+        dataField: "bank",
+        text: "Bank/Account#",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>
+            <span>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
+                }}
+                target="_blank"
+              >
+                <span>
+                  {paymentStatus.bank_name},{" "}
+                  {paymentStatus.account_no}
+                </span>
+              </Link>
+
+            </span>
+
+          </>
+        ),
+        filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      // {
+      //   dataField: "deposit_slip",
+      //   text: "Deposit Slip",
+      //   sort: true,
+      //   formatter: (cellContent, approvedInPayment) => (
+      //     <>
+      //       <Link
+      //         to={{
+      //           pathname:
+      //             process.env.REACT_APP_BACKENDURL +
+      //             approvedInPayment.deposit_slip,
+      //         }}
+      //         target="_blank"
+      //       >
+      //         View Slip
+      //       </Link>
+      //     </>
+      //   ),filter: textFilter(),
+      // },
+      // {
+      //   dataField: "is_settled",
+      //   text: "Is Settled",
+      //   sort: true,
+      // },
+      {
+        dataField: "verified_by",
+        text: "Deposited By",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>{paymentStatus.verified_by}</>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "cleared_at",
+        text: "Cleared Date",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => {
+          const date = new Date(paymentStatus.cleared_at);
+          const day = date.getDate();
+          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const month = monthNames[date.getMonth()];
+          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+      
+          return (
+              <p className="text-muted mb-0">
+                  {`${day}-${month}-${year}`}
+              </p>
+          );
+      },
+      filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      style: { backgroundColor: '	#F0F0F0' },
+      },
+      // {
+      //   dataField: "payment_status",
+      //   text: "Status",
+      //   sort: true,
+      //   formatter: (cellContent, paymentStatus) => (
+      //     <>{paymentStatus.payment_status}</>
+      // ),filter: textFilter(),
+      // },
+      // {
+      //   dataField: "menu",
+      //   isDummyField: true,
+      //   editable: false,
+      //   text: "Action",
+      //   formatter: (cellContent, paymentStatus) => (
+      //     <div className="d-flex gap-3">
+      //       <Link className="text-success" to="#">
+      //         <i
+      //           className="mdi mdi-pencil font-size-18"
+      //           id="edittooltip"
+      //           onClick={e =>
+      //             this.handlePaymentStatusClick(e, paymentStatus)
+      //           }
+      //         ></i>
+      //       </Link>
+            
+      //     </div>
+      //   ),
+      // },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Action",
+        formatter: (cellContent, clearedInPayment) => (
+          <div>
+            <Tooltip title="Update">
+            <Link className="text-success" to="#">
+              <i
+                className="mdi mdi-pencil font-size-18"
+                id="edittooltip"
+                onClick={e =>
+                  this.handlePaymentStatusClick(e, clearedInPayment)
+                }
+              ></i>
+            </Link>
+            </Tooltip>
+            
+          </div>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+    ];
     const { SearchBar } = Search;
 
     const {
@@ -412,9 +430,10 @@ class PendingB2BClients extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={"table align-middle "}
                                       bordered={false}
-                                      striped={true}
+                                      // striped={true}
+                                      columns={columns}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

@@ -43,6 +43,7 @@ export * from "./test-list/actions";
 export * from "./pathologists/actions";
 export * from "./activtylog/actions";
 export * from "./activtylogfinance/actions";
+export * from "./activtylogmarketer/actions";
 // pathologists
 export * from "./bankaccounts/actions";
 
@@ -145,9 +146,12 @@ export * from "./donor-referred-appointments/actions";
 export * from "./donorcheckout/actions";
 export * from "./donor-account-statements/actions";
 
+//Bank
 export * from "./createbank/actions";
 export * from "./bankaccount/actions";
 
+// Corporate
+export * from "./corporatedata/actions";
 
 // invoices
 export * from "./invoices/actions";

@@ -78,6 +78,8 @@ class TestAppointmentsCompletedList extends Component {
                   <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, testAppointment)}
+                    // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+                    // onPointerLeave={this.handleMouseExit()}
                   >
                     {testAppointment.patient_name}
                   </Link>
@@ -665,6 +667,13 @@ class TestAppointmentsCompletedList extends Component {
       booked_at: arg.booked_at,
     });
   };
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   openReshedualModal = (e, arg) => {
     this.setState({
       ReshedualModal: true,
@@ -839,6 +848,8 @@ class TestAppointmentsCompletedList extends Component {
                                   <Modal
                                     isOpen={this.state.PatientModal}
                                     className={this.props.className}
+                                    // onPointerLeave={this.handleMouseExit}
+
                                   >
                                     <ModalHeader
                                       toggle={this.togglePatientModal}
@@ -886,26 +897,28 @@ class TestAppointmentsCompletedList extends Component {
                                                 </div>
                                               </div>
 
-                                              {/* <div className="mb-3 row">
-                                                <div className="col-md-3">
-                                                  <Label className="form-label">
-                                                    Address
-                                                  </Label>
+                                              {this.state.patient_address && this.state.patient_address !== "undefined" ? (
+                                                  <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .patient_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
                                                 </div>
-                                                <div className="col-md-9">
-                                                  <input
-                                                    type="text"
-                                                    value={
-                                                      this.state
-                                                        .patient_address
-                                                    }
-                                                    className="form-control"
-                                                    readOnly={true}
-                                                  />
-                                                </div>
-                                              </div> */}
+                                                ): null}
 
-                                              <div className="mb-3 row">
+                                              {/* <div className="mb-3 row">
                                                 <div className="col-md-3">
                                                   <Label className="form-label">
                                                     City
@@ -921,7 +934,7 @@ class TestAppointmentsCompletedList extends Component {
                                                     readOnly={true}
                                                   />
                                                 </div>
-                                              </div>
+                                              </div> */}
                                               <div className="mb-3 row">
                                                 <div className="col-md-3">
                                                   <Label className="form-label">

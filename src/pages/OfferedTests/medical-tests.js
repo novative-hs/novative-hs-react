@@ -77,6 +77,8 @@ class TestsList extends Component {
                   <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, testsList)}
+                    // onMouseEnter={e => this.openPatientModal(e, testsList)}
+                    // onPointerLeave={this.handleMouseExit()}
                   >
                     {testsList.name}
                   </Link></p>
@@ -87,6 +89,8 @@ class TestsList extends Component {
                   <Link
                     to="#"
                     onClick={e => this.openOtherModal(e, testsList)}
+                    // onMouseEnter={e =>  this.openOtherModal(e, testsList)}
+                    // onPointerLeave={this.handleMouseExit()}
                   >
                     {testsList.name}
                   </Link></p>
@@ -187,6 +191,14 @@ class TestsList extends Component {
       description_in_urdu: arg.description_in_urdu,
     });
   };
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     OtherModal: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   toggleOtherModal = () => {
     this.setState(prevState => ({
       OtherModal: !prevState.OtherModal,
@@ -836,6 +848,7 @@ class TestsList extends Component {
                                     <Modal
                                       isOpen={this.state.OtherModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleOtherModal}
@@ -875,6 +888,7 @@ class TestsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

@@ -74,7 +74,9 @@ class FailedAudits extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, failedAudit)}
+                    // onClick={e => this.openPatientModal(e, failedAudit)}
+                    onMouseEnter={e => this.openPatientModal(e, failedAudit)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {failedAudit.lab_name}
                   </Link>
@@ -186,7 +188,12 @@ class FailedAudits extends Component {
       lab_email: arg.lab_email,
     });
   };
-  
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+    });
+  };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -287,6 +294,7 @@ class FailedAudits extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

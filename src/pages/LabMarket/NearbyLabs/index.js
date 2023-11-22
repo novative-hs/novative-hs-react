@@ -1606,7 +1606,7 @@ class NearbyLabs extends Component {
             </nav>
           </div>
           {this.state.locationAccessAllowed === false ? (
-            <div style={{ height: "30px", display: "flex", alignItems: "center", marginLeft: "200px", marginTop: "7px" }}>
+            <div style={{ backgroundColor: "white", height: "30px", display: "flex", }}>
               <p>
                 <i className="bx bx-error text-danger" style={{ fontSize: "18px" }}></i>
                 <span style={{ fontSize: "14px", marginLeft: "7px" }}>

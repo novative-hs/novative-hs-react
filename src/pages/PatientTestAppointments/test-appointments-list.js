@@ -75,6 +75,8 @@ class TestAppointmentsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, patientTestAppointment)}
+                  // onMouseEnter={e => this.openPatientModal(e, patientTestAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {patientTestAppointment.order_id}
                 </Link>
@@ -97,6 +99,8 @@ class TestAppointmentsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal2(e, testAppointment)}
+                  // onMouseEnter={e => this.openPatientModal2(e, testAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {testAppointment.patient_name}
                 </Link>
@@ -574,7 +578,8 @@ class TestAppointmentsList extends Component {
            
             
             {patientTestAppointment.status == "Pending" && (
-              <Link
+            <Tooltip title="Cancel Appointment">
+             <Link
             className="text-warning font-size-12"
             to="#"
             onClick={e =>
@@ -586,6 +591,7 @@ class TestAppointmentsList extends Component {
           >
             <i className="bx bx-no-entry font-size-14"></i>
             </Link>
+            </Tooltip> 
            )} 
             <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
@@ -692,7 +698,14 @@ class TestAppointmentsList extends Component {
       patient_phone: arg.patient_phone,
     });
   };
-
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     PatientModal2: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   togglePatientModal2 = () => {
     this.setState(prevState => ({
       PatientModal2: !prevState.PatientModal2,
@@ -721,6 +734,7 @@ class TestAppointmentsList extends Component {
       collector_phone: arg.collector_phone,
       collector_photo: arg.collector_photo,
       sample_collected_at: arg.sample_collected_at,
+      collection_status: arg.collection_status,
     });
   };
 
@@ -859,6 +873,7 @@ class TestAppointmentsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -1302,6 +1317,7 @@ class TestAppointmentsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal2}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal2}
@@ -1350,7 +1366,8 @@ class TestAppointmentsList extends Component {
                                                   </div>
                                                 </div>
 
-                                                <div className="mb-3 row">
+                                                {this.state.patient_address && this.state.patient_address !== "undefined" ? (
+                                                  <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Address
@@ -1368,6 +1385,7 @@ class TestAppointmentsList extends Component {
                                                     />
                                                   </div>
                                                 </div>
+                                                ): null}
 
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -1517,6 +1535,7 @@ class TestAppointmentsList extends Component {
                                                     />
                                                   </div>
                                                 </div>
+                                                {this.state.sample_collected_at != null ? (
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
@@ -1534,7 +1553,7 @@ class TestAppointmentsList extends Component {
                                                     />
                                                   </div>
                                                 </div>
-
+                                                ): null}
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">

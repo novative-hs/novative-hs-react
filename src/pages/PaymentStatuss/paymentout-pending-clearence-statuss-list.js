@@ -56,174 +56,7 @@ class PaymentStatussList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      paymentOutStatusListColumns: [
-        {
-          text: "MOF ID",
-          dataField: "id",
-          sort: true,
-          hidden: false,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>{paymentOutStatus.id}</>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "invoice_id",
-          text: "invoice ID",
-          sort: true,
-          hidden: true,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>
-              <strong>{paymentOutStatus.invoice_id}</strong>
-            </>
-          ),
-        },
-        {
-          dataField: "payment_method",
-          text: "Payment Method",
-          sort: true,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>
-              <strong>{paymentOutStatus.payment_method}</strong>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "payment_for",
-          text: "Payment To",
-          sort: true,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>
-              <strong>{paymentOutStatus.payment_for}</strong>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "lab_name",
-          text: "Client Name",
-          sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-            <span>
-              <span>
-                {paymentCreatedStatus.lab_name}{" "}
-                {paymentCreatedStatus.b2b_id}
-              </span>
-            </span>
-          </>
-        ),filter: textFilter(),
-        },
-        {
-          dataField: "payment_at",
-          text: "Payment Date",
-          sort: true,
-          formatter: (cellContent, paymentOutStatus) => {
-            const date = new Date(paymentOutStatus.payment_at);
-            const day = date.getDate();
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const month = monthNames[date.getMonth()];
-            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-        
-            return (
-                <p className="text-muted mb-0">
-                    {`${day}-${month}-${year}`}
-                </p>
-            );
-        },
-        filter: textFilter(),
-        },
-        {
-          dataField: "cheque_no",
-          text: "Cheque/Online Ref#",
-          sort: true,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>
-              <span>
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL + paymentOutStatus.deposit_copy,
-                  }}
-                  target="_blank"
-                >
-                                <strong>{paymentOutStatus.cheque_no}</strong>
 
-                </Link>
-
-              </span>
-
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "amount",
-          text: "Payment",
-          sort: true,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>
-            <div className="text-end">
-              <strong>{paymentOutStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "bank",
-          text: "Bank/Account#",
-          sort: true,
-          formatter: (cellContent, paymentOutStatus) => (
-            <>
-              <span>
-                <span>
-                  {paymentOutStatus.bank_name},{" "}
-                  {paymentOutStatus.account_no}
-                </span>
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        // {
-        //   dataField: "status",
-        //   text: "Status",
-        //   sort: true,
-        // },
-        // {
-        //   dataField: "deposit_copy",
-        //   text: "Deposite Copy",
-        //   sort: true,
-        //   formatter: (cellContent, paymentOutStatus) => (
-        //     <>
-        //       <Link
-        //         to={{
-        //           pathname:
-        //             process.env.REACT_APP_BACKENDURL + paymentOutStatus.deposit_copy,
-        //         }}
-        //         target="_blank"
-        //       >
-        //         View
-        //       </Link>
-        //     </>
-        //   ),
-        // },
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, paymentOutStatus) => (
-            <div className="d-flex gap-3">
-             
-              <button
-                type="submit"
-                className="btn btn-primary save-user"
-                onClick={e => this.handlePaymentStatusClick(e, paymentOutStatus)}
-
-              >
-                Update
-              </button>
-
-            </div>
-          ),
-        },
-      ],
     };
     this.handlePaymentStatusClick =
       this.handlePaymentStatusClick.bind(this);
@@ -342,6 +175,186 @@ class PaymentStatussList extends Component {
   }
 
   render() {
+    const columns= [
+      {
+        text: "MOF ID",
+        dataField: "id",
+        sort: true,
+        hidden: false,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>{paymentOutStatus.id}</>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "invoice_id",
+        text: "invoice ID",
+        sort: true,
+        hidden: true,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>
+            <strong>{paymentOutStatus.invoice_id}</strong>
+          </>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_method",
+        text: "Payment Method",
+        sort: true,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>
+            <strong>{paymentOutStatus.payment_method}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_for",
+        text: "Payment To",
+        sort: true,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>
+            <strong>{paymentOutStatus.payment_for}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "lab_name",
+        text: "Client Name",
+        sort: true,
+      formatter: (cellContent, paymentCreatedStatus) => (
+        <>
+          <span>
+            <span>
+              {paymentCreatedStatus.lab_name}{" "}
+              {paymentCreatedStatus.b2b_id}
+            </span>
+          </span>
+        </>
+      ),filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "payment_at",
+        text: "Payment Date",
+        sort: true,
+        formatter: (cellContent, paymentOutStatus) => {
+          const date = new Date(paymentOutStatus.payment_at);
+          const day = date.getDate();
+          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const month = monthNames[date.getMonth()];
+          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+      
+          return (
+              <p className="text-muted mb-0">
+                  {`${day}-${month}-${year}`}
+              </p>
+          );
+      },
+      filter: textFilter(),
+      headerStyle: { backgroundColor: '#DCDCDC' },
+      style: { backgroundColor: '	#F0F0F0' },
+      },
+      {
+        dataField: "cheque_no",
+        text: "Cheque/Online Ref#",
+        sort: true,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>
+            <span>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentOutStatus.deposit_copy,
+                }}
+                target="_blank"
+              >
+                              <strong>{paymentOutStatus.cheque_no}</strong>
+
+              </Link>
+
+            </span>
+
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "amount",
+        text: "Payment",
+        sort: true,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>
+          <div className="text-end">
+            <strong>{paymentOutStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },
+      {
+        dataField: "bank",
+        text: "Bank/Account#",
+        sort: true,
+        formatter: (cellContent, paymentOutStatus) => (
+          <>
+            <span>
+              <span>
+                {paymentOutStatus.bank_name},{" "}
+                {paymentOutStatus.account_no}
+              </span>
+            </span>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      // {
+      //   dataField: "status",
+      //   text: "Status",
+      //   sort: true,
+      // },
+      // {
+      //   dataField: "deposit_copy",
+      //   text: "Deposite Copy",
+      //   sort: true,
+      //   formatter: (cellContent, paymentOutStatus) => (
+      //     <>
+      //       <Link
+      //         to={{
+      //           pathname:
+      //             process.env.REACT_APP_BACKENDURL + paymentOutStatus.deposit_copy,
+      //         }}
+      //         target="_blank"
+      //       >
+      //         View
+      //       </Link>
+      //     </>
+      //   ),
+      // },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Action",
+        formatter: (cellContent, paymentOutStatus) => (
+          <div className="d-flex gap-3">
+           
+            <button
+              type="submit"
+              className="btn btn-primary save-user"
+              onClick={e => this.handlePaymentStatusClick(e, paymentOutStatus)}
+
+            >
+              Update
+            </button>
+
+          </div>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+    ];
     const { SearchBar } = Search;
 
     const { paymentOutStatuss } = this.props;
@@ -428,9 +441,10 @@ class PaymentStatussList extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={"table align-middle"}
                                       bordered={false}
-                                      striped={true}
+                                      // striped={true}
+                                      columns={columns}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

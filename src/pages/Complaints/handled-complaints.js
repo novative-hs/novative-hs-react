@@ -88,7 +88,9 @@ class handledComplaintsList extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, unhandledComplaint)}
+                    // onClick={e => this.openPatientModal(e, unhandledComplaint)}
+                    onMouseEnter={e => this.openPatientModal(e, unhandledComplaint)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {unhandledComplaint.name}
                   </Link>
@@ -128,7 +130,11 @@ class handledComplaintsList extends Component {
           sort: true,
           formatter: (cellContent, complaint) => (
             <>
-              <Link to="#" onClick={e => this.openMessageModal(e, complaint)}>
+              <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMessageModal(e, complaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
                 {complaint.message.slice(0, 10) + "..."}
               </Link>{" "}
             </>
@@ -195,6 +201,13 @@ class handledComplaintsList extends Component {
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
+  };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      messageModal: false,
+      isHovered: false,
+    });
   };
 
   toggleMessageModal = () => {
@@ -294,6 +307,7 @@ class handledComplaintsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -427,6 +441,7 @@ class handledComplaintsList extends Component {
                                       autoFocus={true}
                                       data-toggle="modal"
                                       centered
+                                      onPointerLeave={this.handleMouseExit}
                                       toggle={this.toggleMessageModal}
                                     >
                                       <div className="modal-content">

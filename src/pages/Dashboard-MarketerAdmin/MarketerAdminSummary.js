@@ -72,12 +72,8 @@ class MarketerAdminSummary extends Component {
                       </Col>
                       <Col xs="6">
                         <div className="mt-2">
-                          <Link
-                            to={
-                              this.state.uuid
-                                ? `/activity-log/${this.state.uuid}`
-                                : `/activity-log`
-                            }
+                        <Link
+                            to={"/activity-log-marketer"}
                             className="btn btn-primary btn-sm"
                           >
                             Activity Log{" "}

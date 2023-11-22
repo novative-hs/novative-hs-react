@@ -76,7 +76,9 @@ class PendingAudits extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, pendingAudit)}
+                    // onClick={e => this.openPatientModal(e, pendingAudit)}
+                    onMouseEnter={e =>  this.openPatientModal(e, pendingAudit)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {pendingAudit.lab_name}
                   </Link>
@@ -189,6 +191,12 @@ class PendingAudits extends Component {
       lab_city: arg.lab_city,
       lab_phone: arg.lab_phone,
       lab_email: arg.lab_email,
+    });
+  };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
     });
   };
   togglePatientModal = () => {
@@ -352,6 +360,7 @@ class PendingAudits extends Component {
                                       <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

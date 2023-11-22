@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -88,7 +88,9 @@ class UnhandledComplaints extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, unhandledComplaint)}
+                    // onClick={e => this.openPatientModal(e, unhandledComplaint)}
+                    onMouseEnter={e =>this.openPatientModal(e, unhandledComplaint)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {unhandledComplaint.name}
                   </Link>
@@ -127,7 +129,11 @@ class UnhandledComplaints extends Component {
           sort: true,
           formatter: (cellContent, complaint) => (
             <>
-              <Link to="#" onClick={e => this.openMessageModal(e, complaint)}>
+              <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMessageModal(e, complaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
                 {complaint.message.slice(0, 10) + "..."}
               </Link>{" "}
             </>
@@ -169,13 +175,14 @@ class UnhandledComplaints extends Component {
           text: "Action",
           formatter: (cellContent, complaint) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.onClickAuditedEvent(e, complaint.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link></Tooltip>
             </>
           ),
         },
@@ -210,7 +217,13 @@ class UnhandledComplaints extends Component {
       phone:arg.phone,
     });
   };
-
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+      messageModal: false,
+    });
+  };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -346,6 +359,7 @@ class UnhandledComplaints extends Component {
                                       role="dialog"
                                       autoFocus={true}
                                       data-toggle="modal"
+                                      onPointerLeave={this.handleMouseExit}
                                       centered
                                       toggle={this.toggleMessageModal}
                                     >
@@ -385,9 +399,10 @@ class UnhandledComplaints extends Component {
                                         </div>
                                       </div>
                                     </Modal>
-<Modal
+                                    <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

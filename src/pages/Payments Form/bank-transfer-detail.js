@@ -311,7 +311,7 @@ class BankTransfersForm extends Component {
                       <CardBody>
                         <div>
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Transfer Type
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -346,7 +346,7 @@ class BankTransfersForm extends Component {
                           </FormGroup>
                           {this.state.transfer_type == "Deposit" ? (
                              <FormGroup className="mb-0">
-                             <Label htmlFor="cardnumberInput">
+                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                                Deposit Type
                                <span
                                  style={{ color: "#f46a6a" }}
@@ -386,7 +386,7 @@ class BankTransfersForm extends Component {
 
                           {this.state.transfer_type == "Interbank Transfer" ? (
                              <FormGroup className="mb-0">
-                             <Label htmlFor="cardnumberInput">
+                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                                Mode
                                <span
                                  style={{ color: "#f46a6a" }}
@@ -422,7 +422,7 @@ class BankTransfersForm extends Component {
                           ) : null}
                           {this.state.transfer_type == "Deposit" || this.state.transfer_type == "Withdraw" ? (
                              <FormGroup className="mb-0">
-                             <Label htmlFor="cardnumberInput">
+                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                                Mode
                                <span
                                  style={{ color: "#f46a6a" }}
@@ -459,7 +459,7 @@ class BankTransfersForm extends Component {
                           ) : null}
                          
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Amount
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -487,7 +487,7 @@ class BankTransfersForm extends Component {
                                 bankTransfer.from_bankaccount_id ? (
                                 <div className="mb-3">
                                   <Label
-                                    className="col-form-label"
+                                    className="col-form-label fw-bolder"
                                   >
                                     Bank Account Name</Label>
     
@@ -519,7 +519,7 @@ class BankTransfersForm extends Component {
                               ) : (
                                 <div className="mb-3 select2-container">
                                   <Label
-                                    className="col-form-label"
+                                    className="col-form-label fw-bolder"
                                   >
                                     Bank Account Name (From)</Label>
     
@@ -565,7 +565,7 @@ class BankTransfersForm extends Component {
                                 bankTransfer.bankaccount_id ? (
                                 <div className="mb-3">
                                   <Label
-                                    className="col-form-label"
+                                    className="col-form-label fw-bolder"
                                   >
                                     Bank Account Name</Label>
     
@@ -597,7 +597,7 @@ class BankTransfersForm extends Component {
                               ) : (
                                 <div className="mb-3 select2-container">
                                   <Label
-                                    className="col-form-label"
+                                    className="col-form-label fw-bolder"
                                   >
                                     Bank Account Name (To)</Label>
     
@@ -643,7 +643,7 @@ class BankTransfersForm extends Component {
                                 bankTransfer.bankaccount_id ? (
                                 <div className="mb-3">
                                   <Label
-                                    className="col-form-label"
+                                    className="col-form-label fw-bolder"
                                   >
                                     Bank Account Name</Label>
     
@@ -675,7 +675,7 @@ class BankTransfersForm extends Component {
                               ) : (
                                 <div className="mb-3 select2-container">
                                   <Label
-                                    className="col-form-label"
+                                    className="col-form-label fw-bolder"
                                   >
                                     Bank Account Name </Label>
     
@@ -719,7 +719,7 @@ class BankTransfersForm extends Component {
 
                           {this.state.transfer_type == "Interbank Transfer" || this.state.transfer_type == "Withdraw" ? (
                              <FormGroup className="mt-4 mb-0">
-                             <Label htmlFor="cardnameInput">
+                             <Label htmlFor="cardnameInput" className="fw-bolder">
                                Cheque/TT #
                                <span
                                  style={{ color: "#f46a6a" }}
@@ -744,7 +744,7 @@ class BankTransfersForm extends Component {
                           ) : null}
 
                             <FormGroup className=" mt-4 mb-0">
-                              <Label htmlFor="expirydateInput">
+                              <Label htmlFor="expirydateInput" className="fw-bolder">
                                 Payment Copy
                                 <span
                                   style={{ color: "#f46a6a" }}
@@ -777,7 +777,7 @@ class BankTransfersForm extends Component {
                             </FormGroup>
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment DateTime
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -808,7 +808,7 @@ class BankTransfersForm extends Component {
                           {this.state.transfer_type == "Interbank Transfer" || 
                             this.state.transfer_type == "Deposit" ? (
                               <FormGroup className=" mt-4 mb-0">
-                              <Label htmlFor="expirydateInput">
+                              <Label htmlFor="expirydateInput" className="fw-bolder">
                                 Deposit Copy
                                 <span
                                   style={{ color: "#f46a6a" }}
@@ -844,7 +844,7 @@ class BankTransfersForm extends Component {
                           {this.state.transfer_type == "Interbank Transfer" || 
                             this.state.transfer_type == "Deposit" ? (
                             <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Deposit DateTime
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -875,7 +875,7 @@ class BankTransfersForm extends Component {
 
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Clearence DateTime
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -937,7 +937,7 @@ class BankTransfersForm extends Component {
                           </FormGroup> */}
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Comments
                               <span
                                 style={{ color: "#f46a6a" }}

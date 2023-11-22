@@ -125,7 +125,8 @@ class LabAdvertisementRequestsList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, labAdvertisementRequest) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -135,6 +136,7 @@ class LabAdvertisementRequestsList extends Component {
                   }
                 ></i>
               </Link>
+              </Tooltip>
               <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"

@@ -77,6 +77,8 @@ class ReferredPatientsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, patientTestAppointment)}
+                  // onMouseEnter={e => this.openPatientModal(e, patientTestAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {patientTestAppointment.patient_name}
                 </Link>
@@ -101,6 +103,8 @@ class ReferredPatientsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openLabModal(e, donorReferredAppointment)}
+                  // onMouseEnter={e => this.openLabModal(e, donorReferredAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {donorReferredAppointment.lab_name}
                 </Link>
@@ -244,11 +248,18 @@ class ReferredPatientsList extends Component {
       patient_address: arg.patient_address,
       patient_age: arg.patient_age,
       patient_unique_id: arg.patient_unique_id,
-      patient_city: arg.patient_city,
+      // patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
       booked_at: arg.booked_at,
     });
   };
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+  //     LabModal: false,
+  //   });
+  // };
   openLabModal = (e, arg) => {
     this.setState({
       LabModal: true,
@@ -362,6 +373,7 @@ class ReferredPatientsList extends Component {
                                     <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleLabModal}
@@ -423,6 +435,7 @@ class ReferredPatientsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -472,7 +485,8 @@ class ReferredPatientsList extends Component {
                                                   </div>
                                                 </div>
 
-                                                {/* <div className="mb-3 row">
+                                                {this.state.patient_address && this.state.patient_address !== "undefined" ? (
+                                                  <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Address
@@ -489,9 +503,10 @@ class ReferredPatientsList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div> */}
+                                                </div>
+                                                ): null}
 
-                                                <div className="mb-3 row">
+                                                {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       City
@@ -507,7 +522,7 @@ class ReferredPatientsList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div>
+                                                </div> */}
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">

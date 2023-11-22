@@ -38,6 +38,7 @@ import {
 } from "store/sample-collector-test-appointments/actions";
 
 import { isEmpty, size } from "lodash";
+import { Tooltip } from "@material-ui/core";
 
 class SampleCollectorTestAppointmentsInProcessList extends Component {
   constructor(props) {
@@ -84,6 +85,8 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, testAppointment)}
+                  // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {testAppointment.patient_name}
                 </Link>
@@ -266,7 +269,8 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, testAppointment) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -276,6 +280,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                   }
                 ></i>
               </Link>
+              </Tooltip>
             </div>
           ),
         },
@@ -304,7 +309,13 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
       appointment_requested_at: arg.appointment_requested_at
     });
   };
-
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -471,6 +482,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

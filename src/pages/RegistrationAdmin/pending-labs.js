@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -65,10 +66,20 @@ class PendingLabs extends Component {
           sort: true,
           formatter: (cellContent, pendingLab) => (
             <>
-              <span>
+              <span style={{
+                width: '200px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
                   <Link
                     to="#"
-                    onClick={e => this.openLabModal(e, pendingLab)}
+                    // onClick={e => this.openLabModal(e, pendingLab)}
+                    onMouseEnter={e => this.openLabModal(e, pendingLab)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {pendingLab.name}
                   </Link>
@@ -81,11 +92,20 @@ class PendingLabs extends Component {
           text: "Address",
           sort: true,   
           formatter: (cellContent, pendingLab) => (
-            <>
+            <span style={{
+              width: '200px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
                    {pendingLab.address}
                   
-            </>
+            </span>
           ),filter: textFilter(),  
+          
         },
         // {
         //   dataField: "city",
@@ -101,7 +121,9 @@ class PendingLabs extends Component {
               {pendingLab.registered_by == 'Lab' ? (
                 <span><Link
                 to="#"
-                onClick={e => this.openPatientModal(e, pendingLab)}
+                // onClick={e => this.openPatientModal(e, pendingLab)}
+                onMouseEnter={e =>  this.openPatientModal(e, pendingLab)}
+                onPointerLeave={this.handleMouseExit()}
               >
                {pendingLab.registered_by}
               </Link>
@@ -110,7 +132,9 @@ class PendingLabs extends Component {
                 <span>
                   <Link
                 to="#"
-                onClick={e => this.openMarketerModal(e, pendingLab)}
+                // onClick={e => this.openMarketerModal(e, pendingLab)}
+                onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
+                onPointerLeave={this.handleMouseExit()}
               >
                {pendingLab.registered_by}
               </Link>
@@ -150,13 +174,18 @@ class PendingLabs extends Component {
           text: "Action",
           formatter: (cellContent, pendingLab) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.handleApprovedEvent(pendingLab.id)}
+                
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link>
+              </Tooltip>
+              {" "}
+              <Tooltip title="Delete">
               <Link
                 className="btn btn-danger btn-rounded"
                 to="#"
@@ -164,6 +193,7 @@ class PendingLabs extends Component {
               >
                 <i className="mdi mdi-close-circle font-size-14"></i>
               </Link>
+              </Tooltip>
             </>
           ),
         },
@@ -205,6 +235,14 @@ class PendingLabs extends Component {
       lab_city: arg.lab_city,
       lab_phone: arg.lab_phone,
       lab_email: arg.lab_email,
+    });
+  };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      MarketerModal: false,
+      LabModal: false,
+      isHovered: false,
     });
   };
   togglePatientModal = () => {
@@ -365,6 +403,7 @@ class PendingLabs extends Component {
                                       <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleLabModal}
@@ -473,6 +512,7 @@ class PendingLabs extends Component {
                                     <Modal
                                       isOpen={this.state.MarketerModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleMarketerModal}
@@ -546,6 +586,7 @@ class PendingLabs extends Component {
                                      <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

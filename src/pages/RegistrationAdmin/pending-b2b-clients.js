@@ -13,7 +13,7 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
-
+import { Tooltip } from "@material-ui/core";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -112,13 +112,16 @@ class PendingB2BClients extends Component {
           text: "Action",
           formatter: (cellContent, pendingB2BClient) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.handleApprovedEvent(pendingB2BClient.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link>
+              </Tooltip>{" "}
+              <Tooltip title="Delete">
               <Link
                 className="btn btn-danger btn-rounded"
                 to="#"
@@ -126,6 +129,7 @@ class PendingB2BClients extends Component {
               >
                 <i className="mdi mdi-close-circle font-size-14"></i>
               </Link>
+              </Tooltip>
             </>
           ),
         },

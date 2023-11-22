@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -107,7 +108,8 @@ class AuditorList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, Auditor) => (
-            <div className="d-flex gap-3">
+            <div>
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -115,6 +117,8 @@ class AuditorList extends Component {
                   onClick={e => this.handleAuditorClick(e, Auditor)}
                 ></i>
               </Link>
+              </Tooltip>
+              <Tooltip title="Delete">
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
@@ -122,6 +126,7 @@ class AuditorList extends Component {
                   onClick={() => this.onClickDelete(Auditor)}
                 ></i>
               </Link>
+              </Tooltip>
             </div>
           ),
         },

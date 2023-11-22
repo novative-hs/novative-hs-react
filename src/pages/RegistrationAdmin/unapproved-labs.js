@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -58,9 +59,17 @@ class UnapprovedLabs extends Component {
           text: "Lab name",
           sort: true,
           formatter: (cellContent, approvedLab) => (
-            <>
+            <span style={{
+              width: '200px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
                 {approvedLab.name}
-            </>
+            </span>
           ),filter: textFilter(),
         },
         {
@@ -68,9 +77,17 @@ class UnapprovedLabs extends Component {
           text: "Address",
           sort: true,
           formatter: (cellContent, approvedLab) => (
-            <>
+            <span style={{
+              width: '200px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
                 {approvedLab.address}
-            </>
+            </span>
           ),filter: textFilter(),
         },
         {
@@ -115,13 +132,14 @@ class UnapprovedLabs extends Component {
           text: "Action",
           formatter: (cellContent, pendingLab) => (
             <>
+            <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.handleApprovedEvent(e, pendingLab.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
+              </Link></Tooltip>{" "}
             </>
           ),
         },

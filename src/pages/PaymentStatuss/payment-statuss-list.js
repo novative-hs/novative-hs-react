@@ -59,225 +59,7 @@ class PaymentStatussList extends Component {
             user_id: localStorage.getItem("authUser")
                 ? JSON.parse(localStorage.getItem("authUser")).user_id
                 : "",
-            paymentStatusListColumns: [
-                {
-                    text: "MIF ID",
-                    dataField: "id",
-                    sort: true,
-                    hidden: false,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>{paymentStatus.id}</>
-                    ), filter: textFilter(),
-                },
-                {
-                    dataField: "invoice_id",
-                    text: "invoice ID",
-                    sort: true,
-                    hidden: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            <strong>{paymentStatus.invoice_id}</strong>
-                        </>
-                    ), filter: textFilter(),
-                },
-                {
-                    dataField: "payment_for",
-                    text: "Payment From",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            <strong>{paymentStatus.payment_for}</strong>
-                        </>
-                    ), filter: textFilter(),
-                },
-                {
-                    dataField: "lab_name",
-                    text: "Client Name",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            <span>
-                                {paymentStatus.donor_name}{" "}
-                                {paymentStatus.lab_name}{" "}
-                                {paymentStatus.advertisement_title}
-                            </span>
-                        </>
-                    ), filter: textFilter(),
-                },
 
-                {
-                    dataField: "payment_method",
-                    text: "Payment Method",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            <strong>{paymentStatus.payment_method}</strong>
-                        </>
-                    ), filter: textFilter(),
-                },
-                {
-                    dataField: "cheque_no",
-                    text: "Cheque/Ref#",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            {paymentStatus.cheque_image && paymentStatus.cheque_no
-                                ? <span><Link
-                                    to={{
-                                        pathname:
-                                            process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
-                                    }}
-                                    target="_blank"
-                                >
-                                    {paymentStatus.cheque_no && (
-                                        <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                                            {paymentStatus.cheque_no}
-                                        </span>
-                                    )}
-                                </Link></span>
-                                : paymentStatus.cheque_image && paymentStatus.refered_n0
-                                    ? <span><Link
-                                        to={{
-                                            pathname:
-                                                process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
-                                        }}
-                                        target="_blank"
-                                    >
-                                        {paymentStatus.refered_no && (
-                                            <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                                                {paymentStatus.refered_no}
-                                            </span>
-                                        )}
-                                    </Link></span>
-                                    : <span>--</span>
-                            }
-                        </>
-                    ),
-                    filter: textFilter({
-                        placeholder: "Filter Cheque/Ref#",
-                        getFilter: (filter) => ({
-                            // Custom filter logic for both fields
-                            comparator: (filterValue, cellValue, row) => {
-                                return (
-                                    row.cheque_no.includes(filterValue) ||
-                                    row.refered_no.includes(filterValue)
-                                );
-                            },
-                        }),
-                    }),
-                },
-                {
-                    dataField: "amount",
-                    text: "Amount",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => (
-                        <>
-                            <div className="text-end">
-                                <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-                        </>
-                    ), filter: textFilter(),
-                },
-
-                // {
-                // dataField: "bank",
-                // text: "Cheque/Reffer#",
-                // sort: true,
-                // formatter: (cellContent, paymentStatus) => (
-                // <>
-                // <span>
-                // <span>
-                // {paymentStatus.bank_name},{" "}
-                // {paymentStatus.account_no}
-                // </span>
-                // </span>
-                // </>
-                // ),
-                // },
-                {
-                    dataField: "paid_at",
-                    text: "Payment Received Date",
-                    sort: true,
-                    formatter: (cellContent, paymentStatus) => {
-                        const date = new Date(paymentStatus.paid_at);
-                        const day = date.getDate();
-                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                        const month = monthNames[date.getMonth()];
-                        const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-
-                        return (
-                            <p className="text-muted mb-0">
-                                {`${day}-${month}-${year}`}
-                            </p>
-                        );
-                    },
-                    filter: textFilter(),
-                },
-                // {
-                // dataField: "bankaccount_id",
-                // text: "Deposit Bank",
-                // sort: true,
-                // },
-                // {
-                // dataField: "deposit_slip",
-                // text: "Certificate",
-                // sort: true,
-                // formatter: (cellContent, paymentStatus) => (
-                // <>
-                // <Link
-                // to={{
-                // pathname:
-                // process.env.REACT_APP_BACKENDURL +
-                // paymentStatus.deposit_slip,
-                // }}
-                // target="_blank"
-                // >
-                // View Slip
-                // </Link>
-                // </>
-                // ),
-                // },
-                // {
-                //     dataField: "cheque_image",
-                //     text: "Cheque Copy",
-                //     sort: true,
-                //     formatter: (cellContent, paymentStatus) => (
-                //         <>
-                //             <Link
-                //                 to={{
-                //                     pathname:
-                //                         process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
-                //                 }}
-                //                 target="_blank"
-                //             >
-                //                 View
-                //             </Link>
-                //         </>
-                //     ),
-                // },
-                // {
-                //     dataField: "payment_status",
-                //     text: "Status",
-                //     sort: true,
-                // },
-                {
-                    dataField: "menu",
-                    isDummyField: true,
-                    editable: false,
-                    text: "Action",
-                    formatter: (cellContent, paymentStatus) => (
-                        <div className="d-flex gap-3">
-                            <button
-                                type="submit"
-                                className="btn btn-primary save-user"
-                                onClick={e => this.handlePaymentStatusClick(e, paymentStatus)}
-
-                            >
-                                Update
-                            </button>
-                        </div>
-                    ),
-                },
-            ],
         };
         this.handlePaymentStatusClick =
             this.handlePaymentStatusClick.bind(this);
@@ -403,6 +185,242 @@ class PaymentStatussList extends Component {
     }
 
     render() {
+        const columns= [
+            {
+                text: "MIF ID",
+                dataField: "id",
+                sort: true,
+                hidden: false,
+                formatter: (cellContent, paymentStatus) => (
+                    <>{paymentStatus.id}</>
+                ), filter: textFilter(),
+             
+                headerStyle: { backgroundColor: '#DCDCDC' },
+            },
+            {
+                dataField: "invoice_id",
+                text: "invoice ID",
+                sort: true,
+                hidden: true,
+                formatter: (cellContent, paymentStatus) => (
+                    <>
+                        <strong>{paymentStatus.invoice_id}</strong>
+                    </>
+                ), filter: textFilter(),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+            },
+            {
+                dataField: "payment_for",
+                text: "Payment From",
+                sort: true,
+                formatter: (cellContent, paymentStatus) => (
+                    <>
+                        <strong>{paymentStatus.payment_for}</strong>
+                    </>
+                ), filter: textFilter(),
+              
+                headerStyle: { backgroundColor: '#DCDCDC' },
+            },
+            {
+                dataField: "lab_name",
+                text: "Client Name",
+                sort: true,
+                formatter: (cellContent, paymentStatus) => (
+                    <>
+                        <span>
+                            {paymentStatus.donor_name}{" "}
+                            {paymentStatus.lab_name}{" "}
+                            {paymentStatus.advertisement_title}
+                        </span>
+                    </>
+                ), filter: textFilter(),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+             
+            },
+
+            {
+                dataField: "payment_method",
+                text: "Payment Method",
+                sort: true,
+                formatter: (cellContent, paymentStatus) => (
+                    <>
+                        <strong>{paymentStatus.payment_method}</strong>
+                    </>
+                ), filter: textFilter(),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+               
+                
+            },
+            {
+                dataField: "cheque_no",
+                text: "Cheque/Ref#",
+                sort: true,
+                formatter: (cellContent, paymentStatus) => (
+                    <>
+                        {paymentStatus.cheque_image && paymentStatus.cheque_no
+                            ? <span><Link
+                                to={{
+                                    pathname:
+                                        process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                                }}
+                                target="_blank"
+                            >
+                                {paymentStatus.cheque_no && (
+                                    <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                                        {paymentStatus.cheque_no}
+                                    </span>
+                                )}
+                            </Link></span>
+                            : paymentStatus.cheque_image && paymentStatus.refered_n0
+                                ? <span><Link
+                                    to={{
+                                        pathname:
+                                            process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                                    }}
+                                    target="_blank"
+                                >
+                                    {paymentStatus.refered_no && (
+                                        <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                                            {paymentStatus.refered_no}
+                                        </span>
+                                    )}
+                                </Link></span>
+                                : <span>--</span>
+                        }
+                    </>
+                ),
+                filter: textFilter({
+                    placeholder: "Filter Cheque/Ref#",
+                    getFilter: (filter) => ({
+                        // Custom filter logic for both fields
+                        comparator: (filterValue, cellValue, row) => {
+                            return (
+                                row.cheque_no.includes(filterValue) ||
+                                row.refered_no.includes(filterValue)
+                            );
+                        },
+                    }),
+                }),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+            },
+            {
+                dataField: "amount",
+                text: "Amount",
+                sort: true,
+                formatter: (cellContent, paymentStatus) => (
+                    <>
+                        <div className="text-end">
+                            <strong>{paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+                    </>
+                ), filter: textFilter(),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+                style: { backgroundColor: '	#F0F0F0' },
+            },
+
+            // {
+            // dataField: "bank",
+            // text: "Cheque/Reffer#",
+            // sort: true,
+            // formatter: (cellContent, paymentStatus) => (
+            // <>
+            // <span>
+            // <span>
+            // {paymentStatus.bank_name},{" "}
+            // {paymentStatus.account_no}
+            // </span>
+            // </span>
+            // </>
+            // ),
+            // },
+            {
+                dataField: "paid_at",
+                text: "Payment Received Date",
+                sort: true,
+                formatter: (cellContent, paymentStatus) => {
+                    const date = new Date(paymentStatus.paid_at);
+                    const day = date.getDate();
+                    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                    const month = monthNames[date.getMonth()];
+                    const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+                    return (
+                        <p className="text-muted mb-0">
+                            {`${day}-${month}-${year}`}
+                        </p>
+                    );
+                },
+                filter: textFilter(),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+                style: { backgroundColor: '	#F0F0F0' },
+              
+            },
+            // {
+            // dataField: "bankaccount_id",
+            // text: "Deposit Bank",
+            // sort: true,
+            // },
+            // {
+            // dataField: "deposit_slip",
+            // text: "Certificate",
+            // sort: true,
+            // formatter: (cellContent, paymentStatus) => (
+            // <>
+            // <Link
+            // to={{
+            // pathname:
+            // process.env.REACT_APP_BACKENDURL +
+            // paymentStatus.deposit_slip,
+            // }}
+            // target="_blank"
+            // >
+            // View Slip
+            // </Link>
+            // </>
+            // ),
+            // },
+            // {
+            //     dataField: "cheque_image",
+            //     text: "Cheque Copy",
+            //     sort: true,
+            //     formatter: (cellContent, paymentStatus) => (
+            //         <>
+            //             <Link
+            //                 to={{
+            //                     pathname:
+            //                         process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+            //                 }}
+            //                 target="_blank"
+            //             >
+            //                 View
+            //             </Link>
+            //         </>
+            //     ),
+            // },
+            // {
+            //     dataField: "payment_status",
+            //     text: "Status",
+            //     sort: true,
+            // },
+            {
+                dataField: "menu",
+                isDummyField: true,
+                editable: false,
+                text: "Action",
+                formatter: (cellContent, paymentStatus) => (
+                    <div className="d-flex gap-3">
+                        <button
+                            type="submit"
+                            className="btn btn-success save-user"
+                            onClick={e => this.handlePaymentStatusClick(e, paymentStatus)}
+
+                        >
+                            Update
+                        </button>
+                    </div>
+                ),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+            },
+        ];
         const { SearchBar } = Search;
 
         const { paymentStatuss } = this.props;
@@ -509,9 +527,9 @@ class PaymentStatussList extends Component {
                                                                             {...toolkitprops.baseProps}
                                                                             {...paginationTableProps}
                                                                             defaultSorted={defaultSorted}
-                                                                            classes={"table align-middle table-hover"}
+                                                                            classes={"table align-middle"}
                                                                             bordered={false}
-                                                                            striped={true}
+                                                                            columns={columns}
                                                                             headerWrapperClasses={"table-light"}
                                                                             responsive
                                                                             ref={this.node}

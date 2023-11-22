@@ -191,7 +191,7 @@ class LabsLists extends Component {
 
                                 <tr key={key}>
                                   {/* <td>{key + 1}</td> */}
-                                 <td className="text-start"> <b><Link to={`/shared-percentage-pending-Fee/${lab_list.id}`}>
+                                 <td className="text-start" style={{whiteSpace: "pre-wrap",width: "300px"}}> <b><Link to={`/shared-percentage-pending-Fee/${lab_list.id}`}>
                                     {lab_list.name}
                                   </Link>
                                   </b>

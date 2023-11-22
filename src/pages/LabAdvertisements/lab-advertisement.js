@@ -6,6 +6,7 @@ import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 
+
 import {
   Card,
   CardBody,
@@ -53,6 +54,7 @@ import {
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
+import { Tooltip } from "@material-ui/core";
 
 class AdvertisementsList extends Component {
   constructor(props) {
@@ -203,24 +205,26 @@ class AdvertisementsList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, labAdvertisement) => (
-            <div className="d-flex gap-3">
+            <div>
               {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced"&& ( 
-              <Link className="text-success" to="#">
+             <Tooltip title="Update"> 
+             <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
                   id="edittooltip"
                   onClick={e => this.handleAdvertisementClick(e, labAdvertisement)}
                 ></i>
-              </Link>
+              </Link></Tooltip>
               )}
               {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced" && ( 
+              <Tooltip title="Delete"> 
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
                   onClick={() => this.onClickDelete(labAdvertisement)}
                 ></i>
-              </Link>
+              </Link></Tooltip>
               )}
             </div>
           ),
@@ -589,13 +593,13 @@ class AdvertisementsList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            title: Yup.string()
-                                              .trim()
-                                              .matches(
-                                                /^[a-zA-Z][a-zA-Z ]+$/,
-                                                "Please enter only alphabets and spaces"
-                                              )
-                                              .required("Please enter name"),
+                                            // title: Yup.string()
+                                            //   .trim()
+                                            //   .matches(
+                                            //     /^[a-zA-Z][a-zA-Z ]+$/,
+                                            //     "Please enter only alphabets and spaces"
+                                            //   )
+                                            //   .required("Please enter name"),
                                             // name: Yup.string().when(
                                             //   "region_type",
                                             //   {
@@ -623,6 +627,13 @@ class AdvertisementsList extends Component {
                                               "Please enter only alphabets and spaces"
                                             ).required(
                                                   "Please enter title it is necessary"
+                                                ).min(
+                                                  3,
+                                                  "Please enter at least 3 characters"
+                                                )
+                                                .max(
+                                                  255,
+                                                  "Please enter maximum 255 characters"
                                                 ),
 
                                             poster: Yup.string().when(
@@ -817,8 +828,10 @@ class AdvertisementsList extends Component {
                                                       name="title"
                                                       type="text"
                                                       required="true"
-                                                      className="form-control"
-                                                      onChange={e => {
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.title && touched.title ? " is-invalid" : "")
+                                                      }                                                      onChange={e => {
                                                         this.setState({
                                                           labAdvertisement: {
                                                             id: labAdvertisement.id,
@@ -841,7 +854,14 @@ class AdvertisementsList extends Component {
                                                       }}
                                                       multiple={false}
                                                       value={this.state.labAdvertisement.title}
-                                                    ></Field>
+                                                    >
+                                                      
+                                                    </Field>
+                                                     <ErrorMessage
+                                                        name="title"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
                                                   </div>
 
                                                   {/* Display current image in edit form only */}

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
-
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -122,13 +122,20 @@ class SharedPercentageLabHazirList extends Component {
             dataField: "status", 
             text: "Status",
             sort: true,
-            filter: selectFilter({
-            options: {
-              'Approved': 'Approved',
-              'Unapproved': 'Unapproved',
-            },
-            defaultValue: 'All',
-          }),
+          //   filter: selectFilter({
+          //   options: {
+          //     'Approved': 'Approved',
+          //     'Unapproved': 'Unapproved',
+          //   },
+          //   defaultValue: 'All',
+          // }),
+          formatter: (cellContent, sharedPercentageApprovedFeeTests) => (
+            <>
+            <div className="text-start">
+                 {sharedPercentageApprovedFeeTests.status}
+            </div>
+            </>
+          ),filter: textFilter(),
           },
           {
             dataField: "shared_percentage",
@@ -137,7 +144,7 @@ class SharedPercentageLabHazirList extends Component {
             formatter: (cellContent, sharedPercentageApprovedFeeTests) => (
               <>
                 {(               
-                                <div className="text-center">
+                                <div className="text-end">
                                 {(sharedPercentageApprovedFeeTests.shared_percentage * 100).toFixed()}%</div>
   
                 )}
@@ -166,6 +173,7 @@ class SharedPercentageLabHazirList extends Component {
           text: "Action",
           formatter: (cellContent, sharedPercentageApprovedFeeTest) => (
             <div className="text-center">
+              <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-pencil font-size-18"
@@ -173,6 +181,7 @@ class SharedPercentageLabHazirList extends Component {
                   onClick={() => this.handleEditBtnClick(sharedPercentageApprovedFeeTest)}
                 ></i>
               </Link>
+              </Tooltip>
             </div>
           ),
         },

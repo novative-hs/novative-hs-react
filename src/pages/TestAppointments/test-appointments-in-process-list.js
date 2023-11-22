@@ -109,6 +109,8 @@ class TestAppointmentsInProcessList extends Component {
                   <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, testAppointment)}
+                    // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+                    // onPointerLeave={this.handleMouseExit()}
                   >
                     {testAppointment.patient_name}
                   </Link>
@@ -732,6 +734,13 @@ class TestAppointmentsInProcessList extends Component {
       booked_at: arg.booked_at,
     });
   };
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     isHovered: false,
+    
+  //   });
+  // };
   openReshedualModal = (e, arg) => {
     this.setState({
       ReshedualModal: true,
@@ -915,6 +924,7 @@ class TestAppointmentsInProcessList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -961,8 +971,9 @@ class TestAppointmentsInProcessList extends Component {
                                                     />
                                                   </div>
                                                 </div>
-{/* 
-                                                <div className="mb-3 row">
+
+                                                {this.state.patient_address && this.state.patient_address !== "undefined" ? (
+                                                  <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                       Address
@@ -979,7 +990,8 @@ class TestAppointmentsInProcessList extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div> */}
+                                                </div>
+                                                ): null}
 
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">

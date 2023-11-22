@@ -53,6 +53,8 @@ class ReferredPatientsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openbookedModal(e, patientTestAppointment)}
+                  // onMouseEnter={e => this.openbookedModal(e, patientTestAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {patientTestAppointment.order_id}
                 </Link>
@@ -73,6 +75,8 @@ class ReferredPatientsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, patientTestAppointment)}
+                  // onMouseEnter={e => this.openPatientModal(e, patientTestAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {patientTestAppointment.patient_name}
                 </Link>
@@ -93,6 +97,8 @@ class ReferredPatientsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openLabModal(e, b2bReferredPatient)}
+                  // onMouseEnter={e => this.openLabModal(e, b2bReferredPatient)}
+                  // onPointerLeave={this.handleMouseExit()}
                 >
                   {b2bReferredPatient.name}
                 </Link>
@@ -332,6 +338,14 @@ class ReferredPatientsList extends Component {
       booked_at: arg.booked_at,
     });
   };
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     bookModal: false,
+  //     LabModal: false,
+  //     isHovered: false,
+  //   });
+  // };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -465,6 +479,7 @@ class ReferredPatientsList extends Component {
                                       <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -627,6 +642,7 @@ class ReferredPatientsList extends Component {
                                     <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.toggleLabModal}
@@ -687,6 +703,7 @@ class ReferredPatientsList extends Component {
                                       <Modal
                                       isOpen={this.state.bookModal}
                                       className={this.props.className}
+                                      // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglebookModal}

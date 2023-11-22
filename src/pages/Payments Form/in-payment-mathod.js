@@ -412,8 +412,8 @@ class InPaymentsForm extends Component {
                   <Col lg="1" sm="1">
                   </Col>
                   <Col lg="10" sm="9">
-                    <Card>
-                      <CardBody>
+                    <Card >
+                      <CardBody >
                         <div>
                           {/* <CardTitle className="h4">
                             Payment information
@@ -423,7 +423,7 @@ class InPaymentsForm extends Component {
                             is Cheque
                           </p> */}
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment From
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -488,7 +488,7 @@ class InPaymentsForm extends Component {
                               </div>
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label>Lab Name</Label>
+                                <Label className="fw-bolder">Lab Name</Label>
                                 <Select
                                   name="lab_id"
                                   component="Select"
@@ -557,7 +557,7 @@ class InPaymentsForm extends Component {
                               </div>
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label>Donor Name</Label>
+                                <Label className="fw-bolder">Donor Name</Label>
                                 <Select
                                   name="donor_id"
                                   component="Select"
@@ -630,7 +630,7 @@ class InPaymentsForm extends Component {
                               
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label>Advertisement Title</Label>
+                                <Label className="fw-bolder">Advertisement Title</Label>
                                 <Select
                                   name="advertisement_id"
                                   component="Select"
@@ -672,7 +672,7 @@ class InPaymentsForm extends Component {
                           ) : null}
 
                           <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Amount
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -695,7 +695,7 @@ class InPaymentsForm extends Component {
                             />
                           </FormGroup>
                           <div>
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment Method
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -723,7 +723,7 @@ class InPaymentsForm extends Component {
                                   className="form-check-label font-size-13"
                                   htmlFor="customRadioInline1"
                                 >
-                                  <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "}
+                                  <i className="far fa-money-bill-alt me-1 font-size-20 align-top " style={{color:"green"}} />{" "}
                                   Cash
                                 </Label>
                               </div>
@@ -744,7 +744,7 @@ class InPaymentsForm extends Component {
                                   className="form-check-label font-size-13"
                                   htmlFor="customRadioInline2"
                                 >
-                                  <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "}
+                                  <i className="far fa-money-bill-alt me-1 font-size-20 align-top" style={{color:"blue"}}  />{" "}
                                   Cheque
                                 </Label>
                               </div>
@@ -765,7 +765,7 @@ class InPaymentsForm extends Component {
                                   className="form-check-label font-size-13"
                                   htmlFor="customRadioInline3"
                                 >
-                                  <i className="fab fa-cc-mastercard me-1 font-size-20 align-top" />{" "}
+                                  <i className="bx bx-transfer-alt me-1 align-top" style={{color:"green", fontSize:"30px", marginTop:"-4px"}}  />{" "}
                                   Online
                                 </Label>
                               </div>
@@ -773,13 +773,13 @@ class InPaymentsForm extends Component {
 
                             {this.state.payment_method == "Cash" ? (
                               <div>
-                                <h5 className="mt-5 mb-3 font-size-15">
+                                <h5 className="mt-5 mb-3 font-size-15 text-danger fw-bolder">
                                   For Cash Payment
                                 </h5>
                                 <div className="p-4 border">
                                   <Form>
                                     <FormGroup className="mb-0">
-                                      <Label htmlFor="cardnumberInput">
+                                      <Label htmlFor="cardnumberInput" className="fw-bolder">
                                         Payment Recieved Date
                                         <span
                                           style={{ color: "#f46a6a" }}
@@ -807,7 +807,7 @@ class InPaymentsForm extends Component {
                                       />
                                     </FormGroup>
                                      <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Recieved By
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -831,7 +831,7 @@ class InPaymentsForm extends Component {
                                      </FormGroup>
 
                                      <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Handover To
                               <span
                                 style={{ color: "#f46a6a" }}
@@ -861,13 +861,13 @@ class InPaymentsForm extends Component {
 
                             {this.state.payment_method == "Cheque" ? (
                               <div>
-                                <h5 className="mt-5 mb-3 font-size-15">
+                                <h5 className="mt-5 mb-3 font-size-15 text-danger fw-bolder">
                                   For Cheque Payment
                                 </h5>
                                 <div className="p-4 border">
                                   <Form>
                                     <FormGroup className="mb-0">
-                                      <Label htmlFor="cardnumberInput">
+                                      <Label htmlFor="cardnumberInput" className="fw-bolder">
                                       Payment Recieved Date
                                         <span
                                           style={{ color: "#f46a6a" }}
@@ -896,7 +896,7 @@ class InPaymentsForm extends Component {
                                     </FormGroup>
                                     
                                     <FormGroup className="mb-0">
-                                      <Label htmlFor="cardnumberInput">
+                                      <Label htmlFor="cardnumberInput" className="fw-bolder">
                                        Cheque Date
                                         <span
                                           style={{ color: "#f46a6a" }}
@@ -927,7 +927,7 @@ class InPaymentsForm extends Component {
                                     <Row>
                                       <Col lg="6">
                                         <FormGroup className="mt-4 mb-0">
-                                          <Label htmlFor="cardnameInput">
+                                          <Label htmlFor="cardnameInput" className="fw-bolder">
                                             Cheque #
                                             <span
                                               style={{ color: "#f46a6a" }}
@@ -952,7 +952,7 @@ class InPaymentsForm extends Component {
                                       </Col>
                                       <Col lg="3">
                                         <FormGroup className=" mt-4 mb-0">
-                                          <Label htmlFor="expirydateInput">
+                                          <Label htmlFor="expirydateInput" className="fw-bolder">
                                             Cheque Image
                                             <span
                                               style={{ color: "#f46a6a" }}
@@ -992,13 +992,13 @@ class InPaymentsForm extends Component {
 
                             {this.state.payment_method == "Card" ? (
                               <div>
-                                <h5 className="mt-5 mb-3 font-size-15">
+                                <h5 className="mt-5 mb-3 font-size-15 text-danger fw-bolder">
                                   For Online Payment
                                 </h5>
                                 <div className="p-4 border">
                                   <Form>
                                     <FormGroup className="mb-0">
-                                      <Label htmlFor="cardnumberInput">
+                                      <Label htmlFor="cardnumberInput" className="fw-bolder">
                                       Payment Recieved Date
                                         <span
                                           style={{ color: "#f46a6a" }}
@@ -1028,7 +1028,7 @@ class InPaymentsForm extends Component {
                                     <Row>
                                       <Col lg="6">
                                         <FormGroup className="mt-4 mb-0">
-                                          <Label htmlFor="cardnameInput">
+                                          <Label htmlFor="cardnameInput" className="fw-bolder">
                                             Online Ref #
                                             <span
                                               style={{ color: "#f46a6a" }}
@@ -1053,7 +1053,7 @@ class InPaymentsForm extends Component {
                                       </Col>
                                       <Col lg="3">
                                         <FormGroup className=" mt-4 mb-0">
-                                          <Label htmlFor="expirydateInput">
+                                          <Label htmlFor="expirydateInput" className="fw-bolder">
                                             Ref Copy
                                             <span
                                               style={{ color: "#f46a6a" }}

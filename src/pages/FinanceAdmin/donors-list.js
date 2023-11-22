@@ -225,7 +225,7 @@ class donors extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Finance Admin" breadcrumbItem="Donors List" />
+            <Breadcrumbs title="List" breadcrumbItem="Donors List" />
             <Row>
               <Col lg="12">
                 <Card>

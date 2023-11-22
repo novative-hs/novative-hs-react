@@ -83,7 +83,9 @@ class InProcessAudits extends Component {
               <span>
                   <Link
                     to="#"
-                    onClick={e => this.openPatientModal(e, inProcessAudit)}
+                    // onClick={e => this.openPatientModal(e, inProcessAudit)}
+                    onMouseEnter={e =>this.openPatientModal(e, inProcessAudit)}
+                    onPointerLeave={this.handleMouseExit()}
                   >
                    {inProcessAudit.lab_name}
                   </Link>
@@ -179,6 +181,12 @@ class InProcessAudits extends Component {
       lab_city: arg.lab_city,
       lab_phone: arg.lab_phone,
       lab_email: arg.lab_email,
+    });
+  };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
     });
   };
   togglePatientModal = () => {
@@ -344,6 +352,7 @@ class InProcessAudits extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}

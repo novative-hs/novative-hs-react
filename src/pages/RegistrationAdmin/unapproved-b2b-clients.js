@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
-
+import { Tooltip } from "@material-ui/core";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -111,15 +111,17 @@ class UnapprovedB2BClients extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, pendingB2BClient) => (
-            <>
+            <div>
+          <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
                 onClick={e => this.handleApprovedEvent(pendingB2BClient.id)}
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>{" "}
-            </>
+              </Link>
+              </Tooltip>
+            </div>
           ),
         },
       ],

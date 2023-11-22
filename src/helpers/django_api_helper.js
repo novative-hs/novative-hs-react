@@ -287,6 +287,7 @@ export const postCorporateInformation = (id, corporate) => {
   formData.append("address", corporate.address);
   formData.append("city_id", corporate.city_id);
   formData.append("website_url", corporate.website_url);
+  formData.append("payment_terms", corporate.payment_terms);
   return axios
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -586,8 +587,17 @@ export const getActivityLog = id =>
       headers: getHeader(authHeader()),
     });
   };
-  export const getActivityLogFinance = id =>
+// ------------- Finanace START Activity Log-------------
+
+export const getActivityLogFinance = id =>
   get(`${url.GET_ACTIVITY_LOG_FINANCE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+// ------------- Marketer Admin Activity Log -------------
+
+export const getActivityLogMarketer = id =>
+  get(`${url.GET_ACTIVITY_LOG_MARKETER}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // ------------- Pathologists START -------------
@@ -1578,6 +1588,35 @@ export const getDonorAccountStatements = id =>
     });
   };
 
+    // List of Corporate
+  export const getCemployees = () =>
+    get(url.GET_CEMPLOYEE, {
+      headers: getHeader(authHeader()),
+    });
+
+  export const addNewCemployeeData = (cemployeeData, id) => {
+    let formData = new FormData();
+    formData.append("name", cemployeeData.name);
+    formData.append("employee_code", cemployeeData.employee_code);
+
+    return axios.post(`${url.ADD_NEW_CEMPLOYEE_DATA}/${id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+  export const updateCemployee = cemployeeData => {
+    let formData = new FormData();
+    formData.append("name", cemployeeData.name);
+    formData.append("employee_code", cemployeeData.employee_code);
+  
+    return axios.put(
+      `${url.UPDATE_CEMPLOYEE}/${cemployeeData.id}`,
+      formData,
+      {
+        headers: getHeader(authHeader()),
+      }
+    );
+  };
+
   // List of Banks
   export const getBanks = () =>
   get(url.GET_BANKS, {
@@ -1590,27 +1629,27 @@ export const getDonorAccountStatements = id =>
     headers: getHeader(authHeader()),
   });
 
-    // Add Bank Account
+  // Add Bank Account
 
-    export const addNewBankAccount = (bankAccount, id) => {
-      let formData = new FormData();
-      // formData.append("lab_id", bankAccount.lab_id);
-      formData.append("bank_id", bankAccount.bank_id);
-      formData.append("account_no", bankAccount.account_no);
-      formData.append("account_type", bankAccount.account_type);
-      formData.append("categorey", bankAccount.categorey);
-      formData.append("currency", bankAccount.currency);
-      formData.append("city", bankAccount.city);
-      formData.append("address", bankAccount.address);
-      formData.append("branch_no", bankAccount.branch_no);
-      formData.append("opening_balance", bankAccount.opening_balance);
-      formData.append("creating_at", bankAccount.creating_at);
-      formData.append("status", bankAccount.status);  
-    
-      return axios.post(`${url.ADD_NEW_BANK_ACCOUNT}/${id}`, formData, {
-        headers: getHeader(authHeader()),
-      });
-    };
+  export const addNewBankAccount = (bankAccount, id) => {
+    let formData = new FormData();
+    // formData.append("lab_id", bankAccount.lab_id);
+    formData.append("bank_id", bankAccount.bank_id);
+    formData.append("account_no", bankAccount.account_no);
+    formData.append("account_type", bankAccount.account_type);
+    formData.append("categorey", bankAccount.categorey);
+    formData.append("currency", bankAccount.currency);
+    formData.append("city", bankAccount.city);
+    formData.append("address", bankAccount.address);
+    formData.append("branch_no", bankAccount.branch_no);
+    formData.append("opening_balance", bankAccount.opening_balance);
+    formData.append("creating_at", bankAccount.creating_at);
+    formData.append("status", bankAccount.status);  
+  
+    return axios.post(`${url.ADD_NEW_BANK_ACCOUNT}/${id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
 // ------------- ACCOUNT STATEMENTS -------------
 export const getAccountStatements = id =>
   get(`${url.GET_ACCOUNT_STATEMENTS}/${id}`, {
