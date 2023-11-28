@@ -17,7 +17,7 @@ import { withTranslation } from "react-i18next";
 import "../../../components/HorizontalLayout/horizontal-navbar.scss";
 
 
-// import ScrollButton from "components/Common/Scrollbutton";
+import ScrollButton from "components/Common/Scrollbutton";
 import {
   Card,
   Button,
@@ -1420,7 +1420,7 @@ class TestsOffered extends Component {
                   </Pagination>
                 </Col>
               </Row> */}
-              {/* <ScrollButton /> */}
+              <ScrollButton />
             </Row>
           </Container>
         </div>

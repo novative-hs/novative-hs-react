@@ -18,7 +18,7 @@ import { withTranslation } from "react-i18next";
 import "../../../components/HorizontalLayout/horizontal-navbar.scss";
 
 
-// import ScrollButton from "components/Common/Scrollbutton";
+import ScrollButton from "components/Common/Scrollbutton";
 import {
   Card,
   Button,
@@ -674,7 +674,8 @@ handleAddToCart = (cart) => {
               ) : null
               }
                  
-             
+                 <ScrollButton />
+
             </Row>
           </Container>
         </div>

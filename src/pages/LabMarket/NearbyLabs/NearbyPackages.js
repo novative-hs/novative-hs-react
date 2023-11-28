@@ -2081,7 +2081,7 @@ shouldHighlightTestsLink() {
                     </Col>
                   </Row>
                 ) : null}
-              {/* <ScrollButton /> */}
+              <ScrollButton />
             </Row>
           </Container>
         </div>

@@ -1813,7 +1813,6 @@ handleAddToCart = (cart) => {
                       </Row>
                     )
                   )}
-                  <ScrollButton/>
               </Row>
               {!isEmpty(this.props.nearbyTests) ? (
                   <Row>
@@ -1847,7 +1846,7 @@ handleAddToCart = (cart) => {
                     </Col>
                   </Row>
                 ) : null}
-              {/* <ScrollButton /> */}
+              <ScrollButton />
             </Row>
           </Container>
         </div>
