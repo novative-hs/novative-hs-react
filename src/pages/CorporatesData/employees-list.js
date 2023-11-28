@@ -300,7 +300,7 @@ class BanksList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Bank Details"
+                                          ? "Edit Employee Details"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>
@@ -358,7 +358,7 @@ class BanksList extends Component {
                                                     <Label
                                                       className="col-form-label"
                                                     >
-                                                      Bank Name
+                                                      Employee Name
                                                       <span
                                                         style={{ color: "#f46a6a" }}
                                                         className="font-size-18"
@@ -398,7 +398,7 @@ class BanksList extends Component {
                                                     <Label
                                                       className="col-form-label"
                                                     >
-                                                      Phone
+                                                      Employee Code
                                                       <span
                                                         style={{ color: "#f46a6a" }}
                                                         className="font-size-18"

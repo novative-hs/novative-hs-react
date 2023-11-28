@@ -170,7 +170,7 @@ class DonorPayment extends Component {
                                 type="text"
                                 className="form-control"
                                 name="name"
-                                placeholder="Enter Bank Name"
+                                placeholder="Enter Employee Name"
                                 onChange={e =>
                                   this.setState({
                                     name: e.target.value,
@@ -198,7 +198,7 @@ class DonorPayment extends Component {
                                 id="employee_code"
                                 name="employee_code"
                                 type="text"
-                                placeholder="Please enter marketer mobile no."
+                                placeholder="Please Enter Employee Code."
                                 onChange={e =>
                                   this.setState({
                                     employee_code: e.target.value,
