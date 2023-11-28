@@ -1982,7 +1982,7 @@ class NearbyLabDetail extends Component {
 
                                   >
                                     {/* <i className="mdi mdi-arrow-right btn-block" /> */}
-                                    <span className="font-size-12">Offered Tests</span>
+                                    <span className="font-size-11">Offered Tests</span>
                                   </button>
                                 )}
                                 {this.props.success.offered_tests === false && (
@@ -1997,7 +1997,7 @@ class NearbyLabDetail extends Component {
                                     style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                   >
                                     {/* <i className="mdi mdi-arrow-right" />  */}
-                                    <span className="font-size-12">Offered Tests</span>
+                                    <span className="font-size-11">Offered Tests</span>
                                   </button>
                                 )}
                               </div>
@@ -2019,7 +2019,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" /> */}
-                                      <span className="font-size-12">Offered Profiles{" "}</span>
+                                      <span className="font-size-11">Offered Profiles{" "}</span>
                                     </button>
                                   )}
                                 {this.props.success.offered_profiles ===
@@ -2036,7 +2036,7 @@ class NearbyLabDetail extends Component {
 
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" /> */}
-                                      <span className="font-size-12">Offered Profiles{" "}</span>
+                                      <span className="font-size-11">Offered Profiles{" "}</span>
                                     </button>
                                   )}
                               </div>
@@ -2058,7 +2058,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" /> */}
-                                      <span className="font-size-12">Offered Packages</span>
+                                      <span className="font-size-11">Offered Packages</span>
                                     </button>
                                   )}
                                 {this.props.success.offered_packages ===
@@ -2073,7 +2073,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Offered Packages{" "}</span>
+                                      <span className="font-size-11">Offered Packages{" "}</span>
                                     </button>
                                   )}
                               </div>
@@ -2095,7 +2095,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" /> */}
-                                      <span className="font-size-12">Offered Radiology{" "}</span>
+                                      <span className="font-size-11">Offered Radiology{" "}</span>
                                     </button>
                                   )}
                                 {this.props.success.offered_radiologies === false && (
@@ -2109,7 +2109,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Offered Radiology{" "}</span>
+                                      <span className="font-size-11">Offered Radiology{" "}</span>
                                     </button>
                                   </div>
                                 )}
@@ -2133,7 +2133,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Sample-Collectors{" "}</span>
+                                      <span className="font-size-11">Sample-Collectors{" "}</span>
                                     </button>
                                   )}
                                 {this.props.success
@@ -2148,7 +2148,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Sample-Collectors{" "}</span>
+                                      <span className="font-size-11">Sample-Collectors{" "}</span>
                                     </button>
                                   )}
                               </div>
@@ -2170,7 +2170,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Pathologists{" "}</span>
+                                      <span className="font-size-11">Pathologists{" "}</span>
                                     </button>
                                   )}
                                 {this.props.success.pathologists ===
@@ -2185,7 +2185,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Pathologists{" "}</span>
+                                      <span className="font-size-11">Pathologists{" "}</span>
                                     </button>
                                   )}
                               </div>
@@ -2207,7 +2207,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Quality-Certificates{" "}</span>
+                                      <span className="font-size-11">Quality-Certificates{" "}</span>
                                     </button>
                                   )}
                                 {this.props.success
@@ -2222,7 +2222,7 @@ class NearbyLabDetail extends Component {
                                       style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
                                     >
                                       {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
-                                      <span className="font-size-12">Quality-Certificates{" "}</span>
+                                      <span className="font-size-11">Quality-Certificates{" "}</span>
                                     </button>
                                   )}
                               </div>
