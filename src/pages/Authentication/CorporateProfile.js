@@ -100,7 +100,7 @@ class CorporateProfile extends Component {
         <div className="page-content">
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumb title="Skote" breadcrumbItem="Profile" />
+            <Breadcrumb title="Corporate" breadcrumbItem="Profile" />
 
             <Row>
               <Col lg="12">
@@ -322,7 +322,7 @@ class CorporateProfile extends Component {
                           for="national_taxation_no"
                           className="form-label"
                         >
-                          Lab NTN #
+                          Corporate NTN #
                         </Label>
                         <Field
                           id="national_taxation_no"
