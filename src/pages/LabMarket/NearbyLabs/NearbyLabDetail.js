@@ -64,6 +64,7 @@ class NearbyLabDetail extends Component {
   }
 
   render() {
+    const isSmallScreen = window.innerWidth < 490;
     return (
       <React.Fragment>
         <div className="topnav">
@@ -73,8 +74,8 @@ class NearbyLabDetail extends Component {
               id="navigation"
             >
               {this.state.user_id &&
-              this.state.user_type === "CSR" &&
-              this.state.user_type !== "b2bclient" ? (
+                this.state.user_type === "CSR" &&
+                this.state.user_type !== "b2bclient" ? (
                 <Collapse
                   isOpen={this.state.isMenuOpened}
                   className="navbar-collapse"
@@ -558,31 +559,1128 @@ class NearbyLabDetail extends Component {
                 title="Lab Marketplace"
                 breadcrumbItem="Nearby Lab Details"
               />
+              {!isSmallScreen ? (
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardBody>
+                        <div className="product-detai-imgs">
+                          <Row>
+                            <Col md="3">
+                              <div className="product-color">
+                                {!this.state.user_id ? (
+                                  <Row style={{ textAlign: "center" }}>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_tests === true && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
 
-              <Row>
-                <Col>
-                  <Card>
-                    <CardBody>
-                      <div className="product-detai-imgs">
-                        <Row>
-                          <Col lx="5">
-                            <div className="me-3">
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  this.props.success.logo
-                                }
-                                alt=""
-                                className="img-thumbnail mx-auto d-block rounded"
-                              />
-                            </div>
-                            <div className="text-center">
-                                  {!this.state.user_id && (
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      )}
+                                      {this.props.success.offered_tests === false && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            alert("Tests not yet entered!");
+
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-secondary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right" /> Offered Tests
+                                        </button>
+                                      )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_profiles ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_profiles ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Profiles not yet entered!");
+
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_packages ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Packages
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_packages ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Packages not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Packages{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .offered_radiologies === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Radiology{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_radiologies === false && (
+                                        <div className="mb-1">
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Radiology not yet entered!");
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Radiology{" "}
+                                          </button>
+                                        </div>
+                                      )}
+
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .sample_collectors === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .sample_collectors === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Sample Collectors not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.pathologists ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.pathologists ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Pathologists not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .quality_certificates === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .quality_certificates === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Quality Certificates not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                  </Row>
+                                ) : null}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type !== "b2bclient" ? (
+                                  <Row style={{ textAlign: "center" }}>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_tests === true && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      )}
+                                      {this.props.success.offered_tests === false && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            alert("Tests not yet entered!");
+
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-secondary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right" /> Offered Tests
+                                        </button>
+                                      )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_profiles ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_profiles ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Profiles not yet entered!");
+
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_packages ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Packages
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_packages ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Packages not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Packages{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .offered_radiologies === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Radiology{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_radiologies === false && (
+                                        <div className="mb-1">
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Radiology not yet entered!");
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Radiology{" "}
+                                          </button>
+                                        </div>
+                                      )}
+
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .sample_collectors === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .sample_collectors === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Sample Collectors not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.pathologists ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.pathologists ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Pathologists not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .quality_certificates === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .quality_certificates === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Quality Certificates not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                  </Row>
+                                ) : null}
+                                {this.state.user_id &&
+                                  this.state.user_type === "CSR" &&
+                                  this.state.user_type !== "b2bclient" ? (
+                                  <Row style={{ textAlign: "center" }}>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_tests === true && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      )}
+                                      {this.props.success.offered_tests === false && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            alert("Tests not yet entered!");
+
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-secondary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right" /> Offered Tests
+                                        </button>
+                                      )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_profiles ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_profiles ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Profiles not yet entered!");
+
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_packages ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Packages
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_packages ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Packages not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Packages{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .offered_radiologies === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Radiology{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_radiologies === false && (
+                                        <div className="mb-1">
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Radiology not yet entered!");
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Radiology{" "}
+                                          </button>
+                                        </div>
+                                      )}
+
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .sample_collectors === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .sample_collectors === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Sample Collectors not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.pathologists ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.pathologists ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Pathologists not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .quality_certificates === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .quality_certificates === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Quality Certificates not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                  </Row>
+                                ) : null}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type === "b2bclient" ? (
+                                  <Row style={{ textAlign: "center" }}>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_tests === true && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      )}
+                                      {this.props.success.offered_tests === false && (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            alert("Tests not yet entered!");
+
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-secondary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right" /> Offered Tests
+                                        </button>
+                                      )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_profiles ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_profiles ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Profiles not yet entered!");
+
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Profiles{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.offered_packages ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Packages
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_packages ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Packages not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Packages{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .offered_radiologies === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />
+                                            Offered Radiology{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.offered_radiologies === false && (
+                                        <div className="mb-1">
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Radiology not yet entered!");
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Offered Radiology{" "}
+                                          </button>
+                                        </div>
+                                      )}
+
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .sample_collectors === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .sample_collectors === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Sample Collectors not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Sample-Collectors{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success.pathologists ===
+                                        true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success.pathologists ===
+                                        false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Pathologists not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Pathologists{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                    <div className="mb-1">
+                                      {this.props.success
+                                        .quality_certificates === true && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              // You can use the history object to navigate to a different route if needed
+                                              this.props.history.push(
+                                                this.props.match.params.uuid
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                              );
+                                            }}
+                                            // Add any other button styling or attributes as needed
+                                            className="btn btn-primary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                      {this.props.success
+                                        .quality_certificates === false && (
+                                          <button
+                                            onClick={() => {
+                                              // Add the logic you want to execute when the button is clicked
+                                              alert("Quality Certificates not yet entered!");
+
+                                            }}
+                                            className="btn btn-secondary btn-md"
+                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                          >
+                                            <i className="mdi mdi-arrow-right btn-block" />{" "}
+                                            Quality-Certificates{" "}
+                                          </button>
+                                        )}
+                                    </div>
+                                  </Row>
+                                ) : null}
+                              </div>
+                            </Col>
+                            <Col lx="4">
+                              <div
+                                style={{
+                                  width: "230px",
+                                  height: "230px",
+                                  marginLeft: "20%",
+                                  // background: "#3B71CA",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL + this.props.success.logo}
+                                  alt="Lab Logo"
+                                  style={{
+                                    maxWidth: "98%",
+                                    maxHeight: "98%",
+                                    textAlign: "center",
+                                  }}
+                                />
+                              </div>
+
+                              <div className="text-center">
+                                {!this.state.user_id && (
+                                  <Link
+                                    to={
+                                      this.props.match.params.uuid
+                                        ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/nearby-labs/${this.props.match.params.guest_id}`
+                                    }
+                                    className="btn btn-secondary mt-2 me-1"
+                                  >
+                                    <i className="bx bxs-shopping-bags" />{" "}
+                                    Continue Browsing{" "}
+                                  </Link>
+                                )}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type !== "b2bclient" && (
                                     <Link
                                       to={
-                                        this.props.match.params.uuid
-                                          ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                          : `/nearby-labs/${this.props.match.params.guest_id}`
+                                        this.props.match.params.guest_id
+                                          ? `/nearby-labs/${this.props.match.params.guest_id}`
+                                          : `/nearby-labs/`
                                       }
                                       className="btn btn-secondary mt-2 me-1"
                                     >
@@ -590,62 +1688,47 @@ class NearbyLabDetail extends Component {
                                       Continue Browsing{" "}
                                     </Link>
                                   )}
-                                  {this.state.user_id &&
-                                    this.state.user_type !== "CSR" &&
-                                    this.state.user_type !== "b2bclient" && (
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-labs/${this.props.match.params.guest_id}`
-                                            : `/nearby-labs/`
-                                        }
-                                        className="btn btn-secondary mt-2 me-1"
-                                      >
-                                        <i className="bx bxs-shopping-bags" />{" "}
-                                        Continue Browsing{" "}
-                                      </Link>
-                                    )}
-                                  {this.state.user_id &&
-                                    this.state.user_type === "CSR" &&
-                                    this.state.user_type !== "b2bclient" && (
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-labs/${this.props.match.params.guest_id}`
-                                            : `/nearby-labs`
-                                        }
-                                        className="btn btn-secondary mt-2 me-1"
-                                      >
-                                        <i className="bx bxs-shopping-bags" />{" "}
-                                        Continue Browsing{" "}
-                                      </Link>
-                                    )}
-                                  {this.state.user_id &&
-                                    this.state.user_type !== "CSR" &&
-                                    this.state.user_type === "b2bclient" && (
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                            : `/nearby-labs`
-                                        }
-                                        className="btn btn-secondary mt-2 me-1"
-                                      >
-                                        <i className="bx bxs-shopping-bags" />{" "}
-                                        Continue Browsing{" "}
-                                      </Link>
-                                    )}
-                                  <Link
-                                    to={{
-                                      pathname: `http://maps.google.com/?q=${this.props.success.address}`,
-                                    }}
-                                    className="btn btn-success ml-1 btn  mt-2"
-                                    target="_blank"
-                                  >
-                                    <i className="bx bxs-navigation" /> Navigate
-                                    to the Lab
-                                  </Link>
-                                  {/* {(this.props.success.complaint_handling_email ||
+                                {this.state.user_id &&
+                                  this.state.user_type === "CSR" &&
+                                  this.state.user_type !== "b2bclient" && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/nearby-labs/${this.props.match.params.guest_id}`
+                                          : `/nearby-labs`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      Continue Browsing{" "}
+                                    </Link>
+                                  )}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type === "b2bclient" && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                          : `/nearby-labs`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      Continue Browsing{" "}
+                                    </Link>
+                                  )}
+                                <Link
+                                  to={{
+                                    pathname: `http://maps.google.com/?q=${this.props.success.address}`,
+                                  }}
+                                  className="btn btn-success ml-1 btn  mt-2"
+                                  target="_blank"
+                                >
+                                  <i className="bx bxs-navigation" /> Navigate to
+                                  the Lab
+                                </Link>
+                                {/* {(this.props.success.complaint_handling_email ||
                                   this.props.success
                                     .complaint_handling_phone) && (
                                   <div className="text-muted float-start ms-3 mt-3">
@@ -673,879 +1756,530 @@ class NearbyLabDetail extends Component {
                                     )}
                                   </div>
                                 )} */}
-                            {/* <div className="mb-3"> */}
+                                {/* <div className="mb-3"> */}
+                              </div>
+                            </Col>
+                            <Col lx="3">
+                              <h2 style={{ color: "#3B71CA", fontWeight: "bold", fontSize: "18px" }}>{this.props.success.name}</h2>
+                              {this.props.success ? (
+                                <div className="text-muted float-start me-3">
+                                  <StarRatings
+                                    rating={this.props.success.rating}
+                                    starRatedColor="#F1B44C"
+                                    starEmptyColor="#2D363F"
+                                    numberOfStars={5}
+                                    name="rating"
+                                    starDimension="14px"
+                                    starSpacing="3px"
+                                  />
                                 </div>
-                          </Col>
-                          <Col lx="3">
-                            <h2>{this.props.success.name}</h2>
-                            {this.props.success ? (
-                              <div className="text-muted float-start me-3">
-                                <StarRatings
-                                  rating={this.props.success.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
+                              ) : null}
+
+                              <p className="font-size-18">
+                                {this.props.success.rating}
+                              </p>
+                              <div className="text-muted float-start font-size-17">
+                                <p>
+                                  <i className="bx bxs-home-circle text-primary me-1" />
+                                  {this.props.success.address}
+                                </p>
+                                <p>
+                                  <i className="bx bxs-buildings text-primary me-1" />{" "}
+                                  {this.props.success.city}
+                                </p>
+                                <p>
+                                  <i className="bx bxs-phone-call text-primary me-1" />
+                                  {this.props.success.landline}
+                                </p>
+                                <p>
+                                  <i className="mdi mdi-email text-primary me-1" />
+                                  {this.props.success.email}
+                                </p>
+                                <p>
+                                  <i className="bx bxs-badge-check text-primary me-1" />
+                                  We have {this.props.success.lab_experience}{" "}
+                                  years of experience in the market
+                                </p>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      </CardBody>
+                    </Card>
+
+                    {/* Insert Review Section */}
+                    <FeedbackDetail />
+                  </Col>
+                </Row>
+              ) :
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardBody>
+                        <div className="product-detai-imgs">
+                          <Row>
+                            <Col lx="5">
+                              {/* <div className="me-auto">
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  this.props.success.logo
+                                }
+                                alt=""
+                                className="img-thumbnail mx-auto d-block rounded"
+                              />
+                            </div> */}
+                              <div
+                                style={{
+                                  width: "170px",
+                                  height: "190px",
+                                  // marginLeft: "20%",
+                                  // background: "#3B71CA",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <img
+                                  src={process.env.REACT_APP_BACKENDURL + this.props.success.logo}
+                                  alt="Lab Logo"
+                                  style={{
+                                    maxWidth: "98%",
+                                    maxHeight: "100%",
+                                    textAlign: "center",
+                                  }}
                                 />
                               </div>
-                            ) : null}
 
-                            <p className="font-size-16">
-                              {this.props.success.rating}
-                            </p>
-                            <div className="text-muted float-start">
-                              <p>
-                                <i className="bx bxs-home-circle me-1" />
-                                {this.props.success.address}
-                              </p>
-                              <p>
-                                <i className="bx bxs-buildings me-1" />{" "}
-                                {this.props.success.city}
-                              </p>
-                              <p>
-                                <i className="bx bxs-phone-call me-1" />
-                                {this.props.success.landline}
-                              </p>
-                              <p>
-                                <i className="mdi mdi-email me-1" />
-                                {this.props.success.email}
-                              </p>
-                              <p>
-                                <i className="bx bxs-badge-check me-1" />
-                                We have {this.props.success.lab_experience}{" "}
-                                years of experience in the market
-                              </p>
-                              <div className="product-color">
-                              {!this.state.user_id ? (
-                          <Row className="mt-4">
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.offered_tests === true && (
+                              <div className="text-center">
+                                {!this.state.user_id && (
                                   <Link
                                     to={
                                       this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                        ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/nearby-labs/${this.props.match.params.guest_id}`
                                     }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_tests === false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.offered_profiles ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Profiles{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_profiles ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Profiles{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.offered_packages ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Packages
-                                  </Link>
-                                )}
-                                {this.props.success.offered_packages ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Offered Packages{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.offered_radiologies ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Radiology{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_radiologies ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Offered Radiology{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.sample_collectors ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Sample-Collectors{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.sample_collectors ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Sample-Collectors{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.pathologists === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.pathologists === false && (
-                                  <Link
-                                    to="#"
-                                    // className=" linklist btn btn-secondary btn-md"
-                                    style={{ color: 'grey' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <Col sm="6" className="mx-auto">
-                              {this.props.success.quality_certificates ===
-                                true && (
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
-                                  }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
-                              )}
-                              {this.props.success.quality_certificates ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className=" linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
-                              )}
-                            </Col>
-                          </Row>
-                        ) : null}
-                        {this.state.user_id &&
-                        this.state.user_type !== "CSR" &&
-                        this.state.user_type !== "b2bclient" ? (
-                          <Row className="mt-4">
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.offered_tests === true && (
-                                  <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
-                                  }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_tests === false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.offered_profiles ===
-                                  true && (
-                                  <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab`
-                                  }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Profiles{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_profiles ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Profiles{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.offered_packages ===
-                                  true && (
-                                  <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/offered-package-by-lab`
-                                  }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Packages
-                                  </Link>
-                                )}
-                                {this.props.success.offered_packages ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Offered Packages{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.offered_radiologies ===
-                                  true && (
-                                  <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab`
-                                  }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Radiology{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_radiologies ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Offered Radiology{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.sample_collectors ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Sample-Collectors{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.sample_collectors ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Sample-Collectors{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.pathologists === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.pathologists === false && (
-                                  <Link
-                                    to="#"
-                                    // className=" linklist btn btn-secondary btn-md"
-                                    style={{ color: 'grey' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <Col sm="6" className="mx-auto">
-                              {this.props.success.quality_certificates ===
-                                true && (
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
-                                  }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
-                              )}
-                              {this.props.success.quality_certificates ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className=" linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
-                              )}
-                            </Col>
-                          </Row>
-                        ) : null}
-                        {this.state.user_id &&
-                        this.state.user_type === "CSR" &&
-                        this.state.user_type !== "b2bclient" ? (
-                          <Row className="mt-4">
-                          <div className="mb-2 row">
-                            <Col sm="6">
-                              {this.props.success.offered_tests === true && (
-                                <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
-                                }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />
-                                  Offered Tests{" "}
-                                </Link>
-                              )}
-                              {this.props.success.offered_tests === false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className="linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right " />{" "}
-                                  Offered Tests{" "}
-                                </Link>
-                              )}
-                            </Col>
-                            <Col sm="6">
-                              {this.props.success.offered_profiles ===
-                                true && (
-                                <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
-                                }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />
-                                  Offered Profiles{" "}
-                                </Link>
-                              )}
-                              {this.props.success.offered_profiles ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className="linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />
-                                  Offered Profiles{" "}
-                                </Link>
-                              )}
-                            </Col>
-                          </div>
-                          <div className="mb-2 row">
-                            <Col sm="6">
-                              {this.props.success.offered_packages ===
-                                true && (
-                                <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
-                                }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />
-                                  Offered Packages
-                                </Link>
-                              )}
-                              {this.props.success.offered_packages ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className="linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Offered Packages{" "}
-                                </Link>
-                              )}
-                            </Col>
-                            <Col sm="6">
-                              {this.props.success.offered_radiologies ===
-                                true && (
-                                <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
-                                }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />
-                                  Offered Radiology{" "}
-                                </Link>
-                              )}
-                              {this.props.success.offered_radiologies ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className="linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Offered Radiology{" "}
-                                </Link>
-                              )}
-                            </Col>
-                          </div>
-                          <div className="mb-2 row">
-                            <Col sm="6">
-                              {this.props.success.sample_collectors ===
-                                true && (
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
-                                  }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Sample-Collectors{" "}
-                                </Link>
-                              )}
-                              {this.props.success.sample_collectors ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className=" linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Sample-Collectors{" "}
-                                </Link>
-                              )}
-                            </Col>
-                            <Col sm="6">
-                              {this.props.success.pathologists === true && (
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
-                                  }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Pathologists{" "}
-                                </Link>
-                              )}
-                              {this.props.success.pathologists === false && (
-                                <Link
-                                  to="#"
-                                  // className=" linklist btn btn-secondary btn-md"
-                                  style={{ color: 'grey' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Pathologists{" "}
-                                </Link>
-                              )}
-                            </Col>
-                          </div>
-                          <Col sm="6" className="mx-auto">
-                            {this.props.success.quality_certificates ===
-                              true && (
-                              <Link
-                                to={
-                                  this.props.match.params.uuid
-                                    ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                    : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
-                                }
-                                // className="linklist btn btn-primary btn-md"
-                                style={{ color: 'blue' }}
-                              >
-                                <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                Quality-Certificates{" "}
-                              </Link>
-                            )}
-                            {this.props.success.quality_certificates ===
-                              false && (
-                              <Link
-                                to="#"
-                                style={{ color: 'grey' }}
-                                // className=" linklist btn btn-secondary btn-md"
-                              >
-                                <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                Quality-Certificates{" "}
-                              </Link>
-                            )}
-                          </Col>
-                        </Row>
-                        ) : null}
-                        {this.state.user_id &&
-                        this.state.user_type !== "CSR" &&
-                        this.state.user_type === "b2bclient" ? (
-                          <Row className="mt-4">
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.offered_tests === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_tests === false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right " />{" "}
-                                    Offered Tests{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.offered_profiles ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Profiles{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_profiles ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Profiles{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.offered_packages ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Packages
-                                  </Link>
-                                )}
-                                {this.props.success.offered_packages ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Offered Packages{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.offered_radiologies ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />
-                                    Offered Radiology{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.offered_radiologies ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className="linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Offered Radiology{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <div className="mb-2 row">
-                              <Col sm="6">
-                                {this.props.success.sample_collectors ===
-                                  true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Sample-Collectors{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.sample_collectors ===
-                                  false && (
-                                  <Link
-                                    to="#"
-                                    style={{ color: 'grey' }}
-                                    // className=" linklist btn btn-secondary btn-md"
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Sample-Collectors{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col sm="6">
-                                {this.props.success.pathologists === true && (
-                                  <Link
-                                    to={
-                                      this.props.match.params.uuid
-                                        ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                        : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
-                                    }
-                                    // className="linklist btn btn-primary btn-md"
-                                    style={{ color: 'blue' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                                {this.props.success.pathologists === false && (
-                                  <Link
-                                    to="#"
-                                    // className=" linklist btn btn-secondary btn-md"
-                                    style={{ color: 'grey' }}
-                                  >
-                                    <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                    Pathologists{" "}
-                                  </Link>
-                                )}
-                              </Col>
-                            </div>
-                            <Col sm="6" className="mx-auto">
-                              {this.props.success.quality_certificates ===
-                                true && (
-                                <Link
-                                  to={
-                                    this.props.match.params.uuid
-                                      ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
-                                  }
-                                  // className="linklist btn btn-primary btn-md"
-                                  style={{ color: 'blue' }}
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
-                              )}
-                              {this.props.success.quality_certificates ===
-                                false && (
-                                <Link
-                                  to="#"
-                                  style={{ color: 'grey' }}
-                                  // className=" linklist btn btn-secondary btn-md"
-                                >
-                                  <i className="mdi mdi-arrow-right btn-block" />{" "}
-                                  Quality-Certificates{" "}
-                                </Link>
-                              )}
-                            </Col>
-                          </Row>
-                        ) : null}
-                            </div>
-                            </div>
-                            
-                          </Col>
-                        </Row>
-                        
-                      </div>
-                    </CardBody>
-                  </Card>
+                                    className="btn btn-secondary mt-2 me-1"
+                                    style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
 
-                  {/* Insert Review Section */}
-                  <FeedbackDetail />
-                </Col>
-              </Row>
+                                  >
+                                    <i className="bx bxs-shopping-bags" />{" "}
+                                    <span className="font-size-12">Continue Browsing{" "}</span>
+                                  </Link>
+                                )}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type !== "b2bclient" && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/nearby-labs/${this.props.match.params.guest_id}`
+                                          : `/nearby-labs/`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      <span className="font-size-12">Continue Browsing{" "}</span>
+                                    </Link>
+                                  )}
+                                {this.state.user_id &&
+                                  this.state.user_type === "CSR" &&
+                                  this.state.user_type !== "b2bclient" && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/nearby-labs/${this.props.match.params.guest_id}`
+                                          : `/nearby-labs`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      <span className="font-size-12">Continue Browsing{" "}</span>
+                                    </Link>
+                                  )}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type === "b2bclient" && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                          : `/nearby-labs`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      <span className="font-size-12">Continue Browsing{" "}</span>
+                                    </Link>
+                                  )}
+                                <Link
+                                  to={{
+                                    pathname: `http://maps.google.com/?q=${this.props.success.address}`,
+                                  }}
+                                  className="btn btn-success ml-1 btn  mt-2"
+                                  target="_blank"
+                                  style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                >
+                                  <i className="bx bxs-navigation" />
+                                  <span className="font-size-12">Navigate to
+                                    the Lab</span>
+                                </Link>
+                                {/* {(this.props.success.complaint_handling_email ||
+                                this.props.success
+                                  .complaint_handling_phone) && (
+                                <div className="text-muted float-start ms-3 mt-3">
+                                  <h5>Help & Support</h5>
+                                  {this.props.success
+                                    .complaint_handling_email && (
+                                    <p>
+                                      <i className="bx bx-mail-send me-1 mt-3" />
+                                      {
+                                        this.props.success
+                                          .complaint_handling_email
+                                      }
+                                    </p>
+                                  )}
+
+                                  {this.props.success
+                                    .complaint_handling_phone && (
+                                    <p>
+                                      <i className="bx bx-phone-call me-1" />
+                                      {
+                                        this.props.success
+                                          .complaint_handling_phone
+                                      }
+                                    </p>
+                                  )}
+                                </div>
+                              )} */}
+                                {/* <div className="mb-3"> */}
+                              </div>
+
+                            </Col>
+                            <Col lx="3">
+                              <div className="mb-1">
+                                {this.props.success.offered_tests === true && (
+                                  <button
+                                    onClick={() => {
+                                      // Add the logic you want to execute when the button is clicked
+                                      // You can use the history object to navigate to a different route if needed
+                                      this.props.history.push(
+                                        this.props.match.params.uuid
+                                          ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                          : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                      );
+                                    }}
+                                    // Add any other button styling or attributes as needed
+                                    className="btn btn-primary btn-md"
+                                    style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                  >
+                                    {/* <i className="mdi mdi-arrow-right btn-block" /> */}
+                                    <span className="font-size-12">Offered Tests</span>
+                                  </button>
+                                )}
+                                {this.props.success.offered_tests === false && (
+                                  <button
+                                    onClick={() => {
+                                      // Add the logic you want to execute when the button is clicked
+                                      alert("Tests not yet entered!");
+
+                                    }}
+                                    // Add any other button styling or attributes as needed
+                                    className="btn btn-secondary btn-md"
+                                    style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                  >
+                                    {/* <i className="mdi mdi-arrow-right" />  */}
+                                    <span className="font-size-12">Offered Tests</span>
+                                  </button>
+                                )}
+                              </div>
+                              <div className="mb-1">
+                                {this.props.success.offered_profiles ===
+                                  true && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        // You can use the history object to navigate to a different route if needed
+                                        this.props.history.push(
+                                          this.props.match.params.uuid
+                                            ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                        );
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-primary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" /> */}
+                                      <span className="font-size-12">Offered Profiles{" "}</span>
+                                    </button>
+                                  )}
+                                {this.props.success.offered_profiles ===
+                                  false && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        alert("Profiles not yet entered!");
+
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-secondary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" /> */}
+                                      <span className="font-size-12">Offered Profiles{" "}</span>
+                                    </button>
+                                  )}
+                              </div>
+                              <div className="mb-1">
+                                {this.props.success.offered_packages ===
+                                  true && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        // You can use the history object to navigate to a different route if needed
+                                        this.props.history.push(
+                                          this.props.match.params.uuid
+                                            ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                        );
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-primary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" /> */}
+                                      <span className="font-size-12">Offered Packages</span>
+                                    </button>
+                                  )}
+                                {this.props.success.offered_packages ===
+                                  false && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        alert("Packages not yet entered!");
+
+                                      }}
+                                      className="btn btn-secondary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Offered Packages{" "}</span>
+                                    </button>
+                                  )}
+                              </div>
+                              <div className="mb-1">
+                                {this.props.success
+                                  .offered_radiologies === true && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        // You can use the history object to navigate to a different route if needed
+                                        this.props.history.push(
+                                          this.props.match.params.uuid
+                                            ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                        );
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-primary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" /> */}
+                                      <span className="font-size-12">Offered Radiology{" "}</span>
+                                    </button>
+                                  )}
+                                {this.props.success.offered_radiologies === false && (
+                                  <div className="mb-1">
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        alert("Radiology not yet entered!");
+                                      }}
+                                      className="btn btn-secondary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Offered Radiology{" "}</span>
+                                    </button>
+                                  </div>
+                                )}
+
+                              </div>
+                              <div className="mb-1">
+                                {this.props.success
+                                  .sample_collectors === true && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        // You can use the history object to navigate to a different route if needed
+                                        this.props.history.push(
+                                          this.props.match.params.uuid
+                                            ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                        );
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-primary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Sample-Collectors{" "}</span>
+                                    </button>
+                                  )}
+                                {this.props.success
+                                  .sample_collectors === false && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        alert("Sample Collectors not yet entered!");
+
+                                      }}
+                                      className="btn btn-secondary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Sample-Collectors{" "}</span>
+                                    </button>
+                                  )}
+                              </div>
+                              <div className="mb-1">
+                                {this.props.success.pathologists ===
+                                  true && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        // You can use the history object to navigate to a different route if needed
+                                        this.props.history.push(
+                                          this.props.match.params.uuid
+                                            ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                        );
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-primary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Pathologists{" "}</span>
+                                    </button>
+                                  )}
+                                {this.props.success.pathologists ===
+                                  false && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        alert("Pathologists not yet entered!");
+
+                                      }}
+                                      className="btn btn-secondary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Pathologists{" "}</span>
+                                    </button>
+                                  )}
+                              </div>
+                              <div className="mb-1">
+                                {this.props.success
+                                  .quality_certificates === true && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        // You can use the history object to navigate to a different route if needed
+                                        this.props.history.push(
+                                          this.props.match.params.uuid
+                                            ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                        );
+                                      }}
+                                      // Add any other button styling or attributes as needed
+                                      className="btn btn-primary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Quality-Certificates{" "}</span>
+                                    </button>
+                                  )}
+                                {this.props.success
+                                  .quality_certificates === false && (
+                                    <button
+                                      onClick={() => {
+                                        // Add the logic you want to execute when the button is clicked
+                                        alert("Quality Certificates not yet entered!");
+
+                                      }}
+                                      className="btn btn-secondary btn-md"
+                                      style={{ width: "100%", textAlign: "left" }} // Set inline style to ensure the same width
+                                    >
+                                      {/* <i className="mdi mdi-arrow-right btn-block" />{" "} */}
+                                      <span className="font-size-12">Quality-Certificates{" "}</span>
+                                    </button>
+                                  )}
+                              </div>
+                            </Col>
+                            <div>
+                              <h2 style={{ color: "#3B71CA", fontWeight: "bold", fontSize: "18px" }}>{this.props.success.name}</h2>
+                              {this.props.success ? (
+                                <div className="text-muted float-start me-3">
+                                  <StarRatings
+                                    rating={this.props.success.rating}
+                                    starRatedColor="#F1B44C"
+                                    starEmptyColor="#2D363F"
+                                    numberOfStars={5}
+                                    name="rating"
+                                    starDimension="14px"
+                                    starSpacing="3px"
+                                  />
+                                </div>
+                              ) : null}
+
+                              <p className="font-size-18">
+                                {this.props.success.rating}
+                              </p>
+                              <div className="text-muted float-start font-size-15">
+                                <p>
+                                  <i className="bx bxs-home-circle text-primary me-1" />
+                                  {this.props.success.address}
+                                </p>
+                                <p>
+                                  <i className="bx bxs-buildings text-primary me-1" />{" "}
+                                  {this.props.success.city}
+                                </p>
+                                <p>
+                                  <i className="bx bxs-phone-call text-primary me-1" />
+                                  {this.props.success.landline}
+                                </p>
+                                <p>
+                                  <i className="mdi mdi-email text-primary me-1" />
+                                  {this.props.success.email}
+                                </p>
+                                <p>
+                                  <i className="bx bxs-badge-check text-primary me-1" />
+                                  We have {this.props.success.lab_experience}{" "}
+                                  years of experience in the market
+                                </p>
+                              </div>
+                            </div>
+                          </Row>
+                        </div>
+                      </CardBody>
+                    </Card>
+
+                    {/* Insert Review Section */}
+                    <FeedbackDetail />
+                  </Col>
+                </Row>
+              }
             </Container>
           ) : null}
         </div>
@@ -1565,6 +2299,7 @@ NearbyLabDetail.propTypes = {
   comments: PropTypes.array,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  history: PropTypes.any,
 };
 
 const mapStateToProps = state => {
