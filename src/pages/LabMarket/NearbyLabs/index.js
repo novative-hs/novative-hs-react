@@ -1908,7 +1908,7 @@ class NearbyLabs extends Component {
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
                       {/* ... (unchanged) */}
-                      <Row className="mb-3" noGutters>
+                      <Row className="mb-3">
                         <Col xs="4" sm="4" md="3" lg="3">
                         <div className="mb-3">
                           <Label
@@ -2754,7 +2754,7 @@ class NearbyLabs extends Component {
                     {({ errors, status, touched }) => (
                       <Form className="form-horizontal">
                         {/* ... (unchanged) */}
-                        <Row className="mb-3" noGutters>
+                        <Row className="mb-3">
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
