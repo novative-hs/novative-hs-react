@@ -1793,36 +1793,26 @@ handleAddToCart = (cart) => {
                       </Card>
                     </Col>
                   ))}
-                {isLargeScreen ? (
-                  isEmpty(this.props.nearbyTests) ? (
-                    <Row className="vh-100">
-                      <Col lg="12">
-                        <div className="mb-5">
-                          <h4 className="text-uppercase">
-                            <i className="mdi mdi-refresh-circle mdi-spin display-1" aria-hidden="true" style={{ color: 'blue', marginLeft: '120px' }}></i>
-                          </h4>
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null
-                ) :null}
-                 {loading ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px' }}>
-                          Please Wait.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : isEmpty(this.props.nearbyTests) ? (
-                    <Row>
-                      <Col lg="12">
-                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                         Sorry No Result Found.....
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null}
+               
+                  {isEmpty(this.props.nearbyTests) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                          Sorry, No Tests Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
                   <ScrollButton/>
               </Row>
               {!isEmpty(this.props.nearbyTests) ? (

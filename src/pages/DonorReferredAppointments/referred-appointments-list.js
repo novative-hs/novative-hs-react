@@ -247,6 +247,7 @@ class ReferredPatientsList extends Component {
       patient_gender: arg.patient_gender,
       patient_address: arg.patient_address,
       patient_age: arg.patient_age,
+      ageFormat: arg.ageFormat,
       patient_unique_id: arg.patient_unique_id,
       // patient_city: arg.patient_city,
       patient_phone: arg.patient_phone,
@@ -476,9 +477,8 @@ class ReferredPatientsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
+                                                      value={`${this.state.patient_age} ${this.state.ageFormat}`}
+
                                                       className="form-control"
                                                       readOnly={true}
                                                     />

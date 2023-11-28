@@ -202,6 +202,7 @@ class TestAppointmentsCompletedList extends Component {
       patient_age: arg.patient_age,
       patient_gender: arg.patient_gender,
       patient_address: arg.patient_address,
+      ageFormat: arg.ageFormat,
       patient_city: arg.patient_city,
       patient_phone:arg.patient_phone,
     });
@@ -338,9 +339,8 @@ class TestAppointmentsCompletedList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
+                                                      value={`${this.state.patient_age} ${this.state.ageFormat}`}
+
                                                       className="form-control"
                                                       readOnly={true}
                                                     />

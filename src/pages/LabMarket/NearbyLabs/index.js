@@ -2072,7 +2072,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                           )
-                        }
+                        }style={{height: "95%"}}
                       >
                         <CardBody>
                           <Link
@@ -2232,7 +2232,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           )
-                        }
+                        }style={{height: "95%"}}
                       >
                         <CardBody>
                           <Link
@@ -2242,26 +2242,27 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             }
                           >
-                            <div
-                              style={{
-                                width: "200px",
-                                height: "100px",
-                              }}
-                            >
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  nearbyLab.logo
-                                }
-                                alt="Lab Logo"
-                                className=" text-end"
+                           <div
                                 style={{
-                                  maxWidth: "100%",
-                                  maxHeight: "100%",
-                                  float: "end",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
-                              />
-                            </div>
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2391,7 +2392,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           )
-                        }
+                        }style={{height: "95%"}}
                       >
                         <CardBody>
                           <Link
@@ -2413,25 +2414,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                             <div
-                              style={{
-                                width: "200px",
-                                height: "100px",
-                              }}
-                            >
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  nearbyLab.logo
-                                }
-                                alt="Lab Logo"
-                                className=" text-end"
                                 style={{
-                                  maxWidth: "100%",
-                                  maxHeight: "100%",
-                                  float: "end",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
-                              />
-                            </div>
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2546,7 +2548,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           )
-                        }
+                        }style={{height: "95%"}}
                       >
                         <CardBody>
                           <Link
@@ -2568,25 +2570,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                             <div
-                              style={{
-                                width: "200px",
-                                height: "100px",
-                              }}
-                            >
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  nearbyLab.logo
-                                }
-                                alt="Lab Logo"
-                                className=" text-end"
                                 style={{
-                                  maxWidth: "100%",
-                                  maxHeight: "100%",
-                                  float: "end",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
-                              />
-                            </div>
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2687,23 +2690,25 @@ class NearbyLabs extends Component {
                       </Card>
                     </Col>
                   ))}
-                {loading ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
+                {isEmpty(nearbyLabs) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Labs Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
 
                 <ScrollButton />
               </Row>
@@ -3064,7 +3069,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -3076,8 +3081,9 @@ class NearbyLabs extends Component {
                             >
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -3211,7 +3217,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -3234,8 +3240,9 @@ class NearbyLabs extends Component {
                           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -3355,7 +3362,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -3378,8 +3385,9 @@ class NearbyLabs extends Component {
                           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -3486,23 +3494,25 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {loading ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
+                {isEmpty(nearbyLabs) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Labs Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
                 <ScrollButton />
               </Col>
               <Col lg="3">
@@ -3933,7 +3943,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -4080,7 +4090,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -4091,25 +4101,26 @@ class NearbyLabs extends Component {
                           }
                         >
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4224,7 +4235,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -4245,26 +4256,27 @@ class NearbyLabs extends Component {
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div> */}
-                          <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                         <div
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4366,7 +4378,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -4388,25 +4400,26 @@ class NearbyLabs extends Component {
                               />
                           </div> */}
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4496,23 +4509,25 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-              {loading ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px' }}>
-                      Please Wait.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : isEmpty(nearbyLabs) ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                      Sorry No Result Found.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : null}
+              {isEmpty(nearbyLabs) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Labs Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
 
               <ScrollButton />
             </Row>
@@ -4699,7 +4714,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -4846,7 +4861,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -4857,25 +4872,26 @@ class NearbyLabs extends Component {
                           }
                         >
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4991,7 +5007,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -5013,25 +5029,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -5133,7 +5150,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      }style={{height: "95%"}}
                     >
                       <CardBody>
                         <Link
@@ -5155,25 +5172,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -5263,23 +5281,25 @@ class NearbyLabs extends Component {
                     </Card>
                   </Col>
                 ))}
-              {loading ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px' }}>
-                      Please Wait.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : isEmpty(nearbyLabs) ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                      Sorry No Result Found.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : null}
+              {isEmpty(nearbyLabs) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Labs Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
               <ScrollButton />
             </Row>
           </div>
@@ -5544,7 +5564,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -5692,7 +5712,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -5704,8 +5724,9 @@ class NearbyLabs extends Component {
                             >
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -5822,7 +5843,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -5845,8 +5866,9 @@ class NearbyLabs extends Component {
           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -5966,7 +5988,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -5989,8 +6011,9 @@ class NearbyLabs extends Component {
           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -6098,23 +6121,25 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {loading ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
+                {isEmpty(nearbyLabs) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Labs Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
                 <ScrollButton />
               </Col>
             </Row>
@@ -6533,7 +6558,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -6691,7 +6716,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -6703,8 +6728,9 @@ class NearbyLabs extends Component {
                             >
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -6847,7 +6873,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -6870,8 +6896,9 @@ class NearbyLabs extends Component {
           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -6991,7 +7018,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }
+                          }style={{height: "95%"}}
                         >
                           <CardBody>
                             <Link
@@ -7014,8 +7041,9 @@ class NearbyLabs extends Component {
           </div> */}
                               <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -7132,23 +7160,25 @@ class NearbyLabs extends Component {
                       </Col>
                     ))}
                 </Row>
-                {loading ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : isEmpty(nearbyLabs) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
+                {isEmpty(nearbyLabs) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Labs Found In Your Specific Area.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
                 <ScrollButton />
               </Col>
             </Row>

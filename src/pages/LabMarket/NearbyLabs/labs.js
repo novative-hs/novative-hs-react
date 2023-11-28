@@ -14,6 +14,8 @@ import logo from "../../../assets/images/logo.svg";
 import logoLight from "../../../assets/images/logo-light.png";
 import logoLightSvg from "../../../assets/images/logo-light.svg";
 import Select, { components } from 'react-select';
+import Tooltip from "@material-ui/core/Tooltip";
+
 //i18n
 import { withTranslation } from "react-i18next";
 import "../../../components/HorizontalLayout/horizontal-navbar.scss";
@@ -80,7 +82,7 @@ class NearbyLabs extends Component {
       selectedLabName: "", // State to store the selected lab name
       filteredLabs: [], // State to store the filtered labs
       labNameInput: '',      // Store the lab name input by the user
-      filteredLabNames: [], 
+      filteredLabNames: [],
       name: "",
       advLive: "",
       activeTab: "1",
@@ -117,7 +119,7 @@ class NearbyLabs extends Component {
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
-    const { labNamesList, onGetLabNamesList} = this.props;
+    const { labNamesList, onGetLabNamesList } = this.props;
 
     if (labNamesList && !labNamesList.length) {
       console.log(onGetLabNamesList(this.state.user_id));
@@ -135,7 +137,7 @@ class NearbyLabs extends Component {
       this.activateParentDropdown(matchingMenuItem);
     }
 
-    
+
 
     let latitude;
     let longitude;
@@ -451,7 +453,7 @@ class NearbyLabs extends Component {
       ),
     });
   };
-  
+
 
   /*
   on change rating checkbox method
@@ -742,23 +744,25 @@ class NearbyLabs extends Component {
     }
     return false;
   };
-shouldHighlightTestsLink() {
-  const { location } = this.props;
-  const currentURL = location.pathname;
+  shouldHighlightTestsLink() {
+    const { location } = this.props;
+    const currentURL = location.pathname;
 
-  // Check if the URL contains "nearby-test"
-  return currentURL.includes('/labs');
-}
+    // Check if the URL contains "nearby-test"
+    return currentURL.includes('/labs');
+  }
   render() {
+    const isSmallScreen = window.innerWidth < 490;
+
     const generateLabNames = (nearbyLabs) => {
       const labNames = nearbyLabs.map((lab) => ({
         label: lab.name, // Replace with the actual property name in your nearbyLabs data
         value: lab.name, // Replace with the actual property name in your nearbyLabs data
       }));
-    
+
       return labNames;
     };
-    
+
     const ClearIndicator = (props) => {
       return (
         <components.ClearIndicator {...props}>
@@ -822,7 +826,7 @@ shouldHighlightTestsLink() {
                           }
                           className="dropdown-item"
                         >
-                         <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>                        
+                          <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>
 
                         </Link>
                       </li>
@@ -913,7 +917,7 @@ shouldHighlightTestsLink() {
                             }
                             className="dropdown-item"
                           >
-                           <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>                        
+                            <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>
 
                           </Link>
                         </li>
@@ -927,7 +931,7 @@ shouldHighlightTestsLink() {
                             }
                             className="dropdown-item"
                           >
-                           <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>                        
+                            <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>
 
                           </Link>
                         </li>
@@ -1129,7 +1133,7 @@ shouldHighlightTestsLink() {
                           }
                           className="dropdown-item"
                         >
-                         <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>                        
+                          <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>
 
                           {/* {this.props.t("Labs")} */}
                         </Link>
@@ -1276,7 +1280,7 @@ shouldHighlightTestsLink() {
                             }
                             className="dropdown-item"
                           >
-                           <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>                        
+                            <span className="pt-4 font-size-12" style={linkStyles}>Labs</span>
 
                           </Link>
                         </li>
@@ -1486,43 +1490,48 @@ shouldHighlightTestsLink() {
               </Col>  */}
 
               {/* <Col lg="9"> */}
-              <Row className="mb-3">
-                <Formik
-                  enableReinitialize={true}
-                  initialValues={{
-                    search_type:
-                      (this.state && this.state.search_type) ||
-                      "Current Location",
-                    city: (this.state && this.state.city) || "",
-                    name: (this.state && this.state.name) ||
+              {!isSmallScreen ? (
+                <Row className="mb-3">
+                  <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                      search_type:
+                        (this.state && this.state.search_type) ||
+                        "Current Location",
+                      city: (this.state && this.state.city) || "",
+                      name: (this.state && this.state.name) ||
                         "",
-                    location: (this.state && this.state.location) || "",
-                  }}
-                  validationSchema={Yup.object().shape({
-                    city: Yup.string().when("search_type", {
-                      is: val => val === "Custom Address",
-                      then: Yup.string().required("Please enter your City"),
-                    }),
-                    location: Yup.string().when("city", {
-                      is: val => val != "",
-                      then: Yup.string().required("Please enter your Location"),
-                    }),
-                  })}
-                >
-                  {({ errors, status, touched }) => (
-                    <Form className="form-horizontal">
-                      {/* Type field */}
-                      <Row>
-                      <Col xs="4" sm="4" md="3" lg="3">
+                      location: (this.state && this.state.location) || "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      city: Yup.string().when("search_type", {
+                        is: val => val === "Custom Address",
+                        then: Yup.string().required("Please enter your City"),
+                      }),
+                      location: Yup.string().when("city", {
+                        is: val => val != "",
+                        then: Yup.string().required("Please enter your Location"),
+                      }),
+                    })}
+                  >
+                    {({ errors, status, touched }) => (
+                      <Form className="form-horizontal">
+                        {/* Type field */}
+                        <Row>
+                          <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
                                 for="LabType"
                                 className="form-label"
                                 style={{
                                   fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
                                 }}
-                              >Search By Lab Name</Label>
-                           <Select
+                              >
+                                Search By Lab Name
+                              </Label>
+                              <Select
                                 type="text"
                                 value={labNames.find((option) => option.value === this.state.name)}
                                 onChange={this.onChangeLabName}
@@ -1533,21 +1542,255 @@ shouldHighlightTestsLink() {
                                 components={{
                                   ClearIndicator,
                                 }}
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                  }),
+                                  // Add more style overrides as needed
+                                }}
                               />
-
                             </div>
                           </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+
+
+
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search Types
+                              </Label>
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">Search By City</option>
+                                <option value="Custom Address">Custom Address</option>
+                              </Field>
+                            </div>
+                          </Col>
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>Km </span>
+                                </Label>
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    placeholder=""
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                          )}
+                          {this.state.search_type === 'City' && (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>By City </span>
+                                </Label>
+                                <Select
+                                  name="city"
+                                  component="Select"
+                                  onChange={this.onChangeCity}
+                                  className="defautSelectParent is-invalid"
+                                  options={cityList}
+                                  placeholder=""
+                                  styles={{
+                                    control: (provided, state) => ({
+                                      ...provided,
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                    }),
+                                    // Add more style overrides as needed
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )}
+                          {this.state.search_type === 'Custom Address' && (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px', }}>Custom Address </span>
+                                </Label>
+                                <Input
+                                  defaultValue={this.state.address}
+                                  onChange={(e) => this.onChangeAddress(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder=""
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )}
+                        </Row>
+                      </Form>
+                    )}
+                  </Formik>
+                </Row>
+              ) : <Row>
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    search_type:
+                      (this.state && this.state.search_type) ||
+                      "Current Location",
+                    city: (this.state && this.state.city) || "",
+                    location: (this.state && this.state.location) || "",
+                    LabType: (this.state && this.state.LabType) || "Main",
+                    km: (this.state && this.state.km) || "30",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    city: Yup.string().when("search_type", {
+                      is: val => val === "Custom Address",
+                      then: Yup.string().required("Please enter your City"),
+                    }),
+                    location: Yup.string().when("city", {
+                      is: val => val != "",
+                      then: Yup.string().required(
+                        "Please enter your Location"
+                      ),
+                    }),
+                  })}
+                >
+                  {({ errors, status, touched }) => (
+                    <Form className="form-horizontal">
+                      {/* Type field */}
+                      {/* Type field */}
+                      <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Labs for more result in Pakistan!</h4>
+                      <Row className="g-0">
+                        <Col>
+                          <div>
+                            <Select
+                              type="text"
+                              value={labNames.find((option) => option.value === this.state.name)}
+                              onChange={this.onChangeLabName}
+                              options={labNames}
+                              placeholder="Lab Name..."
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
                               }}
+
+                            />
+
+                          </div>
+                        </Col>
+                        <Col xs="4" sm="4" md="3" lg="3">
+                          <div>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={e => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
                             >
-                              Search Types
-                            </Label>
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">
+                                Collection Points
+                              </option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className="g-0">
+                        <Col xs="6" sm="6" md="3" lg="3">
+                          <div className="mb-3">
                             <Field
                               name="search_type"
                               component="select"
@@ -1558,96 +1801,52 @@ shouldHighlightTestsLink() {
                               <option value="Current Location">
                                 Current Location
                               </option>
-                              <option value="City">Search By City</option>
-                              <option value="Custom Address">Custom Address</option>
+                              <option value="City">By City</option>
+                              <option value="Custom Address">
+                                Custom Address
+                              </option>
                             </Field>
                           </div>
                         </Col>
-                        <Col xs="4" sm="4" md="3" lg="3">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              Search By Labs Type
-                            </Label>
-                            <Field
-                              name="LabType"
-                              component="select"
-                              onChange={(e) => this.onChangeType(e)}
-                              value={this.state.LabType}
-                              className="form-select"
-                            >
-                              <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
-                              <option value="Others">Both</option>
-                            </Field>
-                          </div>
-                        </Col>
+
                         {this.state.search_type === "Current Location" && (
-                          <Col xs="3" sm="3" md="2" lg="2">
+                          <Col xs="2" sm="2" md="2" lg="2">
                             <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >Search By Kilometers</Label>
                               <div className="input-group">
                                 <Input
                                   defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
+                                  onChange={e => this.onChangeKm(e)}
                                   id="pac-input"
-                                  type="text"
+                                  type="number"  // Change "numbers" to "number"
                                   className="form-control"
-                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
                                   placeholder="Search By Km..."
-
                                 />
                               </div>
                             </div>
-                          </Col>)}
+                          </Col>
+                        )}
                         {this.state.search_type === "Custom Address" && (
-                          <Col xs="3" sm="3" md="2" lg="2">
+                          <Col xs="2" sm="2" md="2" lg="2">
                             <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >Search By Kilometers</Label>
                               <div className="input-group">
                                 <Input
                                   defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
+                                  onChange={e => this.onChangeKm(e)}
                                   id="pac-input"
-                                  type="text"
+                                  type="number"  // Change "numbers" to "number"
                                   className="form-control"
-                                  style={{ fontSize: '14px' }} // Set input font size to 14 pixels
+                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
                                   placeholder="Search By Km..."
-
                                 />
                               </div>
                             </div>
-                          </Col>)}
+                          </Col>
+                        )}
                         {/* City field */}
                         {this.state.search_type === "City" && (
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By City
-                              </Label>
                               <Select
                                 name="city"
                                 component="Select"
@@ -1657,20 +1856,12 @@ shouldHighlightTestsLink() {
                                 placeholder="City..."
                               />
                             </div>
-                          </Col>)}
+                          </Col>
+                        )}
                         {/* Custom Address field */}
                         {this.state.search_type === "Custom Address" && (
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                Search By Custom Address
-                              </Label>
                               <Input
                                 defaultValue={this.state.address}
                                 onChange={e => this.onChangeAddress(e)}
@@ -1680,12 +1871,14 @@ shouldHighlightTestsLink() {
                                 placeholder="Search Location..."
                               />
                             </div>
-                          </Col>)}
+                          </Col>
+                        )}
                       </Row>
                     </Form>
                   )}
                 </Formik>
-              </Row>
+              </Row>}
+
 
               {/* ROW FOR ADVERTISEMENT */}
               {/* <Row> */}
@@ -1699,7 +1892,7 @@ shouldHighlightTestsLink() {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                         )
-                      }
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -1709,15 +1902,25 @@ shouldHighlightTestsLink() {
                               : `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                           }
                         >
-                          <div style={{
-                            width: '200px',
-                            height: '100px',
-                          }}>
+                          <div
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
                             <img
-                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
                               alt="Lab Logo"
                               className=" text-end"
-                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
                             />
                           </div>
                         </Link>
@@ -1747,11 +1950,13 @@ shouldHighlightTestsLink() {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
@@ -1793,13 +1998,13 @@ shouldHighlightTestsLink() {
                                   {nearbyLab.phone}
                                 </span>
                               </div> */}
-                            {nearbyLab.landline ? (
+                          {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
                                 {nearbyLab.landline}
                               </span>
-                            </div>):null}
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >
@@ -1834,7 +2039,7 @@ shouldHighlightTestsLink() {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -1844,15 +2049,25 @@ shouldHighlightTestsLink() {
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           }
                         >
-                          <div style={{
-                            width: '200px',
-                            height: '100px',
-                          }}>
+                          <div
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
                             <img
-                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
                               alt="Lab Logo"
                               className=" text-end"
-                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
                             />
                           </div>
                         </Link>
@@ -1882,11 +2097,13 @@ shouldHighlightTestsLink() {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
@@ -1928,13 +2145,13 @@ shouldHighlightTestsLink() {
                                   {nearbyLab.phone}
                                 </span>
                               </div> */}
-                            {nearbyLab.landline ? (
+                          {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
                                 {nearbyLab.landline}
                               </span>
-                            </div>):null}
+                            </div>) : null}
 
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
@@ -1970,7 +2187,7 @@ shouldHighlightTestsLink() {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -1991,15 +2208,25 @@ shouldHighlightTestsLink() {
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div> */}
-                          <div style={{
-                            width: '200px',
-                            height: '100px',
-                          }}>
+                          <div
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
                             <img
-                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
                               alt="Lab Logo"
                               className=" text-end"
-                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
                             />
                           </div>
 
@@ -2032,11 +2259,13 @@ shouldHighlightTestsLink() {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
@@ -2064,13 +2293,13 @@ shouldHighlightTestsLink() {
                               </span>
                             </div>
                           )}
-                            {nearbyLab.landline ? (
+                          {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
                                 {nearbyLab.landline}
                               </span>
-                            </div>):null}
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >
@@ -2105,7 +2334,7 @@ shouldHighlightTestsLink() {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -2126,18 +2355,27 @@ shouldHighlightTestsLink() {
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div> */}
-                          <div style={{
-                            width: '200px',
-                            height: '100px',
-                          }}>
+                          <div
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
                             <img
-                              src={process.env.REACT_APP_BACKENDURL + nearbyLab.logo}
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
                               alt="Lab Logo"
                               className=" text-end"
-                              style={{ maxWidth: '100%', maxHeight: '100%', float: 'end' }}
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
                             />
                           </div>
-
 
 
                         </Link>
@@ -2167,11 +2405,13 @@ shouldHighlightTestsLink() {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
@@ -2199,13 +2439,13 @@ shouldHighlightTestsLink() {
                               </span>
                             </div>
                           )}
-                            {nearbyLab.landline ? (
+                          {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
                                 {nearbyLab.landline}
                               </span>
-                            </div>):null}
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >
@@ -2230,23 +2470,25 @@ shouldHighlightTestsLink() {
                     </Card>
                   </Col>
                 ))}
-              {loading ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px' }}>
-                      Please Wait.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : isEmpty(nearbyLabs) ? (
-                <Row>
-                  <Col lg="12">
-                    <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                      Sorry No Result Found.....
-                    </div>
-                  </Col>
-                </Row>
-              ) : null}
+              {isEmpty(nearbyLabs) && (
+                loading ? (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px' }}>
+                        Please Wait.....
+                      </div>
+                    </Col>
+                  </Row>
+                ) : (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                        Sorry, No Labs Found In Your Specific Area.....
+                      </div>
+                    </Col>
+                  </Row>
+                )
+              )}
               <ScrollButton />
             </Row>
 

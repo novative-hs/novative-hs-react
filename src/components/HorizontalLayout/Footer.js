@@ -133,7 +133,7 @@ const Footer = () => {
               <div className="mb-2">
                 <Link
                   to={
-                    `#`
+                    `/pages-comingsoon/`
                   }
                 >
                   How to API&apos;s Integrations?

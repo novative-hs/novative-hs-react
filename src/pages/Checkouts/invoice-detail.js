@@ -7,7 +7,7 @@ import { isEmpty, map } from "lodash";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import logo from "../../assets/images/logo-dark.png";
-// import jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 
@@ -33,28 +33,23 @@ class InvoiceDetail extends Component {
   };
 
   sendInvoice = () => {
-    const message = `Here's the invoice I received from Lab Hazir:
-    ${window.location.href}`;
+    const { node } = this;
   
-    const url = `https://web.whatsapp.com/send?text=${encodeURIComponent(
-      message
-    )}`;
+    if (node && node.current) {
+      const scale = 2; // Adjust this value as needed
+      const options = {
+        scale: scale,
+        dpi: 300, // Adjust the DPI value as needed
+      };
   
-    window.open(url);
+      html2canvas(node.current, options).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('l', 'mm', 'a4'); // 'l' for landscape
+        pdf.addImage(imgData, 'PNG', 0, 0, 297, 210); // Swap width and height for landscape
+        pdf.save('LabHazir_Invoice.pdf');
+      });
+    }
   };
-  // sendInvoice = () => {
-  //   const { node } = this;
-
-  //   if (node && node.current) {
-  //     html2canvas(node.current).then((canvas) => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const pdf = new jsPDF('p', 'mm', 'a4');
-  //       pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
-  //       pdf.save('LabHazir_Invoice.pdf');
-  //     });
-  //   }
-  // };
-  
   
   
 
@@ -83,7 +78,7 @@ class InvoiceDetail extends Component {
                       </div>
                       <hr />
                       <Row>
-                      <Col sm="4" className="mt-3">
+                        <Col sm="4" className="mt-3">
                           <address>
                             <strong>Patient Detail:</strong>
                             <br />
@@ -93,7 +88,7 @@ class InvoiceDetail extends Component {
                             <br />
                             <span className="text-danger">Email:</span> {this.props.invoiceDetail[0].patient_email}
                             <br />
-                            <span className="text-danger">Age:</span> {this.props.invoiceDetail[0].patient_age}
+                            <span className="text-danger">Age:</span> {this.props.invoiceDetail[0].patient_age} (<span style={{ color: "red" }}>{this.props.invoiceDetail[0].ageFormat}</span>)
                             {this.props.invoiceDetail[0].patient_address != null ? (
                               <div>
                                 <span className="text-danger">Address:</span> {this.props.invoiceDetail[0].patient_address}
@@ -106,7 +101,7 @@ class InvoiceDetail extends Component {
                           <address>
                             <strong>Lab Detail:</strong>
                             <br />
-                            <span className="text-danger">NTN #</span> {this.props.invoiceDetail[0].lab_ntn}
+                            <span className="text-danger">NTN #:</span> {this.props.invoiceDetail[0].lab_ntn}
                             <br />
                             <span className="text-danger">Lab Name:</span> {this.props.invoiceDetail[0].lab_name}
                             <br />
@@ -114,13 +109,20 @@ class InvoiceDetail extends Component {
                             <br />
                             <span className="text-danger">Lab Address:</span> {this.props.invoiceDetail[0].lab_address}
                             <br />
-                            <span className="text-danger">Sample Collected Date Time by Lab:</span> {new Date(this.props.invoiceDetail[0].estimated_sample_collection_at).toLocaleString("en-US")}
+                            {this.props.invoiceDetail[0].estimated_sample_collection_at !== null ? (
+                              <>
+                                <span className="text-danger">Sampling Date Time by Lab:</span>{" "}
+                                {new Date(this.props.invoiceDetail[0].estimated_sample_collection_at).toLocaleString("en-US")}
+                              </>
+                            ) : null}
                           </address>
                         </Col>
+
+
                         <Col sm="4" className="mt-3 text-sm-end">
-                        <div className="mt-3">
-                        <QRCode value="LabHazir Tax No: 9157548-3" size={100} fgColor="#000000" bgColor="#FFFFFF" />
-                      </div>
+                          <div className="mt-3">
+                            <QRCode value="LabHazir Tax No: 9157548-3" size={100} fgColor="#000000" bgColor="#FFFFFF" />
+                          </div>
                         </Col>
                       </Row>
 
@@ -134,7 +136,7 @@ class InvoiceDetail extends Component {
                             {this.props.invoiceDetail[0].payment_status}
                             <br />
                             {this.props.invoiceDetail[0].payment_method ==
-                            "Card" ? (
+                              "Card" ? (
                               <>
                                 {new Date(
                                   this.props.invoiceDetail[0].paid_at
@@ -147,7 +149,7 @@ class InvoiceDetail extends Component {
                         <Col sm="4" className="mt-3">
                           <address>
                             <strong>Order Detail:</strong>
-                            <br /><span className="text-danger">Invoice Generated Date Time: </span> 
+                            <br /><span className="text-danger">Invoice Generated Date Time: </span>
                             {new Date(
                               this.props.invoiceDetail[0].invoice_generated_at
                             ).toLocaleString("en-US")}
@@ -191,15 +193,15 @@ class InvoiceDetail extends Component {
                                   <td className="text-start">{item.test_categories}</td>
                                   <td className="text-end">{item.price.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
                                   <td className="text-end">{item.discount.toFixed(0)}{"%"}</td>
-                                  <td className="text-end">{(item.discount_by_labhazir+item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td>
-                                   {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
-                                   <td className="text-end">
-                                  {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                  //  -
-                                  //   this.props.invoiceDetail[0]
-                                  //     .home_sampling_charges
-                                      }
-                              </td>
+                                  <td className="text-end">{(item.discount_by_labhazir + item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td>
+                                  {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
+                                  <td className="text-end">
+                                    {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                      //  -
+                                      //   this.props.invoiceDetail[0]
+                                      //     .home_sampling_charges
+                                    }
+                                  </td>
                                 </tr>
                               )
                             )}
@@ -230,14 +232,14 @@ class InvoiceDetail extends Component {
                         </Table>
                       </div>
                       <div> <span className="text-danger font-size-12">
-                                    <strong> 
-                                    Note: Numbers may not add up due to rounding, it is inconsequential enough to be ignored.
-                                    </strong>
-                                  </span>
-                                  </div>
-                    
+                        <strong>
+                          Note: Numbers may not add up due to rounding, it is inconsequential enough to be ignored.
+                        </strong>
+                      </span>
+                      </div>
+
                       <div className="d-print-none">
-                      
+
                         <div className="float-end">
                           <Link
                             to="#"

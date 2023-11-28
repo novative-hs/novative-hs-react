@@ -305,6 +305,7 @@ class TestAppointmentsPendingList extends Component {
     this.setState({
       PatientModal: true,
       patient_age: arg.patient_age,
+      ageFormat: arg.ageFormat,
       patient_gender: arg.patient_gender,
       patient_address: arg.patient_address,
       patient_city: arg.patient_city,
@@ -586,22 +587,20 @@ class TestAppointmentsPendingList extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
+                                              <div className="mb-3 row">
+                                                <div className="col-md-3">
+                                                  <Label className="form-label">
+                                                    Age
+                                                  </Label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                  <input
+                                                    type="text"
+                                                    value={`${this.state.patient_age} ${this.state.ageFormat}`}
+                                                    className="form-control"
+                                                    readOnly={true}
+                                                  />
+                                                </div>
                                                 </div>
                                                 {this.state.patient_address && this.state.patient_address !== "undefined" ? (
                                                   <div className="mb-3 row">

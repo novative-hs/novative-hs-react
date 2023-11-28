@@ -196,6 +196,7 @@ class Checkout extends Component {
               : "",
             patient_name: this.state.patient_name,
             patient_age: this.state.patient_age,
+            ageFormat: this.state.ageFormat,
             patient_gender: this.state.patient_gender,
             patient_phone: this.state.patient_phone,
             // relationsip_with_patient: this.state.relationsip_with_patient,
@@ -223,6 +224,7 @@ class Checkout extends Component {
             booked_by: "CSR",
             patient_name: this.state.patient_name,
             patient_age: this.state.patient_age,
+            ageFormat: this.state.ageFormat,
             patient_gender: this.state.patient_gender,
             patient_phone: this.state.patient_phone,
             // relationsip_with_patient: this.state.relationsip_with_patient,
@@ -297,6 +299,7 @@ class Checkout extends Component {
       // this.state.city_id &&
       // this.state.patient_district &&
       this.state.patient_age &&
+      this.state.ageFormat &&
       this.state.appointment_requested_at
     ) {
       // Check if patient's card information is filled in case of payment method is Card
@@ -355,6 +358,7 @@ class Checkout extends Component {
             : "",
           patient_name: this.state.patient_name,
           patient_age: this.state.patient_age,
+          ageFormat: this.state.ageFormat,
           patient_gender: this.state.patient_gender,
           patient_phone: this.state.patient_phone,
 
@@ -404,6 +408,7 @@ class Checkout extends Component {
             : "",
           patient_name: this.state.patient_name,
           patient_age: this.state.patient_age,
+          ageFormat: this.state.ageFormat,
           patient_gender: this.state.patient_gender,
           patient_phone: this.state.patient_phone,
 
@@ -451,6 +456,7 @@ class Checkout extends Component {
       // this.state.city_id &&
       // this.state.patient_district &&
       this.state.patient_age &&
+      this.state.ageFormat &&
       this.state.appointment_requested_at
     ) {
       // Check if patient's card information is filled in case of payment method is Card
@@ -688,6 +694,7 @@ class Checkout extends Component {
       ageFormat: e.target.value,
     });
   };
+  
 
   render() {
     const iconStyle = {
@@ -1063,7 +1070,6 @@ class Checkout extends Component {
                                       />
                                     </Col>
                                   </FormGroup>
-
                                   <FormGroup className="mb-4" row>
                                     <Label md="2" className="col-form-label">
                                       Patient Age
@@ -1071,28 +1077,30 @@ class Checkout extends Component {
                                         *
                                       </span>
                                     </Label>
-                                    <Col md={8}>
+                                    <Col md={4}>
                                       <input
                                         type="number"
                                         className="form-control"
                                         name="patient_age"
                                         min="0"
                                         placeholder="Enter age"
+                                        value={this.state.patient_age}
                                         onChange={this.handleAgeChange}
                                       />
                                     </Col>
-                                    <Col md={2} className="text-danger">
-                                      <select
-                                        className="form-select"
-                                        onChange={this.handleAgeFormatChange}
+                                    <Col md={4}>
+                                      <Input
+                                        type="select"
+                                        name="ageFormat"
                                         value={this.state.ageFormat}
+                                        onChange={this.handleAgeFormatChange}
                                         style={{ color: 'red' }}
                                       >
                                         <option value="years">Years</option>
                                         <option value="months">Months</option>
-                                      </select>
+                                        <option value="days">Days</option>
+                                      </Input>
                                     </Col>
-
                                   </FormGroup>
 
 

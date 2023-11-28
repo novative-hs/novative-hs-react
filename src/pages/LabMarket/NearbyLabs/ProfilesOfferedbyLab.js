@@ -1389,19 +1389,6 @@ class TestsOffered extends Component {
                 </Row>
               ) : null
               }
-                {isLargeScreen ? (
-                  isEmpty(this.props.offeredTests) ? (
-                    <Row className="vh-100">
-                      <Col lg="12">
-                        <div className="mb-5">
-                          <h4 className="text-uppercase">
-                            <i className="mdi mdi-refresh-circle mdi-spin display-1" aria-hidden="true" style={{ color: 'blue', marginLeft: '120px' }}></i>
-                          </h4>
-                        </div>
-                      </Col>
-                    </Row>
-                  ) : null
-                ) : null}
 
               {/* <Row>
                 <Col lg="12">
