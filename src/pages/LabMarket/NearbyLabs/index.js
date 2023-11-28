@@ -7165,7 +7165,7 @@ class NearbyLabs extends Component {
                       <Row>
                         <Col lg="12">
                           <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait again.....
+                            Please Wait.....
                           </div>
                         </Col>
                       </Row>
