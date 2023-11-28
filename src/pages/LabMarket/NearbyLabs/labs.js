@@ -908,8 +908,8 @@ shouldHighlightTestsLink() {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                                : `/nearby-labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
                             }
                             className="dropdown-item"
                           >
@@ -922,8 +922,8 @@ shouldHighlightTestsLink() {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/nearby-labs/${this.props.match.params.guest_id}`
+                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/labs/${this.props.match.params.guest_id}`
                             }
                             className="dropdown-item"
                           >
@@ -1793,13 +1793,13 @@ shouldHighlightTestsLink() {
                                   {nearbyLab.phone}
                                 </span>
                               </div> */}
-
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                            {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>):null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >
@@ -1928,13 +1928,14 @@ shouldHighlightTestsLink() {
                                   {nearbyLab.phone}
                                 </span>
                               </div> */}
+                            {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>):null}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >
@@ -2063,13 +2064,13 @@ shouldHighlightTestsLink() {
                               </span>
                             </div>
                           )}
-
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                            {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>):null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >
@@ -2198,12 +2199,13 @@ shouldHighlightTestsLink() {
                               </span>
                             </div>
                           )}
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                            {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>):null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger" >

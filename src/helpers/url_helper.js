@@ -243,6 +243,11 @@ export const ADD_NEW_BANK_ACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-acco
 export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const GET_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-list`;
 export const UPDATE_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-data`;
+export const ADD_NEW_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
+export const GET_CORPORATE_TESTS = `${API_ENDPOINT}/api/corporate/corporate-test-list`;
+export const UPDATE_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
+
+
 
 // About All Finance
 export const GET_BANK_ACCOUNTS = `${API_ENDPOINT}/api/finance-admin/bankaccount-list`;
@@ -301,7 +306,7 @@ export const ADD_NEW_PATIENT_FEEDBACK = `${API_ENDPOINT}/api/patient/feedback`;
 // COMPLAINT
 export const ADD_NEW_COMPLAINT = `${API_ENDPOINT}/api/complaint/register-complaint`;
 
-// PATIENT PROFILES
+// corporate PROFILES
 export const GET_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate-profile`;
 export const UPDATE_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate-profile`;
 
@@ -323,6 +328,7 @@ export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
 export const GET_NEARBY_PACKAGES = `${API_ENDPOINT}/api/patient/packages-offered`;
 export const GET_RADIOLOGY = `${API_ENDPOINT}/api/medicaltest/radiology-list`;
 export const GET_TESTS_LIST = `${API_ENDPOINT}/api/medicaltest/test-list`;
+export const GET_CORPORATE_TESTS_LIST = `${API_ENDPOINT}/api/medicaltest/corporate-test-list`;
 export const GET_NEARBY_RADIOLOGY = `${API_ENDPOINT}/api/patient/radiology-tests-offered`;
 
 // CHECKOUT

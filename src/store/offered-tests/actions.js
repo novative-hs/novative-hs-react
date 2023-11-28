@@ -8,6 +8,9 @@ import {
   GET_OFFERED_TESTS,
   GET_OFFERED_TESTS_FAIL,
   GET_OFFERED_TESTS_SUCCESS,
+  GET_CORPORATE_TESTS,
+  GET_CORPORATE_TESTS_FAIL,
+  GET_CORPORATE_TESTS_SUCCESS,
   GET_OFFEREDTEST_REFERRELFEE,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
@@ -26,12 +29,18 @@ import {
   ADD_NEW_OFFERED_TEST,
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
+  ADD_NEW_CORPORATE_TEST,
+  ADD_CORPORATE_TEST_SUCCESS,
+  ADD_CORPORATE_TEST_FAIL,
   ADD_NEW_OFFERED_MAINTEST,
   ADD_OFFERED_MAINTEST_SUCCESS,
   ADD_OFFERED_MAINTEST_FAIL,
   UPDATE_OFFERED_TEST,
   UPDATE_OFFERED_TEST_SUCCESS,
   UPDATE_OFFERED_TEST_FAIL,
+  UPDATE_CORPORATE_TEST,
+  UPDATE_CORPORATE_TEST_SUCCESS,
+  UPDATE_CORPORATE_TEST_FAIL,
   DELETE_OFFERED_TEST,
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
@@ -99,6 +108,21 @@ export const getOfferedTestsFail = error => ({
   payload: error,
 });
 
+export const getCorporateTests = id => ({
+  type: GET_CORPORATE_TESTS,
+  payload: id,
+});
+
+export const getCorporateTestsSuccess = offeredTests => ({
+  type: GET_CORPORATE_TESTS_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getCorporateTestsFail = error => ({
+  type: GET_CORPORATE_TESTS_FAIL,
+  payload: error,
+});
+
 export const getOfferedTestsReferrel = id => ({
   type: GET_OFFEREDTEST_REFERRELFEE,
   payload: id,
@@ -156,6 +180,21 @@ export const getOfferedRadiologysReferrelFail = error => ({
   payload: error,
 });
 
+export const addNewCorporateTest = (offeredTest, id) => ({
+  type: ADD_NEW_CORPORATE_TEST,
+  payload: { offeredTest, id },
+});
+
+export const addCorporateTestSuccess = offeredTest => ({
+  type: ADD_CORPORATE_TEST_SUCCESS,
+  payload: offeredTest,
+});
+
+export const addCorporateTestFail = error => ({
+  type: ADD_CORPORATE_TEST_FAIL,
+  payload: error,
+});
+
 export const addNewOfferedTest = (offeredTest, id) => ({
   type: ADD_NEW_OFFERED_TEST,
   payload: { offeredTest, id },
@@ -198,6 +237,21 @@ export const updateOfferedTestSuccess = offeredTest => ({
 
 export const updateOfferedTestFail = error => ({
   type: UPDATE_OFFERED_TEST_FAIL,
+  payload: error,
+});
+
+export const updateCorporateTest = offeredTest => ({
+  type: UPDATE_CORPORATE_TEST,
+  payload: offeredTest,
+});
+
+export const updateCorporateTestSuccess = offeredTest => ({
+  type: UPDATE_CORPORATE_TEST_SUCCESS,
+  payload: offeredTest,
+});
+
+export const updateCorporateTestFail = error => ({
+  type: UPDATE_CORPORATE_TEST_FAIL,
   payload: error,
 });
 

@@ -2094,25 +2094,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                             <div
-                              style={{
-                                width: "200px",
-                                height: "100px",
-                              }}
-                            >
-                              <img
-                                src={
-                                  process.env.REACT_APP_BACKENDURL +
-                                  nearbyLab.logo
-                                }
-                                alt="Lab Logo"
-                                className=" text-end"
                                 style={{
-                                  maxWidth: "100%",
-                                  maxHeight: "100%",
-                                  float: "end",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
-                              />
-                            </div>
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2140,12 +2141,14 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-google-maps"></i>{" "}
-                                {nearbyLab.address}
-                              </span>
-                            </div>
+<div className="my-0 text-truncate">
+                              <Tooltip title={nearbyLab.address}>
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </Tooltip>
+                              </div>
 
                             {!nearbyLab.is_247_opened &&
                               nearbyLab.opening_time && (
@@ -2330,27 +2333,27 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )} */}
-
+                            {nearbyLab.email ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-email"></i>{" "}
                                 {nearbyLab.email}
                               </span>
-                            </div>
-
+                            </div>):null}
+                            {nearbyLab.phone ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="bx bx-mobile"></i>{" "}
                                 {nearbyLab.phone}
                               </span>
-                            </div>
-
+                            </div>):null}
+                            {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="mdi mdi-phone"></i>{" "}
                                 {nearbyLab.landline}
                               </span>
-                            </div>
+                            </div>):null}
                             {nearbyLab.female_collectors == "Yes" && (
                               <div className="my-0">
                                 <span className="text-danger">
@@ -3952,25 +3955,26 @@ class NearbyLabs extends Component {
                               />
                           </div> */}
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -3998,12 +4002,14 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
-                          </div>
+<div className="my-0 text-truncate">
+                              {/* <Tooltip title={nearbyLab.address}> */}
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              {/* </Tooltip> */}
+                              </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
                             <div className="my-0">
@@ -4715,25 +4721,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                           <div
-                            style={{
-                              width: "200px",
-                              height: "100px",
-                            }}
-                          >
-                            <img
-                              src={
-                                process.env.REACT_APP_BACKENDURL +
-                                nearbyLab.logo
-                              }
-                              alt="Lab Logo"
-                              className=" text-end"
-                              style={{
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                float: "end",
-                              }}
-                            />
-                          </div>
+                                style={{
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    process.env.REACT_APP_BACKENDURL +
+                                    nearbyLab.logo
+                                  }
+                                  alt="Lab Logo"
+                                  className=" text-end"
+                                  style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "100%",
+                                    float: "end",
+                                  }}
+                                />
+                              </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4761,12 +4768,14 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
-                          </div>
+<div className="my-0 text-truncate">
+                              {/* <Tooltip title={nearbyLab.address}> */}
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              {/* </Tooltip> */}
+                              </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
                             <div className="my-0">
@@ -5556,10 +5565,11 @@ class NearbyLabs extends Component {
               className="img-thumbnail mx-auto d-block rounded"
               />
           </div> */}
-                              <div
+                             <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -5603,11 +5613,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
+<div className="my-0 text-truncate">
+                              {/* <Tooltip title={nearbyLab.address}> */}
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-google-maps"></i>{" "}
                                   {nearbyLab.address}
                                 </span>
+                              {/* </Tooltip> */}
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -6542,10 +6554,11 @@ class NearbyLabs extends Component {
               className="img-thumbnail mx-auto d-block rounded"
               />
           </div> */}
-                              <div
+                             <div
                                 style={{
-                                  width: "200px",
-                                  height: "100px",
+                                  width: "150px",
+                                  height: "150px",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -6589,11 +6602,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
+<div className="my-0 text-truncate">
+                              {/* <Tooltip title={nearbyLab.address}> */}
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-google-maps"></i>{" "}
                                   {nearbyLab.address}
                                 </span>
+                              {/* </Tooltip> */}
                               </div>
 
                               {!nearbyLab.is_247_opened &&

@@ -175,8 +175,8 @@ class Navbar extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                              : `/nearby-labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                              ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                              : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
                           }
                           className="dropdown-item"
                         >
@@ -189,8 +189,8 @@ class Navbar extends Component {
                         <Link
                           to={
                             this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-labs/${this.props.match.params.guest_id}`
+                              ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/labs/${this.props.match.params.guest_id}`
                           }
                           className="dropdown-item"
                         >

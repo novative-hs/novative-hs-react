@@ -577,7 +577,7 @@ class TestAppointmentsList extends Component {
           </Tooltip>
            
             
-            {patientTestAppointment.status == "Pending" && (
+            {/* {patientTestAppointment.status == "Pending" && (
             <Tooltip title="Cancel Appointment">
              <Link
             className="text-warning font-size-12"
@@ -592,7 +592,7 @@ class TestAppointmentsList extends Component {
             <i className="bx bx-no-entry font-size-14"></i>
             </Link>
             </Tooltip> 
-           )} 
+           )}  */}
             <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i

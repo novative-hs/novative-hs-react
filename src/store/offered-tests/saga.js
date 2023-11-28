@@ -5,15 +5,19 @@ import {
   GET_UNITS,
   GET_TESTS,
   GET_OFFERED_TESTS,
+  GET_CORPORATE_TESTS,
   GET_LAB_PROFILE,
   GET_OFFEREDTEST_REFERRELFEE,
   GET_OFFEREDPROFILE_REFERRELFEE,
   GET_OFFEREDPACKAGE_REFERRELFEE,
   GET_OFFEREDRADIOLOGY_REFERRELFEE,
   ADD_NEW_OFFERED_TEST,
+  ADD_NEW_CORPORATE_TEST,
   ADD_NEW_OFFERED_MAINTEST,
   DELETE_OFFERED_TEST,
   UPDATE_OFFERED_TEST,
+  UPDATE_CORPORATE_TEST,
+
 } from "./actionTypes";
 
 import {
@@ -25,6 +29,8 @@ import {
   getTestsFail,
   getOfferedTestsSuccess,
   getOfferedTestsFail,
+  getCorporateTestsSuccess,
+  getCorporateTestsFail,
   getOfferedTestsReferrelSuccess,
   getOfferedTestsReferrelFail,
   getOfferedProfilesReferrelSuccess,
@@ -35,10 +41,14 @@ import {
   getOfferedRadiologysReferrelFail,
   addOfferedTestFail,
   addOfferedTestSuccess,
+  addCorporateTestFail,
+  addCorporateTestSuccess,
   addOfferedMainTestFail,
   addOfferedMainTestSuccess,
   updateOfferedTestSuccess,
   updateOfferedTestFail,
+  updateCorporateTestSuccess,
+  updateCorporateTestFail,
   deleteOfferedTestSuccess,
   deleteOfferedTestFail,
 } from "./actions";
@@ -48,14 +58,17 @@ import {
   getUnits,
   getTests,
   getOfferedTests,
+  getCorporateTests,
   getOfferedTestsReferrel,
   getOfferedProfilesReferrel,
   getOfferedPackagesReferrel,
   getOfferedRadiologysReferrel,
   getLabProfile,
   addNewOfferedTest,
+  addNewCorporateTest,
   addNewOfferedMainTest,
   updateOfferedTest,
+  updateCorporateTest,
   deleteOfferedTest,
 } from "../../helpers/django_api_helper";
 
@@ -93,6 +106,14 @@ function* fetchOfferedTests(object) {
     yield put(getOfferedTestsSuccess(response));
   } catch (error) {
     yield put(getOfferedTestsFail(error));
+  }
+}
+function* fetchCorporateTests(object) {
+  try {
+    const response = yield call(getCorporateTests, object.payload);
+    yield put(getCorporateTestsSuccess(response));
+  } catch (error) {
+    yield put(getCorporateTestsFail(error));
   }
 }
 function* fetchOfferedTestsReferrel(object) {
@@ -140,6 +161,18 @@ function* onAddNewOfferedTest(object) {
     yield put(addOfferedTestFail(error));
   }
 }
+function* onAddNewCorporateTest(object) {
+  try {
+    const response = yield call(
+      addNewCorporateTest,
+      object.payload.offeredTest,
+      object.payload.id
+    );
+    yield put(addCorporateTestSuccess(response));
+  } catch (error) {
+    yield put(addCorporateTestFail(error));
+  }
+}
 function* onAddNewOfferedMainTest(object) {
   try {
     const response = yield call(
@@ -161,6 +194,14 @@ function* onUpdateOfferedTest({ payload: offeredTest }) {
     yield put(updateOfferedTestFail(error));
   }
 }
+function* onUpdateCorporateTest({ payload: offeredTest }) {
+  try {
+    const response = yield call(updateCorporateTest, offeredTest);
+    yield put(updateCorporateTestSuccess(response));
+  } catch (error) {
+    yield put(updateCorporateTestFail(error));
+  }
+}
 
 function* onDeleteOfferedTest({ payload: offeredTest }) {
   try {
@@ -175,14 +216,17 @@ function* offeredTestsSaga() {
   yield takeEvery(GET_UNITS, fetchUnits);
   yield takeEvery(GET_TESTS, fetchTests);
   yield takeEvery(GET_OFFERED_TESTS, fetchOfferedTests);
+  yield takeEvery(GET_CORPORATE_TESTS, fetchCorporateTests);
   yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);
   yield takeEvery(GET_OFFEREDTEST_REFERRELFEE, fetchOfferedTestsReferrel);
   yield takeEvery(GET_OFFEREDPROFILE_REFERRELFEE, fetchOfferedProfilesReferrel);
   yield takeEvery(GET_OFFEREDPACKAGE_REFERRELFEE, fetchOfferedPackagesReferrel);
   yield takeEvery(GET_OFFEREDRADIOLOGY_REFERRELFEE, fetchOfferedRadiologysReferrel);
   yield takeEvery(ADD_NEW_OFFERED_TEST, onAddNewOfferedTest);
+  yield takeEvery(ADD_NEW_CORPORATE_TEST, onAddNewCorporateTest);
   yield takeEvery(ADD_NEW_OFFERED_MAINTEST, onAddNewOfferedMainTest);
   yield takeEvery(UPDATE_OFFERED_TEST, onUpdateOfferedTest);
+  yield takeEvery(UPDATE_CORPORATE_TEST, onUpdateCorporateTest);
   yield takeEvery(DELETE_OFFERED_TEST, onDeleteOfferedTest);
 }
 

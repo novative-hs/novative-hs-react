@@ -365,6 +365,10 @@ export const getOfferedTests = id =>
   get(`${url.GET_OFFERED_TESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+export const getCorporateTests = id =>
+  get(`${url.GET_CORPORATE_TESTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 export const getOfferedTestsReferrel = id =>
   get(`${url.GET_OFFEREDTEST_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
@@ -402,6 +406,15 @@ export const addNewOfferedTest = (offeredTest, id) => {
     headers: getHeader(authHeader()),
   });
 };
+export const addNewCorporateTest = (offeredTest, id) => {
+  let formData = new FormData();
+  formData.append("test_id", offeredTest.test_id);
+  formData.append("price", offeredTest.price);
+  console.log("api helper",offeredTest, id)
+  return axios.post(`${url.ADD_NEW_CORPORATE_TEST}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 export const addNewOfferedMainTest = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("main_lab_tests", offeredTest.main_lab_tests);
@@ -429,6 +442,18 @@ export const updateOfferedTest = offeredTest => {
   formData.append("is_active", offeredTest.is_active);
 
   return axios.put(`${url.UPDATE_OFFERED_TEST}/${offeredTest.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const updateCorporateTest = offeredTest => {
+  let formData = new FormData();
+  formData.append("id", offeredTest.id);
+  formData.append("test_id", offeredTest.test_id);
+  formData.append("price", offeredTest.price);
+  // formData.append("is_active", offeredTest.is_active);
+
+  return axios.put(`${url.UPDATE_CORPORATE_TEST}/${offeredTest.id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
@@ -1043,13 +1068,12 @@ export const getRadiology = () =>
   get(url.GET_RADIOLOGY, {
     headers: getHeader(authHeader()),
   });
-
-  // export const getTestsList = () =>
-  // get(url.GET_TESTS_LIST, {
-  //   headers: getHeader(authHeader()),
-  // });
-  export const getTestsList = id =>
+export const getTestsList = id =>
   get(`${url.GET_TESTS_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getCorporateTestsList = id =>
+  get(`${url.GET_CORPORATE_TESTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // Get Nearby Packages

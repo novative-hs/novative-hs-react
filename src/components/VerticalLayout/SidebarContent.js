@@ -1031,26 +1031,40 @@ class SidebarContent extends Component {
               <ul className="metismenu list-unstyled" id="side-menu">
                 <li>
                   <Link to="/dashboard-corporate">
-                    <i className="bx bx-home-circle" />
+                    <i className="bx bx-home-circle font-size-18" />
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/corporate-profile">
-                    <i className="mdi mdi-cog" />
+                    <i className="mdi mdi-account-edit font-size-18" />
                     <span>{this.props.t("Update Profile")}</span>
                   </Link>
                 </li>
+                <li className="menu-title">{this.props.t("Corporate")}</li>
+
                 <li>
                   <Link to="/employee-data">
-                    <i className="mdi mdi-cog" />
+                    <i className="mdi mdi-database-plus font-size-18" />
                     <span>{this.props.t("Add Employee Data")}</span>
                   </Link>
                 </li>
                 <li>
                   <Link to="/employee-list">
-                    <i className="mdi mdi-cog" />
+                    <i className="mdi mdi-clipboard-list font-size-18" />
                     <span>{this.props.t("Employees List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/corporate-test-list">
+                    <i className="fas fa-briefcase-medical font-size-18" />
+                    <span>{this.props.t("Medical Tests")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/corporate-offered-tests">
+                    <i className="fas fa-hand-holding-medical font-size-18" />
+                    <span>{this.props.t("Offered Tests")}</span>
                   </Link>
                 </li>
 

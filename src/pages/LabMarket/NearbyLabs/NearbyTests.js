@@ -1801,55 +1801,70 @@ shouldHighlightTestsLink() {
                     </Row>
                   ) : null
                 ) : null}
-                {loading ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px' }}>
-                        Please Wait.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : isEmpty(this.props.nearbyTests) ? (
-                  <Row>
-                    <Col lg="12">
-                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                        Sorry No Result Found.....
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
-                {!isEmpty(this.props.nearbyTests) ? (
-                  <Row>
-                    <Col lg="12">
-                      <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                        <PaginationItem disabled={page === 1}>
-                          <PaginationLink
-                            previous
-                            href="#"
-                            onClick={(e) => this.onChangepage(e, page - 1)}
-                          />
-                        </PaginationItem>
-                        {Array.from({ length: totalPage }, (_, i) => {
-                          const pageNumber = i + 1;
-                          return (
-                            <PaginationItem key={i} active={pageNumber === this.state.page}>
-                              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
-                                {pageNumber}
-                              </PaginationLink>
-                            </PaginationItem>
-                          );
-                        })}
-                        <PaginationItem disabled={page === totalPage}>
-                          <PaginationLink
-                            next
-                            href="#"
-                            onClick={(e) => this.onChangepage(e, page + 1)}
-                          />
-                        </PaginationItem>
-                      </Pagination>
-                    </Col>
-                  </Row>
-                ) : null}
+                {isEmpty(this.props.nearbyTests) && (
+                    loading ? (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px' }}>
+                            Please Wait.....
+                          </div>
+                        </Col>
+                      </Row>
+                    ) : (
+                      <Row>
+                        <Col lg="12">
+                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                            Sorry, No Result Found.....
+                          </div>
+                        </Col>
+                      </Row>
+                    )
+                  )}
+                
+               {!isEmpty(this.props.nearbyTests) ? (
+  <Row>
+    <Col lg="12">
+      <Pagination className="pagination pagination-rounded justify-content-lg-end mb-2">
+        <PaginationItem disabled={page === 1}>
+          <PaginationLink
+            previous
+            href="#"
+            onClick={(e) => this.onChangepage(e, page - 1)}
+          />
+        </PaginationItem>
+
+        {Array.from({ length: totalPage > 5 ? 5 : totalPage }, (_, i) => {
+          const pageNumber = i + 1;
+          return (
+            <PaginationItem key={i} active={pageNumber === this.state.page}>
+              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+                {pageNumber}
+              </PaginationLink>
+            </PaginationItem>
+          );
+        })}
+
+        {totalPage > 5 && (
+          <PaginationItem>
+            <PaginationLink onClick={(e) => this.onChangepage(e, page + 5)} href="#">
+              Next
+            </PaginationLink>
+          </PaginationItem>
+        )}
+
+        <PaginationItem disabled={page === totalPage}>
+          <PaginationLink
+            next
+            href="#"
+            onClick={(e) => this.onChangepage(e, page + 1)}
+          />
+        </PaginationItem>
+      </Pagination>
+    </Col>
+  </Row>
+) : null}
+
+
 
                 {/* <ScrollButton /> */}
               </Row>

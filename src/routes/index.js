@@ -55,6 +55,9 @@ import DashboardMarketerAdmin from "pages/Dashboard-MarketerAdmin";
 // Corporate
 import EmployeeData from "../pages/CorporatesData/add-employee";
 import EmployeeList from "../pages/CorporatesData/employees-list";
+import CorporateTestsList from "../pages/OfferedTests/corporate-medical-tests";
+import CorporateOfferedTestsList from "../pages/OfferedTests/corporate-offeredtests-list"
+
 
 
 // Lab Components
@@ -788,6 +791,14 @@ const corporateAuthProtectedRoutes = [
   {
     path: "/employee-list",
     component: EmployeeList,
+  },
+  {
+    path: "/corporate-test-list",
+    component: CorporateTestsList,
+  },
+  {
+    path: "/corporate-offered-tests",
+    component: CorporateOfferedTestsList,
   },
 ];
 
