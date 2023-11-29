@@ -712,7 +712,7 @@ class NearbyTests extends Component {
     }
   }
   calculateTotalPage = (items) => {
-  const itemsPerPage = Math.min(25, items.length); // Number of items to display per page, up to a maximum of 50
+  const itemsPerPage = Math.min(5, items.length); // Number of items to display per page, up to a maximum of 50
     const totalItems = items.length;
     console.log("total pahe number", totalItems)
     return Math.ceil(totalItems / itemsPerPage);
