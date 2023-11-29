@@ -712,12 +712,12 @@ class NearbyTests extends Component {
     }
   }
   calculateTotalPage = (items) => {
-  const itemsPerPage = 49 // Number of items to display per page, up to a maximum of 50
+  const itemsPerPage = Math.min(25, items.length); // Number of items to display per page, up to a maximum of 50
     const totalItems = items.length;
     console.log("total pahe number", totalItems)
     return Math.ceil(totalItems / itemsPerPage);
   };
-shouldHighlightTestsLink() {
+  shouldHighlightTestsLink() {
     const { location } = this.props;
     const currentURL = location.pathname;
   
@@ -1992,38 +1992,37 @@ shouldHighlightTestsLink() {
                   )}
                 
                 {!isEmpty(this.props.nearbyTests) ? (
-  <Row>
-    <Col lg="12">
-      <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-        <PaginationItem disabled={page === 1}>
-          <PaginationLink
-            previous
-            href="#"
-            onClick={(e) => this.onChangepage(e, page - 1)}
-          />
-        </PaginationItem>
-        {Array.from({ length: Math.min(5, totalPage) }, (_, i) => {
-          const pageNumber = i + 1;
-          return (
-            <PaginationItem key={i} active={pageNumber === this.state.page}>
-              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
-                {pageNumber}
-              </PaginationLink>
-            </PaginationItem>
-          );
-        })}
-        {totalPage > 5 && (
-          <PaginationItem disabled={page === totalPage}>
-            <PaginationLink
-              next
-              href="#"
-              onClick={(e) => this.onChangepage(e, page + 1)}
-            />
-          </PaginationItem>
-        )}
-      </Pagination>
-    </Col>
-  </Row>
+                  <Row>
+                  <Col lg="12">
+                    <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+                      <PaginationItem disabled={page === 1}>
+                        <PaginationLink
+                          previous
+                          href="#"
+                          onClick={(e) => this.onChangepage(e, page - 1)}
+                        />
+                      </PaginationItem>
+                      {Array.from({ length: totalPage }, (_, i) => {
+                        const pageNumber = i + 1;
+                        return (
+                          <PaginationItem key={i} active={pageNumber === this.state.page}>
+                            <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+                              {pageNumber}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      <PaginationItem disabled={page === totalPage}>
+                        <PaginationLink
+                          next
+                          href="#"
+                          onClick={(e) => this.onChangepage(e, page + 1)}
+                        />
+                      </PaginationItem>
+                    </Pagination>
+                  </Col>
+                </Row>
+                
 ) : null}
 
                 <ScrollButton />
