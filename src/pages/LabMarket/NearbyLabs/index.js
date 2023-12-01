@@ -124,6 +124,9 @@ class NearbyLabs extends Component {
       autoplay: true,
       loading: true, // Add loading state property
       discountData: [],
+      isFormVisible: false,
+      isDivVisible: false,
+      showModal: false,
       filters: {
         discount: [],
         price: { min: 0, max: 500 },
@@ -134,6 +137,7 @@ class NearbyLabs extends Component {
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.toggleAddressModal = this.toggleAddressModal.bind(this);
     console.log("guest_id", this.props.match.params.guest_id);
     console.log("uuid", this.props.match.params.uuid);
     console.log("id", this.props.match.params.id);
@@ -620,6 +624,49 @@ class NearbyLabs extends Component {
     setTimeout(() => {
       this.setState({ loading: false });
     }, 7000);
+
+    if (this.state.search_type === "Current Location") {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          const geocoder = new window.google.maps.Geocoder();
+
+          const latlng = {
+            lat: latitude,
+            lng: longitude
+          };
+
+          geocoder.geocode({ location: latlng }, (results, status) => {
+            if (status === "OK") {
+              if (results[0]) {
+                const formattedAddress = results[0].formatted_address;
+
+                // Extract specific components from the formatted address
+                const addressComponents = formattedAddress.split(', ');
+                const [area, street, city, country] = addressComponents;
+
+                // Optionally, you can set these components in the state if needed
+                this.setState({
+                  area,
+                  street,
+                  city,
+                  country,
+                });
+
+                this.handleAddressChange(formattedAddress);
+              } else {
+                alert("No results found");
+              }
+            } else {
+              alert("Geocoder failed due to: " + status);
+            }
+          });
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    }
   }
 
   // handleLocationUpdate(latitude, longitude) {
@@ -821,26 +868,60 @@ class NearbyLabs extends Component {
     var searchBox = new window.google.maps.places.SearchBox(e.target, options);
 
     searchBox.addListener("places_changed", () => {
-      const { onGetNearbyLabs } = this.props;
-      const { onGetAdvLive } = this.props;
-      const { onGetRegionWiseAdvertisement } = this.props;
+      const newAddress = e.target.value;
+      this.handleAddressChange(newAddress);
 
-      var locationDetails = {
-        latitude: "",
-        longitude: "",
+      // // Find and adjust the z-index of the suggestion list
+      // const suggestionList = document.querySelector(".pac-container");
+      // if (suggestionList) {
+      //   suggestionList.style.zIndex = "9999"; // Adjust the z-index value as needed
+      // }
+    });
+  };
+
+  handleAddressChange = newAddress => {
+    this.setState({ address: newAddress }, () => {
+      // Update other state properties as needed
+      // Call the function to update patient address or any other logic
+      // this.onChangeAddress({ target: { value: newAddress } });
+      console.log("address save or note", this.state.address);
+
+      // Extract specific components from the formatted address
+      const addressComponents = newAddress.split(', ');
+
+      // Assuming the order is area, street, city, country
+      const [area, street, city, country] = addressComponents;
+
+      // Optionally, you can set these components in the state if needed
+      this.setState({
+        area,
+        street,
+        city,
+        country,
+      });
+
+      // Call the necessary APIs with the extracted components
+      const { currentLatitude, currentLongitude, LabType, km, name, locationAccessAllowed } = this.state;
+      const { onGetNearbyLabs, onGetAdvLive, onGetRegionWiseAdvertisement } = this.props;
+
+      const locationDetails = {
+        latitude: currentLatitude,
+        longitude: currentLongitude,
         search_type: this.state.search_type,
-        address: e.target.value,
-        city: this.state.city,
-        LabType: this.state.LabType,
-        km: this.state.km,
-        name: this.state.name,
-        locationAccessAllowed: this.state.locationAccessAllowed,
+        address: newAddress,
+        city,
+        LabType,
+        km,
+        name,
+        locationAccessAllowed,
       };
 
+      // Call the necessary APIs
       onGetNearbyLabs(locationDetails);
       onGetAdvLive(locationDetails);
       onGetRegionWiseAdvertisement(locationDetails);
 
+      // Update state after API calls
       setTimeout(() => {
         this.setState({
           nearbyLabs: this.props.nearbyLabs,
@@ -850,6 +931,7 @@ class NearbyLabs extends Component {
       }, 1000);
     });
   };
+
 
   onChangeSearchType = e => {
     this.setState({ search_type: e.target.value });
@@ -888,6 +970,7 @@ class NearbyLabs extends Component {
       }, 1000);
     }
   };
+
 
   onChangeKm = e => {
     this.setState({ km: e.target.value });
@@ -964,6 +1047,14 @@ class NearbyLabs extends Component {
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+  toggleAddressModal = () => {
+    this.setState(prevState => ({
+      AddressModal: !prevState.AddressModal,
     }));
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
@@ -1065,6 +1156,31 @@ class NearbyLabs extends Component {
       isDropdownOpen: !prevState.isDropdownOpen,
     }));
   };
+  toggleFormVisibility = () => {
+    this.setState((prevState) => ({
+      isFormVisible: !prevState.isFormVisible,
+    }));
+  };
+  toggleDivVisibility = () => {
+    this.setState((prevState) => ({
+      isDivVisible: !prevState.isDivVisible,
+    }));
+    this.setState({ showModal: true });
+
+  };
+  hasNextSection(currentSection) {
+    // Implement logic to check if there is a next section based on the current section
+    // Return true if there is a next section, otherwise return false
+    // Example: You might have an array of sections and check if the current section is not the last one
+    const sections = ['Section1', 'Section2', 'Section3', 'Section4', 'Section5'];
+    const currentIndex = sections.indexOf(currentSection);
+    return currentIndex < sections.length - 1;
+  };
+  handleCancelIconClick = () => {
+    // Handle cancel icon click logic here
+    // Clear the input field
+    this.setState({ address: "" });
+  };
 
   render() {
     const generateLabNames = (nearbyLabs) => {
@@ -1072,7 +1188,7 @@ class NearbyLabs extends Component {
         label: lab.name, // Replace with the actual property name in your nearbyLabs data
         value: lab.name, // Replace with the actual property name in your nearbyLabs data
       }));
-    
+
       return labNames;
     };
 
@@ -1084,6 +1200,7 @@ class NearbyLabs extends Component {
       );
     };
     const { selectedLab } = this.state;
+    const { showModal } = this.state;
     const { labNameInput, filteredLabNames } = this.state;
     const { isDropdownOpen } = this.state;
     const isSmallScreen = window.innerWidth < 490;
@@ -1146,9 +1263,21 @@ class NearbyLabs extends Component {
 
     const closeModal = () => {
       this.setState({ PatientModal: false });
+      this.setState({ AddressModal: false });
+
     };
 
     const { loading } = this.state;
+
+    const closeiconStyle = {
+      position: 'absolute',
+      top: '50%',
+      right: '10px', // Adjust this value to move the icon horizontally
+      transform: 'translateY(-50%)',
+      cursor: 'pointer',
+      color: 'red', // Icon color
+      fontSize: '16px'
+    };
 
 
     return (
@@ -1878,187 +2007,174 @@ class NearbyLabs extends Component {
           <div className="page-content">
             <Container fluid>
               {/* <Breadcrumbs
-                title="Lab Marketplace"
-                breadcrumbItem="Nearby Labs"
+                // title="Filter Labs by"
+                breadcrumbItem="Filter Labs by"
               /> */}
               {/* <h5>Need Some Better?</h5>
               <h2>&ldquo;Let&apos;s find the labs,&rdquo;</h2> */}
-              <Row className="mb-3" style={{ backgroundColor: '#3B71CA', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
-                <Formik
-                  enableReinitialize={true}
-                  initialValues={{
-                    search_type: (this.state && this.state.search_type) || "Current Location",
-                    city: (this.state && this.state.city) || "",
-                    location: (this.state && this.state.location) || "",
-                    LabType: (this.state && this.state.LabType) || "Main",
-                    km: (this.state && this.state.km) || "30",
-                    name: (this.state && this.state.name) || "",
-                  }}
-                  validationSchema={Yup.object().shape({
-                    city: Yup.string().when("search_type", {
-                      is: val => val === "Custom Address",
-                      then: Yup.string().required("Please enter your City"),
-                    }),
-                    location: Yup.string().when("city", {
-                      is: val => val !== "",
-                      then: Yup.string().required("Please enter your Location"),
-                    }),
-                  })}
+              <Row>
+                <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary" ></i> Your Location: <a
+                  onClick={this.toggleDivVisibility}
+                  className="text-danger"
+                  style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
+                  onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
                 >
-                  {({ errors, status, touched }) => (
-                    <Form className="form-horizontal">
-                      {/* ... (unchanged) */}
-                      <Row className="mb-3">
-                        <Col xs="4" sm="4" md="3" lg="3">
-                        <div className="mb-3">
-                          <Label
-                            for="LabType"
-                            className="form-label"
-                            style={{
-                              fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                            }}
-                          >
-                            <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
-                          </Label>
-                          <Select
-                            type="text"
-                            value={labNames.find((option) => option.value === this.state.name)}
-                            onChange={this.onChangeLabName}
-                            options={labNames}
-                            placeholder=""
-                            isSearchable={true}
-                            isClearable={true}
-                            components={{
-                              ClearIndicator,
-                            }}
-                          />
-                        </div>
-                        </Col>
-                        <Col xs="3" sm="3" md="2" lg="2">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Location </span>
-                            </Label>
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={(e) => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="Current Location">Current Location</option>
-                              <option value="City">By City</option>
-                              <option value="Custom Address">Custom Address</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        <Col xs="3" sm="3" md="2" lg="2">
-                          <div className="mb-3">
-                            <Label
-                              for="LabType2"
-                              className="form-label"
-                              style={{
-                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                              }}
-                            >
-                              <span style={{ fontSize: '12px', color: 'white' }}>Labs Type </span>
-                            </Label>
-                            <Field
-                              name="LabType"
-                              component="select"
-                              onChange={(e) => this.onChangeType(e)}
-                              value={this.state.LabType}
-                              className="form-select"
-                            >
-                              <option value="Main">Main Labs</option>
-                              <option value="Collection">Collection Points</option>
-                              <option value="Others">Both</option>
-                            </Field>
-                          </div>
-                        </Col>
-                        {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                          <Col xs="1" sm="2" md="1" lg="1">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Km </span>
-                              </Label>
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={(e) => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="number"  // Change "numbers" to "number"
-                                  className="form-control"
-                                  style={{ fontSize: '14px' }}
-                                  placeholder=""
+                  {this.state.address}
+                </a></span></span>
+                {this.state.isDivVisible && (
+                  <div className="mb-1">
+                    <Input
+                      value={this.state.patient_address}
+                      onChange={(e) => this.onChangeAddress(e)}
+                      id="pac-input"
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter Custom Address"
+                    />
+                  </div>
+                )}
+
+                <Card style={{ alignContent: "center", display: "flex", marginTop: "7px" }}>
+                  <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                      search_type: (this.state && this.state.search_type) || "Current Location",
+                      city: (this.state && this.state.city) || "",
+                      location: (this.state && this.state.location) || "",
+                      LabType: (this.state && this.state.LabType) || "Main",
+                      km: (this.state && this.state.km) || "30",
+                      name: (this.state && this.state.name) || "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      city: Yup.string().when("search_type", {
+                        is: val => val === "Custom Address",
+                        then: Yup.string().required("Please enter your City"),
+                      }),
+                      location: Yup.string().when("city", {
+                        is: val => val !== "",
+                        then: Yup.string().required("Please enter your Location"),
+                      }),
+                    })}
+                  >
+                    {({ errors, status, touched }) => (
+
+                      <Form className="form-horizontal">
+                        {/* ... (unchanged) */}
+                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                          {/* Section 1 */}
+                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                            <span><p>Near By Labs: <a href="#" onClick={this.toggleFormVisibility}>Search Labs<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                            {this.state.isFormVisible && (
+                              <div className="mb-2">
+                                <Select
+                                  type="text"
+                                  value={labNames.find((option) => option.value === this.state.name)}
+                                  onChange={this.onChangeLabName}
+                                  options={labNames}
+                                  placeholder="Please Enter Lab Name.."
+                                  isSearchable={true}
+                                  isClearable={true}
+                                  components={{
+                                    ClearIndicator,
+                                  }}
                                 />
                               </div>
-                            </div>
-                          </Col>
-                        )}
-                        {this.state.search_type === 'City' && (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>By City </span>
-                              </Label>
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={cityList}
-                                placeholder=""
-                              />
-                            </div>
-                          </Col>
-                        )}
-                        {this.state.search_type === 'Custom Address' && (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType1"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Custom Address </span>
-                              </Label>
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={(e) => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder=""
-                              />
-                            </div>
-                          </Col>
-                        )}
-                      </Row>;
+                            )}
+                          </div>
+                          {/* Section 2 */}
+                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                            <span><p>Location Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                            {this.state.isFormVisible && (
+                              <div className="mb-2">
+                                <Field
+                                  name="search_type"
+                                  component="select"
+                                  onChange={(e) => this.onChangeSearchType(e)}
+                                  value={this.state.search_type}
+                                  className="form-select"
+                                >
+                                  <option value="">Choose an option</option>
+                                  <option value="City">By City</option>
+                                  <option value="Custom Address">Custom Address</option>
+                                </Field>
+                              </div>
+                            )}                      </div>
+                          {/* Section 3 */}
+                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                            <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
+                              this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                            {this.state.isFormVisible && (
+                              <div className="mb-2">
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                >
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                  <option value="Others">Both</option>
+                                </Field>
+                              </div>
+                            )}
+                          </div>
+                          {/* Section 4 */}
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                            <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
+                              <span><p>Search By Km: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    style={{ fontSize: '14px' }}
+                                    placeholder=""
+                                  />
+                                </div>
+                              )}
+                            </div>)}
+                          {this.state.search_type === 'City' && (
+                            <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
+                              <span><p>Search By City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Select
+                                    name="city"
+                                    component="Select"
+                                    onChange={this.onChangeCity}
+                                    className="defautSelectParent is-invalid"
+                                    options={cityList}
+                                    placeholder="Enter City Name"
+                                  />
+                                </div>
+                              )}   </div>)}
+                          {/* Section 5 */}
+                          {this.state.search_type === 'Custom Address' && (
+                            <div style={{ flex: "1", paddingRight: "5px" }}>
+                              <span><p>Custom Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Input
+                                    defaultValue={this.state.address}
+                                    onChange={(e) => this.onChangeAddress(e)}
+                                    id="pac-input"
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Custom Address"
+                                  />
+                                </div>
+                              )}                          </div>)}
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
+                </Card>
 
-                    </Form>
-                  )}
-                </Formik>
               </Row>
               <Row>
                 {!isEmpty(nearbyLabs) &&
@@ -2072,7 +2188,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                           )
-                        }style={{height: "95%"}}
+                        } style={{ height: "95%" }}
                       >
                         <CardBody>
                           <Link
@@ -2094,26 +2210,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                             <div
+                              style={{
+                                width: "150px",
+                                height: "150px",
+                                marginLeft: "25%",
+                              }}
+                            >
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  nearbyLab.logo
+                                }
+                                alt="Lab Logo"
+                                className=" text-end"
                                 style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
+                                  float: "end",
                                 }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                              />
+                            </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2141,14 +2257,14 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
 
-<div className="my-0 text-truncate">
+                            <div className="my-0 text-truncate">
                               <Tooltip title={nearbyLab.address}>
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-google-maps"></i>{" "}
                                   {nearbyLab.address}
                                 </span>
                               </Tooltip>
-                              </div>
+                            </div>
 
                             {!nearbyLab.is_247_opened &&
                               nearbyLab.opening_time && (
@@ -2232,7 +2348,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           )
-                        }style={{height: "95%"}}
+                        } style={{ height: "95%" }}
                       >
                         <CardBody>
                           <Link
@@ -2242,27 +2358,27 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             }
                           >
-                           <div
+                            <div
+                              style={{
+                                width: "150px",
+                                height: "150px",
+                                marginLeft: "25%",
+                              }}
+                            >
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  nearbyLab.logo
+                                }
+                                alt="Lab Logo"
+                                className=" text-end"
                                 style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
+                                  float: "end",
                                 }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                              />
+                            </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2335,26 +2451,26 @@ class NearbyLabs extends Component {
                             </div>
                           )} */}
                             {nearbyLab.email ? (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-email"></i>{" "}
-                                {nearbyLab.email}
-                              </span>
-                            </div>):null}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-email"></i>{" "}
+                                  {nearbyLab.email}
+                                </span>
+                              </div>) : null}
                             {nearbyLab.phone ? (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="bx bx-mobile"></i>{" "}
-                                {nearbyLab.phone}
-                              </span>
-                            </div>):null}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="bx bx-mobile"></i>{" "}
+                                  {nearbyLab.phone}
+                                </span>
+                              </div>) : null}
                             {nearbyLab.landline ? (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-phone"></i>{" "}
-                                {nearbyLab.landline}
-                              </span>
-                            </div>):null}
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>) : null}
                             {nearbyLab.female_collectors == "Yes" && (
                               <div className="my-0">
                                 <span className="text-danger">
@@ -2392,7 +2508,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           )
-                        }style={{height: "95%"}}
+                        } style={{ height: "95%" }}
                       >
                         <CardBody>
                           <Link
@@ -2414,26 +2530,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                             <div
+                              style={{
+                                width: "150px",
+                                height: "150px",
+                                marginLeft: "25%",
+                              }}
+                            >
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  nearbyLab.logo
+                                }
+                                alt="Lab Logo"
+                                className=" text-end"
                                 style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
+                                  float: "end",
                                 }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                              />
+                            </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2548,7 +2664,7 @@ class NearbyLabs extends Component {
                               ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                               : `/nearby-lab-detail/${nearbyLab.account_id}`
                           )
-                        }style={{height: "95%"}}
+                        } style={{ height: "95%" }}
                       >
                         <CardBody>
                           <Link
@@ -2570,26 +2686,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                             <div
+                              style={{
+                                width: "150px",
+                                height: "150px",
+                                marginLeft: "25%",
+                              }}
+                            >
+                              <img
+                                src={
+                                  process.env.REACT_APP_BACKENDURL +
+                                  nearbyLab.logo
+                                }
+                                alt="Lab Logo"
+                                className=" text-end"
                                 style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
+                                  float: "end",
                                 }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                              />
+                            </div>
                           </Link>
 
                           <div className="mt-4 text-center">
@@ -2691,24 +2807,24 @@ class NearbyLabs extends Component {
                     </Col>
                   ))}
                 {isEmpty(nearbyLabs) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                            Sorry, No Labs Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
+                  loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                          Sorry, No Labs Found In Your Specific Area.....
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                )}
 
                 <ScrollButton />
               </Row>
@@ -2729,184 +2845,168 @@ class NearbyLabs extends Component {
                 breadcrumbItem="Nearby Labs"
               /> */}
               <Col lg="9">
-                <Row className="mb-3" style={{ backgroundColor: '#3B71CA', padding: '4px', height: "80px", display: "flex", alignItems: "center", marginTop: "7px" }} >
-                  <Formik
-                    enableReinitialize={true}
-                    initialValues={{
-                      search_type: (this.state && this.state.search_type) || "Current Location",
-                      city: (this.state && this.state.city) || "",
-                      location: (this.state && this.state.location) || "",
-                      LabType: (this.state && this.state.LabType) || "Main",
-                      km: (this.state && this.state.km) || "30",
-                      name: (this.state && this.state.name) || "",
-                    }}
-                    validationSchema={Yup.object().shape({
-                      city: Yup.string().when("search_type", {
-                        is: val => val === "Custom Address",
-                        then: Yup.string().required("Please enter your City"),
-                      }),
-                      location: Yup.string().when("city", {
-                        is: val => val !== "",
-                        then: Yup.string().required("Please enter your Location"),
-                      }),
-                    })}
+                <Row>
+                  <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary"></i> Your Location: <a
+                    onClick={this.toggleDivVisibility}
+                    className="text-danger"
+                    style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
+                    onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
                   >
-                    {({ errors, status, touched }) => (
-                      <Form className="form-horizontal">
-                        {/* ... (unchanged) */}
-                        <Row className="mb-3">
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Lab Name </span>
+                    {this.state.address}
+                  </a></span></span>
+                  {this.state.isDivVisible && (
+                    <div className="mb-2">
+                      <Input
+                        defaultValue={this.state.address}
+                        onChange={(e) => this.onChangeAddress(e)}
+                        id="pac-input"
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Custom Address"
+                      />
+                    </div>
+                  )}
+                  <Card style={{ alignContent: "center", display: "flex", marginTop: "7px" }}>
+                    <Formik
+                      enableReinitialize={true}
+                      initialValues={{
+                        search_type: (this.state && this.state.search_type) || "Current Location",
+                        city: (this.state && this.state.city) || "",
+                        location: (this.state && this.state.location) || "",
+                        LabType: (this.state && this.state.LabType) || "Main",
+                        km: (this.state && this.state.km) || "30",
+                        name: (this.state && this.state.name) || "",
+                      }}
+                      validationSchema={Yup.object().shape({
+                        city: Yup.string().when("search_type", {
+                          is: val => val === "Custom Address",
+                          then: Yup.string().required("Please enter your City"),
+                        }),
+                        location: Yup.string().when("city", {
+                          is: val => val !== "",
+                          then: Yup.string().required("Please enter your Location"),
+                        }),
+                      })}
+                    >
+                      {({ errors, status, touched }) => (
 
-                              </Label>
-                              <Select
-                                type="text"
-                                value={labNames.find((option) => option.value === this.state.name)}
-                                onChange={this.onChangeLabName}
-                                options={labNames}
-                                placeholder=""
-                                isSearchable={true}
-                                isClearable={true}
-                                components={{
-                                  ClearIndicator,
-                                }}
-                                
-                              />
-                            </div>
-                          </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Location </span>
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={(e) => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                              >
-                                <option value="Current Location">Current Location</option>
-                                <option value="City">By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                }}
-                              >
-                                <span style={{ fontSize: '12px', color: 'white' }}>Labs Type </span>
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>Km </span>
-                                </Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
-                                    className="form-control"
-                                    style={{ fontSize: '14px' }}
-                                    placeholder=""
+                        <Form className="form-horizontal">
+                          {/* ... (unchanged) */}
+                          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                            {/* Section 1 */}
+                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                              <span><p>Labs: <a href="#" onClick={this.toggleFormVisibility}>Search Labs<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Select
+                                    type="text"
+                                    value={labNames.find((option) => option.value === this.state.name)}
+                                    onChange={this.onChangeLabName}
+                                    options={labNames}
+                                    placeholder="Please Enter Lab Name.."
+                                    isSearchable={true}
+                                    isClearable={true}
+                                    components={{
+                                      ClearIndicator,
+                                    }}
                                   />
                                 </div>
-                              </div>
-                            </Col>
-                          )}
-                          {this.state.search_type === 'City' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>By City </span>
-                                </Label>
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder=""
-                                />
-                              </div>
-                            </Col>
-                          )}
-                          {this.state.search_type === 'Custom Address' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType1"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px', color: 'white' }}>Custom Address </span>
-                                </Label>
-                                <Input
-                                  defaultValue={this.state.address}
-                                  onChange={(e) => this.onChangeAddress(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder=""
-                                />
-                              </div>
-                            </Col>
-                          )}
-                        </Row>;
+                              )}
+                            </div>
+                            {/* Section 2 */}
+                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                              <span><p>Location: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Field
+                                    name="search_type"
+                                    component="select"
+                                    onChange={(e) => this.onChangeSearchType(e)}
+                                    value={this.state.search_type}
+                                    className="form-select"
+                                  >
+                                    <option value="">Choose an option</option>
+                                    <option value="City">By City</option>
+                                    <option value="Custom Address">Custom Address</option>
+                                  </Field>
+                                </div>
+                              )}                      </div>
+                            {/* Section 3 */}
+                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                              <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
+                                this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Field
+                                    name="LabType"
+                                    component="select"
+                                    onChange={(e) => this.onChangeType(e)}
+                                    value={this.state.LabType}
+                                    className="form-select"
+                                  >
+                                    <option value="Main">Main Labs</option>
+                                    <option value="Collection">Collection Points</option>
+                                    <option value="Others">Both</option>
+                                  </Field>
+                                </div>
+                              )}
+                            </div>
+                            {/* Section 4 */}
+                            {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                              <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
+                                <span><p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                                {this.state.isFormVisible && (
+                                  <div className="mb-2">
+                                    <Input
+                                      defaultValue={this.state.km}
+                                      onChange={(e) => this.onChangeKm(e)}
+                                      id="pac-input"
+                                      type="number"  // Change "numbers" to "number"
+                                      className="form-control"
+                                      style={{ fontSize: '14px' }}
+                                      placeholder=""
+                                    />
+                                  </div>
+                                )}
+                              </div>)}
+                            {this.state.search_type === 'City' && (
+                              <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
+                                <span><p>City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                                {this.state.isFormVisible && (
+                                  <div className="mb-2">
+                                    <Select
+                                      name="city"
+                                      component="Select"
+                                      onChange={this.onChangeCity}
+                                      className="defautSelectParent is-invalid"
+                                      options={cityList}
+                                      placeholder="Enter City Name"
+                                    />
+                                  </div>
+                                )}   </div>)}
+                            {/* Section 5 */}
+                            {this.state.search_type === 'Custom Address' && (
+                              <div style={{ flex: "1", paddingRight: "5px" }}>
+                                <span><p>Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                                {this.state.isFormVisible && (
+                                  <div className="mb-2">
+                                    <Input
+                                      defaultValue={this.state.address}
+                                      onChange={(e) => this.onChangeAddress(e)}
+                                      id="pac-input"
+                                      type="text"
+                                      className="form-control"
+                                      placeholder="Enter Custom Address"
+                                    />
+                                  </div>
+                                )}                          </div>)}
+                          </div>
+                        </Form>
+                      )}
+                    </Formik>
+                  </Card>
 
-                      </Form>
-                    )}
-                  </Formik>
                 </Row>
 
                 <Row>
@@ -2921,7 +3021,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             )
-                          } style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -2966,7 +3066,7 @@ class NearbyLabs extends Component {
                             </Link>
 
                             <div className="text-center">
-                              <h5 className="mb-3 text-truncate" style={{fontWeight: "bold"}}>
+                              <h5 className="mb-3 text-truncate" style={{ fontWeight: "bold" }}>
                                 <Link
                                   to={
                                     this.props.match.params.uuid
@@ -2991,12 +3091,12 @@ class NearbyLabs extends Component {
                                 )}
 
                               <div className="my-0 text-truncate">
-                              <Tooltip title={nearbyLab.address}>
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
-                              </Tooltip>
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -3069,7 +3169,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -3217,7 +3317,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -3362,7 +3462,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -3495,24 +3595,24 @@ class NearbyLabs extends Component {
                     ))}
                 </Row>
                 {isEmpty(nearbyLabs) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                            Sorry, No Labs Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
+                  loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                          Sorry, No Labs Found In Your Specific Area.....
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                )}
                 <ScrollButton />
               </Col>
               <Col lg="3">
@@ -3819,7 +3919,7 @@ class NearbyLabs extends Component {
                               components={{
                                 ClearIndicator,
                               }}
-                              
+
                             />
 
                           </div>
@@ -3943,7 +4043,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -3965,26 +4065,26 @@ class NearbyLabs extends Component {
                               />
                           </div> */}
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4012,14 +4112,14 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-<div className="my-0 text-truncate">
-                              {/* <Tooltip title={nearbyLab.address}> */}
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
-                              {/* </Tooltip> */}
-                              </div>
+                          <div className="my-0 text-truncate">
+                            {/* <Tooltip title={nearbyLab.address}> */}
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                            {/* </Tooltip> */}
+                          </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
                             <div className="my-0">
@@ -4090,7 +4190,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -4101,26 +4201,26 @@ class NearbyLabs extends Component {
                           }
                         >
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4235,7 +4335,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -4256,27 +4356,27 @@ class NearbyLabs extends Component {
                               className="img-thumbnail mx-auto d-block rounded"
                               />
                           </div> */}
-                         <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                          <div
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4378,7 +4478,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -4400,26 +4500,26 @@ class NearbyLabs extends Component {
                               />
                           </div> */}
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4510,24 +4610,24 @@ class NearbyLabs extends Component {
                   </Col>
                 ))}
               {isEmpty(nearbyLabs) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                            Sorry, No Labs Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
+                loading ? (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px' }}>
+                        Please Wait.....
+                      </div>
+                    </Col>
+                  </Row>
+                ) : (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                        Sorry, No Labs Found In Your Specific Area.....
+                      </div>
+                    </Col>
+                  </Row>
+                )
+              )}
 
               <ScrollButton />
             </Row>
@@ -4714,7 +4814,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -4736,26 +4836,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -4783,14 +4883,14 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-<div className="my-0 text-truncate">
-                              {/* <Tooltip title={nearbyLab.address}> */}
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
-                              {/* </Tooltip> */}
-                              </div>
+                          <div className="my-0 text-truncate">
+                            {/* <Tooltip title={nearbyLab.address}> */}
+                            <span className="text-muted me-2">
+                              <i className="mdi mdi-google-maps"></i>{" "}
+                              {nearbyLab.address}
+                            </span>
+                            {/* </Tooltip> */}
+                          </div>
 
                           {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
                             <div className="my-0">
@@ -4861,7 +4961,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -4872,26 +4972,26 @@ class NearbyLabs extends Component {
                           }
                         >
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -5007,7 +5107,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -5029,26 +5129,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -5150,7 +5250,7 @@ class NearbyLabs extends Component {
                             ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                             : `/nearby-lab-detail/${nearbyLab.account_id}`
                         )
-                      }style={{height: "95%"}}
+                      } style={{ height: "95%" }}
                     >
                       <CardBody>
                         <Link
@@ -5172,26 +5272,26 @@ class NearbyLabs extends Component {
                             />
                         </div> */}
                           <div
-                                style={{
-                                  width: "150px",
-                                  height: "150px",
-                                  marginLeft: "25%",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    process.env.REACT_APP_BACKENDURL +
-                                    nearbyLab.logo
-                                  }
-                                  alt="Lab Logo"
-                                  className=" text-end"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "100%",
-                                    float: "end",
-                                  }}
-                                />
-                              </div>
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              marginLeft: "25%",
+                            }}
+                          >
+                            <img
+                              src={
+                                process.env.REACT_APP_BACKENDURL +
+                                nearbyLab.logo
+                              }
+                              alt="Lab Logo"
+                              className=" text-end"
+                              style={{
+                                maxWidth: "100%",
+                                maxHeight: "100%",
+                                float: "end",
+                              }}
+                            />
+                          </div>
                         </Link>
 
                         <div className="mt-4 text-center">
@@ -5282,24 +5382,24 @@ class NearbyLabs extends Component {
                   </Col>
                 ))}
               {isEmpty(nearbyLabs) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                            Sorry, No Labs Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
+                loading ? (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px' }}>
+                        Please Wait.....
+                      </div>
+                    </Col>
+                  </Row>
+                ) : (
+                  <Row>
+                    <Col lg="12">
+                      <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                        Sorry, No Labs Found In Your Specific Area.....
+                      </div>
+                    </Col>
+                  </Row>
+                )
+              )}
               <ScrollButton />
             </Row>
           </div>
@@ -5564,7 +5664,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -5585,7 +5685,7 @@ class NearbyLabs extends Component {
               className="img-thumbnail mx-auto d-block rounded"
               />
           </div> */}
-                             <div
+                              <div
                                 style={{
                                   width: "150px",
                                   height: "150px",
@@ -5633,13 +5733,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-<div className="my-0 text-truncate">
-                              {/* <Tooltip title={nearbyLab.address}> */}
+                              <div className="my-0 text-truncate">
+                                {/* <Tooltip title={nearbyLab.address}> */}
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-google-maps"></i>{" "}
                                   {nearbyLab.address}
                                 </span>
-                              {/* </Tooltip> */}
+                                {/* </Tooltip> */}
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -5712,7 +5812,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -5843,7 +5943,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -5988,7 +6088,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -6122,24 +6222,24 @@ class NearbyLabs extends Component {
                     ))}
                 </Row>
                 {isEmpty(nearbyLabs) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                            Sorry, No Labs Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
+                  loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                          Sorry, No Labs Found In Your Specific Area.....
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                )}
                 <ScrollButton />
               </Col>
             </Row>
@@ -6558,7 +6658,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -6579,7 +6679,7 @@ class NearbyLabs extends Component {
               className="img-thumbnail mx-auto d-block rounded"
               />
           </div> */}
-                             <div
+                              <div
                                 style={{
                                   width: "150px",
                                   height: "150px",
@@ -6627,13 +6727,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-<div className="my-0 text-truncate">
-                              {/* <Tooltip title={nearbyLab.address}> */}
+                              <div className="my-0 text-truncate">
+                                {/* <Tooltip title={nearbyLab.address}> */}
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-google-maps"></i>{" "}
                                   {nearbyLab.address}
                                 </span>
-                              {/* </Tooltip> */}
+                                {/* </Tooltip> */}
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -6716,7 +6816,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -6873,7 +6973,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -7018,7 +7118,7 @@ class NearbyLabs extends Component {
                                 ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
                                 : `/nearby-lab-detail/${nearbyLab.account_id}`
                             )
-                          }style={{height: "95%"}}
+                          } style={{ height: "95%" }}
                         >
                           <CardBody>
                             <Link
@@ -7161,24 +7261,24 @@ class NearbyLabs extends Component {
                     ))}
                 </Row>
                 {isEmpty(nearbyLabs) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
-                            Sorry, No Labs Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
+                  loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                          Sorry, No Labs Found In Your Specific Area.....
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                )}
                 <ScrollButton />
               </Col>
             </Row>

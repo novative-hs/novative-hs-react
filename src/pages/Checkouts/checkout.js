@@ -274,19 +274,19 @@ class Checkout extends Component {
               "Order has been placed successfully, check your Email!  Thank you for choosing Labhazir.",
           });
         }
-      }, 1000);
+      }, 3000);
       if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/nearby-labs");
-        }, 4000)
+        }, 7000)
       } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/dashboard-csr");
-        }, 4000)
+        }, 7000)
       } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/dashboard-b2bclient");
-        }, 4000)
+        }, 7000)
       }
     }
   };

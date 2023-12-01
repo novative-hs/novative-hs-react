@@ -37,6 +37,7 @@ class Header extends Component {
       patientProfile: [],
       isDropdownOpen: false,
       cart: "",
+      prevUrl: '',
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -82,6 +83,14 @@ class Header extends Component {
 
     // Set an interval to call the asynchronous function every 2 seconds
     this.interval = setInterval(this.getData, 2000);
+     // Check if the current URL is "/checkout#"
+    const isCheckoutPage = window.location.href.endsWith("/checkout#");
+
+    // If the current page is the checkout page, update the interval to 5 seconds
+    if (isCheckoutPage) {
+      clearInterval(this.interval); // Clear the previous interval
+      this.interval = setInterval(this.getData, 5000);
+    }
   }
 
   componentWillUnmount() {
@@ -107,7 +116,8 @@ class Header extends Component {
     }
 
     this.setState({ carts: cartsData });
-  };
+  }; 
+  
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
     if (

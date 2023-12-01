@@ -1992,37 +1992,36 @@ class NearbyTests extends Component {
                   )}
                 
                 {!isEmpty(this.props.nearbyTests) ? (
-                  <Row>
-                  <Col lg="12">
-                    <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                      <PaginationItem disabled={page === 1}>
-                        <PaginationLink
-                          previous
-                          href="#"
-                          onClick={(e) => this.onChangepage(e, page - 1)}
-                        />
-                      </PaginationItem>
-                      {Array.from({ length: totalPage }, (_, i) => {
-                        const pageNumber = i + 1;
-                        return (
-                          <PaginationItem key={i} active={pageNumber === this.state.page}>
-                            <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
-                              {pageNumber}
-                            </PaginationLink>
-                          </PaginationItem>
-                        );
-                      })}
-                      <PaginationItem disabled={page === totalPage}>
-                        <PaginationLink
-                          next
-                          href="#"
-                          onClick={(e) => this.onChangepage(e, page + 1)}
-                        />
-                      </PaginationItem>
-                    </Pagination>
-                  </Col>
-                </Row>
-                
+                   <Row>
+                   <Col lg="12">
+                     <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+                       <PaginationItem disabled={page === 1}>
+                         <PaginationLink
+                           previous
+                           href="#"
+                           onClick={(e) => this.onChangepage(e, page - 1)}
+                         />
+                       </PaginationItem>
+                       {Array.from({ length: totalPage }, (_, i) => {
+                         const pageNumber = i + 1;
+                         return (
+                           <PaginationItem key={i} active={pageNumber === this.state.page}>
+                             <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+                               {pageNumber}
+                             </PaginationLink>
+                           </PaginationItem>
+                         );
+                       })}
+                       <PaginationItem disabled={page === totalPage}>
+                         <PaginationLink
+                           next
+                           href="#"
+                           onClick={(e) => this.onChangepage(e, page + 1)}
+                         />
+                       </PaginationItem>
+                     </Pagination>
+                   </Col>
+                 </Row>
 ) : null}
 
                 <ScrollButton />
