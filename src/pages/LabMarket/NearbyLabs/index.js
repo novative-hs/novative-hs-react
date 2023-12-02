@@ -1734,29 +1734,6 @@ class NearbyLabs extends Component {
                   ) : null}
             </nav>
           </div>
-          {this.state.locationAccessAllowed === false ? (
-            <div style={{ backgroundColor: "white", height: "30px", display: "flex", }}>
-              <p>
-                <i className="bx bx-error text-danger" style={{ fontSize: "18px" }}></i>
-                <span style={{ fontSize: "14px", marginLeft: "7px" }}>
-                  We can&apos;t find your location because your connection or location access is not enabled.
-                </span>
-              </p>
-              <a
-                href="#"
-                onClick={() => this.setState({ PatientModal: true })}
-                style={{
-                  fontSize: "16px",
-                  marginLeft: "10px", // Add some margin between the text and the link if necessary
-                  // color: "#ff0000", // Set the color of the link text
-                  // textDecoration: "underline", // Add underline style to the link text
-                  cursor: "pointer",
-                }}
-              >
-                <p className="text-danger text-decoration-underline">See how to enable location access.</p>
-              </a>
-            </div>
-          ) : null}
         </div>
         <header id="page-topbaar">
           <div className="navbar-header">
@@ -2013,19 +1990,37 @@ class NearbyLabs extends Component {
               {/* <h5>Need Some Better?</h5>
               <h2>&ldquo;Let&apos;s find the labs,&rdquo;</h2> */}
               <Row>
-                <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary" ></i> Your Location: <a
-                  onClick={this.toggleDivVisibility}
-                  className="text-danger"
-                  style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
-                  onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
-                  onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
-                >
-                  {this.state.address}
-                </a></span></span>
+                <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary"></i> Your Location:
+                  {this.state.locationAccessAllowed === true ? (
+                    <a
+                      onClick={this.toggleDivVisibility}
+                      className="text-danger"
+                      style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                      onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
+                      onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
+                    >
+                      {this.state.address}
+                    </a>
+                  ) : (this.state.locationAccessAllowed === false ? (
+                    <a
+                      onClick={() => this.setState({ PatientModal: true })}
+                      // className="text-danger"
+                      style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                      onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
+                      onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
+                    >
+                      <span >We&apos;re having trouble finding you. Check your connection and location access.  </span>
+                      <span className="text-decoration-underline text-danger">
+                        See how to enable location access.
+                      </span>
+                    </a>
+                  ) : null
+                  )}
+                </span></span>
                 {this.state.isDivVisible && (
-                  <div className="mb-1">
+                  <div className="mb-2">
                     <Input
-                      value={this.state.patient_address}
+                      defaultValue={this.state.address}
                       onChange={(e) => this.onChangeAddress(e)}
                       id="pac-input"
                       type="text"
@@ -2072,7 +2067,7 @@ class NearbyLabs extends Component {
                                   value={labNames.find((option) => option.value === this.state.name)}
                                   onChange={this.onChangeLabName}
                                   options={labNames}
-                                  placeholder="Please Enter Lab Name.."
+                                  placeholder="Enter Lab Name."
                                   isSearchable={true}
                                   isClearable={true}
                                   components={{
@@ -2846,15 +2841,33 @@ class NearbyLabs extends Component {
               /> */}
               <Col lg="9">
                 <Row>
-                  <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary"></i> Your Location: <a
-                    onClick={this.toggleDivVisibility}
-                    className="text-danger"
-                    style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
-                    onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
-                  >
-                    {this.state.address}
-                  </a></span></span>
+                  <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary"></i> Your Location:
+                    {this.state.locationAccessAllowed === true ? (
+                      <a
+                        onClick={this.toggleDivVisibility}
+                        className="text-danger"
+                        style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                        onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
+                        onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
+                      >
+                        {this.state.address}
+                      </a>
+                    ) : (this.state.locationAccessAllowed === false ? (
+                      <a
+                        onClick={() => this.setState({ PatientModal: true })}
+                        // className="text-danger"
+                        style={{ cursor: "pointer", textDecoration: "underline", color: "inherit" }}
+                        onMouseOver={(e) => e.target.style.backgroundColor = "#DDEEFA"}
+                        onMouseOut={(e) => e.target.style.backgroundColor = "transparent"}
+                      >
+                        <span >We&apos;re having trouble finding you. Check your connection and location access.  </span>
+                        <span className="text-decoration-underline text-danger">
+                          See how to enable location access.
+                        </span>
+                      </a>
+                    ) : null
+                    )}
+                  </span></span>
                   {this.state.isDivVisible && (
                     <div className="mb-2">
                       <Input
@@ -2904,7 +2917,7 @@ class NearbyLabs extends Component {
                                     value={labNames.find((option) => option.value === this.state.name)}
                                     onChange={this.onChangeLabName}
                                     options={labNames}
-                                    placeholder="Please Enter Lab Name.."
+                                    placeholder="Enter Lab Name."
                                     isSearchable={true}
                                     isClearable={true}
                                     components={{
