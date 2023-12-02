@@ -1101,7 +1101,7 @@ class NearbyLabs extends Component {
       latitude: "",
       longitude: "",
       search_type: this.state.search_type,
-      address: this.state.address,
+      address: "",
       city: selectedGroup.value,
       LabType: this.state.LabType,
       km: this.state.km,
