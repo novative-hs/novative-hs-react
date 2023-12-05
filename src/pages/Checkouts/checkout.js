@@ -4,6 +4,8 @@ import MetaTags from "react-meta-tags";
 import PropTypes from "prop-types";
 import { any } from "prop-types";
 import { connect } from "react-redux";
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import { Link, withRouter } from "react-router-dom";
@@ -541,6 +543,14 @@ class Checkout extends Component {
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
+    flatpickr("#flatpickrInput", {
+      enableTime: true,
+      dateFormat: "Y-m-dTH:i",
+      minDate: new Date().toISOString().split("T")[0], // Set minimum date to today
+      onChange: (selectedDates, dateStr, instance) => {
+        this.setState({ appointment_requested_at: dateStr });
+      },
+    });
   }
   toggle() {
     this.setState(prevState => ({
@@ -694,7 +704,10 @@ class Checkout extends Component {
       ageFormat: e.target.value,
     });
   };
-  
+  handleFormGroupClick = () => {
+    this.datePickerRef.setFocus(); // Use the correct reference here
+  }
+
 
   render() {
     const iconStyle = {
@@ -731,6 +744,15 @@ class Checkout extends Component {
       });
     }
     // let total =  0;
+    // const formattedDate = date.toLocaleString('en-US', {
+    //   year: 'numeric',
+    //   month: '2-digit',
+    //   day: '2-digit',
+    //   hour: '2-digit',
+    //   minute: '2-digit',
+    //   hour12: false, // 24-hour format
+    //   timeZoneName: 'short',
+    // });
     return (
       console.log(this.state.donationCheck),
       (
@@ -1156,35 +1178,33 @@ class Checkout extends Component {
                                       />
                                     </Col>
                                   </FormGroup> */}
-
-                                  <FormGroup className="mb-4" row>
-                                    <Label md="12" className="col-form-label">
+                                  <div className="form-group row">
+                                    <label htmlFor="flatpickrInput" className="col-md-12 col-form-label">
                                       Please select a suitable date and time for the appointment?
                                       <span style={{ color: "#f46a6a" }} className="font-size-18">
                                         *
                                       </span>
-                                    </Label>
-                                    <Col md="12">
-                                      <Input
-                                        name="appointment_requested_at"
-                                        type="datetime-local"
-                                        min={new Date(
-                                          new Date().toString().split("GMT")[0] + " UTC"
-                                        )
-                                          .toISOString()
-                                          .slice(0, -8)}
-                                        className="form-control"
-                                        onChange={(e) =>
-                                          this.setState({ appointment_requested_at: e.target.value })
-                                        }
-                                      />
-                                      <span className="text-danger font-size-12">
-                                        <strong><span className="text-danger">Note:</span></strong> <strong>
-                                          You will receive Confirmation Email for this time when Lab will confirm.
+                                    </label>
+                                    <div className="col-md-12">
+                                      <div className="input-group">
+                                        <input
+                                          id="flatpickrInput"
+                                          name="appointment_requested_at"
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Please Select Date and Time"
+                                        />
+                                      </div>
+                                      <small className="text-danger">
+                                        <strong>
+                                          <span className="text-danger">Note:</span>
+                                        </strong>{" "}
+                                        <strong>
+                                          You will receive a Confirmation Email for this time when the Lab confirms.
                                         </strong>
-                                      </span>
-                                    </Col>
-                                  </FormGroup>
+                                      </small>
+                                    </div>
+                                  </div>
                                 </Form>
                               </Container>
                               <Row className="mt-4">
@@ -1427,10 +1447,10 @@ class Checkout extends Component {
                                 <div className="col-md-12">
                                   <CardTitle className="h4">Tests and Home Sampling Information</CardTitle>
                                   <span className="text-danger font-size-12">
-                                      <strong><span className="text-danger">Note:</span></strong> <strong>
+                                    <strong><span className="text-danger">Note:</span></strong> <strong>
                                       Please choose if you want to avail Home / Urgent sampling services for the following tests
-                                      </strong>
-                                    </span>
+                                    </strong>
+                                  </span>
                                   <div className="d-flex" style={{ marginBottom: '20px', marginTop: '20px' }}>
                                     <div className="form-check form-check-inline font-size-16">
                                       <Input
@@ -1442,7 +1462,7 @@ class Checkout extends Component {
                                         onChange={this.handleHomeSamplingChange}
                                       />
                                       <Label className="form-check-label font-size-13" htmlFor="customRadioInline1">
-                                        <i className="fas fa-shipping-fast me-2"style={{ color: 'red' }} />
+                                        <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
                                         Home Sampling Service
                                       </Label>
                                     </div>
@@ -1499,63 +1519,63 @@ class Checkout extends Component {
                                     </>
                                   )}
                                   {this.state.is_state_sampling_availed === "Yes" && (
-                                     <>
-                                     <FormGroup className="mb-4" row>
-                                       <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                         Address
-                                         <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
-                                       </Label>
-                                       <Col md="10">
-                                         <div style={inputGroupStyle}>
-                                           <Input
-                                             // defaultValue={this.state.patient_address}
-                                             onChange={e => this.onChangeAddress(e)}
-                                             id="pac-input"
-                                             type="text"
-                                             className="form-control"
-                                             placeholder="Search Location..."
-                                             value={this.state.patient_address}
-                                           />
-                                           {this.state.patient_address ? (
-                                             <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
-                                               <i className="mdi mdi-close-circle"></i>
-                                             </span>
-                                           ) : (
-                                             <span style={iconStyle} onClick={this.handleLocatorIconClick}>
-                                               <i className="bx bx-target-lock"><span style={{ color: "black", marginLeft: "4px" }}>Current Location</span></i>
-                                             </span>
-                                           )}
-                                         </div>
-                                       </Col>
-                                     </FormGroup>
+                                    <>
+                                      <FormGroup className="mb-4" row>
+                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                          Address
+                                          <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
+                                        </Label>
+                                        <Col md="10">
+                                          <div style={inputGroupStyle}>
+                                            <Input
+                                              // defaultValue={this.state.patient_address}
+                                              onChange={e => this.onChangeAddress(e)}
+                                              id="pac-input"
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Search Location..."
+                                              value={this.state.patient_address}
+                                            />
+                                            {this.state.patient_address ? (
+                                              <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+                                                <i className="mdi mdi-close-circle"></i>
+                                              </span>
+                                            ) : (
+                                              <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+                                                <i className="bx bx-target-lock"><span style={{ color: "black", marginLeft: "4px" }}>Current Location</span></i>
+                                              </span>
+                                            )}
+                                          </div>
+                                        </Col>
+                                      </FormGroup>
 
-                                     <FormGroup className="mb-4" row>
-                                      <Col md="2"></Col>
-                                     <Col md="10">
-                                    <Card className="bg-primary bg-soft rounded" >
-                                      {this.state.homeSampledTests.map((homeSampledTest, key) => {
-                                        if (homeSampledTest.state_sampling_charges && homeSampledTest.state_sampling_time) {
-                                          return (
-                                            <div key={"homeSampledTest" + key}>
-                                              <div className="row font-size-12" style={{ margin: '5px' }}>
-                                                <Col sm="4" >
-                                                  <span className="text-primary">Lab Name: </span>
-                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
-                                                    {homeSampledTest.lab_name}
-                                                  </span></Col>
-                                                <Col sm="4" >
-                                                  <span className="text-primary">Urgent Sampling Time: </span>
-                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
-                                                    {homeSampledTest.state_sampling_time}h
-                                                  </span></Col>
-                                                <Col sm="4" >
-                                                  <span className="text-primary">Urgent Sampling Charges : </span>
-                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
-                                                    {homeSampledTest.state_sampling_charges}
-                                                  </span></Col>
+                                      <FormGroup className="mb-4" row>
+                                        <Col md="2"></Col>
+                                        <Col md="10">
+                                          <Card className="bg-primary bg-soft rounded" >
+                                            {this.state.homeSampledTests.map((homeSampledTest, key) => {
+                                              if (homeSampledTest.state_sampling_charges && homeSampledTest.state_sampling_time) {
+                                                return (
+                                                  <div key={"homeSampledTest" + key}>
+                                                    <div className="row font-size-12" style={{ margin: '5px' }}>
+                                                      <Col sm="4" >
+                                                        <span className="text-primary">Lab Name: </span>
+                                                        <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                          {homeSampledTest.lab_name}
+                                                        </span></Col>
+                                                      <Col sm="4" >
+                                                        <span className="text-primary">Urgent Sampling Time: </span>
+                                                        <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                          {homeSampledTest.state_sampling_time}h
+                                                        </span></Col>
+                                                      <Col sm="4" >
+                                                        <span className="text-primary">Urgent Sampling Charges : </span>
+                                                        <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                          {homeSampledTest.state_sampling_charges}
+                                                        </span></Col>
 
-                                                <style>
-                                                  {`
+                                                      <style>
+                                                        {`
                                                   .blinking-text {
                                                     animation: blinking 1s infinite;
                                                     color: red; /* Your desired text color */
@@ -1574,16 +1594,16 @@ class Checkout extends Component {
                                                     }
                                                   }
                                                 `}
-                                                </style>
-                                              </div>
-                                            </div>
-                                          );
-                                        } else {
-                                          return null; // Skip rendering if sampling charges and fees are missing
-                                        }
-                                      })}
-                                    </Card></Col>
-                                    </FormGroup>
+                                                      </style>
+                                                    </div>
+                                                  </div>
+                                                );
+                                              } else {
+                                                return null; // Skip rendering if sampling charges and fees are missing
+                                              }
+                                            })}
+                                          </Card></Col>
+                                      </FormGroup>
                                     </>
 
                                   )}
@@ -2054,7 +2074,7 @@ class Checkout extends Component {
                                         ))}
                                       </tbody>
                                       <tfoot>
-                                      {/* {this.state.checkoutItems.length > 0 && (
+                                        {/* {this.state.checkoutItems.length > 0 && (
                                         <>
                                           {this.state.checkoutItems.slice(-1).map((checkoutItem, key) => (
                                             <tr key={"_checkoutItem_" + key}>
@@ -2158,77 +2178,77 @@ class Checkout extends Component {
 
                               </CardBody>
                               {!isEmpty(this.state.payment_method) && (
-                            <Card className="shadow-none border mb-0">
-                              <CardBody className="text-center">
-                                <CardTitle className="mb-1">
-                                  <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                  Payment method
-                                </CardTitle>
+                                <Card className="shadow-none border mb-0">
+                                  <CardBody className="text-center">
+                                    <CardTitle className="mb-1">
+                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                      Payment method
+                                    </CardTitle>
 
-                                {this.state.payment_method !== "card" && (
-                                  <div>
-                                    <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                      <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
-                                    </p>
-                                  </div>
-                                )}
+                                    {this.state.payment_method !== "card" && (
+                                      <div>
+                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                          <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
+                                        </p>
+                                      </div>
+                                    )}
 
-                                {this.state.payment_method === "Card" && (
-                                  <div>
-                                    <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                      <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
-                                    </p>
-                                  </div>
-                                )}
+                                    {this.state.payment_method === "Card" && (
+                                      <div>
+                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+                                          <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
+                                        </p>
+                                      </div>
+                                    )}
 
-                          {this.state.payment_method === "Donation" && (
-                            <div>
-                              <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'green', backgroundColor: 'yellow' }}>
-                                Sub Total After Donation= Rs. 0
-                              </p>
-                            </div>
-                          )}
+                                    {this.state.payment_method === "Donation" && (
+                                      <div>
+                                        <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'green', backgroundColor: 'yellow' }}>
+                                          Sub Total After Donation= Rs. 0
+                                        </p>
+                                      </div>
+                                    )}
 
-                                <div>
-                                  <div className="table-responsive">
-                                    <a
-                                      href="#"
-                                      onClick={this.handleClickAddPayment}
-                                      style={{ textDecoration: 'none', color: 'inherit' }}
-                                    >
-                                      <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                      Update Payment method
-                                    </a>
-                                  </div>
+                                    <div>
+                                      <div className="table-responsive">
+                                        <a
+                                          href="#"
+                                          onClick={this.handleClickAddPayment}
+                                          style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                          <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                          Update Payment method
+                                        </a>
+                                      </div>
 
-                                  {/* Rest of your component code */}
-                                </div>
-                              </CardBody>
-                            </Card>
-                          )}
+                                      {/* Rest of your component code */}
+                                    </div>
+                                  </CardBody>
+                                </Card>
+                              )}
 
-                          {isEmpty(this.state.payment_method) && (
-                            <Card className="shadow-none border mb-0">
-                              <CardBody className="text-center">
-                                <CardTitle className="mb-1">
-                                  <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                  Payment method
-                                </CardTitle>
-                                <div>
-                                  <div className="table-responsive">
-                                    <a
-                                      href="#"
-                                      onClick={this.handleClickAddPayment}
-                                      style={{ textDecoration: 'none', color: 'inherit' }}
-                                    >
-                                      <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                      Add Payment method
-                                    </a>
-                                  </div>
-                                </div>
-                              </CardBody>
-                            </Card>
-                          )}
+                              {isEmpty(this.state.payment_method) && (
+                                <Card className="shadow-none border mb-0">
+                                  <CardBody className="text-center">
+                                    <CardTitle className="mb-1">
+                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                      Payment method
+                                    </CardTitle>
+                                    <div>
+                                      <div className="table-responsive">
+                                        <a
+                                          href="#"
+                                          onClick={this.handleClickAddPayment}
+                                          style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                          <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+                                          Add Payment method
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </CardBody>
+                                </Card>
+                              )}
 
                               <Row className="mt-4">
                                 <Col sm="6">

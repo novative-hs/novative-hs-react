@@ -845,8 +845,8 @@ class NearbyLabDetail extends Component {
                                             // You can use the history object to navigate to a different route if needed
                                             this.props.history.push(
                                               this.props.match.params.uuid
-                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
                                             );
                                           }}
                                           // Add any other button styling or attributes as needed
@@ -882,8 +882,8 @@ class NearbyLabDetail extends Component {
                                               // You can use the history object to navigate to a different route if needed
                                               this.props.history.push(
                                                 this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.guest_id}`
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab`
                                               );
                                             }}
                                             // Add any other button styling or attributes as needed
@@ -921,8 +921,8 @@ class NearbyLabDetail extends Component {
                                               // You can use the history object to navigate to a different route if needed
                                               this.props.history.push(
                                                 this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.guest_id}`
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab`
                                               );
                                             }}
                                             // Add any other button styling or attributes as needed
@@ -958,8 +958,8 @@ class NearbyLabDetail extends Component {
                                               // You can use the history object to navigate to a different route if needed
                                               this.props.history.push(
                                                 this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.guest_id}`
+                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab`
                                               );
                                             }}
                                             // Add any other button styling or attributes as needed
@@ -996,8 +996,8 @@ class NearbyLabDetail extends Component {
                                               // You can use the history object to navigate to a different route if needed
                                               this.props.history.push(
                                                 this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.guest_id}`
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-sample-collectors/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-sample-collectors`
                                               );
                                             }}
                                             // Add any other button styling or attributes as needed
@@ -1033,8 +1033,8 @@ class NearbyLabDetail extends Component {
                                               // You can use the history object to navigate to a different route if needed
                                               this.props.history.push(
                                                 this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.guest_id}`
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-pathologists/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-pathologists`
                                               );
                                             }}
                                             // Add any other button styling or attributes as needed
@@ -1070,8 +1070,8 @@ class NearbyLabDetail extends Component {
                                               // You can use the history object to navigate to a different route if needed
                                               this.props.history.push(
                                                 this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.guest_id}`
+                                                  ? `/${this.props.match.params.lab_account_id}/lab-quality-certificates/${this.props.match.params.uuid}`
+                                                  : `/${this.props.match.params.lab_account_id}/lab-quality-certificates`
                                               );
                                             }}
                                             // Add any other button styling or attributes as needed
@@ -1725,7 +1725,7 @@ class NearbyLabDetail extends Component {
                                   className="btn btn-success ml-1 btn  mt-2"
                                   target="_blank"
                                 >
-                                  <i className="bx bxs-navigation" /> Navigate to
+                                  <i className="bx bxs-navigation" /> Locate to
                                   the Lab
                                 </Link>
                                 {/* {(this.props.success.complaint_handling_email ||
@@ -1928,7 +1928,7 @@ class NearbyLabDetail extends Component {
 
                                 >
                                   <i className="bx bxs-navigation" />
-                                  <span className="font-size-12">Navigate to
+                                  <span className="font-size-12">Locate to
                                     the Lab</span>
                                 </Link>
                                 {/* {(this.props.success.complaint_handling_email ||
