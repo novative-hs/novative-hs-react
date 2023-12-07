@@ -196,14 +196,100 @@ class ReferrelLabFee extends Component {
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: referrelFeeLabs.length, // replace later with size(referrelFeeLabs),
+      totalSize: referrelFeeLabs.length,
       custom: true,
     };
 
     const defaultSorted = [
       {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
+        dataField: "id",
+        order: "desc",
+      },
+    ];
+
+    const columns = [
+      {
+        dataField: "test_id",
+        text: "Test ID",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "test_name",
+        text: "Test Name",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "test_categories",
+        text: "Test Categories",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "lab_city",
+        text: "Lab City",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "lab_name",
+        text: "Lab Name",
+        sort: true,
+        formatter: (cellContent, referrelFeeLab) => (
+          <span style={{
+            width: '200px', // Set your desired width here
+            fontSize: '14px',
+
+            textOverflow: 'ellipsis',
+            whiteSpace: 'prewrap',
+            textAlign: 'left', // Align text to the left
+            display: 'block',
+          }}>
+            {referrelFeeLab.lab_name}
+
+          </span>
+        ), filter: textFilter(),
+      },
+      {
+        dataField: "price",
+        text: "Price",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "is_eqa_participation",
+        text: "Is EQA Participation",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "is_home_sampling_available",
+        text: "Is Home Sampling Available",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "is_test_performed",
+        text: "Is Test Performed",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "shared_percentage",
+        text: "Shared Percentage",
+        sort: true,
+        filter: textFilter(),
+      },
+      {
+        dataField: "shared_percentage_value",
+        text: "Shared Value",
+        sort: true,
+        formatter: (cellContent, referrelFeeLab) => (
+          <>
+            {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}
+          </>
+        ), filter: textFilter(),
       },
     ];
     const testList = this.props.onlyMedicalTestList.map((test) => ({
@@ -273,63 +359,37 @@ class ReferrelLabFee extends Component {
                 </div>
               </Col>
             </Row>
-
-            <Card >
+            <Card>
               <CardBody>
-                <div className="table-responsive">
-                  <Table className="table-nowrap">
-                    <thead>
-                      <tr>
-                        <th className="text-start">Test ID</th>
-                        <th className="text-start">Test Name</th>
-                        <th className="text-start">Test Categories</th>
-                        <th className="text-start">Lab City</th>
-                        <th className="text-start">Lab Name</th>
-                        <th className="text-end">Price</th>
-                        <th className="text-start">Is EQA Participation</th>
-                        <th className="text-start">Is Home Sampling Available</th>
-                        <th className="text-start">Is Test Performed</th>
-                        <th className="text-end">Shared Percentage %</th>
-                        <th className="text-end">Shared Percentage </th>
-
-                      </tr>
-                    </thead>
-                    {!isEmpty(referrelFeeLabs) &&
-                      referrelFeeLabs.map((referrelFeeLab, key) => (
-                        <tr key={"_row_" + key}>
-                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.test_id}</td>
-                          <td className="text-start py-2 pl-3 pr-4" style={{whiteSpace: "pre-wrap"}}>{referrelFeeLab.test_name}</td>
-                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.test_categories}</td>
-                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.lab_city}</td>
-                          <td className="text-start py-2 pl-3 pr-4" style={{whiteSpace: "pre-wrap"}}>
-                            {referrelFeeLab.lab_name}</td>
-                          <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
-                            {referrelFeeLab.price}
-                          </div></td>
-                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.is_eqa_participation}</td>
-                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.is_home_sampling_available}</td>
-                          <td className="text-start py-2 pl-3 pr-4">{referrelFeeLab.is_test_performed}</td>
-                          <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
-                            {(referrelFeeLab.shared_percentage * 100).toFixed()}%</div></td>
-                          <td className="text-end py-2 pl-3 pr-4"><div className="text-end">
-                            {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}</div></td>
-                        </tr>
-                      ))}
-                    {this.state.showNoResultMessage && (
-                      <Row>
-                        <div className=" mb-5">
-                          <h4 className="text-uppercase">
-                            Sorry no result found.
-                          </h4>
-                        </div>
-                      </Row>
-                    )}
-                  </Table>
-                </div>
+                <ToolkitProvider
+                  keyField="id"
+                  data={referrelFeeLabs}
+                  columns={columns}
+                  search
+                >
+                  {props => (
+                    <div>
+                      {/* <SearchBar {...props.searchProps} /> */}
+                      <BootstrapTable
+                        {...props.baseProps}
+                        defaultSorted={defaultSorted}
+                        pagination={paginationFactory(pageOptions)}
+                        filter={filterFactory()}
+                      />
+                    </div>
+                  )}
+                </ToolkitProvider>
               </CardBody>
             </Card>
-
-
+            {this.state.showNoResultMessage && (
+              <Row>
+                <div className=" mb-5">
+                  <h4 className="text-uppercase">
+                    Sorry no result found.
+                  </h4>
+                </div>
+              </Row>
+            )}
           </Container>
         </div>
       </React.Fragment>

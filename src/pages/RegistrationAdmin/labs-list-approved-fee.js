@@ -40,58 +40,15 @@ class LabsLists extends Component {
     this.node = React.createRef();
     this.state = {
       labsListApprovedFee: [],
-      id: "",
-      LabsLists: "",
-      labsListApprovedFee: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      // labsListListColumns: [
-
-      //   {
-      //     dataField: "id",
-      //     text: "Lab ID",
-      //     sort: true,
-      //     formatter: (cellContent, labsListApprovedFee) => (
-      //       <>
-      //         <strong>{labsListApprovedFee.id}</strong>
-      //       </>
-      //     ),
-      //   },
-      //   {
-      //     dataField: "name",
-      //     text: "Lab Name",
-      //     sort: true,
-      //     formatter: (cellContent, labsListApprovedFee) => (
-      //       <>
-      //         {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
-      //         <Link to={`/shared-percentage-pending-Fee/${labsListApprovedFee.id}`}>
-      //           {labsListApprovedFee.name}
-      //         </Link>
-      //       </>
-      //     ),
-      //   },
-      //   {
-      //     dataField: "email",
-      //     text: "Email",
-      //     sort: true,
-      //   },
-      //   {
-      //     dataField: "phone",
-      //     text: "Phone No.",
-      //     sort: true,
-      //   },
-      //   {
-      //     dataField: "city",
-      //     text: "City",
-      //     sort: true,
-      //   },
-      //   {
-      //     dataField: "district",
-      //     text: "District",
-      //     sort: true,
-      //   },
-      // ],
+      filters: {
+        name: '',
+        landline: '',
+        email: '',
+        address: '',
+      },
     };
   }
 
@@ -128,26 +85,51 @@ class LabsLists extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+  handleFilterChange = (field, value) => {
+    this.setState((prevState) => ({
+      filters: {
+        ...prevState.filters,
+        [field]: value,
+      },
+    }));
+  };
+
 
   render() {
-    const { SearchBar } = Search;
-
+    const { filters } = this.state;
     const { labsListApprovedFee } = this.props;
-    const data = this.state.data;
-    const { onGetLabsListApprovedFee } = this.props;
+    const filteredLabsList = labsListApprovedFee.filter((lab) => {
+      return lab.lab_list.some((lab_list) => {
+        return (
+          lab_list.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+          lab_list.landline.includes(filters.landline) &&
+          lab_list.email.toLowerCase().includes(filters.email.toLowerCase()) &&
+          lab_list.address.toLowerCase().includes(filters.address.toLowerCase())
+        );
+      });
+    });
 
-    const pageOptions = {
-      sizePerPage: 10,
-      totalSize: labsListApprovedFee.length, // replace later with size(labsListApprovedFee),
-      custom: true,
-    };
-
-    const defaultSorted = [
-      {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
-      },
+    const columns = [
+      { dataField: 'name', text: 'Lab Name' },
+      { dataField: 'landline', text: 'Phone' },
+      { dataField: 'email', text: 'Email' },
+      { dataField: 'address', text: 'Address' },
     ];
+
+    const headerCells = columns.map((column) => (
+      <th key={column.dataField} scope="col">
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <span>{column.text}</span>
+          <input
+            type="text"
+            placeholder={`Filter by ${column.text}`}
+            value={filters[column.dataField]}
+            onChange={(e) => this.handleFilterChange(column.dataField, e.target.value)}
+            style={{ width: '200px', padding: '6px' }}  // Adjust the width and padding as needed
+          />
+        </div>
+      </th>
+    ));
         
     return (
       <React.Fragment>
@@ -173,42 +155,29 @@ class LabsLists extends Component {
                       </div>
                       <Table className="align-middle mb-0 table-nowrap">
                         <thead className="table-light">
-                                    <tr>
-                                     
-                                      <th scope="col">Lab Name</th>
-                                      <th scope="col">Phone</th>
-                                      <th scope="col">Email</th>
-                                      <th scope="col">Address</th>
+                        <tr>{headerCells}</tr>
 
-                                    </tr>
                           </thead>
                          
                           <tbody>
-                          {this.props.labsListApprovedFee.map(
-                                      (labsListApprovedFee, key) => (
-                                        <>
-                                          {labsListApprovedFee.lab_list.map(
-                                            (lab_list, key) => (
-
-                                <tr key={key}>
-                                  {/* <td>{key + 1}</td> */}
-                                 <td className="text-start" style={{whiteSpace: "pre-wrap"}} > <b><Link to={`/shared-percentage-approved-Fee/${lab_list.id}`}>
-                                    {lab_list.name}
-                                  </Link>
-                                  </b>
-                                  </td>
-                                  <td className="text-center">{lab_list.landline}</td>
-                                  <td className="text-start">{lab_list.email}</td>
-                                  <td className="text-start" style={{whiteSpace: "pre-wrap"}}>{lab_list.address}</td>
-                                </tr>
-                                    
-                                      )
-                                      
-                                    )}
-                                  </>
-                                )
-                              )}
-                          
+                            {filteredLabsList.map((lab, key) => (
+                              <React.Fragment key={key}>
+                                {lab.lab_list.map((lab_list, key) => (
+                                  <tr key={key}>
+                                    <td className="text-start" style={{ whiteSpace: 'pre-wrap', width: '300px' }}>
+                                      <b>
+                                        <Link to={`/shared-percentage-pending-Fee/${lab_list.id}`}>{lab_list.name}</Link>
+                                      </b>
+                                    </td>
+                                    <td className="text-start">{lab_list.landline}</td>
+                                    <td className="text-start">{lab_list.email}</td>
+                                    <td className="text-start" style={{ whiteSpace: 'pre-wrap' }}>
+                                      {lab_list.address}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </React.Fragment>
+                            ))}
                           </tbody>
                       
               
