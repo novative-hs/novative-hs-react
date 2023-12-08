@@ -20,7 +20,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -73,12 +73,13 @@ class PendingComplaintsLabhazir extends Component {
             <>
               <strong>{complaint.complaint_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "name",
@@ -97,7 +98,7 @@ class PendingComplaintsLabhazir extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -119,7 +120,7 @@ class PendingComplaintsLabhazir extends Component {
                 {new Date(complaint.registered_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -131,7 +132,7 @@ class PendingComplaintsLabhazir extends Component {
               {new Date().getDate() - new Date(complaint.registered_at).getDate()} days
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "message",
@@ -160,7 +161,7 @@ class PendingComplaintsLabhazir extends Component {
                   {pendingComplaintLabhazir.labhazir_complainee}{" "}
                   {pendingComplaintLabhazir.lab_name}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "data",
@@ -455,6 +456,7 @@ class PendingComplaintsLabhazir extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

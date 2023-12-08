@@ -15,7 +15,7 @@ import {
   ModalHeader,
   ModalBody,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -58,7 +58,7 @@ class ResolvedComplaints extends Component {
           hidden: true,
           formatter: (cellContent, resolvedComplaint) => (
             <>{resolvedComplaint.id}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "",
@@ -68,7 +68,7 @@ class ResolvedComplaints extends Component {
             <>
               <strong>{complaint.complaint_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -87,7 +87,7 @@ class ResolvedComplaints extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -119,6 +119,7 @@ class ResolvedComplaints extends Component {
           dataField: "csr_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -130,12 +131,13 @@ class ResolvedComplaints extends Component {
                 {new Date(complaint.assigned_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "complainee",
@@ -147,7 +149,7 @@ class ResolvedComplaints extends Component {
                   {resolvedComplaint.labhazir_complainee}{" "}
                   {resolvedComplaint.lab_name}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "handled_at",
@@ -159,7 +161,7 @@ class ResolvedComplaints extends Component {
                 {new Date(complaint.handled_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
       ],
     };
@@ -414,6 +416,7 @@ class ResolvedComplaints extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

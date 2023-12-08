@@ -556,12 +556,12 @@ class SidebarContent extends Component {
                       </li>
                       <li>
                         <Link to={"/approved-labs"}>
-                          {this.props.t("Approved")}
+                          {this.props.t("Approved/ Active")}
                         </Link>
                       </li>
                       <li>
                         <Link to={"/unapproved-labs"}>
-                          {this.props.t("Unapproved")}
+                          {this.props.t("Unapproved/ Inactive")}
                         </Link>
                       </li>
                     </ul>

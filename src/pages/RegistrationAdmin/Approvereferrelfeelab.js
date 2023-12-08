@@ -20,7 +20,7 @@ import {
   ModalHeader,
   ModalBody,
 } from "reactstrap";
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 import paginationFactory, {
   PaginationProvider,
@@ -252,10 +252,38 @@ class ReferrelLabFee extends Component {
         ), filter: textFilter(),
       },
       {
+        dataField: "type",
+        text: "Lab Type",
+        // sort: true,
+        formatter: (cellContent, referrelFeeLab) => (
+          <>
+            <span className="float-end">
+              {referrelFeeLab.type == "Main Lab" ? (
+                <span>Main</span>
+              ) : (
+                <span>Collection</span>
+              )}
+            </span>
+          </>
+        ),
+        filter: selectFilter({
+          options: {
+            // '': 'All',
+            'Main Lab': 'Main',
+            'Collection Point': 'Collection',
+          },
+          // defaultValue: 'Main Lab',
+        }),
+      },
+      {
         dataField: "price",
         text: "Price",
         sort: true,
-        filter: textFilter(),
+        formatter: (cellContent, referrelFeeLab) => (
+          <>
+            {referrelFeeLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </>
+        ), filter: textFilter(),
       },
       {
         dataField: "is_eqa_participation",
@@ -287,7 +315,7 @@ class ReferrelLabFee extends Component {
         sort: true,
         formatter: (cellContent, referrelFeeLab) => (
           <>
-            {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed()}
+            {(referrelFeeLab.price * referrelFeeLab.shared_percentage).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </>
         ), filter: textFilter(),
       },

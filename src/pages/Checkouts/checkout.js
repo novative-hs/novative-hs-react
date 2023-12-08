@@ -42,6 +42,7 @@ import {
   getDonationCheck,
 } from "store/checkout/actions";
 import { getTerritoriesList } from "store/territories-list/actions";
+import { getPatientProfile } from "store/labmarket/actions";
 
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 
@@ -54,13 +55,14 @@ class Checkout extends Component {
       checkoutItems: [],
       territoriesList: [],
       donationCheck: [],
+      patientProfile: [],
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       user_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
-      patient_name: "",
+      patient_name:"", // Set default to an empty string if patientProfile.name is undefined
       patient_age: "",
       patient_gender: "Male",
       patient_phone: "",
@@ -351,7 +353,7 @@ class Checkout extends Component {
   };
 
   handleProceedClick4 = () => {
-    const canProceed = this.checkForValidations();
+    const canProceed = this.checkForValidationssample();
     if (canProceed) {
       this.setState({
         checkoutData: {
@@ -363,40 +365,15 @@ class Checkout extends Component {
           ageFormat: this.state.ageFormat,
           patient_gender: this.state.patient_gender,
           patient_phone: this.state.patient_phone,
-
-          // relationsip_with_patient: this.state.relationsip_with_patient,
-          // patient_address: this.state.patient_address,
-          // city_id: this.state.city_id,
-          // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
-          // payment_method: this.state.payment_method,
-          // card_number: this.state.card_number,
-          // name_on_card: this.state.name_on_card,
-          // expiry_date: this.state.expiry_date,
-          // cvv_code: this.state.cvv_code,
         },
       });
-
-      // API call to get the checkout items
-      // const { onAddCheckoutData } = this.props;
-      // setTimeout(() => {
-      //   onAddCheckoutData(this.state.checkoutData, this.state.user_id);
-      // }, 2000);
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       setTimeout(() => {
         if (this.props.checkedoutData) {
           this.toggleTab("4");
         }
       }, 1000);
-
-      // setTimeout(() => {
-      //   this.setState({ checkedoutData: this.props.checkedoutData });
-
-      //   // If checkout operation is successful.
-      //   if (this.props.checkedoutData) {
-      //     this.props.history.push("/nearby-labs");
-      //   }
-      // }, 4000);
     }
   };
 
@@ -413,70 +390,25 @@ class Checkout extends Component {
           ageFormat: this.state.ageFormat,
           patient_gender: this.state.patient_gender,
           patient_phone: this.state.patient_phone,
-
-          // relationsip_with_patient: this.state.relationsip_with_patient,
-          // patient_address: this.state.patient_address,
-          // city_id: this.state.city_id,
-          // patient_district: this.state.patient_district,
           appointment_requested_at: this.state.appointment_requested_at,
-          // payment_method: this.state.payment_method,
-          // card_number: this.state.card_number,
-          // name_on_card: this.state.name_on_card,
-          // expiry_date: this.state.expiry_date,
-          // cvv_code: this.state.cvv_code,
         },
       });
-
-      // API call to get the checkout items
-      // const { onAddCheckoutData } = this.props;
-      // setTimeout(() => {
-      //   onAddCheckoutData(this.state.checkoutData, this.state.user_id);
-      // }, 2000);
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       setTimeout(() => {
         if (this.props.checkedoutData) {
           this.toggleTab("2");
         }
       }, 1000);
-
-      // setTimeout(() => {
-      //   this.setState({ checkedoutData: this.props.checkedoutData });
-
-      //   // If checkout operation is successful.
-      //   if (this.props.checkedoutData) {
-      //     this.props.history.push("/nearby-labs");
-      //   }
-      // }, 4000);
     }
   };
 
   checkForValidations = () => {
-    // Check if patient's name, age and appointment Booked for is filled
     if (
       this.state.patient_name &&
-      // this.state.patient_address &&
-      // this.state.city_id &&
-      // this.state.patient_district &&
       this.state.patient_age &&
       this.state.ageFormat &&
       this.state.appointment_requested_at
     ) {
-      // Check if patient's card information is filled in case of payment method is Card
-      // if (this.state.payment_method == "Card") {
-      //   if (
-      //     this.state.card_number &&
-      //     this.state.name_on_card &&
-      //     this.state.expiry_date &&
-      //     this.state.cvv_code
-      //   ) {
-      //     this.setState({ isRequiredFilled: true });
-      //     return true;
-      //   } else {
-      //     this.setState({ isRequiredFilled: false });
-      //     return false;
-      //   }
-      // }
-      // // If patient's payment method is not Card (Cash) then set isRequiredFilled to true
       this.setState({ isRequiredFilled: true });
       return true;
     } else {
@@ -484,11 +416,46 @@ class Checkout extends Component {
       return false;
     }
   };
-
-
-
-
+  checkForValidationssample = () => {
+    if (
+      this.state.is_home_sampling_availed === 'Yes' ||
+      this.state.is_state_sampling_availed === 'Yes'
+    ) {
+      const { patient_address } = this.state;
+  
+      // Check if all the required fields for card payment are filled
+      if (patient_address) {
+        this.setState({ isRequiredFilled: true });
+        return true;
+      } else {
+        this.setState({ isRequiredFilled: false });
+        return false;
+      }
+    } else {
+      this.setState({ isRequiredFilled: true });
+      return true;
+    }
+  };
+  
   componentDidMount() {
+    const { onGetPatientProfile } = this.props;
+
+    // Assuming onGetPatientProfile is synchronous
+    onGetPatientProfile(this.state.user_id);
+
+    // Now you can safely access patientProfile from props
+    const { patientProfile } = this.props;
+
+    // Update the state with the fetched patientProfile
+    setTimeout(() => {
+      this.setState({
+        patientProfile,
+        patient_name: this.props.patientProfile.name, // Set patient_name if needed
+        patient_phone: this.props.patientProfile.phone, // Set patient_name if needed
+        // Add other state updates as needed
+      });
+    }, 1000);
+    console.log("state in the componentdidmount", patientProfile, this.state.patient_name);
     const { onGetDonationCheck } = this.props;
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       setTimeout(() => {
@@ -753,6 +720,8 @@ class Checkout extends Component {
     //   hour12: false, // 24-hour format
     //   timeZoneName: 'short',
     // });
+    const { patientProfile } = this.props;
+    const { onGetPatientProfile } = this.props;
     return (
       console.log(this.state.donationCheck),
       (
@@ -791,8 +760,9 @@ class Checkout extends Component {
                           className={classnames({
                             active: this.state.activeTab === "2",
                           })}
-                          onClick={this.handleProceedClick}
-
+                          onClick={() => {
+                            this.toggleTab("2");
+                          }}
                         >
                           <i className="bx bx-home d-block check-nav-icon font-size-18" />
                           {/* <p className="font-weight-bold mb-4">Home Sample</p> */}
@@ -1048,25 +1018,23 @@ class Checkout extends Component {
                               </p>
                               <Container>
                                 <Form>
-                                  <FormGroup className="mb-4" row>
-                                    <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                      Patient Name
-                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
-                                        *
-                                      </span>
-                                    </Label>
-                                    <Col md="10">
-                                      <Input
-                                        type="text"
-                                        className="form-control"
-                                        name="patient_name"
-                                        placeholder="Enter your name"
-                                        onChange={(e) =>
-                                          this.setState({ patient_name: e.target.value })
-                                        }
-                                      />
-                                    </Col>
-                                  </FormGroup>
+                                <FormGroup className="mb-4" row>
+  <Label htmlFor="patient-name" md="2" className="col-form-label">
+    Patient Name
+    <span style={{ color: "#f46a6a" }} className="font-size-18">
+      *
+    </span>
+  </Label>
+  <Col md="10">
+    <Input
+      type="text"
+      className="form-control"
+      name="patient_name"
+      value={this.state.patient_name}  // Use this.state.patient_name as the value
+      onChange={(e) => this.setState({ patient_name: e.target.value })}
+    />
+  </Col>
+</FormGroup>
 
                                   <FormGroup className="mb-4" row>
                                     <Label md="2" className="col-form-label">
@@ -1083,13 +1051,42 @@ class Checkout extends Component {
                                         type="text"
                                         className="form-control"
                                         name="patient_phone"
-                                        placeholder="Enter Contact no of Patient"
+                                        // placeholder="Enter Contact no of Patient"
+                                        value={this.state.patient_phone}  // Use this.state.patient_name as the value
                                         onChange={e =>
                                           this.setState({
                                             patient_phone: e.target.value,
                                           })
                                         }
                                       />
+                                    </Col>
+                                  </FormGroup>
+                                  
+                                  <FormGroup className="mb-4" row>
+                                    <Label md="2" className="col-form-label">
+                                      Patient Gender
+                                      <span
+                                        style={{ color: "#f46a6a" }}
+                                        className="font-size-18"
+                                      >
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md="10">
+                                      <select
+                                        className="form-control select2"
+                                        title="Gender"
+                                        name="patient_gender"
+                                        onChange={e =>
+                                          this.setState({
+                                            patient_gender: e.target.value,
+                                          })
+                                        }
+                                      >
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                      </select>
                                     </Col>
                                   </FormGroup>
                                   <FormGroup className="mb-4" row>
@@ -1122,35 +1119,6 @@ class Checkout extends Component {
                                         <option value="months">Months</option>
                                         <option value="days">Days</option>
                                       </Input>
-                                    </Col>
-                                  </FormGroup>
-
-
-                                  <FormGroup className="mb-4" row>
-                                    <Label md="2" className="col-form-label">
-                                      Patient Gender
-                                      <span
-                                        style={{ color: "#f46a6a" }}
-                                        className="font-size-18"
-                                      >
-                                        *
-                                      </span>
-                                    </Label>
-                                    <Col md="10">
-                                      <select
-                                        className="form-control select2"
-                                        title="Gender"
-                                        name="patient_gender"
-                                        onChange={e =>
-                                          this.setState({
-                                            patient_gender: e.target.value,
-                                          })
-                                        }
-                                      >
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                      </select>
                                     </Col>
                                   </FormGroup>
 
@@ -1486,125 +1454,85 @@ class Checkout extends Component {
 
 
                                   {this.state.is_home_sampling_availed === "Yes" && (
-                                    <>
-                                      <FormGroup className="mb-4" row>
-                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                          Address
-                                          <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
-                                        </Label>
-                                        <Col md="10">
-                                          <div style={inputGroupStyle}>
-                                            <Input
-                                              // defaultValue={this.state.patient_address}
-                                              onChange={e => this.onChangeAddress(e)}
-                                              id="pac-input"
-                                              type="text"
-                                              className="form-control"
-                                              placeholder="Search Location..."
-                                              value={this.state.patient_address}
-                                            />
-                                            {this.state.patient_address ? (
-                                              <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
-                                                <i className="mdi mdi-close-circle"></i>
-                                              </span>
-                                            ) : (
-                                              <span style={iconStyle} onClick={this.handleLocatorIconClick}>
-                                                <i className="bx bx-target-lock"><span style={{ color: "black", marginLeft: "4px" }}>Current Location</span></i>
-                                              </span>
-                                            )}
-                                          </div>
-                                        </Col>
-                                      </FormGroup>
+  <>
+    <FormGroup className="mb-4" row>
+      <Label htmlFor="patient-name" md="2" className="col-form-label">
+        Address
+        <span style={{ color: "#f46a6a" }} className="font-size-18">
+          *
+        </span>
+      </Label>
+      <Col md="10">
+        <div style={inputGroupStyle}>
+          <Input
+            onChange={e => this.onChangeAddress(e)}
+            id="pac-input"
+            type="text"
+            className="form-control"
+            placeholder="Search Location..."
+            value={this.state.patient_address}
+            required={this.state.is_home_sampling_availed === "Yes"} // Set required based on the condition
+          />
+          {this.state.patient_address ? (
+            <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+              <i className="mdi mdi-close-circle"></i>
+            </span>
+          ) : (
+            <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+              <i className="bx bx-target-lock">
+                <span style={{ color: "black", marginLeft: "4px" }}>Current Location</span>
+              </i>
+            </span>
+          )}
+        </div>
+        {/* Error message */}
+        {this.state.is_home_sampling_availed === "Yes" && !this.state.patient_address && (
+          <small className="text-danger">Address is required</small>
+        )}
+      </Col>
+    </FormGroup>
+  </>
+)}
 
-                                    </>
-                                  )}
                                   {this.state.is_state_sampling_availed === "Yes" && (
-                                    <>
-                                      <FormGroup className="mb-4" row>
-                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                          Address
-                                          <span style={{ color: "#f46a6a" }} className="font-size-18"></span>
-                                        </Label>
-                                        <Col md="10">
-                                          <div style={inputGroupStyle}>
-                                            <Input
-                                              // defaultValue={this.state.patient_address}
-                                              onChange={e => this.onChangeAddress(e)}
-                                              id="pac-input"
-                                              type="text"
-                                              className="form-control"
-                                              placeholder="Search Location..."
-                                              value={this.state.patient_address}
-                                            />
-                                            {this.state.patient_address ? (
-                                              <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
-                                                <i className="mdi mdi-close-circle"></i>
-                                              </span>
-                                            ) : (
-                                              <span style={iconStyle} onClick={this.handleLocatorIconClick}>
-                                                <i className="bx bx-target-lock"><span style={{ color: "black", marginLeft: "4px" }}>Current Location</span></i>
-                                              </span>
-                                            )}
-                                          </div>
-                                        </Col>
-                                      </FormGroup>
-
-                                      <FormGroup className="mb-4" row>
-                                        <Col md="2"></Col>
-                                        <Col md="10">
-                                          <Card className="bg-primary bg-soft rounded" >
-                                            {this.state.homeSampledTests.map((homeSampledTest, key) => {
-                                              if (homeSampledTest.state_sampling_charges && homeSampledTest.state_sampling_time) {
-                                                return (
-                                                  <div key={"homeSampledTest" + key}>
-                                                    <div className="row font-size-12" style={{ margin: '5px' }}>
-                                                      <Col sm="4" >
-                                                        <span className="text-primary">Lab Name: </span>
-                                                        <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
-                                                          {homeSampledTest.lab_name}
-                                                        </span></Col>
-                                                      <Col sm="4" >
-                                                        <span className="text-primary">Urgent Sampling Time: </span>
-                                                        <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
-                                                          {homeSampledTest.state_sampling_time}h
-                                                        </span></Col>
-                                                      <Col sm="4" >
-                                                        <span className="text-primary">Urgent Sampling Charges : </span>
-                                                        <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
-                                                          {homeSampledTest.state_sampling_charges}
-                                                        </span></Col>
-
-                                                      <style>
-                                                        {`
-                                                  .blinking-text {
-                                                    animation: blinking 1s infinite;
-                                                    color: red; /* Your desired text color */
-                                                    background-color: black; /* Your desired background color */
-                                                  }
-
-                                                  @keyframes blinking {
-                                                    0% {
-                                                      opacity: 1;
-                                                    }
-                                                    50% {
-                                                      opacity: 0;
-                                                    }
-                                                    100% {
-                                                      opacity: 1;
-                                                    }
-                                                  }
-                                                `}
-                                                      </style>
-                                                    </div>
-                                                  </div>
-                                                );
-                                              } else {
-                                                return null; // Skip rendering if sampling charges and fees are missing
-                                              }
-                                            })}
-                                          </Card></Col>
-                                      </FormGroup>
-                                    </>
+                                   <>
+                                   <FormGroup className="mb-4" row>
+                                     <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                       Address
+                                       <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                         *
+                                       </span>
+                                     </Label>
+                                     <Col md="10">
+                                       <div style={inputGroupStyle}>
+                                         <Input
+                                           onChange={e => this.onChangeAddress(e)}
+                                           id="pac-input"
+                                           type="text"
+                                           className="form-control"
+                                           placeholder="Search Location..."
+                                           value={this.state.patient_address}
+                                           required={this.state.is_home_sampling_availed === "Yes"} // Set required based on the condition
+                                         />
+                                         {this.state.patient_address ? (
+                                           <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+                                             <i className="mdi mdi-close-circle"></i>
+                                           </span>
+                                         ) : (
+                                           <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+                                             <i className="bx bx-target-lock">
+                                               <span style={{ color: "black", marginLeft: "4px" }}>Current Location</span>
+                                             </i>
+                                           </span>
+                                         )}
+                                       </div>
+                                       {/* Error message */}
+                                       {this.state.is_home_sampling_availed === "Yes" && !this.state.patient_address && (
+                                         <small className="text-danger">Address is required</small>
+                                       )}
+                                     </Col>
+                                   </FormGroup>
+                                 </>
 
                                   )}
 
@@ -1697,9 +1625,8 @@ class Checkout extends Component {
                                       <div className="text-end">
                                         <button
                                           component={Link}
-                                          onClick={() => {
-                                            this.toggleTab("4");
-                                          }}
+                                          onClick={this.handleProceedClick4}
+
                                           to="/checkout"
                                           className="btn btn-success mb-4"
                                         >
@@ -2304,11 +2231,14 @@ Checkout.propTypes = {
   checkedoutData: PropTypes.array,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  onGetPatientProfile: PropTypes.func,
+  patientProfile: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
   homeSampledTests: state.checkout.homeSampledTests,
   donationCheck: state.checkout.donationCheck,
+  patientProfile: state.LabMarket.patientProfile,
   checkoutItems: state.checkout.checkoutItems,
   checkedoutData: state.checkout.checkedoutData,
   territoriesList: state.territoriesList.territoriesList,
@@ -2317,6 +2247,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetHomeSampledTests: id => dispatch(getHomeSampledTests(id)),
   onGetDonationCheck: id => dispatch(getDonationCheck(id)),
+  onGetPatientProfile: id => dispatch(getPatientProfile(id)),
   onGetCheckoutItems: (
     id,
     is_home_sampling_availed,

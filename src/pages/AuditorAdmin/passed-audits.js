@@ -15,7 +15,7 @@ import {
   ModalBody,
 ModalHeader,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -56,6 +56,7 @@ class PassedAudits extends Component {
           dataField: "lab_name",
           text: "Lab name",
           sort: true,
+          style:{ width: "300px" , textAlign: "left"},
           formatter: (cellContent, passedAudit) => (
             <>
               <span>
@@ -69,7 +70,7 @@ class PassedAudits extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "lab_address",
@@ -86,7 +87,7 @@ class PassedAudits extends Component {
                 {new Date(audit.generated_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -96,12 +97,13 @@ class PassedAudits extends Component {
             <>
               <span>{new Date(audit.assigned_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "auditor_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "audited_at",
@@ -111,7 +113,7 @@ class PassedAudits extends Component {
             <>
               <span>{new Date(audit.audited_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "Report",
@@ -387,6 +389,7 @@ class PassedAudits extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

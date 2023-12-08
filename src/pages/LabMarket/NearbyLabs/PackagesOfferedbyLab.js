@@ -73,6 +73,8 @@ class TestsOffered extends Component {
       page: 1,
       searchQuery: "", // New state property for search query
       totalPage: 5, //replace this with total pages of data
+      itemsInCart: [],
+
     };
     this.toggleTab = this.toggleTab.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
@@ -161,6 +163,7 @@ class TestsOffered extends Component {
   handleAddToCart = (cart) => {
     const { onAddToCart } = this.props;
   
+    // Check if the item is already in the cart based on user type
     if (!this.state.user_id) {
       // Check if the item is already in the cart
       if (cart.guest_id === this.props.match.params.guest_id) {
@@ -198,6 +201,10 @@ class TestsOffered extends Component {
   
       onAddToCart(cart, this.props.match.params.uuid);
     }
+  
+    // Update the state to include the newly added item in the cart
+    const updatedItemsInCart = [...this.state.itemsInCart, cart];
+    this.setState({ itemsInCart: updatedItemsInCart });
   
     this.showSuccessMessage("Item added Successfully");
   };
@@ -1049,7 +1056,7 @@ class TestsOffered extends Component {
               {filteredTests.length > 0 ? (
                 filteredTests.map((offeredTest, key) => (
                   <Col xl="4" sm="6" key={"_col_" + key}>
-                  <Card>
+                  <Card style={{ height: "95%" }}>
                     <CardBody>
                       {/* <div className="product-img position-relative">
                         <img
@@ -1358,13 +1365,14 @@ class TestsOffered extends Component {
                           </span> */}
                         </div>
                         <Button
-                          type="button"
-                          color="primary"
-                          className="btn mt-3 me-1"
-                          onClick={() => this.handleAddToCart(offeredTest)}
-                        >
-                          <i className="bx bx-cart me-2" /> Add to cart
-                        </Button>
+  type="button"
+  color={this.state.itemsInCart.includes(offeredTest) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.state.itemsInCart.includes(offeredTest) ? ' disabled' : ''}`}
+  onClick={() => this.handleAddToCart(offeredTest)}
+  disabled={this.state.itemsInCart.includes(offeredTest)} // Disable the button if the item is in the cart
+>
+  <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(offeredTest) ? 'Already Added' : 'Add to cart'}
+</Button>
                       </div>
                     </CardBody>
                   </Card>

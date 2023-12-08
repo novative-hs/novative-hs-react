@@ -61,6 +61,27 @@ class PendingLabs extends Component {
           formatter: (cellContent, pendingLab) => <>{pendingLab.id}</>,
         },
         {
+          dataField: "city",
+          text: "Lab City",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span style={{
+                width: '200px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'center', // Align text to the left
+                display: 'block',
+              }}>
+              {pendingLab.city}
+
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
           dataField: "name",
           text: "Lab name",
           sort: true,
@@ -88,6 +109,17 @@ class PendingLabs extends Component {
           ),filter: textFilter(),
         },
         {
+          dataField: "type",
+          text: "Lab Type",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+                   {pendingLab.type}
+                  
+            </>
+          ),filter: textFilter(),  
+        },
+        {
           dataField: "address",
           text: "Address",
           sort: true,   
@@ -112,6 +144,17 @@ class PendingLabs extends Component {
         //   text: "City",
         //   sort: true,
         // },
+        {
+          dataField: "landline",
+          text: "Lab Phone No",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+                   {pendingLab.landline}
+                  
+            </>
+          ),filter: textFilter(),  
+        },
         {
           dataField: "registered_by",
           text: "Registered by",
@@ -143,17 +186,7 @@ class PendingLabs extends Component {
             </>
           ),filter: textFilter(),
         },
-        {
-          dataField: "landline",
-          text: "Lab Phone No",
-          sort: true,
-          formatter: (cellContent, pendingLab) => (
-            <>
-                   {pendingLab.landline}
-                  
-            </>
-          ),filter: textFilter(),  
-        },
+        
         // {
         //   dataField: "registered_at",
         //   text: "Registered at",
@@ -231,8 +264,6 @@ class PendingLabs extends Component {
   openLabModal = (e, arg) => {
     this.setState({
       LabModal: true,
-      lab_address: arg.lab_address,
-      lab_city: arg.lab_city,
       lab_phone: arg.lab_phone,
       lab_email: arg.lab_email,
     });
@@ -416,41 +447,6 @@ class PendingLabs extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Lab Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.lab_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      City
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.lab_city
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">

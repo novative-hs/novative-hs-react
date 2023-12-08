@@ -15,7 +15,7 @@ import {
   ModalHeader,
   ModalBody,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -68,7 +68,7 @@ class ResolvedComplaintsLabhazir extends Component {
             <>
               <strong>{complaint.complaint_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -87,7 +87,7 @@ class ResolvedComplaintsLabhazir extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -119,6 +119,7 @@ class ResolvedComplaintsLabhazir extends Component {
           dataField: "csr_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -130,12 +131,13 @@ class ResolvedComplaintsLabhazir extends Component {
                 {new Date(complaint.assigned_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "complainee",
@@ -147,7 +149,7 @@ class ResolvedComplaintsLabhazir extends Component {
                   {resolvedComplaintLabhazir.labhazir_complainee}{" "}
                   {resolvedComplaintLabhazir.lab_name}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "handled_at",
@@ -159,7 +161,7 @@ class ResolvedComplaintsLabhazir extends Component {
                 {new Date(complaint.handled_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
       ],
     };
@@ -414,6 +416,7 @@ class ResolvedComplaintsLabhazir extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

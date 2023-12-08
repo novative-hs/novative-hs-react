@@ -18,7 +18,7 @@ import {
   Label,
   Input,
 } from "reactstrap";
-
+import filterFactory, { textFilter} from 'react-bootstrap-table2-filter';
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -69,7 +69,7 @@ class LabAdvertisementRequestsList extends Component {
           hidden: false,
           formatter: (cellContent, labAdvertisementRequest) => (
             <>{labAdvertisementRequest.id}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           text: "Lab Name",
@@ -78,7 +78,7 @@ class LabAdvertisementRequestsList extends Component {
           hidden: false,
           formatter: (cellContent, labAdvertisementRequest) => (
             <>{labAdvertisementRequest.lab_name}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "poster",
@@ -110,17 +110,19 @@ class LabAdvertisementRequestsList extends Component {
               </Link>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "title",
           text: "Title",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "request_status",
           text: "Status",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -326,6 +328,7 @@ class LabAdvertisementRequestsList extends Component {
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
+                                      filter={ filterFactory()}
                                       ref={this.node}
                                     />
 

@@ -17,7 +17,7 @@ import {
   Button,
   ModalHeader,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -84,7 +84,7 @@ class InProcessComplaints extends Component {
             <>
               <strong>{complaint.complaint_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -103,7 +103,7 @@ class InProcessComplaints extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -136,6 +136,7 @@ class InProcessComplaints extends Component {
           dataField: "csr_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -147,12 +148,13 @@ class InProcessComplaints extends Component {
                 {new Date(complaint.assigned_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "complainee",
@@ -164,12 +166,13 @@ class InProcessComplaints extends Component {
                   {inProcessComplaint.labhazir_complainee}{" "}
                   {inProcessComplaint.lab_name}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "city",
           text: "Office",
-          sort: true,      
+          sort: true, 
+          filter: textFilter(),    
         },
         {
           dataField: "data",
@@ -503,6 +506,7 @@ class InProcessComplaints extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

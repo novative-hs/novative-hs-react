@@ -16,7 +16,7 @@ import {
   ModalHeader,
 } from "reactstrap";
 
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -71,6 +71,7 @@ class PendingAudits extends Component {
           dataField: "lab_name",
           text: "Lab name",
           sort: true,
+          style:{ width: "300px" , textAlign: "left"},
           formatter: (cellContent, pendingAudit) => (
             <>
               <span>
@@ -84,7 +85,7 @@ class PendingAudits extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "lab_phone",
@@ -110,6 +111,7 @@ class PendingAudits extends Component {
           dataField: "office",
           text: "Office",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "generated_at",
@@ -121,7 +123,7 @@ class PendingAudits extends Component {
                 {new Date(audit.generated_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "generated_at",
@@ -134,7 +136,7 @@ class PendingAudits extends Component {
               {new Date().getDate() - new Date(audit.generated_at).getDate()} days
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "data",
@@ -353,6 +355,7 @@ class PendingAudits extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

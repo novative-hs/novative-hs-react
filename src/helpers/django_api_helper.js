@@ -980,6 +980,7 @@ export const getNearbyTests = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("test_name", data.test_name);
+  formData.append("name", data.name);
   console.log("donorSetting: ", data)
 
   console.log("In near by lsbd: ", data)
@@ -1026,11 +1027,17 @@ export const getNearbyProfiles = data => {
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("donorSetting: ", data);
+  formData.append("name", data.name);
 
   return axios.post(`${url.GET_NEARBY_PROFILES}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
+
+export const getTestss = () =>
+  get(url.GET_TESTSS, {
+    headers: getHeader(authHeader()),
+  });
 
 export const getProfiles = () =>
   get(url.GET_PROFILES, {
@@ -1055,7 +1062,7 @@ export const getNearbyPackages = data => {
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("packages: ", data);
-
+  formData.append("name", data.name);
 
   // console.log("in packages", data);
 
@@ -1090,6 +1097,7 @@ export const getNearbyRadiology = data => {
   formData.append("LabType", data.LabType);
   formData.append("test_name", data.test_name);
   console.log("radiology: ", data);
+  formData.append("name", data.name);
 
   return axios.post(`${url.GET_NEARBY_RADIOLOGY}`, formData, {
     headers: getHeader(authHeader()),

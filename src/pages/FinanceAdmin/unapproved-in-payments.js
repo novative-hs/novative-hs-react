@@ -400,7 +400,7 @@ class PaymentStatussList extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle"}
+                                      classes={"table align-middle "}
                                       bordered={false}
                                       // striped={true}
                                       columns={columns}

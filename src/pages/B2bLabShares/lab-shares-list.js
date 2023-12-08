@@ -54,6 +54,12 @@ class B2bLabSharesList extends Component {
           dataField: "name",
           text: "Lab Name",
           sort: true,
+          style: { width: "400px"},
+          formatter: (cellContent, b2bLabShare) => (
+            <span className="text-start">
+              <p>{b2bLabShare.name}</p>
+            </span>
+          ),
         },
         {
           dataField: "city",

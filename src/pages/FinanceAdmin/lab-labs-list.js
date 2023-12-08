@@ -68,12 +68,23 @@ class PendingB2BClients extends Component {
           dataField: "name",
           text: "Lab Name",
           sort: true,
+
           formatter: (cellContent, pendingB2BClient) => (
             <>
+                          <span style={{
+                width: '300px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
               <Link to={`/All-Donation-Appointments/${pendingB2BClient.id}`}>
                 {pendingB2BClient.name}
               </Link>
+              </span>
             </>
           ),filter: textFilter(),
         },

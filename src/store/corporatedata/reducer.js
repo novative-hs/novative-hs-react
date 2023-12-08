@@ -1,6 +1,6 @@
 import {
-  // GET_CEMPLOYEE_DATAS_SUCCESS,
-  // GET_CEMPLOYEE_DATAS_FAIL,
+  GET_LABCORPORATE_SUCCESS,
+  GET_LABCORPORATE_FAIL,
   ADD_CEMPLOYEE_DATA_SUCCESS,
   ADD_CEMPLOYEE_DATA_FAIL,
   GET_CEMPLOYEES_SUCCESS,
@@ -18,17 +18,17 @@ const INIT_STATE = {
 
 const cemployeeDatas = (state = INIT_STATE, action) => {
   switch (action.type) {
-    // case GET_CEMPLOYEE_DATAS_SUCCESS:
-    //   return {
-    //     ...state,
-    //     cemployeeDatas: action.payload.data,
-    //   };
+    case GET_LABCORPORATE_SUCCESS:
+      return {
+        ...state,
+        cemployeeDatas: action.payload.data,
+      };
 
-    // case GET_CEMPLOYEE_DATAS_FAIL:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   };
+    case GET_LABCORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_CEMPLOYEES_SUCCESS:
       return {
         ...state,

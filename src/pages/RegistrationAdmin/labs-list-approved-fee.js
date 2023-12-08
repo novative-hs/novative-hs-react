@@ -48,6 +48,8 @@ class LabsLists extends Component {
         landline: '',
         email: '',
         address: '',
+        city: '',
+        type: '',
       },
     };
   }
@@ -101,7 +103,9 @@ class LabsLists extends Component {
     const filteredLabsList = labsListApprovedFee.filter((lab) => {
       return lab.lab_list.some((lab_list) => {
         return (
+          lab_list.city.toLowerCase().includes(filters.city.toLowerCase()) &&
           lab_list.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+          lab_list.type.toLowerCase().includes(filters.type.toLowerCase()) &&
           lab_list.landline.includes(filters.landline) &&
           lab_list.email.toLowerCase().includes(filters.email.toLowerCase()) &&
           lab_list.address.toLowerCase().includes(filters.address.toLowerCase())
@@ -110,7 +114,9 @@ class LabsLists extends Component {
     });
 
     const columns = [
+      { dataField: 'city', text: 'City' },
       { dataField: 'name', text: 'Lab Name' },
+      { dataField: 'type', text: 'Lab Type' },
       { dataField: 'landline', text: 'Phone' },
       { dataField: 'email', text: 'Email' },
       { dataField: 'address', text: 'Address' },
@@ -125,7 +131,7 @@ class LabsLists extends Component {
             placeholder={`Filter by ${column.text}`}
             value={filters[column.dataField]}
             onChange={(e) => this.handleFilterChange(column.dataField, e.target.value)}
-            style={{ width: '200px', padding: '6px' }}  // Adjust the width and padding as needed
+            style={{ width: '170px', padding: '6px' }}  // Adjust the width and padding as needed
           />
         </div>
       </th>
@@ -164,11 +170,13 @@ class LabsLists extends Component {
                               <React.Fragment key={key}>
                                 {lab.lab_list.map((lab_list, key) => (
                                   <tr key={key}>
+                                    <td className="text-start">{lab_list.city}</td>
                                     <td className="text-start" style={{ whiteSpace: 'pre-wrap', width: '300px' }}>
                                       <b>
                                         <Link to={`/shared-percentage-pending-Fee/${lab_list.id}`}>{lab_list.name}</Link>
                                       </b>
                                     </td>
+                                    <td className="text-start">{lab_list.type}</td>
                                     <td className="text-start">{lab_list.landline}</td>
                                     <td className="text-start">{lab_list.email}</td>
                                     <td className="text-start" style={{ whiteSpace: 'pre-wrap' }}>

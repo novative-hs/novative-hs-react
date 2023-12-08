@@ -16,7 +16,7 @@ import {
   ModalBody,
   Label,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -64,7 +64,7 @@ class DiscountLabHazirList extends Component {
             <>
               <strong>{discountLabHazir.id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -83,7 +83,7 @@ class DiscountLabHazirList extends Component {
                 </span>
               
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "discount",
@@ -95,7 +95,7 @@ class DiscountLabHazirList extends Component {
                 <span>{(discountLabHazir.discount*100).toFixed()}%</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "start_date",
@@ -111,7 +111,7 @@ class DiscountLabHazirList extends Component {
                 <span>{discountLabHazir.start_date}</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "end_date",
@@ -127,7 +127,7 @@ class DiscountLabHazirList extends Component {
                 <span>{discountLabHazir.end_date}</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -342,12 +342,13 @@ class DiscountLabHazirList extends Component {
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
                                       classes={
-                                        "table align-middle table-nowrap table-hover"
+                                        "table align-middle table-hover"
                                       }
                                       bordered={false}
                                       striped={false}
                                       headerWrapperClasses={"table-light"}
                                       responsive
+                                      filter={filterFactory()}
                                       ref={this.node}
                                     />
 

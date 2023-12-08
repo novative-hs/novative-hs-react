@@ -52,6 +52,7 @@ import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
+import { getLabNamesList } from "store/lab-names/actions";
 
 
 class NearbyProfiles extends Component {
@@ -69,6 +70,8 @@ class NearbyProfiles extends Component {
       Profiles: [],
       nearbyProfiles: [],
       territoriesList: [],
+      labNamesList: [],
+      name: "",
       activeTab: "1",
       address: "",
       test_name: "",
@@ -86,6 +89,7 @@ class NearbyProfiles extends Component {
       success: "",
       error: "",
       discountData: [],
+      itemsInCart: [],
       loading: true, // Add loading state property
       filters: {
         discount: [],
@@ -176,6 +180,7 @@ class NearbyProfiles extends Component {
         test_name: this.state.test_name,
         km: this.state.km,
         LabType: this.state.LabType,
+        name: this.state.name,
 
       };
 
@@ -359,6 +364,45 @@ class NearbyProfiles extends Component {
   handlePageClick = page => {
     this.setState({ page });
   };
+  onChangeLabName = (selectedGroup) => {
+    this.setState({ name: selectedGroup.value });
+
+    // Call nearby labs API only if the search type changes to current location
+
+    const { onGetNearbyProfiles } = this.props;
+
+    var latitude;
+    var longitude;
+
+    if (this.state.search_type == "Current Location") {
+      latitude = this.state.currentLatitude;
+      longitude = this.state.currentLongitude;
+    } else {
+      latitude = "";
+      longitude = "";
+    }
+
+    if (this)
+      var data = {
+        latitude: latitude,
+        longitude: longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+        name: selectedGroup.value,
+        test_name: this.state.test_name,
+        LabType: this.state.LabType,
+        km: this.state.km,
+        page: this.state.page,
+      };
+
+      onGetNearbyProfiles(data);
+  
+      setTimeout(() => {
+        this.setState({ nearbyProfiles: this.props.nearbyProfiles });
+      }, 1000);
+  };
+
 
   onchangename = (selectedGroup) => {
     this.setState({ test_name: selectedGroup.value }, () => {
@@ -385,6 +429,8 @@ class NearbyProfiles extends Component {
         test_name: this.state.test_name, // Now using the ID of the selected profile
         LabType: this.state.LabType,
         km: this.state.km,
+        name: this.state.name,
+
       };
   
       onGetNearbyProfiles(data);
@@ -414,6 +460,7 @@ class NearbyProfiles extends Component {
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
+      name: this.state.name,
 
     };
     // region wise advertisement
@@ -444,6 +491,7 @@ class NearbyProfiles extends Component {
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
+      name: this.state.name,
 
     };
     // region wise advertisement
@@ -475,6 +523,7 @@ class NearbyProfiles extends Component {
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
+      name: this.state.name,
 
     };
     // region wise advertisement
@@ -519,6 +568,8 @@ class NearbyProfiles extends Component {
           LabType: this.state.LabType,
           km: this.state.km,
           page: this.state.page,
+          name: this.state.name,
+
         };
 
         onGetNearbyProfiles(data);
@@ -550,6 +601,8 @@ class NearbyProfiles extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
+        name: this.state.name,
+
       };
 
       onGetNearbyProfiles(data);
@@ -576,6 +629,8 @@ class NearbyProfiles extends Component {
       LabType: this.state.LabType,
       km: this.state.km,
       page: this.state.page,
+      name: this.state.name,
+
     };
 
     onGetNearbyProfiles(data);
@@ -615,6 +670,7 @@ class NearbyProfiles extends Component {
   handleAddToCart = (cart) => {
     const { onAddToCart } = this.props;
   
+    // Check if the item is already in the cart based on user type
     if (!this.state.user_id) {
       // Check if the item is already in the cart
       if (cart.guest_id === this.props.match.params.guest_id) {
@@ -652,6 +708,11 @@ class NearbyProfiles extends Component {
   
       onAddToCart(cart, this.props.match.params.uuid);
     }
+  
+    // Update the state to include the newly added item in the cart
+    const updatedItemsInCart = [...this.state.itemsInCart, cart];
+    this.setState({ itemsInCart: updatedItemsInCart });
+
   
     this.showSuccessMessage("Item added Successfully");
   };
@@ -763,6 +824,10 @@ shouldHighlightTestsLink() {
         value: this.props.territoriesList[i].city,
       });
     }
+    const labNames = this.props.labNamesList.map((labnameslist) => ({
+      label: labnameslist.name,
+      value: labnameslist.name, // Use the profile ID as the value
+    }));
     
     return (
       <React.Fragment>
@@ -1495,14 +1560,11 @@ shouldHighlightTestsLink() {
                               }}
                               />
                             </div>
-                          </Col>
-
-
-
-                          <Col xs="3" sm="3" md="2" lg="2">
+                          </Col> 
+                          <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
-                                for="LabType2"
+                                for="LabType"
                                 className="form-label"
                                 style={{
                                   fontSize: window.innerWidth <= 576 ? '7px' : '12px',
@@ -1510,26 +1572,27 @@ shouldHighlightTestsLink() {
                                   fontWeight: "bold",
                                 }}
                               >
-                                Search Types
+                                Search By Lab Name
                               </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                                style={{
+                              <Select
+                               name="labnamwslist"
+                               component="Select"
+                               onChange={this.onChangeLabName}
+                               value={labNames.find(
+                                 (item) => item.value === this.state.name
+                               )} // Use find to match the selected value in the options
+                               className="defautSelectParent"
+                               options={labNames}
+                               styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
                                   border: '2px solid blue',
                                   borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
+                                }),
+                                // Add more style overrides as needed
+                              }}
+
+                            />
                             </div>
                           </Col>
                           <Col xs="3" sm="3" md="2" lg="2">
@@ -1563,39 +1626,39 @@ shouldHighlightTestsLink() {
                               </Field>
                             </div>
                           </Col>
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                    color: 'black',
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
                                   fontWeight: "bold",
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px' }}>Km </span>
-                                </Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
-                                    className="form-control"
-                                    placeholder=""
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      fontSize: '14px'
-                                      // Add more style overrides as needed
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </Col>
-                          )}
+                                }}
+                              >
+                                Search Types
+                              </Label>
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">Search By City</option>
+                                <option value="Custom Address">Custom Address</option>
+                              </Field>
+                            </div>
+                          </Col>
                           {this.state.search_type === 'City' && (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
@@ -1656,6 +1719,39 @@ shouldHighlightTestsLink() {
                                     // Add more style overrides as needed
                                   }}
                                 />
+                              </div>
+                            </Col>
+                          )}
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>Km </span>
+                                </Label>
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    placeholder=""
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </Col>
                           )}
@@ -1835,7 +1931,7 @@ shouldHighlightTestsLink() {
                 {!isEmpty(this.props.nearbyProfiles) &&
                   this.props.nearbyProfiles.map((nearbyProfile, key) => (
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
-                      <Card>
+                      <Card style={{ height: "95%" }}> 
                         <CardBody>
                           <div className="mt-4 text-center">
                           
@@ -1969,15 +2065,14 @@ shouldHighlightTestsLink() {
                               />
                             </div>
                             <Button
-                              type="button"
-                              color="primary"
-                              className="btn mt-3 me-1"
-                              onClick={() =>
-                                this.handleAddToCart(nearbyProfile)
-                              }
-                            >
-                              <i className="bx bx-cart me-2" /> Add to cart
-                            </Button>
+  type="button"
+  color={this.state.itemsInCart.includes(nearbyProfile) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyProfile) ? ' disabled' : ''}`}
+  onClick={() => this.handleAddToCart(nearbyProfile)}
+  disabled={this.state.itemsInCart.includes(nearbyProfile)} // Disable the button if the item is in the cart
+>
+  <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyProfile) ? 'Already Added' : 'Add to cart'}
+</Button>
                           </div>
                         </CardBody>
                       </Card>
@@ -2002,42 +2097,43 @@ shouldHighlightTestsLink() {
                       </Row>
                     )
                   )}
-                  <ScrollButton/>
               </Row>
 
              
               {!isEmpty(this.props.nearbyProfiles) ? (
-                  <Row>
-                  <Col lg="12">
-                    <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                      <PaginationItem disabled={page === 1}>
-                        <PaginationLink
-                          previous
-                          href="#"
-                          onClick={(e) => this.onChangepage(e, page - 1)}
-                        />
-                      </PaginationItem>
-                      {Array.from({ length: totalPage }, (_, i) => {
-                        const pageNumber = i + 1;
-                        return (
-                          <PaginationItem key={i} active={pageNumber === this.state.page}>
-                            <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
-                              {pageNumber}
-                            </PaginationLink>
-                          </PaginationItem>
-                        );
-                      })}
-                      <PaginationItem disabled={page === totalPage}>
-                        <PaginationLink
-                          next
-                          href="#"
-                          onClick={(e) => this.onChangepage(e, page + 1)}
-                        />
-                      </PaginationItem>
-                    </Pagination>
-                  </Col>
-                </Row>
-                ) : null}
+   <Row>
+   <Col lg="12">
+     <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+       <PaginationItem disabled={page === 1}>
+         <PaginationLink
+           previous
+           href="#"
+           onClick={(e) => this.onChangepage(e, page - 1)}
+         />
+       </PaginationItem>
+       {Array.from({ length: totalPage }, (_, i) => {
+         const pageNumber = i + 1;
+         return (
+           <PaginationItem key={i} active={pageNumber === this.state.page}>
+             <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+               {pageNumber}
+             </PaginationLink>
+           </PaginationItem>
+         );
+       })}
+       <PaginationItem disabled={page === totalPage}>
+         <PaginationLink
+           next
+           href="#"
+           onClick={(e) => this.onChangepage(e, page + 1)}
+         />
+       </PaginationItem>
+     </Pagination>
+   </Col>
+ </Row>
+
+) : null}
+
               <ScrollButton />
 
             </Row>
@@ -2065,14 +2161,17 @@ NearbyProfiles.propTypes = {
   t: PropTypes.any,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  onGetLabNamesList: PropTypes.func,
+  labNamesList: PropTypes.array,
 };
 
-const mapStateToProps = ({ ProfileMarket, carts }) => ({
+const mapStateToProps = ({ ProfileMarket, carts, labNamesList }) => ({
   nearbyProfiles: ProfileMarket.nearbyProfiles,
   Profiles: ProfileMarket.Profiles,
   success: carts.success,
   error: carts.error,
   territoriesList: ProfileMarket.territoriesList,
+  labNamesList: labNamesList.labNamesList,
 
 });
 // const mapStateToProps = ({ nearbyProfiles }) => ({
@@ -2084,6 +2183,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetProfiles: () => dispatch(getProfiles()),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetLabNamesList: () => dispatch(getLabNamesList()),
 
 });
 

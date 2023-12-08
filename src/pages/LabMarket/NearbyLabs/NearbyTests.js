@@ -46,6 +46,7 @@ import { productsData } from "common/data";
 
 //Import actions
 import { getAdvertisementLives } from "store/advertisement-live/actions";
+import { getTestss } from "store/profilemarket/actions";
 import { getNearbyTests } from "store/testmarket/actions";
 import { addToCart } from "store/actions";
 import { any } from "prop-types";
@@ -53,6 +54,7 @@ import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
+import { getLabNamesList } from "store/lab-names/actions";
 
 
 class NearbyTests extends Component {
@@ -68,12 +70,15 @@ class NearbyTests extends Component {
         : "",
       ratingvalues: [],
       nearbyTests: [],
+      Testss: [],
       advertisementLives: [],
       territoriesList: [],
+      labNamesList: [],
       advertisementLive: "",
       activeTab: "1",
       address: "",
       test_name: "",
+      name: "",
       test_type: "",
       search_type: "Current Location",
       city: "",
@@ -88,6 +93,7 @@ class NearbyTests extends Component {
       success: "",
       error: "",
       discountData: [],
+      itemsInCart: [],
       loading: true, // Add loading state property
       filters: {
         discount: [],
@@ -110,6 +116,11 @@ class NearbyTests extends Component {
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
+    // const { labNamesList, onGetLabNamesList } = this.props;
+
+    // if (labNamesList && !labNamesList.length) {
+    //   console.log(onGetLabNamesList(this.state.user_id));
+    // }
 
     let latitude;
     let longitude;
@@ -152,6 +163,10 @@ class NearbyTests extends Component {
   }
 
   handleLocationUpdate(latitude, longitude) {
+    const { Testss, onGetTestss } = this.props;
+    if (Testss && !Testss.length) {
+      console.log(onGetTestss(this.state.user_id));
+    }
     const { onGetNearbyTests } = this.props;
 
     setTimeout(() => {
@@ -165,6 +180,7 @@ class NearbyTests extends Component {
         address: this.state.address,
         city: this.state.city,
         test_name: this.state.test_name,
+        name: this.state.name,
         km: this.state.km,
         page: this.state.page,
         LabType: this.state.LabType,
@@ -306,10 +322,11 @@ class NearbyTests extends Component {
     }
     this.setState({ nearbyTests: filteredProducts });
   };
+  onChangeLabName = (selectedGroup) => {
+    this.setState({ name: selectedGroup.value });
 
-  onchangename = e => {
-    this.setState({ test_name: e.target.value });
-    // Calling API when focus is out of test name and setting nearby tests array
+    // Call nearby labs API only if the search type changes to current location
+
     const { onGetNearbyTests } = this.props;
 
     var latitude;
@@ -330,7 +347,45 @@ class NearbyTests extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
+        name: selectedGroup.value,
         test_name: this.state.test_name,
+        LabType: this.state.LabType,
+        km: this.state.km,
+        page: this.state.page,
+      };
+
+      onGetNearbyTests(data);
+  
+      setTimeout(() => {
+        this.setState({ nearbyTests: this.props.nearbyTests });
+      }, 1000);
+  };
+
+  onchangename = (selectedGroup) => {
+    this.setState({ test_name: selectedGroup.value });
+    // Calling API when focus is out of test name and setting nearby tests array
+    const { onGetNearbyTests } = this.props;
+
+    var latitude;
+    var longitude;
+
+    if (this.state.search_type == "Current Location") {
+      latitude = this.state.currentLatitude;
+      longitude = this.state.currentLongitude;
+    } else {
+      latitude = "";
+      longitude = "";
+    }
+
+    if (this)
+      var data = {
+        latitude: latitude,
+        longitude: longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        name: this.state.name,
+        city: this.state.city,
+        test_name: selectedGroup.value,
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
@@ -371,6 +426,7 @@ class NearbyTests extends Component {
           address: e.target.value,
           city: this.state.city,
           test_name: this.state.test_name,
+          name: this.state.name,
           LabType: this.state.LabType,
           km: this.state.km,
           page: this.state.page,
@@ -405,7 +461,7 @@ class NearbyTests extends Component {
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
-
+      name: this.state.name,
     };
     // region wise advertisement
     onGetNearbyTests(data);
@@ -436,7 +492,7 @@ class NearbyTests extends Component {
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
-
+      name: this.state.name,
     };
     // region wise advertisement
     onGetNearbyTests(data);
@@ -468,6 +524,7 @@ class NearbyTests extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
+        name: this.state.name,
       };
 
       onGetNearbyTests(data);
@@ -494,6 +551,7 @@ class NearbyTests extends Component {
       LabType: this.state.LabType,
       km: this.state.km,
       page: this.state.page,
+      name: this.state.name,
     };
 
     onGetNearbyTests(data);
@@ -549,6 +607,7 @@ class NearbyTests extends Component {
       address: this.state.address,
       city: this.state.city,
       test_name: this.state.test_name,
+      name: this.state.name,
     };
     // region wise advertisement
     onGetNearbyTests(data);
@@ -560,49 +619,55 @@ class NearbyTests extends Component {
     }, 1000);
   };
 
-  handleAddToCart = (cart) => {
-    const { onAddToCart } = this.props;
-  
-    if (!this.state.user_id) {
-      // Check if the item is already in the cart
-      if (cart.guest_id === this.props.match.params.guest_id) {
-        this.showErrorMessage("Item is already added to the cart");
-        return;
-      }
-  
-      this.setState({ guest_id: this.props.match.params.guest_id });
-      cart.guest_id = this.props.match.params.guest_id;
-      onAddToCart(cart, cart.guest_id);
-  
-      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
-    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-      // Check if the item is already in the cart
-      if (cart.user_id === this.state.user_id) {
-        this.showErrorMessage("Item is already added to the cart");
-        return;
-      }
-  
-      onAddToCart(cart, this.state.user_id);
-    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-      // Check if the item is already in the cart
-      if (cart.guest_id === this.props.match.params.guest_id) {
-        this.showErrorMessage("Item is already added to the cart");
-        return;
-      }
-  
-      onAddToCart(cart, this.props.match.params.guest_id);
-    } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
-      // Check if the item is already in the cart
-      if (cart.user_id === this.state.user_id) {
-        this.showErrorMessage("Item is already added to the cart");
-        return;
-      }
-  
-      onAddToCart(cart, this.props.match.params.uuid);
+handleAddToCart = (cart) => {
+  const { onAddToCart } = this.props;
+
+  // Check if the item is already in the cart based on user type
+  if (!this.state.user_id) {
+    // Check if the item is already in the cart
+    if (cart.guest_id === this.props.match.params.guest_id) {
+      this.showErrorMessage("Item is already added to the cart");
+      return;
     }
+
+    this.setState({ guest_id: this.props.match.params.guest_id });
+    cart.guest_id = this.props.match.params.guest_id;
+    onAddToCart(cart, cart.guest_id);
+
+    console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
+  } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+    // Check if the item is already in the cart
+    if (cart.user_id === this.state.user_id) {
+      this.showErrorMessage("Item is already added to the cart");
+      return;
+    }
+
+    onAddToCart(cart, this.state.user_id);
+  } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+    // Check if the item is already in the cart
+    if (cart.guest_id === this.props.match.params.guest_id) {
+      this.showErrorMessage("Item is already added to the cart");
+      return;
+    }
+
+    onAddToCart(cart, this.props.match.params.guest_id);
+  } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+    // Check if the item is already in the cart
+    if (cart.user_id === this.state.user_id) {
+      this.showErrorMessage("Item is already added to the cart");
+      return;
+    }
+
+    onAddToCart(cart, this.props.match.params.uuid);
+  }
+
+  // Update the state to include the newly added item in the cart
+  const updatedItemsInCart = [...this.state.itemsInCart, cart];
+  this.setState({ itemsInCart: updatedItemsInCart });
+
+  this.showSuccessMessage("Item added Successfully");
+};
   
-    this.showSuccessMessage("Item added Successfully");
-  };
   
   showErrorMessage = (message) => {
     this.showPopup(message, "red");
@@ -725,6 +790,9 @@ class NearbyTests extends Component {
     return currentURL.includes('/nearby-test/');
   }
   render() {
+    const { Testss } = this.props;
+    const { labNamesList } = this.props;
+
     const isSmallScreen = window.innerWidth < 490;
 
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
@@ -747,6 +815,21 @@ class NearbyTests extends Component {
         value: this.props.territoriesList[i].city,
       });
     }
+    const testssList = this.props.Testss.map((testss) => ({
+      label: testss.name,
+      value: testss.name, // Use the profile ID as the value
+    }));
+    // const labNames = [];
+    // for (let i = 0; i < this.props.labNamesList.length; i++) {
+    //   labNames.push({
+    //     label: this.props.labNamesList[i],
+    //     value: this.props.labNamesList[i],
+    //   });
+    // }
+    const labNames = this.props.labNamesList.map((labnameslist) => ({
+      label: labnameslist.name,
+      value: labnameslist.name, // Use the profile ID as the value
+    }));
 
     return (
 
@@ -1415,27 +1498,33 @@ class NearbyTests extends Component {
                               >
                                 Search By Test Name
                               </Label>
-                              <Input
-                               type="text"
-                               onChange={e => this.onchangename(e)}
-                                 // onBlur={this.handleBlur}
-                               value={this.state.test_name}
-                               placeholder="Test Name..."
-                                style={{
+                              <Select
+                               name="profile"
+                               component="Select"
+                               onChange={this.onchangename}
+                               value={testssList.find(
+                                 (item) => item.value === this.state.test_name
+                               )} // Use find to match the selected value in the options
+                               className="defautSelectParent"
+                               options={testssList}
+                               styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
                                   border: '2px solid blue',
                                   borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              />
+                                }),
+                                // Add more style overrides as needed
+                              }}
+
+                            />
                             </div>
+                            <Col>
+                        </Col>
                           </Col>
-
-
-
-                          <Col xs="3" sm="3" md="2" lg="2">
+                          <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
                               <Label
-                                for="LabType2"
+                                for="LabType"
                                 className="form-label"
                                 style={{
                                   fontSize: window.innerWidth <= 576 ? '7px' : '12px',
@@ -1443,26 +1532,27 @@ class NearbyTests extends Component {
                                   fontWeight: "bold",
                                 }}
                               >
-                                Search Types
+                                Search By Lab Name
                               </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                                style={{
+                              <Select
+                               name="labnamwslist"
+                               component="Select"
+                               onChange={this.onChangeLabName}
+                               value={labNames.find(
+                                 (item) => item.value === this.state.name
+                               )} // Use find to match the selected value in the options
+                               className="defautSelectParent"
+                               options={labNames}
+                               styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
                                   border: '2px solid blue',
                                   borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
+                                }),
+                                // Add more style overrides as needed
+                              }}
+
+                            />
                             </div>
                           </Col>
                           <Col xs="3" sm="3" md="2" lg="2">
@@ -1496,39 +1586,39 @@ class NearbyTests extends Component {
                               </Field>
                             </div>
                           </Col>
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                    color: 'black',
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
                                   fontWeight: "bold",
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px' }}>Km </span>
-                                </Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
-                                    className="form-control"
-                                    placeholder=""
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      fontSize: '14px'
-                                      // Add more style overrides as needed
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </Col>
-                          )}
+                                }}
+                              >
+                                Search Types
+                              </Label>
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">Search By City</option>
+                                <option value="Custom Address">Custom Address</option>
+                              </Field>
+                            </div>
+                          </Col>
                           {this.state.search_type === 'City' && (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
@@ -1592,6 +1682,39 @@ class NearbyTests extends Component {
                               </div>
                             </Col>
                           )}
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>Km </span>
+                                </Label>
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    placeholder=""
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                          )}
                         </Row>
                       </Form>
                     )}
@@ -1629,13 +1752,16 @@ class NearbyTests extends Component {
                       <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Tests for more result in Pakistan!</h4>
                       <Row className="g-0">
                         <Col>
-                          <div>
-                            <Input
-                              type="text"
-                              onChange={e => this.onchangename(e)}
-                                // onBlur={this.handleBlur}
-                              value={this.state.test_name}
-                              placeholder="Test Name..."
+                        <div>
+                            <Select
+                               name="profile"
+                               component="Select"
+                               onChange={this.onchangename}
+                               value={testssList.find(
+                                 (item) => item.value === this.state.test_name
+                               )} // Use find to match the selected value in the options
+                               className="defautSelectParent"
+                               options={testssList}
 
                             />
 
@@ -1765,7 +1891,7 @@ class NearbyTests extends Component {
                 {!isEmpty(this.props.nearbyTests) &&
                   this.props.nearbyTests.map((nearbyTest, key) => (
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
-                      <Card>
+                      <Card style={{ height: "95%" }}>
                         <CardBody>
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
@@ -1945,13 +2071,14 @@ class NearbyTests extends Component {
                               )}
                             </div>
                             <Button
-                              type="button"
-                              color="primary"
-                              className="btn mt-3 me-1"
-                              onClick={() => this.handleAddToCart(nearbyTest)}
-                            >
-                              <i className="bx bx-cart me-2" /> Add to cart
-                            </Button>
+  type="button"
+  color={this.state.itemsInCart.includes(nearbyTest) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyTest) ? ' disabled' : ''}`}
+  onClick={() => this.handleAddToCart(nearbyTest)}
+  disabled={this.state.itemsInCart.includes(nearbyTest)} // Disable the button if the item is in the cart
+>
+  <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyTest) ? 'Already Added' : 'Add to cart'}
+</Button>
                           </div>
                         </CardBody>
                       </Card>
@@ -2051,14 +2178,24 @@ NearbyTests.propTypes = {
   t: PropTypes.any,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  onGetTestss: PropTypes.func,
+  Testss: PropTypes.array,
+  onGetLabNamesList: PropTypes.func,
+  labNamesList: PropTypes.array,
+
 };
 
-const mapStateToProps = ({ TestMarket, carts, advertisementLives }) => ({
+const mapStateToProps = ({ TestMarket, carts, advertisementLives, ProfileMarket, labNamesList }) => ({
   nearbyTests: TestMarket.nearbyTests,
   success: carts.success,
   error: carts.error,
   advertisementLives: advertisementLives.advertisementLives,
   territoriesList: TestMarket.territoriesList,
+  Testss: ProfileMarket.Testss,
+  // onGetLabNamesList: PropTypes.func,
+  // labNamesList: PropTypes.array,
+  labNamesList: labNamesList.labNamesList,
+
 
 });
 // const mapStateToProps = ({ nearbyTests }) => ({
@@ -2070,6 +2207,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetAdvertisementLives: id => dispatch(getAdvertisementLives(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetTestss: () => dispatch(getTestss()),
+  onGetLabNamesList: () => dispatch(getLabNamesList()),
+
 
 });
 

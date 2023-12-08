@@ -17,7 +17,7 @@ import {
   Button,
   ModalHeader,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -68,7 +68,7 @@ class InProcessComplaintsLabhazir extends Component {
           hidden: true,
           formatter: (cellContent, inProcessComplaintLabhazir) => (
             <>{inProcessComplaintLabhazir.id}</>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "",
@@ -78,7 +78,7 @@ class InProcessComplaintsLabhazir extends Component {
             <>
               <strong>{complaint.complaint_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -97,7 +97,7 @@ class InProcessComplaintsLabhazir extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -129,6 +129,7 @@ class InProcessComplaintsLabhazir extends Component {
           dataField: "csr_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -140,12 +141,13 @@ class InProcessComplaintsLabhazir extends Component {
                 {new Date(complaint.assigned_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "complainee",
@@ -157,7 +159,7 @@ class InProcessComplaintsLabhazir extends Component {
                   {inProcessComplaintLabhazir.labhazir_complainee}{" "}
                   {inProcessComplaintLabhazir.lab_name}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "data",
@@ -446,6 +448,7 @@ class InProcessComplaintsLabhazir extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

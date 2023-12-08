@@ -17,7 +17,7 @@ import {
   Button,
   ModalHeader,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -78,6 +78,7 @@ class InProcessAudits extends Component {
           dataField: "lab_name",
           text: "Lab name",
           sort: true,
+          style:{ width: "300px", textAlign: "left"},
           formatter: (cellContent, inProcessAudit) => (
             <>
               <span>
@@ -91,12 +92,13 @@ class InProcessAudits extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "office",
           text: "Office",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "generated_at",
@@ -108,7 +110,7 @@ class InProcessAudits extends Component {
                 {new Date(audit.generated_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -118,12 +120,13 @@ class InProcessAudits extends Component {
             <>
               <span>{new Date(audit.assigned_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "auditor_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "data",
@@ -345,6 +348,7 @@ class InProcessAudits extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

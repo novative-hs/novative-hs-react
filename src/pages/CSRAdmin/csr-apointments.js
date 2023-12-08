@@ -17,7 +17,7 @@ import {
   Label,
   Input,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -72,7 +72,7 @@ class csrAppointments extends Component {
             <>
               <strong>{csrAppointment.order_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "patient_name",
@@ -91,7 +91,7 @@ class csrAppointments extends Component {
                 </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "lab_name",
@@ -109,7 +109,7 @@ class csrAppointments extends Component {
                 </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "is_home_sampling_availed",
@@ -123,7 +123,7 @@ class csrAppointments extends Component {
                 <span>No</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "is_state_sampling_availed",
@@ -137,12 +137,13 @@ class csrAppointments extends Component {
                 <span>No</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "appointment_requested_at",
@@ -156,7 +157,7 @@ class csrAppointments extends Component {
                 )}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "estimated_sample_collection_at",
@@ -170,7 +171,7 @@ class csrAppointments extends Component {
                 )}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -374,6 +375,7 @@ class csrAppointments extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

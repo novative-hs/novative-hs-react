@@ -17,7 +17,7 @@ import {
   Label,
   Input,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -60,6 +60,7 @@ class AuditorsList extends Component {
           dataField: "photo",
           text: "Name",
           sort: true,
+          style:{ textAlign: "left"},
           formatter: (cellContent, Auditor) => (
             <>
               <Link
@@ -72,12 +73,13 @@ class AuditorsList extends Component {
                 {Auditor.name}
               </Link>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
+          filter: textFilter(),
         },
         // {
         //   dataField: "cnic",
@@ -88,11 +90,13 @@ class AuditorsList extends Component {
           dataField: "phone",
           text: "Mobile No.",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "territory_office",
           text: "Territory Office",
           sort: true,
+          filter: textFilter(),
         },
       
 
@@ -291,6 +295,7 @@ class AuditorsList extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

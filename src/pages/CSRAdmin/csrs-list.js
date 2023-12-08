@@ -17,7 +17,7 @@ import {
   Label,
   Input,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -73,28 +73,32 @@ class CSRsList extends Component {
                 {CSR.name}
               </Link>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "cnic",
           text: "CNIC",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "phone",
           text: "Mobile No.",
           sort: true,
+          filter: textFilter(),
         },
 
         {
           dataField: "roles",
           text: "Roles",
           sort: true,
+          filter: textFilter(),
         },
         // {
         //   dataField: "menu",
@@ -287,6 +291,7 @@ class CSRsList extends Component {
                                       defaultSorted={defaultSorted}
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
+                                      filter={filterFactory()}
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive

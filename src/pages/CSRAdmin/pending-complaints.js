@@ -20,7 +20,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -81,12 +81,13 @@ class PendingComplaints extends Component {
             <>
               <strong>{complaint.complaint_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "complainant",
           text: "Complainant",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "name",
@@ -105,7 +106,7 @@ class PendingComplaints extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -117,7 +118,7 @@ class PendingComplaints extends Component {
                 {new Date(complaint.registered_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -130,7 +131,7 @@ class PendingComplaints extends Component {
 
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "email",
@@ -170,12 +171,13 @@ class PendingComplaints extends Component {
                   {pendingComplaint.labhazir_complainee}{" "}
                   {pendingComplaint.lab_name}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "city",
           text: "Office",
-          sort: true,      
+          sort: true,   
+          filter: textFilter(),   
         },
         {
           dataField: "data",
@@ -515,6 +517,7 @@ class PendingComplaints extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

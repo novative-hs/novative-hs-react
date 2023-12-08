@@ -1,32 +1,29 @@
 import {
-  // GET_CREATE_CEMPLOYEES,
-  // GET_CREATE_CEMPLOYEES_FAIL,
-  // GET_CREATE_CEMPLOYEES_SUCCESS,
   ADD_NEW_CEMPLOYEE_DATA,
   ADD_CEMPLOYEE_DATA_SUCCESS,
   ADD_CEMPLOYEE_DATA_FAIL,
-  GET_CEMPLOYEES,
-  GET_CEMPLOYEES_SUCCESS,
-  GET_CEMPLOYEES_FAIL,
+  GET_LABCORPORATE,
+  GET_LABCORPORATE_SUCCESS,
+  GET_LABCORPORATE_FAIL,
   UPDATE_CEMPLOYEE,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
 } from "./actionTypes";
 
-// export const getCreateCemployees = id => ({
-//   type: GET_CREATE_CEMPLOYEES,
-//   payload: id,
-// });
+export const getLabCorporate = id => ({
+  type: GET_LABCORPORATE,
+  payload: id,
+});
 
-// export const getCreateCemployeesSuccess = createCemployees => ({
-//   type: GET_CREATE_CEMPLOYEES_SUCCESS,
-//   payload: createCemployees,
-// });
+export const getLabCorporateSuccess = cemployees => ({
+  type: GET_LABCORPORATE_SUCCESS,
+  payload: cemployees,
+});
 
-// export const getCreateCemployeesFail = error => ({
-//   type: GET_CREATE_CEMPLOYEES_FAIL,
-//   payload: error,
-// });
+export const getLabCorporateFail = error => ({
+  type: GET_LABCORPORATE_FAIL,
+  payload: error,
+});
 export const getCemployees = () => ({
   type: GET_CEMPLOYEES,
 });

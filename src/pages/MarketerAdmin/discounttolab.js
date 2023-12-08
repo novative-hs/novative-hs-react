@@ -16,7 +16,7 @@ import {
   ModalBody,
   Label,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -56,16 +56,7 @@ class DiscountLabHazirList extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       discountLabHazirListColumns: [
-        {
-          dataField: "lab_name",
-          text: "Lab Name",
-          sort: true,
-          formatter: (cellContent, discountLabHazirToLab) => (
-            <>
-              <strong>{discountLabHazirToLab.lab_name}</strong>
-            </>
-          ),
-        },
+
         {
           dataField: "id",
           text: "Test ID",
@@ -74,7 +65,7 @@ class DiscountLabHazirList extends Component {
             <>
               <strong>{discountLabHazirToLab.id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "test_name",
@@ -93,7 +84,19 @@ class DiscountLabHazirList extends Component {
                 </span>
               
             </>
-          ),
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "lab_name",
+          text: "Lab Name",
+          sort: true,
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+            <p className="text-start" style={{whiteSpace:"pre-wrap", width: "200px"}}>
+              <span>{discountLabHazirToLab.lab_name}</span>
+              </p>
+            </>
+          ),filter: textFilter(),
         },
         {
           dataField: "price",
@@ -108,7 +111,7 @@ class DiscountLabHazirList extends Component {
                 </span>
               
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "discount",
@@ -120,7 +123,7 @@ class DiscountLabHazirList extends Component {
                 <span>{(discountLabHazirToLab.discount*100).toFixed()}%</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "discount_by_labhazir",
@@ -132,7 +135,7 @@ class DiscountLabHazirList extends Component {
                 <span>{(discountLabHazirToLab.discount_by_labhazir*100).toFixed()}%</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "discounted_price",
@@ -145,7 +148,7 @@ class DiscountLabHazirList extends Component {
                 // (discountLab.price-((discountLab.price*(discountLab.discount*100))/100))
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "start_date_by_labhazir",
@@ -161,7 +164,7 @@ class DiscountLabHazirList extends Component {
                 <span>{discountLabHazirToLab.start_date_by_labhazir}</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "end_date_by_labhazir",
@@ -177,7 +180,7 @@ class DiscountLabHazirList extends Component {
                 <span>{discountLabHazirToLab.end_date_by_labhazir}</span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
       {
           dataField: "menu",
@@ -400,13 +403,14 @@ class DiscountLabHazirList extends Component {
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
                                       classes={
-                                        "table align-middle table-nowrap table-hover"
+                                        "table align-middle table-hover"
                                       }
                                       bordered={false}
                                       striped={false}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
                                     />
 
                                     <Modal

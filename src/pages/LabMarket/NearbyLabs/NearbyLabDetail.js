@@ -1776,7 +1776,7 @@ class NearbyLabDetail extends Component {
                               ) : null}
 
                               <p className="font-size-18">
-                                {this.props.success.rating}
+                                {this.props.success.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                               </p>
                               <div className="text-muted float-start font-size-17">
                                 <p>

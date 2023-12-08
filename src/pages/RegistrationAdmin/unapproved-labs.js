@@ -14,6 +14,8 @@ import {
   Label,
   Modal,
   ModalBody,
+  ModalHeader,
+
 } from "reactstrap";
 
 import paginationFactory, {
@@ -55,22 +57,91 @@ class UnapprovedLabs extends Component {
           formatter: (cellContent, approvedLab) => <>{approvedLab.id}</>,
         },
         {
-          dataField: "name",
-          text: "Lab name",
+          dataField: "city",
+          text: "Lab City",
           sort: true,
           formatter: (cellContent, approvedLab) => (
-            <span style={{
-              width: '200px', // Set your desired width here
-              fontSize: '14px',
-            
-              textOverflow: 'ellipsis',
-              whiteSpace: 'prewrap',
-              textAlign: 'left', // Align text to the left
-              display: 'block',
-            }}>
-                {approvedLab.name}
-            </span>
+            <>
+                {approvedLab.city}
+            </>
           ),filter: textFilter(),
+        },
+        {
+          dataField: "name",
+          text: "Lab Name",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span style={{
+                width: '200px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
+                <Link
+                  to="#"
+                  onMouseEnter={e => this.openPatientModal(e, approvedLab)}
+                  onPointerLeave={this.handleMouseExit()}
+                >
+                  {approvedLab.name}
+                </Link>
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
+          dataField: "type",
+          text: "Lab Type",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span className="float-end">
+                {approvedLab.type == "Main Lab" ? (
+                  <span>Main</span>
+                ) : (
+                  <span>Collection</span>
+                )}
+              </span>
+            </>
+          ),
+          filter: selectFilter({
+            options: {
+              // '': 'All',
+              'Main Lab': 'Main',
+              'Collection Point': 'Collection',
+            },
+            // defaultValue: 'Main Lab',
+          }),
+        },
+        {
+          dataField: "email",
+          text: "Email",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span className="float-start">
+                {approvedLab.email}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
+          dataField: "lab_phone",
+          text: "Phone",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span className="float-start">
+                {approvedLab.lab_phone}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "address",
@@ -90,59 +161,25 @@ class UnapprovedLabs extends Component {
             </span>
           ),filter: textFilter(),
         },
-        {
-          dataField: "city",
-          text: "City",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-                {approvedLab.city}
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "registered_at",
-          text: "Registered at",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span>
-                {new Date(approvedLab.registered_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "done_at",
-          text: "Unapproved at",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span>
-                {new Date(approvedLab.done_at).toLocaleString("en-US")}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "data",
-          text: "id",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, pendingLab) => (
-            <>
-            <Tooltip title="Update">
-              <Link
-                className="btn btn-success btn-rounded"
-                to="#"
-                onClick={e => this.handleApprovedEvent(e, pendingLab.id)}
-              >
-                <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link></Tooltip>{" "}
-            </>
-          ),
-        },
+        // {
+        //   dataField: "data",
+        //   text: "id",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Action",
+        //   formatter: (cellContent, pendingLab) => (
+        //     <>
+        //     <Tooltip title="Update">
+        //       <Link
+        //         className="btn btn-success btn-rounded"
+        //         to="#"
+        //         onClick={e => this.handleApprovedEvent(e, pendingLab.id)}
+        //       >
+        //         <i className="mdi mdi-check-circle font-size-14"></i>
+        //       </Link></Tooltip>{" "}
+        //     </>
+        //   ),
+        // },
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -154,6 +191,29 @@ class UnapprovedLabs extends Component {
     onGetUnapprovedLabs(this.state.user_id);
     this.setState({ unapprovedLabs });
   }
+  openPatientModal = (e, arg) => {
+    this.setState({
+      PatientModal: true,
+      name: arg.name,
+      registered_at: arg.registered_at,
+      done_at: arg.done_at,
+      isHovered: true,
+    });
+  };
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+    });
+  };
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
 
   toggle() {
     this.setState(prevState => ({
@@ -211,6 +271,12 @@ class UnapprovedLabs extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Unapproved" />
             <Row>
+            <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: There will be UnapprovedApproved and Inactive Labs Shown on it.
+                  </strong>
+                  </span>
+                </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -257,6 +323,115 @@ class UnapprovedLabs extends Component {
                                       filter={filterFactory()}
 
                                     />
+                                    {this.state.isHovered && (
+                                      <Modal
+                                        isOpen={this.state.PatientModal}
+                                        className={this.props.className}
+                                        onPointerLeave={this.handleMouseExit}
+                                      >
+                                        <ModalHeader
+                                          toggle={this.togglePatientModal}
+                                          tag="h4"
+                                        >
+                                          <span></span>
+                                        </ModalHeader>
+                                        <ModalBody>
+                                          <Formik>
+                                            <Form>
+                                              <Row>
+                                                <Col className="col-12">
+                                                  {/* <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Lab Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div> */}
+                                                  {/* <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div> */}
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Name
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.name
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Approvel At
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          new Date(this.state.done_at).toLocaleString('en-US')
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Register At
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          new Date(this.state.registered_at).toLocaleString('en-US')
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          </Formik>
+                                        </ModalBody>
+                                      </Modal>
+                                    )}
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}

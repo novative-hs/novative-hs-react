@@ -66,8 +66,6 @@ import { productsData } from "common/data";
 import { getNearbyLabs, getAdvLive, getRegionWiseAdvertisement, getPatientProfile } from "store/labmarket/actions";
 import { getLabNamesList } from "store/lab-names/actions";
 
-// import { getPatientProfile } from "store/auth/patientprofile/actions";
-
 import { any } from "prop-types";
 import "./nearbylabs.scss";
 
@@ -2078,25 +2076,7 @@ class NearbyLabs extends Component {
                             )}
                           </div>
                           {/* Section 2 */}
-                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                            <span><p>Location Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                            {this.state.isFormVisible && (
-                              <div className="mb-2">
-                                <Field
-                                  name="search_type"
-                                  component="select"
-                                  onChange={(e) => this.onChangeSearchType(e)}
-                                  value={this.state.search_type}
-                                  className="form-select"
-                                >
-                                  <option value="">Choose an option</option>
-                                  <option value="City">By City</option>
-                                  <option value="Custom Address">Custom Address</option>
-                                </Field>
-                              </div>
-                            )}                      </div>
-                          {/* Section 3 */}
-                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
                             <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
                               this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                             {this.state.isFormVisible && (
@@ -2115,7 +2095,56 @@ class NearbyLabs extends Component {
                               </div>
                             )}
                           </div>
+                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                            <span><p>Location Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                            {this.state.isFormVisible && (
+                              <div className="mb-2">
+                                <Field
+                                  name="search_type"
+                                  component="select"
+                                  onChange={(e) => this.onChangeSearchType(e)}
+                                  value={this.state.search_type}
+                                  className="form-select"
+                                >
+                                  <option value="">Choose an option</option>
+                                  <option value="City">By City</option>
+                                  <option value="Custom Address">Custom Address</option>
+                                </Field>
+                              </div>
+                            )}                      </div>
+                          {this.state.search_type === 'City' && (
+                            <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
+                              <span><p>Search By City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Select
+                                    name="city"
+                                    component="Select"
+                                    onChange={this.onChangeCity}
+                                    className="defautSelectParent is-invalid"
+                                    options={cityList}
+                                    placeholder="Enter City Name"
+                                  />
+                                </div>
+                              )}   </div>)}
                           {/* Section 4 */}
+                          {this.state.search_type === 'Custom Address' && (
+                            <div style={{ flex: "1", paddingRight: "5px" }}>
+                              <span><p>Custom Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Input
+                                    defaultValue={this.state.address}
+                                    onChange={(e) => this.onChangeAddress(e)}
+                                    id="pac-input"
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Enter Custom Address"
+                                  />
+                                </div>
+                              )}                          
+                            </div>)}
+                          {/* Section 5 */}
                           {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
                             <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
                               <span><p>Search By Km: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
@@ -2133,37 +2162,7 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                             </div>)}
-                          {this.state.search_type === 'City' && (
-                            <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>Search By City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Select
-                                    name="city"
-                                    component="Select"
-                                    onChange={this.onChangeCity}
-                                    className="defautSelectParent is-invalid"
-                                    options={cityList}
-                                    placeholder="Enter City Name"
-                                  />
-                                </div>
-                              )}   </div>)}
-                          {/* Section 5 */}
-                          {this.state.search_type === 'Custom Address' && (
-                            <div style={{ flex: "1", paddingRight: "5px" }}>
-                              <span><p>Custom Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Input
-                                    defaultValue={this.state.address}
-                                    onChange={(e) => this.onChangeAddress(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Custom Address"
-                                  />
-                                </div>
-                              )}                          </div>)}
+
                         </div>
                       </Form>
                     )}
@@ -2927,26 +2926,8 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                             </div>
-                            {/* Section 2 */}
-                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>Location: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Field
-                                    name="search_type"
-                                    component="select"
-                                    onChange={(e) => this.onChangeSearchType(e)}
-                                    value={this.state.search_type}
-                                    className="form-select"
-                                  >
-                                    <option value="">Choose an option</option>
-                                    <option value="City">By City</option>
-                                    <option value="Custom Address">Custom Address</option>
-                                  </Field>
-                                </div>
-                              )}                      </div>
-                            {/* Section 3 */}
-                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                             {/* Section 3 */}
+                             <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
                               <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
                                 this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                               {this.state.isFormVisible && (
@@ -2965,24 +2946,25 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                             </div>
-                            {/* Section 4 */}
-                            {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                              <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
-                                <span><p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                                {this.state.isFormVisible && (
-                                  <div className="mb-2">
-                                    <Input
-                                      defaultValue={this.state.km}
-                                      onChange={(e) => this.onChangeKm(e)}
-                                      id="pac-input"
-                                      type="number"  // Change "numbers" to "number"
-                                      className="form-control"
-                                      style={{ fontSize: '14px' }}
-                                      placeholder=""
-                                    />
-                                  </div>
-                                )}
-                              </div>)}
+                            {/* Section 2 */}
+                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                              <span><p>Location: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              {this.state.isFormVisible && (
+                                <div className="mb-2">
+                                  <Field
+                                    name="search_type"
+                                    component="select"
+                                    onChange={(e) => this.onChangeSearchType(e)}
+                                    value={this.state.search_type}
+                                    className="form-select"
+                                  >
+                                    <option value="">Choose an option</option>
+                                    <option value="City">By City</option>
+                                    <option value="Custom Address">Custom Address</option>
+                                  </Field>
+                                </div>
+                              )}                      
+                            </div>
                             {this.state.search_type === 'City' && (
                               <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
                                 <span><p>City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
@@ -3014,6 +2996,26 @@ class NearbyLabs extends Component {
                                     />
                                   </div>
                                 )}                          </div>)}
+                           
+                            {/* Section 4 */}
+                            {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                              <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
+                                <span><p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                                {this.state.isFormVisible && (
+                                  <div className="mb-2">
+                                    <Input
+                                      defaultValue={this.state.km}
+                                      onChange={(e) => this.onChangeKm(e)}
+                                      id="pac-input"
+                                      type="number"  // Change "numbers" to "number"
+                                      className="form-control"
+                                      style={{ fontSize: '14px' }}
+                                      placeholder=""
+                                    />
+                                  </div>
+                                )}
+                              </div>)}
+                            
                           </div>
                         </Form>
                       )}
@@ -7303,7 +7305,6 @@ class NearbyLabs extends Component {
 }
 
 NearbyLabs.propTypes = {
-  patientProfile: PropTypes.array,
   history: any,
   location: any,
   match: PropTypes.object,

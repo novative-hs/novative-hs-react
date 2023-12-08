@@ -5,6 +5,9 @@ import {
   GET_PROFILES,
   GET_PROFILES_FAIL,
   GET_PROFILES_SUCCESS,
+  GET_TESTSS,
+  GET_TESTSS_FAIL,
+  GET_TESTSS_SUCCESS,
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
 } from "./actionTypes";
@@ -52,6 +55,20 @@ export const getProfilesSuccess = Profiles => ({
 
 export const getProfilesFail = error => ({
   type: GET_PROFILES_FAIL,
+  payload: error,
+});
+export const getTestss = () => ({
+  type: GET_TESTSS,
+  // payload: {},
+});
+
+export const getTestssSuccess = Testss => ({
+  type: GET_TESTSS_SUCCESS,
+  payload: Testss,
+});
+
+export const getTestssFail = error => ({
+  type: GET_TESTSS_FAIL,
   payload: error,
 });
 

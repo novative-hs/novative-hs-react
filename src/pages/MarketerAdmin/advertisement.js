@@ -7,7 +7,7 @@ import { withRouter, Link } from "react-router-dom";
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 // import MultiSelectCheckBox from 'react-multiselect-checkboxes';
 import { Tooltip } from "@material-ui/core";
-
+import filterFactory, { textFilter} from 'react-bootstrap-table2-filter';
 import {
   Card,
   CardBody,
@@ -74,7 +74,9 @@ class AdvertisementsList extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, advertisement) => <>{advertisement.id}</>,
+          formatter: (cellContent, advertisement) => <>{advertisement.id}
+         </>,
+          filter: textFilter(),
         },
         {
           dataField: "poster",
@@ -125,12 +127,13 @@ class AdvertisementsList extends Component {
                 </div>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "title",
           text: "Title",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -405,6 +408,8 @@ class AdvertisementsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                              
+                                      filter={filterFactory()}
                                     />
 
                                     <Modal

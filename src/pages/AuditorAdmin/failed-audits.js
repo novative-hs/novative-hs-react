@@ -17,7 +17,7 @@ import {
   Button,
   ModalHeader,
 } from "reactstrap";
-
+import filterFactory,{textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -69,6 +69,7 @@ class FailedAudits extends Component {
           dataField: "lab_name",
           text: "Lab name",
           sort: true,
+          style:{ width: "300px" , textAlign: "left"},
           formatter: (cellContent, failedAudit) => (
             <>
               <span>
@@ -82,7 +83,7 @@ class FailedAudits extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "lab_city",
@@ -104,7 +105,7 @@ class FailedAudits extends Component {
                 {new Date(audit.generated_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -114,7 +115,7 @@ class FailedAudits extends Component {
             <>
               <span>{new Date(audit.assigned_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "audited_at",
@@ -124,12 +125,13 @@ class FailedAudits extends Component {
             <>
               <span>{new Date(audit.audited_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "auditor_name",
           text: "Assigned to",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "Report",
@@ -290,6 +292,7 @@ class FailedAudits extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}

@@ -15,7 +15,7 @@ import {
   ModalBody,
   ModalHeader,
 } from "reactstrap";
-
+import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -69,7 +69,7 @@ class CompletedAudits extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "generated_at",
@@ -81,7 +81,7 @@ class CompletedAudits extends Component {
                 {new Date(audit.generated_at).toLocaleString("en-US")}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "assigned_at",
@@ -91,7 +91,7 @@ class CompletedAudits extends Component {
             <>
               <span>{new Date(audit.assigned_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "audited_at",
@@ -101,7 +101,7 @@ class CompletedAudits extends Component {
             <>
               <span>{new Date(audit.audited_at).toLocaleString("en-US")}</span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "Report",
@@ -273,6 +273,7 @@ class CompletedAudits extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
+                                      filter={filterFactory()}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}

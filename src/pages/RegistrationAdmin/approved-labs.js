@@ -64,7 +64,7 @@ class ApprovedLabs extends Component {
         },
         {
           dataField: "city",
-          text: "City",
+          text: "Lab City",
           // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -138,6 +138,32 @@ class ApprovedLabs extends Component {
           }),
         },
         {
+          dataField: "email",
+          text: "Email",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span className="float-start">
+                {approvedLab.email}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
+          dataField: "lab_phone",
+          text: "Phone",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span className="float-end">
+                {approvedLab.lab_phone}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
           dataField: "offered_tests",
           text: "Offered Tests",
           sort: true,
@@ -187,39 +213,39 @@ class ApprovedLabs extends Component {
           ), filter: textFilter(),
         },
 
-        {
-          dataField: "registered_at",
-          text: "Registeration",
-          // sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span>
-                {new Date(approvedLab.registered_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                }).replace(/\//g, '-')}
-              </span>
-            </>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "done_at",
-          text: "Approvel",
-          // sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span>
-                {new Date(approvedLab.done_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                }).replace(/\//g, '-')}
-              </span>
-            </>
-          ),
-          filter: textFilter(),
-        },
+        // {
+        //   dataField: "registered_at",
+        //   text: "Registeration",
+        //   // sort: true,
+        //   formatter: (cellContent, approvedLab) => (
+        //     <>
+        //       <span>
+        //         {new Date(approvedLab.registered_at).toLocaleDateString("en-US", {
+        //           year: "numeric",
+        //           month: "2-digit",
+        //           day: "2-digit",
+        //         }).replace(/\//g, '-')}
+        //       </span>
+        //     </>
+        //   ), filter: textFilter(),
+        // },
+        // {
+        //   dataField: "done_at",
+        //   text: "Approvel",
+        //   // sort: true,
+        //   formatter: (cellContent, approvedLab) => (
+        //     <>
+        //       <span>
+        //         {new Date(approvedLab.done_at).toLocaleDateString("en-US", {
+        //           year: "numeric",
+        //           month: "2-digit",
+        //           day: "2-digit",
+        //         }).replace(/\//g, '-')}
+        //       </span>
+        //     </>
+        //   ),
+        //   filter: textFilter(),
+        // },
 
         // {
         //   dataField: "is_blocked",
@@ -263,8 +289,8 @@ class ApprovedLabs extends Component {
       lab_address: arg.lab_address,
       lab_name: arg.lab_name,
       lab_city: arg.lab_city,
-      lab_phone: arg.lab_phone,
-      lab_email: arg.lab_email,
+      registered_at: arg.registered_at,
+      done_at: arg.done_at,
       isHovered: true,
     });
   };
@@ -310,7 +336,7 @@ class ApprovedLabs extends Component {
     const { onGetApprovedLabs } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: approvedLabs.length, // replace later with size(approvedLabs),
       custom: true,
     };
@@ -333,6 +359,12 @@ class ApprovedLabs extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Approved" />
             <Row>
+                <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: There will be Approved and Active Labs Shown on it.
+                  </strong>
+                  </span>
+                </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -469,14 +501,14 @@ class ApprovedLabs extends Component {
                                                   <div className="mb-3 row">
                                                     <div className="col-md-3">
                                                       <Label className="form-label">
-                                                        email
+                                                        Approvel At
                                                       </Label>
                                                     </div>
                                                     <div className="col-md-9">
                                                       <input
                                                         type="text"
                                                         value={
-                                                          this.state.lab_email
+                                                          new Date(this.state.done_at).toLocaleString('en-US')
                                                         }
                                                         className="form-control"
                                                         readOnly={true}
@@ -486,37 +518,21 @@ class ApprovedLabs extends Component {
                                                   <div className="mb-3 row">
                                                     <div className="col-md-3">
                                                       <Label className="form-label">
-                                                        Contact No.
+                                                        Register At
                                                       </Label>
                                                     </div>
-                                                    <div className="col-md-6">
+                                                    <div className="col-md-9">
                                                       <input
                                                         type="text"
                                                         value={
-                                                          this.state.lab_phone
+                                                          new Date(this.state.registered_at).toLocaleString('en-US')
                                                         }
                                                         className="form-control"
                                                         readOnly={true}
                                                       />
                                                     </div>
 
-                                                    <div className="col-md-3">
-                                                      <button
-                                                        type="button"
-                                                        className="btn btn-secondary"
-                                                        onClick={() => {
-                                                          navigator.clipboard.writeText(
-                                                            this.state
-                                                              .lab_phone
-                                                          );
-                                                          this.setState({
-                                                            btnText: "Copied",
-                                                          });
-                                                        }}
-                                                      >
-                                                        {this.state.btnText}
-                                                      </button>
-                                                    </div>
+                                                    
                                                   </div>
                                                 </Col>
                                               </Row>

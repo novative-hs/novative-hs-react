@@ -1537,11 +1537,6 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
-                                isSearchable={true}
-                                isClearable={true}
-                                components={{
-                                  ClearIndicator,
-                                }}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
@@ -1551,42 +1546,6 @@ class NearbyLabs extends Component {
                                   // Add more style overrides as needed
                                 }}
                               />
-                            </div>
-                          </Col>
-
-
-
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
                             </div>
                           </Col>
                           <Col xs="3" sm="3" md="2" lg="2">
@@ -1620,39 +1579,39 @@ class NearbyLabs extends Component {
                               </Field>
                             </div>
                           </Col>
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                    color: 'black',
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
                                   fontWeight: "bold",
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px' }}>Km </span>
-                                </Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
-                                    className="form-control"
-                                    placeholder=""
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      fontSize: '14px'
-                                      // Add more style overrides as needed
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </Col>
-                          )}
+                                }}
+                              >
+                                Search Types
+                              </Label>
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">Search By City</option>
+                                <option value="Custom Address">Custom Address</option>
+                              </Field>
+                            </div>
+                          </Col>
                           {this.state.search_type === 'City' && (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
@@ -1713,6 +1672,39 @@ class NearbyLabs extends Component {
                                     // Add more style overrides as needed
                                   }}
                                 />
+                              </div>
+                            </Col>
+                          )}
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>Km </span>
+                                </Label>
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    placeholder=""
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </Col>
                           )}

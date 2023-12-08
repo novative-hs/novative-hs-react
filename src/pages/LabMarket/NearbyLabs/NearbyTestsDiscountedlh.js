@@ -88,6 +88,7 @@ class NearbyTests extends Component {
       success: "",
       error: "",
       discountData: [],
+      itemsInCart: [],
       loading: true, // Add loading state property
       territoriesList: [],
       filters: {
@@ -551,13 +552,14 @@ class NearbyTests extends Component {
      }, 1000);
   };
 
-handleAddToCart = (cart) => {
+  handleAddToCart = (cart) => {
     const { onAddToCart } = this.props;
   
+    // Check if the item is already in the cart based on user type
     if (!this.state.user_id) {
       // Check if the item is already in the cart
       if (cart.guest_id === this.props.match.params.guest_id) {
-        this.showPopup("Item is already added to the cart", "red", "white");
+        this.showErrorMessage("Item is already added to the cart");
         return;
       }
   
@@ -566,26 +568,37 @@ handleAddToCart = (cart) => {
       onAddToCart(cart, cart.guest_id);
   
       console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
-      this.showPopup("Item added Successfully", "green", "white");
-    } else if (this.state.user_type !== "CSR") {
+    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
       // Check if the item is already in the cart
       if (cart.user_id === this.state.user_id) {
-        this.showPopup("Item is already added to the cart", "red", "white");
+        this.showErrorMessage("Item is already added to the cart");
         return;
       }
   
       onAddToCart(cart, this.state.user_id);
-      this.showPopup("Item added Successfully", "green", "white");
-    } else if (this.state.user_type === "CSR") {
+    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
       // Check if the item is already in the cart
       if (cart.guest_id === this.props.match.params.guest_id) {
-        this.showPopup("Item is already added to the cart", "red", "white");
+        this.showErrorMessage("Item is already added to the cart");
         return;
       }
   
       onAddToCart(cart, this.props.match.params.guest_id);
-      this.showPopup("Item added Successfully", "green", "white");
+    } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+      // Check if the item is already in the cart
+      if (cart.user_id === this.state.user_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+  
+      onAddToCart(cart, this.props.match.params.uuid);
     }
+  
+    // Update the state to include the newly added item in the cart
+    const updatedItemsInCart = [...this.state.itemsInCart, cart];
+    this.setState({ itemsInCart: updatedItemsInCart });
+  
+    this.showSuccessMessage("Item added Successfully");
   };
   
   showPopup = (message, textColor) => {
@@ -1583,7 +1596,7 @@ handleAddToCart = (cart) => {
                 {!isEmpty(this.props.nearbyTests) &&
                   this.props.nearbyTests.map((nearbyTest, key) => (
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
-                      <Card>
+                      <Card style={{ height: "95%" }}>
                         <CardBody>
                           {/* <div className="product-img position-relative">
                             <img
@@ -1781,13 +1794,14 @@ handleAddToCart = (cart) => {
                             </div>
                           
                             <Button
-                              type="button"
-                              color="primary"
-                              className="btn mt-3 me-1"
-                              onClick={() => this.handleAddToCart(nearbyTest)}
-                            >
-                              <i className="bx bx-cart me-2" /> Add to cart
-                            </Button>
+  type="button"
+  color={this.state.itemsInCart.includes(nearbyTest) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyTest) ? ' disabled' : ''}`}
+  onClick={() => this.handleAddToCart(nearbyTest)}
+  disabled={this.state.itemsInCart.includes(nearbyTest)} // Disable the button if the item is in the cart
+>
+  <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyTest) ? 'Already Added' : 'Add to cart'}
+</Button>
                           </div>
                         </CardBody>
                       </Card>

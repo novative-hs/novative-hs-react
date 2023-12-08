@@ -19,7 +19,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import filterFactory, { textFilter} from 'react-bootstrap-table2-filter';
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -54,12 +54,16 @@ class LabsLists extends Component {
             <>
               <strong>{labsList.id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
           text: "Lab Name",
           sort: true,
+          style: {
+            width: "300px",
+            textAlign: "left",
+          },
           formatter: (cellContent, labsList) => (
             <>
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
@@ -67,27 +71,31 @@ class LabsLists extends Component {
                 {labsList.name}
               </Link>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "phone",
           text: "Phone No.",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "city",
           text: "City",
           sort: true,
+          filter: textFilter(),
         },
         {
           dataField: "district",
           text: "District",
           sort: true,
+          filter: textFilter(),
         },
       ],
     };
@@ -200,6 +208,7 @@ class LabsLists extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={ filterFactory()}
                                     />
                                   </div>
                                 </Col>
