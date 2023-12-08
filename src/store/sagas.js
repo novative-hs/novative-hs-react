@@ -37,6 +37,7 @@ import activitylogfinanceSaga from "./activtylogfinance/saga";
 import activitylogmarketerSaga from "./activtylogmarketer/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
+import quotesSaga from "./quotes/saga";
 import LabsListPendingFeeSaga from "./labs-list-pending/saga";
 import sharedPercentagePendingFeeTestsSaga from "./shared-percentage-pending-fee/saga";
 import sampleCollectorsSaga from "./sample-collectors/saga";
@@ -143,6 +144,7 @@ export default function* rootSaga() {
     fork(activitylogfinanceSaga),
     fork(activitylogmarketerSaga),
     fork(cartsSaga),
+    fork(quotesSaga),
     fork(bankTransferSaga),
     fork(LabsListPendingFeeSaga),
     fork(sharedPercentagePendingFeeTestsSaga),

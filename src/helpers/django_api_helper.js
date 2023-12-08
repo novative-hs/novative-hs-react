@@ -1241,7 +1241,16 @@ export const getCsrComplaints = id =>
       headers: getHeader(authHeader()),
     });
   };
-
+// Get Quotes
+export const getQuotes = (city_id, test_id) => {
+  let formData = new FormData();
+  formData.append("city_id", city_id);
+  formData.append("test_id", test_id);
+  console.log("In near by lsbd: ", city_id, test_id)
+  return axios.post(`${url.GET_QUOTES}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 // ------------- Cart START -------------
 export const getCarts = id =>
   get(`${url.GET_CARTS}/${id}`, {
@@ -1263,7 +1272,8 @@ export const deleteCart = cart =>
 export const addToCart = (cart, id) => {
   let formData = new FormData();
   // formData.append("account_id", cart.patient_id);
-  formData.append("lab_id", cart.lab_id);
+  // formData.append("lab_id", cart.lab_id);
+  formData.append("lab_id", cart.lab_id !== undefined ? cart.lab_id : cart.lab_id_id);
   formData.append("offered_test_id", cart.id);
   formData.append("amount", cart.price);
   formData.append("guest_id", cart.guest_id);
@@ -1273,7 +1283,7 @@ export const addToCart = (cart, id) => {
 
 
 
-  console.log("cart items", cart, cart.patient_id)
+  console.log("cart items in django apiiii", cart, cart.lab_id_id)
 
   return axios.post(`${url.ADD_TO_CART}/${id}`, formData, {
     headers: getHeader(authHeader()),

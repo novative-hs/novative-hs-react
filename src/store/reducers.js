@@ -52,6 +52,7 @@ import bankaccounts from "./bankaccounts/reducer";
 
 //carts
 import carts from "./carts/reducer";
+import quotes from "./quotes/reducer";
 
 //home sample collectors
 import sampleCollectors from "./sample-collectors/reducer";
@@ -259,6 +260,7 @@ const rootReducer = combineReducers({
   discountLabs,
   discountLabHazirToLabs, 
   carts,
+  quotes,
   sampleCollectors,
   qualityCertificates,
   feedbacks,

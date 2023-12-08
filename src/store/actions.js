@@ -50,6 +50,9 @@ export * from "./bankaccounts/actions";
 // carts
 export * from "./carts/actions";
 
+//quotes
+export * from "./quotes/actions";
+
 // home sample collectors
 export * from "./sample-collectors/actions";
 

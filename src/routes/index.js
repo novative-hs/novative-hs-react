@@ -9,6 +9,7 @@ import SampleCollectorProfile from "../pages/Authentication/SampleCollectorProfi
 import StaffProfile from "../pages/Authentication/StaffProfile";
 // LabMarket Pages
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
+import MedicalTestsList from "pages/LabMarket/NearbyLabs/MedicalTestsList";
 import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
 // TestMarket Pages
 import labs from "pages/LabMarket/NearbyLabs/labs";
@@ -107,6 +108,7 @@ import LabPathologists from "../pages/LabMarket/NearbyLabs/NearbyLabDetails/path
 import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
 import TestsOfferedbyLab from "pages/LabMarket/NearbyLabs/TestsOfferedbyLab";
 import CartsList from "../pages/Carts/carts-list";
+import QuoteList from "../pages/Carts/quotes-list";
 // import checkout from "pages/Checkouts/checkout-list";
 import Checkout from "pages/Checkouts/checkout";
 import checkoutcsr from "pages/Checkouts/checkout";
@@ -295,6 +297,10 @@ const publicRoutes = [
   {
     path: "/cart/:guest_id?/:uuid?",
     component: CartsList,
+  },
+  {
+    path: "/quote-list/:guest_id?/:uuid?",
+    component: QuoteList,
   },
   
   // {
@@ -686,6 +692,10 @@ const patientAuthProtectedRoutes = [
     component: CartsList,
   },
   {
+    path: "/quote-list/:guest_id?/:uuid?",
+    component: QuoteList,
+  },
+  {
     path: "/checkout/:uuid?",
     component: Checkout,
   },
@@ -736,6 +746,9 @@ const patientPublicRoutes = [
   },
   {  path: "/nearby-packages/:guest_id?/:uuid?",
     component: NearbyPackages 
+  },
+  {  path: "/tests-offered-labhazir/:guest_id?/:uuid?",
+    component:  MedicalTestsList
   },
   {  path: "/nearby-radiology/:guest_id?/:uuid?",
   component: NearbyRadiology 

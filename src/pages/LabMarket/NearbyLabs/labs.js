@@ -544,9 +544,7 @@ class NearbyLabs extends Component {
     if (e.target.value === "Current Location") {
       this.setState({ city: "" });
       this.setState({ address: "" });
-
       const { onGetNearbyLabs } = this.props;
-
       var locationDetails = {
         latitude: this.state.currentLatitude,
         longitude: this.state.currentLongitude,

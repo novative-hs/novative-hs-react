@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link, Redirect } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import { Card, CardBody, Col,Table, Container, Row } from "reactstrap";
 import { Collapse } from "reactstrap";
 import logo from "../../../src/assets/images/logo.svg";
 import logoLight from "../../../src/assets/images/logo-light.png";
@@ -22,21 +22,20 @@ import BootstrapTable from "react-bootstrap-table-next";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
-import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
+import { getQuotes, deleteCart } from "store/quotes/actions";
 
-import { isEmpty, size } from "lodash";
+import { isEmpty, size , map} from "lodash";
 
 import "assets/scss/table.scss";
-import carts from "pages/CartsList/carts";
 
 class CartList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      carts: [],
+      quotes: [],
       isMenuOpened: false,
-      cart: "",
+      quote: "",
       abc: "",
       isDropdownOpen: false,
       user_id: localStorage.getItem("authUser")
@@ -51,102 +50,6 @@ class CartList extends Component {
       modal: false,
       deleteModal: false,
       isDisabled: true,
-      cartListColumns: [
-        {
-          text: "id",
-          dataField: "id",
-          sort: true,
-          hidden: true,
-          formatter: (cellContent, cart) => <>{cart.id}</>,
-        },
-        {
-          dataField: "lab_name",
-          text: "Lab name",
-          sort: true,
-        },
-        {
-          dataField: "test_name",
-          text: "Test name",
-          sort: true,
-          headerStyle: () => {
-            return { width: "30%" };
-          },
-        },
-        {
-          dataField: "price",
-          text: "Price",
-          sort: true,
-          formatter: (cellContent, cart) => (
-            <>
-              {
-                <span>
-                  {cart.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </span>
-              }
-            </>
-          ),
-        },
-        {
-          dataField: "lab_discount",
-          text: "Discount By Lab",
-          sort: true,
-          formatter: (cellContent, cart) => (
-            <>{<span>{(cart.lab_discount * 100).toFixed()}%</span>}</>
-          ),
-        },
-        {
-          dataField: "labhaz_discount_test",
-          text: "Test Discount (Labhazir)",
-          sort: true,
-          formatter: (cellContent, cart) => (
-            <>{<span>{(cart.labhaz_discount_test * 100).toFixed()}%</span>}</>
-          ),
-        },
-        {
-          dataField: "discount_by_labhazir",
-          text: "All Tests Discount (Labhazir)",
-          sort: true,
-          formatter: (cellContent, cart) => (
-            <>{<span>{(cart.discount_by_labhazir * 100).toFixed()}%</span>}</>
-          ),
-        },
-        {
-          dataField: "total_balance",
-          text: "After Discount",
-          sort: true,
-          formatter: (cellContent, cart) => (
-            <>
-              {
-                // <span>{cart.total_balance.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
-                <span>
-                  {Math.round(cart.total_balance)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </span>
-              }
-            </>
-          ),
-        },
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, cart) => (
-            <Col>
-              <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
-                  <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(cart)}
-                  ></i>
-                </Link>
-              </Tooltip>
-            </Col>
-          ),
-        },
-      ],
     };
     this.handleCartClick = this.handleCartClick.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -156,45 +59,35 @@ class CartList extends Component {
   }
 
   componentDidMount() {
-    const { onGetCarts } = this.props;
+    const { onGetQuotes } = this.props;
+    if ((!this.state.user_id)) {
+      console.log("quotesssssssssssssssssssssssssssssss",onGetQuotes(this.props.match.params.guest_id));
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotessssssssssssssssssssssssssssssshshshhdhhsdhdhdhhdhdhdh",this.props.quotes );
 
-    // onGetCarts(this.props.match.params.id);
-    // this.setState({ carts: this.props.carts });
-    if (!this.state.user_id) {
-      console.log(onGetCarts(this.props.match.params.guest_id));
-      this.setState({ carts: this.props.carts });
-      console.log("carts:", this.props.match.params.guest_id);
-      console.log("userr", this.state.user_id);
+      console.log("quotes:", this.props.match.params.guest_id)
+      console.log("userr", this.state.user_id)
     }
-    if (
-      this.state.user_id &&
-      this.state.user_type !== "CSR" &&
-      this.state.user_type !== "b2bclient"
-    ) {
-      onGetCarts(this.state.user_id);
-      this.setState({ carts: this.props.carts });
-      console.log("carts:", this.props.match.params.guest_id);
-      console.log("userr", this.state.user_id);
+    if ((this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient"))
+    {
+      onGetQuotes(this.state.user_id);
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotes:", this.props.match.params.guest_id)
+      console.log("userr", this.state.user_id)
     }
-    if (
-      this.state.user_id &&
-      this.state.user_type === "CSR" &&
-      this.state.user_type !== "b2bclient"
-    ) {
-      onGetCarts(this.props.match.params.guest_id);
-      this.setState({ carts: this.props.carts });
-      console.log("carts:", this.props.match.params.guest_id);
-      console.log("userr", this.state.user_id);
+    if((this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient"))
+    {
+      onGetQuotes(this.props.match.params.guest_id);
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotes:", this.props.match.params.guest_id)
+      console.log("userr", this.state.user_id)
     }
-    if (
-      this.state.user_id &&
-      this.state.user_type !== "CSR" &&
-      this.state.user_type === "b2bclient"
-    ) {
-      onGetCarts(this.props.match.params.uuid);
-      this.setState({ carts: this.props.carts });
-      console.log("carts:", this.props.match.params.uuid);
-      console.log("userr", this.state.user_id);
+    if((this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient"))
+    {
+      onGetQuotes(this.props.match.params.uuid);
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotes:", this.props.match.params.uuid)
+      console.log("userr", this.state.user_id)
     }
   }
 
@@ -205,9 +98,9 @@ class CartList extends Component {
   }
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { carts } = this.props;
-    if (!isEmpty(carts) && size(prevProps.carts) !== size(carts)) {
-      this.setState({ carts: {}, isEdit: false });
+    const { quotes } = this.props;
+    if (!isEmpty(quotes) && size(prevProps.quotes) !== size(quotes)) {
+      this.setState({ quotes: {}, isEdit: false });
     }
   }
 
@@ -231,81 +124,72 @@ class CartList extends Component {
     }));
   };
 
-  onClickDelete = carts => {
-    this.setState({ carts: carts });
+  onClickDelete = quotes => {
+    this.setState({ quotes: quotes });
     this.setState({ deleteModal: true });
   };
 
   handleDeleteCart = () => {
-    const { onDeleteCart, onGetCarts } = this.props;
-    const { carts } = this.state;
+    const { onDeleteCart, onGetQuotes } = this.props;
+    const { quotes } = this.state;
 
-    if (carts.id !== undefined) {
-      onDeleteCart(carts);
+    if (quotes.id !== undefined) {
+      onDeleteCart(quotes);
       // onDeleteAllCart(id);
       setTimeout(() => {
-        if (!this.state.user_id) {
-          console.log(onGetCarts(this.props.match.params.guest_id));
-          this.setState({ carts: this.props.carts });
-          console.log("carts:", this.props.match.params.uuid);
-        }
-        if (this.state.user_id && this.state.user_type !== "CSR") {
-          onGetCarts(this.state.user_id);
-          this.setState({ carts: this.props.carts });
-          console.log("carts:", this.state.user_id);
-          console.log("carts:", carts);
-        }
-        if (this.state.user_id && this.state.user_type === "CSR") {
-          onGetCarts(this.props.match.params.guest_id);
-          this.setState({ carts: this.props.carts });
-          console.log("carts:", this.props.match.params.guest_id);
-          console.log("carts:", carts);
-        }
+        if ((!this.state.user_id)) {
+      console.log(onGetQuotes(this.props.match.params.guest_id));
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotes:", this.props.match.params.uuid)
+    }
+    if ((this.state.user_id && this.state.user_type !== "CSR"))
+    {
+      onGetQuotes(this.state.user_id);
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotes:", this.state.user_id)
+      console.log("quotes:", quotes)
+    }
+    if((this.state.user_id && this.state.user_type === "CSR"))
+    {
+      onGetQuotes(this.props.match.params.guest_id);
+      this.setState({ quotes: this.props.quotes });
+      console.log("quotes:", this.props.match.params.guest_id)
+      console.log("quotes:", quotes)
+    }
       }, 1000);
       this.setState({ deleteModal: false });
     }
   };
 
   handleCart = () => {
-    if (
-      this.state.user_id &&
-      this.state.user_type !== "CSR" &&
-      this.state.user_type !== "b2bclient"
-    ) {
-      this.props.match.params.uuid = this.props.match.params.guest_id;
-      console.log(this.props.match.params.uuid);
+
+    if (this.state.user_id && this.state.user_type !=="CSR" && this.state.user_type !=="b2bclient") {
+      this.props.match.params.uuid = this.props.match.params.guest_id
+      console.log(this.props.match.params.uuid)
       this.props.history.push(
         this.props.match.params.uuid
           ? `/checkout/${this.props.match.params.uuid}`
           : `/checkout`
       );
     }
-    if (
-      this.state.user_id &&
-      this.state.user_type === "CSR" &&
-      this.state.user_type !== "b2bclient"
-    ) {
-      console.log(this.state.user_id);
-      console.log(this.state.user_type);
-      console.log(this.props.match.params.guest_id);
-      console.log(this.props.match.params.filnalurl);
-      console.log(this.props.match.params.uuid);
+    if (this.state.user_id && this.state.user_type ==="CSR" && this.state.user_type !=="b2bclient") {
+      console.log(this.state.user_id)
+      console.log(this.state.user_type)
+      console.log(this.props.match.params.guest_id)
+      console.log(this.props.match.params.filnalurl)
+      console.log(this.props.match.params.uuid)
       this.props.history.push(
         this.props.match.params.guest_id
           ? `/checkout-csr/${this.props.match.params.guest_id}`
           : `/checkout-csr`
       );
     }
-    if (
-      this.state.user_id &&
-      this.state.user_type !== "CSR" &&
-      this.state.user_type === "b2bclient"
-    ) {
-      console.log(this.state.user_id);
-      console.log(this.state.user_type);
-      console.log(this.props.match.params.guest_id);
-      console.log(this.props.match.params.filnalurl);
-      console.log(this.props.match.params.uuid);
+    if (this.state.user_id && this.state.user_type !=="CSR" && this.state.user_type ==="b2bclient") {
+      console.log(this.state.user_id)
+      console.log(this.state.user_type)
+      console.log(this.props.match.params.guest_id)
+      console.log(this.props.match.params.filnalurl)
+      console.log(this.props.match.params.uuid)
       this.props.history.push(
         this.props.match.params.guest_id
           ? `/checkout-b2b/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
@@ -322,52 +206,17 @@ class CartList extends Component {
     }
   };
 
-  handleEmptyCart = () => {
-    const { onGetCarts, onEmptyCart } = this.props;
-    const { carts } = this.state;
-
-    onEmptyCart(this.state.user_id);
-
-    setTimeout(() => {
-      if (!this.state.user_id) {
-        console.log(onGetCarts(this.props.match.params.guest_id));
-        this.setState({ carts: this.props.carts });
-        console.log("carts:", this.props.match.params.uuid);
-      }
-      if (this.state.user_id && this.state.user_type !== "CSR") {
-        onGetCarts(this.state.user_id);
-        this.setState({ carts: this.props.carts });
-        console.log("carts:", this.state.user_id);
-        console.log("carts:", carts);
-      }
-      if (this.state.user_id && this.state.user_type === "CSR") {
-        onGetCarts(this.props.match.params.guest_id);
-        this.setState({ carts: this.props.carts });
-        console.log("carts:", this.props.match.params.guest_id);
-        console.log("carts:", carts);
-      }
-    }, 1000);
-
-    this.setState({ carts });
-
-    this.props.history.push(
-      this.props.match.params.uuid
-        ? `/nearby-labs/${this.props.match.params.uuid}`
-        : `/nearby-labs`
-    );
-  };
-
   handleCartClick = (e, arg) => {
-    const cart = arg;
+    const quote = arg;
 
     this.setState({
-      cart: {
-        id: cart.id,
-        patient_id: cart.patient_id,
-        lab_id: cart.lab_id,
-        offered_test_id: cart.offered_test_id,
-        test_appointment_id: cart.test_appointment_id,
-        invoice_id: cart.invoice_id,
+      quote: {
+        id: quote.id,
+        patient_id: quote.patient_id,
+        lab_id: quote.lab_id,
+        offered_test_id: quote.offered_test_id,
+        test_appointment_id: quote.test_appointment_id,
+        invoice_id: quote.invoice_id,
       },
       isEdit: true,
     });
@@ -375,13 +224,13 @@ class CartList extends Component {
     this.toggle();
   };
   toggleDropdown = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isDropdownOpen: !prevState.isDropdownOpen,
     }));
   };
   openMenu = () => {
     this.setState({ isMenuOpened: !this.state.isMenuOpened });
-    console.log(this.state.isMenuOpened);
+    console.log(this.state.isMenuOpened)
   };
 
   render() {
@@ -391,15 +240,15 @@ class CartList extends Component {
 
     const { SearchBar } = Search;
 
-    const { carts } = this.props;
+    const { quotes } = this.props;
 
     const { deleteModal } = this.state;
 
-    const pageOptions = {
-      sizePerPage: 10,
-      totalSize: carts.length, // replace later with size(carts),
-      custom: true,
-    };
+    // const pageOptions = {
+    //   sizePerPage: 10,
+    //   totalSize: quotes.length, // replace later with size(quotes),
+    //   custom: true,
+    // };
 
     const defaultSorted = [
       {
@@ -416,15 +265,14 @@ class CartList extends Component {
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
         <div className="p-4">
-          <div className="topnav mt-5">
-            <div className="container-fluid left-space">
-              <nav
-                className="navbar navbar-light navbar-expand-lg topnav-menu"
-                id="navigation"
-              >
-                {this.state.user_id &&
-                this.state.user_type === "CSR" &&
-                this.state.user_type !== "b2bclient" ? (
+        <div className="topnav mt-5">
+          <div className="container-fluid left-space">
+          <nav
+              className="navbar navbar-light navbar-expand-lg topnav-menu"
+              id="navigation"
+            >
+               {this.state.user_id && this.state.user_type ==="CSR" && this.state.user_type !== "b2bclient"
+                ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
@@ -498,57 +346,53 @@ class CartList extends Component {
                       </li>
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
-                          <Link
-                            to={"/test-appointments"}
-                            className="dropdown-item"
-                          >
+                          <Link to={"/test-appointments"} className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">
-                              My Appointments
-                            </span>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
                           </Link>
                         </li>
                       )}
                     </ul>
                   </Collapse>
-                ) : null}
-                {!this.state.user_id ? (
+                ): null}
+              {!this.state.user_id
+                ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                      {this.props.match.params.filnalurl ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                                : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Labs</span>
-                          </Link>
-                        </li>
-                      ) : (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/labs/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Labs</span>
-                          </Link>
-                        </li>
-                      )}
+                    {this.props.match.params.filnalurl ? (
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                              : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                        </Link>
+                      </li>
+                    ) : (
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/labs/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                        </Link>
+                      </li>
+                    )}
 
-                      {this.props.match.params.filnalurl &&
-                      this.props.match.params.guest_id ? (
+{this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -561,8 +405,7 @@ class CartList extends Component {
                             <span className="pt-4 font-size-12">Tests</span>
                           </Link>
                         </li>
-                      ) : !this.props.match.params.filnalurl &&
-                        this.props.match.params.guest_id ? (
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -576,8 +419,7 @@ class CartList extends Component {
                           </Link>
                         </li>
                       ) : null}
-                      {this.props.match.params.filnalurl &&
-                      this.props.match.params.guest_id ? (
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -590,8 +432,7 @@ class CartList extends Component {
                             <span className="pt-4 font-size-12">Profiles</span>
                           </Link>
                         </li>
-                      ) : !this.props.match.params.filnalurl &&
-                        this.props.match.params.guest_id ? (
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -606,8 +447,7 @@ class CartList extends Component {
                         </li>
                       ) : null}
 
-                      {this.props.match.params.filnalurl &&
-                      this.props.match.params.guest_id ? (
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -620,8 +460,7 @@ class CartList extends Component {
                             <span className="pt-4 font-size-12">Packages</span>
                           </Link>
                         </li>
-                      ) : !this.props.match.params.filnalurl &&
-                        this.props.match.params.guest_id ? (
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -636,8 +475,7 @@ class CartList extends Component {
                         </li>
                       ) : null}
 
-                      {this.props.match.params.filnalurl &&
-                      this.props.match.params.guest_id ? (
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -650,8 +488,7 @@ class CartList extends Component {
                             <span className="pt-4 font-size-12">Radiology</span>
                           </Link>
                         </li>
-                      ) : !this.props.match.params.filnalurl &&
-                        this.props.match.params.guest_id ? (
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -666,6 +503,7 @@ class CartList extends Component {
                         </li>
                       ) : null}
 
+               
                       {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
@@ -695,14 +533,10 @@ class CartList extends Component {
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
-                          <Link
-                            to={"/test-appointments"}
-                            className="dropdown-item"
-                          >
+                          <Link to={"/test-appointments"} className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">
-                              My Appointments
-                            </span>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
                           </Link>
                         </li>
                         /* <li className="nav-item dropdown">
@@ -734,9 +568,9 @@ class CartList extends Component {
                       )}
                     </ul>
                   </Collapse>
-                ) : this.state.user_id &&
-                  this.state.user_type !== "CSR" &&
-                  this.state.user_type !== "b2bclient" ? (
+
+                ) : 
+                this.state.user_id && this.state.user_type !== "CSR"  && this.state.user_type !== "b2bclient" ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
                     className="navbar-collapse"
@@ -841,18 +675,14 @@ class CartList extends Component {
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.guest_id
-                                ? `/test-appointments/${this.props.match.params.guest_id}`
-                                : `/test-appointments`
-                            }
-                            className="dropdown-item"
-                          >
+                          <Link to={
+                            this.props.match.params.guest_id
+                              ? `/test-appointments/${this.props.match.params.guest_id}`
+                              : `/test-appointments`
+                          } className="dropdown-item">
                             {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">
-                              My Appointments
-                            </span>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
                           </Link>
                         </li>
                         /* <li className="nav-item dropdown">
@@ -882,106 +712,103 @@ class CartList extends Component {
                           </div>
                           </li> */
                       )}
-                    </ul>
-                  </Collapse>
-                ) : this.state.user_id &&
-                  this.state.user_type !== "CSR" &&
-                  this.state.user_type === "b2bclient" ? (
-                  <Collapse
-                    isOpen={this.state.isMenuOpened}
-                    className="navbar-collapse"
-                    id="topnav-menu-content"
-                  >
-                    <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/labs`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
 
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-test`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Tests</span>
-                          {/* {this.props.t("Tests")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-profiles`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Profiles</span>
-                          {/* {this.props.t("Profiles")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-packages`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Packages</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/nearby-radiology`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Radiology</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
-                      {this.state.user_id && this.state.user_type == "patient" && (
-                        <li className="nav-item">
-                          <Link
-                            to={"/test-appointments"}
-                            className="dropdown-item"
-                          >
-                            {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">
-                              My Appointments
-                            </span>
-                          </Link>
-                        </li>
-                      )}
                     </ul>
                   </Collapse>
+                ) : 
+                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
+                  <Collapse
+                  isOpen={this.state.isMenuOpened}
+                  className="navbar-collapse"
+                  id="topnav-menu-content"
+                >
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/labs`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Labs</span>
+                      </Link>
+                    </li>
+
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-test`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Tests</span>
+                        {/* {this.props.t("Tests")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-profiles`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Profiles</span>
+                        {/* {this.props.t("Profiles")} */}
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-packages`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Packages</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
+                  <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/nearby-radiology`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Radiology</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>   
+                    {this.state.user_id && this.state.user_type == "patient" && (
+                      <li className="nav-item">
+                        <Link to={"/test-appointments"} className="dropdown-item">
+                          {/* {this.props.t("My Appointments")} */}
+                          <span className="pt-4 font-size-12">My Appointments</span>
+
+                        </Link>
+                      </li>
+                    )}
+                  </ul>
+                </Collapse>
                 ) : null}
-              </nav>
-            </div>
+
+            </nav>
           </div>
         </div>
-
+        </div>
+       
         <header id="page-topbaar">
           <div className="navbar-header">
-            <div className="d-flex">
+          <div className="d-flex">
               {isLargeScreen ? (
                 <div className="navbar-brand-box">
                   <Link
@@ -1016,30 +843,32 @@ class CartList extends Component {
                     </span>
                   </Link>
                 </div>
+
+
               ) : null}
 
               {!isLargeScreen ? (
+
                 <button
                   type="button"
                   className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
-                  style={{ left: "12px", top: "6px" }} // Set left position to 10 pixels
+                  style={{ left: '12px', top: '6px' }} // Set left position to 10 pixels
                   data-toggle="collapse"
                   onClick={this.openMenu}
                   data-target="#topnav-menu-content"
                 >
                   <i className="fa fa-fw fa-bars" />
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
-                  data-toggle="collapse"
-                  onClick={this.openMenu}
-                  data-target="#topnav-menu-content"
-                >
-                  <i className="fa fa-fw fa-bars" />
-                </button>
-              )}
+
+              ) : <button
+                type="button"
+                className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                data-toggle="collapse"
+                onClick={this.openMenu}
+                data-target="#topnav-menu-content"
+              >
+                <i className="fa fa-fw fa-bars" />
+              </button>}
             </div>
 
             <div className="d-flex">
@@ -1048,17 +877,18 @@ class CartList extends Component {
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Link
-                    to={
-                      this.props.match.params.uuid
+                      to={
+                        this.props.match.params.uuid
                         ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                         : `/cart/${this.props.match.params.guest_id}`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle d-none"
+                      }
+                      className="btn header-items noti-icon right-bar-toggle d-none"
                   >
-                    <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-                    {/* {!isEmpty(this.props.carts) &&
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
+
+                        {/* {!isEmpty(this.props.quotes) &&
                         
-                          this.props.carts.slice(-1).pop().cart_quantity+this.state.count
+                          this.props.quotes.slice(-1).pop().cart_quantity+this.state.count
                           } */}
                   </Link>
                   <Link
@@ -1097,100 +927,72 @@ class CartList extends Component {
                     <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" />{" "}
                   </Link>
                 </div>
-              ) : this.state.user_type == "patient" ? (
+              )
+               : this.state.user_type == "patient" ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-2">
-                  <Link
-                    // to={"/profile"}
-                    to={
-                      this.props.match.params.guest_id
-                        ? `/profile/${this.props.match.params.guest_id}`
-                        : `/profile`
-                    }
-                    className="dropdown-content me-2 text-light"
-                  >
-                    <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
-                    <span className="pt-4 font-size-12">
-                      {this.state.patient_name.split(" ")[0]}
-                    </span>
-                  </Link>{" "}
-                  <button
-                    className="btn header-items noti-icon right-bar-toggle"
-                    style={{ position: "relative" }}
-                    onClick={this.toggleDropdown}
-                  >
-                    <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
-                  </button>
-                  {isDropdownOpen && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "50px", // Adjust this value to set the distance between the button and the dropdown
-                        right: "20px",
-                        backgroundColor: "#f9f9f9",
-                        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                        padding: "10px",
-                        minWidth: "150px",
-                        zIndex: 1,
-                      }}
-                    >
-                      <ul style={{ listStyleType: "none", padding: "2px" }}>
-                        <li>
-                          <Link
-                            to="/change-password"
-                            className="dropdown-content me-2 text-light"
-                          >
-                            <i
-                              className="mdi mdi-key align-middle me-1 font-size-20"
-                              style={{ color: "blue" }}
-                            />{" "}
-                            <span
-                              className="pt-4 font-size-12"
-                              style={{ color: "blue" }}
-                            >
-                              Password
-                            </span>
-                            <hr style={{ margin: "0 0" }} />
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="/contact-us"
-                            className="dropdown-content me-2 text-light"
-                          >
-                            <i
-                              className="fas fa-headset align-middle me-1 mt-1 font-size-20"
-                              style={{ color: "blue" }}
-                            />{" "}
-                            <span
-                              className="pt-4 font-size-12"
-                              style={{ color: "blue" }}
-                            >
-                              Contact Us{" "}
-                            </span>
-                            <hr style={{ margin: "0 0" }} />
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            to="/logout"
-                            className="dropdown-content text-light"
-                          >
-                            <i
-                              className="mdi mdi-power align-middle font-size-20"
-                              style={{ color: "blue" }}
-                            />{" "}
-                            <span
-                              className="pt-2 font-size-12"
-                              style={{ color: "blue", marginLeft: "5px" }}
-                            >
-                              Log Out
-                            </span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
+                <Link
+                  // to={"/profile"}
+                  to={
+                    this.props.match.params.guest_id
+                      ? `/profile/${this.props.match.params.guest_id}`
+                      : `/profile`
+                  }
+                  className="dropdown-content me-2 text-light"
+                >
+                  <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
+                  <span className="pt-4 font-size-12">
+                    {this.state.patient_name.split(" ")[0]}                    
+                  </span>
+                </Link>{" "}
+                <button
+                  className="btn header-items noti-icon right-bar-toggle"
+                  style={{ position: 'relative' }}
+                  onClick={this.toggleDropdown}
+                >
+                  <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
+                </button>
+
+                {isDropdownOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50px', // Adjust this value to set the distance between the button and the dropdown
+                    right: '20px',
+                    backgroundColor: '#f9f9f9',
+                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                    padding: '10px',
+                    minWidth: '150px',
+                    zIndex: 1,
+                  }}>
+                    <ul style={{ listStyleType: "none", padding: '2px' }}>
+                      <li>
+                        <Link to="/change-password" className="dropdown-content me-2 text-light">
+                          <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                          <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                            Password
+                          </span>
+                          <hr style={{margin: '0 0' }} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/contact-us" className="dropdown-content me-2 text-light">
+                          <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                          <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                            Contact Us                  </span>
+                          <hr style={{ margin: '0 0' }} />
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/logout" className="dropdown-content text-light">
+                          <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
+                          <span className="pt-2 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                            Log Out                    
+                          </span>
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
               ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (
@@ -1281,106 +1083,121 @@ class CartList extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>Cart List | Lab Hazir</title>
+            <title>Quote List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="Cart" breadcrumbItem="Cart List" />
-            <Row>
-              <Col lg="12">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
+        <Breadcrumbs title="Quote" breadcrumbItem="Quote List" />
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody>
+                {/* <PaginationProvider
+                  pagination={paginationFactory(pageOptions)}
+                  keyField="id"
+                  columns={this.state.cartListColumns}
+                  data={quotes}
+                >
+                  {({ paginationProps, paginationTableProps }) => (
+                    <ToolkitProvider
                       keyField="id"
                       columns={this.state.cartListColumns}
-                      data={carts}
+                      data={quotes}
+                      search
                     >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.cartListColumns}
-                          data={carts}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>
-                              </Row>
-
-                              <Row>
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={
-                                        "table align-middle table-hover table-responsive"
-                                      } // Added responsive class here
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                    />
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
-                      )}
-                    </PaginationProvider>
-
-                    <Row className="mt-4">
-                      <Col sm="6">
+                      {(toolkitprops) => (
+                        <React.Fragment>
+                          <Row className="mb-2">
+                            <Col sm="4">
+                              <div className="search-box ms-2 mb-2 d-inline-block">
+                                <div className="position-relative">
+                                  <SearchBar {...toolkitprops.searchProps} />
+                                  <i className="bx bx-search-alt search-icon" />
+                                </div>
+                              </div>
+                            </Col>
+                            <Col sm="4">
                         <button
-                          to="/dashboard-patient/:id/nearby-labs"
                           className="btn btn-danger"
-                          onClick={this.handleEmptyCart}
-                          disabled={this.state.carts.length == 0}
+                          // onClick={this.handleEmptyCart}
+                          disabled={this.state.quotes.length == 0}
                         >
                           <i className="mdi mdi-delete-empty me-1" />
-                          Empty Cart
+                          See Quote
                         </button>
                       </Col>
-                      <Col sm="6">
-                        <div className="text-sm-end mt-2 mt-sm-0">
-                          <button
-                            // component={Link}
-                            // to="/checkout"
-                            className="btn btn-success"
-                            onClick={this.handleCart}
-                            disabled={this.state.carts.length == 0}
-                          >
-                            <i className="mdi mdi-cart-arrow-right me-1" />{" "}
-                            Checkout{" "}
-                          </button>
-                        </div>
-                      </Col>
-                    </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
+                          </Row>
+                         
+                          <Row>
+                            <Col xl="12">
+                              <div className="table-responsive">
+                                <BootstrapTable
+                                  {...toolkitprops.baseProps}
+                                  {...paginationTableProps}
+                                  defaultSorted={defaultSorted}
+                                  classes={"table align-middle table-hover table-responsive"} // Added responsive class here
+                                  bordered={false}
+                                  striped={true}
+                                  headerWrapperClasses={"table-light"}
+                                  responsive
+                                  ref={this.node}
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row className="align-items-md-center mt-30">
+                            <Col className="pagination pagination-rounded justify-content-end mb-2">
+                              <PaginationListStandalone
+                                {...paginationProps}
+                              />
+                            </Col>
+                          </Row>
+                        </React.Fragment>
+                      )}
+                    </ToolkitProvider>
+                  )}
+                </PaginationProvider> */}
+                               {!isEmpty(this.props.quotes.labs_offering_tests) ? (
+  this.props.quotes.labs_offering_tests.map((lab, labIndex) => (
+    <div key={`lab_${labIndex}`}>
+      <h3 style={{ textAlign: 'center' }}>{lab.lab_details.lab_name}</h3>
+      <Table key={`table_${labIndex}`}>
+        <thead>
+          <tr>
+            <th>Test Name</th>
+            <th>Test Details</th>
+            {/* Add more column headings if needed */}
+          </tr>
+        </thead>
+        <tbody>
+          {!isEmpty(lab.tests_offered) ? (
+            lab.tests_offered.map((test, testIndex) => (
+              <tr key={`test_${testIndex}`}>
+                <td className="float-start" >{test.test_name}</td>
+                <td>{test.test_details}</td>
+                {/* Add more columns if needed */}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2">No tests offered by this lab.</td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    </div>
+  ))
+) : (
+  <h5>Sorry! No labs found near you offering these tests.</h5>
+)}
+
+
+
+
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
         </div>
       </React.Fragment>
     );
@@ -1391,23 +1208,21 @@ CartList.propTypes = {
   history: PropTypes.any,
   location: PropTypes.any,
   match: PropTypes.object,
-  carts: PropTypes.array,
+  quotes: PropTypes.any,
   className: PropTypes.any,
-  onGetCarts: PropTypes.func,
+  onGetQuotes: PropTypes.func,
   onDeleteCart: PropTypes.func,
-  onEmptyCart: PropTypes.func,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
 };
 
-const mapStateToProps = ({ carts }) => ({
-  carts: carts.carts,
+const mapStateToProps = ({ quotes }) => ({
+  quotes: quotes.quotes,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetCarts: id => dispatch(getCarts(id)),
+  onGetQuotes: id => dispatch(getQuotes(id)),
   onDeleteCart: cartItem => dispatch(deleteCart(cartItem)),
-  onEmptyCart: id => dispatch(emptyCart(id)),
 });
 
 export default connect(

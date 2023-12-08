@@ -1360,6 +1360,19 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Comparison</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
                           <Link to={
@@ -1524,6 +1537,33 @@ class NearbyLabs extends Component {
                           </Link>
                         </li>
                       ) : null}
+                      {this.state.filnalurl && this.state.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.state.filnalurl}/${this.state.guest_id}`
+                                : `/tests-offered-labhazir/${this.state.filnalurl}/${this.state.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                          </Link>
+                        </li>
+                      ) : !this.state.filnalurl && this.state.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.state.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Compare</span>
+                          </Link>
+                        </li>
+                      ) : null}
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
@@ -1615,6 +1655,19 @@ class NearbyLabs extends Component {
                           className="dropdown-item"
                         >
                           <span className="pt-4 font-size-12">Radiology</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Compare</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -1710,6 +1763,19 @@ class NearbyLabs extends Component {
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">Radiology</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Compare</span>
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>

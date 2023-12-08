@@ -60,6 +60,8 @@ export const EMPTY_CART = `${API_ENDPOINT}/api/patient/cart-list`;
 export const DELETE_CART = `${API_ENDPOINT}/api/patient/cart-item`;
 export const ADD_TO_CART = `${API_ENDPOINT}/api/patient/cart-item`;
 
+export const GET_QUOTES = `${API_ENDPOINT}/api/patient/quote-list`;
+
 // SAMPLE COLLECTOR
 export const GET_SAMPLE_COLLECTORS = `${API_ENDPOINT}/api/lab/sample-collector-list`;
 export const ADD_NEW_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
