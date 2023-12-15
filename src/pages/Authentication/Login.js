@@ -134,75 +134,81 @@ class Login extends Component {
                                 "Please enter your password"
                               ),
                             })}
-                            onSubmit={values => {
-                              this.props.loginUser(values, this.props.history);
-                              console.log("page: ", values)
-                              setTimeout(() => {
-                                console.log(values)
+                            onSubmit={async (values, { setSubmitting }) => {
+                              try {
+                                await this.props.loginUser(values, this.props.history);
+                            
                                 const success = this.props.success;
-                                if (!isLargeScreen && this.state.finalUrl) {
-                                  console.log("finalUrl in mobile app else case", this.state.finalUrl)
-                                  if (success.account_type === "patient") {
+                            
+                                // Rest of your logic for redirection based on success
+                                setTimeout(() => {
+                                  if (!isLargeScreen && this.state.finalUrl) {
+                                    console.log("finalUrl in mobile app else case", this.state.finalUrl)
+                                    if (success.account_type === "patient") {
+                                      this.props.history.push(
+                                        this.state.finalUrl
+                                          ? `/nearby-labs/${this.state.finalUrl}`
+                                          : `/nearby-labs/${this.state.finalUrl}`
+                                      );
+                                    } else if (success.account_type === "samplecollector") {
+                                      this.props.history.push("/dashboard-samplecollector");
+                                    }
+                                  } 
+                                  if (isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
                                     this.props.history.push(
-                                      this.state.finalUrl
-                                        ? `/nearby-labs/${this.state.finalUrl}`
-                                        : `/nearby-labs/${this.state.finalUrl}`
+                                      this.props.match.params.uuid
+                                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                                        : `/nearby-labs`
                                     );
-                                  } else if (success.account_type === "samplecollector") {
-                                    this.props.history.push("/dashboard-samplecollector");
-                                  }
-                                } 
-                                if (isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
-                                  this.props.history.push(
-                                    this.props.match.params.uuid
-                                      ? `/nearby-labs/${this.props.match.params.uuid}`
-                                      : `/nearby-labs`
-                                  );
-                                  console.log(this.props.match.params.uuid);
-                                } 
-                                if (!isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
-                                  this.props.history.push(
-                                    this.props.match.params.uuid
-                                      ? `/nearby-labs/${this.props.match.params.uuid}`
-                                      : `/nearby-labs`
-                                  );
-                                  console.log(this.props.match.params.uuid);
-                                } 
-                                
-                                  else if (success.account_type === "labowner") {
-                                    this.props.history.push("/dashboard-lab");
-                                  } else if (success.account_type === "b2b-admin") {
-                                    this.props.history.push("/b2b-clients-list");
-                                  } else if (success.account_type === "b2bclient") {
-                                    this.props.history.push("/dashboard-b2bclient");
-                                  } else if (success.account_type === "CSR") {
-                                    this.props.history.push("/dashboard-csr");
-                                  } else if (success.account_type === "finance-officer") {
-                                    this.props.history.push("/dashboard-finance");
-                                  } else if (success.account_type === "finance-admin") {
-                                    this.props.history.push("/dashboard-financeadmin");
-                                  } else if (success.account_type === "auditor") {
-                                    this.props.history.push("/dashboard-auditor");
-                                  } else if (success.account_type === "registration-admin") {
-                                    this.props.history.push("/pending-labs");
-                                  } else if (success.account_type === "marketer-admin") {
-                                    this.props.history.push("/discount-labhazir");
-                                  } else if (success.account_type === "samplecollector") {
-                                    this.props.history.push("/dashboard-samplecollector");
-                                  } else if (success.account_type === "csr-admin") {
-                                    this.props.history.push("/pending-complaints-lab");
-                                  } else if (success.account_type === "auditor-admin") {
-                                    this.props.history.push("/pending-audits");
-                                  } else if (success.account_type === "hr-admin") {
-                                    this.props.history.push("/add-staff");
-                                  } else if (success.account_type === "donor") {
-                                    this.props.history.push("/dashboard-donor");
-                                  } else if (success.account_type === "corporate") {
-                                    this.props.history.push("/dashboard-corporate");
-                                  }
-
-
-                              }, 1000);
+                                    console.log(this.props.match.params.uuid);
+                                  } 
+                                  if (!isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
+                                    this.props.history.push(
+                                      this.props.match.params.uuid
+                                        ? `/nearby-labs/${this.props.match.params.uuid}`
+                                        : `/nearby-labs`
+                                    );
+                                    console.log(this.props.match.params.uuid);
+                                  } else if (success.account_type === "labowner") {
+                                      this.props.history.push("/dashboard-lab");
+                                    } else if (success.account_type === "b2b-admin") {
+                                      this.props.history.push("/b2b-clients-list");
+                                    } else if (success.account_type === "b2bclient") {
+                                      this.props.history.push("/dashboard-b2bclient");
+                                    } else if (success.account_type === "CSR") {
+                                      this.props.history.push("/dashboard-csr");
+                                    } else if (success.account_type === "finance-officer") {
+                                      this.props.history.push("/dashboard-finance");
+                                    } else if (success.account_type === "finance-admin") {
+                                      this.props.history.push("/dashboard-financeadmin");
+                                    } else if (success.account_type === "auditor") {
+                                      this.props.history.push("/dashboard-auditor");
+                                    } else if (success.account_type === "registration-admin") {
+                                      this.props.history.push("/pending-labs");
+                                    } else if (success.account_type === "marketer-admin") {
+                                      this.props.history.push("/discount-labhazir");
+                                    } else if (success.account_type === "samplecollector") {
+                                      this.props.history.push("/dashboard-samplecollector");
+                                    } else if (success.account_type === "csr-admin") {
+                                      this.props.history.push("/pending-complaints-lab");
+                                    } else if (success.account_type === "auditor-admin") {
+                                      this.props.history.push("/pending-audits");
+                                    } else if (success.account_type === "hr-admin") {
+                                      this.props.history.push("/add-staff");
+                                    } else if (success.account_type === "donor") {
+                                      this.props.history.push("/dashboard-donor");
+                                    } else if (success.account_type === "corporate") {
+                                      this.props.history.push("/dashboard-corporate");
+                                    }
+                                }, 1000);
+                            
+                              } catch (error) {
+                                // Handle the error, e.g., display an error message on the login page
+                                console.error("Login failed:", error);
+                                this.props.apiError("Login failed. Please check your credentials.");
+                              } finally {
+                                setSubmitting(false);
+                              }
                             }}
                           >
                             {({ errors, status, touched }) => (
