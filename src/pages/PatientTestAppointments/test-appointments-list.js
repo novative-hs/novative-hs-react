@@ -108,11 +108,11 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
-        // {
-        //   dataField: "patient_city",
-        //   text: "City",
-        //   sort: true,
-        // },
+        {
+          dataField: "lab_name",
+          text: "Lab Name",
+          sort: true,
+        },
         // {
         //   dataField: "patient_district",
         //   text: "District",
@@ -148,20 +148,20 @@ class TestAppointmentsList extends Component {
         // },
         {
           dataField: "is_home_sampling_availed",
-          text: "Home sampling / Urgent Sampling",
+          text: "Home Sampling",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              {testAppointment.is_home_sampling_availed == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}/ 
-              {testAppointment.is_state_sampling_availed == true ? (
+              {testAppointment.is_home_sampling_availed == true || testAppointment.is_state_sampling_availed == true ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>
               )}
+              {/* {testAppointment.is_state_sampling_availed == true ? (
+                <span>Yes</span>
+              ) : (
+                <span>No</span>
+              )} */}
             </>
           ),
           // filter: selectFilter({
@@ -180,7 +180,7 @@ class TestAppointmentsList extends Component {
           formatter: (cellContent, patientTestAppointment) => (
             <>
               {patientTestAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
+                <span>--</span>
               ) : (
                 <span>
                   {new Date(
@@ -222,16 +222,16 @@ class TestAppointmentsList extends Component {
              <span>
                   {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
                     !testAppointment.collector_name ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        Not assigned
+                      <span >
+                  
                       </span>
                     ):(
                       <span>{testAppointment.collector_name}</span>
                     )}
                   {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
                     !testAppointment.collection_status ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        Pending
+                      <span>
+                        --
                       </span>
                     ): testAppointment.collection_status == "Assigned" ? (
                       <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
@@ -261,8 +261,8 @@ class TestAppointmentsList extends Component {
 
                   {!testAppointment.is_home_sampling_availed &&
                    !testAppointment.is_state_sampling_availed && (
-                    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                      Not availed
+                    <span>
+                      --
                     </span>
                   )}
                 </span>
@@ -460,7 +460,7 @@ class TestAppointmentsList extends Component {
           formatter: (cellContent, patientTestAppointment) => (
             <>
               {patientTestAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
+                <span>--</span>
               ) : (
                 <span>
                   {new Date(
@@ -502,7 +502,7 @@ class TestAppointmentsList extends Component {
                   Report
                 </Link>
               ) : (
-                <span>Not uploaded</span>
+                <span>--</span>
               )}
             </>
           ),
@@ -515,8 +515,8 @@ class TestAppointmentsList extends Component {
             <>
               {testAppointment.is_home_sampling_availed &&
                 !testAppointment.collector_name && (
-                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                    Not assigned
+                  <span>
+                    --
                   </span>
                 )}
 
@@ -534,8 +534,8 @@ class TestAppointmentsList extends Component {
                 )}
 
               {!testAppointment.is_home_sampling_availed && (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Not availed
+                <span>
+                  --
                 </span>
               )}
             </>
@@ -880,7 +880,7 @@ class TestAppointmentsList extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Requested by Patient</span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
@@ -1324,7 +1324,7 @@ class TestAppointmentsList extends Component {
                                         toggle={this.togglePatientModal2}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Patient Details</span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
