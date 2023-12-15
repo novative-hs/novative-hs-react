@@ -25,6 +25,9 @@ import {
   Label,
   CardBody,
   CardTitle,
+  Modal,
+  ModalHeader,
+  ModalBody,
   Alert,
 } from "reactstrap";
 
@@ -62,7 +65,7 @@ class Checkout extends Component {
       user_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
-      patient_name:"", // Set default to an empty string if patientProfile.name is undefined
+      patient_name: "", // Set default to an empty string if patientProfile.name is undefined
       patient_age: "",
       patient_gender: "Male",
       patient_phone: "",
@@ -92,6 +95,7 @@ class Checkout extends Component {
 
     };
     this.toggleTab = this.toggleTab.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
     console.log("guest_id", this.props.match.params.guest_id);
     console.log("uuid", this.props.match.params.uuid);
@@ -109,6 +113,14 @@ class Checkout extends Component {
 
   handleSelectGroup = selectedGroup => {
     this.setState({ selectedGroup });
+  };
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
   };
 
   handleStateSamplingChange = e => {
@@ -271,18 +283,18 @@ class Checkout extends Component {
       }
 
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      setTimeout(() => {
-        if (this.props.checkedoutData) {
-          this.setState({
-            checkoutSuccess:
-              "Order has been placed successfully, check your Email!  Thank you for choosing Labhazir.",
-          });
-        }
-      }, 3000);
+      // setTimeout(() => {
+      if (this.props.checkedoutData) {
+        this.setState({
+          checkoutSuccess:
+            this.setState({ PatientModal: true })
+        });
+      }
+      // }, 3000);
       if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-        setTimeout(() => {
-          this.props.history.push("/nearby-labs");
-        }, 7000)
+        // setTimeout(() => {
+        //   this.props.history.push("/labs");
+        // }, 7000)
       } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
         setTimeout(() => {
           this.props.history.push("/dashboard-csr");
@@ -422,7 +434,7 @@ class Checkout extends Component {
       this.state.is_state_sampling_availed === 'Yes'
     ) {
       const { patient_address } = this.state;
-  
+
       // Check if all the required fields for card payment are filled
       if (patient_address) {
         this.setState({ isRequiredFilled: true });
@@ -436,7 +448,7 @@ class Checkout extends Component {
       return true;
     }
   };
-  
+
   componentDidMount() {
     const { onGetPatientProfile } = this.props;
 
@@ -510,12 +522,28 @@ class Checkout extends Component {
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
+    // flatpickr("#flatpickrInput", {
+    //   enableTime: false,
+    //   dateFormat: "Y-m-dTH:i",
+    //   minDate: new Date().toISOString().split("T")[0], // Set minimum date to today
+    //   onChange: (selectedDates, dateStr, instance) => {
+    //     this.setState({ appointment_requested_at: dateStr });
+    //   },
+    // });
     flatpickr("#flatpickrInput", {
-      enableTime: true,
-      dateFormat: "Y-m-dTH:i",
+      enableTime: false,
+      dateFormat: "Y-m-d", // Use "Y-m-d" to include only the date
       minDate: new Date().toISOString().split("T")[0], // Set minimum date to today
       onChange: (selectedDates, dateStr, instance) => {
-        this.setState({ appointment_requested_at: dateStr });
+        // Get current time
+        const now = new Date();
+        const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+        // Append current time to the selected date
+        const dateTimeStr = `${dateStr}T${currentTime}`;
+
+        // Set the state with the combined date and time
+        this.setState({ appointment_requested_at: dateTimeStr });
       },
     });
   }
@@ -674,7 +702,9 @@ class Checkout extends Component {
   handleFormGroupClick = () => {
     this.datePickerRef.setFocus(); // Use the correct reference here
   }
-
+  printInvoice = () => {
+    window.print();
+  };
 
   render() {
     const iconStyle = {
@@ -722,6 +752,38 @@ class Checkout extends Component {
     // });
     const { patientProfile } = this.props;
     const { onGetPatientProfile } = this.props;
+    const openModal = () => {
+      const modal = document.getElementById("modal");
+      modal.style.display = "block";
+    };
+
+    const closeModal = () => {
+      this.setState({ PatientModal: false });
+
+    };
+    const backdropStyle = {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.7)', // Adjust the opacity to control the blur
+      zIndex: 9999,
+      display: this.state.PatientModal ? 'block' : 'none',
+    };
+
+    const modalStyle = {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: 'white',
+      padding: '20px',
+      width: '500px', // Increase width
+      height: '400px', // Increase height
+      zIndex: 10000,
+      display: this.state.PatientModal ? 'block' : 'none',
+    };
     return (
       console.log(this.state.donationCheck),
       (
@@ -738,6 +800,72 @@ class Checkout extends Component {
                   {this.state.checkoutSuccess}
                 </Alert>
               )}
+              <div>
+                <div style={backdropStyle}></div>
+                <div style={modalStyle}>
+                  <Col className="col-12 text-center">
+                    <div
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        border: "2px solid green",
+                        margin: "0 auto", // Center the circle
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <i
+                        className="fas fa-check"
+                        style={{ color: "green", fontSize: "36px", borderRadius: "50%" }}
+                      ></i>
+                    </div>
+                    <strong className="font-size-15 font-weight-bold mb-3">
+                      Order has been placed successfully,
+                    </strong>
+                    <p style={{ fontSize: "14px", color: "gray" }}>
+                      Your booking detail has been sent to you by Email.
+                    </p>
+                    <strong className="font-size-15 font-weight-bold mb-3 text-danger">
+                      Thank You For Choosing Labhazir!
+                    </strong>
+                  </Col>
+
+                  <div className="d-flex justify-content-center mb-3">
+                    <Link
+                      to="/nearby-test"
+                      // onClick={this.printInvoice}
+                      className="btn mt-2 me-1"
+                      style={{
+                        color: "black",
+                        border: "2px solid blue",
+                        // backgroundColor: "white",
+                      }}
+                    >
+                      Search More Tests
+                    </Link>
+                    <Link
+                      to="/test-appointments"
+                      className="btn mt-2 me-1"
+                      style={{
+                        color: "black",
+                        border: "2px solid blue",
+                        backgroundColor: "white",
+                      }}
+                    >
+                      Track Appointments
+                    </Link>
+                  </div>
+
+                  <div className="text-center mb-3">
+                    <Link to="/labs" className="btn btn-primary" onClick={this.closeModal}>
+                      <i className="bx bxs-home" /> Go Back To Home Page
+                    </Link>
+                  </div>
+                </div>
+              </div>
               <div className="checkout-tabs">
                 <Row>
                   <Col>
@@ -1018,23 +1146,23 @@ class Checkout extends Component {
                               </p>
                               <Container>
                                 <Form>
-                                <FormGroup className="mb-4" row>
-  <Label htmlFor="patient-name" md="2" className="col-form-label">
-    Patient Name
-    <span style={{ color: "#f46a6a" }} className="font-size-18">
-      *
-    </span>
-  </Label>
-  <Col md="10">
-    <Input
-      type="text"
-      className="form-control"
-      name="patient_name"
-      value={this.state.patient_name}  // Use this.state.patient_name as the value
-      onChange={(e) => this.setState({ patient_name: e.target.value })}
-    />
-  </Col>
-</FormGroup>
+                                  <FormGroup className="mb-4" row>
+                                    <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                      Patient Name
+                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                        *
+                                      </span>
+                                    </Label>
+                                    <Col md="10">
+                                      <Input
+                                        type="text"
+                                        className="form-control"
+                                        name="patient_name"
+                                        value={this.state.patient_name}  // Use this.state.patient_name as the value
+                                        onChange={(e) => this.setState({ patient_name: e.target.value })}
+                                      />
+                                    </Col>
+                                  </FormGroup>
 
                                   <FormGroup className="mb-4" row>
                                     <Label md="2" className="col-form-label">
@@ -1061,7 +1189,7 @@ class Checkout extends Component {
                                       />
                                     </Col>
                                   </FormGroup>
-                                  
+
                                   <FormGroup className="mb-4" row>
                                     <Label md="2" className="col-form-label">
                                       Patient Gender
@@ -1147,32 +1275,31 @@ class Checkout extends Component {
                                     </Col>
                                   </FormGroup> */}
                                   <div className="form-group row">
-                                    <label htmlFor="flatpickrInput" className="col-md-12 col-form-label">
-                                      Please select a suitable date and time for the appointment?
-                                      <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                    <label className="col-md-2" htmlFor="flatpickrInput">
+                                      Please select a suitable date and time for the appointment?{' '}
+                                      <span style={{ color: '#f46a6a' }} className="font-size-18">
                                         *
                                       </span>
                                     </label>
-                                    <div className="col-md-12">
+                                    <Col md={10}>
                                       <div className="input-group">
                                         <input
                                           id="flatpickrInput"
                                           name="appointment_requested_at"
                                           type="text"
                                           className="form-control"
-                                          placeholder="Please Select Date and Time"
+                                          placeholder="Please Select the Date on which you want to book an Appointment"
                                         />
                                       </div>
                                       <small className="text-danger">
                                         <strong>
                                           <span className="text-danger">Note:</span>
-                                        </strong>{" "}
-                                        <strong>
-                                          You will receive a Confirmation Email for this time when the Lab confirms.
-                                        </strong>
+                                        </strong>{' '}
+                                        <strong>You will receive a Confirmation Email for this time when the Lab confirms.</strong>
                                       </small>
-                                    </div>
+                                    </Col>
                                   </div>
+
                                 </Form>
                               </Container>
                               <Row className="mt-4">
@@ -1416,24 +1543,44 @@ class Checkout extends Component {
                                   <CardTitle className="h4">Tests and Home Sampling Information</CardTitle>
                                   <span className="text-danger font-size-12">
                                     <strong><span className="text-danger">Note:</span></strong> <strong>
-                                      Please choose if you want to avail Home / Urgent sampling services for the following tests
+                                      Please choose if you want to avail Routine / Urgent Home Sampling services for the following tests
                                     </strong>
                                   </span>
                                   <div className="d-flex" style={{ marginBottom: '20px', marginTop: '20px' }}>
-                                    <div className="form-check form-check-inline font-size-16">
-                                      <Input
-                                        type="radio"
-                                        value="Cash"
-                                        name="payment_method"
-                                        id="customRadioInline1"
-                                        className="form-check-input"
-                                        onChange={this.handleHomeSamplingChange}
-                                      />
-                                      <Label className="form-check-label font-size-13" htmlFor="customRadioInline1">
-                                        <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
-                                        Home Sampling Service
-                                      </Label>
-                                    </div>
+                                    <strong>Home Sampling: </strong>
+                                    {this.state.homeSampledTests.find(homeSampledTest => homeSampledTest.home_sampling_charges > 0) ? (
+                                      <div className="form-check form-check-inline font-size-16" style={{ marginLeft: '14px' }}>
+                                        <Input
+                                          type="radio"
+                                          value="Cash"
+                                          name="payment_method"
+                                          id="customRadioInline1"
+                                          className="form-check-input"
+                                          onChange={this.handleHomeSamplingChange}
+                                        />
+                                        <Label className="form-check-label font-size-13" htmlFor="customRadioInline1">
+                                          <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
+                                          Routine
+                                        </Label>
+                                      </div>
+                                    ) : (
+                                      <div className="form-check form-check-inline font-size-16" style={{ marginLeft: '10px' }}>
+                                        <Input
+                                          type="radio"
+                                          value="Cash"
+                                          name="payment_method"
+                                          id="customRadioInline1"
+                                          className="form-check-input"
+                                          onChange={this.handleHomeSamplingChange}
+                                          disabled  // Add the disabled attribute
+                                        />
+                                        <Label className="form-check-label font-size-13" htmlFor="customRadioInline1" style={{ color: 'grey' }}>
+                                          <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
+                                          Routine
+                                        </Label>
+                                      </div>
+                                    )}
+
                                     {this.state.homeSampledTests.find(homeSampledTest => homeSampledTest.state_sampling_charges > 0) ? (
                                       <div className="form-check form-check-inline font-size-16">
                                         <Input
@@ -1446,93 +1593,107 @@ class Checkout extends Component {
                                         />
                                         <Label className="form-check-label font-size-13" htmlFor="customRadioInline2">
                                           <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
-                                          Urgent Sampling Service
+                                          Urgent
                                         </Label>
                                       </div>
-                                    ) : null}
+                                    ) : <div className="form-check form-check-inline font-size-16">
+                                      <Input
+                                        type="radio"
+                                        value="Cash"
+                                        name="payment_method"
+                                        id="customRadioInline2"
+                                        className="form-check-input"
+                                        onChange={this.handleStateSamplingChange}
+                                        disabled  // Add the disabled attribute
+                                      />
+                                      <Label className="form-check-label font-size-13" htmlFor="customRadioInline2" style={{ color: 'grey' }}>
+                                        <i className="fas fa-shipping-fast me-2" style={{ color: 'red' }} />
+                                        Urgent
+                                      </Label>
+                                    </div>}
                                   </div>
 
 
                                   {this.state.is_home_sampling_availed === "Yes" && (
-  <>
-    <FormGroup className="mb-4" row>
-      <Label htmlFor="patient-name" md="2" className="col-form-label">
-        Address
-        <span style={{ color: "#f46a6a" }} className="font-size-18">
-          *
-        </span>
-      </Label>
-      <Col md="10">
-        <div style={inputGroupStyle}>
-          <Input
-            onChange={e => this.onChangeAddress(e)}
-            id="pac-input"
-            type="text"
-            className="form-control"
-            placeholder="Search Location..."
-            value={this.state.patient_address}
-            required={this.state.is_home_sampling_availed === "Yes"} // Set required based on the condition
-          />
-          {this.state.patient_address ? (
-            <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
-              <i className="mdi mdi-close-circle"></i>
-            </span>
-          ) : (
-            <span style={iconStyle} onClick={this.handleLocatorIconClick}>
-              <i className="bx bx-target-lock">
-                <span style={{ color: "black", marginLeft: "4px" }}>Current Location</span>
-              </i>
-            </span>
-          )}
-        </div>
-        {/* Error message */}
-        {this.state.is_home_sampling_availed === "Yes" && !this.state.patient_address && (
-          <small className="text-danger">Address is required</small>
-        )}
-      </Col>
-    </FormGroup>
-  </>
-)}
+                                    <>
+                                      <FormGroup className="mb-4" row>
+                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                          Address
+                                          <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                            *
+                                          </span>
+                                        </Label>
+                                        <Col md="10">
+                                          <div style={inputGroupStyle}>
+                                            <Input
+                                              onChange={e => this.onChangeAddress(e)}
+                                              id="pac-input"
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Search Location..."
+                                              value={this.state.patient_address}
+                                              required={this.state.is_home_sampling_availed === "Yes"} // Set required based on the condition
+                                            />
+                                            {this.state.patient_address ? (
+                                              <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+                                                <i className="mdi mdi-close-circle"></i>
+                                              </span>
+                                            ) : (
+                                              <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+                                                <i className="bx bx-target-lock">
+                                                  <span style={{ color: "black", marginLeft: "4px" }}>Current Location</span>
+                                                </i>
+                                              </span>
+                                            )}
+                                          </div>
+                                          {/* Error message */}
+                                          {this.state.is_home_sampling_availed === "Yes" && !this.state.patient_address && (
+                                            <small className="text-danger">Address is required</small>
+                                          )}
+                                        </Col>
+                                      </FormGroup>
+                                    </>
+                                  )}
 
                                   {this.state.is_state_sampling_availed === "Yes" && (
-                                   <>
-                                   <FormGroup className="mb-4" row>
-                                     <Label htmlFor="patient-name" md="2" className="col-form-label">
-                                       Address
-                                       <span style={{ color: "#f46a6a" }} className="font-size-18">
-                                         *
-                                       </span>
-                                     </Label>
-                                     <Col md="10">
-                                       <div style={inputGroupStyle}>
-                                         <Input
-                                           onChange={e => this.onChangeAddress(e)}
-                                           id="pac-input"
-                                           type="text"
-                                           className="form-control"
-                                           placeholder="Search Location..."
-                                           value={this.state.patient_address}
-                                           required={this.state.is_home_sampling_availed === "Yes"} // Set required based on the condition
-                                         />
-                                         {this.state.patient_address ? (
-                                           <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
-                                             <i className="mdi mdi-close-circle"></i>
-                                           </span>
-                                         ) : (
-                                           <span style={iconStyle} onClick={this.handleLocatorIconClick}>
-                                             <i className="bx bx-target-lock">
-                                               <span style={{ color: "black", marginLeft: "4px" }}>Current Location</span>
-                                             </i>
-                                           </span>
-                                         )}
-                                       </div>
-                                       {/* Error message */}
-                                       {this.state.is_home_sampling_availed === "Yes" && !this.state.patient_address && (
-                                         <small className="text-danger">Address is required</small>
-                                       )}
-                                     </Col>
-                                   </FormGroup>
-                                 </>
+                                    <>
+                                      <FormGroup className="mb-4" row>
+                                        <Label htmlFor="patient-name" md="2" className="col-form-label">
+                                          Address
+                                          <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                            *
+                                          </span>
+                                        </Label>
+                                        <Col md="10">
+                                          <div style={inputGroupStyle}>
+                                            <Input
+                                              onChange={e => this.onChangeAddress(e)}
+                                              id="pac-input"
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Search Location..."
+                                              value={this.state.patient_address}
+                                              required={this.state.is_home_sampling_availed === "Yes"} // Set required based on the condition
+                                            />
+                                            {this.state.patient_address ? (
+                                              <span style={closeiconStyle} onClick={this.handleCancelIconClick}>
+                                                <i className="mdi mdi-close-circle"></i>
+                                              </span>
+                                            ) : (
+                                              <span style={iconStyle} onClick={this.handleLocatorIconClick}>
+                                                <i className="bx bx-target-lock">
+                                                  <span style={{ color: "black", marginLeft: "4px" }}>Current Location</span>
+                                                </i>
+                                              </span>
+                                            )}
+                                          </div>
+                                          {/* Error message */}
+                                          {this.state.is_home_sampling_availed === "Yes" && !this.state.patient_address && (
+                                            <small className="text-danger">Address is required</small>
+                                          )}
+                                        </Col>
+                                      </FormGroup>
+                                    </>
 
                                   )}
 
@@ -2109,7 +2270,7 @@ class Checkout extends Component {
                                   <CardBody className="text-center">
                                     <CardTitle className="mb-1">
                                       <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                      Payment method
+                                      Payment Method
                                     </CardTitle>
 
                                     {this.state.payment_method !== "card" && (
@@ -2130,11 +2291,12 @@ class Checkout extends Component {
 
                                     {this.state.payment_method === "Donation" && (
                                       <div>
-                                        <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'green', backgroundColor: 'yellow' }}>
+                                        <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'red', backgroundColor: 'grey' }}>
                                           Sub Total After Donation= Rs. 0
                                         </p>
                                       </div>
                                     )}
+
 
                                     <div>
                                       <div className="table-responsive">
@@ -2143,8 +2305,8 @@ class Checkout extends Component {
                                           onClick={this.handleClickAddPayment}
                                           style={{ textDecoration: 'none', color: 'inherit' }}
                                         >
-                                          <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                          Update Payment method
+                                          <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red', fontWeight: "bold" }} />
+                                          <strong>Change Your Payment Method</strong>
                                         </a>
                                       </div>
 
@@ -2157,10 +2319,10 @@ class Checkout extends Component {
                               {isEmpty(this.state.payment_method) && (
                                 <Card className="shadow-none border mb-0">
                                   <CardBody className="text-center">
-                                    <CardTitle className="mb-1">
+                                    {/* <CardTitle className="mb-1">
                                       <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
                                       Payment method
-                                    </CardTitle>
+                                    </CardTitle> */}
                                     <div>
                                       <div className="table-responsive">
                                         <a
@@ -2168,8 +2330,8 @@ class Checkout extends Component {
                                           onClick={this.handleClickAddPayment}
                                           style={{ textDecoration: 'none', color: 'inherit' }}
                                         >
-                                          <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                          Add Payment method
+                                          <i className="mdi mdi-plus me-1 font-size-18 align-middle" style={{ color: 'red', fontWeight: "bold" }} />
+                                          <strong>Add Payment Method</strong>
                                         </a>
                                       </div>
                                     </div>
@@ -2233,6 +2395,8 @@ Checkout.propTypes = {
   territoriesList: PropTypes.array,
   onGetPatientProfile: PropTypes.func,
   patientProfile: PropTypes.array,
+  className: PropTypes.any,
+
 };
 
 const mapStateToProps = state => ({

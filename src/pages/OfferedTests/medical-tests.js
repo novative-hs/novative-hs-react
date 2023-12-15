@@ -7,6 +7,7 @@ import { withRouter, Link } from "react-router-dom";
 import * as Yup from "yup";
 
 import {
+  Alert,
   Card,
   CardBody,
   Col,
@@ -49,6 +50,8 @@ class TestsList extends Component {
       assignedTo: "",
       TestsList: "",
       btnText: "Copy",
+      isPaymentUpdated: false,
+      disabledTests: [], // an array to keep track of disabled test IDs
       testsList: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -140,15 +143,13 @@ class TestsList extends Component {
             // <div className="d-flex gap-6">
               <div className="float-middle">
                 <Button
-                  color="primary"
-                  className="w-55  btn-block btn btn-primary"
-                  // onClick={() => this.handleOfferedTestClicks(testsList.id)}
+                  type="button"
+                  color={this.state.disabledTests.includes(testsList.id) ? 'secondary' : 'primary'}
+                  className={`btn mt-3 me-1${this.state.disabledTests.includes(testsList.id) ? ' disabled' : ''}`}
                   onClick={e => this.handleOfferedTestClicks(e, testsList.id, testsList.name, testsList.sample_type)}
-
-                // disabled={testsList.length == 0}
+                  disabled={this.state.disabledTests.includes(testsList.id)} // Disable the button if the item is in the cart
                 >
-                  <i className="mdi mdi-plus-circle-outline me-1" />
-                  Add Test
+                  <i className="mdi mdi-plus-circle-outline me-1" /> {this.state.disabledTests.includes(testsList.id) ? 'Already Added' : 'Add Test'}
                 </Button>
               </div>
             // </div>
@@ -258,16 +259,23 @@ class TestsList extends Component {
       initialValues: {
         ...this.state.initialValues,
         test_id: arg1, // set the test_id value to arg
-        test_name:arg2,
-        sample_type:arg3
+        test_name: arg2,
+        sample_type: arg3,
       },
       selectedTest: arg1, // store arg in component state
-      selectedname: arg2, 
-      selectedtype: arg3, 
-
+      selectedname: arg2,
+      selectedtype: arg3,
+      // Check if the test is already disabled
     });
+    if (!this.state.disabledTests.includes(arg1)) {
+      // Add the test ID to the disabledTests array
+      this.setState((prevState) => ({
+        disabledTests: [...prevState.disabledTests, arg1],
+      }));
+    }
     this.toggle();
   };
+  
   // handleOfferedTestClicks = (e, arg) => {
   //   this.setState(
   //     console.log("fuction call",{
@@ -349,6 +357,11 @@ class TestsList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Tests" breadcrumbItem="Medical Tests" />
             <Row>
+            {
+             this.state.isPaymentUpdated && this.state.isPaymentUpdated ? (
+              <Alert color="success">Offered Test Added Successfully.</Alert>
+            ) : null}
+
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -544,9 +557,13 @@ class TestsList extends Component {
                                                 is_active: values.is_active,
                                               };
                                               onAddNewOfferedTest(newOfferedTest, this.state.user_id);
+                                              // setTimeout(() => {
+                                                this.setState({ isPaymentUpdated: true });                                                
+                                              // }, 1000);
                                               setTimeout(() => {
                                                 ongetTestsList(this.state.user_id);
-                                              }, 1000);
+                                                this.setState({ isPaymentUpdated: false });                                                
+                                              }, 2000);
                                             }
                                             this.setState({
                                               selectedOfferedTest: null,
