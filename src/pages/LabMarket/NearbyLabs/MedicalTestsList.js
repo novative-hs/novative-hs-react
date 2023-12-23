@@ -1055,11 +1055,11 @@ class MedicalTestList extends Component {
                     <tr>
                       <th className="text-start">Lab Name</th>
                       <th className="text-start">Test Name</th>
-                      <th className="text-start">Price</th>
+                      <th className="text-end">Price</th>
                       {/* <th className="text-center"> Total Price</th> */}
-                      <th className="text-center"> Discount</th>
-                      <th className="text-center"> Price after Discount</th>
-                      <th className="text-center">
+                      <th className="text-end"> Discount</th>
+                      <th className="text-end"> Price after Discount</th>
+                      <th className="text-end">
                         Total Price after Discount
                       </th>
                     </tr>
@@ -1255,17 +1255,18 @@ class MedicalTestList extends Component {
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                           </td> */}
                           <td className="text-end py-2 pl-3 pr-4">
-                            {!isEmpty(referrelFeeLab.offered_tests) &&
-                              referrelFeeLab.offered_tests.map(
-                                (offeredTest, index) => (
-                                  <div key={index}>
-                                    {(
-                                      offeredTest.discount +
-                                      (offeredTest.discount_by_labhazir || 0)
-                                    ).toFixed(2)}
-                                  </div>
-                                )
+                          {!isEmpty(referrelFeeLab.offered_tests) &&
+                          referrelFeeLab.offered_tests.map((offeredTest, index) => (
+                            <div key={index}>
+                              {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
+                                <span>
+                                  Discount: {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)).toFixed(2))}
+                                </span>
+                              ) : (
+                                '--'
                               )}
+                            </div>
+                          ))}
                           </td>
                           <td className="text-end py-2 pl-3 pr-4">
                             {referrelFeeLab.offered_tests.map(
