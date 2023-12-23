@@ -1083,12 +1083,12 @@ shouldHighlightTestsLink() {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-radiology/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                                : `/nearby-radiology/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Radiology</span>
+                            <span className="pt-4 font-size-12">Book a Test</span>
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -1096,12 +1096,12 @@ shouldHighlightTestsLink() {
                           <Link
                             to={
                               this.props.match.params.uuid
-                                ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/nearby-radiology/${this.props.match.params.guest_id}`
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Radiology</span>
+                            <span className="pt-4 font-size-12">Book a Test</span>
                           </Link>
                         </li>
                       ) : null}
