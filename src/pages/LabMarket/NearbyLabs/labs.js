@@ -815,6 +815,18 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                    <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" style={linkStyles}>Book a Test</span>
+                          </Link>
+                        </li>
                       <li className="nav-item">
                         <Link
                           to={
@@ -905,6 +917,35 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                    {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" style={linkStyles}>Book a Test</span>
+
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" style={linkStyles}>Book a Test</span>
+
+                          </Link>
+                        </li>
+                      ) : null}
                       {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
@@ -1122,6 +1163,18 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                    <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" style={linkStyles}>Book a Test</span>
+                          </Link>
+                        </li>
                       <li className="nav-item">
                         <Link
                           to={
@@ -1269,6 +1322,18 @@ class NearbyLabs extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
+                      <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" style={linkStyles}>Book a Test</span>
+                          </Link>
+                        </li>
                         <li className="nav-item">
                           <Link
                             to={

@@ -1560,7 +1560,7 @@ class NearbyLabs extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Compare</span>
+                            <span className="pt-4 font-size-12">Book a Test</span>
                           </Link>
                         </li>
                       ) : null}
@@ -1667,7 +1667,7 @@ class NearbyLabs extends Component {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12">Compare</span>
+                          <span className="pt-4 font-size-12">Book a Test</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -1775,7 +1775,7 @@ class NearbyLabs extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Compare</span>
+                            <span className="pt-4 font-size-12">Book a Test</span>
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>

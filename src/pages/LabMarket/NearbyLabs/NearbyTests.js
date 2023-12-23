@@ -914,6 +914,18 @@ handleAddToCart = (cart) => {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
                           <Link to={
@@ -1076,6 +1088,33 @@ handleAddToCart = (cart) => {
                           </Link>
                         </li>
                       ) : null}
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                          </Link>
+                        </li>
+                      ) : null}
 
 
                       {/* <li className="nav-item dropdown">
@@ -1224,6 +1263,18 @@ handleAddToCart = (cart) => {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
                       {/* <li className="nav-item dropdown">
                     <Link
                       to="/#"
@@ -1366,6 +1417,18 @@ handleAddToCart = (cart) => {
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
+                        <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
                         {this.state.user_id && this.state.user_type == "patient" && (
                           <li className="nav-item">
                             <Link to={
