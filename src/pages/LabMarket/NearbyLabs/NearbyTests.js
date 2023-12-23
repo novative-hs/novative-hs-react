@@ -1098,7 +1098,7 @@ handleAddToCart = (cart) => {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Radiology</span>
+                            <span className="pt-4 font-size-12">Book a Test</span>
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -1111,7 +1111,7 @@ handleAddToCart = (cart) => {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Radiology</span>
+                            <span className="pt-4 font-size-12">Book a Test</span>
                           </Link>
                         </li>
                       ) : null}
