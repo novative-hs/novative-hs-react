@@ -278,21 +278,28 @@ class Header extends Component {
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Tooltip title="Cart">
-                  <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                        : `/cart/${this.props.match.params.guest_id}`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                    {!isEmpty(this.props.carts) &&
-                        totalLength + this.state.count
-                      }
-                  </Link>
-                  </Tooltip>
+  <Link
+    to={
+      this.props.match.params.uuid
+        ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+        : `/cart/${this.props.match.params.guest_id}`
+    }
+    className="btn header-items noti-icon right-bar-toggle"
+  >
+    <i className="mdi mdi-cart align-middle me-1 font-size-20">
+      {!isEmpty(this.props.carts) && (
+        <span
+          style={{
+            verticalAlign: '0.9em',
+            fontSize: '0.6em',
+          }}
+        >
+          {totalLength + this.state.count}
+        </span>
+      )}
+    </i>
+  </Link>
+</Tooltip>
                   <Tooltip title="Login">
                   <Link
                     to={
@@ -367,7 +374,14 @@ class Header extends Component {
                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
                       {!isEmpty(this.props.carts) &&
+                        <span
+                      style={{
+                        verticalAlign: '0.9em',
+                        fontSize: '0.6em',
+                      }}
+                    >
 this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+</span>
                       }
                     </Link>
                     </Tooltip>
@@ -499,8 +513,14 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                       <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
                       {!isEmpty(this.props.carts) &&
-
-                        this.props.carts.cart_quantity + this.state.count
+                        <span
+                      style={{
+                        verticalAlign: '0.9em',
+                        fontSize: '0.6em',
+                      }}
+                    >
+this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+</span>
                       }
                     </Link>
                     <button
@@ -630,10 +650,16 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                  >
                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
 
-                       {!isEmpty(this.props.carts) &&
-                       
-                         this.props.carts.slice(-1).pop().cart_quantity+this.state.count
-                         }
+                     {!isEmpty(this.props.carts) &&
+                        <span
+                      style={{
+                        verticalAlign: '0.9em',
+                        fontSize: '0.6em',
+                      }}
+                    >
+this.props.carts.slice(-1).pop().cart_quantity + this.state.count
+</span>
+                      }
                  </Link>
 </div>
                   )}
