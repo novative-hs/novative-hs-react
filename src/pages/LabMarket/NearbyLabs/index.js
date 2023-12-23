@@ -1943,7 +1943,7 @@ class NearbyLabs extends Component {
                       >
                         <i className="mdi mdi-home me-1 font-size-24" />{" "}
                       </Link>
-                      <Link
+                     <Link
                         to={
                           this.props.match.params.uuid
                             ? `/cart/${this.props.match.params.uuid}`
@@ -1953,8 +1953,17 @@ class NearbyLabs extends Component {
                       >
                         <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
                         {!isEmpty(this.props.carts) &&
+                        <span
+                        style={{
+                          verticalAlign: '0.9em',
+                          fontSize: '0.6em',
+                        }}
+                      >
                           this.props.carts.slice(-1).pop().cart_quantity +
-                          this.state.count}
+                            this.state.count
+                            </span>
+                            
+                            }
                       </Link>
                     </div>
                   )}

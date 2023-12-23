@@ -658,18 +658,25 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                       </Link>
                       <Link
                         to={
-                          this.props.match.params.guest_id
-                            ? `/cart/${this.props.match.params.guest_id}`
+                          this.props.match.params.uuid
+                            ? `/cart/${this.props.match.params.uuid}`
                             : `/cart`
                         }
                         className="btn header-items noti-icon right-bar-toggle"
                       >
                         <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
                         {!isEmpty(this.props.carts) &&
-
-                          this.props.carts.slice(-1).pop().cart_quantity + this.state.count
-                        }
+                        <span
+                        style={{
+                          verticalAlign: '0.9em',
+                          fontSize: '0.6em',
+                        }}
+                      >
+                          this.props.carts.slice(-1).pop().cart_quantity +
+                            this.state.count
+                            </span>
+                            
+                            }
                       </Link>
                       {/* <Link
                       to={
