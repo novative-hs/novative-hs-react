@@ -80,7 +80,7 @@ class NearbyTests extends Component {
       test_name: "",
       name: "",
       test_type: "",
-      search_type: "Current Location",
+      search_type: "",
       city: "",
       latitude: "",
       longitude: "",
@@ -92,6 +92,7 @@ class NearbyTests extends Component {
       LabType: "Main",
       success: "",
       error: "",
+      locationAccessAllowed: "",
       discountData: [],
       itemsInCart: [],
       loading: true, // Add loading state property
@@ -104,6 +105,7 @@ class NearbyTests extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
     console.log("guest_id", this.props.match.params.guest_id);
     console.log("uuid", this.props.match.params.uuid);
     console.log("id", this.props.match.params.id);
@@ -112,15 +114,23 @@ class NearbyTests extends Component {
 
 
   componentDidMount() {
+    const {
+      onGetNearbyTests,
+    } = this.props;
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
-    // const { labNamesList, onGetLabNamesList } = this.props;
+    const { labNamesList, onGetLabNamesList } = this.props;
 
-    // if (labNamesList && !labNamesList.length) {
-    //   console.log(onGetLabNamesList(this.state.user_id));
-    // }
+    if (labNamesList && !labNamesList.length) {
+      console.log(onGetLabNamesList(this.state.user_id));
+    }
+    const { Testss, onGetTestss } = this.props;
+
+    if (Testss && !Testss.length) {
+      console.log(onGetTestss(this.state.user_id));
+    }
 
     let latitude;
     let longitude;
@@ -146,14 +156,237 @@ class NearbyTests extends Component {
       // Call the dependent code here or pass the latitude and longitude values as arguments
       this.handleLocationUpdate(latitude, longitude);
     } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        console.log("web", latitude, longitude);
+      if (navigator.geolocation) {
+        const nearbyTestsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          name: this.state.name,
+          locationAccessAllowed: this.state.locationAccessAllowed,
+          test_name: this.state.test_name,
+          page: this.state.page,
+        };
 
-        // Call the dependent code here or pass the latitude and longitude values as arguments
-        this.handleLocationUpdate(latitude, longitude);
-      });
+        // Call onGetNearbyLabs before prompting for geolocation
+        onGetNearbyTests(nearbyTestsLocationDetails);
+        setTimeout(() => {
+          this.setState({ nearbyTests: this.props.nearbyTests });
+        }, 500);
+        navigator.geolocation.getCurrentPosition((position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          console.log("web", latitude, longitude);
+
+          this.setState({ currentLatitude: latitude });
+          this.setState({ currentLongitude: longitude });
+          this.setState({ locationAccessAllowed: true });
+          this.setState({ search_type: "Current Location" });
+          // near by labs
+          if ((this.state.user_id || this.state.user_type === "CSR")) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyTests(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyTests: this.props.nearbyTests });
+              }, 500);
+            }
+          }
+
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            if (latitude && longitude) {
+              onGetNearbyTests(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyTests: this.props.nearbyTests });
+              }, 500);
+            }
+          }
+
+          if ((!this.state.user_id) || this.props.match.params.guest_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyTests(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyTests: this.props.nearbyTests });
+              }, 500);
+            }
+          }
+          if (this.state.user_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            if (latitude && longitude) {
+              onGetNearbyTests(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyTests: this.props.nearbyTests });
+              }, 500);
+            }
+          }
+        }, () => {
+          // Location access denied by the user
+          // console.log("Location access denied by the user.");
+          // this.setState({ locationAccessAllowed: false });
+          // const denialMessage = "For accurate results, please allow location access.";
+          // alert(denialMessage); // You can use an alert, or create a message element in your UI.
+          // // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
+
+          // Example:
+          this.setState({ latitude: null, longitude: null });
+          // near by labs
+          if ((this.state.user_id || this.state.user_type === "CSR") && this.props.match.params.guest_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyTests(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyTests: this.props.nearbyTests });
+              }, 500);
+            }
+          }
+
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            if (latitude && longitude) {
+              onGetNearbyTests(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyTests: this.props.nearbyTests });
+              }, 500);
+            }
+          }
+
+          if ((!this.state.user_id) && this.props.match.params.guest_id) {
+
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            onGetNearbyTests(nearbyTestsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyTests: this.props.nearbyTests });
+            }, 500);
+          }
+          if (this.state.user_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              test_name: this.state.test_name,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+              page: this.state.page,
+
+            };
+            onGetNearbyTests(nearbyTestsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyTests: this.props.nearbyTests });
+            }, 500);
+          }
+        }
+        );
+      } else {
+        // Geolocation is not supported by the browser
+        console.log("Geolocation is not supported by the browser.");
+        // Handle this scenario as needed, e.g., display an error message or provide alternative functionality.
+      }
     }
     setTimeout(() => {
       this.setState({ loading: false });
@@ -184,6 +417,8 @@ class NearbyTests extends Component {
         km: this.state.km,
         page: this.state.page,
         LabType: this.state.LabType,
+        locationAccessAllowed: this.state.locationAccessAllowed,
+
       };
 
       if (this.state.currentLatitude && this.state.currentLongitude) {
@@ -207,6 +442,15 @@ class NearbyTests extends Component {
   toggleDescriptionModal = () => {
     this.setState(prevState => ({
       DescriptionModal: !prevState.DescriptionModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+
+  togglePatientModal = () => {
+    this.setState(prevState => ({
+      PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
@@ -352,13 +596,15 @@ class NearbyTests extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
+        locationAccessAllowed: this.state.locationAccessAllowed,
+
       };
 
-      onGetNearbyTests(data);
-  
-      setTimeout(() => {
-        this.setState({ nearbyTests: this.props.nearbyTests });
-      }, 1000);
+    onGetNearbyTests(data);
+
+    setTimeout(() => {
+      this.setState({ nearbyTests: this.props.nearbyTests });
+    }, 1000);
   };
 
   onchangename = (selectedGroup) => {
@@ -389,6 +635,8 @@ class NearbyTests extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
+        locationAccessAllowed: this.state.locationAccessAllowed,
+
       };
 
     onGetNearbyTests(data);
@@ -430,6 +678,7 @@ class NearbyTests extends Component {
           LabType: this.state.LabType,
           km: this.state.km,
           page: this.state.page,
+          locationAccessAllowed: this.state.locationAccessAllowed,
 
         };
 
@@ -462,6 +711,8 @@ class NearbyTests extends Component {
       city: this.state.city,
       test_name: this.state.test_name,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
+
     };
     // region wise advertisement
     onGetNearbyTests(data);
@@ -493,6 +744,8 @@ class NearbyTests extends Component {
       city: this.state.city,
       test_name: this.state.test_name,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
+
     };
     // region wise advertisement
     onGetNearbyTests(data);
@@ -504,36 +757,60 @@ class NearbyTests extends Component {
     }, 1000);
   };
 
-  onChangeSearchType = e => {
+  onChangeSearchType = async e => {
     this.setState({ search_type: e.target.value });
 
-    // Call nearby labs API only if the search type changes to current location
+    // Call nearby tests API only if the search type changes to current location
     if (e.target.value === "Current Location") {
       this.setState({ city: "" });
       this.setState({ address: "" });
 
-      const { onGetNearbyTests } = this.props;
+      // Check if the geolocation API is supported
+      if ("geolocation" in navigator) {
+        try {
+          const locationPermission = await navigator.permissions.query({ name: 'geolocation' });
 
-      var data = {
-        latitude: this.state.currentLatitude,
-        longitude: this.state.currentLongitude,
-        search_type: e.target.value,
-        address: this.state.address,
-        city: this.state.city,
-        test_name: this.state.test_name,
-        LabType: this.state.LabType,
-        km: this.state.km,
-        page: this.state.page,
-        name: this.state.name,
-      };
+          if (locationPermission.state === 'denied' && !this.state.locationAccessAllowed) {
+            // Location access is denied
+            // Show the PatientModal only when the user explicitly clicks on "Current Location"
+            this.setState({ PatientModal: true });
+          } else {
+            // Location access is prompted, ask the user for permission
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
 
-      onGetNearbyTests(data);
+            var data = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              search_type: e.target.value,
+              address: this.state.address,
+              city: this.state.city,
+              test_name: this.state.test_name,
+              LabType: this.state.LabType,
+              km: this.state.km,
+              page: this.state.page,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
 
-      setTimeout(() => {
-        this.setState({ nearbyTests: this.props.nearbyTests });
-      }, 1000);
+            const { onGetNearbyTests } = this.props;
+            onGetNearbyTests(data);
+
+            setTimeout(() => {
+              this.setState({ nearbyTests: this.props.nearbyTests, locationAccessAllowed: true });
+            }, 1000);
+          }
+        } catch (error) {
+          console.error('Error checking location permission:', error);
+        }
+      } else {
+        // Geolocation API is not supported, show an error message
+        this.setState({ PatientModal: true }); // Show the modal for error
+      }
     }
   };
+
 
   onChangeCity = selectedGroup => {
     this.setState({ city: selectedGroup.value });
@@ -552,6 +829,8 @@ class NearbyTests extends Component {
       km: this.state.km,
       page: this.state.page,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
+
     };
 
     onGetNearbyTests(data);
@@ -608,6 +887,8 @@ class NearbyTests extends Component {
       city: this.state.city,
       test_name: this.state.test_name,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
+
     };
     // region wise advertisement
     onGetNearbyTests(data);
@@ -619,64 +900,64 @@ class NearbyTests extends Component {
     }, 1000);
   };
 
-handleAddToCart = (cart) => {
-  const { onAddToCart } = this.props;
+  handleAddToCart = (cart) => {
+    const { onAddToCart } = this.props;
 
-  // Check if the item is already in the cart based on user type
-  if (!this.state.user_id) {
-    // Check if the item is already in the cart
-    if (cart.guest_id === this.props.match.params.guest_id) {
-      this.showErrorMessage("Item is already added to the cart");
-      return;
+    // Check if the item is already in the cart based on user type
+    if (!this.state.user_id) {
+      // Check if the item is already in the cart
+      if (cart.guest_id === this.props.match.params.guest_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+
+      this.setState({ guest_id: this.props.match.params.guest_id });
+      cart.guest_id = this.props.match.params.guest_id;
+      onAddToCart(cart, cart.guest_id);
+
+      console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
+    } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+      // Check if the item is already in the cart
+      if (cart.user_id === this.state.user_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+
+      onAddToCart(cart, this.state.user_id);
+    } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+      // Check if the item is already in the cart
+      if (cart.guest_id === this.props.match.params.guest_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+
+      onAddToCart(cart, this.props.match.params.guest_id);
+    } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
+      // Check if the item is already in the cart
+      if (cart.user_id === this.state.user_id) {
+        this.showErrorMessage("Item is already added to the cart");
+        return;
+      }
+
+      onAddToCart(cart, this.props.match.params.uuid);
     }
 
-    this.setState({ guest_id: this.props.match.params.guest_id });
-    cart.guest_id = this.props.match.params.guest_id;
-    onAddToCart(cart, cart.guest_id);
+    // Update the state to include the newly added item in the cart
+    const updatedItemsInCart = [...this.state.itemsInCart, cart];
+    this.setState({ itemsInCart: updatedItemsInCart });
 
-    console.log("uuid:", cart.guest_id, this.props.match.params.guest_id);
-  } else if (this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-    // Check if the item is already in the cart
-    if (cart.user_id === this.state.user_id) {
-      this.showErrorMessage("Item is already added to the cart");
-      return;
-    }
+    this.showSuccessMessage("Item added Successfully");
+  };
 
-    onAddToCart(cart, this.state.user_id);
-  } else if (this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-    // Check if the item is already in the cart
-    if (cart.guest_id === this.props.match.params.guest_id) {
-      this.showErrorMessage("Item is already added to the cart");
-      return;
-    }
 
-    onAddToCart(cart, this.props.match.params.guest_id);
-  } else if (this.state.user_type === "b2bclient" && this.state.user_type !== "CSR") {
-    // Check if the item is already in the cart
-    if (cart.user_id === this.state.user_id) {
-      this.showErrorMessage("Item is already added to the cart");
-      return;
-    }
-
-    onAddToCart(cart, this.props.match.params.uuid);
-  }
-
-  // Update the state to include the newly added item in the cart
-  const updatedItemsInCart = [...this.state.itemsInCart, cart];
-  this.setState({ itemsInCart: updatedItemsInCart });
-
-  this.showSuccessMessage("Item added Successfully");
-};
-  
-  
   showErrorMessage = (message) => {
     this.showPopup(message, "red");
   };
-  
+
   showSuccessMessage = (message) => {
     this.showPopup(message, "green");
   };
-  
+
   showPopup = (message, textColor) => {
     // Create and style the popup
     const popup = document.createElement("div");
@@ -688,7 +969,7 @@ handleAddToCart = (cart) => {
     popup.style.height = "100%";
     popup.style.background = "rgba(0, 0, 0, 0.5)";
     popup.style.zIndex = "1000";
-  
+
     const popupContent = document.createElement("div");
     popupContent.style.position = "absolute";
     popupContent.style.top = "50%";
@@ -698,23 +979,23 @@ handleAddToCart = (cart) => {
     popupContent.style.padding = "20px";
     popupContent.style.borderRadius = "5px";
     popupContent.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.3)";
-  
+
     const messageElement = document.createElement("div");
     messageElement.style.fontSize = "18px";
     messageElement.style.textAlign = "center";
     messageElement.style.color = textColor; // Set the text color
-  
+
     // Set the message
     messageElement.textContent = message;
-  
+
     // Append elements to the DOM
     popupContent.appendChild(messageElement);
     popup.appendChild(popupContent);
     document.body.appendChild(popup);
-  
+
     // Show the popup
     popup.style.display = "block";
-  
+
     // Hide the popup after a certain duration (e.g., 3 seconds)
     setTimeout(() => {
       popup.style.display = "none";
@@ -777,7 +1058,7 @@ handleAddToCart = (cart) => {
     }
   }
   calculateTotalPage = (items) => {
-  const itemsPerPage = Math.min(5, items.length); // Number of items to display per page, up to a maximum of 50
+    const itemsPerPage = Math.min(5, items.length); // Number of items to display per page, up to a maximum of 50
     const totalItems = items.length;
     console.log("total pahe number", totalItems)
     return Math.ceil(totalItems / itemsPerPage);
@@ -785,7 +1066,7 @@ handleAddToCart = (cart) => {
   shouldHighlightTestsLink() {
     const { location } = this.props;
     const currentURL = location.pathname;
-  
+
     // Check if the URL contains "nearby-test"
     return currentURL.includes('/nearby-test/');
   }
@@ -815,21 +1096,25 @@ handleAddToCart = (cart) => {
         value: this.props.territoriesList[i].city,
       });
     }
-    const testssList = this.props.Testss.map((testss) => ({
-      label: testss.name,
-      value: testss.name, // Use the profile ID as the value
-    }));
-    // const labNames = [];
-    // for (let i = 0; i < this.props.labNamesList.length; i++) {
-    //   labNames.push({
-    //     label: this.props.labNamesList[i],
-    //     value: this.props.labNamesList[i],
-    //   });
-    // }
-    const labNames = this.props.labNamesList.map((labnameslist) => ({
-      label: labnameslist.name,
-      value: labnameslist.name, // Use the profile ID as the value
-    }));
+    const labNames = [];
+    for (let i = 0; i < this.props.labNamesList.length; i++) {
+      labNames.push({
+        label: this.props.labNamesList[i].name,
+        value: this.props.labNamesList[i].name,
+      });
+    }
+    const closeModal = () => {
+      this.setState({ PatientModal: false });
+      this.setState({ AddressModal: false });
+
+    };
+    const testssList = [];
+    for (let i = 0; i < this.props.Testss.length; i++) {
+      testssList.push({
+        label: this.props.Testss[i].name,
+        value: this.props.Testss[i].name,
+      });
+    }
 
     return (
 
@@ -852,6 +1137,18 @@ handleAddToCart = (cart) => {
                         <Link
                           to={
                             this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
                               ? `/labs/${this.props.match.params.guest_id}`
                               : `/labs`
                           }
@@ -870,8 +1167,8 @@ handleAddToCart = (cart) => {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>  
-                          
+                          <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>
+
                           {/* {this.props.t("Tests")} */}
                         </Link>
                       </li>
@@ -914,18 +1211,6 @@ handleAddToCart = (cart) => {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
-                        </Link>
-                      </li>
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
                           <Link to={
@@ -950,6 +1235,35 @@ handleAddToCart = (cart) => {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+
+                          </Link>
+                        </li>
+                      ) : null}
                       {this.props.match.params.filnalurl ? (
                         <li className="nav-item">
                           <Link
@@ -988,7 +1302,7 @@ handleAddToCart = (cart) => {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>  
+                            <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -1001,7 +1315,7 @@ handleAddToCart = (cart) => {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>  
+                            <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>
                           </Link>
                         </li>
                       ) : null}
@@ -1088,33 +1402,6 @@ handleAddToCart = (cart) => {
                           </Link>
                         </li>
                       ) : null}
-                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : null}
 
 
                       {/* <li className="nav-item dropdown">
@@ -1198,6 +1485,18 @@ handleAddToCart = (cart) => {
                         <Link
                           to={
                             this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
                               ? `/labs/${this.props.match.params.guest_id}`
                               : `/labs`
                           }
@@ -1221,7 +1520,7 @@ handleAddToCart = (cart) => {
                           className="dropdown-item"
                         >
                           {/* {this.props.t("Tests")} */}
-                          <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>  
+                          <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>
                         </Link>
                       </li>
                       <li className="nav-item">
@@ -1261,18 +1560,6 @@ handleAddToCart = (cart) => {
                         >
                           <span className="pt-4 font-size-12">Radiology</span>
                           {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
                         </Link>
                       </li>
                       {/* <li className="nav-item dropdown">
@@ -1356,6 +1643,18 @@ handleAddToCart = (cart) => {
                           <Link
                             to={
                               this.props.match.params.guest_id
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
                                 ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                                 : `/labs`
                             }
@@ -1374,7 +1673,7 @@ handleAddToCart = (cart) => {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>  
+                            <span className="pt-4 font-size-12" style={linkStyles}>Tests</span>
                             {/* {this.props.t("Tests")} */}
                           </Link>
                         </li>
@@ -1417,18 +1716,6 @@ handleAddToCart = (cart) => {
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
-                        <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
-                        </Link>
-                      </li>
                         {this.state.user_id && this.state.user_type == "patient" && (
                           <li className="nav-item">
                             <Link to={
@@ -1511,6 +1798,43 @@ handleAddToCart = (cart) => {
                   </Formik>
                 </ModalBody>
               </Modal>
+
+              <Modal
+                isOpen={this.state.PatientModal}
+                className={this.props.className}
+              >
+                <ModalHeader toggle={this.togglePatientModal}>
+                  <h2 style={{ fontSize: "16px" }}>How to enable location access on your browser</h2>
+                </ModalHeader>
+                <ModalBody>
+                  <Formik>
+                    <Form>
+                      <Row>
+                        <Col className="col-12">
+                          <p className="font-size-15 font-weight-bold">On your Chrome browser</p>
+                          <p style={{ fontSize: "14px", marginLeft: "15px" }}>
+                            <stront className="font-size-16 font-weight-bold">1.</stront>   To the left of the address bar, click the Padlock icon <i className="fas fa-lock" style={{ fontSize: '14px' }}></i> {" "}<br></br>
+                            <span style={{ fontSize: "14px", marginLeft: "15px" }}>then select &ldquo;Site Settings.&rdquo;</span>
+                          </p>
+                          <p style={{ fontSize: "14px", marginLeft: "15px" }}>
+                            <stront className="font-size-16 font-weight-bold">2.</stront>   Under Permissions, find Location and change it to
+                            Allow.
+                          </p>
+                        </Col>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={closeModal}
+                          >
+                            Got It!
+                          </button>
+                        </div>
+                      </Row>
+                    </Form>
+                  </Formik>
+                </ModalBody>
+              </Modal>
               {/* <Col lg="3">
                 <Card>
                   <CardBody>
@@ -1527,7 +1851,7 @@ handleAddToCart = (cart) => {
                     initialValues={{
                       search_type:
                         (this.state && this.state.search_type) ||
-                        "Current Location",
+                        "",
                       city: (this.state && this.state.city) || "",
                       name: (this.state && this.state.name) ||
                         "",
@@ -1562,27 +1886,25 @@ handleAddToCart = (cart) => {
                                 Search By Test Name
                               </Label>
                               <Select
-                               name="profile"
-                               component="Select"
-                               onChange={this.onchangename}
-                               value={testssList.find(
-                                 (item) => item.value === this.state.test_name
-                               )} // Use find to match the selected value in the options
-                               className="defautSelectParent"
-                               options={testssList}
-                               styles={{
-                                control: (provided, state) => ({
-                                  ...provided,
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                }),
-                                // Add more style overrides as needed
-                              }}
+                                name="profile"
+                                component="Select"
+                                onChange={this.onchangename}
 
-                            />
+                                className="defautSelectParent"
+                                options={testssList}
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                  }),
+                                  // Add more style overrides as needed
+                                }}
+
+                              />
                             </div>
                             <Col>
-                        </Col>
+                            </Col>
                           </Col>
                           <Col xs="4" sm="4" md="3" lg="3">
                             <div className="mb-3">
@@ -1598,24 +1920,22 @@ handleAddToCart = (cart) => {
                                 Search By Lab Name
                               </Label>
                               <Select
-                               name="labnamwslist"
-                               component="Select"
-                               onChange={this.onChangeLabName}
-                               value={labNames.find(
-                                 (item) => item.value === this.state.name
-                               )} // Use find to match the selected value in the options
-                               className="defautSelectParent"
-                               options={labNames}
-                               styles={{
-                                control: (provided, state) => ({
-                                  ...provided,
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                }),
-                                // Add more style overrides as needed
-                              }}
+                                name="labnamwslist"
+                                component="Select"
+                                onChange={this.onChangeLabName}
 
-                            />
+                                className="defautSelectParent"
+                                options={labNames}
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                  }),
+                                  // Add more style overrides as needed
+                                }}
+
+                              />
                             </div>
                           </Col>
                           <Col xs="3" sm="3" md="2" lg="2">
@@ -1649,39 +1969,73 @@ handleAddToCart = (cart) => {
                               </Field>
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search Types
-                              </Label>
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
+                          {this.state.locationAccessAllowed === true ? (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType2"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  Search Types
+                                </Label>
+                                <Field
+                                  name="search_type"
+                                  component="select"
+                                  onChange={e => this.onChangeSearchType(e)}
+                                  value={this.state.search_type}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Current Location">Current Location</option>
+                                  <option value="City">Search By City</option>
+                                  <option value="Custom Address">Custom Address</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          ) : (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType2"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  Search Types
+                                </Label>
+                                <Field
+                                  name="search_type"
+                                  component="select"
+                                  onChange={e => this.onChangeSearchType(e)}
+                                  value={this.state.search_type}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="">Choose an option</option>
+                                  <option value="Current Location">Current Location</option>
+                                  <option value="City">Search By City</option>
+                                  <option value="Custom Address">Custom Address</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          )}
+
                           {this.state.search_type === 'City' && (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
@@ -1691,7 +2045,7 @@ handleAddToCart = (cart) => {
                                   style={{
                                     fontSize: window.innerWidth <= 576 ? '8px' : '12px',
                                     color: 'black',
-                                  fontWeight: "bold",
+                                    fontWeight: "bold",
                                   }}
                                 >
                                   <span style={{ fontSize: '12px' }}>By City </span>
@@ -1724,7 +2078,7 @@ handleAddToCart = (cart) => {
                                   style={{
                                     fontSize: window.innerWidth <= 576 ? '8px' : '12px',
                                     color: 'black',
-                                  fontWeight: "bold",
+                                    fontWeight: "bold",
                                   }}
                                 >
                                   <span style={{ fontSize: '12px', }}>Custom Address </span>
@@ -1754,7 +2108,7 @@ handleAddToCart = (cart) => {
                                   style={{
                                     fontSize: window.innerWidth <= 576 ? '7px' : '12px',
                                     color: 'black',
-                                  fontWeight: "bold",
+                                    fontWeight: "bold",
                                   }}
                                 >
                                   <span style={{ fontSize: '12px' }}>Km </span>
@@ -1787,9 +2141,9 @@ handleAddToCart = (cart) => {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    search_type:
-                      (this.state && this.state.search_type) ||
-                      "Current Location",
+                    // search_type:
+                    //   (this.state && this.state.search_type) ||
+                    //   "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) || "Main",
@@ -1815,16 +2169,14 @@ handleAddToCart = (cart) => {
                       <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Tests for more result in Pakistan!</h4>
                       <Row className="g-0">
                         <Col>
-                        <div>
+                          <div>
                             <Select
-                               name="profile"
-                               component="Select"
-                               onChange={this.onchangename}
-                               value={testssList.find(
-                                 (item) => item.value === this.state.test_name
-                               )} // Use find to match the selected value in the options
-                               className="defautSelectParent"
-                               options={testssList}
+                              name="profile"
+                              component="Select"
+                              onChange={this.onchangename}
+
+                              className="defautSelectParent"
+                              options={testssList}
 
                             />
 
@@ -1858,6 +2210,7 @@ handleAddToCart = (cart) => {
                               value={this.state.search_type}
                               className="form-select"
                             >
+                              <option value="">Choose an option</option>
                               <option value="Current Location">
                                 Current Location
                               </option>
@@ -1958,8 +2311,8 @@ handleAddToCart = (cart) => {
                         <CardBody>
                           <div className="mt-4 text-center">
                             <h5 className="mb-2 text-truncate">
-                            <Tooltip title={nearbyTest.test_name}>
-                              <span> {nearbyTest.test_name} </span>
+                              <Tooltip title={nearbyTest.test_name}>
+                                <span> {nearbyTest.test_name} </span>
                               </Tooltip>
                             </h5>
                             <Link
@@ -2134,71 +2487,71 @@ handleAddToCart = (cart) => {
                               )}
                             </div>
                             <Button
-  type="button"
-  color={this.state.itemsInCart.includes(nearbyTest) ? 'secondary' : 'primary'}
-  className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyTest) ? ' disabled' : ''}`}
-  onClick={() => this.handleAddToCart(nearbyTest)}
-  disabled={this.state.itemsInCart.includes(nearbyTest)} // Disable the button if the item is in the cart
->
-  <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyTest) ? 'Already Added' : 'Add to cart'}
-</Button>
+                              type="button"
+                              color={this.state.itemsInCart.includes(nearbyTest) ? 'secondary' : 'primary'}
+                              className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyTest) ? ' disabled' : ''}`}
+                              onClick={() => this.handleAddToCart(nearbyTest)}
+                              disabled={this.state.itemsInCart.includes(nearbyTest)} // Disable the button if the item is in the cart
+                            >
+                              <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyTest) ? 'Already Added' : 'Add to cart'}
+                            </Button>
                           </div>
                         </CardBody>
                       </Card>
                     </Col>
                   ))}
                 {isEmpty(this.props.nearbyTests) && (
-                    loading ? (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px' }}>
-                            Please Wait.....
-                          </div>
-                        </Col>
-                      </Row>
-                    ) : (
-                      <Row>
-                        <Col lg="12">
-                          <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
+                  loading ? (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px' }}>
+                          Please Wait.....
+                        </div>
+                      </Col>
+                    </Row>
+                  ) : (
+                    <Row>
+                      <Col lg="12">
+                        <div className="mb-5" style={{ fontSize: '24px', color: 'red' }}>
                           Sorry, No Tests Found In Your Specific Area.....
-                          </div>
-                        </Col>
-                      </Row>
-                    )
-                  )}
-                
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                )}
+
                 {!isEmpty(this.props.nearbyTests) ? (
-                   <Row>
-                   <Col lg="12">
-                     <Pagination className="pagination pagination-rounded justify-content-end mb-2">
-                       <PaginationItem disabled={page === 1}>
-                         <PaginationLink
-                           previous
-                           href="#"
-                           onClick={(e) => this.onChangepage(e, page - 1)}
-                         />
-                       </PaginationItem>
-                       {Array.from({ length: totalPage }, (_, i) => {
-                         const pageNumber = i + 1;
-                         return (
-                           <PaginationItem key={i} active={pageNumber === this.state.page}>
-                             <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
-                               {pageNumber}
-                             </PaginationLink>
-                           </PaginationItem>
-                         );
-                       })}
-                       <PaginationItem disabled={page === totalPage}>
-                         <PaginationLink
-                           next
-                           href="#"
-                           onClick={(e) => this.onChangepage(e, page + 1)}
-                         />
-                       </PaginationItem>
-                     </Pagination>
-                   </Col>
-                 </Row>
-) : null}
+                  <Row>
+                    <Col lg="12">
+                      <Pagination className="pagination pagination-rounded justify-content-end mb-2">
+                        <PaginationItem disabled={page === 1}>
+                          <PaginationLink
+                            previous
+                            href="#"
+                            onClick={(e) => this.onChangepage(e, page - 1)}
+                          />
+                        </PaginationItem>
+                        {Array.from({ length: totalPage }, (_, i) => {
+                          const pageNumber = i + 1;
+                          return (
+                            <PaginationItem key={i} active={pageNumber === this.state.page}>
+                              <PaginationLink onClick={(e) => this.onChangepage(e, pageNumber)} href="#">
+                                {pageNumber}
+                              </PaginationLink>
+                            </PaginationItem>
+                          );
+                        })}
+                        <PaginationItem disabled={page === totalPage}>
+                          <PaginationLink
+                            next
+                            href="#"
+                            onClick={(e) => this.onChangepage(e, page + 1)}
+                          />
+                        </PaginationItem>
+                      </Pagination>
+                    </Col>
+                  </Row>
+                ) : null}
 
                 <ScrollButton />
               </Row>
@@ -2256,8 +2609,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetAdvertisementLives: id => dispatch(getAdvertisementLives(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
-  onGetTestss: () => dispatch(getTestss()),
-  onGetLabNamesList: () => dispatch(getLabNamesList()),
+  onGetTestss: id => dispatch(getTestss(id)),
+  onGetLabNamesList: id => dispatch(getLabNamesList(id)),
 
 
 });

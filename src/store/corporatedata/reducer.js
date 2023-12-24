@@ -1,10 +1,10 @@
 import {
   GET_LABCORPORATE_SUCCESS,
   GET_LABCORPORATE_FAIL,
+  GET_EMPLOYEECORPORATE_SUCCESS,
+  GET_EMPLOYEECORPORATE_FAIL,
   ADD_CEMPLOYEE_DATA_SUCCESS,
   ADD_CEMPLOYEE_DATA_FAIL,
-  GET_CEMPLOYEES_SUCCESS,
-  GET_CEMPLOYEES_FAIL,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
 } from "./actionTypes";
@@ -29,13 +29,13 @@ const cemployeeDatas = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-    case GET_CEMPLOYEES_SUCCESS:
+    case GET_EMPLOYEECORPORATE_SUCCESS:
       return {
         ...state,
-        cemployees: action.payload.data,
+        cemployeeDatas: action.payload.data,
       };
 
-    case GET_CEMPLOYEES_FAIL:
+    case GET_EMPLOYEECORPORATE_FAIL:
       return {
         ...state,
         error: action.payload,

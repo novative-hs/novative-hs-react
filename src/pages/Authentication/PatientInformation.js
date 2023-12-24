@@ -155,7 +155,7 @@ class PatientInformation extends Component {
                                         ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
                                         : `/login/${this.props.match.params.guest_id}`
                                     );
-                                  }, 3000); // 4000 milliseconds = 4 seconds
+                                  }, 2000); // 4000 milliseconds = 4 seconds
                                 } else if (
                                   this.props.patient &&
                                   this.state.user_id &&

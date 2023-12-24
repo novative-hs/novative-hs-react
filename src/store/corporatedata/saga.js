@@ -2,17 +2,17 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
 import {
-  // GET_CEMPLOYEE_DATAS,
+  GET_LABCORPORATE,
+  GET_EMPLOYEECORPORATE,
   ADD_NEW_CEMPLOYEE_DATA,
   UPDATE_CEMPLOYEE,
-  GET_CEMPLOYEES,
 } from "./actionTypes";
 
 import {
-  // getCreateCemployeesSuccess,
-  // getCreateCemployeesFail,
-  getCemployeesSuccess,
-  getCemployeesFail,
+  getLabCorporateSuccess,
+  getLabCorporateFail,
+  getEmployeeCorporateSuccess,
+  getEmployeeCorporateFail,
   addCemployeeDataFail,
   addCemployeeDataSuccess,
   updateCemployeeSuccess,
@@ -21,26 +21,26 @@ import {
 
 //Include Both Helper File with needed methods
 import {
-  // getCreateCemployees,
+  getLabCorporate,
+  getEmployeeCorporate,
   addNewCemployeeData,
   updateCemployee,
-  getCemployees,
 } from "../../helpers/django_api_helper";
 
-// function* fetchCreateCemployees(object) {
-//   try {
-//     const response = yield call(getCreateCemployees, object.payload);
-//     yield put(getCreateCemployeesSuccess(response));
-//   } catch (error) {
-//     yield put(getCreateCemployeesFail(error));
-//   }
-// }
-function* fetchCemployees() {
+function* fetchLabCorporate(object) {
   try {
-    const response = yield call(getCemployees);
-    yield put(getCemployeesSuccess(response));
+    const response = yield call(getLabCorporate, object.payload);
+    yield put(getLabCorporateSuccess(response));
   } catch (error) {
-    yield put(getCemployeesFail(error));
+    yield put(getLabCorporateFail(error));
+  }
+}
+function* fetchEmployeeCorporate(object) {
+  try {
+    const response = yield call(getEmployeeCorporate, object.payload);
+    yield put(getEmployeeCorporateSuccess(response));
+  } catch (error) {
+    yield put(getEmployeeCorporateFail(error));
   }
 }
 
@@ -66,8 +66,8 @@ function* onUpdateCemployee({ payload: cemployee }) {
 }
 
 function* cemployeeDataSaga() {
-  // yield takeEvery(GET_CEMPLOYEE_DATAS, fetchCreateCemployees);
-  yield takeEvery(GET_CEMPLOYEES, fetchCemployees);
+  yield takeEvery(GET_LABCORPORATE, fetchLabCorporate);
+  yield takeEvery(GET_EMPLOYEECORPORATE, fetchEmployeeCorporate);
   yield takeEvery(ADD_NEW_CEMPLOYEE_DATA, onAddNewCemployeeData);
   yield takeEvery(UPDATE_CEMPLOYEE, onUpdateCemployee);
 

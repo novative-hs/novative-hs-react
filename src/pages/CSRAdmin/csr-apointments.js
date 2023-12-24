@@ -117,7 +117,7 @@ class csrAppointments extends Component {
           sort: true,
           formatter: (cellContent, csrAppointment) => (
             <>
-              {csrAppointment.is_home_sampling_availed == true ? (
+              {csrAppointment.is_home_sampling_availed == true || csrAppointment.is_state_sampling_availed == true ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>
@@ -125,20 +125,20 @@ class csrAppointments extends Component {
             </>
           ),filter: textFilter(),
         },
-        {
-          dataField: "is_state_sampling_availed",
-          text: "State Sampling",
-          sort: true,
-          formatter: (cellContent, csrAppointment) => (
-            <>
-              {csrAppointment.is_home_sampling_availed == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}
-            </>
-          ),filter: textFilter(),
-        },
+        // {
+        //   dataField: "is_state_sampling_availed",
+        //   text: "State Sampling",
+        //   sort: true,
+        //   formatter: (cellContent, csrAppointment) => (
+        //     <>
+        //       {csrAppointment.is_home_sampling_availed == true ? (
+        //         <span>Yes</span>
+        //       ) : (
+        //         <span>No</span>
+        //       )}
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         {
           dataField: "status",
           text: "Status",

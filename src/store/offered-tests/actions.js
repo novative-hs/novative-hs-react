@@ -41,6 +41,9 @@ import {
   UPDATE_CORPORATE_TEST,
   UPDATE_CORPORATE_TEST_SUCCESS,
   UPDATE_CORPORATE_TEST_FAIL,
+  UPDATE_CORPORATE_STATUS,
+  UPDATE_CORPORATE_STATUS_SUCCESS,
+  UPDATE_CORPORATE_STATUS_FAIL,
   DELETE_OFFERED_TEST,
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
@@ -252,6 +255,20 @@ export const updateCorporateTestSuccess = offeredTest => ({
 
 export const updateCorporateTestFail = error => ({
   type: UPDATE_CORPORATE_TEST_FAIL,
+  payload: error,
+});
+export const updateCorporateStatus = offeredTest => ({
+  type: UPDATE_CORPORATE_STATUS,
+  payload: offeredTest,
+});
+
+export const updateCorporateStatusSuccess = offeredTest => ({
+  type: UPDATE_CORPORATE_STATUS_SUCCESS,
+  payload: offeredTest,
+});
+
+export const updateCorporateStatusFail = error => ({
+  type: UPDATE_CORPORATE_STATUS_FAIL,
   payload: error,
 });
 

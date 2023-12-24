@@ -244,11 +244,13 @@ export const ADD_NEW_BANK_ACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-acco
 // ADD CORPORATE EMPLOYEE DATA
 export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const GET_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-list`;
+export const GET_LABCORPORATE = `${API_ENDPOINT}/api/lab/corporatelist`;
+export const GET_EMPLOYEECORPORATE = `${API_ENDPOINT}/api/corporate/employee-list`;
 export const UPDATE_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const ADD_NEW_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
 export const GET_CORPORATE_TESTS = `${API_ENDPOINT}/api/corporate/corporate-test-list`;
 export const UPDATE_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
-
+export const UPDATE_CORPORATE_STATUS = `${API_ENDPOINT}/api/lab/corporatelist`;
 
 
 // About All Finance

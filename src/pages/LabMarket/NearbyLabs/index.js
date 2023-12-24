@@ -108,7 +108,7 @@ class NearbyLabs extends Component {
       activeTab: "1",
       isDropdownOpen: false,
       address: "",
-      search_type: "Current Location",
+      search_type: "",
       km: "30",
       LabType: "Main",
       city: "",
@@ -349,6 +349,26 @@ class NearbyLabs extends Component {
     }
     else {
       if (navigator.geolocation) {
+        const guest_id = uuidv4();
+        const nearbyLabsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          name: this.state.name,
+          locationAccessAllowed: this.state.locationAccessAllowed,
+          guest_id,
+        };
+        console.log("guestid in nearby lab:", guest_id, nearbyLabsLocationDetails.guest_id)
+        this.setState({ guest_id });
+        // Call onGetNearbyLabs before prompting for geolocation
+        onGetNearbyLabs(nearbyLabsLocationDetails);
+        setTimeout(() => {
+          this.setState({ nearbyLabs: this.props.nearbyLabs });
+        }, 500);
         navigator.geolocation.getCurrentPosition((position) => {
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
@@ -357,6 +377,8 @@ class NearbyLabs extends Component {
           this.setState({ currentLatitude: latitude });
           this.setState({ currentLongitude: longitude });
           this.setState({ locationAccessAllowed: true });
+          this.setState({ search_type: "Current Location" });
+
 
           const advLiveLocationDetails = {
             latitude,
@@ -486,26 +508,26 @@ class NearbyLabs extends Component {
           }
         }, () => {
           // Location access denied by the user
-          console.log("Location access denied by the user.");
-          this.setState({ locationAccessAllowed: false });
-          const denialMessage = "For accurate results, please allow location access.";
-          alert(denialMessage); // You can use an alert, or create a message element in your UI.
-          // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
+          // console.log("Location access denied by the user.");
+          // this.setState({ locationAccessAllowed: false });
+          // const denialMessage = "For accurate results, please allow location access.";
+          // alert(denialMessage); // You can use an alert, or create a message element in your UI.
+          // // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
 
           // Example:
           this.setState({ latitude: null, longitude: null });
-          const advLiveLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
+          // const advLiveLocationDetails = {
+          //   latitude,
+          //   longitude,
+          //   search_type: this.state.search_type,
+          //   address: this.state.address,
+          //   city: this.state.city,
 
-          };
-          onGetAdvLive(advLiveLocationDetails);
-          setTimeout(() => {
-            this.setState({ advLives: this.props.advLives });
-          }, 500);
+          // };
+          // onGetAdvLive(advLiveLocationDetails);
+          // setTimeout(() => {
+          //   this.setState({ advLives: this.props.advLives });
+          // }, 500);
           // near by labs
           if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
             const guest_id = uuidv4();
@@ -596,18 +618,18 @@ class NearbyLabs extends Component {
             }, 500);
           }
 
-          // region Wise Advertisement 
-          const regionWiseAdvLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-          };
-          onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
-          setTimeout(() => {
-            this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-          }, 500);
+          // // region Wise Advertisement 
+          // const regionWiseAdvLocationDetails = {
+          //   latitude,
+          //   longitude,
+          //   search_type: this.state.search_type,
+          //   address: this.state.address,
+          //   city: this.state.city,
+          // };
+          // onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
+          // setTimeout(() => {
+          //   this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
+          // }, 500);
         }
         );
       } else {
@@ -931,44 +953,116 @@ class NearbyLabs extends Component {
   };
 
 
-  onChangeSearchType = e => {
+  // onChangeSearchType = async e => {
+  //   this.setState({ search_type: e.target.value });
+
+  //   // Call nearby labs API only if the search type changes to current location
+  //   if (e.target.value === "Current Location") {
+  //     this.setState({ city: "" });
+  //     this.setState({ address: "" });
+  //     const { onGetNearbyLabs, onGetAdvLive, onGetRegionWiseAdvertisement } = this.props;
+
+  //     // Check if the location access is allowed
+  //     try {
+  //       const locationPermission = await navigator.permissions.query({ name: 'geolocation' });
+  //       if (locationPermission.state === 'denied') {
+  //         // Location access is denied
+  //         alert('Location access is denied. For accurate results, please allow location access.');
+  //         return;
+  //       } else {
+  //         // Location access is allowed, refresh the page
+  //         window.location.reload();
+  //       }
+  //     } catch (error) {
+  //       console.error('Error checking location permission:', error);
+  //     }
+  //     // Location access is allowed, proceed with API calls
+  //     var locationDetails = {
+  //       latitude: this.state.currentLatitude,
+  //       longitude: this.state.currentLongitude,
+  //       search_type: e.target.value,
+  //       address: this.state.address,
+  //       city: this.state.city,
+  //       LabType: this.state.LabType,
+  //       km: this.state.km,
+  //       name: this.state.name,
+  //       locationAccessAllowed: this.state.locationAccessAllowed,
+  //     };
+
+  //     // region wise advertisement
+  //     onGetNearbyLabs(locationDetails);
+  //     onGetAdvLive(locationDetails);
+  //     onGetRegionWiseAdvertisement(locationDetails);
+
+  //     setTimeout(() => {
+  //       this.setState({
+  //         nearbyLabs: this.props.nearbyLabs,
+  //         advLives: this.props.advLives,
+  //         regionWiseAdvertisement: this.props.regionWiseAdvertisement,
+  //       });
+  //     }, 1000);
+  //   }
+  // };
+
+
+  onChangeSearchType = async e => {
     this.setState({ search_type: e.target.value });
 
-    // Call nearby labs API only if the search type changes to current location
     if (e.target.value === "Current Location") {
       this.setState({ city: "" });
       this.setState({ address: "" });
+      const { onGetNearbyLabs, onGetAdvLive, onGetRegionWiseAdvertisement } = this.props;
 
-      const { onGetNearbyLabs } = this.props;
-      const { onGetAdvLive } = this.props;
-      const { onGetRegionWiseAdvertisement } = this.props;
+      // Check if the geolocation API is supported
+      if ("geolocation" in navigator) {
+        try {
+          const locationPermission = await navigator.permissions.query({ name: 'geolocation' });
 
-      var locationDetails = {
-        latitude: this.state.currentLatitude,
-        longitude: this.state.currentLongitude,
-        search_type: e.target.value,
-        address: this.state.address,
-        city: this.state.city,
-        LabType: this.state.LabType,
-        km: this.state.km,
-        name: this.state.name,
-        locationAccessAllowed: this.state.locationAccessAllowed,
-      };
-      // region wise advertisement
-      onGetNearbyLabs(locationDetails);
-      onGetAdvLive(locationDetails);
-      onGetRegionWiseAdvertisement(locationDetails);
+          if (locationPermission.state === 'denied' && !this.state.locationAccessAllowed) {
+            // Location access is denied
+            // Show the PatientModal only when the user explicitly clicks on "Current Location"
+            this.setState({ PatientModal: true });
+          } else {
+            // Location access is prompted, ask the user for permission
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
 
-      setTimeout(() => {
-        this.setState({
-          nearbyLabs: this.props.nearbyLabs,
-          advLives: this.props.advLives,
-          regionWiseAdvertisement: this.props.regionWiseAdvertisement,
-        });
-      }, 1000);
+            var data = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              search_type: e.target.value,
+              address: this.state.address,
+              city: this.state.city,
+              test_name: this.state.test_name,
+              LabType: this.state.LabType,
+              km: this.state.km,
+              page: this.state.page,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+
+            const { onGetNearbyLabs } = this.props;
+            onGetNearbyLabs(locationDetails);
+            onGetAdvLive(locationDetails);
+            onGetRegionWiseAdvertisement(locationDetails);
+            setTimeout(() => {
+              this.setState({
+                nearbyLabs: this.props.nearbyLabs,
+                advLives: this.props.advLives,
+                regionWiseAdvertisement: this.props.regionWiseAdvertisement,
+              });
+            }, 1000);
+          }
+        } catch (error) {
+          console.error('Error checking location permission:', error);
+        }
+      } else {
+        // Geolocation API is not supported, show an error message
+        this.setState({ PatientModal: true }); // Show the modal for error
+      }
     }
   };
-
 
   onChangeKm = e => {
     this.setState({ km: e.target.value });
@@ -1181,14 +1275,14 @@ class NearbyLabs extends Component {
   };
 
   render() {
-    const generateLabNames = (nearbyLabs) => {
-      const labNames = nearbyLabs.map((lab) => ({
-        label: lab.name, // Replace with the actual property name in your nearbyLabs data
-        value: lab.name, // Replace with the actual property name in your nearbyLabs data
-      }));
+    // const generateLabNames = (nearbyLabs) => {
+    //   const labNames = nearbyLabs.map((lab) => ({
+    //     label: lab.name, // Replace with the actual property name in your nearbyLabs data
+    //     value: lab.name, // Replace with the actual property name in your nearbyLabs data
+    //   }));
 
-      return labNames;
-    };
+    //   return labNames;
+    // };
 
     const ClearIndicator = (props) => {
       return (
@@ -1244,7 +1338,6 @@ class NearbyLabs extends Component {
       totalPage,
       regionWiseAdvertisement,
     } = this.state;
-    const labNames = generateLabNames(nearbyLabs);
     const { onGetPatientProfile } = this.props;
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
@@ -1253,11 +1346,19 @@ class NearbyLabs extends Component {
         value: this.props.territoriesList[i].city,
       });
     }
+    const labNames = [];
+    for (let i = 0; i < this.props.labNamesList.length; i++) {
+      labNames.push({
+        label: this.props.labNamesList[i].name,
+        value: this.props.labNamesList[i].name,
+      });
+    }
 
     const openModal = () => {
       const modal = document.getElementById("modal");
       modal.style.display = "block";
     };
+
 
     const closeModal = () => {
       this.setState({ PatientModal: false });
@@ -1295,6 +1396,19 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
                       <li className="nav-item">
                         <Link
                           to={
@@ -1360,32 +1474,44 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Comparison</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
+                      
                       {this.state.user_id && this.state.user_type == "patient" && (
-                        <li className="nav-item">
-                          <Link to={
-                            this.props.match.params.uuid
-                              ? `/test-appointments/${this.props.match.params.uuid}`
-                              : `/test-appointments`
-                          }
-                            className="dropdown-item">
-                            {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">My Appointments</span>
-
+                        <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/test-appointments/${this.props.match.params.uuid}`
+                                : `/test-appointments`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span
+                              className="badge rounded-pill badge-soft-warning font-size-12"
+                              style={{
+                                animation: 'flickerAndMove 3s infinite linear',
+                              }}
+                            >
+                              Appointments Summary
+                            </span>
                           </Link>
+                          <style>
+                            {`
+                             @keyframes flickerAndMove {
+                               0%, 100% {
+                                 color: darkred;
+                                 text-shadow: 0 0 4px darkred;
+                                 transform: translateX(0);
+                               }
+                               50% {
+                                 color: red;
+                                 text-shadow: 0 0 4px red;
+                                 transform: translateX(5px);
+                               }
+                             }
+                           `}
+                          </style>
                         </li>
+
                       )}
                     </ul>
                   </Collapse>
@@ -1398,6 +1524,33 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                    {this.state.filnalurl && this.state.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.state.filnalurl}/${this.state.guest_id}`
+                                : `/tests-offered-labhazir/${this.state.filnalurl}/${this.state.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                      ) : !this.state.filnalurl && this.state.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.state.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                      ) : null}
                       {this.state.filnalurl && this.state.guest_id ? (
                         <li className="nav-item">
                           <Link
@@ -1537,46 +1690,45 @@ class NearbyLabs extends Component {
                           </Link>
                         </li>
                       ) : null}
-                      {this.state.filnalurl && this.state.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.state.filnalurl}/${this.state.guest_id}`
-                                : `/tests-offered-labhazir/${this.state.filnalurl}/${this.state.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Radiology</span>
-                          </Link>
-                        </li>
-                      ) : !this.state.filnalurl && this.state.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.state.guest_id}/${this.props.match.params.uuid}`
-                                : `/tests-offered-labhazir/${this.state.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : null}
+                      
 
                       {this.state.user_id && this.state.user_type == "patient" && (
-                        <li className="nav-item">
-                          <Link to={
-                            this.props.match.params.uuid
-                              ? `/test-appointments/${this.props.match.params.uuid}`
-                              : `/test-appointments`
-                          } className="dropdown-item">
-                            {/* {this.props.t("My Appointments")} */}
-                            <span className="pt-4 font-size-12">My Appointments</span>
-
+                        <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/test-appointments/${this.props.match.params.uuid}`
+                                : `/test-appointments`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span
+                              className="badge rounded-pill badge-soft-warning font-size-12"
+                              style={{
+                                animation: 'flickerAndMove 3s infinite linear',
+                              }}
+                            >
+                              Appointments Summary
+                            </span>
                           </Link>
+                          <style>
+                            {`
+                            @keyframes flickerAndMove {
+                              0%, 100% {
+                                color: darkred;
+                                text-shadow: 0 0 4px darkred;
+                                transform: translateX(0);
+                              }
+                              50% {
+                                color: red;
+                                text-shadow: 0 0 4px red;
+                                transform: translateX(5px);
+                              }
+                            }
+                          `}
+                          </style>
                         </li>
+
                       )}
                     </ul>
                   </Collapse>
@@ -1589,6 +1741,19 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
                       <li className="nav-item">
                         <Link
                           to={
@@ -1658,34 +1823,48 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
+                      
 
                       {this.state.user_id && this.state.user_type == "patient" && (
-                        <li className="nav-item">
+                        <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
                           <Link
                             to={
                               this.props.match.params.uuid
                                 ? `/test-appointments/${this.props.match.params.uuid}`
                                 : `/test-appointments`
                             }
-                            className="dropdown-item">
-
-                            <span className="pt-4 font-size-12">My Appointments</span>
-
+                            className="dropdown-item"
+                          >
+                            <span
+                              className="badge rounded-pill badge-soft-warning font-size-12"
+                              style={{
+                                animation: 'flickerAndMove 3s infinite linear',
+                              }}
+                            >
+                              Appointments Summary
+                            </span>
                           </Link>
+                          <style>
+                            {`
+      @keyframes flickerAndMove {
+        0%, 100% {
+          color: darkred;
+          text-shadow: 0 0 4px darkred;
+          transform: translateX(0);
+        }
+        50% {
+          color: red;
+          text-shadow: 0 0 4px red;
+          transform: translateX(5px);
+        }
+      }
+    `}
+                          </style>
                         </li>
+
+
+
+
                       )}
                     </ul>
                   </Collapse>
@@ -1697,6 +1876,19 @@ class NearbyLabs extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
+                      <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
                         <li className="nav-item">
                           <Link
                             to={
@@ -1766,31 +1958,42 @@ class NearbyLabs extends Component {
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.uuid}/${this.props.match.params.guest_id}`
-                                : `/tests-offered-labhazir/`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                            {/* {this.props.t("Packages")} */}
-                          </Link>
-                        </li>
-
+                       
                         {this.state.user_id && this.state.user_type == "patient" && (
-                          <li className="nav-item">
-                            <Link to={
-                              this.props.match.params.uuid
-                                ? `/test-appointments/${this.props.match.params.uuid}`
-                                : `/test-appointments`
-                            } className="dropdown-item">
-                              {/* {this.props.t("My Appointments")} */}
-                              <span className="pt-4 font-size-12">My Appointments</span>
-
+                          <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/test-appointments/${this.props.match.params.uuid}`
+                                  : `/test-appointments`
+                              }
+                              className="dropdown-item"
+                            >
+                              <span
+                                className="badge rounded-pill badge-soft-warning font-size-12"
+                                style={{
+                                  animation: 'flickerAndMove 3s infinite linear',
+                                }}
+                              >
+                                Appointments Summary
+                              </span>
                             </Link>
+                            <style>
+                              {`
+      @keyframes flickerAndMove {
+        0%, 100% {
+          color: darkred;
+          text-shadow: 0 0 4px darkred;
+          transform: translateX(0);
+        }
+        50% {
+          color: red;
+          text-shadow: 0 0 4px red;
+          transform: translateX(5px);
+        }
+      }
+    `}
+                            </style>
                           </li>
                         )}
                       </ul>
@@ -1943,7 +2146,7 @@ class NearbyLabs extends Component {
                       >
                         <i className="mdi mdi-home me-1 font-size-24" />{" "}
                       </Link>
-                     <Link
+                      <Link
                         to={
                           this.props.match.params.uuid
                             ? `/cart/${this.props.match.params.uuid}`
@@ -1953,17 +2156,17 @@ class NearbyLabs extends Component {
                       >
                         <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
                         {!isEmpty(this.props.carts) &&
-                        <span
-                        style={{
-                          verticalAlign: '0.9em',
-                          fontSize: '0.6em',
-                        }}
-                      >
-                          this.props.carts.slice(-1).pop().cart_quantity +
+                          <span
+                            style={{
+                              verticalAlign: '0.9em',
+                              fontSize: '0.6em',
+                            }}
+                          >
+                            this.props.carts.slice(-1).pop().cart_quantity +
                             this.state.count
-                            </span>
-                            
-                            }
+                          </span>
+
+                        }
                       </Link>
                     </div>
                   )}
@@ -2063,8 +2266,8 @@ class NearbyLabs extends Component {
               {/* <h5>Need Some Better?</h5>
               <h2>&ldquo;Let&apos;s find the labs,&rdquo;</h2> */}
               <Row>
-                <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary"></i> Your Location:
-                  {this.state.locationAccessAllowed === true ? (
+                <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by:</span>
+                  {/* {this.state.locationAccessAllowed === true ? (
                     <a
                       onClick={this.toggleDivVisibility}
                       className="text-danger"
@@ -2088,8 +2291,8 @@ class NearbyLabs extends Component {
                       </span>
                     </a>
                   ) : null
-                  )}
-                </span></span>
+                  )} */}
+                </span>
                 {this.state.isDivVisible && (
                   <div className="mb-2">
                     <Input
@@ -2107,7 +2310,7 @@ class NearbyLabs extends Component {
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
-                      search_type: (this.state && this.state.search_type) || "Current Location",
+                      search_type: (this.state && this.state.search_type) || "",
                       city: (this.state && this.state.city) || "",
                       location: (this.state && this.state.location) || "",
                       LabType: (this.state && this.state.LabType) || "Main",
@@ -2132,12 +2335,12 @@ class NearbyLabs extends Component {
                         <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                           {/* Section 1 */}
                           <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                            <span><p>Near By Labs: <a href="#" onClick={this.toggleFormVisibility}>Search Labs<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                            <span><p>Labs: <a href="#" onClick={this.toggleFormVisibility}>Search Labs<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                             {this.state.isFormVisible && (
                               <div className="mb-2">
                                 <Select
                                   type="text"
-                                  value={labNames.find((option) => option.value === this.state.name)}
+
                                   onChange={this.onChangeLabName}
                                   options={labNames}
                                   placeholder="Enter Lab Name."
@@ -2150,8 +2353,8 @@ class NearbyLabs extends Component {
                               </div>
                             )}
                           </div>
-                          {/* Section 2 */}
-                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                          {/* Section 3 */}
+                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
                             <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
                               this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                             {this.state.isFormVisible && (
@@ -2170,8 +2373,25 @@ class NearbyLabs extends Component {
                               </div>
                             )}
                           </div>
+                          {/* Section 2 */}
                           <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                            <span><p>Location Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                            <span>
+                              <p>
+                                Location:
+                                <a href="#" onClick={this.toggleFormVisibility}>
+                                  {this.state.isFormVisible ? (
+                                    this.state.search_type === "Current Location" && this.state.locationAccessAllowed
+                                      ? "Current Location"
+                                      : this.state.search_type
+                                  ) : (
+                                    <span style={{ color: "blue" }}>
+                                      {this.state.locationAccessAllowed ? "Current Location" : "Choose an option"}
+                                    </span>
+                                  )}
+                                  <i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i>
+                                </a>
+                              </p>
+                            </span>
                             {this.state.isFormVisible && (
                               <div className="mb-2">
                                 <Field
@@ -2181,15 +2401,35 @@ class NearbyLabs extends Component {
                                   value={this.state.search_type}
                                   className="form-select"
                                 >
-                                  <option value="">Choose an option</option>
-                                  <option value="City">By City</option>
-                                  <option value="Custom Address">Custom Address</option>
+                                  {this.state.locationAccessAllowed ? (
+                                    <>
+                                      <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
+                                        Current Location
+                                      </option>
+                                      <option value="City">Search By City</option>
+                                      <option value="Custom Address">Custom Address</option>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <option value="" onClick={() => this.onChangeSearchType("")}>
+                                        Choose an option
+                                      </option>
+                                      <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
+                                        Current Location
+                                      </option>
+                                      <option value="City">Search By City</option>
+                                      <option value="Custom Address">Custom Address</option>
+                                    </>
+                                  )}
                                 </Field>
                               </div>
-                            )}                      </div>
+                            )}
+                          </div>
+
+
                           {this.state.search_type === 'City' && (
                             <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>Search By City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              <span><p>City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                               {this.state.isFormVisible && (
                                 <div className="mb-2">
                                   <Select
@@ -2202,10 +2442,10 @@ class NearbyLabs extends Component {
                                   />
                                 </div>
                               )}   </div>)}
-                          {/* Section 4 */}
+                          {/* Section 5 */}
                           {this.state.search_type === 'Custom Address' && (
                             <div style={{ flex: "1", paddingRight: "5px" }}>
-                              <span><p>Custom Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              <span><p>Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                               {this.state.isFormVisible && (
                                 <div className="mb-2">
                                   <Input
@@ -2217,26 +2457,34 @@ class NearbyLabs extends Component {
                                     placeholder="Enter Custom Address"
                                   />
                                 </div>
-                              )}                          
+                              )}
                             </div>)}
-                          {/* Section 5 */}
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
-                              <span><p>Search By Km: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+
+                          {/* Section 4 */}
+
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' || this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
+
+                            <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none" }}>
+                              <span>
+                                <p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i></a></p>
+                              </span>
                               {this.state.isFormVisible && (
                                 <div className="mb-2">
                                   <Input
                                     defaultValue={this.state.km}
                                     onChange={(e) => this.onChangeKm(e)}
                                     id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
+                                    type="number"
                                     className="form-control"
                                     style={{ fontSize: '14px' }}
                                     placeholder=""
                                   />
                                 </div>
                               )}
-                            </div>)}
+                            </div>
+
+                          )}
+
 
                         </div>
                       </Form>
@@ -2915,8 +3163,8 @@ class NearbyLabs extends Component {
               /> */}
               <Col lg="9">
                 <Row>
-                  <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by</span><span style={{ marginLeft: "30px" }}><i className="mdi mdi-google-maps text-primary"></i> Your Location:
-                    {this.state.locationAccessAllowed === true ? (
+                  <span className="mb-1" style={{ fontSize: "14px" }}><span>Filter Labs by: </span>
+                    {/* {this.state.locationAccessAllowed === true ? (
                       <a
                         onClick={this.toggleDivVisibility}
                         className="text-danger"
@@ -2940,8 +3188,8 @@ class NearbyLabs extends Component {
                         </span>
                       </a>
                     ) : null
-                    )}
-                  </span></span>
+                    )} */}
+                  </span>
                   {this.state.isDivVisible && (
                     <div className="mb-2">
                       <Input
@@ -2958,7 +3206,7 @@ class NearbyLabs extends Component {
                     <Formik
                       enableReinitialize={true}
                       initialValues={{
-                        search_type: (this.state && this.state.search_type) || "Current Location",
+                        // search_type: (this.state && this.state.search_type) || "Current Location",
                         city: (this.state && this.state.city) || "",
                         location: (this.state && this.state.location) || "",
                         LabType: (this.state && this.state.LabType) || "Main",
@@ -2988,7 +3236,7 @@ class NearbyLabs extends Component {
                                 <div className="mb-2">
                                   <Select
                                     type="text"
-                                    value={labNames.find((option) => option.value === this.state.name)}
+
                                     onChange={this.onChangeLabName}
                                     options={labNames}
                                     placeholder="Enter Lab Name."
@@ -3001,8 +3249,8 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
                             </div>
-                             {/* Section 3 */}
-                             <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
+                            {/* Section 3 */}
+                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
                               <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
                                 this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
                               {this.state.isFormVisible && (
@@ -3023,7 +3271,23 @@ class NearbyLabs extends Component {
                             </div>
                             {/* Section 2 */}
                             <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>Location: <a href="#" onClick={this.toggleFormVisibility}>{this.state.search_type}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+                              <span>
+                                <p>
+                                  Location:
+                                  <a href="#" onClick={this.toggleFormVisibility}>
+                                    {this.state.isFormVisible ? (
+                                      this.state.search_type === "Current Location" && this.state.locationAccessAllowed
+                                        ? "Current Location"
+                                        : this.state.search_type
+                                    ) : (
+                                      <span style={{ color: "blue" }}>
+                                        {this.state.locationAccessAllowed ? "Current Location" : "Choose an option"}
+                                      </span>
+                                    )}
+                                    <i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i>
+                                  </a>
+                                </p>
+                              </span>
                               {this.state.isFormVisible && (
                                 <div className="mb-2">
                                   <Field
@@ -3033,13 +3297,32 @@ class NearbyLabs extends Component {
                                     value={this.state.search_type}
                                     className="form-select"
                                   >
-                                    <option value="">Choose an option</option>
-                                    <option value="City">By City</option>
-                                    <option value="Custom Address">Custom Address</option>
+                                    {this.state.locationAccessAllowed ? (
+                                      <>
+                                        <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
+                                          Current Location
+                                        </option>
+                                        <option value="City">Search By City</option>
+                                        <option value="Custom Address">Custom Address</option>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <option value="" onClick={() => this.onChangeSearchType("")}>
+                                          Choose an option
+                                        </option>
+                                        <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
+                                          Current Location
+                                        </option>
+                                        <option value="City">Search By City</option>
+                                        <option value="Custom Address">Custom Address</option>
+                                      </>
+                                    )}
                                   </Field>
                                 </div>
-                              )}                      
+                              )}
                             </div>
+
+
                             {this.state.search_type === 'City' && (
                               <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
                                 <span><p>City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
@@ -3070,27 +3353,35 @@ class NearbyLabs extends Component {
                                       placeholder="Enter Custom Address"
                                     />
                                   </div>
-                                )}                          </div>)}
-                           
+                                )}
+                              </div>)}
+
                             {/* Section 4 */}
-                            {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                              <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", }}>
-                                <span><p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
+
+                            {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' || this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
+
+                              <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none" }}>
+                                <span>
+                                  <p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i></a></p>
+                                </span>
                                 {this.state.isFormVisible && (
                                   <div className="mb-2">
                                     <Input
                                       defaultValue={this.state.km}
                                       onChange={(e) => this.onChangeKm(e)}
                                       id="pac-input"
-                                      type="number"  // Change "numbers" to "number"
+                                      type="number"
                                       className="form-control"
                                       style={{ fontSize: '14px' }}
                                       placeholder=""
                                     />
                                   </div>
                                 )}
-                              </div>)}
-                            
+                              </div>
+
+                            )}
+
+
                           </div>
                         </Form>
                       )}
@@ -3707,7 +3998,7 @@ class NearbyLabs extends Component {
               </Col>
               <Col lg="3">
                 <span style={{ fontSize: '18px', backgroundColor: '#3B71CA', color: 'white', borderRadius: '5px', padding: '0px 20px' }}>Advertisements</span>
-                {!isEmpty(this.props.advLives) &&
+                {!isEmpty(this.props.advLives) && Array.isArray(this.props.advLives) && (
                   this.props.advLives.map((advLive, key) => (
                     <Col className="mt-3" lg="9" key={"col" + key}>
                       <Link
@@ -3763,7 +4054,8 @@ class NearbyLabs extends Component {
                         </div>
                       </Link>
                     </Col>
-                  ))}
+                  ))
+                )}
                 {this.props.regionWiseAdvertisement.map((regionWiseAdvertisement, key) => (
                   <>
                     {regionWiseAdvertisement.nearby_adv_list.map(
@@ -3969,9 +4261,9 @@ class NearbyLabs extends Component {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    search_type:
-                      (this.state && this.state.search_type) ||
-                      "Current Location",
+                    // search_type:
+                    //   (this.state && this.state.search_type) ||
+                    //   "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) || "Main",
@@ -4000,7 +4292,7 @@ class NearbyLabs extends Component {
                           <div>
                             <Select
                               type="text"
-                              value={labNames.find((option) => option.value === this.state.name)}
+
                               onChange={this.onChangeLabName}
                               options={labNames}
                               placeholder="Lab Name..."
@@ -4042,6 +4334,7 @@ class NearbyLabs extends Component {
                               value={this.state.search_type}
                               className="form-select"
                             >
+                              <option value="">Choose an option</option>
                               <option value="Current Location">
                                 Current Location
                               </option>
@@ -4740,9 +5033,9 @@ class NearbyLabs extends Component {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    search_type:
-                      (this.state && this.state.search_type) ||
-                      "Current Location",
+                    // search_type:
+                    //   (this.state && this.state.search_type) ||
+                    //   "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) || "Main",
@@ -4771,7 +5064,7 @@ class NearbyLabs extends Component {
                           <div>
                             <Select
                               type="text"
-                              value={labNames.find((option) => option.value === this.state.name)}
+
                               onChange={this.onChangeLabName}
                               options={labNames}
                               placeholder="Lab Name..."
@@ -4812,6 +5105,7 @@ class NearbyLabs extends Component {
                               value={this.state.search_type}
                               className="form-select"
                             >
+                              <option value="">Choose an option</option>
                               <option value="Current Location">
                                 Current Location
                               </option>
@@ -5503,7 +5797,7 @@ class NearbyLabs extends Component {
             </MetaTags>
             <Row style={{ marginTop: "70px" }}>
               <Slider {...settings} appendDots={customDots}>
-                {!isEmpty(this.props.advLives) &&
+                {Array.isArray(this.props.advLives) && this.props.advLives.length > 0 ? (
                   this.props.advLives.map((advLive, key) => (
                     <div key={"advLive-" + key}>
                       <Link
@@ -5533,7 +5827,7 @@ class NearbyLabs extends Component {
                               autoPlay={this.state.autoplay}
                               loop
                               style={sliderStyles}
-                              key={"video-" + key} // Add unique key for video element
+                              key={"video-" + key}
                             >
                               <source
                                 src={
@@ -5550,7 +5844,10 @@ class NearbyLabs extends Component {
                         )}
                       </Link>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <p>No advertisements available.</p>
+                )}
 
                 {this.props.regionWiseAdvertisement.map(
                   (regionWiseAdvertisement, key) => (
@@ -5564,7 +5861,7 @@ class NearbyLabs extends Component {
                                 : `/nearby-lab-detail/${nearby_adv_list.account_id}`
                             }
                             style={sliderStyles}
-                            key={"image-" + index} // Add unique key for image element
+                            key={"image-" + index}
                           >
                             <img
                               src={
@@ -5582,16 +5879,15 @@ class NearbyLabs extends Component {
                 )}
               </Slider>
             </Row>
-
             <Row style={{ marginLeft: "20px", marginRight: "20px" }}>
               <Col lg="9">
                 <Row>
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
-                      search_type:
-                        (this.state && this.state.search_type) ||
-                        "Current Location",
+                      // search_type:
+                      //   (this.state && this.state.search_type) ||
+                      //   "Current Location",
                       city: (this.state && this.state.city) || "",
                       location: (this.state && this.state.location) || "",
                       LabType: (this.state && this.state.LabType) || "Main",
@@ -5620,7 +5916,7 @@ class NearbyLabs extends Component {
                             <div>
                               <Select
                                 type="text"
-                                value={labNames.find((option) => option.value === this.state.name)}
+
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
@@ -5661,6 +5957,7 @@ class NearbyLabs extends Component {
                                 value={this.state.search_type}
                                 className="form-select"
                               >
+                                <option value="">Choose an option</option>
                                 <option value="Current Location">
                                   Current Location
                                 </option>
@@ -6344,7 +6641,7 @@ class NearbyLabs extends Component {
             </MetaTags>
             <Row style={{ marginTop: "70px" }}>
               <Slider {...settings} appendDots={customDots}>
-                {!isEmpty(this.props.advLives) &&
+                {Array.isArray(this.props.advLives) && this.props.advLives.length > 0 && (
                   this.props.advLives.map((advLive, key) => (
                     <div key={"advLive-" + key}>
                       <Link
@@ -6391,8 +6688,8 @@ class NearbyLabs extends Component {
                         )}
                       </Link>
                     </div>
-                  ))}
-
+                  ))
+                )}
                 {this.props.regionWiseAdvertisement.map(
                   (regionWiseAdvertisement, key) => (
                     <div key={"regionWiseAdvertisement-" + key}>
@@ -6583,9 +6880,9 @@ class NearbyLabs extends Component {
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
-                      search_type:
-                        (this.state && this.state.search_type) ||
-                        "Current Location",
+                      // search_type:
+                      //   (this.state && this.state.search_type) ||
+                      //   "Current Location",
                       city: (this.state && this.state.city) || "",
                       location: (this.state && this.state.location) || "",
                       LabType: (this.state && this.state.LabType) || "Main",
@@ -6614,7 +6911,7 @@ class NearbyLabs extends Component {
                             <div>
                               <Select
                                 type="text"
-                                value={labNames.find((option) => option.value === this.state.name)}
+
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
@@ -6655,6 +6952,7 @@ class NearbyLabs extends Component {
                                 value={this.state.search_type}
                                 className="form-select"
                               >
+                                <option value="">Choose an option</option>
                                 <option value="Current Location">
                                   Current Location
                                 </option>

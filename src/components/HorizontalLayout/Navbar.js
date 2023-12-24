@@ -84,6 +84,16 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
+                  <li className="nav-item">
+                      <Link
+                         to={"/tests-offered-labhazir"
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Book a Test</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
                     <li className="nav-item">
                       <Link
                         to={
@@ -125,7 +135,7 @@ class Navbar extends Component {
                     </li>
                     <li className="nav-item">
                       <Link
-                         to={"/nearby-radiology"
+                         to={"/nearby-packages"
                         }
                         className="dropdown-item"
                       >
@@ -133,19 +143,17 @@ class Navbar extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    {/* <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/nearby-radiology/${this.props.match.params.guest_id}`
-                              : `/nearby-radiology`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Radiology</span>
-                          {/* {this.props.t("Packages")} */}
-                    {/* </Link>
-                      </li> */}
+                    <li className="nav-item">
+                      <Link
+                         to={"/nearby-radiology"
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Radiology</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
+                    
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -169,6 +177,33 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
+                  {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                      ) : null}
                     {this.props.match.params.filnalurl &&
                     this.props.match.params.guest_id ? (
                       <li className="nav-item">
@@ -316,6 +351,7 @@ class Navbar extends Component {
                         </Link>
                       </li>
                     ) : null}
+                   
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -328,32 +364,6 @@ class Navbar extends Component {
                           </span>
                         </Link>
                       </li>
-                      /* <li className="nav-item dropdown">
-                           <Link
-                            to="/#"
-                            onClick={e => {
-                              e.preventDefault();
-                              this.setState({ appState: !this.state.appState });
-                            }}
-                            className="nav-link dropdown-toggle arrow-none"
-                          >
-                            <i className="bx bx-test-tube me-2" />
-                            {this.props.t("Appointments")}{" "}
-                            <div className="arrow-down" />
-                          </Link>
-                          <div
-                            className={classname("dropdown-menu", {
-                              show: this.state.appState,
-                            })}
-                          >
-                            <Link
-                              to={"/test-appointments"}
-                              className="dropdown-item"
-                            >
-                              {this.props.t("Test Appointments")}
-                            </Link>
-                          </div>
-                          </li> */
                     )}
                   </ul>
                 </Collapse>
@@ -366,6 +376,21 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
+                  <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                            : this.props.match.params.uuid
+                            ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
+                            : `/tests-offered-labhazir`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Book a Test</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
                     <li className="nav-item">
                       <Link
                         to={
@@ -445,33 +470,7 @@ class Navbar extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    {/* <li className="nav-item dropdown">
-                    <Link
-                      to="/#"
-                      onClick={e => {
-                        e.preventDefault();
-                        this.setState({ appState: !this.state.appState });
-                      }}
-                      className="nav-link dropdown-toggle arrow-none"
-                    >
-                      <i className="bx bx-store me-2" />
-                      {this.props.t("Lab Marketplace")}{" "}
-                      <div className="arrow-down" />
-                    </Link>
-                    <div
-                      className={classname("dropdown-menu", {
-                        show: this.state.appState,
-                      })}
-                    >
-                      <Link to="/nearby-labs" className="dropdown-item">
-                        {this.props.t("Nearby Labs")}
-                      </Link>
-                      <Link to="/nearby-test" className="dropdown-item">
-                        {this.props.t("Nearby Tests")}
-                      </Link>
-                    </div>
-                  </li> */}
-
+                    
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -528,6 +527,19 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
+                  <li className="nav-item">
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/tests-offered-labhazir`
+                        }
+                        className="dropdown-item"
+                      >
+                        <span className="pt-4 font-size-12">Book a Test</span>
+                        {/* {this.props.t("Packages")} */}
+                      </Link>
+                    </li>
                     <li className="nav-item">
                       <Link
                         to={
@@ -593,6 +605,7 @@ class Navbar extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
+                    
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link

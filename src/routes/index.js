@@ -76,6 +76,8 @@ import FeedbacksList from "../pages/Feedbacks/feedbacks-list";
 import LabInvoiceDetail from "pages/Checkouts/invoice-detail";
 import CsrInvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabAdvertisements from "../pages/LabAdvertisements/lab-advertisement";
+import CorporateOfferedTestsListForLab from "../pages/LabMarket/NearbyLabs/corporate-offeredtests-list"
+
 
 
 // Payment In Status
@@ -262,7 +264,7 @@ import DiscountLab from "pages/MarketerAdmin/discounttolab";
 import BanksList from "pages/CreateBanks/banks-list";
 import BankAccountsList from "pages/BankAccounts/bankaccounts-list";
 import Payments from "pages/Authentication/Payments"
-
+import CorporatesList from "pages/LabMarket/NearbyLabs/corporate-list"
 
 import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
@@ -301,6 +303,10 @@ const publicRoutes = [
   {
     path: "/quote-list/:guest_id?/:uuid?",
     component: QuoteList,
+  },
+  {
+    path: "/corporate-offered-tests/:id",
+    component: CorporateOfferedTestsListForLab,
   },
   
   // {
@@ -414,6 +420,10 @@ const labAuthProtectedRoutes = [
   {
     path: "/lab-payments/:id",
     component: Payments,
+  },
+  {
+    path: "/corporates-List",
+    component: CorporatesList,
   },
 ];
 

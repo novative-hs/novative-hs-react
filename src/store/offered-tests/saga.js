@@ -17,6 +17,8 @@ import {
   DELETE_OFFERED_TEST,
   UPDATE_OFFERED_TEST,
   UPDATE_CORPORATE_TEST,
+  UPDATE_CORPORATE_STATUS,
+
 
 } from "./actionTypes";
 
@@ -49,6 +51,8 @@ import {
   updateOfferedTestFail,
   updateCorporateTestSuccess,
   updateCorporateTestFail,
+  updateCorporateStatusSuccess,
+  updateCorporateStatusFail,
   deleteOfferedTestSuccess,
   deleteOfferedTestFail,
 } from "./actions";
@@ -69,6 +73,7 @@ import {
   addNewOfferedMainTest,
   updateOfferedTest,
   updateCorporateTest,
+  updateCorporateStatus,
   deleteOfferedTest,
 } from "../../helpers/django_api_helper";
 
@@ -202,6 +207,14 @@ function* onUpdateCorporateTest({ payload: offeredTest }) {
     yield put(updateCorporateTestFail(error));
   }
 }
+function* onUpdateCorporateStatus({ payload: offeredTest }) {
+  try {
+    const response = yield call(updateCorporateStatus, offeredTest);
+    yield put(updateCorporateStatusSuccess(response));
+  } catch (error) {
+    yield put(updateCorporateStatusFail(error));
+  }
+}
 
 function* onDeleteOfferedTest({ payload: offeredTest }) {
   try {
@@ -227,6 +240,7 @@ function* offeredTestsSaga() {
   yield takeEvery(ADD_NEW_OFFERED_MAINTEST, onAddNewOfferedMainTest);
   yield takeEvery(UPDATE_OFFERED_TEST, onUpdateOfferedTest);
   yield takeEvery(UPDATE_CORPORATE_TEST, onUpdateCorporateTest);
+  yield takeEvery(UPDATE_CORPORATE_STATUS, onUpdateCorporateStatus);
   yield takeEvery(DELETE_OFFERED_TEST, onDeleteOfferedTest);
 }
 

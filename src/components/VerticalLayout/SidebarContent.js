@@ -960,6 +960,15 @@ class SidebarContent extends Component {
 
                 <li className="menu-title">{this.props.t("Lab")}</li>
 
+                
+                 {/* Corporate List Links */}
+                 <li>
+                  <Link to={"/corporates-List"}>
+                    <i className="fas fa-hand-holding-medical" />
+                    <span>{this.props.t("Corporates List")}</span>
+                  </Link>
+                </li>
+
                 {/* Offered Test Links */}
                 <li>
                   <Link to={"/offered-tests"}>

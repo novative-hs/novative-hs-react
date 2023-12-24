@@ -83,7 +83,7 @@ class Header extends Component {
 
     // Set an interval to call the asynchronous function every 2 seconds
     this.interval = setInterval(this.getData, 2000);
-     // Check if the current URL is "/checkout#"
+    // Check if the current URL is "/checkout#"
     const isCheckoutPage = window.location.href.endsWith("/checkout#");
 
     // If the current page is the checkout page, update the interval to 5 seconds
@@ -116,8 +116,8 @@ class Header extends Component {
     }
 
     this.setState({ carts: cartsData });
-  }; 
-  
+  };
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { carts } = this.props;
     if (
@@ -236,39 +236,39 @@ class Header extends Component {
 
               ) : null}
 
-            {isSmallScreen && this.state.user_type == "patient" && window.location.pathname == "/nearby-labs" ? (
-              <button
-                type="button"
-                className="
+              {isSmallScreen && this.state.user_type == "patient" && window.location.pathname == "/nearby-labs" ? (
+                <button
+                  type="button"
+                  className="
                 btn btn-sm pl-5 font-size-16 d-lg-none header-item"
-                style={{ left: '12px', top: '6px', display: 'none' }} // Hide the button
-                data-toggle="collapse"
-                onClick={this.toggleMenu}
-                data-target="#topnav-menu-content"
-              >
-                <i className="fa fa-fw fa-bars" />
-              </button>
-            ) : isSmallScreen && this.state.user_type == "patient" && window.location.pathname !== "/nearby-labs" ? (
-              <button
+                  style={{ left: '12px', top: '6px', display: 'none' }} // Hide the button
+                  data-toggle="collapse"
+                  onClick={this.toggleMenu}
+                  data-target="#topnav-menu-content"
+                >
+                  <i className="fa fa-fw fa-bars" />
+                </button>
+              ) : isSmallScreen && this.state.user_type == "patient" && window.location.pathname !== "/nearby-labs" ? (
+                <button
+                  type="button"
+                  className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
+                  data-toggle="collapse"
+                  style={{ left: '12px', top: '6px' }}
+                  onClick={this.toggleMenu}
+                  data-target="#topnav-menu-content"
+                >
+                  <i className="fa fa-fw fa-bars" />
+                </button>
+              ) : <button
                 type="button"
                 className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
                 data-toggle="collapse"
-                style={{ left: '12px', top: '6px'}}
+                style={{ left: '12px', top: '6px' }}
                 onClick={this.toggleMenu}
                 data-target="#topnav-menu-content"
               >
                 <i className="fa fa-fw fa-bars" />
-              </button>
-            ): <button
-            type="button"
-            className="btn btn-sm pl-5 font-size-16 d-lg-none header-item"
-            data-toggle="collapse"
-            style={{ left: '12px', top: '6px'}}
-            onClick={this.toggleMenu}
-            data-target="#topnav-menu-content"
-          >
-            <i className="fa fa-fw fa-bars" />
-          </button>}
+              </button>}
 
             </div>
 
@@ -278,53 +278,54 @@ class Header extends Component {
               {!this.state.user_id ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-4">
                   <Tooltip title="Cart">
-  <Link
-    to={
-      this.props.match.params.uuid
-        ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-        : `/cart/${this.props.match.params.guest_id}`
-    }
-    className="btn header-items noti-icon right-bar-toggle"
-  >
-    <i className="mdi mdi-cart align-middle me-1 font-size-20">
-      {!isEmpty(this.props.carts) && (
-        <span
-          style={{
-            verticalAlign: '0.9em',
-            fontSize: '0.6em',
-          }}
-        >
-          {totalLength + this.state.count}
-        </span>
-      )}
-    </i>
-  </Link>
-</Tooltip>
+                    <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                          : `/cart/${this.props.match.params.guest_id}`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20">
+                        {!isEmpty(this.props.carts) && (
+                          <span
+                            style={{
+                              verticalAlign: '0.9em',
+                              fontSize: '0.6em',
+                            }}
+                          >
+                            {totalLength + this.state.count}
+                          </span>
+                        )}
+                      </i>
+                    </Link>
+                  </Tooltip>
+
                   <Tooltip title="Login">
-                  <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                        : `/login/${this.props.match.params.guest_id}`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
-                    <span className="pt-4 font-size-12">Login</span>
-                  </Link>
+                    <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/login/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                          : `/login/${this.props.match.params.guest_id}`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
+                      <span className="pt-4 font-size-12">Login</span>
+                    </Link>
                   </Tooltip>
                   <Tooltip title="Sign Up">
-                  <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/register/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                        : `/register/${this.props.match.params.guest_id}`
-                    }
-                    className="btn header-items noti-icon right-bar-toggle"
-                  >
-                    <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
-                    <span className="pt-4 font-size-12">Sign up</span>
-                  </Link>
+                    <Link
+                      to={
+                        this.props.match.params.uuid
+                          ? `/register/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                          : `/register/${this.props.match.params.guest_id}`
+                      }
+                      className="btn header-items noti-icon right-bar-toggle"
+                    >
+                      <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
+                      <span className="pt-4 font-size-12">Sign up</span>
+                    </Link>
                   </Tooltip>
 
                   {/* <Link
@@ -348,58 +349,59 @@ class Header extends Component {
                         this.props.match.params.guest_id
                           ? `/profile/${this.props.match.params.guest_id}`
                           : this.props.match.params.uuid
-                          ? `/profile/${this.props.match.params.uuid}`
-                          : `/profile`
+                            ? `/profile/${this.props.match.params.uuid}`
+                            : `/profile`
                       }
                       className="dropdown-content me-2 text-light"
                     >
                       <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
                       <span className="pt-4 font-size-12">
-                        {this.state.patient_name.split(" ")[0]}                    
+                        {this.state.patient_name.split(" ")[0]}
                       </span>
                     </Link>
-                    </Tooltip>{" "}
-                    <Tooltip title="Cart">
+                  </Tooltip>{" "}
+                  <Tooltip title="Cart">
                     <Link
                       to={
                         this.props.match.params.guest_id
                           ? `/cart/${this.props.match.params.guest_id}`
                           : this.props.match.params.uuid
-                          ? `/cart/${this.props.match.params.uuid}`
-                          : `/cart`
+                            ? `/cart/${this.props.match.params.uuid}`
+                            : `/cart`
                       }
-                      
+
                       className="dropdown-content me-2 text-light"
                     >
-                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                      {!isEmpty(this.props.carts) &&
-                        <span
-                      style={{
-                        verticalAlign: '0.9em',
-                        fontSize: '0.6em',
-                      }}
-                    >
-this.props.carts.slice(-1).pop().cart_quantity + this.state.count
-</span>
-                      }
+                      <i className="mdi mdi-cart align-middle me-1 font-size-20">
+                        {!isEmpty(this.props.carts) && (
+                          <span
+                            style={{
+                              verticalAlign: '0.9em',
+                              fontSize: '0.6em',
+                            }}
+                          >
+                            {totalLength + this.state.count}
+                          </span>
+                        )}
+                      </i>
                     </Link>
-                    </Tooltip>
-                    <Tooltip title="More">
+                  </Tooltip>
+                  <Tooltip title="More">
                     <button
                       className="btn header-items noti-icon right-bar-toggle"
-                      style={{ position: 'relative', 
-                      marginRight: '0',
-                      padding: '0',
-                    }}
+                      style={{
+                        position: 'relative',
+                        marginRight: '0',
+                        padding: '0',
+                      }}
                       onClick={this.toggleDropdown}
                     >
                       <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
                     </button>
-                    </Tooltip>
+                  </Tooltip>
 
-                    {isDropdownOpen && (
-                      <div ref={this.dropdownRef}
+                  {isDropdownOpen && (
+                    <div ref={this.dropdownRef}
                       style={{
                         position: 'absolute',
                         top: '50px', // Adjust this value to set the distance between the button and the dropdown
@@ -410,218 +412,219 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                         minWidth: '150px',
                         zIndex: 1,
                       }}>
-                        <ul style={{ listStyleType: "none", padding: '2px' }}>
-                          <li>
-                            <Link to="/change-password" className="dropdown-content me-2 text-light">
-                              <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Password
-                              </span>
-                              <hr style={{margin: '0 0' }} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/contact-us" className="dropdown-content me-2 text-light">
-                              <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Contact Us                  </span>
-                              <hr style={{ margin: '0 0' }} />
-                            </Link>
-                          </li>
-                          <li>
-                            <a onClick={openModal} className="dropdown-content me-2 text-light">
-                              <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Wallet                  </span>
-                              <hr style={{ margin: '0 0' }} />
-                            </a>
-                      <div id="modal" className="modal mt-4" style={{ display: "none" }}>
-                        <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
-                            </div>
+                      <ul style={{ listStyleType: "none", padding: '2px' }}>
+                        <li>
+                          <Link to="/change-password" className="dropdown-content me-2 text-light">
+                            <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                              Password
+                            </span>
+                            <hr style={{ margin: '0 0' }} />
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/contact-us" className="dropdown-content me-2 text-light">
+                            <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                              Contact Us                  </span>
+                            <hr style={{ margin: '0 0' }} />
+                          </Link>
+                        </li>
+                        <li>
+                          <a onClick={openModal} className="dropdown-content me-2 text-light">
+                            <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                              Wallet                  </span>
+                            <hr style={{ margin: '0 0' }} />
+                          </a>
+                          <div id="modal" className="modal mt-4" style={{ display: "none" }}>
+                            <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
+                                </div>
 
 
-                            <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
-                              Rs. {this.props.patientProfile.available_credit}
-                              {/* <div>
+                                <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
+                                  Rs. {this.props.patientProfile.available_credit}
+                                  {/* <div>
                                 <p>
                                 You have received this money in case of refund which you can use only for testing.
                                 </p>
                               </div> */}
-                            </div>
-                            <div className="my-0" style={{ textAlign: 'center' }}>
-                              <span className="text-danger">
-                                <i className="mdi mdi-information"></i>{" "}
-                                You have received this money in case of refund.
-                              </span><br></br>
-                              <span className="text-danger">
-                                Which you can use only for testing.
-                              </span>
-                            </div>
+                                </div>
+                                <div className="my-0" style={{ textAlign: 'center' }}>
+                                  <span className="text-danger">
+                                    <i className="mdi mdi-information"></i>{" "}
+                                    You have received this money in case of refund.
+                                  </span><br></br>
+                                  <span className="text-danger">
+                                    Which you can use only for testing.
+                                  </span>
+                                </div>
 
-                            <div className="modal-footer">
-                              <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={closeModal}
-                              >
-                                Close
-                              </button>
+                                <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={closeModal}
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </li>
-                          <li>
-                            <Link to="/logout" className="dropdown-content text-light">
-                              <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
-                                Log Out                    
-                              </span>
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-              ): this.state.user_type == "patient" && isSmallScreen && this.state.filnalurl ? ( 
+                        </li>
+                        <li>
+                          <Link to="/logout" className="dropdown-content text-light">
+                            <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                              Log Out
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : this.state.user_type == "patient" && isSmallScreen && this.state.filnalurl ? (
                 <div className="dropdown d-lg-inline-block ms-4 mt-6">
-                    <Link
-                      // to={"/profile"}
-                      to={
-                        this.props.match.params.uuid
-                          ? `/profile/${this.state.filnalurl}/${this.props.match.params.uuid}`
-                          : `/profile`
-                      }
-                      className="dropdown-content me-2 text-light"
-                    >
-                      <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">
-                        {this.state.patient_name.split(" ")[0]}                    
-                      </span>
-                    </Link>{" "}
-                    <Link
-                      to={
-                        this.props.match.params.uuid
-                          ? `/cart/${this.state.filnalurl}/${this.props.match.params.uuid}`
-                          : `/cart`
-                      }
-                      className="dropdown-content me-2 text-light"
-                    >
-                      <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                      {!isEmpty(this.props.carts) &&
+                  <Link
+                    // to={"/profile"}
+                    to={
+                      this.props.match.params.uuid
+                        ? `/profile/${this.state.filnalurl}/${this.props.match.params.uuid}`
+                        : `/profile`
+                    }
+                    className="dropdown-content me-2 text-light"
+                  >
+                    <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
+                    <span className="pt-4 font-size-12">
+                      {this.state.patient_name.split(" ")[0]}
+                    </span>
+                  </Link>{" "}
+                  <Link
+                    to={
+                      this.props.match.params.uuid
+                        ? `/cart/${this.state.filnalurl}/${this.props.match.params.uuid}`
+                        : `/cart`
+                    }
+                    className="dropdown-content me-2 text-light"
+                  >
+                    <i className="mdi mdi-cart align-middle me-1 font-size-20">
+                      {!isEmpty(this.props.carts) && (
                         <span
-                      style={{
-                        verticalAlign: '0.9em',
-                        fontSize: '0.6em',
-                      }}
-                    >
-this.props.carts.slice(-1).pop().cart_quantity + this.state.count
-</span>
-                      }
-                    </Link>
-                    <button
-                      className="btn header-items noti-icon right-bar-toggle"
-                      style={{ position: 'relative', 
+                          style={{
+                            verticalAlign: '0.9em',
+                            fontSize: '0.6em',
+                          }}
+                        >
+                          {totalLength + this.state.count}
+                        </span>
+                      )}
+                    </i>
+                  </Link>
+                  <button
+                    className="btn header-items noti-icon right-bar-toggle"
+                    style={{
+                      position: 'relative',
                       marginRight: '0',
                       padding: '0',
                     }}
-                      onClick={this.toggleDropdown}
-                    >
-                      <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
-                    </button>
+                    onClick={this.toggleDropdown}
+                  >
+                    <i className="mdi mdi-menu-down align-middle me-1 font-size-20" />
+                  </button>
 
-                    {isDropdownOpen && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '50px', // Adjust this value to set the distance between the button and the dropdown
-                        right: '20px',
-                        backgroundColor: '#f9f9f9',
-                        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-                        padding: '10px',
-                        minWidth: '150px',
-                        zIndex: 1,
-                      }}>
-                        <ul style={{ listStyleType: "none", padding: '2px' }}>
-                          <li>
-                            <Link to="/change-password" className="dropdown-content me-2 text-light">
-                              <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Password
-                              </span>
-                              <hr style={{margin: '0 0' }} />
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="/contact-us" className="dropdown-content me-2 text-light">
-                              <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Contact Us                  </span>
-                              <hr style={{ margin: '0 0' }} />
-                            </Link>
-                          </li>
-                          <li>
-                            <a onClick={openModal} className="dropdown-content me-2 text-light">
-                              <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
-                                Wallet                  </span>
-                              <hr style={{ margin: '0 0' }} />
-                            </a>
-                      <div id="modal" className="modal mt-4" style={{ display: "none" }}>
-                        <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
-                            </div>
+                  {isDropdownOpen && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '50px', // Adjust this value to set the distance between the button and the dropdown
+                      right: '20px',
+                      backgroundColor: '#f9f9f9',
+                      boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                      padding: '10px',
+                      minWidth: '150px',
+                      zIndex: 1,
+                    }}>
+                      <ul style={{ listStyleType: "none", padding: '2px' }}>
+                        <li>
+                          <Link to="/change-password" className="dropdown-content me-2 text-light">
+                            <i className="mdi mdi-key align-middle me-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                              Password
+                            </span>
+                            <hr style={{ margin: '0 0' }} />
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to="/contact-us" className="dropdown-content me-2 text-light">
+                            <i className="fas fa-headset align-middle me-1 mt-1 font-size-20" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                              Contact Us                  </span>
+                            <hr style={{ margin: '0 0' }} />
+                          </Link>
+                        </li>
+                        <li>
+                          <a onClick={openModal} className="dropdown-content me-2 text-light">
+                            <i className="mdi mdi-wallet align-middle me-1 font-size-24" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue' }}>
+                              Wallet                  </span>
+                            <hr style={{ margin: '0 0' }} />
+                          </a>
+                          <div id="modal" className="modal mt-4" style={{ display: "none" }}>
+                            <div className="modal-dialog" style={{ width: "500px", height: "300px" }}>
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5 className="modal-title" style={{ textAlign: 'center', fontWeight: 'bold', margin: '0 auto' }}>Available Credit</h5>
+                                </div>
 
 
-                            <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
-                              Rs. {this.props.patientProfile.available_credit}
-                              {/* <div>
+                                <div className="modal-body" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}>
+                                  Rs. {this.props.patientProfile.available_credit}
+                                  {/* <div>
                                 <p>
                                 You have received this money in case of refund which you can use only for testing.
                                 </p>
                               </div> */}
-                            </div>
-                            <div className="my-0" style={{ textAlign: 'center' }}>
-                              <span className="text-danger">
-                                <i className="mdi mdi-information"></i>{" "}
-                                You have received this money in case of refund.
-                              </span><br></br>
-                              <span className="text-danger">
-                                Which you can use only for testing.
-                              </span>
-                            </div>
+                                </div>
+                                <div className="my-0" style={{ textAlign: 'center' }}>
+                                  <span className="text-danger">
+                                    <i className="mdi mdi-information"></i>{" "}
+                                    You have received this money in case of refund.
+                                  </span><br></br>
+                                  <span className="text-danger">
+                                    Which you can use only for testing.
+                                  </span>
+                                </div>
 
-                            <div className="modal-footer">
-                              <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={closeModal}
-                              >
-                                Close
-                              </button>
+                                <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={closeModal}
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </li>
-                          <li>
-                            <Link to="/logout" className="dropdown-content text-light">
-                              <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }}/>{" "}
-                              <span className="pt-4 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
-                                Log Out                    
-                              </span>
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-              ): (
+                        </li>
+                        <li>
+                          <Link to="/logout" className="dropdown-content text-light">
+                            <i className="mdi mdi-power align-middle font-size-20" style={{ color: 'blue' }} />{" "}
+                            <span className="pt-4 font-size-12" style={{ color: 'blue', marginLeft: '5px' }}>
+                              Log Out
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
                 <div className="dropdown d-lg-inline-block ms-3 mt-3">
                   {this.state.user_type == "labowner" && (
                     <Link
@@ -634,34 +637,34 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
 
                   {this.state.user_type == "b2bclient" && (
                     <div className="dropdown d-lg-inline-block ms-4 mt-4">
-                    <Link
-                      to={"/dashboard-b2bclient"}
-                      className="btn header-items noti-icon right-bar-toggle"
-                    >
-                      <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                    </Link>
-                    <Link
-                     to={
-                       this.props.match.params.guest_id
-                       ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                       : `/cart`
-                     }
-                     className="btn header-items noti-icon right-bar-toggle"
-                 >
-                     <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-
-                     {!isEmpty(this.props.carts) &&
-                        <span
-                      style={{
-                        verticalAlign: '0.9em',
-                        fontSize: '0.6em',
-                      }}
-                    >
-this.props.carts.slice(-1).pop().cart_quantity + this.state.count
-</span>
-                      }
-                 </Link>
-</div>
+                      <Link
+                        to={"/dashboard-b2bclient"}
+                        className="btn header-items noti-icon right-bar-toggle"
+                      >
+                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
+                      </Link>
+                      <Link
+                        to={
+                          this.props.match.params.guest_id
+                            ? `/cart/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                            : `/cart`
+                        }
+                        className="btn header-items noti-icon right-bar-toggle"
+                      >
+                        <i className="mdi mdi-cart align-middle me-1 font-size-20">
+                          {!isEmpty(this.props.carts) && (
+                            <span
+                              style={{
+                                verticalAlign: '0.9em',
+                                fontSize: '0.6em',
+                              }}
+                            >
+                              {totalLength + this.state.count}
+                            </span>
+                          )}
+                        </i>
+                      </Link>
+                    </div>
                   )}
 
                   {this.state.user_type == "auditor" && (
@@ -684,25 +687,24 @@ this.props.carts.slice(-1).pop().cart_quantity + this.state.count
                       </Link>
                       <Link
                         to={
-                          this.props.match.params.uuid
-                            ? `/cart/${this.props.match.params.uuid}`
+                          this.props.match.params.guest_id
+                            ? `/cart/${this.props.match.params.guest_id}`
                             : `/cart`
                         }
                         className="btn header-items noti-icon right-bar-toggle"
                       >
-                        <i className="mdi mdi-cart align-middle me-1 font-size-20" />{" "}
-                        {!isEmpty(this.props.carts) &&
-                        <span
-                        style={{
-                          verticalAlign: '0.9em',
-                          fontSize: '0.6em',
-                        }}
-                      >
-                          this.props.carts.slice(-1).pop().cart_quantity +
-                            this.state.count
+                        <i className="mdi mdi-cart align-middle me-1 font-size-20">
+                          {!isEmpty(this.props.carts) && (
+                            <span
+                              style={{
+                                verticalAlign: '0.9em',
+                                fontSize: '0.6em',
+                              }}
+                            >
+                              {totalLength + this.state.count}
                             </span>
-                            
-                            }
+                          )}
+                        </i>
                       </Link>
                       {/* <Link
                       to={
@@ -823,5 +825,5 @@ const mapStateToProps = state => {
 // );
 
 export default withRouter(
-  connect(mapStateToProps, { getCarts,getPatientProfile, toggleRightSidebar })(withTranslation()(Header))
+  connect(mapStateToProps, { getCarts, getPatientProfile, toggleRightSidebar })(withTranslation()(Header))
 );

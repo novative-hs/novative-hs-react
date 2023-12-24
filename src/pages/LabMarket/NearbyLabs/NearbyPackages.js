@@ -76,12 +76,13 @@ class NearbyPackage extends Component {
       address: "",
       test_name: "",
       test_type: "",
-      search_type: "Current Location",
+      search_type: "",
       city: "",
       latitude: "",
       longitude: "",
       currentLatitude: "",
       currentLongitude: "",
+      locationAccessAllowed: "",
       location: "",
       km: "30",
       page: "1",
@@ -100,15 +101,29 @@ class NearbyPackage extends Component {
     };
     this.toggleTab = this.toggleTab.bind(this);
     this.onSelectRating = this.onSelectRating.bind(this);
+    this.togglePatientModal = this.togglePatientModal.bind(this);
     console.log("yaha ani chahi hai uuid", this.props.match.params.uuid)
     console.log("yaha ani chahi hai guid", this.props.match.params.guest_id)
     console.log(this.state.user_type)
   }
 
   componentDidMount() {
+    const {
+      onGetNearbyPackages,
+    } = this.props;
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
+    }
+    const { labNamesList, onGetLabNamesList } = this.props;
+
+    if (labNamesList && !labNamesList.length) {
+      console.log(onGetLabNamesList(this.state.user_id));
+    }
+    const { Packages, onGetPackages } = this.props;
+
+    if (Packages && !Packages.length) {
+      console.log(onGetPackages(this.state.user_id));
     }
     // let matchingMenuItem = null;
     // const ul = document.getElementById("navigation");
@@ -137,30 +152,252 @@ class NearbyPackage extends Component {
     console.log('Latitude:', latitudeFromUrl);
     console.log('Longitude:', longitudeFromUrl);
   
-    // Check if latitude and longitude values are present in URL parameters
     if (latitudeFromUrl && longitudeFromUrl) {
       // Use latitude and longitude from URL
       latitude = parseFloat(latitudeFromUrl);
       longitude = parseFloat(longitudeFromUrl);
       console.log("print lat log in app", latitude, longitude);
-  
+
       // Call the dependent code here or pass the latitude and longitude values as arguments
       this.handleLocationUpdate(latitude, longitude);
     } else {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        console.log("web", latitude, longitude);
-  
-        // Call the dependent code here or pass the latitude and longitude values as arguments
-        this.handleLocationUpdate(latitude, longitude);
-      });
+      if (navigator.geolocation) {
+        const nearbyTestsLocationDetails = {
+          latitude,
+          longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          km: this.state.km,
+          LabType: this.state.LabType,
+          name: this.state.name,
+          locationAccessAllowed: this.state.locationAccessAllowed,
+          test_name: this.state.test_name,
+          page: this.state.page,
+        };
+        
+        // Call onGetNearbyLabs before prompting for geolocation
+        onGetNearbyPackages(nearbyTestsLocationDetails);
+        setTimeout(() => {
+          this.setState({ nearbyPackages: this.props.nearbyPackages });
+        }, 500);
+        navigator.geolocation.getCurrentPosition((position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          console.log("web", latitude, longitude);
+
+          this.setState({ currentLatitude: latitude });
+          this.setState({ currentLongitude: longitude });
+          this.setState({ locationAccessAllowed: true });
+          this.setState({ search_type: "Current Location" });
+          // near by labs
+          if ((this.state.user_id || this.state.user_type === "CSR")) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyPackages(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyPackages: this.props.nearbyPackages });
+              }, 500);
+            }
+          }
+
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            if (latitude && longitude) {
+              onGetNearbyPackages(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyPackages: this.props.nearbyPackages });
+              }, 500);
+            }
+          }
+
+          if ((!this.state.user_id) || this.props.match.params.guest_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyPackages(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyPackages: this.props.nearbyPackages });
+              }, 500);
+            }
+          }
+          if (this.state.user_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            if (latitude && longitude) {
+              onGetNearbyPackages(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyPackages: this.props.nearbyPackages });
+              }, 500);
+            }
+          }
+        }, () => {
+          // Location access denied by the user
+          // console.log("Location access denied by the user.");
+          // this.setState({ locationAccessAllowed: false });
+          // const denialMessage = "For accurate results, please allow location access.";
+          // alert(denialMessage); // You can use an alert, or create a message element in your UI.
+          // // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
+
+          // Example:
+          this.setState({ latitude: null, longitude: null });
+          // near by labs
+          if ((this.state.user_id || this.state.user_type === "CSR") && this.props.match.params.guest_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            if (latitude && longitude) {
+              onGetNearbyPackages(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyPackages: this.props.nearbyPackages });
+              }, 500);
+            }
+          }
+
+          // near by labs
+          if (this.state.user_id || this.state.user_type === "b2bclient") {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            if (latitude && longitude) {
+              onGetNearbyPackages(nearbyTestsLocationDetails);
+              setTimeout(() => {
+                this.setState({ nearbyPackages: this.props.nearbyPackages });
+              }, 500);
+            }
+          }
+
+          if ((!this.state.user_id) && this.props.match.params.guest_id) {
+
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              test_name: this.state.test_name,
+              page: this.state.page,
+
+            };
+            console.log(window.location.href);
+            onGetNearbyPackages(nearbyTestsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyPackages: this.props.nearbyPackages });
+            }, 500);
+          }
+          if (this.state.user_id) {
+            const nearbyTestsLocationDetails = {
+              latitude,
+              longitude,
+              search_type: this.state.search_type,
+              test_name: this.state.test_name,
+              address: this.state.address,
+              city: this.state.city,
+              km: this.state.km,
+              LabType: this.state.LabType,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+              name: this.state.name,
+              page: this.state.page,
+
+            };
+            onGetNearbyPackages(nearbyTestsLocationDetails);
+            setTimeout(() => {
+              this.setState({ nearbyPackages: this.props.nearbyPackages });
+            }, 500);
+          }
+        }
+        );
+      } else {
+        // Geolocation is not supported by the browser
+        console.log("Geolocation is not supported by the browser.");
+        // Handle this scenario as needed, e.g., display an error message or provide alternative functionality.
+      }
     }
+    // Set loading state to false after 7 seconds
     setTimeout(() => {
       this.setState({ loading: false });
-    }, 7000); // Set loading state to false after 7 seconds
-  }
-
+    }, 7000);
+      }
   handleLocationUpdate(latitude, longitude) {
     const { Packages, onGetPackages } = this.props;
     if (Packages && !Packages.length) {
@@ -183,6 +420,7 @@ class NearbyPackage extends Component {
         LabType: this.state.LabType,
         page: this.state.page,
         name: this.state.name,
+        locationAccessAllowed: this.state.locationAccessAllowed,
 
       };
 
@@ -203,7 +441,6 @@ class NearbyPackage extends Component {
       description_in_urdu: arg.description_in_urdu,
     });
   };
-
   toggleDescriptionModal = () => {
     this.setState(prevState => ({
       DescriptionModal: !prevState.DescriptionModal,
@@ -397,6 +634,7 @@ class NearbyPackage extends Component {
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
+        locationAccessAllowed: this.state.locationAccessAllowed,
       };
 
       onGetNearbyPackages(data);
@@ -431,6 +669,7 @@ class NearbyPackage extends Component {
         km: this.state.km,
         page: this.state.page,
         name: this.state.name,
+        locationAccessAllowed: this.state.locationAccessAllowed,
 
       };
   
@@ -474,6 +713,7 @@ class NearbyPackage extends Component {
           km: this.state.km,
           page: this.state.page,
           name: this.state.name,
+          locationAccessAllowed: this.state.locationAccessAllowed,
 
         };
 
@@ -486,37 +726,61 @@ class NearbyPackage extends Component {
     });
   };
 
-  onChangeSearchType = e => {
+  onChangeSearchType = async e => {
     this.setState({ search_type: e.target.value });
-
-    // Call nearby labs API only if the search type changes to current location
+  
+    // Call nearby tests API only if the search type changes to current location
     if (e.target.value === "Current Location") {
       this.setState({ city: "" });
       this.setState({ address: "" });
-
-      const { onGetNearbyPackages } = this.props;
-
-      var data = {
-        latitude: this.state.currentLatitude,
-        longitude: this.state.currentLongitude,
-        search_type: e.target.value,
-        address: this.state.address,
-        city: this.state.city,
-        test_name: this.state.test_name,
-        LabType: this.state.LabType,
-        km: this.state.km,
-        page: this.state.page,
-        name: this.state.name,
-
-      };
-
-      onGetNearbyPackages(data);
-
-      setTimeout(() => {
-        this.setState({ nearbyPackages: this.props.nearbyPackages });
-      }, 1000);
+  
+      // Check if the geolocation API is supported
+      if ("geolocation" in navigator) {
+        try {
+          const locationPermission = await navigator.permissions.query({ name: 'geolocation' });
+  
+          if (locationPermission.state === 'denied' && !this.state.locationAccessAllowed) {
+            // Location access is denied
+            // Show the PatientModal only when the user explicitly clicks on "Current Location"
+            this.setState({ PatientModal: true });
+          } else {
+            // Location access is prompted, ask the user for permission
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+  
+            var data = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              search_type: e.target.value,
+              address: this.state.address,
+              city: this.state.city,
+              test_name: this.state.test_name,
+              LabType: this.state.LabType,
+              km: this.state.km,
+              page: this.state.page,
+              name: this.state.name,
+              locationAccessAllowed: this.state.locationAccessAllowed,
+            };
+  
+            const { onGetNearbyPackages } = this.props;
+            onGetNearbyPackages(data);
+  
+            setTimeout(() => {
+              this.setState({ nearbyPackages: this.props.nearbyPackages, locationAccessAllowed: true });
+            }, 1000);
+          }
+        } catch (error) {
+          console.error('Error checking location permission:', error);
+        }
+      } else {
+        // Geolocation API is not supported, show an error message
+        this.setState({ PatientModal: true }); // Show the modal for error
+      }
     }
   };
+  
+  
 
   onChangeCity = selectedGroup => {
     this.setState({ city: selectedGroup.value });
@@ -535,6 +799,7 @@ class NearbyPackage extends Component {
       km: this.state.km,
       page: this.state.page,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
 
     };
 
@@ -591,6 +856,8 @@ class NearbyPackage extends Component {
       test_name: this.state.test_name,
       page: this.state.page,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
+
 
     };
     // region wise advertisement
@@ -726,6 +993,7 @@ class NearbyPackage extends Component {
       test_name: this.state.test_name,
       page: this.state.page,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
 
     };
     // region wise advertisement
@@ -757,6 +1025,7 @@ class NearbyPackage extends Component {
       city: this.state.city,
       test_name: this.state.test_name,
       name: this.state.name,
+      locationAccessAllowed: this.state.locationAccessAllowed,
 
     };
     // region wise advertisement
@@ -800,18 +1069,25 @@ shouldHighlightTestsLink() {
 
     const { page } = this.state;
     const { Packages } = this.props;
+    const labNames = [];
+    for (let i = 0; i < this.props.labNamesList.length; i++) {
+      labNames.push({
+        label: this.props.labNamesList[i].name,
+        value: this.props.labNamesList[i].name,
+      });
+    }
+    const closeModal = () => {
+      this.setState({ PatientModal: false });
+      this.setState({ AddressModal: false });
 
-    // const packageList = [];
-    // for (let i = 0; i < this.props.Packages.length; i++) {
-    //   packageList.push({
-    //     label: this.props.Packages[i].name,
-    //     value: this.props.Packages[i].id,
-    //   });
-    // }
-    const packageList = this.props.Packages.map((pkg) => ({
-      label: pkg.name,
-      value: pkg.name,
-    }));
+    };
+    const packageList = [];
+    for (let i = 0; i < this.props.Packages.length; i++) {
+      packageList.push({
+        label: this.props.Packages[i].name,
+        value: this.props.Packages[i].name,
+      });
+    }
     
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
@@ -820,19 +1096,15 @@ shouldHighlightTestsLink() {
         value: this.props.territoriesList[i].city,
       });
     }
-    const labNames = this.props.labNamesList.map((labnameslist) => ({
-      label: labnameslist.name,
-      value: labnameslist.name, // Use the profile ID as the value
-    }));
     return (
       <React.Fragment>
         <div className="topnav">
           <div className="container-fluid left-space">
-            <nav
+          <nav
               className="navbar navbar-light navbar-expand-lg topnav-menu"
               id="navigation"
             >
-             {this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient"
+              {this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient"
                 ? (
                   <Collapse
                     isOpen={this.state.isMenuOpened}
@@ -840,6 +1112,18 @@ shouldHighlightTestsLink() {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
                       <li className="nav-item">
                         <Link
                           to={
@@ -863,6 +1147,7 @@ shouldHighlightTestsLink() {
                           className="dropdown-item"
                         >
                           <span className="pt-4 font-size-12">Tests</span>
+
                           {/* {this.props.t("Tests")} */}
                         </Link>
                       </li>
@@ -888,46 +1173,21 @@ shouldHighlightTestsLink() {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>  
-
+                          <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">
+                      <li className="nav-item">\
                         <Link
                           to={
                             this.props.match.params.guest_id
                               ? `/nearby-radiology/${this.props.match.params.guest_id}`
-                              : `/nearby-radiology`
+                              : `/nearby-radiology/`
                           }
                           className="dropdown-item"
                         >
                           <span className="pt-4 font-size-12">Radiology</span>
                           {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
                         </Link>
                       </li>
                       {this.state.user_id && this.state.user_type == "patient" && (
@@ -953,36 +1213,65 @@ shouldHighlightTestsLink() {
                     className="navbar-collapse"
                     id="topnav-menu-content"
                   >
-                     <ul className="navbar-nav">
-                    {this.props.match.params.filnalurl ? (
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                              : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
-                    ) : (
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                              : `/labs/${this.props.match.params.guest_id}`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Labs</span>
-                        </Link>
-                      </li>
-                    )}
+                    <ul className="navbar-nav">
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
 
-{this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                          </Link>
+                        </li>
+                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+
+                          </Link>
+                        </li>
+                      ) : null}
+                      {this.props.match.params.filnalurl ? (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                                : `/labs/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                      ) : (
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/labs/${this.props.match.params.guest_id}`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                      )}
+
+                      {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -992,7 +1281,7 @@ shouldHighlightTestsLink() {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">Tests</span>
+                            <span className="pt-4 font-size-12" >Tests</span>
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -1047,7 +1336,7 @@ shouldHighlightTestsLink() {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>  
+                            <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>
                           </Link>
                         </li>
                       ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
@@ -1060,7 +1349,7 @@ shouldHighlightTestsLink() {
                             }
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>  
+                            <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>
                           </Link>
                         </li>
                       ) : null}
@@ -1092,34 +1381,8 @@ shouldHighlightTestsLink() {
                           </Link>
                         </li>
                       ) : null}
-{this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : null}
-               
+
+
                       {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
@@ -1189,14 +1452,26 @@ shouldHighlightTestsLink() {
                     </ul>
                   </Collapse>
 
-                ) 
-                : this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ? (
+                ) :
+                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient" ? (
                   <Collapse
                     isOpen={this.props.menuOpen}
                     className="navbar-collapse"
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
                       <li className="nav-item">
                         <Link
                           to={
@@ -1224,7 +1499,7 @@ shouldHighlightTestsLink() {
                           className="dropdown-item"
                         >
                           {/* {this.props.t("Tests")} */}
-                          <span className="pt-4 font-size-12">Tests</span>
+                          <span className="pt-4 font-size-12" >Tests</span>
                         </Link>
                       </li>
                       <li className="nav-item">
@@ -1249,7 +1524,7 @@ shouldHighlightTestsLink() {
                           }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>  
+                          <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -1264,18 +1539,6 @@ shouldHighlightTestsLink() {
                         >
                           <span className="pt-4 font-size-12">Radiology</span>
                           {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
                         </Link>
                       </li>
                       {/* <li className="nav-item dropdown">
@@ -1348,106 +1611,106 @@ shouldHighlightTestsLink() {
                     </ul>
                   </Collapse>
                 ) :
-                this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
-                  <Collapse
-                  isOpen={this.state.isMenuOpened}
-                  className="navbar-collapse"
-                  id="topnav-menu-content"
-                >
-                 <ul className="navbar-nav">
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/labs`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Labs</span>
-                      </Link>
-                    </li>
+                  this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient" ? (
+                    <Collapse
+                      isOpen={this.state.isMenuOpened}
+                      className="navbar-collapse"
+                      id="topnav-menu-content"
+                    >
+                      <ul className="navbar-nav">
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/tests-offered-labhazir`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/labs/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/labs`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
 
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-test`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Tests</span>
-                        {/* {this.props.t("Tests")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-profiles`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Profiles</span>
-                        {/* {this.props.t("Profiles")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-packages`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>  
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>
-                  <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                            : `/nearby-radiology`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Radiology</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>   
-                    <li className="nav-item">
-                        <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                              : `/tests-offered-labhazir`
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Book a Test</span>
-                        </Link>
-                      </li>
-                    {this.state.user_id && this.state.user_type == "patient" && (
-                      <li className="nav-item">
-                        <Link to={
-                            this.props.match.params.guest_id
-                              ? `/test-appointments/${this.props.match.params.guest_id}`
-                              : `/test-appointments`
-                          } className="dropdown-item">
-                          {/* {this.props.t("My Appointments")} */}
-                          <span className="pt-4 font-size-12">My Appointments</span>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-test/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-test`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" >Tests</span>
+                            {/* {this.props.t("Tests")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-profiles/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-profiles`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Profiles</span>
+                            {/* {this.props.t("Profiles")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-packages/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-packages`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12" style={linkStyles}>Packages</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-radiology/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-radiology`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        {this.state.user_id && this.state.user_type == "patient" && (
+                          <li className="nav-item">
+                            <Link to={
+                              this.props.match.params.guest_id
+                                ? `/test-appointments/${this.props.match.params.guest_id}`
+                                : `/test-appointments`
+                            } className="dropdown-item">
+                              {/* {this.props.t("My Appointments")} */}
+                              <span className="pt-4 font-size-12">My Appointments</span>
 
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </Collapse>
-                ) : null}
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </Collapse>
+                  ) : null}
 
             </nav>
           </div>
@@ -1556,6 +1819,44 @@ shouldHighlightTestsLink() {
                   </Formik>
                 </ModalBody>
               </Modal>
+
+
+              <Modal
+              isOpen={this.state.PatientModal}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.togglePatientModal}>
+                <h2 style={{ fontSize: "16px" }}>How to enable location access on your browser</h2>
+              </ModalHeader>
+              <ModalBody>
+                <Formik>
+                  <Form>
+                    <Row>
+                      <Col className="col-12">
+                        <p className="font-size-15 font-weight-bold">On your Chrome browser</p>
+                        <p style={{ fontSize: "14px", marginLeft: "15px" }}>
+                          <stront className="font-size-16 font-weight-bold">1.</stront>   To the left of the address bar, click the Padlock icon <i className="fas fa-lock" style={{ fontSize: '14px' }}></i> {" "}<br></br>
+                          <span style={{ fontSize: "14px", marginLeft: "15px" }}>then select &ldquo;Site Settings.&rdquo;</span>
+                        </p>
+                        <p style={{ fontSize: "14px", marginLeft: "15px" }}>
+                          <stront className="font-size-16 font-weight-bold">2.</stront>   Under Permissions, find Location and change it to
+                          Allow.
+                        </p>
+                      </Col>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={closeModal}
+                        >
+                          Got It!
+                        </button>
+                      </div>
+                    </Row>
+                  </Form>
+                </Formik>
+              </ModalBody>
+            </Modal>
               {/* <Col lg="3">
                 <Card>
                   <CardBody>
@@ -1571,8 +1872,8 @@ shouldHighlightTestsLink() {
                     enableReinitialize={true}
                     initialValues={{
                       search_type:
-                        (this.state && this.state.search_type) ||
-                        "Current Location",
+                      (this.state && this.state.search_type) ||
+                      "",
                       city: (this.state && this.state.city) || "",
                       name: (this.state && this.state.name) ||
                         "",
@@ -1610,9 +1911,7 @@ shouldHighlightTestsLink() {
                               name="profile"
                               component="Select"
                               onChange={this.onchangename}
-                              value={packageList.find(
-                                (item) => item.value === this.state.test_name
-                              )} // Use find to match the selected value in the options
+                             
                               className="defautSelectParent"
                               options={packageList}
                                styles={{
@@ -1643,9 +1942,7 @@ shouldHighlightTestsLink() {
                                name="labnamwslist"
                                component="Select"
                                onChange={this.onChangeLabName}
-                               value={labNames.find(
-                                 (item) => item.value === this.state.name
-                               )} // Use find to match the selected value in the options
+                              
                                className="defautSelectParent"
                                options={labNames}
                                styles={{
@@ -1691,6 +1988,39 @@ shouldHighlightTestsLink() {
                               </Field>
                             </div>
                           </Col>
+                          {this.state.locationAccessAllowed === true ? (
+                              <Col xs="3" sm="3" md="2" lg="2">
+                                <div className="mb-3">
+                                  <Label
+                                    for="LabType2"
+                                    className="form-label"
+                                    style={{
+                                      fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                      color: 'black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    Search Types
+                                  </Label>
+                                  <Field
+                                    name="search_type"
+                                    component="select"
+                                    onChange={e => this.onChangeSearchType(e)}
+                                    value={this.state.search_type}
+                                    className="form-select"
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      // Add more style overrides as needed
+                                    }}
+                                  >
+                                    <option value="Current Location">Current Location</option>
+                                    <option value="City">Search By City</option>
+                                    <option value="Custom Address">Custom Address</option>
+                                  </Field>
+                                </div>
+                              </Col>
+                            ) : (
                           <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
@@ -1716,6 +2046,7 @@ shouldHighlightTestsLink() {
                                   // Add more style overrides as needed
                                 }}
                               >
+                                <option value="">Choose an option</option>
                                 <option value="Current Location">
                                   Current Location
                                 </option>
@@ -1724,6 +2055,7 @@ shouldHighlightTestsLink() {
                               </Field>
                             </div>
                           </Col>
+                          )}
                           {this.state.search_type === 'City' && (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
@@ -1829,9 +2161,9 @@ shouldHighlightTestsLink() {
                 <Formik
                   enableReinitialize={true}
                   initialValues={{
-                    search_type:
-                      (this.state && this.state.search_type) ||
-                      "Current Location",
+                    // search_type:
+                    //   (this.state && this.state.search_type) ||
+                    //   "Current Location",
                     city: (this.state && this.state.city) || "",
                     location: (this.state && this.state.location) || "",
                     LabType: (this.state && this.state.LabType) || "Main",
@@ -1862,9 +2194,7 @@ shouldHighlightTestsLink() {
                               name="profile"
                               component="Select"
                               onChange={this.onchangename}
-                              value={packageList.find(
-                                (item) => item.value === this.state.test_name
-                              )} // Use find to match the selected value in the options
+                             
                               className="defautSelectParent"
                               options={packageList}
 
@@ -1900,6 +2230,7 @@ shouldHighlightTestsLink() {
                               value={this.state.search_type}
                               className="form-select"
                             >
+                              <option value="">Choose an option</option>
                               <option value="Current Location">
                                 Current Location
                               </option>
@@ -2288,9 +2619,9 @@ const mapStateToProps = ({ PackageMarket, carts, labNamesList }) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetNearbyPackages: data => dispatch(getNearbyPackages(data)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
-  onGetPackages: () => dispatch(getPackages()),
+  onGetPackages: id => dispatch(getPackages(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
-  onGetLabNamesList: () => dispatch(getLabNamesList()),
+  onGetLabNamesList: id => dispatch(getLabNamesList(id)),
 
 });
 

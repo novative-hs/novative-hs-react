@@ -369,6 +369,19 @@ export const getCorporateTests = id =>
   get(`${url.GET_CORPORATE_TESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+// List of Corporate 
+export const getLabCorporate = id =>
+  get(`${url.GET_LABCORPORATE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+// List of Corporate Employee
+export const getEmployeeCorporate = id =>
+  get(`${url.GET_EMPLOYEECORPORATE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 export const getOfferedTestsReferrel = id =>
   get(`${url.GET_OFFEREDTEST_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
@@ -454,6 +467,15 @@ export const updateCorporateTest = offeredTest => {
   // formData.append("is_active", offeredTest.is_active);
 
   return axios.put(`${url.UPDATE_CORPORATE_TEST}/${offeredTest.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const updateCorporateStatus = offeredTest => {
+  let formData = new FormData();
+  formData.append("status", offeredTest.status);
+  // formData.append("is_active", offeredTest.is_active);
+
+  return axios.put(`${url.UPDATE_CORPORATE_STATUS}/${offeredTest.id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
@@ -980,7 +1002,9 @@ export const getNearbyTests = data => {
   formData.append("address", data.address);
   formData.append("city", data.city);
   formData.append("test_name", data.test_name);
+  formData.append("locationAccessAllowed", data.locationAccessAllowed);
   formData.append("name", data.name);
+  formData.append("locationAccessAllowed", data.locationAccessAllowed);
   console.log("donorSetting: ", data)
 
   console.log("In near by lsbd: ", data)
@@ -990,6 +1014,7 @@ export const getNearbyTests = data => {
     headers: getHeader(authHeader()),
   });
 };
+
 // Get Nearby Tests
 export const getNearbyTestsDiscounted = data => {
   let formData = new FormData();
@@ -1028,6 +1053,7 @@ export const getNearbyProfiles = data => {
   formData.append("test_name", data.test_name);
   console.log("donorSetting: ", data);
   formData.append("name", data.name);
+  formData.append("locationAccessAllowed", data.locationAccessAllowed);
 
   return axios.post(`${url.GET_NEARBY_PROFILES}`, formData, {
     headers: getHeader(authHeader()),
@@ -1063,6 +1089,7 @@ export const getNearbyPackages = data => {
   formData.append("test_name", data.test_name);
   console.log("packages: ", data);
   formData.append("name", data.name);
+  formData.append("locationAccessAllowed", data.locationAccessAllowed);
 
   // console.log("in packages", data);
 
@@ -1098,6 +1125,8 @@ export const getNearbyRadiology = data => {
   formData.append("test_name", data.test_name);
   console.log("radiology: ", data);
   formData.append("name", data.name);
+  formData.append("locationAccessAllowed", data.locationAccessAllowed);
+
 
   return axios.post(`${url.GET_NEARBY_RADIOLOGY}`, formData, {
     headers: getHeader(authHeader()),
@@ -1629,12 +1658,6 @@ export const getDonorAccountStatements = id =>
       headers: getHeader(authHeader()),
     });
   };
-
-    // List of Corporate
-  export const getCemployees = () =>
-    get(url.GET_CEMPLOYEE, {
-      headers: getHeader(authHeader()),
-    });
 
   export const addNewCemployeeData = (cemployeeData, id) => {
     let formData = new FormData();

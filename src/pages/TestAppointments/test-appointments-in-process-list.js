@@ -140,12 +140,7 @@ class TestAppointmentsInProcessList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              {testAppointment.is_home_sampling_availed == true ? (
-                <span>Yes</span>
-              ) : (
-                <span>No</span>
-              )}/ 
-              {testAppointment.is_state_sampling_availed == true ? (
+              {testAppointment.is_home_sampling_availed == true || testAppointment.is_state_sampling_availed == true ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>

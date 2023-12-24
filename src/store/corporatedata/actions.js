@@ -5,6 +5,9 @@ import {
   GET_LABCORPORATE,
   GET_LABCORPORATE_SUCCESS,
   GET_LABCORPORATE_FAIL,
+  GET_EMPLOYEECORPORATE,
+  GET_EMPLOYEECORPORATE_SUCCESS,
+  GET_EMPLOYEECORPORATE_FAIL,
   UPDATE_CEMPLOYEE,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
@@ -15,26 +18,27 @@ export const getLabCorporate = id => ({
   payload: id,
 });
 
-export const getLabCorporateSuccess = cemployees => ({
+export const getLabCorporateSuccess = cemployeeData => ({
   type: GET_LABCORPORATE_SUCCESS,
-  payload: cemployees,
+  payload: cemployeeData,
 });
 
 export const getLabCorporateFail = error => ({
   type: GET_LABCORPORATE_FAIL,
   payload: error,
 });
-export const getCemployees = () => ({
-  type: GET_CEMPLOYEES,
+export const getEmployeeCorporate = id => ({
+  type: GET_EMPLOYEECORPORATE,
+  payload: id,
 });
 
-export const getCemployeesSuccess = cemployees => ({
-  type: GET_CEMPLOYEES_SUCCESS,
-  payload: cemployees,
+export const getEmployeeCorporateSuccess = cemployeeData => ({
+  type: GET_EMPLOYEECORPORATE_SUCCESS,
+  payload: cemployeeData,
 });
 
-export const getCemployeesFail = error => ({
-  type: GET_CEMPLOYEES_FAIL,
+export const getEmployeeCorporateFail = error => ({
+  type: GET_EMPLOYEECORPORATE_FAIL,
   payload: error,
 });
 

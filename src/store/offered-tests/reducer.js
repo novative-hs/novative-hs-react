@@ -27,6 +27,8 @@ import {
   UPDATE_OFFERED_TEST_FAIL,
   UPDATE_CORPORATE_TEST_SUCCESS,
   UPDATE_CORPORATE_TEST_FAIL,
+  UPDATE_CORPORATE_STATUS_SUCCESS,
+  UPDATE_CORPORATE_STATUS_FAIL,
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
 } from "./actionTypes";
@@ -203,6 +205,21 @@ const tests = (state = INIT_STATE, action) => {
       };
 
     case UPDATE_CORPORATE_TEST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_CORPORATE_STATUS_SUCCESS:
+      return {
+        ...state,
+        offeredTests: state.offeredTests.map(offeredTest =>
+          offeredTest.id.toString() === action.payload.id.toString()
+            ? { offeredTest, ...action.payload }
+            : offeredTest
+        ),
+      };
+
+    case UPDATE_CORPORATE_STATUS_FAIL:
       return {
         ...state,
         error: action.payload,
