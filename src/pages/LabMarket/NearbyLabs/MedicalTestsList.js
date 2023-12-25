@@ -282,6 +282,8 @@ class MedicalTestList extends Component {
         order: "desc", // desc or asc
       },
     ];
+    const isFilterApplied = this.state.city_id && this.state.test_id;
+
 
     return (
       <React.Fragment>
@@ -1055,277 +1057,305 @@ class MedicalTestList extends Component {
               </Col>
               <Card >
               <CardBody>
-              <div className="table-responsive">
-                <Table className="table-nowrap">
-                <thead style={{ backgroundColor: "red" }}>
-                    <tr >
-                      <th className="text-start">Lab Name</th>
-                      <th className="text-start">Test Name</th>
-                      <th className="text-center">Price</th>
-                      {/* <th className="text-center"> Total Price</th> */}
-                      <th className="text-center"> Discount</th>
-                      <th className="text-center"> Price after Discount</th>
-                      <th className="text-center">
-                        Total Price after Discount
-                      </th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  {!isEmpty(quotes) &&
-                    Array.isArray(quotes.top_lab_details_with_tests) &&
-                    quotes.top_lab_details_with_tests.map(
-                      (referrelFeeLab, key) => (
-                        <tr
-                          key={"_row_" + key}
-                          style={{ backgroundColor: key % 2 === 0 ? 'white' : '#f1f8fe' }}
-                        >
-                          <td className="text-start" style={{
-                            backgroundColor: 'transparent !important',
-                            width: '200px',
-                            fontSize: '14px',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'normal',
-                            textAlign: 'left',
-                            display: 'block',
-                          }}>
-                            {!this.state.user_id ? (
-                              <React.Fragment>
-                                {!this.state.user_id ? (
-                                  <React.Fragment>
-                                    <div style={{ background: 'transparent' }}>
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                        }
-                                        className="text-dark"
-                                        style={{ background: 'transparent' }}
-                                      >
-                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                          <b>{referrelFeeLab.name}</b>
-                                        </span>    </Link>
-                                      <div style={{ fontSize: "12px", background: 'transparent' }}>
-                                        <b>{referrelFeeLab.type}</b>
-                                      </div>
-                                      <div>
-                                        <StarRatings
-                                          rating={referrelFeeLab.rating}
-                                          starRatedColor="#F1B44C"
-                                          starEmptyColor="#2D363F"
-                                          numberOfStars={5}
-                                          name="rating"
-                                          starDimension="14px"
-                                          starSpacing="3px"
-                                        />
-                                      </div>
-                                    </div>
-                                  </React.Fragment>
-                                ) : null}
-
-                              </React.Fragment>
-                            ) : null}
-
-                            {(this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") && (
-                              <div>
-                                <Link
-                                  to={
-                                    this.props.match.params.guest_id
-                                      ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                  }
-                                  className="text-dark"
-                                >
-                                  <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                    <b>{referrelFeeLab.name}</b>
-                                  </span>
-                                </Link>
-                                <div style={{ fontSize: "12px" }}>
-                                  <b>{referrelFeeLab.type}</b>
-                                </div>
-                                <div>
-                                  <StarRatings
-                                    rating={referrelFeeLab.rating}
-                                    starRatedColor="#F1B44C"
-                                    starEmptyColor="#2D363F"
-                                    numberOfStars={5}
-                                    name="rating"
-                                    starDimension="14px"
-                                    starSpacing="3px"
-                                  />
-                                </div>
-                              </div>
-                            )}
-
-                            {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
-                              <div>
-                                <Link
-                                  to={
-                                    this.props.match.params.guest_id
-                                      ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                  }
-                                  className="text-dark"
-                                >
-                                  <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                    <b>{referrelFeeLab.name}</b>
-                                  </span>
-                                </Link>
-                                <div style={{ fontSize: "12px" }}>
-                                  <b>{referrelFeeLab.type}</b>
-                                </div>
-                                <div>
-                                  <StarRatings
-                                    rating={referrelFeeLab.rating}
-                                    starRatedColor="#F1B44C"
-                                    starEmptyColor="#2D363F"
-                                    numberOfStars={5}
-                                    name="rating"
-                                    starDimension="14px"
-                                    starSpacing="3px"
-                                  />
-                                </div>
-                              </div>
-                            )}
-
-                            {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") && (
-                              <div>
-                                <Link
-                                  to={
-                                    this.props.match.params.guest_id
-                                      ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                      : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                  }
-                                  className="text-dark"
-                                >
-                                  <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                    <b>{referrelFeeLab.name}</b>
-                                  </span>
-                                </Link>
-                                <div style={{ fontSize: "12px" }}>
-                                  <b>{referrelFeeLab.type}</b>
-                                </div>
-                                <div>
-                                  <StarRatings
-                                    rating={referrelFeeLab.rating}
-                                    starRatedColor="#F1B44C"
-                                    starEmptyColor="#2D363F"
-                                    numberOfStars={5}
-                                    name="rating"
-                                    starDimension="14px"
-                                    starSpacing="3px"
-                                  />
-                                </div>
-                              </div>
-                            )}
-                          </td>
-                          <td className="text-start"
-                            style={{ whiteSpace: "pre-wrap" }}
+              {isFilterApplied ? ( // Only render the table if both city_id and test_id are selected
+                  <div className="table-responsive">
+                  <Table className="table-nowrap">
+                  <thead style={{ backgroundColor: "red" }}>
+                      <tr >
+                        <th className="text-start">Lab Name</th>
+                        <th className="text-start">Test Name</th>
+                        <th className="text-center">Price</th>
+                        {/* <th className="text-center"> Total Price</th> */}
+                        <th className="text-center"> Discount</th>
+                        <th className="text-center"> Price after Discount</th>
+                        <th className="text-center">
+                          Total Price after Discount
+                        </th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    {!isEmpty(quotes) &&
+                      Array.isArray(quotes.top_lab_details_with_tests) &&
+                      quotes.top_lab_details_with_tests.map(
+                        (referrelFeeLab, key) => (
+                          <tr
+                            key={"_row_" + key}
+                            style={{ backgroundColor: key % 2 === 0 ? 'white' : '#f1f8fe' }}
                           >
-                            {!isEmpty(referrelFeeLab.offered_tests) &&
-                              referrelFeeLab.offered_tests.map(
-                                (offeredTest, index) => (
-                                  <div key={index} style={{ background: 'transparent' }}>{offeredTest.test_name}</div>
-                                )
-                              )}
-                          </td>
-                          <td className="text-end">
-                            {!isEmpty(referrelFeeLab.offered_tests) &&
-                              referrelFeeLab.offered_tests.map(
-                                (offeredTest, index) => (
-                                  <div key={index} style={{ background: 'transparent' }}>
-                                    {" "}
-                                    {offeredTest.price
-                                      .toString()
-                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                  </div>
-                                )
-                              )}
-                          </td>
-                          <td className="text-end">
-                            {!isEmpty(referrelFeeLab.offered_tests) &&
-                              referrelFeeLab.offered_tests.map((offeredTest, index) => (
-                                // Use a Fragment to avoid wrapping with a div
-                                <div key={index} style={{ background: 'transparent' }}>
-                                  {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
-                                    <span>
-                                      Discount: {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)).toFixed(2))}
+                            <td className="text-start" style={{
+                              backgroundColor: 'transparent !important',
+                              width: '200px',
+                              fontSize: '14px',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'normal',
+                              textAlign: 'left',
+                              display: 'block',
+                            }}>
+                              {!this.state.user_id ? (
+                                <React.Fragment>
+                                  {!this.state.user_id ? (
+                                    <React.Fragment>
+                                      <div style={{ background: 'transparent' }}>
+                                        <Link
+                                          to={
+                                            this.props.match.params.guest_id
+                                              ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                              : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                          }
+                                          className="text-dark"
+                                          style={{ background: 'transparent' }}
+                                        >
+                                          <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                            <b>{referrelFeeLab.name}</b>
+                                          </span>    </Link>
+                                        <div style={{ fontSize: "12px", background: 'transparent' }}>
+                                          <b>{referrelFeeLab.type}</b>
+                                        </div>
+                                        <div>
+                                          <StarRatings
+                                            rating={referrelFeeLab.rating}
+                                            starRatedColor="#F1B44C"
+                                            starEmptyColor="#2D363F"
+                                            numberOfStars={5}
+                                            name="rating"
+                                            starDimension="14px"
+                                            starSpacing="3px"
+                                          />
+                                        </div>
+                                      </div>
+                                    </React.Fragment>
+                                  ) : null}
+  
+                                </React.Fragment>
+                              ) : null}
+  
+                              {(this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") && (
+                                <div>
+                                  <Link
+                                    to={
+                                      this.props.match.params.guest_id
+                                        ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                    }
+                                    className="text-dark"
+                                  >
+                                    <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                      <b>{referrelFeeLab.name}</b>
                                     </span>
-                                  ) : (
-                                    '--'
-                                  )}
-                                </div>
-                              ))}
-                          </td>
-
-                          <td className="text-end">
-                            {referrelFeeLab.offered_tests
-                              .map((offeredTest, index) => {
-                                const discountByTest = offeredTest.discount || 0;
-                                const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
-                                const totalDiscount = discountByTest + discountByLabhazir;
-                                const discountedPrice =
-                                  offeredTest.price -
-                                  (offeredTest.price * (totalDiscount * 100)) / 100;
-
-                                return (
-                                  <div key={index} style={{ background: 'transparent' }}>
-                                    {discountedPrice
-                                      .toFixed(2)
-                                      .toString()
-                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  </Link>
+                                  <div style={{ fontSize: "12px" }}>
+                                    <b>{referrelFeeLab.type}</b>
                                   </div>
-                                );
-                              })}
-                          </td>
-
-
-
-
-                          <td className="text-end py-2 pl-3 pr-4">
-                            <div style={{ background: 'transparent' }}>
+                                  <div>
+                                    <StarRatings
+                                      rating={referrelFeeLab.rating}
+                                      starRatedColor="#F1B44C"
+                                      starEmptyColor="#2D363F"
+                                      numberOfStars={5}
+                                      name="rating"
+                                      starDimension="14px"
+                                      starSpacing="3px"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+  
+                              {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
+                                <div>
+                                  <Link
+                                    to={
+                                      this.props.match.params.guest_id
+                                        ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                    }
+                                    className="text-dark"
+                                  >
+                                    <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                      <b>{referrelFeeLab.name}</b>
+                                    </span>
+                                  </Link>
+                                  <div style={{ fontSize: "12px" }}>
+                                    <b>{referrelFeeLab.type}</b>
+                                  </div>
+                                  <div>
+                                    <StarRatings
+                                      rating={referrelFeeLab.rating}
+                                      starRatedColor="#F1B44C"
+                                      starEmptyColor="#2D363F"
+                                      numberOfStars={5}
+                                      name="rating"
+                                      starDimension="14px"
+                                      starSpacing="3px"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+  
+                              {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") && (
+                                <div>
+                                  <Link
+                                    to={
+                                      this.props.match.params.guest_id
+                                        ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                        : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                    }
+                                    className="text-dark"
+                                  >
+                                    <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                      <b>{referrelFeeLab.name}</b>
+                                    </span>
+                                  </Link>
+                                  <div style={{ fontSize: "12px" }}>
+                                    <b>{referrelFeeLab.type}</b>
+                                  </div>
+                                  <div>
+                                    <StarRatings
+                                      rating={referrelFeeLab.rating}
+                                      starRatedColor="#F1B44C"
+                                      starEmptyColor="#2D363F"
+                                      numberOfStars={5}
+                                      name="rating"
+                                      starDimension="14px"
+                                      starSpacing="3px"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                            <td className="text-start"
+                              style={{ whiteSpace: "pre-wrap" }}
+                            >
+                              {!isEmpty(referrelFeeLab.offered_tests) &&
+                                referrelFeeLab.offered_tests.map(
+                                  (offeredTest, index) => (
+                                    <div key={index} style={{ background: 'transparent' }}>{offeredTest.test_name}</div>
+                                  )
+                                )}
+                            </td>
+                            <td className="text-end">
+                              {!isEmpty(referrelFeeLab.offered_tests) &&
+                                referrelFeeLab.offered_tests.map(
+                                  (offeredTest, index) => (
+                                    <div key={index} style={{ background: 'transparent' }}>
+                                      {" "}
+                                      {offeredTest.price
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </div>
+                                  )
+                                )}
+                            </td>
+                            <td className="text-end">
+                              {!isEmpty(referrelFeeLab.offered_tests) &&
+                                referrelFeeLab.offered_tests.map((offeredTest, index) => (
+                                  // Use a Fragment to avoid wrapping with a div
+                                  <div key={index} style={{ background: 'transparent' }}>
+                                    {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
+                                      <span>
+                                        Discount: {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)).toFixed(2))}
+                                      </span>
+                                    ) : (
+                                      '--'
+                                    )}
+                                  </div>
+                                ))}
+                            </td>
+  
+                            <td className="text-end">
                               {referrelFeeLab.offered_tests
-                                .reduce((total, offeredTest) => {
+                                .map((offeredTest, index) => {
                                   const discountByTest = offeredTest.discount || 0;
                                   const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
                                   const totalDiscount = discountByTest + discountByLabhazir;
-                                  const discountedPrice = (
+                                  const discountedPrice =
                                     offeredTest.price -
-                                    (offeredTest.price * (totalDiscount * 100)) / 100
+                                    (offeredTest.price * (totalDiscount * 100)) / 100;
+  
+                                  return (
+                                    <div key={index} style={{ background: 'transparent' }}>
+                                      {discountedPrice
+                                        .toFixed(2)
+                                        .toString()
+                                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </div>
                                   );
-                                  return total + Number(discountedPrice);
-                                }, 0)
-                                .toFixed(2)
-                                .toString()
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                            </div></td>
-
-                          <td className="text-center">
-                            <Button
-                              type="button"
-                              color="primary"
-                              className="btn mt-3 me-1 text-white bg-primary btn-outline-primary"
-                              onClick={() => {
-                                this.handleAddToCart(referrelFeeLab);
-                              }}
-                            >
-                              <i className="bx bx-cart me-2" /> Add to cart
-                            </Button>
-                          </td>
-                        </tr>
-                      )
+                                })}
+                            </td>
+  
+  
+  
+  
+                            <td className="text-end py-2 pl-3 pr-4">
+                              <div style={{ background: 'transparent' }}>
+                                {referrelFeeLab.offered_tests
+                                  .reduce((total, offeredTest) => {
+                                    const discountByTest = offeredTest.discount || 0;
+                                    const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
+                                    const totalDiscount = discountByTest + discountByLabhazir;
+                                    const discountedPrice = (
+                                      offeredTest.price -
+                                      (offeredTest.price * (totalDiscount * 100)) / 100
+                                    );
+                                    return total + Number(discountedPrice);
+                                  }, 0)
+                                  .toFixed(2)
+                                  .toString()
+                                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                              </div></td>
+  
+                            <td className="text-center">
+                              <Button
+                                type="button"
+                                color="primary"
+                                className="btn mt-3 me-1 text-white bg-primary btn-outline-primary"
+                                onClick={() => {
+                                  this.handleAddToCart(referrelFeeLab);
+                                }}
+                              >
+                                <i className="bx bx-cart me-2" /> Add to cart
+                              </Button>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    {isEmpty(quotes) && (
+                      <Row style={{ background: 'transparent' }}>
+                        <div className=" mt-4" >
+                          <h4 className="text-uppercase">
+                            Sorry no result found.
+                          </h4>
+                        </div>
+                      </Row>
                     )}
-                  {isEmpty(quotes) && (
-                    <Row style={{ background: 'transparent' }}>
-                      <div className=" mt-4" >
-                        <h4 className="text-uppercase">
-                          Sorry no result found.
-                        </h4>
-                      </div>
-                    </Row>
-                  )}
-                </Table>
-              </div>
+                  </Table>
+                </div>
+                ) : (
+                  <div className="table-responsive">
+                  <Table className="table-nowrap">
+                  <thead style={{ backgroundColor: "red" }}>
+                      <tr >
+                        <th className="text-start">Lab Name</th>
+                        <th className="text-start">Test Name</th>
+                        <th className="text-center">Price</th>
+                        {/* <th className="text-center"> Total Price</th> */}
+                        <th className="text-center"> Discount</th>
+                        <th className="text-center"> Price after Discount</th>
+                        <th className="text-center">
+                          Total Price after Discount
+                        </th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <div className="mt-4">
+                    <h4 className="text-uppercase text-danger">
+                      Please select both City and Test Names to view data.
+                    </h4>
+                  </div>
+                  </Table>
+                </div>
+
+                )}
+              
               </CardBody>
               </Card>
             </Row>
