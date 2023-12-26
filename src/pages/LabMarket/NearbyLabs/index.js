@@ -2291,7 +2291,6 @@ class NearbyLabs extends Component {
                   </div>
                 )}
 
-                <Card style={{ alignContent: "center", display: "flex", marginTop: "7px" }}>
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
@@ -2314,168 +2313,236 @@ class NearbyLabs extends Component {
                     })}
                   >
                     {({ errors, status, touched }) => (
-
-                      <Form className="form-horizontal">
-                        {/* ... (unchanged) */}
-                        <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                          {/* Section 1 */}
-                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                            <span><p>Labs: <a href="#" onClick={this.toggleFormVisibility}>Search Labs<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                            {this.state.isFormVisible && (
-                              <div className="mb-2">
+                      <Row>
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Lab Name
+                              </Label> */}
+                              <Select
+                                type="text"
+                                // value={labNames.find((option) => option.value === this.state.name)}
+                                onChange={this.onChangeLabName}
+                                options={labNames}
+                                placeholder="Lab Name..."
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                  }),
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </Col>
+                          {this.state.locationAccessAllowed === true ? (
+                              <Col xs="3" sm="3" md="2" lg="2">
+                                <div className="mb-3">
+                                  {/* <Label
+                                    for="LabType2"
+                                    className="form-label"
+                                    style={{
+                                      fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                      color: 'black',
+                                      fontWeight: 'bold',
+                                    }}
+                                  >
+                                    Search Types
+                                  </Label> */}
+                                  <Field
+                                    name="search_type"
+                                    component="select"
+                                    onChange={e => this.onChangeSearchType(e)}
+                                    value={this.state.search_type}
+                                    className="form-select"
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      // Add more style overrides as needed
+                                    }}
+                                  >
+                                    <option value="Current Location">Current Location</option>
+                                    <option value="City">Search By City</option>
+                                    <option value="Custom Address">Custom Address</option>
+                                  </Field>
+                                </div>
+                              </Col>
+                            ) : (
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search Types
+                              </Label> */}
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="">Choose an option</option>
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">Search By City</option>
+                                <option value="Custom Address">Custom Address</option>
+                              </Field>
+                            </div>
+                          </Col>
+                          )}
+                          {this.state.search_type === 'City' && (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>By City </span>
+                                </Label> */}
                                 <Select
-                                  type="text"
-
-                                  onChange={this.onChangeLabName}
-                                  options={labNames}
-                                  placeholder="Enter Lab Name."
-                                  isSearchable={true}
-                                  isClearable={true}
-                                  components={{
-                                    ClearIndicator,
+                                  name="city"
+                                  component="Select"
+                                  onChange={this.onChangeCity}
+                                  className="defautSelectParent is-invalid"
+                                  options={cityList}
+                                  placeholder="City Name.."
+                                  styles={{
+                                    control: (provided, state) => ({
+                                      ...provided,
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                    }),
+                                    // Add more style overrides as needed
                                   }}
                                 />
                               </div>
-                            )}
-                          </div>
-                          {/* Section 3 */}
-                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                            <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
-                              this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                            {this.state.isFormVisible && (
-                              <div className="mb-2">
-                                <Field
-                                  name="LabType"
-                                  component="select"
-                                  onChange={(e) => this.onChangeType(e)}
-                                  value={this.state.LabType}
-                                  className="form-select"
-                                >
-                                  <option value="Main">Main Labs</option>
-                                  <option value="Collection">Collection Points</option>
-                                  <option value="Others">Both</option>
-                                </Field>
-                              </div>
-                            )}
-                          </div>
-                          {/* Section 2 */}
-                          <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                            <span>
-                              <p>
-                                Location:
-                                <a href="#" onClick={this.toggleFormVisibility}>
-                                  {this.state.isFormVisible ? (
-                                    this.state.search_type === "Current Location" && this.state.locationAccessAllowed
-                                      ? "Current Location"
-                                      : this.state.search_type
-                                  ) : (
-                                    <span style={{ color: "blue" }}>
-                                      {this.state.locationAccessAllowed ? "Current Location" : "Choose an option"}
-                                    </span>
-                                  )}
-                                  <i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i>
-                                </a>
-                              </p>
-                            </span>
-                            {this.state.isFormVisible && (
-                              <div className="mb-2">
-                                <Field
-                                  name="search_type"
-                                  component="select"
-                                  onChange={(e) => this.onChangeSearchType(e)}
-                                  value={this.state.search_type}
-                                  className="form-select"
-                                >
-                                  {this.state.locationAccessAllowed ? (
-                                    <>
-                                      <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
-                                        Current Location
-                                      </option>
-                                      <option value="City">Search By City</option>
-                                      <option value="Custom Address">Custom Address</option>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <option value="" onClick={() => this.onChangeSearchType("")}>
-                                        Choose an option
-                                      </option>
-                                      <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
-                                        Current Location
-                                      </option>
-                                      <option value="City">Search By City</option>
-                                      <option value="Custom Address">Custom Address</option>
-                                    </>
-                                  )}
-                                </Field>
-                              </div>
-                            )}
-                          </div>
-
-
-                          {this.state.search_type === 'City' && (
-                            <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Select
-                                    name="city"
-                                    component="Select"
-                                    onChange={this.onChangeCity}
-                                    className="defautSelectParent is-invalid"
-                                    options={cityList}
-                                    placeholder="Enter City Name"
-                                  />
-                                </div>
-                              )}   </div>)}
-                          {/* Section 5 */}
+                            </Col>
+                          )}
                           {this.state.search_type === 'Custom Address' && (
-                            <div style={{ flex: "1", paddingRight: "5px" }}>
-                              <span><p>Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Input
-                                    defaultValue={this.state.address}
-                                    onChange={(e) => this.onChangeAddress(e)}
-                                    id="pac-input"
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Enter Custom Address"
-                                  />
-                                </div>
-                              )}
-                            </div>)}
-
-                          {/* Section 4 */}
-
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' || this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
-
-                            <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none" }}>
-                              <span>
-                                <p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i></a></p>
-                              </span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px', }}>Custom Address </span>
+                                </Label> */}
+                                <Input
+                                  defaultValue={this.state.address}
+                                  onChange={(e) => this.onChangeAddress(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Enter Address.."
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )}
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' ||this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                {/* <Label
+                                  for="LabType"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>Km </span>
+                                </Label> */}
+                                <div className="input-group">
                                   <Input
                                     defaultValue={this.state.km}
                                     onChange={(e) => this.onChangeKm(e)}
                                     id="pac-input"
-                                    type="number"
+                                    type="number"  // Change "numbers" to "number"
                                     className="form-control"
-                                    style={{ fontSize: '14px' }}
                                     placeholder=""
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
                                   />
                                 </div>
-                              )}
-                            </div>
-
+                              </div>
+                            </Col>
                           )}
-
-
-                        </div>
-                      </Form>
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label> */}
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
+                         
+                        </Row>
                     )}
                   </Formik>
-                </Card>
 
               </Row>
               <Row>
@@ -2515,7 +2582,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "25%",
+                                marginLeft: "30%",
                               }}
                             >
                               <img
@@ -2664,7 +2731,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "25%",
+                                marginLeft: "30%",
                               }}
                             >
                               <img
@@ -2835,7 +2902,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "25%",
+                                marginLeft: "30%",
                               }}
                             >
                               <img
@@ -2991,7 +3058,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "25%",
+                                marginLeft: "30%",
                               }}
                             >
                               <img
@@ -3133,7 +3200,6 @@ class NearbyLabs extends Component {
             </Container>
           </div>
         ) : null}
-
         {!isSmallScreen &&
           (!isEmpty(this.props.advLives) ||
             !isEmpty(regionWiseAdvertisement)) ? (
@@ -3187,7 +3253,7 @@ class NearbyLabs extends Component {
                       />
                     </div>
                   )}
-                  <Card style={{ alignContent: "center", display: "flex", marginTop: "7px" }}>
+                  {/* <Card style={{ alignContent: "center", display: "flex", marginTop: "7px" }}> */}
                     <Formik
                       enableReinitialize={true}
                       initialValues={{
@@ -3210,168 +3276,240 @@ class NearbyLabs extends Component {
                       })}
                     >
                       {({ errors, status, touched }) => (
-
                         <Form className="form-horizontal">
-                          {/* ... (unchanged) */}
-                          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                            {/* Section 1 */}
-                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>Labs: <a href="#" onClick={this.toggleFormVisibility}>Search Labs<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Select
-                                    type="text"
-
-                                    onChange={this.onChangeLabName}
-                                    options={labNames}
-                                    placeholder="Enter Lab Name."
-                                    isSearchable={true}
-                                    isClearable={true}
-                                    components={{
-                                      ClearIndicator,
+                        {/* Type field */}
+                        <Row>
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Lab Name
+                              </Label> */}
+                              <Select
+                                type="text"
+                                // value={labNames.find((option) => option.value === this.state.name)}
+                                onChange={this.onChangeLabName}
+                                options={labNames}
+                                placeholder="Lab Name..."
+                                styles={{
+                                  control: (provided, state) => ({
+                                    ...provided,
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                  }),
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </Col>
+                          {this.state.locationAccessAllowed === true ? (
+                              <Col xs="3" sm="3" md="2" lg="2">
+                                <div className="mb-3">
+                                  {/* <Label
+                                    for="LabType2"
+                                    className="form-label"
+                                    style={{
+                                      fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                      color: 'black',
+                                      fontWeight: 'bold',
                                     }}
-                                  />
-                                </div>
-                              )}
-                            </div>
-                            {/* Section 3 */}
-                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                              <span><p>Lab Type: <a href="#" onClick={this.toggleFormVisibility}>{this.state.LabType === 'Main' ? 'Main Labs' :
-                                this.state.LabType === 'Collection' ? 'Collection Points' : 'Both'}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
-                                  <Field
-                                    name="LabType"
-                                    component="select"
-                                    onChange={(e) => this.onChangeType(e)}
-                                    value={this.state.LabType}
-                                    className="form-select"
                                   >
-                                    <option value="Main">Main Labs</option>
-                                    <option value="Collection">Collection Points</option>
-                                    <option value="Others">Both</option>
-                                  </Field>
-                                </div>
-                              )}
-                            </div>
-                            {/* Section 2 */}
-                            <div style={{ flex: "1", borderRight: "1px solid #F0F0F0", marginRight: "5px", paddingRight: "5px" }}>
-                              <span>
-                                <p>
-                                  Location:
-                                  <a href="#" onClick={this.toggleFormVisibility}>
-                                    {this.state.isFormVisible ? (
-                                      this.state.search_type === "Current Location" && this.state.locationAccessAllowed
-                                        ? "Current Location"
-                                        : this.state.search_type
-                                    ) : (
-                                      <span style={{ color: "blue" }}>
-                                        {this.state.locationAccessAllowed ? "Current Location" : "Choose an option"}
-                                      </span>
-                                    )}
-                                    <i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i>
-                                  </a>
-                                </p>
-                              </span>
-                              {this.state.isFormVisible && (
-                                <div className="mb-2">
+                                    Search Types
+                                  </Label> */}
                                   <Field
                                     name="search_type"
                                     component="select"
-                                    onChange={(e) => this.onChangeSearchType(e)}
+                                    onChange={e => this.onChangeSearchType(e)}
                                     value={this.state.search_type}
                                     className="form-select"
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      // Add more style overrides as needed
+                                    }}
                                   >
-                                    {this.state.locationAccessAllowed ? (
-                                      <>
-                                        <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
-                                          Current Location
-                                        </option>
-                                        <option value="City">Search By City</option>
-                                        <option value="Custom Address">Custom Address</option>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <option value="" onClick={() => this.onChangeSearchType("")}>
-                                          Choose an option
-                                        </option>
-                                        <option value="Current Location" onClick={() => this.onChangeSearchType("Current Location")}>
-                                          Current Location
-                                        </option>
-                                        <option value="City">Search By City</option>
-                                        <option value="Custom Address">Custom Address</option>
-                                      </>
-                                    )}
+                                    <option value="Current Location">Current Location</option>
+                                    <option value="City">Search By City</option>
+                                    <option value="Custom Address">Custom Address</option>
                                   </Field>
                                 </div>
-                              )}
+                              </Col>
+                            ) : (
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search Types
+                              </Label> */}
+                              <Field
+                                name="search_type"
+                                component="select"
+                                onChange={e => this.onChangeSearchType(e)}
+                                value={this.state.search_type}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="">Choose an option</option>
+                                <option value="Current Location">
+                                  Current Location
+                                </option>
+                                <option value="City">Search By City</option>
+                                <option value="Custom Address">Custom Address</option>
+                              </Field>
                             </div>
-
-
-                            {this.state.search_type === 'City' && (
-                              <div style={{ flex: "1", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none", marginRight: "5px", paddingRight: "5px" }}>
-                                <span><p>City: <a href="#" onClick={this.toggleFormVisibility}>Search City<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                                {this.state.isFormVisible && (
-                                  <div className="mb-2">
-                                    <Select
-                                      name="city"
-                                      component="Select"
-                                      onChange={this.onChangeCity}
-                                      className="defautSelectParent is-invalid"
-                                      options={cityList}
-                                      placeholder="Enter City Name"
-                                    />
-                                  </div>
-                                )}   </div>)}
-                            {/* Section 5 */}
-                            {this.state.search_type === 'Custom Address' && (
-                              <div style={{ flex: "1", paddingRight: "5px" }}>
-                                <span><p>Address: <a href="#" onClick={this.toggleFormVisibility}>Search Address<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px", }}></i></a></p></span>
-                                {this.state.isFormVisible && (
-                                  <div className="mb-2">
-                                    <Input
-                                      defaultValue={this.state.address}
-                                      onChange={(e) => this.onChangeAddress(e)}
-                                      id="pac-input"
-                                      type="text"
-                                      className="form-control"
-                                      placeholder="Enter Custom Address"
-                                    />
-                                  </div>
-                                )}
-                              </div>)}
-
-                            {/* Section 4 */}
-
-                            {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' || this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
-
-                              <div style={{ flex: "1", marginRight: "5px", paddingRight: "5px", borderRight: this.hasNextSection('Section5') ? "1px solid #F0F0F0" : "none" }}>
-                                <span>
-                                  <p>Kilometer: <a href="#" onClick={this.toggleFormVisibility}>{this.state.km}<i className="bx bx bx-chevron-down" style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}></i></a></p>
-                                </span>
-                                {this.state.isFormVisible && (
-                                  <div className="mb-2">
-                                    <Input
-                                      defaultValue={this.state.km}
-                                      onChange={(e) => this.onChangeKm(e)}
-                                      id="pac-input"
-                                      type="number"
-                                      className="form-control"
-                                      style={{ fontSize: '14px' }}
-                                      placeholder=""
-                                    />
-                                  </div>
-                                )}
+                          </Col>
+                          )}
+                          {this.state.search_type === 'City' && (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>By City </span>
+                                </Label> */}
+                                <Select
+                                  name="city"
+                                  component="Select"
+                                  onChange={this.onChangeCity}
+                                  className="defautSelectParent is-invalid"
+                                  options={cityList}
+                                  placeholder="City Name.."
+                                  styles={{
+                                    control: (provided, state) => ({
+                                      ...provided,
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                    }),
+                                    // Add more style overrides as needed
+                                  }}
+                                />
                               </div>
-
-                            )}
-
-
-                          </div>
-                        </Form>
+                            </Col>
+                          )}
+                          {this.state.search_type === 'Custom Address' && (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px', }}>Custom Address </span>
+                                </Label> */}
+                                <Input
+                                  defaultValue={this.state.address}
+                                  onChange={(e) => this.onChangeAddress(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Enter Address.."
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )}
+                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' ||this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                {/* <Label
+                                  for="LabType"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                    color: 'black',
+                                  fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px' }}>Km </span>
+                                </Label> */}
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"  // Change "numbers" to "number"
+                                    className="form-control"
+                                    placeholder=""
+                                    style={{
+                                      border: '2px solid blue',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                          )}
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label> */}
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
+                         
+                        </Row>
+                      </Form>
                       )}
                     </Formik>
-                  </Card>
+                  {/* </Card> */}
 
                 </Row>
 
@@ -3412,7 +3550,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "25%",
+                                  marginLeft: "30%",
                                 }}
                               >
                                 <img
@@ -3549,7 +3687,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "25%",
+                                  marginLeft: "30%",
                                 }}
                               >
                                 <img
@@ -3708,7 +3846,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "25%",
+                                  marginLeft: "30%",
                                 }}
                               >
                                 <img
@@ -3853,7 +3991,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "25%",
+                                  marginLeft: "30%",
                                 }}
                               >
                                 <img
