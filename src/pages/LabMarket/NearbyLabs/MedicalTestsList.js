@@ -1053,6 +1053,7 @@ class MedicalTestList extends Component {
                     className="defautSelectParent"
                     options={testList}
                   />
+                  <p className="text-danger">You may Select Single or Multiple Test to Book.</p>
                 </div>
               </Col>
               <Card >
@@ -1272,7 +1273,7 @@ class MedicalTestList extends Component {
                                     (offeredTest.price * (totalDiscount * 100)) / 100;
   
                                   return (
-                                    <div key={index} style={{ background: 'transparent' }}>
+                                    <div key={index} style={{ background: 'transparent',}}>
                                       {discountedPrice
                                         .toFixed(2)
                                         .toString()
@@ -1281,12 +1282,8 @@ class MedicalTestList extends Component {
                                   );
                                 })}
                             </td>
-  
-  
-  
-  
                             <td className="text-end py-2 pl-3 pr-4">
-                              <div style={{ background: 'transparent' }}>
+                              <div className="text-danger" style={{ background: 'transparent',  fontSize: "16px", fontWeight: "bold" }}>
                                 {referrelFeeLab.offered_tests
                                   .reduce((total, offeredTest) => {
                                     const discountByTest = offeredTest.discount || 0;
@@ -1347,7 +1344,7 @@ class MedicalTestList extends Component {
                       </tr>
                     </thead>
                     <div className="mt-4">
-                    <h4 className="text-uppercase text-danger">
+                    <h4 className="text-uppercase text-primary">
                       Please select both City and Test Names to view data.
                     </h4>
                   </div>
