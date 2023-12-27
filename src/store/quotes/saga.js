@@ -29,7 +29,12 @@ function* fetchQuotes(object) {
       getQuotes,
        object.payload.city_id,
        object.payload.test_id,
-       );
+       object.payload.search_type,
+       object.payload.longitude,
+       object.payload.latitude,
+       object.payload.km,
+       object.payload.locationAccessAllowed,
+       ); 
     yield put(getQuotesSuccess(response));
   } catch (error) {
     yield put(getQuotesFail(error));

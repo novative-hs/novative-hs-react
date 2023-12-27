@@ -1271,11 +1271,16 @@ export const getCsrComplaints = id =>
     });
   };
 // Get Quotes
-export const getQuotes = (city_id, test_id) => {
+export const getQuotes = (city_id, test_id, search_type, longitude, latitude, km, locationAccessAllowed) => {
   let formData = new FormData();
   formData.append("city_id", city_id);
   formData.append("test_id", test_id);
-  console.log("In near by lsbd: ", city_id, test_id)
+  formData.append("search_type", search_type);
+  formData.append("longitude", longitude);
+  formData.append("latitude", latitude);
+  formData.append("km", km);
+  formData.append("locationAccessAllowed", locationAccessAllowed);
+  console.log("In near by lsbd: ", city_id, test_id, search_type, longitude, latitude, km)
   return axios.post(`${url.GET_QUOTES}`, formData, {
     headers: getHeader(authHeader()),
   });
