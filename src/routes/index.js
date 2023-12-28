@@ -231,6 +231,8 @@ import HandledComplaints from "pages/Complaints/handled-complaints";
 import csrComplaints from "pages/Complaints/csr-complaints";
 import NotesList from "pages/Complaints/notes-list";
 import NotesLists from "pages/Complaints/notes-list";
+import NotesComplains from "pages/Complaints/notes-list-complain";
+import NotesComplainsAdmin from "pages/Complaints/notes-list-complain"
 import labnotes from "pages/Complaints/notes-list";
 import MsgsList from "pages/Complaints/msg-box";
 
@@ -639,6 +641,8 @@ const csrAuthProtectedRoutes = [
   { path: "/unhandled-complaints", component: UnhandledComplaints },
   { path: "/csr-pending-appointments", component: csrComplaints },
   { path: "/csr-notes-list/:id", component: NotesList },
+  { path: "/csr-notes-complains/:id", component: NotesComplains },
+
   {
     path: "/csr-invoice-detail/:id",
     component: CsrInvoiceDetail,
@@ -661,6 +665,7 @@ const csrAdminAuthProtectedRoutes = [
   { path: "/pending-complaints-lab", component: PendingComplaints },
   { path: "/pending-csr-appointments", component: csrApointments },
   { path: "/csr-notes-lists/:id", component: NotesLists },
+  { path: "/csr-notes-admincomplains/:id", component: NotesComplainsAdmin },
   { path: "/pending-complaints-labhazir", component: pendingComplaintslabhazir },
   { path: "/inprocess-complaints-lab", component: InProcessComplaints },
   { path: "/inprocess-complaints-labhazir", component: inprocessComplaintslabhazir },

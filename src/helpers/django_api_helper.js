@@ -528,6 +528,23 @@ export const deleteSampleCollector = sampleCollector =>
     headers: getHeader(authHeader()),
   });
 
+  // ------------- Live chat for csr and csr admin complaints -------------
+export const getNotesComplaint = id =>
+  get(`${url.GET_NOTES_COMPLAINT}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewNoteComplaint = (note, id) => {
+  let formData = new FormData();
+  formData.append("note", note.note);
+  formData.append("complaint_id", note.complaint_id);
+
+  console.log("heeeeeee",note, id)
+  return axios.post(`${url.ADD_NEW_NOTE_COMPLAINT}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+  };
+
   // ------------- Test Certificate Requests START -------------
 export const getNotes = id =>
 get(`${url.GET_NOTES}/${id}`, {
@@ -1213,7 +1230,7 @@ export const getUnhandledComplaints = id =>
 
   export const updateUnhandledComplaints = data => {
     let formData = new FormData();
-    formData.append("comment", data.comment);
+    formData.append("status", data.status);
     console.log("Form data: ", formData);
   
     return axios.put(`${url.UPDATE_UNHANDLED_COMPLAINTS}/${data.id}`, formData, {

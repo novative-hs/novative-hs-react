@@ -5,7 +5,43 @@ import {
   ADD_NEW_NOTE,
   ADD_NOTE_SUCCESS,
   ADD_NOTE_FAIL,
+  GET_NOTES_COMPLAINT,
+  GET_NOTES_COMPLAINT_FAIL,
+  GET_NOTES_COMPLAINT_SUCCESS,
+  ADD_NEW_NOTE_COMPLAINT,
+  ADD_NOTE_COMPLAINT_SUCCESS,
+  ADD_NOTE_COMPLAINT_FAIL,
 } from "./actionTypes";
+
+export const getNotesComplaint = id => ({
+  type: GET_NOTES_COMPLAINT,
+  payload: id,
+});
+
+export const getNotesComplaintSuccess = notes => ({
+  type: GET_NOTES_COMPLAINT_SUCCESS,
+  payload: notes,
+});
+
+export const getNotesComplaintFail = error => ({
+  type: GET_NOTES_COMPLAINT_FAIL,
+  payload: error,
+});
+
+export const addNewNoteComplaint = (note, id) => ({
+  type: ADD_NEW_NOTE_COMPLAINT,
+  payload: { note, id },
+});
+
+export const addNoteComplaintSuccess = note => ({
+  type: ADD_NOTE_COMPLAINT_SUCCESS,
+  payload: note,
+});
+
+export const addNoteComplaintFail = error => ({
+  type: ADD_NOTE_COMPLAINT_FAIL,
+  payload: error,
+});
 
 export const getNotes = id => ({
   type: GET_NOTES,
@@ -36,3 +72,4 @@ export const addNoteFail = error => ({
   type: ADD_NOTE_FAIL,
   payload: error,
 });
+

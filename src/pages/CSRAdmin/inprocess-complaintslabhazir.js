@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
+
 import {
   Card,
   CardBody,
@@ -176,6 +178,23 @@ class InProcessComplaintsLabhazir extends Component {
               >
                 Reassign
               </Link>{" "}
+            </>
+          ),
+        },
+        {
+          dataField: "data",
+          text: "id",
+          isDummyField: true,
+          editable: false,
+          text: "Chat",
+          formatter: (cellContent, complaint) => (
+            <>
+              <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/csr-notes-admincomplains/${complaint.id}`}
+                ></Link>
+              </Tooltip>
             </>
           ),
         },

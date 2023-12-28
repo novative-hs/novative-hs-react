@@ -210,6 +210,8 @@ export const GET_CSR_COMPLAINTS = `${API_ENDPOINT}/api/staff/csr-appointment`;
 export const UPDATE_CSR_COMPLAINTS = `${API_ENDPOINT}/api/staff/csr-appointment`;
 export const GET_CSR_APPOINTMENTS = `${API_ENDPOINT}/api/staff/csr-admin-appointment`;
 export const UPDATE_CSR_APPOINTMENTS = `${API_ENDPOINT}/api/staff/csr-admin-appointment`;
+export const ADD_NEW_NOTE_COMPLAINT =`${API_ENDPOINT}/api/complaint/add-note`;
+export const GET_NOTES_COMPLAINT = `${API_ENDPOINT}/api/complaint/add-note`;
 
 export const ADD_NEW_NOTE =`${API_ENDPOINT}/api/staff/add-note`;
 export const GET_NOTES = `${API_ENDPOINT}/api/staff/add-note`;

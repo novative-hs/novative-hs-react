@@ -176,13 +176,25 @@ class UnhandledComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
             <Tooltip title="Update">
-              <Link
-                className="btn btn-success btn-rounded"
+              {/* <Link
+                className="di mdi-pencil font-size-18"
                 to="#"
                 onClick={e => this.onClickAuditedEvent(e, complaint.id)}
               >
-                <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link></Tooltip>
+              </Link> */}
+               <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={e => this.onClickAuditedEvent(e, complaint.id)}
+
+                  ></i>
+            </Tooltip>
+              <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/csr-notes-complains/${complaint.id}`}
+                ></Link>
+              </Tooltip>
             </>
           ),
         },
@@ -533,14 +545,14 @@ class UnhandledComplaints extends Component {
                                           enableReinitialize={true}
                                           initialValues={{
                                             
-                                            comment:
+                                            status:
                                               (this.state &&
-                                                this.state.comment) ||
+                                                this.state.status) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                            
-                                            comment: Yup.string().required(
+                                            status: Yup.string().required(
                                               "Please enter your comments/reason of result"
                                             ),
                                           })}
@@ -552,7 +564,7 @@ class UnhandledComplaints extends Component {
 
                                             const data = {
                                               id: this.state.id,
-                                              comment: values.comment,
+                                              status: values.status,
                                             };
 
                                             console.log(data);
@@ -581,32 +593,33 @@ class UnhandledComplaints extends Component {
                                                   
                                                     <div className="mb-3">
                                                       <Label className="form-label">
-                                                        Comment
+                                                        Update Status
                                                       </Label>
                                                       <Field
-                                                        name="comment"
-                                                        as="textarea"
-                                                        rows="4"
-                                                        cols="50"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.comment &&
-                                                          touched.comment
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        value={
-                                                          this.state.comment
-                                                        }
-                                                        onChange={e =>
-                                                          this.setState({
-                                                            comment:
-                                                              e.target.value,
-                                                          })
-                                                        }
-                                                      />
+                                                      name="status"
+                                                      component="select"
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          status:
+                                                            e.target.value,
+                                                        })
+                                                      }
+                                                      value={
+                                                        this.state
+                                                          .status
+                                                      }
+                                                      className="form-select"
+                                                    >
+                                                      <option value="">
+                                                        --- Please Select---
+                                                      </option>
+
+                                                      <option value="Change">
+                                                        Resolved
+                                                      </option>
+                                                    </Field>
                                                       <ErrorMessage
-                                                        name="comment"
+                                                        name="status"
                                                         component="div"
                                                         className="invalid-feedback"
                                                       />

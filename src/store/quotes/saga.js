@@ -22,7 +22,6 @@ import {
   // addToCart,
 } from "../../helpers/django_api_helper";
 import { ADD_TO_CART } from "helpers/url_helper";
-
 function* fetchQuotes(object) {
   try {
     const response = yield call(

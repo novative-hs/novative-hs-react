@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -166,6 +167,23 @@ class handledComplaintsList extends Component {
             </>
           ),
           filter: textFilter(),
+        },
+        {
+          dataField: "data",
+          text: "id",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, complaint) => (
+            <>
+              <Tooltip title="Add Comment">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/csr-notes-complains/${complaint.id}`}
+                ></Link>
+              </Tooltip>
+            </>
+          ),
         },
       ],
     };
