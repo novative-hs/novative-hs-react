@@ -394,6 +394,7 @@ export const GET_PENDING_DONORS = `${API_ENDPOINT}/api/registration-admin/pendin
 export const GET_APPROVED_DONORS = `${API_ENDPOINT}/api/registration-admin/approved-donors`;
 export const GET_UNAPPROVED_DONORS = `${API_ENDPOINT}/api/registration-admin/unapproved-donors`;
 export const APPROVE_UNAPPROVE_DONOR = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-donor`;
+export const GET_LABS_RATING = `${API_ENDPOINT}/api/registration-admin/labs-rating`;
 
 // FINANCE ADMIN
 

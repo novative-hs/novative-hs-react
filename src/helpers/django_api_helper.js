@@ -1419,6 +1419,14 @@ export const getFeedbacks = id =>
   get(`${url.GET_FEEDBACKS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+
+
+// FEEDBACK
+export const getLabsRating =() =>
+  get(`${url.GET_LABS_RATING}`, {
+    headers: getHeader(authHeader()),
+  });
 // export const updatePaymentInfo = id => {
 //   let formData = new FormData();
 

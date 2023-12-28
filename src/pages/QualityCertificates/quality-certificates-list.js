@@ -449,29 +449,29 @@ class QualityCertificatesList extends Component {
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
-                                            name: Yup.string().when(
-                                              "certificate_type",
-                                              {
-                                                is: val => val === "Others",
-                                                then: Yup.string()
-                                                  .trim()
-                                                  .required(
-                                                    "Please enter test name"
-                                                  )
-                                                  .min(
-                                                    3,
-                                                    "Please enter at least 3 characters"
-                                                  )
-                                                  .max(
-                                                    255,
-                                                    "Please enter maximum 255 characters"
-                                                  )
-                                                  .matches(
-                                                    /^[a-zA-Z][a-zA-Z ]+$/,
-                                                    "Please enter only alphabets and spaces"
-                                                  ),
-                                              }
-                                            ),
+                                            // name: Yup.string().when(
+                                            //   "certificate_type",
+                                            //   {
+                                            //     is: val => val === "Others",
+                                            //     then: Yup.string()
+                                            //       .trim()
+                                            //       .required(
+                                            //         "Please enter test name"
+                                            //       )
+                                            //       .min(
+                                            //         3,
+                                            //         "Please enter at least 3 characters"
+                                            //       )
+                                            //       .max(
+                                            //         255,
+                                            //         "Please enter maximum 255 characters"
+                                            //       )
+                                            //       .matches(
+                                            //         /^[a-zA-Z][a-zA-Z ]+$/,
+                                            //         "Please enter only alphabets and spaces"
+                                            //       ),
+                                            //   }
+                                            // ),
 
                                             certificate: Yup.string().when(
                                               "hiddenEditFlag",
@@ -494,10 +494,11 @@ class QualityCertificatesList extends Component {
                                             ),
                                           })}
                                           onSubmit={values => {
-                                            if (
-                                              values.certificate_type !=
-                                              "Others"
-                                            ) {
+                                            // if (
+                                            //   values.certificate_type !=
+                                            //   "Others"
+                                            // ) 
+                                            {
                                               values.name =
                                                 values.certificate_type;
                                             }
@@ -680,8 +681,8 @@ class QualityCertificatesList extends Component {
                                                       <option value="EQA Certificate">
                                                         EQA Certificate
                                                       </option>
-                                                      <option value="Others">
-                                                        Others
+                                                      <option value="License">
+                                                      License
                                                       </option>
                                                     </Field>
                                                     <ErrorMessage
@@ -691,7 +692,7 @@ class QualityCertificatesList extends Component {
                                                     />
                                                   </div>
                                                
-                                                  {/* Certificate Title field */}
+                                                  {/* Certificate Title field
                                                   {this.state.qualityCertificate
                                                     .certificate_type ===
                                                     "Others" && (
@@ -745,7 +746,7 @@ class QualityCertificatesList extends Component {
                                                         className="invalid-feedback"
                                                       />
                                                     </div>
-                                                  )}
+                                                  )} */}
 
                                                   {/* Type field */}
                                                   <div className="mb-3">

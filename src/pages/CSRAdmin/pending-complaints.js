@@ -26,6 +26,7 @@ import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import moment from 'moment';
 
 
 //Import Breadcrumb
@@ -87,7 +88,7 @@ class PendingComplaints extends Component {
         },
         {
           dataField: "complainant",
-          text: "Complainant",
+          text: "Complaint From",
           sort: true,
           filter: textFilter(),
         },
@@ -117,10 +118,11 @@ class PendingComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.registered_at).toLocaleString("en-US")}
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "registered_at",
@@ -165,7 +167,7 @@ class PendingComplaints extends Component {
        
         {
           dataField: "complainee",
-          text: "Complainee",
+          text: "Complaint Against",
           sort: true,
           formatter: (cellContent, pendingComplaint) => (
             <>

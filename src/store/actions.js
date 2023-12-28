@@ -114,6 +114,8 @@ export * from "./shared-percentage-pending-fee/actions";
 
 // feedbacks
 export * from "./feedbacks/actions";
+export * from "./labs-rating/actions";
+
 
 // complaints
 export * from "./complaints/actions";

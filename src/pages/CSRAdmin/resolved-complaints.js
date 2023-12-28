@@ -22,6 +22,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
+import moment from 'moment';
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -130,20 +131,21 @@ class ResolvedComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.assigned_at).toLocaleString("en-US")}
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "complainant",
-          text: "Complainant",
+          text: "Complaint From",
           sort: true,
           filter: textFilter(),
         },
         {
           dataField: "complainee",
-          text: "Complainee",
+          text: "Complaint Against",
           sort: true,
           formatter: (cellContent, resolvedComplaint) => (
             <>
@@ -160,10 +162,11 @@ class ResolvedComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.handled_at).toLocaleString("en-US")}
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "data",

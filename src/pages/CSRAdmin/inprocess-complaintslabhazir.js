@@ -31,6 +31,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 
 //Import Breadcrumb
 import * as Yup from "yup";
+import moment from 'moment';
 import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getInProcessComplaintsLabhazir,
@@ -140,20 +141,21 @@ class InProcessComplaintsLabhazir extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.assigned_at).toLocaleString("en-US")}
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "complainant",
-          text: "Complainant",
+          text: "Complaint From",
           sort: true,
           filter: textFilter(),
         },
         {
           dataField: "complainee",
-          text: "Complainee",
+          text: "Complaint Against",
           sort: true,
           formatter: (cellContent, inProcessComplaintLabhazir) => (
             <>

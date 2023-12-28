@@ -475,7 +475,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to={"/unhandled-complaints"}>
                     <i className="mdi mdi-chat-remove" />
-                    <span>{this.props.t("Unhandled Complaints")}</span>
+                    <span>{this.props.t("Open Complaints")}</span>
                   </Link>
                 </li>
 
@@ -483,7 +483,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to={"/handled-complaints"}>
                     <i className="mdi mdi-checkbox-multiple-marked-circle" />
-                    <span>{this.props.t("Handled Complaints")}</span>
+                    <span>{this.props.t("Closed Complaints")}</span>
                   </Link>
                 </li>
                 <li>
@@ -638,6 +638,12 @@ class SidebarContent extends Component {
                         </Link>
                       </li>
                     </ul>
+                  </li>
+                  <li>
+                    <Link to={"/labs-rating"}>
+                    <i className="mdi mdi-hospital-building" />
+                      {this.props.t("Labs Rating")}
+                    </Link>
                   </li>
                 </ul>
               </div>

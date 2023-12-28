@@ -25,11 +25,11 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
+import moment from 'moment';
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, ErrorMessage } from "formik";
-
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
@@ -76,7 +76,7 @@ class handledComplaintsList extends Component {
         },
         {
           dataField: "complainant",
-          text: "Complainant",
+          text: "Complaint From",
           sort: true,
           filter: textFilter(),
         },
@@ -113,7 +113,7 @@ class handledComplaintsList extends Component {
        
         {
           dataField: "complainee",
-          text: "Complainee",
+          text: "Complaint Against",
           sort: true,
           formatter: (cellContent, handledComplaint) => (
             <>
@@ -149,7 +149,7 @@ class handledComplaintsList extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.registered_at).toLocaleString("en-US")}
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),
@@ -162,7 +162,7 @@ class handledComplaintsList extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.handled_at).toLocaleString("en-US")}
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),

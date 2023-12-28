@@ -188,6 +188,8 @@ import ApprovedDonors from "pages/RegistrationAdmin/approved-donors";
 import UnapprovedDonors from "pages/RegistrationAdmin/unapproved-donors";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
+import labsRating from "../pages/RegistrationAdmin/labs-rating";
+
 
 
 
@@ -612,6 +614,10 @@ const registrationAdminAuthProtectedRoutes = [
   },
   {
     path: "/approvereferrellab",component: ApproveReferrelLab,
+  },
+  {
+    path: "/labs-rating",
+    component: labsRating,
   },
 ];
 

@@ -62,6 +62,7 @@ import csrTerritoryListSaga from "./csr-territory-list/saga";
 import auditorTerritoryListSaga from "./auditor-territory-list/saga";
 import discountLabSaga from "./discount-lab/saga";
 import feedbacksSaga from "./feedbacks/saga";
+import labsRatingSaga from "./labs-rating/saga";
 import testAppointmentsSaga from "./test-appointments/saga";
 import patientTestAppointmentsSaga from "./patient-test-appointments/saga";
 import B2bReferredPatientsSaga from "./b2b-referred-patients/saga";
@@ -166,6 +167,7 @@ export default function* rootSaga() {
     fork(auditorTerritoryListSaga),
     fork(discountLabSaga),
     fork(feedbacksSaga),
+    fork(labsRatingSaga),
     fork(complaintsSaga),
     fork(csrcomplaintsSaga),
     fork(csrappointmentsSaga),

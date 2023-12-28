@@ -113,6 +113,8 @@ import referrelFeeLabs from "./referrel-fee-to-lab/reducer";
 
 //feedbacks
 import feedbacks from "./feedbacks/reducer";
+import labsRating from "./labs-rating/reducer";
+
 
 //test appointment
 import testAppointments from "./test-appointments/reducer";
@@ -206,6 +208,7 @@ const rootReducer = combineReducers({
   ForgetPassword,
   ConfirmPassword,
   ChangePassword,
+  labsRating,
   LabProfile,
   B2bProfile,
   b2baccountStatements,
