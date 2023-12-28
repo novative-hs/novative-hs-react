@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+import Select, { components } from 'react-select';
 import { Formik, Field, Form } from "formik";
 import { Collapse } from "reactstrap";
 import * as Yup from "yup";
@@ -616,8 +616,11 @@ class nearbyRadiology extends Component {
     this.setState({ page });
   };
   onChangeLabName = (selectedGroup) => {
-    this.setState({ name: selectedGroup.value });
-
+    if (!selectedGroup) {
+      this.setState({ name: '' });
+    } else {
+      this.setState({ name: selectedGroup.value });
+    }
     // Call nearby labs API only if the search type changes to current location
 
     const { onGetNearbyRadiology } = this.props;
@@ -640,7 +643,7 @@ class nearbyRadiology extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
-        name: selectedGroup.value,
+        name: selectedGroup ? selectedGroup.value : '', // Ensure selectedGroup is not null
         test_name: this.state.test_name,
         LabType: this.state.LabType,
         km: this.state.km,
@@ -657,7 +660,11 @@ class nearbyRadiology extends Component {
   };
 
   onchangename = (selectedGroup) => {
-    this.setState({ test_name: selectedGroup.value });
+    if (!selectedGroup) {
+      this.setState({ test_name: '' });
+    } else {
+      this.setState({ test_name: selectedGroup.value });
+    }
     // Calling API when focus is out of test name and setting nearby tests array
     const { onGetNearbyRadiology } = this.props;
 
@@ -679,7 +686,7 @@ class nearbyRadiology extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
-        test_name: this.state.test_name,
+        test_name: selectedGroup ? selectedGroup.value : '', // Ensure selectedGroup is not null
         LabType: this.state.LabType,
         km: this.state.km,
         page: this.state.page,
@@ -1065,6 +1072,13 @@ shouldHighlightTestsLink() {
   return currentURL.includes('/nearby-radiology/');
 }
   render() {
+    const ClearIndicator = (props) => {
+      return (
+        <components.ClearIndicator {...props}>
+          <span onClick={props.clearValue}>X</span>
+        </components.ClearIndicator>
+      );
+    };
     const isSmallScreen = window.innerWidth < 490;
 
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
@@ -1926,6 +1940,11 @@ shouldHighlightTestsLink() {
                               component="Select"
                               onChange={this.onchangename}
                               className="defautSelectParent"
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                               options={
                                 radiologyList
                               }
@@ -1963,7 +1982,11 @@ shouldHighlightTestsLink() {
                                name="labnamwslist"
                                component="Select"
                                onChange={this.onChangeLabName}
-
+                               isSearchable={true}
+                               isClearable={true}
+                               components={{
+                                 ClearIndicator,
+                               }}
                                className="defautSelectParent"
                                options={labNames}
                                styles={{
@@ -1978,37 +2001,7 @@ shouldHighlightTestsLink() {
                             />
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
+                         
                           {this.state.locationAccessAllowed === true ? (
                               <Col xs="3" sm="3" md="2" lg="2">
                                 <div className="mb-3">
@@ -2173,6 +2166,37 @@ shouldHighlightTestsLink() {
                               </div>
                             </Col>
                           )}
+                           <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
                         </Row>
                       </Form>
                     )}
@@ -2216,6 +2240,11 @@ shouldHighlightTestsLink() {
                               component="Select"
                               onChange={this.onchangename}
                               className="defautSelectParent"
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                               options={
                                 radiologyList
                               }

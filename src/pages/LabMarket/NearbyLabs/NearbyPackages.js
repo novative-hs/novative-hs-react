@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+import Select, { components } from 'react-select';
 import { Formik, Field, Form } from "formik";
 import { Collapse } from "reactstrap";
 import * as Yup from "yup";
@@ -605,7 +605,11 @@ class NearbyPackage extends Component {
     this.setState({ page });
   };
   onChangeLabName = (selectedGroup) => {
-    this.setState({ name: selectedGroup.value });
+    if (!selectedGroup) {
+      this.setState({ name: '' });
+    } else {
+      this.setState({ name: selectedGroup.value });
+    }
 
     // Call nearby labs API only if the search type changes to current location
 
@@ -629,7 +633,7 @@ class NearbyPackage extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
-        name: selectedGroup.value,
+        name: selectedGroup ? selectedGroup.value : '', // Ensure selectedGroup is not null
         test_name: this.state.test_name,
         LabType: this.state.LabType,
         km: this.state.km,
@@ -644,43 +648,79 @@ class NearbyPackage extends Component {
       }, 1000);
   };
   onchangename = (selectedGroup) => {
-    this.setState({ test_name: selectedGroup.value }, () => {
-      // Calling API when focus is out of test name and setting nearby tests array
-      const { onGetNearbyPackages } = this.props;
-      var latitude;
-      var longitude;
+    if (!selectedGroup) {
+      this.setState({ test_name: '' }, () => {
+        // Calling API when focus is out of test name and setting nearby packages array
+        const { onGetNearbyPackages } = this.props;
+        var latitude;
+        var longitude;
   
-      if (this.state.search_type === "Current Location") {
-        latitude = this.state.currentLatitude;
-        longitude = this.state.currentLongitude;
-      } else {
-        latitude = "";
-        longitude = "";
-      }
+        if (this.state.search_type === "Current Location") {
+          latitude = this.state.currentLatitude;
+          longitude = this.state.currentLongitude;
+        } else {
+          latitude = "";
+          longitude = "";
+        }
   
-      var data = {
-        latitude: latitude,
-        longitude: longitude,
-        search_type: this.state.search_type,
-        address: this.state.address,
-        city: this.state.city,
-        test_name: this.state.test_name, // Now using the ID of the selected profile
-        LabType: this.state.LabType,
-        km: this.state.km,
-        page: this.state.page,
-        name: this.state.name,
-        locationAccessAllowed: this.state.locationAccessAllowed,
-
-      };
+        var data = {
+          latitude: latitude,
+          longitude: longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          test_name: '', // Set to an appropriate default value when selectedGroup is null
+          LabType: this.state.LabType,
+          km: this.state.km,
+          page: this.state.page,
+          name: this.state.name,
+          locationAccessAllowed: this.state.locationAccessAllowed,
+        };
   
-      onGetNearbyPackages(data);
+        onGetNearbyPackages(data);
   
-      setTimeout(() => {
-        this.setState({ nearbyPackages: this.props.nearbyPackages });
-      }, 1000);
-    });
+        setTimeout(() => {
+          this.setState({ nearbyPackages: this.props.nearbyPackages });
+        }, 1000);
+      });
+    } else {
+      this.setState({ test_name: selectedGroup.value }, () => {
+        // Calling API when focus is out of test name and setting nearby packages array
+        const { onGetNearbyPackages } = this.props;
+        var latitude;
+        var longitude;
+  
+        if (this.state.search_type === "Current Location") {
+          latitude = this.state.currentLatitude;
+          longitude = this.state.currentLongitude;
+        } else {
+          latitude = "";
+          longitude = "";
+        }
+  
+        var data = {
+          latitude: latitude,
+          longitude: longitude,
+          search_type: this.state.search_type,
+          address: this.state.address,
+          city: this.state.city,
+          test_name: selectedGroup ? selectedGroup.value : '', // Ensure selectedGroup is not null
+          LabType: this.state.LabType,
+          km: this.state.km,
+          page: this.state.page,
+          name: this.state.name,
+          locationAccessAllowed: this.state.locationAccessAllowed,
+        };
+  
+        onGetNearbyPackages(data);
+  
+        setTimeout(() => {
+          this.setState({ nearbyPackages: this.props.nearbyPackages });
+        }, 1000);
+      });
+    }
   };
-  
+    
   onChangeAddress = e => {
     // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
     var cityBounds = new google.maps.LatLngBounds(
@@ -1052,6 +1092,13 @@ shouldHighlightTestsLink() {
   return currentURL.includes('/nearby-packages/');
 }
   render() {
+    const ClearIndicator = (props) => {
+      return (
+        <components.ClearIndicator {...props}>
+          <span onClick={props.clearValue}>X</span>
+        </components.ClearIndicator>
+      );
+    };
     const isSmallScreen = window.innerWidth < 490;
 
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
@@ -1911,7 +1958,11 @@ shouldHighlightTestsLink() {
                               name="profile"
                               component="Select"
                               onChange={this.onchangename}
-                             
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                               className="defautSelectParent"
                               options={packageList}
                                styles={{
@@ -1942,7 +1993,11 @@ shouldHighlightTestsLink() {
                                name="labnamwslist"
                                component="Select"
                                onChange={this.onChangeLabName}
-                              
+                               isSearchable={true}
+                               isClearable={true}
+                               components={{
+                                 ClearIndicator,
+                               }}
                                className="defautSelectParent"
                                options={labNames}
                                styles={{
@@ -1957,37 +2012,7 @@ shouldHighlightTestsLink() {
                             />
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
+                         
                           {this.state.locationAccessAllowed === true ? (
                               <Col xs="3" sm="3" md="2" lg="2">
                                 <div className="mb-3">
@@ -2152,6 +2177,37 @@ shouldHighlightTestsLink() {
                               </div>
                             </Col>
                           )}
+                           <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
                         </Row>
                       </Form>
                     )}
@@ -2194,7 +2250,11 @@ shouldHighlightTestsLink() {
                               name="profile"
                               component="Select"
                               onChange={this.onchangename}
-                             
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                               className="defautSelectParent"
                               options={packageList}
 

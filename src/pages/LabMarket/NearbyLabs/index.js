@@ -110,7 +110,7 @@ class NearbyLabs extends Component {
       address: "",
       search_type: "",
       km: "30",
-      LabType: "Main",
+      LabType: "",
       city: "",
       latitude: "",
       longitude: "",
@@ -387,6 +387,8 @@ class NearbyLabs extends Component {
           this.setState({ currentLongitude: longitude });
           this.setState({ locationAccessAllowed: true });
           this.setState({ search_type: "Current Location" });
+          this.setState({ LabType: "Main" });
+
 
           // near by labs
           if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
@@ -2297,7 +2299,7 @@ class NearbyLabs extends Component {
                       search_type: (this.state && this.state.search_type) || "",
                       city: (this.state && this.state.city) || "",
                       location: (this.state && this.state.location) || "",
-                      LabType: (this.state && this.state.LabType) || "Main",
+                      LabType: (this.state && this.state.LabType) || "",
                       km: (this.state && this.state.km) || "30",
                       name: (this.state && this.state.name) || "",
                     }}
@@ -2333,6 +2335,11 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
@@ -2433,6 +2440,7 @@ class NearbyLabs extends Component {
                                   className="defautSelectParent is-invalid"
                                   options={cityList}
                                   placeholder="City Name.."
+                                  
                                   styles={{
                                     control: (provided, state) => ({
                                       ...provided,
@@ -2508,6 +2516,7 @@ class NearbyLabs extends Component {
                               </div>
                             </Col>
                           )}
+                         {this.state.locationAccessAllowed === true ? (
                           <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               {/* <Label
@@ -2539,6 +2548,39 @@ class NearbyLabs extends Component {
                               </Field>
                             </div>
                           </Col>
+                          ):(
+                            <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label> */}
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Others">Both</option>
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                              </Field>
+                            </div>
+                          </Col>
+                          )}
                          
                         </Row>
                     )}
@@ -2582,7 +2624,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "30%",
+                                marginLeft: "25%",
                               }}
                             >
                               <img
@@ -2731,7 +2773,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "30%",
+                                marginLeft: "25%",
                               }}
                             >
                               <img
@@ -2902,7 +2944,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "30%",
+                                marginLeft: "25%",
                               }}
                             >
                               <img
@@ -3058,7 +3100,7 @@ class NearbyLabs extends Component {
                               style={{
                                 width: "150px",
                                 height: "150px",
-                                marginLeft: "30%",
+                                marginLeft: "25%",
                               }}
                             >
                               <img
@@ -3260,7 +3302,7 @@ class NearbyLabs extends Component {
                         // search_type: (this.state && this.state.search_type) || "Current Location",
                         city: (this.state && this.state.city) || "",
                         location: (this.state && this.state.location) || "",
-                        LabType: (this.state && this.state.LabType) || "Main",
+                        LabType: (this.state && this.state.LabType) || "",
                         km: (this.state && this.state.km) || "30",
                         name: (this.state && this.state.name) || "",
                       }}
@@ -3298,6 +3340,11 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
@@ -3473,6 +3520,7 @@ class NearbyLabs extends Component {
                               </div>
                             </Col>
                           )}
+                          {this.state.locationAccessAllowed === true ? (
                           <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               {/* <Label
@@ -3504,7 +3552,39 @@ class NearbyLabs extends Component {
                               </Field>
                             </div>
                           </Col>
-                         
+                          ):(
+                            <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              {/* <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label> */}
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Others">Both</option>
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                              </Field>
+                            </div>
+                          </Col>
+                          )}
                         </Row>
                       </Form>
                       )}
@@ -3687,7 +3767,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "30%",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -3846,7 +3926,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "30%",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img
@@ -3991,7 +4071,7 @@ class NearbyLabs extends Component {
                                 style={{
                                   width: "150px",
                                   height: "150px",
-                                  marginLeft: "30%",
+                                  marginLeft: "25%",
                                 }}
                               >
                                 <img

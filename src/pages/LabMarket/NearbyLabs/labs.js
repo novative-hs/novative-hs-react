@@ -28,6 +28,7 @@ import {
   ModalBody,
   ModalHeader,
   Container,
+  Button,
   Input,
   Label,
   Pagination,
@@ -214,7 +215,6 @@ class NearbyLabs extends Component {
               }, 500);
             }
           }
-
           // near by labs
           if (this.state.user_id || this.state.user_type === "b2bclient") {
             const nearbyLabsLocationDetails = {
@@ -276,14 +276,6 @@ class NearbyLabs extends Component {
             }
           }
         }, () => {
-          // Location access denied by the user
-          // console.log("Location access denied by the user.");
-          // this.setState({ locationAccessAllowed: false });
-          // const denialMessage = "For accurate results, please allow location access.";
-          // alert(denialMessage); // You can use an alert, or create a message element in your UI.
-          // // Handle the denial here. You can display a message, set default values, or perform other actions as needed.
-
-          // Example:
           this.setState({ latitude: null, longitude: null });
           // near by labs
           if ((this.state.user_id || this.state.user_type === "CSR") && this.props.match.params.guest_id) {
@@ -530,41 +522,70 @@ class NearbyLabs extends Component {
   };
 
   onChangeAddress = e => {
+    const { onGetNearbyLabs } = this.props;
+  
     // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
     var cityBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(this.state.latitude, this.state.longitude)
     );
-
-    const options = {
-      bounds: cityBounds,
-      types: ["establishment"],
-      componentRestrictions: { country: "pk" },
-    };
-
-    var searchBox = new window.google.maps.places.SearchBox(e.target, options);
-
-    searchBox.addListener("places_changed", () => {
-      const { onGetNearbyLabs } = this.props;
-
-      var locationDetails = {
-        latitude: "",
-        longitude: "",
-        search_type: this.state.search_type,
-        address: e.target.value,
-        city: this.state.city,
-        LabType: this.state.LabType,
-        km: this.state.km,
-        name: this.state.name,
-        locationAccessAllowed: this.state.locationAccessAllowed,
-      };
-
-      onGetNearbyLabs(locationDetails);
-
-      setTimeout(() => {
-        this.setState({ nearbyLabs: this.props.nearbyLabs });
-      }, 1000);
-    });
+  
+    // Initialize AutocompleteService
+    const autocompleteService = new google.maps.places.AutocompleteService();
+  
+    // Call AutocompleteService to get place predictions
+    autocompleteService.getPlacePredictions(
+      {
+        input: e.target.value,
+        bounds: cityBounds,
+        types: ["geocode", "establishment"],
+      },
+      (predictions, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          // Filter predictions to include only those inside Pakistan
+          const pakistanPredictions = predictions.filter(prediction => {
+            return (
+              prediction.structured_formatting.main_text_matched_substrings.some(
+                match => match.offset === 0
+              ) &&
+              prediction.terms.some(term => term.value === "Pakistan")
+            );
+          });
+  
+          // Handle predictions, e.g., update the state or perform further actions
+          const locationDetails = {
+            // Extract relevant details from the first prediction
+            latitude:
+              pakistanPredictions.length > 0
+                ? pakistanPredictions[0].geometry.location.lat()
+                : "",
+            longitude:
+              pakistanPredictions.length > 0
+                ? pakistanPredictions[0].geometry.location.lng()
+                : "",
+            search_type: this.state.search_type,
+            address: e.target.value,
+            city: this.state.city,
+            LabType: this.state.LabType,
+            km: this.state.km,
+            name: this.state.name,
+            locationAccessAllowed: this.state.locationAccessAllowed,
+          };
+  
+          // Call the action to get nearby labs
+          onGetNearbyLabs(locationDetails);
+  
+          // Update state after a delay (if needed)
+          setTimeout(() => {
+            this.setState({ nearbyLabs: this.props.nearbyLabs });
+          }, 1000);
+        } else {
+          console.error("AutocompleteService failed with status:", status);
+        }
+      }
+    );
   };
+  
+  
 
   onChangeSearchType = async e => {
     this.setState({ search_type: e.target.value });
@@ -804,6 +825,7 @@ class NearbyLabs extends Component {
     // Check if the URL contains "nearby-test"
     return currentURL.includes('/labs');
   }
+  
   render() {
     const isSmallScreen = window.innerWidth < 490;
 
@@ -1614,7 +1636,7 @@ class NearbyLabs extends Component {
                 </Card>
               </Col>  */}
 
-                 <Modal
+            <Modal
               isOpen={this.state.PatientModal}
               className={this.props.className}
             >
@@ -1655,6 +1677,7 @@ class NearbyLabs extends Component {
               {!isSmallScreen ? (
                 <Row className="mb-3">
                   <Formik
+                    innerRef={(formik) => (this.formik = formik)} 
                     enableReinitialize={true}
                     initialValues={{
                       // search_type:
@@ -1699,6 +1722,11 @@ class NearbyLabs extends Component {
                                 onChange={this.onChangeLabName}
                                 options={labNames}
                                 placeholder="Lab Name..."
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
@@ -1708,37 +1736,6 @@ class NearbyLabs extends Component {
                                   // Add more style overrides as needed
                                 }}
                               />
-                            </div>
-                          </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
                             </div>
                           </Col>
                           {this.state.locationAccessAllowed === true ? (
@@ -1905,6 +1902,37 @@ class NearbyLabs extends Component {
                               </div>
                             </Col>
                           )}
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
                         </Row>
                       </Form>
                     )}

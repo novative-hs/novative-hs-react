@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+import Select, { components } from 'react-select';
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import MetaTags from "react-meta-tags";
@@ -567,7 +567,12 @@ class NearbyTests extends Component {
     this.setState({ nearbyTests: filteredProducts });
   };
   onChangeLabName = (selectedGroup) => {
-    this.setState({ name: selectedGroup.value });
+    if (!selectedGroup) {
+      this.setState({ name: '' });
+    } else {
+      this.setState({ name: selectedGroup.value });
+    }
+    
 
     // Call nearby labs API only if the search type changes to current location
 
@@ -591,7 +596,7 @@ class NearbyTests extends Component {
         search_type: this.state.search_type,
         address: this.state.address,
         city: this.state.city,
-        name: selectedGroup.value,
+        name: selectedGroup ? selectedGroup.value : '', // Ensure selectedGroup is not null
         test_name: this.state.test_name,
         LabType: this.state.LabType,
         km: this.state.km,
@@ -608,43 +613,49 @@ class NearbyTests extends Component {
   };
 
   onchangename = (selectedGroup) => {
-    this.setState({ test_name: selectedGroup.value });
+    // Clear the value when the custom clear indicator is clicked
+    if (!selectedGroup) {
+      this.setState({ test_name: '' });
+    } else {
+      this.setState({ test_name: selectedGroup.value });
+    }
+    
+  
     // Calling API when focus is out of test name and setting nearby tests array
     const { onGetNearbyTests } = this.props;
-
+  
     var latitude;
     var longitude;
-
-    if (this.state.search_type == "Current Location") {
+  
+    if (this.state.search_type === "Current Location") {
       latitude = this.state.currentLatitude;
       longitude = this.state.currentLongitude;
     } else {
       latitude = "";
       longitude = "";
     }
-
-    if (this)
-      var data = {
-        latitude: latitude,
-        longitude: longitude,
-        search_type: this.state.search_type,
-        address: this.state.address,
-        name: this.state.name,
-        city: this.state.city,
-        test_name: selectedGroup.value,
-        LabType: this.state.LabType,
-        km: this.state.km,
-        page: this.state.page,
-        locationAccessAllowed: this.state.locationAccessAllowed,
-
-      };
-
+  
+    var data = {
+      latitude: latitude,
+      longitude: longitude,
+      search_type: this.state.search_type,
+      address: this.state.address,
+      name: this.state.name,
+      city: this.state.city,
+      test_name: selectedGroup ? selectedGroup.value : '', // Ensure selectedGroup is not null
+      LabType: this.state.LabType,
+      km: this.state.km,
+      page: this.state.page,
+      locationAccessAllowed: this.state.locationAccessAllowed,
+    };
+  
     onGetNearbyTests(data);
-
+  
     setTimeout(() => {
       this.setState({ nearbyTests: this.props.nearbyTests });
     }, 1000);
   };
+  
 
   onChangeAddress = e => {
     // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
@@ -1071,6 +1082,13 @@ class NearbyTests extends Component {
     return currentURL.includes('/nearby-test/');
   }
   render() {
+    const ClearIndicator = (props) => {
+      return (
+        <components.ClearIndicator {...props}>
+          <span onClick={props.clearValue}>X</span>
+        </components.ClearIndicator>
+      );
+    };
     const { Testss } = this.props;
     const { labNamesList } = this.props;
 
@@ -1889,9 +1907,13 @@ class NearbyTests extends Component {
                                 name="profile"
                                 component="Select"
                                 onChange={this.onchangename}
-
                                 className="defautSelectParent"
                                 options={testssList}
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
@@ -1926,6 +1948,11 @@ class NearbyTests extends Component {
 
                                 className="defautSelectParent"
                                 options={labNames}
+                                isSearchable={true}
+                                isClearable={true}
+                                components={{
+                                  ClearIndicator,
+                                }}
                                 styles={{
                                   control: (provided, state) => ({
                                     ...provided,
@@ -1938,37 +1965,7 @@ class NearbyTests extends Component {
                               />
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
+                         
                           {this.state.locationAccessAllowed === true ? (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
@@ -2132,6 +2129,37 @@ class NearbyTests extends Component {
                               </div>
                             </Col>
                           )}
+                           <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                              <Field
+                                name="LabType"
+                                component="select"
+                                onChange={(e) => this.onChangeType(e)}
+                                value={this.state.LabType}
+                                className="form-select"
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              >
+                                <option value="Main">Main Labs</option>
+                                <option value="Collection">Collection Points</option>
+                                <option value="Others">Both</option>
+                              </Field>
+                            </div>
+                          </Col>
                         </Row>
                       </Form>
                     )}
@@ -2177,7 +2205,11 @@ class NearbyTests extends Component {
 
                               className="defautSelectParent"
                               options={testssList}
-
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
                             />
 
                           </div>
