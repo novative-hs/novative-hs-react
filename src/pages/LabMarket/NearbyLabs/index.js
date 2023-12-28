@@ -377,7 +377,7 @@ class NearbyLabs extends Component {
             return;
           }
         });
-        
+
         navigator.geolocation.getCurrentPosition((position) => {
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
@@ -1262,15 +1262,13 @@ class NearbyLabs extends Component {
   };
 
   render() {
-    // const generateLabNames = (nearbyLabs) => {
-    //   const labNames = nearbyLabs.map((lab) => ({
-    //     label: lab.name, // Replace with the actual property name in your nearbyLabs data
-    //     value: lab.name, // Replace with the actual property name in your nearbyLabs data
-    //   }));
+    const { search_type } = this.state;
+    let borderColor = '2px solid blue'; // Default border color
 
-    //   return labNames;
-    // };
-
+    // Check the selected option and update border color accordingly
+    if (search_type === 'Current Location') {
+      borderColor = '2px solid red'; // Change to the desired color
+    }
     const ClearIndicator = (props) => {
       return (
         <components.ClearIndicator {...props}>
@@ -1383,7 +1381,7 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                    <li className="nav-item">
+                      <li className="nav-item">
                         <Link
                           to={
                             this.props.match.params.uuid
@@ -1461,7 +1459,7 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      
+
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
                           <Link
@@ -1511,7 +1509,7 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                    {this.state.filnalurl && this.state.guest_id ? (
+                      {this.state.filnalurl && this.state.guest_id ? (
                         <li className="nav-item">
                           <Link
                             to={
@@ -1677,7 +1675,7 @@ class NearbyLabs extends Component {
                           </Link>
                         </li>
                       ) : null}
-                      
+
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
@@ -1728,7 +1726,7 @@ class NearbyLabs extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                    <li className="nav-item">
+                      <li className="nav-item">
                         <Link
                           to={
                             this.props.match.params.uuid
@@ -1810,7 +1808,7 @@ class NearbyLabs extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      
+
 
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
@@ -1863,7 +1861,7 @@ class NearbyLabs extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
-                      <li className="nav-item">
+                        <li className="nav-item">
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -1945,7 +1943,7 @@ class NearbyLabs extends Component {
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
-                       
+
                         {this.state.user_id && this.state.user_type == "patient" && (
                           <li className="nav-item" style={{ animation: 'flickerAndMove 3s infinite linear' }}>
                             <Link
@@ -2293,32 +2291,32 @@ class NearbyLabs extends Component {
                   </div>
                 )}
 
-                  <Formik
-                    enableReinitialize={true}
-                    initialValues={{
-                      search_type: (this.state && this.state.search_type) || "",
-                      city: (this.state && this.state.city) || "",
-                      location: (this.state && this.state.location) || "",
-                      LabType: (this.state && this.state.LabType) || "",
-                      km: (this.state && this.state.km) || "30",
-                      name: (this.state && this.state.name) || "",
-                    }}
-                    validationSchema={Yup.object().shape({
-                      city: Yup.string().when("search_type", {
-                        is: val => val === "Custom Address",
-                        then: Yup.string().required("Please enter your City"),
-                      }),
-                      location: Yup.string().when("city", {
-                        is: val => val !== "",
-                        then: Yup.string().required("Please enter your Location"),
-                      }),
-                    })}
-                  >
-                    {({ errors, status, touched }) => (
-                      <Row>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              {/* <Label
+                <Formik
+                  enableReinitialize={true}
+                  initialValues={{
+                    search_type: (this.state && this.state.search_type) || "",
+                    city: (this.state && this.state.city) || "",
+                    location: (this.state && this.state.location) || "",
+                    LabType: (this.state && this.state.LabType) || "",
+                    km: (this.state && this.state.km) || "30",
+                    name: (this.state && this.state.name) || "",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    city: Yup.string().when("search_type", {
+                      is: val => val === "Custom Address",
+                      then: Yup.string().required("Please enter your City"),
+                    }),
+                    location: Yup.string().when("city", {
+                      is: val => val !== "",
+                      then: Yup.string().required("Please enter your Location"),
+                    }),
+                  })}
+                >
+                  {({ errors, status, touched }) => (
+                    <Row>
+                      <Col xs="4" sm="4" md="3" lg="3">
+                        <div className="mb-3">
+                          {/* <Label
                                 for="LabType"
                                 className="form-label"
                                 style={{
@@ -2329,32 +2327,32 @@ class NearbyLabs extends Component {
                               >
                                 Search By Lab Name
                               </Label> */}
-                              <Select
-                                type="text"
-                                // value={labNames.find((option) => option.value === this.state.name)}
-                                onChange={this.onChangeLabName}
-                                options={labNames}
-                                placeholder="Lab Name..."
-                                isSearchable={true}
-                                isClearable={true}
-                                components={{
-                                  ClearIndicator,
-                                }}
-                                styles={{
-                                  control: (provided, state) => ({
-                                    ...provided,
-                                    border: '2px solid blue',
-                                    borderRadius: '5px',
-                                  }),
-                                  // Add more style overrides as needed
-                                }}
-                              />
-                            </div>
-                          </Col>
-                          {this.state.locationAccessAllowed === true ? (
-                              <Col xs="3" sm="3" md="2" lg="2">
-                                <div className="mb-3">
-                                  {/* <Label
+                          <Select
+                            type="text"
+                            // value={labNames.find((option) => option.value === this.state.name)}
+                            onChange={this.onChangeLabName}
+                            options={labNames}
+                            placeholder="Lab Name..."
+                            isSearchable={true}
+                            isClearable={true}
+                            components={{
+                              ClearIndicator,
+                            }}
+                            styles={{
+                              control: (provided, state) => ({
+                                ...provided,
+                                border: '2px solid blue',
+                                borderRadius: '5px',
+                              }),
+                              // Add more style overrides as needed
+                            }}
+                          />
+                        </div>
+                      </Col>
+                      {this.state.locationAccessAllowed === true ? (
+                        <Col xs="3" sm="3" md="2" lg="2">
+                          <div className="mb-3">
+                            {/* <Label
                                     for="LabType2"
                                     className="form-label"
                                     style={{
@@ -2365,28 +2363,28 @@ class NearbyLabs extends Component {
                                   >
                                     Search Types
                                   </Label> */}
-                                  <Field
-                                    name="search_type"
-                                    component="select"
-                                    onChange={e => this.onChangeSearchType(e)}
-                                    value={this.state.search_type}
-                                    className="form-select"
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      // Add more style overrides as needed
-                                    }}
-                                  >
-                                    <option value="Current Location">Current Location</option>
-                                    <option value="City">Search By City</option>
-                                    <option value="Custom Address">Custom Address</option>
-                                  </Field>
-                                </div>
-                              </Col>
-                            ) : (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              {/* <Label
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={search_type}
+                              className="form-select"
+                              style={{
+                                border: borderColor,
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
+                            >
+                              <option value="Current Location">Current Location</option>
+                              <option value="City">Search By City</option>
+                              <option value="Custom Address">Custom Address</option>
+                            </Field>
+                          </div>
+                        </Col>
+                      ) : (
+                        <Col xs="3" sm="3" md="2" lg="2">
+                          <div className="mb-3">
+                            {/* <Label
                                 for="LabType2"
                                 className="form-label"
                                 style={{
@@ -2397,32 +2395,32 @@ class NearbyLabs extends Component {
                               >
                                 Search Types
                               </Label> */}
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="">Choose an option</option>
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          )}
-                          {this.state.search_type === 'City' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                {/* <Label
+                            <Field
+                              name="search_type"
+                              component="select"
+                              onChange={e => this.onChangeSearchType(e)}
+                              value={search_type}
+                              className="form-select"
+                              style={{
+                                border: borderColor,
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
+                            >
+                              <option value="">Choose an option</option>
+                              <option value="Current Location">
+                                Current Location
+                              </option>
+                              <option value="City">Search By City</option>
+                              <option value="Custom Address">Custom Address</option>
+                            </Field>
+                          </div>
+                        </Col>
+                      )}
+                      {this.state.search_type === 'City' && (
+                        <Col xs="3" sm="3" md="2" lg="2">
+                          <div className="mb-3">
+                            {/* <Label
                                   for="LabType1"
                                   className="form-label"
                                   style={{
@@ -2433,30 +2431,30 @@ class NearbyLabs extends Component {
                                 >
                                   <span style={{ fontSize: '12px' }}>By City </span>
                                 </Label> */}
-                                <Select
-                                  name="city"
-                                  component="Select"
-                                  onChange={this.onChangeCity}
-                                  className="defautSelectParent is-invalid"
-                                  options={cityList}
-                                  placeholder="City Name.."
-                                  
-                                  styles={{
-                                    control: (provided, state) => ({
-                                      ...provided,
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                    }),
-                                    // Add more style overrides as needed
-                                  }}
-                                />
-                              </div>
-                            </Col>
-                          )}
-                          {this.state.search_type === 'Custom Address' && (
-                            <Col xs="3" sm="3" md="2" lg="2">
-                              <div className="mb-3">
-                                {/* <Label
+                            <Select
+                              name="city"
+                              component="Select"
+                              onChange={this.onChangeCity}
+                              className="defautSelectParent is-invalid"
+                              options={cityList}
+                              placeholder="City Name.."
+
+                              styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                }),
+                                // Add more style overrides as needed
+                              }}
+                            />
+                          </div>
+                        </Col>
+                      )}
+                      {this.state.search_type === 'Custom Address' && (
+                        <Col xs="3" sm="3" md="2" lg="2">
+                          <div className="mb-3">
+                            {/* <Label
                                   for="LabType1"
                                   className="form-label"
                                   style={{
@@ -2467,59 +2465,70 @@ class NearbyLabs extends Component {
                                 >
                                   <span style={{ fontSize: '12px', }}>Custom Address </span>
                                 </Label> */}
-                                <Input
-                                  defaultValue={this.state.address}
-                                  onChange={(e) => this.onChangeAddress(e)}
-                                  id="pac-input"
-                                  type="text"
-                                  className="form-control"
-                                  placeholder="Enter Address.."
-                                  style={{
-                                    border: '2px solid blue',
-                                    borderRadius: '5px',
-                                    // Add more style overrides as needed
-                                  }}
-                                />
-                              </div>
-                            </Col>
-                          )}
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' ||this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
-                              <div className="mb-3">
-                                {/* <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                    color: 'black',
-                                  fontWeight: "bold",
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px' }}>Km </span>
-                                </Label> */}
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
-                                    className="form-control"
-                                    placeholder=""
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      fontSize: '14px'
-                                      // Add more style overrides as needed
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </Col>
-                          )}
-                         {this.state.locationAccessAllowed === true ? (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              {/* <Label
+                            <Input
+                              defaultValue={this.state.address}
+                              onChange={(e) => this.onChangeAddress(e)}
+                              id="pac-input"
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter Address.."
+                              style={{
+                                border: '2px solid blue',
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
+                            />
+                          </div>
+                        </Col>
+                      )}
+                      {this.state.search_type === 'Custom Address' ? (
+                        <Col xs="1" sm="2" md="1" lg="1">
+                          <div className="mb-3">
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="number"
+                                className="form-control"
+                                placeholder=""
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  fontSize: '14px'
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      ) : (this.state.search_type === 'Current Location' && (
+                        <Col xs="1" sm="2" md="1" lg="1">
+                          <div className="mb-3">
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="number"
+                                className="form-control"
+                                placeholder=""
+                                style={{
+                                  border: '2px solid red',
+                                  borderRadius: '5px',
+                                  fontSize: '14px'
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      )
+                      )}
+                      {this.state.locationAccessAllowed === true ? (
+                        <Col xs="3" sm="3" md="2" lg="2">
+                          <div className="mb-3">
+                            {/* <Label
                                 for="LabType2"
                                 className="form-label"
                                 style={{
@@ -2530,28 +2539,28 @@ class NearbyLabs extends Component {
                               >
                                 Search By Labs Type
                               </Label> */}
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          ):(
-                            <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              {/* <Label
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={(e) => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                              style={{
+                                border: '2px solid blue',
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
+                            >
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points</option>
+                              <option value="Others">Both</option>
+                            </Field>
+                          </div>
+                        </Col>
+                      ) : (
+                        <Col xs="3" sm="3" md="2" lg="2">
+                          <div className="mb-3">
+                            {/* <Label
                                 for="LabType2"
                                 className="form-label"
                                 style={{
@@ -2562,29 +2571,29 @@ class NearbyLabs extends Component {
                               >
                                 Search By Labs Type
                               </Label> */}
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Others">Both</option>
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          )}
-                         
-                        </Row>
-                    )}
-                  </Formik>
+                            <Field
+                              name="LabType"
+                              component="select"
+                              onChange={(e) => this.onChangeType(e)}
+                              value={this.state.LabType}
+                              className="form-select"
+                              style={{
+                                border: '2px solid blue',
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
+                            >
+                              <option value="Others">Both</option>
+                              <option value="Main">Main Labs</option>
+                              <option value="Collection">Collection Points</option>
+                            </Field>
+                          </div>
+                        </Col>
+                      )}
+
+                    </Row>
+                  )}
+                </Formik>
 
               </Row>
               <Row>
@@ -3296,29 +3305,29 @@ class NearbyLabs extends Component {
                     </div>
                   )}
                   {/* <Card style={{ alignContent: "center", display: "flex", marginTop: "7px" }}> */}
-                    <Formik
-                      enableReinitialize={true}
-                      initialValues={{
-                        // search_type: (this.state && this.state.search_type) || "Current Location",
-                        city: (this.state && this.state.city) || "",
-                        location: (this.state && this.state.location) || "",
-                        LabType: (this.state && this.state.LabType) || "",
-                        km: (this.state && this.state.km) || "30",
-                        name: (this.state && this.state.name) || "",
-                      }}
-                      validationSchema={Yup.object().shape({
-                        city: Yup.string().when("search_type", {
-                          is: val => val === "Custom Address",
-                          then: Yup.string().required("Please enter your City"),
-                        }),
-                        location: Yup.string().when("city", {
-                          is: val => val !== "",
-                          then: Yup.string().required("Please enter your Location"),
-                        }),
-                      })}
-                    >
-                      {({ errors, status, touched }) => (
-                        <Form className="form-horizontal">
+                  <Formik
+                    enableReinitialize={true}
+                    initialValues={{
+                      // search_type: (this.state && this.state.search_type) || "Current Location",
+                      city: (this.state && this.state.city) || "",
+                      location: (this.state && this.state.location) || "",
+                      LabType: (this.state && this.state.LabType) || "",
+                      km: (this.state && this.state.km) || "30",
+                      name: (this.state && this.state.name) || "",
+                    }}
+                    validationSchema={Yup.object().shape({
+                      city: Yup.string().when("search_type", {
+                        is: val => val === "Custom Address",
+                        then: Yup.string().required("Please enter your City"),
+                      }),
+                      location: Yup.string().when("city", {
+                        is: val => val !== "",
+                        then: Yup.string().required("Please enter your Location"),
+                      }),
+                    })}
+                  >
+                    {({ errors, status, touched }) => (
+                      <Form className="form-horizontal">
                         {/* Type field */}
                         <Row>
                           <Col xs="4" sm="4" md="3" lg="3">
@@ -3357,9 +3366,9 @@ class NearbyLabs extends Component {
                             </div>
                           </Col>
                           {this.state.locationAccessAllowed === true ? (
-                              <Col xs="3" sm="3" md="2" lg="2">
-                                <div className="mb-3">
-                                  {/* <Label
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
                                     for="LabType2"
                                     className="form-label"
                                     style={{
@@ -3370,28 +3379,28 @@ class NearbyLabs extends Component {
                                   >
                                     Search Types
                                   </Label> */}
-                                  <Field
-                                    name="search_type"
-                                    component="select"
-                                    onChange={e => this.onChangeSearchType(e)}
-                                    value={this.state.search_type}
-                                    className="form-select"
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      // Add more style overrides as needed
-                                    }}
-                                  >
-                                    <option value="Current Location">Current Location</option>
-                                    <option value="City">Search By City</option>
-                                    <option value="Custom Address">Custom Address</option>
-                                  </Field>
-                                </div>
-                              </Col>
-                            ) : (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              {/* <Label
+                                <Field
+                                  name="search_type"
+                                  component="select"
+                                  onChange={e => this.onChangeSearchType(e)}
+                                  value={search_type}
+                                  className="form-select"
+                                  style={{
+                                    border: borderColor,
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Current Location">Current Location</option>
+                                  <option value="City">Search By City</option>
+                                  <option value="Custom Address">Custom Address</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          ) : (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
                                 for="LabType2"
                                 className="form-label"
                                 style={{
@@ -3402,27 +3411,27 @@ class NearbyLabs extends Component {
                               >
                                 Search Types
                               </Label> */}
-                              <Field
-                                name="search_type"
-                                component="select"
-                                onChange={e => this.onChangeSearchType(e)}
-                                value={this.state.search_type}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="">Choose an option</option>
-                                <option value="Current Location">
-                                  Current Location
-                                </option>
-                                <option value="City">Search By City</option>
-                                <option value="Custom Address">Custom Address</option>
-                              </Field>
-                            </div>
-                          </Col>
+                                <Field
+                                  name="search_type"
+                                  component="select"
+                                  onChange={e => this.onChangeSearchType(e)}
+                                  value={search_type}
+                                  className="form-select"
+                                  style={{
+                                    border: borderColor,
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="">Choose an option</option>
+                                  <option value="Current Location">
+                                    Current Location
+                                  </option>
+                                  <option value="City">Search By City</option>
+                                  <option value="Custom Address">Custom Address</option>
+                                </Field>
+                              </div>
+                            </Col>
                           )}
                           {this.state.search_type === 'City' && (
                             <Col xs="3" sm="3" md="2" lg="2">
@@ -3487,26 +3496,15 @@ class NearbyLabs extends Component {
                               </div>
                             </Col>
                           )}
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address' ||this.state.locationAccessAllowed === true && this.state.search_type !== 'City') && (
+                          {this.state.search_type === 'Custom Address' ? (
                             <Col xs="1" sm="2" md="1" lg="1">
                               <div className="mb-3">
-                                {/* <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                    color: 'black',
-                                  fontWeight: "bold",
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px' }}>Km </span>
-                                </Label> */}
                                 <div className="input-group">
                                   <Input
                                     defaultValue={this.state.km}
                                     onChange={(e) => this.onChangeKm(e)}
                                     id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
+                                    type="number"
                                     className="form-control"
                                     placeholder=""
                                     style={{
@@ -3519,43 +3517,35 @@ class NearbyLabs extends Component {
                                 </div>
                               </div>
                             </Col>
-                          )}
+                          ) : (this.state.search_type === 'Current Location' && (
+                            <Col xs="1" sm="2" md="1" lg="1">
+                              <div className="mb-3">
+                                <div className="input-group">
+                                  <Input
+                                    defaultValue={this.state.km}
+                                    onChange={(e) => this.onChangeKm(e)}
+                                    id="pac-input"
+                                    type="number"
+                                    className="form-control"
+                                    placeholder=""
+                                    style={{
+                                      border: '2px solid red',
+                                      borderRadius: '5px',
+                                      fontSize: '14px'
+                                      // Add more style overrides as needed
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </Col>
+                          )
+                          )
+                          }
+
                           {this.state.locationAccessAllowed === true ? (
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              {/* <Label
-                                for="LabType2"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Labs Type
-                              </Label> */}
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
-                                style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
-                                }}
-                              >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
-                          ):(
                             <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              {/* <Label
+                              <div className="mb-3">
+                                {/* <Label
                                 for="LabType2"
                                 className="form-label"
                                 style={{
@@ -3566,29 +3556,61 @@ class NearbyLabs extends Component {
                               >
                                 Search By Labs Type
                               </Label> */}
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                  <option value="Others">Both</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          ) : (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                {/* <Label
+                                for="LabType2"
+                                className="form-label"
                                 style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
                                 }}
                               >
-                                <option value="Others">Both</option>
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                              </Field>
-                            </div>
-                          </Col>
+                                Search By Labs Type
+                              </Label> */}
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Others">Both</option>
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                </Field>
+                              </div>
+                            </Col>
                           )}
                         </Row>
                       </Form>
-                      )}
-                    </Formik>
+                    )}
+                  </Formik>
                   {/* </Card> */}
 
                 </Row>

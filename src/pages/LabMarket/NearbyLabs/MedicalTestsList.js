@@ -397,6 +397,13 @@ class MedicalTestList extends Component {
   
   
   render() {
+    const { search_type } = this.state;
+    let borderColor = '2px solid blue'; // Default border color
+
+    // Check the selected option and update border color accordingly
+    if (search_type === 'Current Location') {
+      borderColor = '2px solid red'; // Change to the desired color
+    }
     const { SearchBar } = Search;
     const { loading } = this.state;
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
@@ -1160,13 +1167,13 @@ class MedicalTestList extends Component {
                             component="select"
                             onChange={(e) => this.onChangeSearchType(e)
                             }
-                            value={this.state.search_type}
-                            className="form-select"
-                            style={{
-                              border: '2px solid blue',
-                              borderRadius: '5px',
-                              // Add more style overrides as needed
-                            }}
+                            value={search_type}
+                              className="form-select"
+                              style={{
+                                border: borderColor,
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
                           >
                             <option value="">Choose an option</option>
                             <option value="Current Location">Current Location</option>
@@ -1197,7 +1204,7 @@ class MedicalTestList extends Component {
                               className="form-control"
                               placeholder=""
                               style={{
-                                border: '2px solid blue',
+                                border: '2px solid red',
                                 borderRadius: '5px',
                                 fontSize: '14px'
                                 // Add more style overrides as needed

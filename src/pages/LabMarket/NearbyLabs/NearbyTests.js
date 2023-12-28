@@ -1082,6 +1082,13 @@ class NearbyTests extends Component {
     return currentURL.includes('/nearby-test/');
   }
   render() {
+    const { search_type } = this.state;
+    let borderColor = '2px solid blue'; // Default border color
+
+    // Check the selected option and update border color accordingly
+    if (search_type === 'Current Location') {
+      borderColor = '2px solid red'; // Change to the desired color
+    }
     const ClearIndicator = (props) => {
       return (
         <components.ClearIndicator {...props}>
@@ -1928,7 +1935,7 @@ class NearbyTests extends Component {
                             <Col>
                             </Col>
                           </Col>
-                          <Col xs="4" sm="4" md="3" lg="3">
+                          <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
                                 for="LabType"
@@ -1984,13 +1991,13 @@ class NearbyTests extends Component {
                                   name="search_type"
                                   component="select"
                                   onChange={e => this.onChangeSearchType(e)}
-                                  value={this.state.search_type}
-                                  className="form-select"
-                                  style={{
-                                    border: '2px solid blue',
-                                    borderRadius: '5px',
-                                    // Add more style overrides as needed
-                                  }}
+                                  value={search_type}
+                              className="form-select"
+                              style={{
+                                border: borderColor,
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
                                 >
                                   <option value="Current Location">Current Location</option>
                                   <option value="City">Search By City</option>
@@ -2016,13 +2023,13 @@ class NearbyTests extends Component {
                                   name="search_type"
                                   component="select"
                                   onChange={e => this.onChangeSearchType(e)}
-                                  value={this.state.search_type}
-                                  className="form-select"
-                                  style={{
-                                    border: '2px solid blue',
-                                    borderRadius: '5px',
-                                    // Add more style overrides as needed
-                                  }}
+                                  value={search_type}
+                              className="form-select"
+                              style={{
+                                border: borderColor,
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
                                 >
                                   <option value="">Choose an option</option>
                                   <option value="Current Location">Current Location</option>
@@ -2053,7 +2060,7 @@ class NearbyTests extends Component {
                                   onChange={this.onChangeCity}
                                   className="defautSelectParent is-invalid"
                                   options={cityList}
-                                  placeholder=""
+                                  placeholder="City.."
                                   styles={{
                                     control: (provided, state) => ({
                                       ...provided,
@@ -2086,7 +2093,7 @@ class NearbyTests extends Component {
                                   id="pac-input"
                                   type="text"
                                   className="form-control"
-                                  placeholder=""
+                                  placeholder="Address.."
                                   style={{
                                     border: '2px solid blue',
                                     borderRadius: '5px',
@@ -2096,39 +2103,72 @@ class NearbyTests extends Component {
                               </div>
                             </Col>
                           )}
-                          {(this.state.search_type === 'Current Location' || this.state.search_type === 'Custom Address') && (
-                            <Col xs="1" sm="2" md="1" lg="1">
-                              <div className="mb-3">
-                                <Label
-                                  for="LabType"
-                                  className="form-label"
-                                  style={{
-                                    fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                    color: 'black',
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                  <span style={{ fontSize: '12px' }}>Km </span>
-                                </Label>
-                                <div className="input-group">
-                                  <Input
-                                    defaultValue={this.state.km}
-                                    onChange={(e) => this.onChangeKm(e)}
-                                    id="pac-input"
-                                    type="number"  // Change "numbers" to "number"
-                                    className="form-control"
-                                    placeholder=""
-                                    style={{
-                                      border: '2px solid blue',
-                                      borderRadius: '5px',
-                                      fontSize: '14px'
-                                      // Add more style overrides as needed
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </Col>
-                          )}
+                          {this.state.search_type === 'Custom Address' ? (
+                        <Col xs="1" sm="2" md="1" lg="1">
+                          <div className="mb-3">
+                          <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Km
+                              </Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="number"
+                                className="form-control"
+                                placeholder=""
+                                style={{
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                  fontSize: '14px'
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      ) : (this.state.search_type === 'Current Location' && (
+                        <Col xs="1" sm="2" md="1" lg="1">
+                          <div className="mb-3">
+                          <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Km
+                              </Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="number"
+                                className="form-control"
+                                placeholder=""
+                                style={{
+                                  border: '2px solid red',
+                                  borderRadius: '5px',
+                                  fontSize: '14px'
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      )
+                      )}
                            <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
