@@ -154,7 +154,7 @@ class UnhandledComplaints extends Component {
           ),
           filter: textFilter(),
         },
-        
+       
         {
           dataField: "registered_at",
           text: "Pending Since",

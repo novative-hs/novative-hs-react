@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
 import {
   Card,
   CardBody,
@@ -159,9 +160,7 @@ class csrComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.appointment_requested_at).toLocaleString(
-                  "en-US"
-                )}
+                {moment(complaint.appointment_requested_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),
@@ -174,14 +173,15 @@ class csrComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {new Date(complaint.estimated_sample_collection_at).toLocaleString(
-                  "en-US"
-                )}
+                {complaint.estimated_sample_collection_at
+                  ? moment(complaint.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
               </span>
             </>
           ),
           filter: textFilter(),
         },
+        
         {
           dataField: "menu",
           isDummyField: true,

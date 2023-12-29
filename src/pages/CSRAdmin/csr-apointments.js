@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
+
 import {
   Card,
   CardBody,
@@ -152,12 +154,11 @@ class csrAppointments extends Component {
           formatter: (cellContent, csrAppointment) => (
             <>
               <span>
-                {new Date(csrAppointment.appointment_requested_at).toLocaleString(
-                  "en-US"
-                )}
+                {moment(csrAppointment.appointment_requested_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "estimated_sample_collection_at",
@@ -166,12 +167,13 @@ class csrAppointments extends Component {
           formatter: (cellContent, csrAppointment) => (
             <>
               <span>
-                {new Date(csrAppointment.estimated_sample_collection_at).toLocaleString(
-                  "en-US"
-                )}
+                {csrAppointment.estimated_sample_collection_at
+                  ? moment(csrAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
               </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "menu",
