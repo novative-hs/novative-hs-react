@@ -116,22 +116,22 @@ class ResolvedComplaints extends Component {
         //   text: "Phone No.",
         //   sort: true,
         // },
-        {
-          dataField: "message",
-          text: "Message",
-          sort: true,
-          formatter: (cellContent, complaint) => (
-            <>
-              <Link to="#" 
-              // onClick={e => this.openMessageModal(e, complaint)}
-              onMouseEnter={e => this.openMessageModal(e, complaint)}
-              onPointerLeave={this.handleMouseExit()}
-              >
-                {complaint.message.slice(0, 10) + "..."}
-              </Link>{" "}
-            </>
-          ),
-        },
+        // {
+        //   dataField: "message",
+        //   text: "Message",
+        //   sort: true,
+        //   formatter: (cellContent, complaint) => (
+        //     <>
+        //       <Link to="#" 
+        //       // onClick={e => this.openMessageModal(e, complaint)}
+        //       onMouseEnter={e => this.openMessageModal(e, complaint)}
+        //       onPointerLeave={this.handleMouseExit()}
+        //       >
+        //         {complaint.message.slice(0, 10) + "..."}
+        //       </Link>{" "}
+        //     </>
+        //   ),
+        // },
         {
           dataField: "csr_name",
           text: "Assigned to",

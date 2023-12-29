@@ -201,23 +201,23 @@ class PendingComplaints extends Component {
             </>
           ),
         },
-        {
-          dataField: "data",
-          text: "id",
-          isDummyField: true,
-          editable: false,
-          text: "Chat",
-          formatter: (cellContent, complaint) => (
-            <>
-              <Tooltip title="Add Comment">
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/csr-notes-admincomplains/${complaint.id}`}
-                ></Link>
-              </Tooltip>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "data",
+        //   text: "id",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Chat",
+        //   formatter: (cellContent, complaint) => (
+        //     <>
+        //       <Tooltip title="Add Comment">
+        //         <Link
+        //           className="fas fa-comment font-size-18"
+        //           to={`/csr-notes-admincomplains/${complaint.id}`}
+        //         ></Link>
+        //       </Tooltip>
+        //     </>
+        //   ),
+        // },
       ],
     };
     this.toggle = this.toggle.bind(this);

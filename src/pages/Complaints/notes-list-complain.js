@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
+
 
 import {
   Card,
@@ -154,7 +156,33 @@ class NotesList extends Component {
                     <Col xl="3" md="3" sm="6" key={"_col_" + key}>
                       <Card className="mb-2" style={{ backgroundColor: "#f2f2f2" }}>
                         <CardBody className="p-3">
-                          {note.note &&(
+                        {note.note && note.field_name === "status" && note.old_value !== "Not Paid" ? (
+                          <div><div>
+                            <p>
+                              <b>{note.staff_name}</b> <span className="text-danger"> Forwarded the Complain: </span> {" "}{note.note} <span className="text-danger"> at </span> {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                            </p>
+                          </div>
+                          <div></div>
+                          <p>
+                            <b>{note.staff_name}</b> changes status of complain to <b>{note.new_value}</b> at {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                          </p>
+                        </div>
+                        ) : (!note.note && note.field_name === "status" && note.old_value !== "Not Paid") ? (
+                          <div>
+                            <p>
+                              <b>{note.staff_name}</b> changes status of appointment to <b>{note.new_value}</b> at {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                            </p>
+                          </div>
+                        ) : (note.note && note.field_name !== "status" && note.old_value !== "Not Paid") ? (
+                          <div>
+                            <p>
+                              <b>{note.staff_name}</b> {note.note} at {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                            </p>
+                          </div>
+                        ) : null}
+
+
+                          {/* {note.note &&(
                           <div >
                             <p>
                               <b>{note.staff_name}</b>{" "}{note.note} at {" "} {new Date(note.added_at).toLocaleString("en-US")}
@@ -167,7 +195,7 @@ class NotesList extends Component {
                              <b>{note.staff_name}</b>{" "} changes status of appointment to <b>{note.new_value}</b> at {" "} {new Date(note.added_at).toLocaleString("en-US")}
                            </p>
                          </div>
-                          )}
+                          )} */}
                           {note.field_name == "collection_status" &&(
                            <div >
                            <p>
