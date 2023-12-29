@@ -331,8 +331,22 @@ class MedicalTestList extends Component {
     const selectedCityId = selectedGroup.value;
     this.setState({ city_id: selectedCityId });
     // this.setState({ km: "", latitude: "", longitude: "", locationAccessAllowed: "" });
-    this.setState({ search_type: this.state.search_type });
-
+    if (selectedCityId && this.state.test_id) {
+      // Call your API here
+      const { onGetQuotes } = this.props;
+      onGetQuotes(selectedCityId, this.state.test_id, this.state.search_type);
+  
+      // Set loading state
+      this.setState({ loading: true });
+  
+      // Clear previous quotes
+      this.setState({ quotes: [] });
+  
+      // Set loading state to false after 7 seconds
+      setTimeout(() => {
+        this.setState({ loading: false });
+      }, 7000);
+    }
   };
   handleTestsChange = async (selectedTests) => {
     const selectedTestIds = selectedTests.map((test) => test.value);
