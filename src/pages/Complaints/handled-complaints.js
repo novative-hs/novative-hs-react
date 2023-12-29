@@ -64,6 +64,19 @@ class handledComplaintsList extends Component {
           filter: textFilter(),
         },
         {
+          dataField: "registered_at",
+          text: "Registered at",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
           dataField: "complaint_id",
           text: "Complaint ID",
           sort: true,
@@ -142,22 +155,10 @@ class handledComplaintsList extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "registered_at",
-          text: "Registered at",
-          sort: true,
-          formatter: (cellContent, complaint) => (
-            <>
-              <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          filter: textFilter(),
-        },
+        
         {
           dataField: "handled_at",
-          text: "Handled at",
+          text: "Open at",
           sort: true,
           formatter: (cellContent, complaint) => (
             <>

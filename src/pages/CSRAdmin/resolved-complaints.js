@@ -38,6 +38,12 @@ import {
 } from "store/csr-admin/actions";
 
 import "assets/scss/table.scss";
+import { getCSRList } from "store/staff/actions";
+//Office
+import { getCsrCentralList,
+       getCsrSouthList,
+       getCsrNorthList,
+      } from "store/csr-territory-list/actions";
 
 class ResolvedComplaints extends Component {
   constructor(props) {
@@ -50,6 +56,14 @@ class ResolvedComplaints extends Component {
       assignedTo: "",
       ResolvedComplaints: "",
       resolvedComplaint: "",
+      assignedTo: "",
+      PendingComplaints: "",
+      resolvedComplaint: "",
+      csrList: [],
+      // Office
+      csrCentralTerritoryList: [],
+      csrSouthTerritoryList: [],
+      csrNorthTerritoryList: [],
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -173,6 +187,24 @@ class ResolvedComplaints extends Component {
           text: "id",
           isDummyField: true,
           editable: false,
+          text: "Action",
+          formatter: (cellContent, resolvedComplaint) => (
+            <>
+              <Link
+                className="btn btn-success"
+                to="#"
+                onClick={e => this.handleApprovedEvent(e, resolvedComplaint.id)}
+              >
+                Reopen
+              </Link>{" "}
+            </>
+          ),
+        },
+        {
+          dataField: "data",
+          text: "id",
+          isDummyField: true,
+          editable: false,
           text: "Chat",
           formatter: (cellContent, complaint) => (
             <>
@@ -196,6 +228,24 @@ class ResolvedComplaints extends Component {
     const { resolvedComplaints, onGetResolvedComplaints } = this.props;
     onGetResolvedComplaints();
     this.setState({ resolvedComplaints });
+
+    //  csr central list
+    const { csrCentralTerritoryList, onGetCsrCentralList } = this.props;
+    onGetCsrCentralList();
+    this.setState({ csrCentralTerritoryList });
+    //  csr south list
+    const { csrSouthTerritoryList, onGetCsrSouthList } = this.props;
+    onGetCsrSouthList();
+    this.setState({ csrSouthTerritoryList });
+    //  csr north list
+    const { csrNorthTerritoryList, onGetCsrNorthList } = this.props;
+    onGetCsrNorthList();
+    this.setState({ csrNorthTerritoryList });
+
+    // csrs list
+    const { csrList, onGetCSRList } = this.props;
+    onGetCSRList();
+    this.setState({ csrList });
   }
   openPatientModal = (e, arg) => {
     this.setState({
@@ -274,7 +324,43 @@ class ResolvedComplaints extends Component {
         order: "desc", // desc or asc
       },
     ];
+    const csrList = [];
+    for (let i = 0; i < this.props.csrList.length; i++) {
+      csrList.push({
+        label: this.props.csrList[i].name,
+        value: this.props.csrList[i].id,
+      });
+    }
+    // Central Office
+    const csrCentralTerritoryList = [];
 
+    for (let i = 0; i < this.props.csrCentralTerritoryList.length; i++) {
+      csrCentralTerritoryList.push({
+        label: this.props.csrCentralTerritoryList[i].name,
+        value: this.props.csrCentralTerritoryList[i].id,
+      });
+  
+    }
+    // South Office
+    const csrSouthTerritoryList = [];
+
+    for (let i = 0; i < this.props.csrSouthTerritoryList.length; i++) {
+      csrSouthTerritoryList.push({
+        label: this.props.csrSouthTerritoryList[i].name,
+        value: this.props.csrSouthTerritoryList[i].id,
+      });
+  
+    }
+    // North Office
+    const csrNorthTerritoryList = [];
+
+    for (let i = 0; i < this.props.csrNorthTerritoryList.length; i++) {
+      csrNorthTerritoryList.push({
+        label: this.props.csrNorthTerritoryList[i].name,
+        value: this.props.csrNorthTerritoryList[i].id,
+      });
+  
+    }
     return (
       <React.Fragment>
         <div className="page-content">
@@ -286,6 +372,9 @@ class ResolvedComplaints extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Complaints" breadcrumbItem="Resolved" />
             <Row>
+            <div className="mb-3">
+                                                <p><b>Note: When you Reopen a complaint it will move to Inprocess Complaints.</b></p>
+                                                </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -447,6 +536,247 @@ class ResolvedComplaints extends Component {
                                 </Col>
                               </Row>
                               <Modal
+                                      isOpen={this.state.modal}
+                                      className={this.props.className}
+                                    >
+                                      <div className="modal-header">
+                                        <button
+                                          type="button"
+                                          className="btn-close"
+                                          onClick={() =>
+                                            this.setState({
+                                              modal: false,
+                                            })
+                                          }
+                                          data-bs-dismiss="modal"
+                                          aria-label="Close"
+                                        ></button>
+                                      </div>
+                                      <ModalBody>
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                            assignedTo:
+                                              (this.state &&
+                                                this.state.assignedTo) ||
+                                              "",
+                                          }}
+                                          validationSchema={Yup.object().shape({
+                                            assignedTo: Yup.number().required(
+                                              "Please select CSR to assign complaint"
+                                            ),
+                                          })}
+                                          onSubmit={values => {
+                                            const data = {
+                                              id: this.state.id,
+                                              assignedTo: values.assignedTo,
+                                            };
+
+                                            // Assign complaint
+                                            onAssignComplaint(data);
+
+                                            // Calling to update list record
+                                            setTimeout(() => {
+                                              onGetResolvedComplaints();
+                                            }, 1000);
+
+                                            this.toggle();
+                                          }}
+                                        >
+                                          
+                                          {({ errors, status, touched }) => (
+                                            
+                                            <Form>
+                                              <Row>
+                                              <Col className="col-12">
+                                                    <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Office
+                                                    </Label>
+                                                    <Field
+                                                      name="office"
+                                                      as="select"
+                                                      className="form-control"
+                                                      onChange={e => {
+                                                        this.setState({
+                                                          resolvedComplaint: {
+                                                         
+                                                            office: e.target.value,
+                                                          
+                                                          },
+                                                        });
+                                                      }}
+                                                      multiple={false}
+                                                      value={
+                                                        this.state.office
+                                                      }
+                                                    >
+                                                       <option value="">
+                                                      ---Select Office---
+                                                      </option>
+                                                      <option value="Central Office">
+                                                      Central Office
+                                                      </option>
+                                                      <option value="South Office">
+                                                      South Office
+                                                      </option>
+                                                      <option value="North Office">
+                                                      North Office
+                                                      </option>
+                                                   
+                                                    </Field>
+                                                  </div>
+                                               
+                                          {this.state.resolvedComplaint.office =="Central Office"
+                                                &&(
+
+                                                  <div className="mb-3 select2-container">
+                                                    <Label>Assigned to</Label>
+                                                    <Select
+                                                      name="assignedTo"
+                                                      component="Select"
+                                                      onChange={selectedGroup => {
+                                                        this.setState({
+                                                          assignedTo:
+                                                            selectedGroup.value,
+                                                        });
+                                                      }}
+                                                      className={
+                                                        "defautSelectParent" +
+                                                        (errors.assignedTo
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      styles={{
+                                                        control: (
+                                                          base,
+                                                          state
+                                                        ) => ({
+                                                          ...base,
+                                                          borderColor:
+                                                            errors.assignedTo
+                                                              ? "#f46a6a"
+                                                              : "#ced4da",
+                                                        }),
+                                                      }}
+                                                      options={csrCentralTerritoryList}
+                                                      placeholder="Select CSR..."
+                                                    />
+                                                    <ErrorMessage
+                                                      name="assignedTo"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                )} 
+                                                 {/* South Office */}
+                                                 {this.state.resolvedComplaint.office =="South Office"
+                                                &&(
+
+                                                  <div className="mb-3 select2-container">
+                                                    <Label>Assigned to</Label>
+                                                    <Select
+                                                      name="assignedTo"
+                                                      component="Select"
+                                                      onChange={selectedGroup => {
+                                                        this.setState({
+                                                          assignedTo:
+                                                            selectedGroup.value,
+                                                        });
+                                                      }}
+                                                      className={
+                                                        "defautSelectParent" +
+                                                        (errors.assignedTo
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      styles={{
+                                                        control: (
+                                                          base,
+                                                          state
+                                                        ) => ({
+                                                          ...base,
+                                                          borderColor:
+                                                            errors.assignedTo
+                                                              ? "#f46a6a"
+                                                              : "#ced4da",
+                                                        }),
+                                                      }}
+                                                      options={csrSouthTerritoryList}
+                                                      placeholder="Select CSR..."
+                                                    />
+                                                    <ErrorMessage
+                                                      name="assignedTo"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                )} 
+                                                 {/* North Office */}
+                                                 {this.state.resolvedComplaint.office =="North Office"
+                                                &&(
+
+                                                  <div className="mb-3 select2-container">
+                                                    <Label>Assigned to</Label>
+                                                    <Select
+                                                      name="assignedTo"
+                                                      component="Select"
+                                                      onChange={selectedGroup => {
+                                                        this.setState({
+                                                          assignedTo:
+                                                            selectedGroup.value,
+                                                        });
+                                                      }}
+                                                      className={
+                                                        "defautSelectParent" +
+                                                        (errors.assignedTo
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      styles={{
+                                                        control: (
+                                                          base,
+                                                          state
+                                                        ) => ({
+                                                          ...base,
+                                                          borderColor:
+                                                            errors.assignedTo
+                                                              ? "#f46a6a"
+                                                              : "#ced4da",
+                                                        }),
+                                                      }}
+                                                      options={csrNorthTerritoryList}
+                                                      placeholder="Select CSR..."
+                                                    />
+                                                    <ErrorMessage
+                                                      name="assignedTo"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                )} 
+                                                </Col>
+                                              
+                                              </Row>
+                                            
+                                              <Row>
+                                                <Col>
+                                                  <div className="text-end">
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                    >
+                                                      Save
+                                                    </button>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          )}
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                              <Modal
                                 isOpen={this.state.messageModal}
                                 role="dialog"
                                 autoFocus={true}
@@ -518,17 +848,32 @@ ResolvedComplaints.propTypes = {
   match: PropTypes.object,
   resolvedComplaints: PropTypes.array,
   csrList: PropTypes.array,
+  csrCentralTerritoryList: PropTypes.array,
+  csrSouthTerritoryList:  PropTypes.array,
+  csrNorthTerritoryList:  PropTypes.array,
+  onGetCSRList: PropTypes.func,
+  onGetCsrCentralList: PropTypes.func,
+  onGetCsrSouthList: PropTypes.func,
+  onGetCsrNorthList: PropTypes.func,
   className: PropTypes.any,
   onGetResolvedComplaints: PropTypes.func,
   onAssignComplaint: PropTypes.func,
 };
-const mapStateToProps = ({ csrAdmin }) => ({
+const mapStateToProps = ({ csrAdmin, staff, csrTerritoryList }) => ({
   resolvedComplaints: csrAdmin.resolvedComplaints,
+  csrList: staff.csrList,
+  csrCentralTerritoryList: csrTerritoryList.csrCentralTerritoryList,
+  csrSouthTerritoryList: csrTerritoryList.csrSouthTerritoryList,
+  csrNorthTerritoryList: csrTerritoryList.csrNorthTerritoryList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAssignComplaint: data => dispatch(assignComplaint(data)),
   onGetResolvedComplaints: () => dispatch(getResolvedComplaints()),
+  onGetCSRList: () => dispatch(getCSRList()),
+  onGetCsrCentralList: () => dispatch(getCsrCentralList()),
+  onGetCsrSouthList: () => dispatch(getCsrSouthList()),
+  onGetCsrNorthList: () => dispatch(getCsrNorthList()),
 });
 
 export default connect(
