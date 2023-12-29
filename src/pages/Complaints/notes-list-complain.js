@@ -142,7 +142,7 @@ class NotesList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="Comments"
-              breadcrumbItem="Comments List"
+              breadcrumbItem="This is Internal Labhazir"
             />
             <Row>
               <Col lg="12">
