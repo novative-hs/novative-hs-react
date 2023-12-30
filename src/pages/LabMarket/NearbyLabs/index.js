@@ -76,6 +76,21 @@ import { CITIES } from "helpers/global_variables_helper";
 import offeredTestsList from "pages/OfferedTests/offered-tests-list";
 import ScrollButton from "components/Common/Scrollbutton";
 
+function formatTime(timeString) {
+  const [hours, minutes] = timeString.split(':');
+  const date = new Date(2000, 0, 1, parseInt(hours), parseInt(minutes), 0);
+
+  // Convert to 12-hour format with AM/PM
+  const formattedTime = date.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    timeZone: 'Asia/Karachi', // Adjust to the desired time zone (Islamabad)
+  });
+
+  return formattedTime;
+}
+
 class NearbyLabs extends Component {
   constructor(props) {
     super(props);
@@ -2691,38 +2706,21 @@ class NearbyLabs extends Component {
                                 <div className="my-0">
                                   <span className="text-muted me-2">
                                     <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_time}
-                                  </span>
-                                </div>
-                              )}
+                                    {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                            {!nearbyLab.is_247_opened &&
-                              nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
+
                                   </span>
                                 </div>
                               )}
                             {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
+                                  <i className="mdi mdi-calendar"></i>{" "}
                                   {nearbyLab.opening_day} to{" "}
                                   {nearbyLab.closing_day}
                                 </span>
                               </div>
                             )}
-
-                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )} */}
 
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -2749,6 +2747,20 @@ class NearbyLabs extends Component {
                                 starSpacing="3px"
                               />
                             </div>
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                              }
+                            >
+                              <div className="my-0 mt-3">
+                                <span className="me-2" style={{ color: 'blue' }}>
+                                  See Details
+                                  <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                </span>
+                              </div>
+                            </Link>
                           </div>
                         </CardBody>
                       </Card>
@@ -2826,11 +2838,13 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-google-maps"></i>{" "}
-                                {nearbyLab.address}
-                              </span>
+                            <div className="my-0 text-truncate">
+                              <Tooltip title={nearbyLab.address}>
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </Tooltip>
                             </div>
 
                             {!nearbyLab.is_247_opened &&
@@ -2838,45 +2852,28 @@ class NearbyLabs extends Component {
                                 <div className="my-0">
                                   <span className="text-muted me-2">
                                     <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_time}
-                                  </span>
-                                </div>
-                              )}
+                                    {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                            {!nearbyLab.is_247_opened &&
-                              nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
+
                                   </span>
                                 </div>
                               )}
                             {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
-                                  {nearbyLab.opening_day} To{" "}
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
                                   {nearbyLab.closing_day}
                                 </span>
                               </div>
                             )}
-
-                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )} */}
-                            {nearbyLab.email ? (
+                            {/* {nearbyLab.email ? (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-email"></i>{" "}
                                   {nearbyLab.email}
                                 </span>
-                              </div>) : null}
+                              </div>) : null} */}
                             {nearbyLab.phone ? (
                               <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2910,6 +2907,21 @@ class NearbyLabs extends Component {
                                 starSpacing="3px"
                               />
                             </div>
+
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                              }
+                            >
+                              <div className="my-0 mt-3">
+                                <span className="me-2" style={{ color: 'blue' }}>
+                                  See Details
+                                  <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                </span>
+                              </div>
+                            </Link>
                           </div>
                         </CardBody>
                       </Card>
@@ -2997,11 +3009,13 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-google-maps"></i>{" "}
-                                {nearbyLab.address}
-                              </span>
+                            <div className="my-0 text-truncate">
+                              <Tooltip title={nearbyLab.address}>
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </Tooltip>
                             </div>
 
                             {!nearbyLab.is_247_opened &&
@@ -3009,44 +3023,28 @@ class NearbyLabs extends Component {
                                 <div className="my-0">
                                   <span className="text-muted me-2">
                                     <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_time}
-                                  </span>
-                                </div>
-                              )}
+                                    {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                            {!nearbyLab.is_247_opened &&
-                              nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
+
                                   </span>
                                 </div>
                               )}
                             {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
-                                  {nearbyLab.opening_day}
-                                </span>
-                              </div>
-                            )}
-
-                            {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
                                   {nearbyLab.closing_day}
                                 </span>
                               </div>
                             )}
-
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-phone"></i>{" "}
-                                {nearbyLab.landline}
-                              </span>
-                            </div>
+                            {nearbyLab.landline ? (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>) : null}
                             {nearbyLab.female_collectors == "Yes" && (
                               <div className="my-0">
                                 <span className="text-danger">
@@ -3066,6 +3064,20 @@ class NearbyLabs extends Component {
                                 starSpacing="3px"
                               />
                             </div>
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                              }
+                            >
+                              <div className="my-0 mt-3">
+                                <span className="me-2" style={{ color: 'blue' }}>
+                                  See Details
+                                  <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                </span>
+                              </div>
+                            </Link>
                           </div>
                         </CardBody>
                       </Card>
@@ -3153,11 +3165,13 @@ class NearbyLabs extends Component {
                                 </div>
                               )}
 
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-google-maps"></i>{" "}
-                                {nearbyLab.address}
-                              </span>
+                            <div className="my-0 text-truncate">
+                              <Tooltip title={nearbyLab.address}>
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-google-maps"></i>{" "}
+                                  {nearbyLab.address}
+                                </span>
+                              </Tooltip>
                             </div>
 
                             {!nearbyLab.is_247_opened &&
@@ -3165,43 +3179,28 @@ class NearbyLabs extends Component {
                                 <div className="my-0">
                                   <span className="text-muted me-2">
                                     <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_time}
+                                    {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                   </span>
                                 </div>
                               )}
-
-                            {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
-                                  {nearbyLab.closing_time}
-                                </span>
-                              </div>
-                            )}
                             {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
-                                  <i className="mdi mdi-timer"></i>{" "}
-                                  {nearbyLab.opening_day} To{" "}
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
                                   {nearbyLab.closing_day}
                                 </span>
                               </div>
                             )}
-
-                            {/* {!nearbyLab.is_247_opened && nearbyLab.closing_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )} */}
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-phone"></i>{" "}
-                                {nearbyLab.landline}
-                              </span>
-                            </div>
+                            {nearbyLab.landline ? (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-phone"></i>{" "}
+                                  {nearbyLab.landline}
+                                </span>
+                              </div>) : null}
                             {nearbyLab.female_collectors == "Yes" && (
                               <div className="my-0">
                                 <span className="text-danger">
@@ -3221,6 +3220,20 @@ class NearbyLabs extends Component {
                                 starSpacing="3px"
                               />
                             </div>
+                            <Link
+                              to={
+                                this.props.match.params.uuid
+                                  ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                  : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                              }
+                            >
+                              <div className="my-0 mt-3">
+                                <span className="me-2" style={{ color: 'blue' }}>
+                                  See Details
+                                  <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                </span>
+                              </div>
+                            </Link>
                           </div>
                         </CardBody>
                       </Card>
@@ -3710,33 +3723,29 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -3756,6 +3765,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -3833,11 +3856,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -3845,47 +3870,44 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
-                              <div className="my-0">
+                              {/* <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-email"></i>{" "}
                                   {nearbyLab.email}
                                 </span>
-                              </div>
+                              </div> */}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="bx bx-mobile"></i>{" "}
-                                  {nearbyLab.phone}
-                                </span>
-                              </div>
+                              {nearbyLab.phone ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="bx bx-mobile"></i>{" "}
+                                    {nearbyLab.phone}
+                                  </span>
+                                </div>) : null}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -3905,6 +3927,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -3992,11 +4028,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -4004,33 +4042,29 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -4050,6 +4084,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -4137,44 +4185,43 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
-                              {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_time}
-                                  </span>
-                                </div>
-                              )}
+                              {!nearbyLab.is_247_opened &&
+                                nearbyLab.opening_time && (
+                                  <div className="my-0">
+                                    <span className="text-muted me-2">
+                                      <i className="mdi mdi-timer"></i>{" "}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
+
+                                    </span>
+                                  </div>
+                                )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -4194,6 +4241,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -4729,37 +4790,34 @@ class NearbyLabs extends Component {
                             {/* </Tooltip> */}
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}</span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -4779,6 +4837,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -4856,56 +4928,57 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
-                          <div className="my-0">
+                          {/* <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-email"></i>{" "}
                               {nearbyLab.email}
                             </span>
-                          </div>
+                          </div> */}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="bx bx-mobile"></i> {nearbyLab.phone}
-                            </span>
-                          </div>
+                          {nearbyLab.phone ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="bx bx-mobile"></i>{" "}
+                                {nearbyLab.phone}
+                              </span>
+                            </div>) : null}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -4925,6 +4998,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -5012,43 +5099,42 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -5068,6 +5154,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -5155,44 +5255,43 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -5212,6 +5311,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -5493,45 +5606,41 @@ class NearbyLabs extends Component {
                             )}
 
                           <div className="my-0 text-truncate">
-                            {/* <Tooltip title={nearbyLab.address}> */}
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
-                            {/* </Tooltip> */}
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
-
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -5551,6 +5660,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -5628,57 +5751,58 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
 
-                          <div className="my-0">
+                          {/* <div className="my-0">
                             <span className="text-muted me-2">
                               <i className="mdi mdi-email"></i>{" "}
                               {nearbyLab.email}
                             </span>
-                          </div>
+                          </div> */}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="bx bx-mobile"></i> {nearbyLab.phone}
-                            </span>
-                          </div>
+                          {nearbyLab.phone ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="bx bx-mobile"></i>{" "}
+                                {nearbyLab.phone}
+                              </span>
+                            </div>) : null}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -5698,6 +5822,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -5785,43 +5923,42 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -5841,6 +5978,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -5928,44 +6079,42 @@ class NearbyLabs extends Component {
                               </div>
                             )}
 
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-google-maps"></i>{" "}
-                              {nearbyLab.address}
-                            </span>
+                          <div className="my-0 text-truncate">
+                            <Tooltip title={nearbyLab.address}>
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-google-maps"></i>{" "}
+                                {nearbyLab.address}
+                              </span>
+                            </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                            nearbyLab.opening_time && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
+
+                                </span>
+                              </div>
+                            )}
                           {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                             <div className="my-0">
                               <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                <i className="mdi mdi-calendar"></i>{" "}
+                                {nearbyLab.opening_day} to{" "}
+                                {nearbyLab.closing_day}
+                              </span>
                             </div>
                           )}
-
-                          <div className="my-0">
-                            <span className="text-muted me-2">
-                              <i className="mdi mdi-phone"></i>{" "}
-                              {nearbyLab.landline}
-                            </span>
-                          </div>
+                          {nearbyLab.landline ? (
+                            <div className="my-0">
+                              <span className="text-muted me-2">
+                                <i className="mdi mdi-phone"></i>{" "}
+                                {nearbyLab.landline}
+                              </span>
+                            </div>) : null}
                           {nearbyLab.female_collectors == "Yes" && (
                             <div className="my-0">
                               <span className="text-danger">
@@ -5985,6 +6134,20 @@ class NearbyLabs extends Component {
                               starSpacing="3px"
                             />
                           </div>
+                          <Link
+                            to={
+                              this.props.match.params.uuid
+                                ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                            }
+                          >
+                            <div className="my-0 mt-3">
+                              <span className="me-2" style={{ color: 'blue' }}>
+                                See Details
+                                <i className="mdi mdi-chevron-double-down"></i>{" "}
+                              </span>
+                            </div>
+                          </Link>
                         </div>
                       </CardBody>
                     </Card>
@@ -6346,12 +6509,12 @@ class NearbyLabs extends Component {
                                 )}
 
                               <div className="my-0 text-truncate">
-                                {/* <Tooltip title={nearbyLab.address}> */}
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
-                                {/* </Tooltip> */}
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -6359,33 +6522,29 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -6405,6 +6564,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -6482,42 +6655,48 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
+                              {!nearbyLab.is_247_opened &&
+                                nearbyLab.opening_time && (
+                                  <div className="my-0">
+                                    <span className="text-muted me-2">
+                                      <i className="mdi mdi-timer"></i>{" "}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
+                                    </span>
+                                  </div>
+                                )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
-
-                              <div className="my-0">
+                              {/* <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-email"></i>{" "}
                                   {nearbyLab.email}
                                 </span>
-                              </div>
+                              </div> */}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="bx bx-mobile"></i>{" "}
-                                  {nearbyLab.phone}
-                                </span>
-                              </div>
+                              {nearbyLab.phone ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="bx bx-mobile"></i>{" "}
+                                    {nearbyLab.phone}
+                                  </span>
+                                </div>) : null}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -6537,6 +6716,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -6624,11 +6817,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -6636,33 +6831,29 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -6682,6 +6873,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -6769,11 +6974,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -6781,33 +6988,28 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
-
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -6827,6 +7029,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -7341,12 +7557,12 @@ class NearbyLabs extends Component {
                                 )}
 
                               <div className="my-0 text-truncate">
-                                {/* <Tooltip title={nearbyLab.address}> */}
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
-                                {/* </Tooltip> */}
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -7354,24 +7570,18 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
                                   </span>
                                 </div>
                               )}
@@ -7385,12 +7595,13 @@ class NearbyLabs extends Component {
                               </div>
                             )} */}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -7410,6 +7621,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -7487,11 +7712,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -7499,24 +7726,19 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
@@ -7529,26 +7751,28 @@ class NearbyLabs extends Component {
                               </div>
                             )} */}
 
-                              <div className="my-0">
+                              {/* <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-email"></i>{" "}
                                   {nearbyLab.email}
                                 </span>
-                              </div>
+                              </div> */}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="bx bx-mobile"></i>{" "}
-                                  {nearbyLab.phone}
-                                </span>
-                              </div>
+                              {nearbyLab.phone ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="bx bx-mobile"></i>{" "}
+                                    {nearbyLab.phone}
+                                  </span>
+                                </div>) : null}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -7568,6 +7792,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -7655,11 +7893,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -7667,33 +7907,28 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
-
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -7713,6 +7948,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>
@@ -7800,11 +8049,13 @@ class NearbyLabs extends Component {
                                   </div>
                                 )}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-google-maps"></i>{" "}
-                                  {nearbyLab.address}
-                                </span>
+                              <div className="my-0 text-truncate">
+                                <Tooltip title={nearbyLab.address}>
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-google-maps"></i>{" "}
+                                    {nearbyLab.address}
+                                  </span>
+                                </Tooltip>
                               </div>
 
                               {!nearbyLab.is_247_opened &&
@@ -7812,24 +8063,19 @@ class NearbyLabs extends Component {
                                   <div className="my-0">
                                     <span className="text-muted me-2">
                                       <i className="mdi mdi-timer"></i>{" "}
-                                      {nearbyLab.opening_time}
+                                      {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+
+
                                     </span>
                                   </div>
                                 )}
-
-                              {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                                <div className="my-0">
-                                  <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.closing_time}
-                                  </span>
-                                </div>
-                              )}
                               {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
                                 <div className="my-0">
                                   <span className="text-muted me-2">
-                                    <i className="mdi mdi-timer"></i>{" "}
-                                    {nearbyLab.opening_day} To {nearbyLab.closing_day}                                </span>
+                                    <i className="mdi mdi-calendar"></i>{" "}
+                                    {nearbyLab.opening_day} to{" "}
+                                    {nearbyLab.closing_day}
+                                  </span>
                                 </div>
                               )}
 
@@ -7842,12 +8088,13 @@ class NearbyLabs extends Component {
                               </div>
                             )} */}
 
-                              <div className="my-0">
-                                <span className="text-muted me-2">
-                                  <i className="mdi mdi-phone"></i>{" "}
-                                  {nearbyLab.landline}
-                                </span>
-                              </div>
+                              {nearbyLab.landline ? (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-phone"></i>{" "}
+                                    {nearbyLab.landline}
+                                  </span>
+                                </div>) : null}
                               {nearbyLab.female_collectors == "Yes" && (
                                 <div className="my-0">
                                   <span className="text-danger">
@@ -7867,6 +8114,20 @@ class NearbyLabs extends Component {
                                   starSpacing="3px"
                                 />
                               </div>
+                              <Link
+                                to={
+                                  this.props.match.params.uuid
+                                    ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
+                                    : `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}`
+                                }
+                              >
+                                <div className="my-0 mt-3">
+                                  <span className="me-2" style={{ color: 'blue' }}>
+                                    See Details
+                                    <i className="mdi mdi-chevron-double-down"></i>{" "}
+                                  </span>
+                                </div>
+                              </Link>
                             </div>
                           </CardBody>
                         </Card>

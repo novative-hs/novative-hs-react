@@ -63,6 +63,21 @@ import { getLabNamesList } from "store/lab-names/actions";
 
 import offeredTestsList from "pages/OfferedTests/offered-tests-list";
 
+function formatTime(timeString) {
+  const [hours, minutes] = timeString.split(':');
+  const date = new Date(2000, 0, 1, parseInt(hours), parseInt(minutes), 0);
+  
+  // Convert to 12-hour format with AM/PM
+  const formattedTime = date.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    timeZone: 'Asia/Karachi', // Adjust to the desired time zone (Islamabad)
+  });
+
+  return formattedTime;
+}
+
 class NearbyLabs extends Component {
   constructor(props) {
     super(props);
@@ -368,6 +383,7 @@ class NearbyLabs extends Component {
       this.setState({ loading: false });
     }, 7000); // Set loading state to false after 7 seconds
   }
+  
   handleLocationUpdate(latitude, longitude) {
     const { onGetNearbyLabs } = this.props;
     // const guest_id = uuidv4();
@@ -2209,32 +2225,24 @@ class NearbyLabs extends Component {
                             </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
-
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )}
-
+                          {!nearbyLab.is_247_opened &&
+                              nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
+                                  </span>
+                                </div>
+                              )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
                           {/* <div className="my-0">
                                 <span className="text-muted me-2">
                                   <i className="mdi mdi-email"></i>{" "}
@@ -2371,31 +2379,26 @@ class NearbyLabs extends Component {
                             </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                              nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                    {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )}
+
+                                  </span>
+                                </div>
+                              )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
 
                           {/* <div className="my-0">
                                 <span className="text-muted me-2">
@@ -2547,31 +2550,26 @@ class NearbyLabs extends Component {
                             </Tooltip>
                           </div>
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
+                          {!nearbyLab.is_247_opened &&
+                              nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                  {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )}
+
+                                  </span>
+                                </div>
+                              )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
                           {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
@@ -2707,32 +2705,26 @@ class NearbyLabs extends Component {
                               </span>
                             </Tooltip>
                           </div>
+                          {!nearbyLab.is_247_opened &&
+                              nearbyLab.opening_time && (
+                                <div className="my-0">
+                                  <span className="text-muted me-2">
+                                    <i className="mdi mdi-timer"></i>{" "}
+                                                                        {formatTime(nearbyLab.opening_time)} to {formatTime(nearbyLab.closing_time)}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_time}
-                              </span>
-                            </div>
-                          )}
 
-                          {!nearbyLab.is_247_opened && nearbyLab.closing_time && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.closing_time}
-                              </span>
-                            </div>
-                          )}
-                          {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="mdi mdi-timer"></i>{" "}
-                                {nearbyLab.opening_day} to {nearbyLab.closing_day}
-                              </span>
-                            </div>
-                          )}
+                                  </span>
+                                </div>
+                              )}
+                            {!nearbyLab.is_247_opened && nearbyLab.opening_day && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  <i className="mdi mdi-calendar"></i>{" "}
+                                  {nearbyLab.opening_day} to{" "}
+                                  {nearbyLab.closing_day}
+                                </span>
+                              </div>
+                            )}
                           {nearbyLab.landline ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
