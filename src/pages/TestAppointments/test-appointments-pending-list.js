@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import moment from 'moment';
 
 import {
   Card,
@@ -117,7 +118,9 @@ class TestAppointmentsPendingList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-                {new Date(testAppointment.booked_at).toLocaleString("en-US")}
+                {/* {new Date(testAppointment.booked_at).toLocaleString("en-US")} */}
+                {moment(testAppointment.booked_at).format("DD MMM YYYY, h:mm A")}
+
               </span>
             </>
           ), filter: textFilter(),
@@ -129,9 +132,10 @@ class TestAppointmentsPendingList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-                {new Date(
+                {/* {new Date(
                   testAppointment.appointment_requested_at
-                ).toLocaleString("en-US")}
+                ).toLocaleString("en-US")} */}
+                {moment(testAppointment.appointment_requested_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ), filter: textFilter(),
@@ -142,7 +146,7 @@ class TestAppointmentsPendingList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              {testAppointment.is_home_sampling_availed == true ? (
+              {testAppointment.is_home_sampling_availed == true || testAppointment.is_state_sampling_availed == true ? (
                 <span>Yes</span>
               ) : (
                 <span>No</span>
@@ -158,47 +162,47 @@ class TestAppointmentsPendingList extends Component {
             defaultValue: 'All',
           }),
         },
-        {
-          dataField: "is_state_sampling_availed",
-          text: "Urgent sampling",
-          sort: true,
-          formatter: (cellContent, testAppointment) => (
-            <>
-              {testAppointment.is_state_sampling_availed == true ? (
-                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning blinking-text">Yes</span>
-              ) : (
-                <span>No</span>
-              )}
-              <style>
-          {`
-            .blinking-text {
-              animation: blinking 1s infinite;
-            }
+        // {
+        //   dataField: "is_state_sampling_availed",
+        //   text: "Urgent sampling",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       {testAppointment.is_state_sampling_availed == true ? (
+        //         <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning blinking-text">Yes</span>
+        //       ) : (
+        //         <span>No</span>
+        //       )}
+        //       <style>
+        //   {`
+        //     .blinking-text {
+        //       animation: blinking 1s infinite;
+        //     }
 
-            @keyframes blinking {
-              0% {
-                opacity: 1;
-              }
-              50% {
-                opacity: 0;
-              }
-              100% {
-                opacity: 1;
-              }
-            }
-          `}
-        </style>
-            </>
-          ),
-          filter: selectFilter({
-            options: {
-              '': 'All',
-              'true': 'Yes',
-              'false': 'No',
-            },
-            defaultValue: 'All',
-          }),
-        },
+        //     @keyframes blinking {
+        //       0% {
+        //         opacity: 1;
+        //       }
+        //       50% {
+        //         opacity: 0;
+        //       }
+        //       100% {
+        //         opacity: 1;
+        //       }
+        //     }
+        //   `}
+        // </style>
+        //     </>
+        //   ),
+        //   filter: selectFilter({
+        //     options: {
+        //       '': 'All',
+        //       'true': 'Yes',
+        //       'false': 'No',
+        //     },
+        //     defaultValue: 'All',
+        //   }),
+        // },
         {
           dataField: "menu",
           isDummyField: true,

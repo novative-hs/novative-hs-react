@@ -24,7 +24,7 @@ class DeleteModal extends Component {
                     style={{ fontSize: "9em", color: "orange" }}
                   />
                   <h2>Are you sure?</h2>
-                  <h4>You won&t be able to revert this!</h4>
+                  <h4>You won&apos;t be able to revert this!</h4>
                 </div>
               </Col>
             </Row>

@@ -1485,31 +1485,9 @@ class NearbyLabs extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span
-                              className="badge rounded-pill badge-soft-warning font-size-12"
-                              style={{
-                                animation: 'flickerAndMove 3s infinite linear',
-                              }}
-                            >
-                              Appointments Summary
-                            </span>
-                          </Link>
-                          <style>
-                            {`
-                             @keyframes flickerAndMove {
-                               0%, 100% {
-                                 color: darkred;
-                                 text-shadow: 0 0 4px darkred;
-                                 transform: translateX(0);
-                               }
-                               50% {
-                                 color: red;
-                                 text-shadow: 0 0 4px red;
-                                 transform: translateX(5px);
-                               }
-                             }
-                           `}
-                          </style>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
+</Link>
                         </li>
 
                       )}
@@ -1702,31 +1680,9 @@ class NearbyLabs extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span
-                              className="badge rounded-pill badge-soft-warning font-size-12"
-                              style={{
-                                animation: 'flickerAndMove 3s infinite linear',
-                              }}
-                            >
-                              Appointments Summary
-                            </span>
-                          </Link>
-                          <style>
-                            {`
-                            @keyframes flickerAndMove {
-                              0%, 100% {
-                                color: darkred;
-                                text-shadow: 0 0 4px darkred;
-                                transform: translateX(0);
-                              }
-                              50% {
-                                color: red;
-                                text-shadow: 0 0 4px red;
-                                transform: translateX(5px);
-                              }
-                            }
-                          `}
-                          </style>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
+</Link>
                         </li>
 
                       )}
@@ -1835,31 +1791,9 @@ class NearbyLabs extends Component {
                             }
                             className="dropdown-item"
                           >
-                            <span
-                              className="badge rounded-pill badge-soft-warning font-size-12"
-                              style={{
-                                animation: 'flickerAndMove 3s infinite linear',
-                              }}
-                            >
-                              Appointments Summary
-                            </span>
-                          </Link>
-                          <style>
-                            {`
-      @keyframes flickerAndMove {
-        0%, 100% {
-          color: darkred;
-          text-shadow: 0 0 4px darkred;
-          transform: translateX(0);
-        }
-        50% {
-          color: red;
-          text-shadow: 0 0 4px red;
-          transform: translateX(5px);
-        }
-      }
-    `}
-                          </style>
+                            <span className="pt-4 font-size-12">My Appointments</span>
+
+</Link>
                         </li>
 
 
@@ -1969,31 +1903,9 @@ class NearbyLabs extends Component {
                               }
                               className="dropdown-item"
                             >
-                              <span
-                                className="badge rounded-pill badge-soft-warning font-size-12"
-                                style={{
-                                  animation: 'flickerAndMove 3s infinite linear',
-                                }}
-                              >
-                                Appointments Summary
-                              </span>
-                            </Link>
-                            <style>
-                              {`
-      @keyframes flickerAndMove {
-        0%, 100% {
-          color: darkred;
-          text-shadow: 0 0 4px darkred;
-          transform: translateX(0);
-        }
-        50% {
-          color: red;
-          text-shadow: 0 0 4px red;
-          transform: translateX(5px);
-        }
-      }
-    `}
-                            </style>
+                              <span className="pt-4 font-size-12">My Appointments</span>
+
+</Link>
                           </li>
                         )}
                       </ul>

@@ -5,6 +5,8 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row, Label,ModalHeader, Modal,ModalBody } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import moment from 'moment';
+
 
 import paginationFactory, {
   PaginationProvider,
@@ -107,9 +109,12 @@ class TestAppointmentsCompletedList extends Component {
 
               {testAppointment.status != "Pending" ? (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     testAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                  {testAppointment.estimated_sample_collection_at
+                  ? moment(testAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
                 </span>
               ) : null}
             </>
@@ -122,17 +127,30 @@ class TestAppointmentsCompletedList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-                {new Date(testAppointment.handovered_at).toLocaleString(
+                {/* {new Date(testAppointment.handovered_at).toLocaleString(
                   "en-US"
-                )}
+                )} */}
+                {testAppointment.handovered_at
+                  ? moment(testAppointment.handovered_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
               </span>
             </>
           ),
         },
+        // {
+        //   dataField: "dues",
+        //   text: "Dues",
+        //   sort: true,
+        // },
         {
           dataField: "dues",
           text: "Dues",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>             
+             <div className="text-end">
+            {testAppointment.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
+        ),
         },
         {
           dataField: "payment_status",

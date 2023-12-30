@@ -74,6 +74,7 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 import FeedbacksList from "../pages/Feedbacks/feedbacks-list";
 import LabInvoiceDetail from "pages/Checkouts/invoice-detail";
+import AppointmentDetail from "pages/Checkouts/appointment-detail"
 import CsrInvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabAdvertisements from "../pages/LabAdvertisements/lab-advertisement";
 import CorporateOfferedTestsListForLab from "../pages/LabMarket/NearbyLabs/corporate-offeredtests-list"
@@ -723,6 +724,10 @@ const patientAuthProtectedRoutes = [
   {
     path: "/invoice-detail/:id",
     component: InvoiceDetail,
+  },
+  {
+    path: "/appointment-detail/:id",
+    component: AppointmentDetail,
   },
   // { path: "/nearby-labs/:uuid?", component: NearbyLabs },
 

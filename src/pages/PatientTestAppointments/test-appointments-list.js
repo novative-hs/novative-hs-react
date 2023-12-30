@@ -5,6 +5,7 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import * as Yup from "yup";
 import { isEmpty, size } from "lodash";
+import moment from 'moment';
 
 import {
   Alert,
@@ -183,9 +184,12 @@ class TestAppointmentsList extends Component {
                 <span>--</span>
               ) : (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     patientTestAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                  {patientTestAppointment.estimated_sample_collection_at
+                  ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
                 </span>
               )}
             </>
@@ -463,9 +467,12 @@ class TestAppointmentsList extends Component {
                 <span>--</span>
               ) : (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     patientTestAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                   {patientTestAppointment.estimated_result_uploading_at
+                  ? moment(patientTestAppointment.estimated_result_uploading_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
                 </span>
               )}
             </>
@@ -477,36 +484,21 @@ class TestAppointmentsList extends Component {
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
-              {patientTestAppointment.status == "Result Uploaded" &&
-              patientTestAppointment.result_type == "File" ? (
-                <Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL +
-                      patientTestAppointment.result,
-                  }}
-                  target="_blank"
+              {patientTestAppointment.status === "Result Uploaded" &&
+              (patientTestAppointment.result_type === "File" || patientTestAppointment.result_type === "Link") ? (
+                <button
+                  className="btn btn-link"
+                  onClick={() => this.downloadFile(process.env.REACT_APP_BACKENDURL + patientTestAppointment.result)}
                 >
-                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-                  Report
-                </Link>
-              ) : patientTestAppointment.status == "Result Uploaded" &&
-                patientTestAppointment.result_type == "Link" ? (
-                <Link
-                  to={{
-                    pathname: patientTestAppointment.url,
-                  }}
-                  target="_blank"
-                >
-                  <i className="mdi mdi-eye font-size-14" id="edittooltip"></i>{" "}
-                  Report
-                </Link>
+                  <i className="mdi mdi-download font-size-14" id="edittooltip"></i> Report
+                </button>
               ) : (
                 <span>--</span>
               )}
             </>
           ),
         },
+               
         {
           dataField: "collector_name",
           text: "Collector Detail",
@@ -575,24 +567,6 @@ class TestAppointmentsList extends Component {
               </span>
             )}
           </Tooltip>
-           
-            
-            {/* {patientTestAppointment.status == "Pending" && (
-            <Tooltip title="Cancel Appointment">
-             <Link
-            className="text-warning font-size-12"
-            to="#"
-            onClick={e =>
-              this.opencancelModal(
-                e,
-                patientTestAppointment
-              )
-            }
-          >
-            <i className="bx bx-no-entry font-size-14"></i>
-            </Link>
-            </Tooltip> 
-           )}  */}
             <Link className="text-success" to="#">
               <Tooltip title="Reschedual Appoitment Info">
                 <i
@@ -603,12 +577,20 @@ class TestAppointmentsList extends Component {
                 ></i>
               </Tooltip>
             </Link>
-              <Tooltip title="Invoice">
+            <Tooltip title="Invoice">
+              {patientTestAppointment.payment_status == "Not Paid" ? (
+                <Link
+                  className="mdi mdi-receipt font-size-18"
+                  to={`/appointment-detail/${patientTestAppointment.id}`}
+                ></Link>
+              ) : (
                 <Link
                   className="mdi mdi-receipt font-size-18"
                   to={`/invoice-detail/${patientTestAppointment.id}`}
                 ></Link>
-              </Tooltip>
+              )}
+            </Tooltip>
+
           </div>
             </>
           ),
@@ -667,7 +649,22 @@ class TestAppointmentsList extends Component {
       // patient_phone: arg.patient_phone,
     });
   };
+// Add this method to your class component
+downloadFile = async (url) => {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
 
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'report';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error('Error downloading file:', error);
+  }
+}
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -915,9 +912,9 @@ class TestAppointmentsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={new Date(
-                                                        this.state.booked_at
-                                                      ).toLocaleString("en-US")}
+                                                      value={this.state.booked_at
+                                                        ? moment(this.state.booked_at).format("DD MMM YYYY, h:mm A")
+                                                        : "--"}
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -932,9 +929,10 @@ class TestAppointmentsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={new Date(
-                                                        this.state.appointment_requested_at
-                                                      ).toLocaleString("en-US")}
+                                                      value={this.state.appointment_requested_at
+                                                        ? moment(this.state.appointment_requested_at).format("DD MMM YYYY, h:mm A")
+                                                        : "--"}
+                                                      
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -980,23 +978,7 @@ class TestAppointmentsList extends Component {
                                                     />
                                                   </div>
                                                 </div> */}
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                    Reschedule Reason
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.reschedule_reason
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
+                                                
                                                 {this.state
                                                     .reschedule_reason ==
                                                     "Other" &&
@@ -1044,11 +1026,10 @@ class TestAppointmentsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state.rescheduled_at !== null
-                                                          ? new Date(this.state.rescheduled_at).toLocaleString('en-US')
-                                                          : null
-                                                      }
+                                                      value={this.state.rescheduled_at
+                                                        ? moment(this.state.rescheduled_at).format("DD MMM YYYY, h:mm A")
+                                                        : "--"}
+                                                      
                                                       className="form-control"
                                                       readOnly={true}
                                                     />

@@ -532,7 +532,7 @@ class Checkout extends Component {
     // });
     flatpickr("#flatpickrInput", {
       enableTime: false,
-      dateFormat: "Y-m-d", // Use "Y-m-d" to include only the date
+      dateFormat: "d-m-Y", // Use "Y-m-d" to include only the date
       minDate: new Date().toISOString().split("T")[0], // Set minimum date to today
       onChange: (selectedDates, dateStr, instance) => {
         // Get current time
@@ -1276,7 +1276,7 @@ class Checkout extends Component {
                                   </FormGroup> */}
                                   <div className="form-group row">
                                     <label className="col-md-2" htmlFor="flatpickrInput">
-                                      Please select a suitable date and time for the appointment?{' '}
+                                      Select a date for the appointment?{' '}
                                       <span style={{ color: '#f46a6a' }} className="font-size-18">
                                         *
                                       </span>
@@ -1288,14 +1288,14 @@ class Checkout extends Component {
                                           name="appointment_requested_at"
                                           type="text"
                                           className="form-control"
-                                          placeholder="Please Select the Date on which you want to book an Appointment"
+                                          placeholder="Select the date on which you would like to book an appointment"
                                         />
                                       </div>
                                       <small className="text-danger">
                                         <strong>
                                           <span className="text-danger">Note:</span>
                                         </strong>{' '}
-                                        <strong>You will receive a Confirmation Email for this time when the Lab confirms.</strong>
+                                        <strong>Once the lab confirms, you will receive a confirmation email for this time.</strong>
                                       </small>
                                     </Col>
                                   </div>
@@ -1540,7 +1540,7 @@ class Checkout extends Component {
                             <div className="container">
                               <div className="row">
                                 <div className="col-md-12">
-                                  <CardTitle className="h4">Tests and Home Sampling Information</CardTitle>
+                                  <CardTitle className="h4">Home Sampling Information for Tests.</CardTitle>
                                   <span className="text-danger font-size-12">
                                     <strong><span className="text-danger">Note:</span></strong> <strong>
                                       Please choose if you want to avail Routine / Urgent Home Sampling services for the following tests
@@ -1693,6 +1693,61 @@ class Checkout extends Component {
                                           )}
                                         </Col>
                                       </FormGroup>
+                                      <FormGroup className="mb-4" row>
+                                      <Col md="2"></Col>
+                                     <Col md="10">
+                                    <Card className="bg-primary bg-soft rounded" >
+                                      {this.state.homeSampledTests.map((homeSampledTest, key) => {
+                                        if (homeSampledTest.state_sampling_charges && homeSampledTest.state_sampling_time) {
+                                          return (
+                                            <div key={"homeSampledTest" + key}>
+                                              <div className="row font-size-12" style={{ margin: '5px' }}>
+                                                <Col sm="4" >
+                                                  <span className="text-primary">Lab Name: </span>
+                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                    {homeSampledTest.lab_name}
+                                                  </span></Col>
+                                                <Col sm="4" >
+                                                  <span className="text-primary">Urgent Sampling Time: </span>
+                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                    {homeSampledTest.state_sampling_time}h
+                                                  </span></Col>
+                                                <Col sm="4" >
+                                                  <span className="text-primary">Urgent Sampling Charges : </span>
+                                                  <span className="badge rounded-pill badge-soft-warning font-size-16 badge-soft-warning blinking-text">
+                                                    {homeSampledTest.state_sampling_charges}
+                                                  </span></Col>
+
+                                                <style>
+                                                  {`
+                                                  .blinking-text {
+                                                    animation: blinking 1s infinite;
+                                                    color: red; /* Your desired text color */
+                                                    background-color: black; /* Your desired background color */
+                                                  }
+
+                                                  @keyframes blinking {
+                                                    0% {
+                                                      opacity: 1;
+                                                    }
+                                                    50% {
+                                                      opacity: 0;
+                                                    }
+                                                    100% {
+                                                      opacity: 1;
+                                                    }
+                                                  }
+                                                `}
+                                                </style>
+                                              </div>
+                                            </div>
+                                          );
+                                        } else {
+                                          return null; // Skip rendering if sampling charges and fees are missing
+                                        }
+                                      })}
+                                    </Card></Col>
+                                    </FormGroup>
                                     </>
 
                                   )}

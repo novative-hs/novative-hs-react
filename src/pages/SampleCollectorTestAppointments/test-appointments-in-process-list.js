@@ -4,6 +4,7 @@ import Select from "react-select";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
 
 import {
   Card,
@@ -127,9 +128,12 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-                {new Date(
+                {/* {new Date(
                   testAppointment.estimated_sample_collection_at
-                ).toLocaleString("en-US")}
+                ).toLocaleString("en-US")} */}
+                {testAppointment.estimated_sample_collection_at
+                  ? moment(testAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
               </span>
             </>
           ),
@@ -720,7 +724,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                         />
                                                       </div>
                                                       <Label className="form-label">
-                                                        Yes! I Collected the Due Amount from Patient
+                                                        Yes, I have collected the due amount from the patient.
                                                       </Label> 
                                                     
                                                       <input
@@ -870,7 +874,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                     
                                                       <div className="mb-3">
                                                       <Label className="form-label">
-                                                        Yes! I Collected the Due Amount from Patient
+                                                        Yes, I have collected the due amount from the patient.
                                                       </Label> 
                                                     
                                                       <input
@@ -918,12 +922,12 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                                         />
                                                       </div>
 
-                                                      <div>
+                                                      <div className="mt-2">
                                                       <Label className="form-label">
-                                                       <b> Yes! I Collected the Due Amount from Patient </b>
+                                                       <b> Yes, I have collected the due amount from the patient. </b>
                                                       </Label> 
                                                     
-                                                      <input
+                                                      <input style={{marginLeft: "20px"}}
                                                        name="is_exact_amount_collected"
                                                        type="checkbox"
                                                        required= {true}

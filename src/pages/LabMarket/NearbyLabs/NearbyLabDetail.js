@@ -662,7 +662,7 @@ class NearbyLabDetail extends Component {
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
-                                            alert("Tests not yet entered!");
+                                            alert("Tests have not been entered yet!");
 
                                           }}
                                           // Add any other button styling or attributes as needed
@@ -929,7 +929,7 @@ class NearbyLabDetail extends Component {
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
-                                            alert("Tests not yet entered!");
+                                            alert("Tests have not been entered yet!");
 
                                           }}
                                           // Add any other button styling or attributes as needed
@@ -1196,7 +1196,7 @@ class NearbyLabDetail extends Component {
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
-                                            alert("Tests not yet entered!");
+                                            alert("Tests have not been entered yet!");
 
                                           }}
                                           // Add any other button styling or attributes as needed
@@ -1463,7 +1463,7 @@ class NearbyLabDetail extends Component {
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
-                                            alert("Tests not yet entered!");
+                                            alert("Tests have not been entered yet!");
 
                                           }}
                                           // Add any other button styling or attributes as needed
@@ -2056,7 +2056,7 @@ class NearbyLabDetail extends Component {
                                   <button
                                     onClick={() => {
                                       // Add the logic you want to execute when the button is clicked
-                                      alert("Tests not yet entered!");
+                                      alert("Tests have not been entered yet!");
 
                                     }}
                                     // Add any other button styling or attributes as needed

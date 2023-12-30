@@ -127,7 +127,7 @@ const Footer = () => {
                     `/register/`
                   }
                 >
-                  Become a Lab
+                  Register Your Lab
                 </Link>
               </div>
               <div className="mb-2">

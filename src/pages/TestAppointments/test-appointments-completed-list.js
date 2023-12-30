@@ -7,8 +7,7 @@ import { Card, CardBody, Col, Container, Row, Modal, Label, ModalBody, ModalHead
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Tooltip from "@material-ui/core/Tooltip";
 import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
-
-
+import moment from 'moment';
 
 import paginationFactory, {
   PaginationProvider,
@@ -140,9 +139,12 @@ class TestAppointmentsCompletedList extends Component {
                 <span>Not available yet</span>
               ) : (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     patientTestAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                 {patientTestAppointment.estimated_sample_collection_at
+                  ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
                 </span>
               )}
             </>
@@ -161,9 +163,13 @@ class TestAppointmentsCompletedList extends Component {
                 <span>----</span>
               ) : (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     patientTestAppointment.sample_collected_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                  {patientTestAppointment.sample_collected_at
+                  ? moment(patientTestAppointment.sample_collected_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
+
                 </span>
               )}
             </>
@@ -302,9 +308,12 @@ class TestAppointmentsCompletedList extends Component {
 
               {testAppointment.status != "Pending" ? (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     testAppointment.estimated_result_uploading_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                  {testAppointment.estimated_result_uploading_at
+                  ? moment(testAppointment.estimated_result_uploading_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
                 </span>
               ) : null}
             </>

@@ -6,6 +6,7 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import moment from 'moment';
 
 import {
   Alert,
@@ -136,7 +137,7 @@ class TestAppointmentsInProcessList extends Component {
         
         {
           dataField: "is_home_sampling_availed",
-          text: "Home sampling / Urgent Sampling",
+          text: "Home sampling",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
@@ -167,9 +168,12 @@ class TestAppointmentsInProcessList extends Component {
                 <span>Not available yet</span>
               ) : (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     patientTestAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")}
+                  ).toLocaleString("en-US")} */}
+                   {patientTestAppointment.estimated_sample_collection_at
+                  ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
                 </span>
               )}
             </>
@@ -188,10 +192,13 @@ class TestAppointmentsInProcessList extends Component {
                 <span>----</span>
               ) : (
                 <span>
-                  {new Date(
+                  {/* {new Date(
                     patientTestAppointment.sample_collected_at
-                  ).toLocaleString("en-US")}
-                </span>
+                  ).toLocaleString("en-US")} */}
+                  {patientTestAppointment.sample_collected_at
+                  ? moment(patientTestAppointment.sample_collected_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
+\                </span>
               )}
             </>
           ), filter: textFilter(),

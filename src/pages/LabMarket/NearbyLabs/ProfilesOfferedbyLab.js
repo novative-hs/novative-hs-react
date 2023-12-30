@@ -1442,7 +1442,7 @@ class TestsOffered extends Component {
                     </Col>
                 ))
               ) : 
-              loading && !isEmpty(this.props.offeredTests) ? (
+              isEmpty(this.props.offeredTests) && loading ? (
                 // Loading state
                 <Row>
                   <Col lg="12">
@@ -1451,16 +1451,15 @@ class TestsOffered extends Component {
                     </div>
                   </Col>
                 </Row>
-              ) : !loading && isEmpty(this.props.offeredTests) ? (
-                // No results found
+              ) : (
                 <Row>
                   <Col lg="12">
                     <div className="mb-5" style={{ fontSize: "24px", color: "red" }}>
-                      Sorry No Result Found.....
+                    Sorry, No tests were found at your specified lab.....
                     </div>
                   </Col>
                 </Row>
-              ) : null
+              )
               }
 
               {/* <Row>
