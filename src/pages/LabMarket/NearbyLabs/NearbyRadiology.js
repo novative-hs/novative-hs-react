@@ -53,6 +53,7 @@ import "./nearbylabs.scss";
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
 import { getLabNamesList } from "store/lab-names/actions";
+import { getCarts } from "store/carts/actions";
 
 class nearbyRadiology extends Component {
   constructor(props) {
@@ -70,6 +71,7 @@ class nearbyRadiology extends Component {
       territoriesList: [],
       Radiology: [],
       labNamesList: [],
+      carts: [],
       name: "",
       activeTab: "1",
       address: "",
@@ -107,6 +109,11 @@ class nearbyRadiology extends Component {
   }
 
   componentDidMount() {
+    const { carts, onGetCarts } = this.props;
+    onGetCarts(this.state.user_id);
+    this.setState({
+      carts
+    });
     const {
       onGetNearbyRadiology,
     } = this.props;
@@ -1072,6 +1079,9 @@ shouldHighlightTestsLink() {
   return currentURL.includes('/nearby-radiology/');
 }
   render() {
+    const { onGetCarts } = this.props;
+
+    const { carts } = this.props;
     const { search_type } = this.state;
     let borderColor = '2px solid blue'; // Default border color
 
@@ -2603,7 +2613,7 @@ shouldHighlightTestsLink() {
                                 {nearbyRadiology.duration_type}
                               </span>
                             </div> */}
-                            <Button
+                            {/* <Button
   type="button"
   color={this.state.itemsInCart.includes(nearbyRadiology) ? 'secondary' : 'primary'}
   className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyRadiology) ? ' disabled' : ''}`}
@@ -2611,6 +2621,24 @@ shouldHighlightTestsLink() {
   disabled={this.state.itemsInCart.includes(nearbyRadiology)} // Disable the button if the item is in the cart
 >
   <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyRadiology) ? 'Already Added' : 'Add to cart'}
+</Button> */}
+<Button
+  type="button"
+  color={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyRadiology.id) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyRadiology.id) ? ' disabled' : ''}`}
+  // onClick={() => this.handleAddToCart(nearbyRadiology)}
+  onClick={() => {
+    // Check if nearbyRadiology.name is equal to any cartItem.name
+    if (this.props.carts.some(cartItem => cartItem.test_name === nearbyRadiology.test_name)) {
+      alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
+    } else {
+      // If not, proceed with adding to the cart
+      this.handleAddToCart(nearbyRadiology);
+    }
+  }}
+  disabled={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyRadiology.id)}
+>
+  <i className="bx bx-cart me-2" /> {this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyRadiology.id) ? 'Already Added' : 'Add to cart'}
 </Button>
                           </div>
                         </CardBody>
@@ -2715,6 +2743,8 @@ nearbyRadiology.propTypes = {
   territoriesList: PropTypes.array,
   onGetLabNamesList: PropTypes.func,
   labNamesList: PropTypes.array,
+  carts: PropTypes.any,
+  onGetCarts: PropTypes.func,
 };
 
 const mapStateToProps = ({ RadiologyMarket, carts, labNamesList }) => ({
@@ -2724,6 +2754,8 @@ const mapStateToProps = ({ RadiologyMarket, carts, labNamesList }) => ({
   error: carts.error,
   territoriesList: RadiologyMarket.territoriesList,
   labNamesList: labNamesList.labNamesList,
+  carts: carts.carts,
+
 
 });
 
@@ -2733,6 +2765,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetRadiology: id => dispatch(getRadiology(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
   onGetLabNamesList: id => dispatch(getLabNamesList(id)),
+  onGetCarts: id => dispatch(getCarts(id)),
 
 });
 

@@ -55,6 +55,7 @@ import "./nearbylabs.scss";
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
 import { getLabNamesList } from "store/lab-names/actions";
+import { getCarts } from "store/carts/actions";
 
 
 class NearbyTests extends Component {
@@ -72,6 +73,7 @@ class NearbyTests extends Component {
       nearbyTests: [],
       Testss: [],
       advertisementLives: [],
+      carts: [],
       territoriesList: [],
       labNamesList: [],
       advertisementLive: "",
@@ -114,6 +116,15 @@ class NearbyTests extends Component {
 
 
   componentDidMount() {
+    const { carts, onGetCarts } = this.props;
+    onGetCarts(this.state.user_id);
+    this.setState({
+      carts
+    });
+    console.log("this.props.carts:", this.props.carts);
+    console.log("Color:", (this.state.itemsInCart.some(item => item.id === this.props.carts.offered_test_id) ? 'secondary' : 'primary'));
+    console.log("offered_test_id:", this.props.carts.offered_test_id);
+  
     const {
       onGetNearbyTests,
     } = this.props;
@@ -656,7 +667,6 @@ class NearbyTests extends Component {
     }, 1000);
   };
   
-
   onChangeAddress = e => {
     // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
     var cityBounds = new google.maps.LatLngBounds(
@@ -822,7 +832,6 @@ class NearbyTests extends Component {
     }
   };
 
-
   onChangeCity = selectedGroup => {
     this.setState({ city: selectedGroup.value });
 
@@ -956,8 +965,8 @@ class NearbyTests extends Component {
     // Update the state to include the newly added item in the cart
     const updatedItemsInCart = [...this.state.itemsInCart, cart];
     this.setState({ itemsInCart: updatedItemsInCart });
-
-    this.showSuccessMessage("Item added Successfully");
+    console.log("itemsInCart:", this.state.itemsInCart);
+        this.showSuccessMessage("Item added Successfully");
   };
 
 
@@ -1082,6 +1091,10 @@ class NearbyTests extends Component {
     return currentURL.includes('/nearby-test/');
   }
   render() {
+    const { onGetCarts } = this.props;
+
+    const { carts } = this.props;
+
     const { search_type } = this.state;
     let borderColor = '2px solid blue'; // Default border color
 
@@ -2559,14 +2572,34 @@ class NearbyTests extends Component {
                               )}
                             </div>
                             <Button
-                              type="button"
-                              color={this.state.itemsInCart.includes(nearbyTest) ? 'secondary' : 'primary'}
-                              className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyTest) ? ' disabled' : ''}`}
-                              onClick={() => this.handleAddToCart(nearbyTest)}
-                              disabled={this.state.itemsInCart.includes(nearbyTest)} // Disable the button if the item is in the cart
-                            >
-                              <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyTest) ? 'Already Added' : 'Add to cart'}
-                            </Button>
+  type="button"
+  color={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id) ? ' disabled' : ''}`}
+  // onClick={() => this.handleAddToCart(nearbyTest)}
+  onClick={() => {
+    // Check if nearbyTest.name is equal to any cartItem.name
+    if (this.props.carts.some(cartItem => cartItem.test_name === nearbyTest.test_name)) {
+      alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
+    } else {
+      // If not, proceed with adding to the cart
+      this.handleAddToCart(nearbyTest);
+    }
+  }}
+  disabled={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id)}
+>
+  <i className="bx bx-cart me-2" /> {this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id) ? 'Already Added' : 'Add to cart'}
+</Button>
+
+                            {/* <Button
+  type="button"
+  color={this.state.itemsInCart.includes(this.props.carts) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.state.itemsInCart.includes(this.props.carts) ? ' disabled' : ''}`}
+  onClick={() => this.handleAddToCart(nearbyTest)}
+  disabled={this.state.itemsInCart.includes(this.props.carts)} // Disable the button if the item is in the cart
+>
+  <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(this.props.carts) ? 'Already Added' : 'Add to cart'}
+</Button> */}
+
                           </div>
                         </CardBody>
                       </Card>
@@ -2656,7 +2689,8 @@ NearbyTests.propTypes = {
   Testss: PropTypes.array,
   onGetLabNamesList: PropTypes.func,
   labNamesList: PropTypes.array,
-
+  carts: PropTypes.any,
+  onGetCarts: PropTypes.func,
 };
 
 const mapStateToProps = ({ TestMarket, carts, advertisementLives, ProfileMarket, labNamesList }) => ({
@@ -2669,7 +2703,7 @@ const mapStateToProps = ({ TestMarket, carts, advertisementLives, ProfileMarket,
   // onGetLabNamesList: PropTypes.func,
   // labNamesList: PropTypes.array,
   labNamesList: labNamesList.labNamesList,
-
+  carts: carts.carts,
 
 });
 // const mapStateToProps = ({ nearbyTests }) => ({
@@ -2683,7 +2717,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
   onGetTestss: id => dispatch(getTestss(id)),
   onGetLabNamesList: id => dispatch(getLabNamesList(id)),
-
+  onGetCarts: id => dispatch(getCarts(id)),
 
 });
 

@@ -47,6 +47,8 @@ import { any } from "prop-types";
 
 import { getOfferedPackagesReferrel } from "store/offered-tests/actions";
 import { addToCart } from "store/actions";
+import { getCarts } from "store/carts/actions";
+
 
 class TestsOffered extends Component {
   constructor(props) {
@@ -84,6 +86,11 @@ class TestsOffered extends Component {
   }
 
   componentDidMount() {
+    const { carts, onGetCarts } = this.props;
+    onGetCarts(this.state.user_id);
+    this.setState({
+      carts
+    });
     const { ongetOfferedTestsReferrel } = this.props;
     if (this.state.applied) {
       ongetOfferedTestsReferrel();
@@ -349,6 +356,7 @@ class TestsOffered extends Component {
   };
 
   render() {
+    const { onGetCarts } = this.props;
     const { loading } = this.state;
     const isLargeScreen = window.innerWidth < 490;
 
@@ -1430,7 +1438,7 @@ class TestsOffered extends Component {
                             {offeredTest.lab_name}
                           </span> */}
                         </div>
-                        <Button
+                        {/* <Button
   type="button"
   color={this.state.itemsInCart.includes(offeredTest) ? 'secondary' : 'primary'}
   className={`btn mt-3 me-1${this.state.itemsInCart.includes(offeredTest) ? ' disabled' : ''}`}
@@ -1438,6 +1446,24 @@ class TestsOffered extends Component {
   disabled={this.state.itemsInCart.includes(offeredTest)} // Disable the button if the item is in the cart
 >
   <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(offeredTest) ? 'Already Added' : 'Add to cart'}
+</Button> */}
+<Button
+  type="button"
+  color={this.props.carts.some(cartItem => cartItem.offered_test_id === offeredTest.id) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.props.carts.some(cartItem => cartItem.offered_test_id === offeredTest.id) ? ' disabled' : ''}`}
+  // onClick={() => this.handleAddToCart(offeredTest)}
+  onClick={() => {
+    // Check if offeredTest.name is equal to any cartItem.name
+    if (this.props.carts.some(cartItem => cartItem.test_name === offeredTest.test_name)) {
+      alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
+    } else {
+      // If not, proceed with adding to the cart
+      this.handleAddToCart(offeredTest);
+    }
+  }}
+  disabled={this.props.carts.some(cartItem => cartItem.offered_test_id === offeredTest.id)}
+>
+  <i className="bx bx-cart me-2" /> {this.props.carts.some(cartItem => cartItem.offered_test_id === offeredTest.id) ? 'Already Added' : 'Add to cart'}
 </Button>
                       </div>
                     </CardBody>
@@ -1513,9 +1539,10 @@ TestsOffered.propTypes = {
   success: PropTypes.any,
   error: PropTypes.any,
   className: PropTypes.any,
-  carts: PropTypes.array,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  carts: PropTypes.any,
+  onGetCarts: PropTypes.func,
 };
 
 const mapStateToProps = ({ offeredTests, carts }) => ({
@@ -1529,6 +1556,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   ongetOfferedTestsReferrel: () =>
     dispatch(getOfferedPackagesReferrel(ownProps.match.params.lab_account_id)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
+  onGetCarts: id => dispatch(getCarts(id)),
+
 });
 
 export default connect(

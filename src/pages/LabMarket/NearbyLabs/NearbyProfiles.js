@@ -53,6 +53,7 @@ import "./nearbylabs.scss";
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
 import { getLabNamesList } from "store/lab-names/actions";
+import { getCarts } from "store/carts/actions";
 
 
 class NearbyProfiles extends Component {
@@ -71,6 +72,7 @@ class NearbyProfiles extends Component {
       nearbyProfiles: [],
       territoriesList: [],
       labNamesList: [],
+      carts: [],
       name: "",
       activeTab: "1",
       address: "",
@@ -107,6 +109,14 @@ class NearbyProfiles extends Component {
   }
 
   componentDidMount() {
+    const { carts, onGetCarts } = this.props;
+    onGetCarts(this.state.user_id);
+    this.setState({
+      carts
+    });
+    console.log("this.props.carts:", this.props.carts);
+    console.log("Color:", (this.state.itemsInCart.some(item => item.id === this.props.carts.offered_test_id) ? 'secondary' : 'primary'));
+    console.log("offered_test_id:", this.props.carts.offered_test_id);
     const {
       onGetNearbyProfiles,
     } = this.props;
@@ -1105,6 +1115,9 @@ shouldHighlightTestsLink() {
 }
 
   render() {
+    const { onGetCarts } = this.props;
+
+    const { carts } = this.props;
     const { search_type } = this.state;
     let borderColor = '2px solid blue'; // Default border color
 
@@ -2587,7 +2600,7 @@ shouldHighlightTestsLink() {
                                 starSpacing="3px"
                               />
                             </div>
-                            <Button
+                            {/* <Button
   type="button"
   color={this.state.itemsInCart.includes(nearbyProfile) ? 'secondary' : 'primary'}
   className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyProfile) ? ' disabled' : ''}`}
@@ -2595,6 +2608,24 @@ shouldHighlightTestsLink() {
   disabled={this.state.itemsInCart.includes(nearbyProfile)} // Disable the button if the item is in the cart
 >
   <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyProfile) ? 'Already Added' : 'Add to cart'}
+</Button> */}
+<Button
+  type="button"
+  color={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyProfile.id) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyProfile.id) ? ' disabled' : ''}`}
+  // onClick={() => this.handleAddToCart(nearbyProfile)}
+  onClick={() => {
+    // Check if nearbyProfile.name is equal to any cartItem.name
+    if (this.props.carts.some(cartItem => cartItem.test_name === nearbyProfile.test_name)) {
+      alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
+    } else {
+      // If not, proceed with adding to the cart
+      this.handleAddToCart(nearbyProfile);
+    }
+  }}
+  disabled={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyProfile.id)}
+>
+  <i className="bx bx-cart me-2" /> {this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyProfile.id) ? 'Already Added' : 'Add to cart'}
 </Button>
                           </div>
                         </CardBody>
@@ -2686,6 +2717,8 @@ NearbyProfiles.propTypes = {
   territoriesList: PropTypes.array,
   onGetLabNamesList: PropTypes.func,
   labNamesList: PropTypes.array,
+  carts: PropTypes.any,
+  onGetCarts: PropTypes.func,
 };
 
 const mapStateToProps = ({ ProfileMarket, carts, labNamesList }) => ({
@@ -2695,6 +2728,7 @@ const mapStateToProps = ({ ProfileMarket, carts, labNamesList }) => ({
   error: carts.error,
   territoriesList: ProfileMarket.territoriesList,
   labNamesList: labNamesList.labNamesList,
+  carts: carts.carts,
 
 });
 // const mapStateToProps = ({ nearbyProfiles }) => ({
@@ -2707,6 +2741,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetProfiles: id => dispatch(getProfiles(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
   onGetLabNamesList: id => dispatch(getLabNamesList(id)),
+  onGetCarts: id => dispatch(getCarts(id)),
 
 });
 

@@ -54,7 +54,7 @@ import "./nearbylabs.scss";
 
 import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
-
+import { getCarts } from "store/carts/actions";
 
 class NearbyTests extends Component {
   constructor(props) {
@@ -70,6 +70,7 @@ class NearbyTests extends Component {
       ratingvalues: [],
       nearbyTests: [],
       advertisementLives: [],
+      carts: [],
       advertisementLive: "",
       activeTab: "1",
       address: "",
@@ -106,6 +107,11 @@ class NearbyTests extends Component {
   }
 
   componentDidMount() {
+    const { carts, onGetCarts } = this.props;
+    onGetCarts(this.state.user_id);
+    this.setState({
+      carts
+    });
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
@@ -739,6 +745,9 @@ class NearbyTests extends Component {
     };
 
   render() {
+    const { onGetCarts } = this.props;
+
+    const { carts } = this.props;
     const totalPage = !isEmpty(this.props.nearbyTests) ? this.calculateTotalPage(this.props.nearbyTests) : 1;
     console.log("total pahe number", totalPage)
     const { loading } = this.state;
@@ -1861,7 +1870,7 @@ class NearbyTests extends Component {
                       )}
                             </div>
                           
-                            <Button
+                            {/* <Button
   type="button"
   color={this.state.itemsInCart.includes(nearbyTest) ? 'secondary' : 'primary'}
   className={`btn mt-3 me-1${this.state.itemsInCart.includes(nearbyTest) ? ' disabled' : ''}`}
@@ -1869,6 +1878,24 @@ class NearbyTests extends Component {
   disabled={this.state.itemsInCart.includes(nearbyTest)} // Disable the button if the item is in the cart
 >
   <i className="bx bx-cart me-2" /> {this.state.itemsInCart.includes(nearbyTest) ? 'Already Added' : 'Add to cart'}
+</Button> */}
+<Button
+  type="button"
+  color={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id) ? 'secondary' : 'primary'}
+  className={`btn mt-3 me-1${this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id) ? ' disabled' : ''}`}
+  // onClick={() => this.handleAddToCart(nearbyTest)}
+  onClick={() => {
+    // Check if nearbyTest.name is equal to any cartItem.name
+    if (this.props.carts.some(cartItem => cartItem.test_name === nearbyTest.test_name)) {
+      alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
+    } else {
+      // If not, proceed with adding to the cart
+      this.handleAddToCart(nearbyTest);
+    }
+  }}
+  disabled={this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id)}
+>
+  <i className="bx bx-cart me-2" /> {this.props.carts.some(cartItem => cartItem.offered_test_id === nearbyTest.id) ? 'Already Added' : 'Add to cart'}
 </Button>
                           </div>
                         </CardBody>
@@ -1954,6 +1981,8 @@ NearbyTests.propTypes = {
   t: PropTypes.any,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  carts: PropTypes.any,
+  onGetCarts: PropTypes.func,
 };
 
 const mapStateToProps = ({ TestMarket, carts, advertisementLives }) => ({
@@ -1962,6 +1991,7 @@ const mapStateToProps = ({ TestMarket, carts, advertisementLives }) => ({
   error: carts.error,
   advertisementLives: advertisementLives.advertisementLives,
   territoriesList: TestMarket.territoriesList,
+  carts: carts.carts,
 
 });
 // const mapStateToProps = ({ nearbyTests }) => ({
@@ -1973,6 +2003,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetAdvertisementLives: id => dispatch(getAdvertisementLives(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetCarts: id => dispatch(getCarts(id)),
 
 });
 
