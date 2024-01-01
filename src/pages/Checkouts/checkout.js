@@ -532,7 +532,7 @@ class Checkout extends Component {
     // });
     flatpickr("#flatpickrInput", {
       enableTime: false,
-      dateFormat: "d-m-Y", // Use "Y-m-d" to include only the date
+      dateFormat: "Y-m-d", // Use "Y-m-d" to include only the date
       minDate: new Date().toISOString().split("T")[0], // Set minimum date to today
       onChange: (selectedDates, dateStr, instance) => {
         // Get current time
