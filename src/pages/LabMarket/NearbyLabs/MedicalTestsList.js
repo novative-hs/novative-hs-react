@@ -1349,7 +1349,7 @@ class MedicalTestList extends Component {
                               styles={{
                                 control: (provided, state) => ({
                                   ...provided,
-                                  border: '2px solid blue',
+                                  border: '2px solid green',
                                   borderRadius: '5px',
                                 }),
                                 // Add more style overrides as needed
@@ -1384,7 +1384,7 @@ class MedicalTestList extends Component {
                               // Add more style overrides as needed
                             }}
                           />
-                          <p className="text-danger">You may Select Single or Multiple Test to Book.</p>
+                          <p className="text-danger">You may Select Single or Multiple Tests to Book.</p>
                         </div>
 
                       </Col>
@@ -1406,10 +1406,10 @@ class MedicalTestList extends Component {
                             <th className="text-start">Reporting Time</th>
                             <th className="text-center">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
-                            <th className="text-center"> Discount in Rupees</th>
+                            <th className="text-center"> Discount</th>
                             <th className="text-center"> Price after Discount</th>
                             <th className="text-center">
-                              Total Price after Discount
+                            Net Payable
                             </th>
                             <th></th>
                           </tr>
@@ -1691,6 +1691,8 @@ class MedicalTestList extends Component {
                                         style={{
                                           backgroundColor: 'primary', // Primary color
                                           borderColor: 'primary', // Primary color
+                                          fontSize: '20px',
+
                                         }}
                                       >
                                         <i className="bx bx-cart me-2" /> {areAllTestIdsInCart ? 'Already Added' : 'Add to cart'}
@@ -1722,10 +1724,10 @@ class MedicalTestList extends Component {
                             <th className="text-start">Reporting Time</th>
                             <th className="text-center">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
-                            <th className="text-center"> Discount in Rupees</th>
+                            <th className="text-center"> Discount</th>
                             <th className="text-center"> Price after Discount</th>
                             <th className="text-center">
-                              Total Price after Discount
+                              Net Payable
                             </th>
                             <th></th>
                           </tr>
@@ -2007,6 +2009,7 @@ class MedicalTestList extends Component {
                                         style={{
                                           backgroundColor: 'primary', // Primary color
                                           borderColor: 'primary', // Primary color
+                                          fontSize: '20px',
                                         }}
                                       >
                                         <i className="bx bx-cart me-2" /> {areAllTestIdsInCart ? 'Already Added' : 'Add to cart'}
@@ -2039,10 +2042,10 @@ class MedicalTestList extends Component {
                             <th className="text-start">Reporting Time</th>
                             <th className="text-center">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
-                            <th className="text-center"> Discount in Rupees</th>
+                            <th className="text-center"> Discount</th>
                             <th className="text-center"> Price after Discount</th>
                             <th className="text-center">
-                              Total Price after Discount
+                            Net Payable
                             </th>
                             <th></th>
                           </tr>
