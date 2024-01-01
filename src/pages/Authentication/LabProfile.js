@@ -362,7 +362,7 @@ class LabProfile extends Component {
                         />
                       </div>
                       {/* Lab experience field */}
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <Label for="lab_experience" className="form-label">
                           Lab Experience (Years)
                         </Label>
@@ -386,7 +386,7 @@ class LabProfile extends Component {
                           component="div"
                           className="invalid-feedback"
                         />
-                      </div>
+                      </div> */}
                       {/* Email field */}
                       <div className="mb-3">
                         <Label for="email" className="form-label">

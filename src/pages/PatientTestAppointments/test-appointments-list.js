@@ -821,8 +821,14 @@ downloadFile = async (url) => {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Test Appointments" breadcrumbItem=" List" />
+            <Breadcrumbs title="Test Appointments" breadcrumbItem="Test Appointments List" />
             <Row>
+            <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: If you want to reschedule your appointment, please call the Lab.
+                  </strong>
+                  </span>
+                </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -961,7 +967,7 @@ downloadFile = async (url) => {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                {/* <div className="mb-3 row">
+                                                <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
                                                     reschedule_reason
@@ -977,7 +983,7 @@ downloadFile = async (url) => {
                                                       readOnly={true}
                                                     />
                                                   </div>
-                                                </div> */}
+                                                </div>
                                                 
                                                 {this.state
                                                     .reschedule_reason ==

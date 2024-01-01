@@ -599,6 +599,7 @@ export const addNewQualityCertificate = (qualityCertificate, id) => {
   formData.append("type", qualityCertificate.type);
   formData.append("certificate", qualityCertificate.certificate);
   formData.append("certificate_type", qualityCertificate.certificate_type);
+  formData.append("sub_certificate_type", qualityCertificate.sub_certificate_type);
   formData.append("expiry_date", qualityCertificate.expiry_date);
   formData.append("start_date", qualityCertificate.start_date);
   formData.append("end_date", qualityCertificate.end_date);
@@ -894,6 +895,7 @@ export const updateLabSettings = (labSettings, id) => {
   formData.append("opening_day", labSettings.opening_day);
   formData.append("closing_day", labSettings.closing_day);
   formData.append("health_dept_certified", labSettings.health_dept_certified);
+  formData.append("lab_experience", labSettings.lab_experience);
   formData.append("registration_no", labSettings.registration_no);
   formData.append("license_no", labSettings.license_no);
   formData.append(

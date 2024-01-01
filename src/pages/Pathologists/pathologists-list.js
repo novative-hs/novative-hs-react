@@ -346,6 +346,8 @@ class PathologistsList extends Component {
               breadcrumbItem="Pathologists List"
             />
             <Row>
+            <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p>
+
               <Col lg="12">
                 <Card>
                   <CardBody>

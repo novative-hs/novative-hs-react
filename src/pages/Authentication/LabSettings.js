@@ -119,6 +119,7 @@ class LabSettings extends Component {
         complaint_handling_email: this.props.success.complaint_handling_email,
         complaint_handling_phone: this.props.success.complaint_handling_phone,
         registration_no: this.props.success.registration_no,
+        lab_experience: this.props.success.lab_experience,
         license_no: this.props.success.license_no,
         health_dept_certified: this.props.success.health_dept_certified,
         // is_iso_15189_certified: this.props.success.is_iso_15189_certified,
@@ -166,6 +167,8 @@ class LabSettings extends Component {
                       (this.state && this.state.state_sampling_time) || "",
                     registration_no:
                       (this.state && this.state.registration_no) || "",
+                    lab_experience:
+                      (this.state && this.state.lab_experience) || "",
                     license_no: (this.state && this.state.license_no) || "",
                     phone: (this.state && this.state.phone) || "",
                     type: (this.state && this.state.type) || "",
@@ -219,6 +222,14 @@ class LabSettings extends Component {
                       .email("Please enter valid email")
                       .max(255, "Please enter maximum 255 characters"),
                     complaint_handling_phone: Yup.string(),
+                    lab_experience: Yup.number("Please enter number only")
+                      .required("Please enter your lab experience")
+                      .positive()
+                      .integer()
+                      .min(
+                        0,
+                        "Please enter a number greater than or equal to 0"
+                      )
                     // .required(
                     //   "Please enter your complaint handling phone no."
                     // )
@@ -373,7 +384,7 @@ class LabSettings extends Component {
                                 htmlFor="opening_day"
                                 className="col-md-3 col-form-label"
                               >
-                               From
+                                From
                               </label>
                               <div className="col-md-9">
 
@@ -716,6 +727,31 @@ class LabSettings extends Component {
                           </div>
                         </div>
                       )}
+                      <div className="mb-3">
+                        <Label for="lab_experience" className="form-label">
+                          Lab Experience (Years)
+                        </Label>
+                        <Field
+                          id="lab_experience"
+                          name="lab_experience"
+                          type="number"
+                          onChange={e =>
+                            this.setState({ lab_experience: e.target.value })
+                          }
+                          value={this.state.lab_experience}
+                          className={
+                            "form-control" +
+                            (errors.lab_experience && touched.lab_experience
+                              ? " is-invalid"
+                              : "")
+                          }
+                        />
+                        <ErrorMessage
+                          name="lab_experience"
+                          component="div"
+                          className="invalid-feedback"
+                        />
+                      </div>
 
                       {/* Phone field */}
                       <div className="mb-3">
@@ -924,7 +960,8 @@ class LabSettings extends Component {
                         </Label>
                         <Field
                           name="type"
-                          component="select"
+                          // component="select"
+                          disabled // Set the disabled attribute to make it read-only
                           onChange={e =>
                             this.setState({
                               type: e.target.value,
@@ -933,12 +970,11 @@ class LabSettings extends Component {
                           value={this.state.type}
                           className="form-select"
                         >
-                          <option value="Main Lab">Main Lab</option>
-                          <option value="Collection Point">
-                            Collection Point
-                          </option>
+                          {/* <option value="Main Lab">Main Lab</option>
+    <option value="Collection Point">Collection Point</option> */}
                         </Field>
                       </div>
+
                       {/* Is Active */}
                       <div className="mb-3">
                         <Label for="is_active" className="form-label">

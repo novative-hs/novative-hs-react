@@ -553,6 +553,7 @@ class LabInformation extends Component {
                                       Collection Point
                                     </option>
                                   </Field>
+                                  <p className="text-danger">Note: once the lab type is selected (Main Lab / Collection Point) cannot be changed at any later stage.</p>
                                 </div>
 
                                 {/* Branch name field */}

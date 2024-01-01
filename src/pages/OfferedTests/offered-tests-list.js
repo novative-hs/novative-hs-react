@@ -1222,7 +1222,7 @@ class OfferedTestsList extends Component {
                     }
                     />
                       
-                        <b> Do you want to add your main labs tests as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the tests offered by your main lab with all the details will be added <br></br>this will not be undone, You can edit the test details only</b>
+                        <b> Do you want to add all tests of main lab as offered tests of this collection point? <br></br><strong className="text-primary">Note: </strong>Once marked all the tests of main lab will be added to the offered tests of this collection point. However you can update  the test details.<br></br>Such as reporting time, home sampling, is the test active. If main lab makes any change it will be updated in all collection points except the fields mentioned above.</b>
                     
                     </div>
                     </CardBody>
