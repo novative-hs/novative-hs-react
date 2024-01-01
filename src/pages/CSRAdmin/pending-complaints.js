@@ -55,6 +55,7 @@ class PendingComplaints extends Component {
       pendingComplaints: [],
       id: "",
       btnText: "Copy",
+      isUrgent: false, 
       assignedTo: "",
       PendingComplaints: "",
       pendingComplaint: "",
@@ -148,22 +149,22 @@ class PendingComplaints extends Component {
         //   sort: true,
         // },
       
-        {
-          dataField: "message",
-          text: "Message",
-          sort: true,
-          formatter: (cellContent, complaint) => (
-            <>
-              <Link to="#" 
-              // onClick={e => this.openMessageModal(e, complaint)}
-              onMouseEnter={e => this.openMessageModal(e, complaint)}
-              onPointerLeave={this.handleMouseExit()}
-              >
-                {complaint.message.slice(0, 10) + "..."}
-              </Link>{" "}
-            </>
-          ),
-        },
+        // {
+        //   dataField: "message",
+        //   text: "Message",
+        //   sort: true,
+        //   formatter: (cellContent, complaint) => (
+        //     <>
+        //       <Link to="#" 
+        //       // onClick={e => this.openMessageModal(e, complaint)}
+        //       onMouseEnter={e => this.openMessageModal(e, complaint)}
+        //       onPointerLeave={this.handleMouseExit()}
+        //       >
+        //         {complaint.message.slice(0, 10) + "..."}
+        //       </Link>{" "}
+        //     </>
+        //   ),
+        // },
        
         {
           dataField: "complainee",
@@ -578,6 +579,7 @@ class PendingComplaints extends Component {
                                             const data = {
                                               id: this.state.id,
                                               assignedTo: values.assignedTo,
+                                              is_it_urgent: this.state.isUrgent, // Include the checkbox value
                                             };
 
                                             // Assign complaint
@@ -764,6 +766,20 @@ class PendingComplaints extends Component {
                                                   </div>
                                                 )} 
                                                 </Col>
+                                                <Col className="col-12">
+                                              <div className="mb-3 form-check">
+                                                <label htmlFor="isUrgentCheckbox" className="form-check-label">
+                                                  This Complaint Requires Immediate Attention!
+                                                </label>
+                                                <input
+                                                  type="checkbox"
+                                                  id="isUrgentCheckbox"
+                                                  className="form-check-input"
+                                                  checked={this.state.isUrgent}
+                                                  onChange={(e) => this.setState({ isUrgent: e.target.checked })}
+                                                />
+                                              </div>
+                                            </Col>
                                               
                                               </Row>
                                             
