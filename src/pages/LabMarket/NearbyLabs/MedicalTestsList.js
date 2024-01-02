@@ -1421,7 +1421,7 @@ class MedicalTestList extends Component {
                           </tr>
                         </thead>
                         {!isEmpty(quotes) &&
-                          Array.isArray(quotes.top_lab_details_with_tests) &&
+                          Array.isArray(quotes.top_lab_details_with_tests) && quotes.top_lab_details_with_tests.length > 0 ?
                           quotes.top_lab_details_with_tests.map(
                             (referrelFeeLab, key) => (
                               <tr
@@ -1708,8 +1708,15 @@ class MedicalTestList extends Component {
                                 </td>
                               </tr>
                             )
+                          ): (
+                            <div className=" mt-4" >
+                            <h4 className="text-primary" style={{fontSize: "18px"}}>
+    &quot;Labhazir will only show labs that offer All the tests you&lsquo;ve selected.&quot;
+</h4>
+
+                          </div>
                           )}
-                        {isEmpty(quotes) && (
+                        {/* {isEmpty(quotes) && (
                           <Row style={{ background: 'transparent' }}>
                             <div className=" mt-4" >
                               <h4 className="text-uppercase">
@@ -1717,7 +1724,7 @@ class MedicalTestList extends Component {
                               </h4>
                             </div>
                           </Row>
-                        )}
+                        )} */}
                       </Table>
                     </div>
                   ) : isFilterApplied2 ? (
@@ -1739,7 +1746,7 @@ class MedicalTestList extends Component {
                           </tr>
                         </thead>
                         {!isEmpty(quotes) &&
-                          Array.isArray(quotes.top_lab_details_with_tests) &&
+                          Array.isArray(quotes.top_lab_details_with_tests) && quotes.top_lab_details_with_tests.length > 0 ?
                           quotes.top_lab_details_with_tests.map(
                             (referrelFeeLab, key) => (
                               <tr
@@ -2025,13 +2032,20 @@ class MedicalTestList extends Component {
                                 </td>
                               </tr>
                             )
+                          ):(
+                            <div className=" mt-4" >
+                            <h4 className="text-primary" style={{fontSize: "18px"}}>
+    &quot;Labhazir will only show labs that offer All the tests you&lsquo;ve selected.&quot;
+</h4>
+
+                          </div>
                           )}
                         {isEmpty(quotes) && (
                           <Row style={{ background: 'transparent' }}>
                             <div className=" mt-4" >
-                              <h4 className="text-uppercase">
-                              Labhazir will only show labs offering All selected tests.
-                              </h4>
+                            <h4 className="text-primary" style={{fontSize: "18px"}}>
+    &quot;Labhazir will only show labs that offer all the tests you&lsquo;ve selected.&quot;
+</h4>
                             </div>
                           </Row>
                         )}
@@ -2057,7 +2071,7 @@ class MedicalTestList extends Component {
                           </tr>
                         </thead>
                         <div className="mt-4">
-                          <h4 className="text-primary">
+                          <h4 className="text-primary" style={{fontSize: "18px"}}>
                             Select Your Location or City and Test Names to book an appointment.
                           </h4>
                         </div>
