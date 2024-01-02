@@ -273,12 +273,12 @@ class CSRsList extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </Col>
                               </Row>

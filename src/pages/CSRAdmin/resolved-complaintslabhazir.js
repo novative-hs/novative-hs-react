@@ -84,6 +84,12 @@ class ResolvedComplaintsLabhazir extends Component {
           ),filter: textFilter(),
         },
         {
+          dataField: "complainant",
+          text: "Complaint From",
+          sort: true,
+          filter: textFilter(),
+        },
+        {
           dataField: "name",
           text: "Name",
           sort: true,
@@ -99,6 +105,18 @@ class ResolvedComplaintsLabhazir extends Component {
                    {resolvedComplaintLabhazir.name}
                   </Link>
               </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "complainee",
+          text: "Complaint Against",
+          sort: true,
+          formatter: (cellContent, resolvedComplaintLabhazir) => (
+            <>
+                  {/* {resolvedComplaintLabhazir.complainee},{" "} */}
+                  {resolvedComplaintLabhazir.labhazir_complainee}{" "}
+                  {resolvedComplaintLabhazir.lab_name}
             </>
           ),filter: textFilter(),
         },
@@ -147,24 +165,8 @@ class ResolvedComplaintsLabhazir extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "complainant",
-          text: "Complaint From",
-          sort: true,
-          filter: textFilter(),
-        },
-        {
-          dataField: "complainee",
-          text: "Complaint Against",
-          sort: true,
-          formatter: (cellContent, resolvedComplaintLabhazir) => (
-            <>
-                  {/* {resolvedComplaintLabhazir.complainee},{" "} */}
-                  {resolvedComplaintLabhazir.labhazir_complainee}{" "}
-                  {resolvedComplaintLabhazir.lab_name}
-            </>
-          ),filter: textFilter(),
-        },
+
+       
         {
           dataField: "handled_at",
           text: "Handled at",
@@ -362,12 +364,12 @@ class ResolvedComplaintsLabhazir extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Resolved Complaints | Complaint Hazir</title>
+            <title>Closed Complaints | Complaint Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Complaints" breadcrumbItem="Resolved" />
+            <Breadcrumbs title="Complaints" breadcrumbItem="Closed" />
             <Row>
             <div className="mb-3">
                                                 <p><b>Note: When you Reopen a complaint it will move to Inprocess Complaints.</b></p>
@@ -393,12 +395,12 @@ class ResolvedComplaintsLabhazir extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}

@@ -71,6 +71,19 @@ class PendingComplaintsLabhazir extends Component {
           ),
         },
         {
+          dataField: "registered_at",
+          text: "Registered at",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
           dataField: "",
           text: "Complaint ID",
           sort: true,
@@ -105,6 +118,18 @@ class PendingComplaintsLabhazir extends Component {
             </>
           ),filter: textFilter(),
         },
+        {
+          dataField: "complainee",
+          text: "Complaint Against",
+          sort: true,
+          formatter: (cellContent, pendingComplaintLabhazir) => (
+            <>
+                  {/* {pendingComplaintLabhazir.complainee},{" "} */}
+                  {pendingComplaintLabhazir.labhazir_complainee}{" "}
+                  {pendingComplaintLabhazir.lab_name}
+            </>
+          ),filter: textFilter(),
+        },
         // {
         //   dataField: "email",
         //   text: "Email",
@@ -115,19 +140,7 @@ class PendingComplaintsLabhazir extends Component {
         //   text: "Phone No.",
         //   sort: true,
         // },
-        {
-          dataField: "registered_at",
-          text: "Registered at",
-          sort: true,
-          formatter: (cellContent, complaint) => (
-            <>
-              <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          filter: textFilter(),
-        },
+
         {
           dataField: "registered_at",
           text: "Pending Since",
@@ -157,18 +170,7 @@ class PendingComplaintsLabhazir extends Component {
         //   ),
         // },
        
-        {
-          dataField: "complainee",
-          text: "Complaint Against",
-          sort: true,
-          formatter: (cellContent, pendingComplaintLabhazir) => (
-            <>
-                  {/* {pendingComplaintLabhazir.complainee},{" "} */}
-                  {pendingComplaintLabhazir.labhazir_complainee}{" "}
-                  {pendingComplaintLabhazir.lab_name}
-            </>
-          ),filter: textFilter(),
-        },
+
         {
           dataField: "data",
           text: "id",
@@ -317,12 +319,12 @@ class PendingComplaintsLabhazir extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending Complaints | Complaint Hazir</title>
+            <title>Open Complaints | Complaint Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Complaints" breadcrumbItem="Pending" />
+            <Breadcrumbs title="Complaints" breadcrumbItem="Open" />
             <Row>
             <div className="mb-3">
                                                 <p><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
@@ -348,12 +350,12 @@ class PendingComplaintsLabhazir extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                   <Modal
                                       isOpen={this.state.PatientModal}

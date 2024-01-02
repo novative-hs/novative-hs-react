@@ -90,6 +90,12 @@ class InProcessComplaints extends Component {
           ),filter: textFilter(),
         },
         {
+          dataField: "complainant",
+          text: "Complaint From",
+          sort: true,
+          filter: textFilter(),
+        },
+        {
           dataField: "name",
           text: "Complainant Name",
           sort: true,
@@ -105,6 +111,18 @@ class InProcessComplaints extends Component {
                    {inProcessComplaint.name}
                   </Link>
               </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "complainee",
+          text: "Complaint Against",
+          sort: true,
+          formatter: (cellContent, inProcessComplaint) => (
+            <>
+                  {/* {inProcessComplaint.complainee},{" "} */}
+                  {inProcessComplaint.labhazir_complainee}{" "}
+                  {inProcessComplaint.lab_name}
             </>
           ),filter: textFilter(),
         },
@@ -153,25 +171,21 @@ class InProcessComplaints extends Component {
             </>
           ),
           filter: textFilter(),
-        },
+        }, 
         {
-          dataField: "complainant",
-          text: "Complaint From",
+          dataField: "registered_at",
+          text: "Pending Since",
           sort: true,
-          filter: textFilter(),
-        },
-        {
-          dataField: "complainee",
-          text: "Complaint Against",
-          sort: true,
-          formatter: (cellContent, inProcessComplaint) => (
+          formatter: (cellContent, complaint) => (
             <>
-                  {/* {inProcessComplaint.complainee},{" "} */}
-                  {inProcessComplaint.labhazir_complainee}{" "}
-                  {inProcessComplaint.lab_name}
+              <span>
+              {new Date().getDate() - new Date(complaint.registered_at).getDate()} days
+
+              </span>
             </>
           ),filter: textFilter(),
         },
+       
         {
           dataField: "city",
           text: "Office",
@@ -368,12 +382,12 @@ class InProcessComplaints extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>InProcess Complaints | Complaint Hazir</title>
+            <title>Open Complaints | Complaint Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Complaints" breadcrumbItem="InProcess" />
+            <Breadcrumbs title="Complaints" breadcrumbItem="Open" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -396,12 +410,12 @@ class InProcessComplaints extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                   <Modal
                                       isOpen={this.state.PatientModal}

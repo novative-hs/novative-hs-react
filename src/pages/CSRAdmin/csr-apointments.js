@@ -43,6 +43,7 @@ import {
 } from "store/csr-admin-appointments/actions";
 
 import { isEmpty, size } from "lodash";
+import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import "assets/scss/table.scss";
 
 class csrAppointments extends Component {
@@ -52,8 +53,10 @@ class csrAppointments extends Component {
     this.state = {
       csrAppointments: [],
       csrAppointment: "",
+      status: "",
       modal: false,
       btnText: "Copy",
+      unapprovedModal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -183,17 +186,15 @@ class csrAppointments extends Component {
           formatter: (cellContent, csrAppointment) => (
             <div className="d-flex gap-3">
               
-              <Link className="text-success" to="#">
-                <Tooltip title="Update">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e =>
-                      this.handlePaymentStatusClick(e, csrAppointment)
-                    }
-                  ></i>
-                </Tooltip>
+              <Tooltip title="Delete">
+              <Link
+                className="btn btn-danger btn-rounded"
+                to="#"
+                onClick={e => this.handleApprovedEvent(csrAppointment.id)}
+              >
+                <i className="mdi mdi-close-circle font-size-14"></i>
               </Link>
+              </Tooltip>
               <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"
@@ -205,8 +206,9 @@ class csrAppointments extends Component {
         },
       ],
     };
-    this.handlePaymentStatusClick = this.handlePaymentStatusClick.bind(this);
+    // this.handlePaymentStatusClick = this.handlePaymentStatusClick.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
+    this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
     this.toggleLabModal = this.toggleLabModal.bind(this);
     this.toggle = this.toggle.bind(this);
   }
@@ -215,6 +217,26 @@ class csrAppointments extends Component {
     onGetCsrAppointments(this.state.user_id);
     this.setState({ csrAppointments });
   }
+  callOnApproveUnapproveLab = () => {
+    const { onGetCsrAppointments } = this.props;
+  
+    const data = {
+      id: this.state.id,
+      appointment_requested_at: this.state.appointment_requested_at,
+      status: this.state.status,
+    };
+  
+    // Calling to unapprove lab
+    onGetCsrAppointments(data);
+  
+    // Note: Assuming onGetCsrAppointments updates the state with the new data
+  
+    // Remove the attempt to call csrAppointments here
+    // setTimeout(() => {
+    //   csrAppointments();
+    // }, 1000);
+  };
+  
 
   toggle() {
     this.setState(prevState => ({
@@ -290,19 +312,22 @@ class csrAppointments extends Component {
       deleteModal: !prevState.deleteModal,
     }));
   };
+  handleApprovedEvent = id => {
+    this.setState({ id: id, status: "Cancel", unapprovedModal: true });
 
-  handlePaymentStatusClick = (e, arg) => {
-    this.setState({
-      csrAppointment: {
-        id: arg.id,
-        // cleared_at: arg.cleared_at,
-        appointment_requested_at: arg.appointment_requested_at,
-      },
-      isEdit: true,
-    });
-
-    this.toggle();
   };
+  // handlePaymentStatusClick = (e, arg) => {
+  //   this.setState({
+  //     csrAppointment: {
+  //       id: arg.id,
+  //       // cleared_at: arg.cleared_at,
+  //       appointment_requested_at: arg.appointment_requested_at,
+  //     },
+  //     isEdit: true,
+  //   });
+
+  //   this.toggle();
+  // };
 
   render() {
     const { SearchBar } = Search;
@@ -329,6 +354,11 @@ class csrAppointments extends Component {
 
     return (
       <React.Fragment>
+         <ApproveUnapproveModal
+            show={this.state.unapprovedModal}
+            onYesClick={this.callOnApproveUnapproveLab}
+            onCloseClick={() => this.setState({ unapprovedModal: false })}
+          />
         <div className="page-content">
           <MetaTags>
             <title>Pending Appointment List | Lab Hazir</title>
@@ -358,12 +388,12 @@ class csrAppointments extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </Col>
                               </Row>

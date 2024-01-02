@@ -88,6 +88,12 @@ class ResolvedComplaints extends Component {
           ),filter: textFilter(),
         },
         {
+          dataField: "complainant",
+          text: "Complaint From",
+          sort: true,
+          filter: textFilter(),
+        },
+        {
           dataField: "name",
           text: "Name",
           sort: true,
@@ -106,32 +112,18 @@ class ResolvedComplaints extends Component {
             </>
           ),filter: textFilter(),
         },
-        // {
-        //   dataField: "email",
-        //   text: "Email",
-        //   sort: true,
-        // },
-        // {
-        //   dataField: "phone",
-        //   text: "Phone No.",
-        //   sort: true,
-        // },
-        // {
-        //   dataField: "message",
-        //   text: "Message",
-        //   sort: true,
-        //   formatter: (cellContent, complaint) => (
-        //     <>
-        //       <Link to="#" 
-        //       // onClick={e => this.openMessageModal(e, complaint)}
-        //       onMouseEnter={e => this.openMessageModal(e, complaint)}
-        //       onPointerLeave={this.handleMouseExit()}
-        //       >
-        //         {complaint.message.slice(0, 10) + "..."}
-        //       </Link>{" "}
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: "complainee",
+          text: "Complaint Against",
+          sort: true,
+          formatter: (cellContent, resolvedComplaint) => (
+            <>
+                  {/* {resolvedComplaint.complainee},{" "} */}
+                  {resolvedComplaint.labhazir_complainee}{" "}
+                  {resolvedComplaint.lab_name}
+            </>
+          ),filter: textFilter(),
+        },
         {
           dataField: "csr_name",
           text: "Assigned to",
@@ -151,24 +143,8 @@ class ResolvedComplaints extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "complainant",
-          text: "Complaint From",
-          sort: true,
-          filter: textFilter(),
-        },
-        {
-          dataField: "complainee",
-          text: "Complaint Against",
-          sort: true,
-          formatter: (cellContent, resolvedComplaint) => (
-            <>
-                  {/* {resolvedComplaint.complainee},{" "} */}
-                  {resolvedComplaint.labhazir_complainee}{" "}
-                  {resolvedComplaint.lab_name}
-            </>
-          ),filter: textFilter(),
-        },
+        
+        
         {
           dataField: "handled_at",
           text: "Handled at",
@@ -365,12 +341,12 @@ class ResolvedComplaints extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Resolved Complaints | Complaint Hazir</title>
+            <title>Closed Complaints | Complaint Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Complaints" breadcrumbItem="Resolved" />
+            <Breadcrumbs title="Complaints" breadcrumbItem="Closed" />
             <Row>
             <div className="mb-3">
                                                 <p><b>Note: When you Reopen a complaint it will move to Inprocess Complaints.</b></p>
@@ -396,12 +372,12 @@ class ResolvedComplaints extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}

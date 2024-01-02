@@ -78,6 +78,19 @@ class PendingComplaints extends Component {
           ),
         },
         {
+          dataField: "registered_at",
+          text: "Registered at",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
           dataField: "",
           text: "Complaint ID",
           sort: true,
@@ -113,18 +126,24 @@ class PendingComplaints extends Component {
           ),filter: textFilter(),
         },
         {
-          dataField: "registered_at",
-          text: "Registered at",
+          dataField: "complainee",
+          text: "Complaint Against",
           sort: true,
-          formatter: (cellContent, complaint) => (
+          formatter: (cellContent, pendingComplaint) => (
             <>
-              <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
-              </span>
+            <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMessageModal(e, pendingComplaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
+                {pendingComplaint.lab_name}
+              </Link>{" "}
+                  {/* {pendingComplaint.complainee},{" "} */}
+                  {/* {pendingComplaint.lab_name} */}
             </>
-          ),
-          filter: textFilter(),
+          ),filter: textFilter(),
         },
+       
         {
           dataField: "registered_at",
           text: "Pending Since",
@@ -166,18 +185,7 @@ class PendingComplaints extends Component {
         //   ),
         // },
        
-        {
-          dataField: "complainee",
-          text: "Complaint Against",
-          sort: true,
-          formatter: (cellContent, pendingComplaint) => (
-            <>
-                  {/* {pendingComplaint.complainee},{" "} */}
-                  {pendingComplaint.labhazir_complainee}{" "}
-                  {pendingComplaint.lab_name}
-            </>
-          ),filter: textFilter(),
-        },
+        
         {
           dataField: "city",
           text: "Office",
@@ -285,12 +293,15 @@ class PendingComplaints extends Component {
     this.setState(prevState => ({
       messageModal: !prevState.messageModal,
     }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
   };
 
   openMessageModal = (e, arg) => {
     this.setState({ messageModal: true, 
-      message: arg.message,
-      subject: arg.subject,
+      lab_city: arg.lab_city,
+      lab_phone: arg.lab_phone,
 
      });
   };
@@ -377,15 +388,15 @@ class PendingComplaints extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending Complaints | Complaint Hazir</title>
+            <title>Open Complaints | Complaint Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Complaints" breadcrumbItem="Pending" />
+            <Breadcrumbs title="Complaints" breadcrumbItem="Open" />
             <Row>
             <div className="mb-3">
-                                                <p className="test-danger"><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
+                                                <p className="text-danger"><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
                                                 </div>
               <Col lg="12">
                 <Card>
@@ -523,6 +534,82 @@ class PendingComplaints extends Component {
                                                 </div>
                                               </Col>
                                             </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                     <Modal
+                                      isOpen={this.state.messageModal}
+                                      onPointerLeave={this.handleMouseExit}
+                                      toggle={this.toggleMessageModal}
+                                    >
+                                    <ModalHeader
+                                        toggle={this.toggleMessageModal}
+                                        tag="h4"
+                                      >
+                                        <span></span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                        <Row>
+                                        <Col className="col-12">
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .lab_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                        </Row>
                                           </Form>
                                         </Formik>
                                       </ModalBody>
@@ -801,51 +888,7 @@ class PendingComplaints extends Component {
                                       </ModalBody>
                                     </Modal>
 
-                                    <Modal
-                                      isOpen={this.state.messageModal}
-                                      role="dialog"
-                                      autoFocus={true}
-                                      data-toggle="modal"
-                                      centered
-                                      onPointerLeave={this.handleMouseExit}
-                                      toggle={this.toggleMessageModal}
-                                    >
-                                      <div className="modal-content">
-                                        <div className="modal-header border-bottom-0">
-                                          <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() =>
-                                              this.setState({
-                                                messageModal: false,
-                                              })
-                                            }
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"
-                                          ></button>
-                                        </div>
-                                        <div className="modal-body">
-                                          <div className="text-center mb-4">
-                                            <div className="avatar-md mx-auto mb-4">
-                                              <div className="avatar-title bg-light rounded-circle text-primary h3">
-                                                <i className="mdi mdi-email-open"></i>
-                                              </div>
-                                            </div>
-
-                                            <div className="row justify-content-center">
-                                              <div className="col-xl-10">
-                                                <h4 className="text-primary">
-                                                {this.state.subject}
-                                                </h4>
-                                                <p className="text-muted font-size-14 mb-4">
-                                                  {this.state.message}
-                                                </p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </Modal>
+                                   
                                   </div>
                                 </Col>
                               </Row>
