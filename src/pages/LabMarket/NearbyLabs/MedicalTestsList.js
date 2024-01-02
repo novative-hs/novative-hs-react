@@ -514,6 +514,9 @@ class MedicalTestList extends Component {
     if (search_type === 'Current Location') {
       borderColor = '2px solid red'; // Change to the desired color
     }
+    if (search_type === 'City') {
+      borderColor = '2px solid green'; // Change to the desired color
+    }
     const { SearchBar } = Search;
     const { loading } = this.state;
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();

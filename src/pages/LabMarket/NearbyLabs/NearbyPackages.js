@@ -1108,6 +1108,12 @@ shouldHighlightTestsLink() {
     if (search_type === 'Current Location') {
       borderColor = '2px solid red'; // Change to the desired color
     }
+    if (search_type === 'City') {
+      borderColor = '2px solid green'; // Change to the desired color
+    }
+    if (search_type === 'Custom Address') {
+      borderColor = '2px solid yellow'; // Change to the desired color
+    }
     const ClearIndicator = (props) => {
       return (
         <components.ClearIndicator {...props}>
@@ -1957,79 +1963,7 @@ shouldHighlightTestsLink() {
                       <Form className="form-horizontal">
                         {/* Type field */}
                         <Row>
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Package Name
-                              </Label>
-                              <Select
-                              name="profile"
-                              component="Select"
-                              onChange={this.onchangename}
-                              isSearchable={true}
-                              isClearable={true}
-                              components={{
-                                ClearIndicator,
-                              }}
-                              className="defautSelectParent"
-                              options={packageList}
-                               styles={{
-                                control: (provided, state) => ({
-                                  ...provided,
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                }),
-                                // Add more style overrides as needed
-                              }}
-                              />
-                            </div>
-                          </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
-                                for="LabType"
-                                className="form-label"
-                                style={{
-                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
-                                  color: 'black',
-                                  fontWeight: "bold",
-                                }}
-                              >
-                                Search By Lab Name
-                              </Label>
-                              <Select
-                               name="labnamwslist"
-                               component="Select"
-                               onChange={this.onChangeLabName}
-                               isSearchable={true}
-                               isClearable={true}
-                               components={{
-                                 ClearIndicator,
-                               }}
-                               className="defautSelectParent"
-                               options={labNames}
-                               styles={{
-                                control: (provided, state) => ({
-                                  ...provided,
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                }),
-                                // Add more style overrides as needed
-                              }}
-
-                            />
-                            </div>
-                          </Col>
-                         
-                          {this.state.locationAccessAllowed === true ? (
+                        {this.state.locationAccessAllowed === true ? (
                             <Col xs="3" sm="3" md="2" lg="2">
                               <div className="mb-3">
                                 <Label
@@ -2119,7 +2053,7 @@ shouldHighlightTestsLink() {
                                   styles={{
                                     control: (provided, state) => ({
                                       ...provided,
-                                      border: '2px solid blue',
+                                      border: '2px solid green',
                                       borderRadius: '5px',
                                     }),
                                     // Add more style overrides as needed
@@ -2150,7 +2084,7 @@ shouldHighlightTestsLink() {
                                   className="form-control"
                                   placeholder=""
                                   style={{
-                                    border: '2px solid blue',
+                                    border: '2px solid yellow',
                                     borderRadius: '5px',
                                     // Add more style overrides as needed
                                   }}
@@ -2181,7 +2115,7 @@ shouldHighlightTestsLink() {
                                 className="form-control"
                                 placeholder=""
                                 style={{
-                                  border: '2px solid blue',
+                                  border: '2px solid yellow',
                                   borderRadius: '5px',
                                   fontSize: '14px'
                                   // Add more style overrides as needed
@@ -2224,6 +2158,77 @@ shouldHighlightTestsLink() {
                         </Col>
                       )
                       )}
+                          <Col xs="4" sm="4" md="3" lg="3">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Package Name
+                              </Label>
+                              <Select
+                              name="profile"
+                              component="Select"
+                              onChange={this.onchangename}
+                              isSearchable={true}
+                              isClearable={true}
+                              components={{
+                                ClearIndicator,
+                              }}
+                              className="defautSelectParent"
+                              options={packageList}
+                               styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                }),
+                                // Add more style overrides as needed
+                              }}
+                              />
+                            </div>
+                          </Col>
+                          <Col xs="3" sm="3" md="2" lg="2">
+                            <div className="mb-3">
+                              <Label
+                                for="LabType"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Lab Name
+                              </Label>
+                              <Select
+                               name="labnamwslist"
+                               component="Select"
+                               onChange={this.onChangeLabName}
+                               isSearchable={true}
+                               isClearable={true}
+                               components={{
+                                 ClearIndicator,
+                               }}
+                               className="defautSelectParent"
+                               options={labNames}
+                               styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                }),
+                                // Add more style overrides as needed
+                              }}
+
+                            />
+                            </div>
+                          </Col>
                            <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
