@@ -671,6 +671,10 @@ const csrAuthProtectedRoutes = [
     path: "/test-appointments/:id",
     component: TestAppointmentsCSRList,
   },
+  {
+    path: "/appointment-detail/:id",
+    component: AppointmentDetail,
+  },
 ];
 
 const csrAdminAuthProtectedRoutes = [

@@ -192,8 +192,8 @@ class csrComplaints extends Component {
               <Tooltip title="Invoice">
                 <Link
                   className="mdi mdi-receipt font-size-18"
-                  to={`/csr-invoice-detail/${csrComplaint.id}`}
-                ></Link>
+                  to={`/appointment-detail/${patientTestAppointment.id}`}
+                  ></Link>
               </Tooltip>
               <Link className="text-success" to="#">
                 <Tooltip title="Update">
