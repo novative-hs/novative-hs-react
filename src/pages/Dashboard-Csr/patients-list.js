@@ -181,7 +181,7 @@ class PatientsList extends Component {
 
                             </tr>
                           </thead>
-                          {!isEmpty(patients) &&
+                          {!isEmpty(patients) ? (
                   patients.map((patient, key) => (
                     <tr key={"_row_" + key}>
                       <td className="text-start py-2 pl-3 pr-4">{patient.account_id}</td>
@@ -199,16 +199,24 @@ class PatientsList extends Component {
                       <td className="text-start py-2 pl-3 pr-4">{patient.phone}</td>
                       <td className="text-start py-2 pl-3 pr-4">{patient.city}</td>
                     </tr>
-                  ))}
-                  {this.state.showNoResultMessage && (
-              <Row>
-                  <div className=" mb-5">
-                    <h4 className="text-uppercase">
+                  ))): (
+                    <div className=" mt-5">
+                    <h4 className="text-uppercase text-primary">
                       Sorry no result found.
                     </h4>
                   </div>
+                  )
+                  
+                  }
+                  {/* {this.state.showNoResultMessage && (
+              <Row>
+                  <div className=" mb-5">
+                    <h4 className="text-uppercase">
+                      Sorry no result fou
+                    </h4>
+                  </div>
               </Row>
-            )}
+            )} */}
                         </Table>
                       </div>
                          </CardBody>
