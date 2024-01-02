@@ -83,11 +83,30 @@ class TestAppointmentsPendingList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <strong>{testAppointment.order_id}</strong><br></br>
-              <strong>
+              {/* <strong>
                 {testAppointment.type}{" ("}
                 {testAppointment.address}{")"}
-              </strong>
+              </strong> */}
             </>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "address",
+          text: "Lab Address",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <span style={{
+              width: '300px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
+                            {testAppointment.address}
+
+            </span>
           ), filter: textFilter(),
         },
         {

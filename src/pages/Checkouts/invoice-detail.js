@@ -62,7 +62,7 @@ class InvoiceDetail extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Invoices" breadcrumbItem="Invoice Detail" />
+            <Breadcrumbs title="Invoices" breadcrumbItem="Invoice" />
             {!isEmpty(this.props.invoiceDetail) && (
               <Row>
                 <Col lg="12">

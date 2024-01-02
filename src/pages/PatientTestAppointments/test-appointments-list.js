@@ -538,7 +538,7 @@ class TestAppointmentsList extends Component {
           text: "Actions",
           isDummyField: true,
           editable: false,
-          formatter: (cellContent, patientTestAppointment) => (
+          formatter: (cellContent, patientTestAppointment, testAppointment) => (
             <> 
           <div>
           <Tooltip title="Feedback">
@@ -563,33 +563,41 @@ class TestAppointmentsList extends Component {
               </span>
             ) : (
               <span className="text-secondary font-size-12">
-                <i className="bx bxs-star font-size-14"></i> 
+                {/* <i className="bx bxs-star font-size-14"></i>  */}
               </span>
             )}
           </Tooltip>
-            <Link className="text-success" to="#">
-              <Tooltip title="Reschedual Appoitment Info">
-                <i
-                  className="mdi mdi-calendar-clock font-size-18"
-                  id="edittooltip"
-                  onClick={e => this.openReshedualModal(e, patientTestAppointment)
-                  }
-                ></i>
-              </Tooltip>
-            </Link>
-            <Tooltip title="Invoice">
-              {patientTestAppointment.payment_status == "Not Paid" ? (
-                <Link
-                  className="mdi mdi-receipt font-size-18"
-                  to={`/appointment-detail/${patientTestAppointment.id}`}
-                ></Link>
-              ) : (
-                <Link
-                  className="mdi mdi-receipt font-size-18"
-                  to={`/invoice-detail/${patientTestAppointment.id}`}
-                ></Link>
-              )}
-            </Tooltip>
+          <Tooltip title="Reschedual Appoitment Info">
+
+          {patientTestAppointment.reschedule_count == 0 ?(
+            <span className="text-secondary font-size-12">
+              </span>
+          ): <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-calendar-clock font-size-18"
+              id="edittooltip"
+              onClick={e => this.openReshedualModal(e, patientTestAppointment)
+              }
+            ></i>
+        </Link> }          
+        </Tooltip>
+        
+              {patientTestAppointment.payment_status === "Not Paid" ? (
+  <Tooltip title="Appointment Detail">
+    <Link
+      className="mdi mdi-receipt font-size-18"
+      to={`/appointment-detail/${patientTestAppointment.id}`}
+    ></Link>
+  </Tooltip>
+) : (
+  <Tooltip title="Invoice Detail">
+    <Link
+      className="mdi mdi-receipt font-size-18"
+      to={`/invoice-detail/${patientTestAppointment.id}`}
+    ></Link>
+  </Tooltip>
+)}
+
 
           </div>
             </>

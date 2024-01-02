@@ -137,6 +137,26 @@ class UnhandledComplaints extends Component {
           ),
           filter: textFilter(),
         },
+        {
+          dataField: "is_it_urgent",
+          text: "Urgent",
+          sort: true,
+          filter: textFilter(),
+          formatter: (cellContent, row) => {
+            const isUrgent = row.is_it_urgent;
+    
+            // Conditionally render red or green round box
+            return isUrgent ? (
+              <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                Urgent
+              </span>
+            ) : (
+              <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                Normal
+              </span>
+            );
+          },
+        },
         // {
         //   dataField: "message",
         //   text: "Message",
@@ -154,7 +174,19 @@ class UnhandledComplaints extends Component {
         //   ),
         //   filter: textFilter(),
         // },
-       
+        {
+          dataField: "registered_at",
+          text: "Registered at",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <span>
+                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
         {
           dataField: "registered_at",
           text: "Pending Since",

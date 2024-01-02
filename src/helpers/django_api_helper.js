@@ -2025,6 +2025,8 @@ export const assignComplaint = data => {
   formData.append("id", data.id);
   // formData.append("office", data.office);
   formData.append("assigned_to", data.assignedTo);
+  formData.append("is_it_urgent", data.is_it_urgent);
+
 
   return axios.put(`${url.ASSIGN_COMPLAINT}`, formData, {
     headers: getHeader(authHeader()),

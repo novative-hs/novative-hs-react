@@ -1404,7 +1404,7 @@ class MedicalTestList extends Component {
                             <th className="text-start">Lab Name</th>
                             <th className="text-start">Test Name</th>
                             <th className="text-start">Reporting Time</th>
-                            <th className="text-center">Price</th>
+                            <th className="text-end">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
                             <th className="text-center"> Discount</th>
                             <th className="text-center"> Price after Discount</th>
@@ -1721,7 +1721,7 @@ class MedicalTestList extends Component {
                           <tr >
                             <th className="text-start">Lab Name</th>
                             <th className="text-start">Test Name</th>
-                            <th className="text-start">Reporting Time</th>
+                            <th className="text-end">Reporting Time</th>
                             <th className="text-center">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
                             <th className="text-center"> Discount</th>
@@ -2039,7 +2039,7 @@ class MedicalTestList extends Component {
                           <tr >
                             <th className="text-start">Lab Name</th>
                             <th className="text-start">Test Name</th>
-                            <th className="text-start">Reporting Time</th>
+                            <th className="text-end">Reporting Time</th>
                             <th className="text-center">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
                             <th className="text-center"> Discount</th>
