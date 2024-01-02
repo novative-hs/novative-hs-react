@@ -361,11 +361,11 @@ class csrAppointments extends Component {
           />
         <div className="page-content">
           <MetaTags>
-            <title>Pending Appointment List | Lab Hazir</title>
+            <title>Pending Cancellation List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Pending Appointment" />
+            <Breadcrumbs title="List" breadcrumbItem="Pending Cancellation" />
             <Row>
               <Col lg="12">
                 <Card>
