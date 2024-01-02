@@ -246,9 +246,9 @@ class MedicalTestList extends Component {
     } else if (this.state.search_type === "Current Location" && this.state.test_id) {
       this.handleCurrentLocationSearch();
     }  
-    // else if (this.state.search_type === "Custom Address" && this.state.test_id && this.state.address) {
-    //   this.makeApiCall();
-    // }
+    else if (this.state.search_type === "Custom Address" && this.state.test_id && this.state.address) {
+      this.makeApiCall();
+    }
   };
 
   // Add a new function for handling the API call
