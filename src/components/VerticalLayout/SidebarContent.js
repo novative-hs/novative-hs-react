@@ -463,12 +463,12 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to={"/csr-checkout"}>
                     <i className="mdi mdi-phone" />
                     <span>{this.props.t("Online Booking")}</span>
                   </Link>
-                </li>
+                </li> */}
 
                 <li className="menu-title">{this.props.t("CSR")}</li>
                 {/* Unhandled Complaints */}

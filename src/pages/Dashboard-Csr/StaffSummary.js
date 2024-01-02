@@ -89,7 +89,7 @@ class StaffSummary extends Component {
                             <i className="mdi mdi-arrow-right ms-1" />
                           </Link>
                         </div>
-                      </Col> 
+                      </Col>
                       {/* <Col xs="6">
                         <div className="mt-2">
                           <Link
@@ -118,15 +118,27 @@ class StaffSummary extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">
-                        Unhandled Complaints
+                      <p className="text-muted fw-medium font-size-18">
+                        Book Appointment by:
                       </p>
-                      <h4 className="mb-0">0</h4>
+                      <h4 className="mb-0 text-danger font-size-14">Existing Patients <i className={"mdi mdi-arrow-right-bold font-size-14"} /></h4>
                     </div>
-                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-list-check font-size-24"} />
-                      </span>
+                    <div className="text-center py-2 pl-3 pr-4">
+                      <button
+                        className="btn btn-primary font-size-14"
+                        onClick={() => {
+                          const url = this.props.match.params.guest_id
+                            ? `/patients-list/${this.props.match.params.guest_id}`
+                            : `/patients-list`
+
+                          // Perform any additional actions or navigation logic here
+
+                          // For navigation, you can use react-router-dom's history or other navigation methods
+                          this.props.history.push(url);
+                        }}
+                      >
+                        Proceed
+                      </button>
                     </div>
                   </div>
                 </CardBody>
@@ -138,13 +150,25 @@ class StaffSummary extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Handled Complaints</p>
-                      <h4 className="mb-0">0</h4>
+                      <p className="text-muted fw-medium font-size-18">Book Appointment by:</p>
+                      <h4 className="mb-0 text-danger font-size-14">New Patients  <i className={"mdi mdi-arrow-right-bold font-size-14"} /></h4>
                     </div>
-                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
-                      <span className="avatar-title">
-                        <i className={"bx bx-copy-alt font-size-24"} />
-                      </span>
+                    <div className="text-center py-2 pl-3 pr-4">
+                      <button
+                        className="btn btn-primary font-size-14"
+                        onClick={() => {
+                          const url = this.props.match.params.guest_id
+                            ? `/register/${this.props.match.params.guest_id}`
+                            : `/register`
+
+                          // Perform any additional actions or navigation logic here
+
+                          // For navigation, you can use react-router-dom's history or other navigation methods
+                          this.props.history.push(url);
+                        }}
+                      >
+                        Register
+                      </button>
                     </div>
                   </div>
                 </CardBody>
@@ -212,6 +236,8 @@ StaffSummary.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getStaffProfile: PropTypes.func,
+  history: PropTypes.any,
+
 };
 
 const mapStateToProps = state => {
