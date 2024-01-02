@@ -119,7 +119,7 @@ class StaffSummary extends Component {
                   <div className="d-flex">
                     <div className="flex-grow-1">
                       <p className="text-muted fw-medium font-size-18">
-                        Book Appointment by:
+                        Book an Appointment for:
                       </p>
                       <h4 className="mb-0 text-danger font-size-14">Existing Patients <i className={"mdi mdi-arrow-right-bold font-size-14"} /></h4>
                     </div>
@@ -150,7 +150,7 @@ class StaffSummary extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium font-size-18">Book Appointment by:</p>
+                      <p className="text-muted fw-medium font-size-18">Book an Appointment for:</p>
                       <h4 className="mb-0 text-danger font-size-14">New Patients  <i className={"mdi mdi-arrow-right-bold font-size-14"} /></h4>
                     </div>
                     <div className="text-center py-2 pl-3 pr-4">
