@@ -60,6 +60,7 @@ class MedicalTestList extends Component {
       quotes: [],
       search_type: "", // Set the initial value to an empty string or a default value
       km: "30",
+      address: "",
       latitude: "",
       longitude: "",
       locationAccessAllowed: "",
@@ -135,7 +136,7 @@ class MedicalTestList extends Component {
 
           // Assuming onGetQuotes is a prop, use it from props
           const { onGetQuotes } = this.props;
-          onGetQuotes(this.state.city_id, this.state.test_id, this.state.search_type, this.state.currentLongitude, this.state.currentLatitude, this.state.km, this.state.locationAccessAllowed);
+          onGetQuotes(this.state.city_id, this.state.test_id, this.state.search_type, this.state.address, this.state.currentLongitude, this.state.currentLatitude, this.state.km, this.state.locationAccessAllowed);
 
           // Set loading state
           this.setState({ loading: true });
@@ -172,7 +173,7 @@ class MedicalTestList extends Component {
       this.setState({ currentLatitude: latitude });
       this.setState({ currentLongitude: longitude });
       if (this.state.currentLatitude && this.state.currentLongitude && this.state.test_id) {
-        onGetQuotes(this.state.city_id, this.state.test_id, this.state.search_type, this.state.currentLongitude, this.state.currentLatitude, this.state.km, this.state.locationAccessAllowed);
+        onGetQuotes(this.state.city_id, this.state.test_id, this.state.search_type, this.state.address, this.state.currentLongitude, this.state.currentLatitude, this.state.km, this.state.locationAccessAllowed);
 
         // Set loading state
         this.setState({ loading: true });
@@ -218,7 +219,7 @@ class MedicalTestList extends Component {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
           const { onGetQuotes } = this.props;
-          onGetQuotes(this.state.city_id, this.state.test_id, this.state.search_type, longitude, latitude, this.state.km, this.state.locationAccessAllowed);
+          onGetQuotes(this.state.city_id, this.state.test_id, this.state.search_type, this.state.address, longitude, latitude, this.state.km, this.state.locationAccessAllowed);
 
           // Set loading state
           this.setState({ loading: true, quotes: [] });
@@ -244,6 +245,8 @@ class MedicalTestList extends Component {
       this.handleApiCall();
     } else if (this.state.search_type === "Current Location" && this.state.test_id) {
       this.handleCurrentLocationSearch();
+    }  else if (this.state.search_type === "Custom Address" && this.state.test_id) {
+      this.makeApiCall();
     }
   };
 
@@ -254,6 +257,7 @@ class MedicalTestList extends Component {
       this.state.city_id,
       this.state.test_id,
       this.state.search_type,
+      this.state.address,
       this.state.currentLongitude,
       this.state.currentLatitude,
       this.state.km,
@@ -267,6 +271,27 @@ class MedicalTestList extends Component {
     setTimeout(() => {
       this.setState({ loading: false });
     }, 7000);
+  };
+  onChangeAddress = async (e) => {
+    // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
+    var cityBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(this.state.latitude, this.state.longitude)
+    );
+  
+    const options = {
+      bounds: cityBounds,
+      types: ["establishment"],
+      componentRestrictions: { country: "pk" },
+    };
+  
+    var searchBox = new window.google.maps.places.SearchBox(e.target, options);
+  
+    searchBox.addListener("places_changed", () => {
+      this.setState({ address: e.target.value }, () => {
+        // Now that the state is updated, make the API call
+        this.makeApiCall();
+      });
+    });
   };
 
   handleCityChange = (selectedGroup) => {
@@ -290,7 +315,7 @@ class MedicalTestList extends Component {
       }, 7000);
     }
   };
-  handleTestsChange = async (selectedTests) => {
+  handleTestsChange = async (selectedTests, e) => {
     const selectedTestIds = selectedTests.map((test) => test.value);
     this.setState({ test_id: selectedTestIds });
 
@@ -329,7 +354,7 @@ class MedicalTestList extends Component {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const { onGetQuotes } = this.props;
-            onGetQuotes(this.state.city_id, selectedTestIds, this.state.search_type, longitude, latitude, this.state.km, this.state.locationAccessAllowed);
+            onGetQuotes(this.state.city_id, selectedTestIds, this.state.search_type, this.state.address, longitude, latitude, this.state.km, this.state.locationAccessAllowed);
 
             // Set loading state
             this.setState({ loading: true, quotes: [] });
@@ -346,9 +371,37 @@ class MedicalTestList extends Component {
         // Geolocation API is not supported, show an error message
         this.setState({ PatientModal: true }); // Show the modal for error
       }
+    } else if (this.state.search_type === "Custom Address" && selectedTestIds.length > 0) {
+      // Apply that city's latitude and longitude as city bound so that we see addresses of that city only
+
+        this.setState({ test_id: selectedTestIds }, () => {
+          // Now that the state is updated, make the API call
+          this.makeApiCall();
+        });
     } else {
       console.log("City or Test IDs not selected. API call not made.");
     }
+  };
+  makeApiCall = () => {
+    const { onGetQuotes } = this.props;
+    onGetQuotes(
+      this.state.city_id,
+      this.state.test_id,
+      this.state.search_type,
+      this.state.address,
+      this.state.longitude,
+      this.state.latitude,
+      this.state.km,
+      this.state.locationAccessAllowed
+    );
+  
+    // Set loading state
+    this.setState({ loading: true, quotes: [] });
+  
+    // Set loading state to false after 7 seconds
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 7000);
   };
   handleAddToCart = cart => {
     console.log("1stttt", cart);
@@ -368,59 +421,59 @@ class MedicalTestList extends Component {
           // Skip adding to the cart if the test already exists
           return;
         }
-       // const { id:id } = offeredTest;
-       if (!this.state.user_id) {
-        // Check if the item is already in the cart
-        if (offeredTest.guest_id === this.props.match.params.guest_id) {
-          this.showErrorMessage("Item is already added to the cart");
-          return;
+        // const { id:id } = offeredTest;
+        if (!this.state.user_id) {
+          // Check if the item is already in the cart
+          if (offeredTest.guest_id === this.props.match.params.guest_id) {
+            this.showErrorMessage("Item is already added to the cart");
+            return;
+          }
+
+          this.setState({ guest_id: this.props.match.params.guest_id });
+          offeredTest.guest_id = this.props.match.params.guest_id;
+          onAddToCart(offeredTest, offeredTest.guest_id);
+
+          console.log(
+            "uuid:",
+            offeredTest.guest_id,
+            this.props.match.params.guest_id
+          );
+        } else if (
+          this.state.user_type !== "CSR" &&
+          this.state.user_type !== "b2bclient"
+        ) {
+          // Check if the item is already in the cart
+          if (offeredTest.user_id === this.state.user_id) {
+            this.showErrorMessage("Item is already added to the cart");
+            return;
+          }
+
+          onAddToCart(offeredTest, this.state.user_id);
+        } else if (
+          this.state.user_type === "CSR" &&
+          this.state.user_type !== "b2bclient"
+        ) {
+          // Check if the item is already in the offeredTest
+          if (offeredTest.guest_id === this.props.match.params.guest_id) {
+            this.showErrorMessage("Item is already added to the cart");
+            return;
+          }
+
+          onAddToCart(offeredTest, this.props.match.params.guest_id);
+        } else if (
+          this.state.user_type === "b2bclient" &&
+          this.state.user_type !== "CSR"
+        ) {
+          // Check if the item is already in the offeredTest
+          if (offeredTest.user_id === this.state.user_id) {
+            this.showErrorMessage("Item is already added to the cart");
+            return;
+          }
+
+          onAddToCart(offeredTest, this.props.match.params.uuid);
         }
-
-        this.setState({ guest_id: this.props.match.params.guest_id });
-        offeredTest.guest_id = this.props.match.params.guest_id;
-        onAddToCart(offeredTest, offeredTest.guest_id);
-
-        console.log(
-          "uuid:",
-          offeredTest.guest_id,
-          this.props.match.params.guest_id
-        );
-      } else if (
-        this.state.user_type !== "CSR" &&
-        this.state.user_type !== "b2bclient"
-      ) {
-        // Check if the item is already in the cart
-        if (offeredTest.user_id === this.state.user_id) {
-          this.showErrorMessage("Item is already added to the cart");
-          return;
-        }
-
-        onAddToCart(offeredTest, this.state.user_id);
-      } else if (
-        this.state.user_type === "CSR" &&
-        this.state.user_type !== "b2bclient"
-      ) {
-        // Check if the item is already in the offeredTest
-        if (offeredTest.guest_id === this.props.match.params.guest_id) {
-          this.showErrorMessage("Item is already added to the cart");
-          return;
-        }
-
-        onAddToCart(offeredTest, this.props.match.params.guest_id);
-      } else if (
-        this.state.user_type === "b2bclient" &&
-        this.state.user_type !== "CSR"
-      ) {
-        // Check if the item is already in the offeredTest
-        if (offeredTest.user_id === this.state.user_id) {
-          this.showErrorMessage("Item is already added to the cart");
-          return;
-        }
-
-        onAddToCart(offeredTest, this.props.match.params.uuid);
-      }
-    });
-    this.showSuccessMessage("Item added Successfully");
+      });
+      this.showSuccessMessage("Item added Successfully");
     } else {
       // Show error message if there are no offered tests
       this.showErrorMessage("No offered tests to add to the cart");
@@ -520,6 +573,9 @@ class MedicalTestList extends Component {
     if (search_type === 'City') {
       borderColor = '2px solid green'; // Change to the desired color
     }
+    if (search_type === 'Custom Address') {
+      borderColor = '2px solid yellow'; // Change to the desired color
+    }
     const { SearchBar } = Search;
     const { loading } = this.state;
     const isTestsLinkHighlighted = this.shouldHighlightTestsLink();
@@ -565,7 +621,7 @@ class MedicalTestList extends Component {
       },
     ];
     const isFilterApplied = this.state.city_id && this.state.test_id && this.state.search_type === "City";
-    const isFilterApplied2 = this.state.test_id && this.state.search_type === "Current Location";
+    const isFilterApplied2 = this.state.test_id && this.state.search_type === "Current Location" || this.state.search_type === "Custom Address";
 
     const renderedRowKeys = []; // Array to store rendered row keys
     console.log("have data in the renderedRowKeys", renderedRowKeys)
@@ -1296,9 +1352,74 @@ class MedicalTestList extends Component {
                             <option value="">Choose an option</option>
                             <option value="Current Location">Current Location</option>
                             <option value="City">Search By City</option>
+                            <option value="Custom Address">Custom Address</option>
+
                           </select>
                         </div>
                       </Col>
+                      {this.state.search_type === 'Custom Address' && (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                  for="LabType1"
+                                  className="form-label"
+                                  style={{
+                                    fontSize: window.innerWidth <= 576 ? '8px' : '12px',
+                                    color: 'black',
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  <span style={{ fontSize: '12px', }}>Custom Address </span>
+                                </Label>
+                                <Input
+                                  defaultValue={this.state.address}
+                                  onChange={(e) => this.onChangeAddress(e)}
+                                  id="pac-input"
+                                  type="text"
+                                  className="form-control"
+                                  placeholder="Address.."
+                                  style={{
+                                    border: '2px solid yellow',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )}
+                          {this.state.search_type === 'Custom Address' && (
+                        <Col xs="1" sm="2" md="1" lg="1">
+                          <div className="mb-3">
+                          <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Km
+                              </Label>
+                            <div className="input-group">
+                              <Input
+                                defaultValue={this.state.km}
+                                onChange={(e) => this.onChangeKm(e)}
+                                id="pac-input"
+                                type="number"
+                                className="form-control"
+                                placeholder="km.."
+                                style={{
+                                  border: '2px solid yellow',
+                                  borderRadius: '5px',
+                                  fontSize: '14px'
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Col>
+                      )}
                       {this.state.search_type === 'Current Location' && (
                         <Col xs="1" sm="2" md="1" lg="1">
                           <div className="mb-3">
@@ -1412,332 +1533,7 @@ class MedicalTestList extends Component {
                             <th className="text-end">Reporting Time</th>
                             <th className="text-end">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
-                            <th className="text-center"> Discount</th>
-                            <th className="text-center"> Price after Discount</th>
-                            <th className="text-center">
-                            Net Payable
-                            </th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        {!isEmpty(quotes) &&
-                          Array.isArray(quotes.top_lab_details_with_tests) && quotes.top_lab_details_with_tests.length > 0 ?
-                          quotes.top_lab_details_with_tests.map(
-                            (referrelFeeLab, key) => (
-                              <tr
-                                key={"_row_" + key}
-                                style={{ backgroundColor: key % 2 === 0 ? 'white' : '#f1f8fe' }}
-                              >
-                                <td className="text-start" style={{
-                                  backgroundColor: 'transparent !important',
-                                  width: '200px',
-                                  fontSize: '14px',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'normal',
-                                  textAlign: 'left',
-                                  display: 'block',
-                                }}>
-                                  {!this.state.user_id ? (
-                                    <React.Fragment>
-                                      {!this.state.user_id ? (
-                                        <React.Fragment>
-                                          <div style={{ background: 'transparent' }}>
-                                            <Link
-                                              to={
-                                                this.props.match.params.guest_id
-                                                  ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                                  : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                              }
-                                              className="text-dark"
-                                              style={{ background: 'transparent' }}
-                                            >
-                                              <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                                <b>{referrelFeeLab.name}</b>
-                                              </span>    </Link>
-                                            <div style={{ fontSize: "12px", background: 'transparent' }}>
-                                              <b>{referrelFeeLab.type}</b>
-                                            </div>
-                                            <div>
-                                              <StarRatings
-                                                rating={referrelFeeLab.rating}
-                                                starRatedColor="#F1B44C"
-                                                starEmptyColor="#2D363F"
-                                                numberOfStars={5}
-                                                name="rating"
-                                                starDimension="14px"
-                                                starSpacing="3px"
-                                              />
-                                            </div>
-                                          </div>
-                                        </React.Fragment>
-                                      ) : null}
-
-                                    </React.Fragment>
-                                  ) : null}
-
-                                  {(this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") && (
-                                    <div>
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                        }
-                                        className="text-dark"
-                                      >
-                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                          <b>{referrelFeeLab.name}</b>
-                                        </span>
-                                      </Link>
-                                      <div style={{ fontSize: "12px" }}>
-                                        <b>{referrelFeeLab.type}</b>
-                                      </div>
-                                      <div>
-                                        <StarRatings
-                                          rating={referrelFeeLab.rating}
-                                          starRatedColor="#F1B44C"
-                                          starEmptyColor="#2D363F"
-                                          numberOfStars={5}
-                                          name="rating"
-                                          starDimension="14px"
-                                          starSpacing="3px"
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-
-                                  {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
-                                    <div>
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                        }
-                                        className="text-dark"
-                                      >
-                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                          <b>{referrelFeeLab.name}</b>
-                                        </span>
-                                      </Link>
-                                      <div style={{ fontSize: "12px" }}>
-                                        <b>{referrelFeeLab.type}</b>
-                                      </div>
-                                      <div>
-                                        <StarRatings
-                                          rating={referrelFeeLab.rating}
-                                          starRatedColor="#F1B44C"
-                                          starEmptyColor="#2D363F"
-                                          numberOfStars={5}
-                                          name="rating"
-                                          starDimension="14px"
-                                          starSpacing="3px"
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-
-                                  {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") && (
-                                    <div>
-                                      <Link
-                                        to={
-                                          this.props.match.params.guest_id
-                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
-                                        }
-                                        className="text-dark"
-                                      >
-                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
-                                          <b>{referrelFeeLab.name}</b>
-                                        </span>
-                                      </Link>
-                                      <div style={{ fontSize: "12px" }}>
-                                        <b>{referrelFeeLab.type}</b>
-                                      </div>
-                                      <div>
-                                        <StarRatings
-                                          rating={referrelFeeLab.rating}
-                                          starRatedColor="#F1B44C"
-                                          starEmptyColor="#2D363F"
-                                          numberOfStars={5}
-                                          name="rating"
-                                          starDimension="14px"
-                                          starSpacing="3px"
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
-                                </td>
-                                <td className="text-start"
-                                  style={{ whiteSpace: "pre-wrap" }}
-                                >
-                                  {!isEmpty(referrelFeeLab.offered_tests) &&
-                                    referrelFeeLab.offered_tests.map(
-                                      (offeredTest, index) => (
-                                        <div key={index} style={{ background: 'transparent' }}>{offeredTest.test_name}</div>
-                                      )
-                                    )}
-                                </td>
-                                <td className="text-end">
-                                {!isEmpty(referrelFeeLab.offered_tests) &&
-                                  referrelFeeLab.offered_tests.map(
-                                    (offeredTest, index) => (
-                                      <div key={index} style={{ background: 'transparent' }}>
-                                        {" "}
-                                        {offeredTest.duration_required}{" "}
-                                {offeredTest.duration_type}
-                                                                      </div>
-                                    )
-                                  )}
-                              </td>
-                                <td className="text-end">
-                                  {!isEmpty(referrelFeeLab.offered_tests) &&
-                                    referrelFeeLab.offered_tests.map(
-                                      (offeredTest, index) => (
-                                        <div key={index} style={{ background: 'transparent' }}>
-                                          {" "}
-                                          {offeredTest.price
-                                            .toString()
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </div>
-                                      )
-                                    )}
-                                </td>
-                                <td className="text-end">
-                                  {!isEmpty(referrelFeeLab.offered_tests) &&
-                                    referrelFeeLab.offered_tests.map((offeredTest, index) => (
-                                      // Use a Fragment to avoid wrapping with a div
-                                      <div key={index} style={{ background: 'transparent' }}>
-                                        {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
-                                          <span>
-    {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
-                                          </span>
-                                        ) : (
-                                          '--'
-                                        )}
-                                      </div>
-                                    ))}
-                                </td>
-
-                                <td className="text-end">
-                                  {referrelFeeLab.offered_tests
-                                    .map((offeredTest, index) => {
-                                      const discountByTest = offeredTest.discount || 0;
-                                      const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
-                                      const totalDiscount = discountByTest + discountByLabhazir;
-                                      const discountedPrice =
-                                        offeredTest.price -
-                                        (offeredTest.price * (totalDiscount * 100)) / 100;
-
-                                      return (
-                                        <div key={index} style={{ background: 'transparent', }}>
-                                          {discountedPrice
-                                            .toFixed(2)
-                                            .toString()
-                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </div>
-                                      );
-                                    })}
-                                </td>
-                                <td className="text-end py-2 pl-3 pr-4">
-                                  <div className="text-danger" style={{ background: 'transparent', fontSize: "16px", fontWeight: "bold" }}>
-                                    {referrelFeeLab.offered_tests
-                                      .reduce((total, offeredTest) => {
-                                        const discountByTest = offeredTest.discount || 0;
-                                        const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
-                                        const totalDiscount = discountByTest + discountByLabhazir;
-                                        const discountedPrice = (
-                                          offeredTest.price -
-                                          (offeredTest.price * (totalDiscount * 100)) / 100
-                                        );
-                                        return total + Number(discountedPrice);
-                                      }, 0)
-                                      .toFixed(2)
-                                      .toString()
-                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                  </div></td>
-
-                                {/* <td className="text-center">
-                                  <Button
-                                    type="button"
-                                    color="primary"
-                                    className="btn mt-3 me-1 text-white bg-primary btn-outline-primary"
-                                    onClick={() => {
-                                      this.handleAddToCart(referrelFeeLab);
-                                    }}
-                                  >
-                                    <i className="bx bx-cart me-2" /> Add to cart
-                                  </Button>
-                                </td> */}
-                                <td className="text-center">
-                                  {(() => {
-                                    // Check if all offeredTest.id in this row are already in this.props.carts
-                                    const areAllTestIdsInCart = referrelFeeLab.offered_tests.every(offeredTest =>
-                                      this.props.carts.some(cartItem => cartItem.offered_test_id === offeredTest.id)
-                                    );
-
-                                    console.log("all present have or not", areAllTestIdsInCart);
-
-                                    return (
-                                      <Button
-                                        type="button"
-                                        color={areAllTestIdsInCart ? 'secondary' : 'primary'}
-                                        className={`btn mt-3 me-1${areAllTestIdsInCart ? ' disabled' : ''}`}
-                                        onClick={() => {
-                                          const areAllTestIdsInCart = referrelFeeLab.offered_tests.every(offeredTest =>
-                                            this.props.carts.some(cartItem => cartItem.test_name === offeredTest.test_name)
-                                          );
-                                          if (areAllTestIdsInCart) {
-                                            alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
-                                          } else {
-                                            this.handleAddToCart(referrelFeeLab);
-                                          }
-                                        }}
-                                        disabled={areAllTestIdsInCart}
-                                        style={{
-                                          backgroundColor: 'primary', // Primary color
-                                          borderColor: 'primary', // Primary color
-                                          fontSize: '10px',
-
-                                        }}
-                                      >
-                                        <i className="bx bx-cart me-2" /> {areAllTestIdsInCart ? 'Already Added' : 'Add to cart'}
-                                      </Button>
-                                    );
-                                  })()}
-                                </td>
-                              </tr>
-                            )
-                          ): (
-                            <div className=" mt-4" >
-                            <h4 className="text-primary" style={{fontSize: "18px"}}>
-    &quot;Labhazir will only show labs that offer All the tests you&lsquo;ve selected.&quot;
-</h4>
-
-                          </div>
-                          )}
-                        {/* {isEmpty(quotes) && (
-                          <Row style={{ background: 'transparent' }}>
-                            <div className=" mt-4" >
-                              <h4 className="text-uppercase">
-                              Labhazir will only show labs offering All selected tests.
-                              </h4>
-                            </div>
-                          </Row>
-                        )} */}
-                      </Table>
-                    </div>
-                  ) : isFilterApplied2 ? (
-                    <div className="table-responsive">
-                      <Table className="table-nowrap">
-                        <thead style={{ backgroundColor: "red" }}>
-                          <tr >
-                            <th className="text-start">Lab Name</th>
-                            <th className="text-start">Test Name</th>
-                            <th className="text-end">Reporting Time</th>
-                            <th className="text-center">Price</th>
-                            {/* <th className="text-center"> Total Price</th> */}
-                            <th className="text-center"> Discount</th>
+                            <th className="text-center"> Discount (Rs)</th>
                             <th className="text-center"> Price after Discount</th>
                             <th className="text-center">
                               Net Payable
@@ -1904,17 +1700,17 @@ class MedicalTestList extends Component {
                                     )}
                                 </td>
                                 <td className="text-end">
-                                {!isEmpty(referrelFeeLab.offered_tests) &&
-                                  referrelFeeLab.offered_tests.map(
-                                    (offeredTest, index) => (
-                                      <div key={index} style={{ background: 'transparent' }}>
-                                        {" "}
-                                        {offeredTest.duration_required}{" "}
-                                {offeredTest.duration_type}
-                                                                      </div>
-                                    )
-                                  )}
-                              </td>
+                                  {!isEmpty(referrelFeeLab.offered_tests) &&
+                                    referrelFeeLab.offered_tests.map(
+                                      (offeredTest, index) => (
+                                        <div key={index} style={{ background: 'transparent' }}>
+                                          {" "}
+                                          {offeredTest.duration_required}{" "}
+                                          {offeredTest.duration_type}
+                                        </div>
+                                      )
+                                    )}
+                                </td>
                                 <td className="text-end">
                                   {!isEmpty(referrelFeeLab.offered_tests) &&
                                     referrelFeeLab.offered_tests.map(
@@ -1935,7 +1731,332 @@ class MedicalTestList extends Component {
                                       <div key={index} style={{ background: 'transparent' }}>
                                         {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
                                           <span>
-    {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
+                                            {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
+                                          </span>
+                                        ) : (
+                                          '--'
+                                        )}
+                                      </div>
+                                    ))}
+                                </td>
+
+                                <td className="text-end">
+                                  {referrelFeeLab.offered_tests
+                                    .map((offeredTest, index) => {
+                                      const discountByTest = offeredTest.discount || 0;
+                                      const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
+                                      const totalDiscount = discountByTest + discountByLabhazir;
+                                      const discountedPrice =
+                                        offeredTest.price -
+                                        (offeredTest.price * (totalDiscount * 100)) / 100;
+
+                                      return (
+                                        <div key={index} style={{ background: 'transparent', }}>
+                                          {discountedPrice
+                                            .toFixed(2)
+                                            .toString()
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </div>
+                                      );
+                                    })}
+                                </td>
+                                <td className="text-end py-2 pl-3 pr-4">
+                                  <div className="text-danger" style={{ background: 'transparent', fontSize: "16px", fontWeight: "bold" }}>
+                                    {referrelFeeLab.offered_tests
+                                      .reduce((total, offeredTest) => {
+                                        const discountByTest = offeredTest.discount || 0;
+                                        const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
+                                        const totalDiscount = discountByTest + discountByLabhazir;
+                                        const discountedPrice = (
+                                          offeredTest.price -
+                                          (offeredTest.price * (totalDiscount * 100)) / 100
+                                        );
+                                        return total + Number(discountedPrice);
+                                      }, 0)
+                                      .toFixed(2)
+                                      .toString()
+                                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  </div></td>
+
+                                {/* <td className="text-center">
+                                  <Button
+                                    type="button"
+                                    color="primary"
+                                    className="btn mt-3 me-1 text-white bg-primary btn-outline-primary"
+                                    onClick={() => {
+                                      this.handleAddToCart(referrelFeeLab);
+                                    }}
+                                  >
+                                    <i className="bx bx-cart me-2" /> Add to cart
+                                  </Button>
+                                </td> */}
+                                <td className="text-center">
+                                  {(() => {
+                                    // Check if all offeredTest.id in this row are already in this.props.carts
+                                    const areAllTestIdsInCart = referrelFeeLab.offered_tests.every(offeredTest =>
+                                      this.props.carts.some(cartItem => cartItem.offered_test_id === offeredTest.id)
+                                    );
+
+                                    console.log("all present have or not", areAllTestIdsInCart);
+
+                                    return (
+                                      <Button
+                                        type="button"
+                                        color={areAllTestIdsInCart ? 'secondary' : 'primary'}
+                                        className={`btn mt-3 me-1${areAllTestIdsInCart ? ' disabled' : ''}`}
+                                        onClick={() => {
+                                          const areAllTestIdsInCart = referrelFeeLab.offered_tests.every(offeredTest =>
+                                            this.props.carts.some(cartItem => cartItem.test_name === offeredTest.test_name)
+                                          );
+                                          if (areAllTestIdsInCart) {
+                                            alert("An item with the same name but from a different lab is already in the cart. Please remove the previous one first.");
+                                          } else {
+                                            this.handleAddToCart(referrelFeeLab);
+                                          }
+                                        }}
+                                        disabled={areAllTestIdsInCart}
+                                        style={{
+                                          backgroundColor: 'primary', // Primary color
+                                          borderColor: 'primary', // Primary color
+                                          fontSize: '10px',
+
+                                        }}
+                                      >
+                                        <i className="bx bx-cart me-2" /> {areAllTestIdsInCart ? 'Already Added' : 'Add to cart'}
+                                      </Button>
+                                    );
+                                  })()}
+                                </td>
+                              </tr>
+                            )
+                          ) : (
+                            <div className=" mt-4" >
+                              <h4 className="text-primary" style={{ fontSize: "18px" }}>
+                                &quot;Labhazir will only show labs that offer All the tests you&lsquo;ve selected.&quot;
+                              </h4>
+
+                            </div>
+                          )}
+                        {/* {isEmpty(quotes) && (
+                          <Row style={{ background: 'transparent' }}>
+                            <div className=" mt-4" >
+                              <h4 className="text-uppercase">
+                              Labhazir will only show labs offering All selected tests.
+                              </h4>
+                            </div>
+                          </Row>
+                        )} */}
+                      </Table>
+                    </div>
+                  ) : isFilterApplied2 ? (
+                    <div className="table-responsive">
+                      <Table className="table-nowrap">
+                        <thead style={{ backgroundColor: "red" }}>
+                          <tr >
+                            <th className="text-start">Lab Name</th>
+                            <th className="text-start">Test Name</th>
+                            <th className="text-end">Reporting Time</th>
+                            <th className="text-center">Price</th>
+                            {/* <th className="text-center"> Total Price</th> */}
+                            <th className="text-center"> Discount (Rs)</th>
+                            <th className="text-center"> Price after Discount</th>
+                            <th className="text-center">
+                              Net Payable
+                            </th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        {!isEmpty(quotes) &&
+                          Array.isArray(quotes.top_lab_details_with_tests) && quotes.top_lab_details_with_tests.length > 0 ?
+                          quotes.top_lab_details_with_tests.map(
+                            (referrelFeeLab, key) => (
+                              <tr
+                                key={"_row_" + key}
+                                style={{ backgroundColor: key % 2 === 0 ? 'white' : '#f1f8fe' }}
+                              >
+                                <td className="text-start" style={{
+                                  backgroundColor: 'transparent !important',
+                                  width: '200px',
+                                  fontSize: '14px',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'normal',
+                                  textAlign: 'left',
+                                  display: 'block',
+                                }}>
+                                  {!this.state.user_id ? (
+                                    <React.Fragment>
+                                      {!this.state.user_id ? (
+                                        <React.Fragment>
+                                          <div style={{ background: 'transparent' }}>
+                                            <Link
+                                              to={
+                                                this.props.match.params.guest_id
+                                                  ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                  : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                              }
+                                              className="text-dark"
+                                              style={{ background: 'transparent' }}
+                                            >
+                                              <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                                <b>{referrelFeeLab.name}</b>
+                                              </span>    </Link>
+                                            <div style={{ fontSize: "12px", background: 'transparent' }}>
+                                              <b>{referrelFeeLab.type}</b>
+                                            </div>
+                                            <div>
+                                              <StarRatings
+                                                rating={referrelFeeLab.rating}
+                                                starRatedColor="#F1B44C"
+                                                starEmptyColor="#2D363F"
+                                                numberOfStars={5}
+                                                name="rating"
+                                                starDimension="14px"
+                                                starSpacing="3px"
+                                              />
+                                            </div>
+                                          </div>
+                                        </React.Fragment>
+                                      ) : null}
+
+                                    </React.Fragment>
+                                  ) : null}
+
+                                  {(this.state.user_id) && (this.state.user_type === "CSR") && (this.state.user_type !== "b2bclient") && (
+                                    <div>
+                                      <Link
+                                        to={
+                                          this.props.match.params.guest_id
+                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                        }
+                                        className="text-dark"
+                                      >
+                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                          <b>{referrelFeeLab.name}</b>
+                                        </span>
+                                      </Link>
+                                      <div style={{ fontSize: "12px" }}>
+                                        <b>{referrelFeeLab.type}</b>
+                                      </div>
+                                      <div>
+                                        <StarRatings
+                                          rating={referrelFeeLab.rating}
+                                          starRatedColor="#F1B44C"
+                                          starEmptyColor="#2D363F"
+                                          numberOfStars={5}
+                                          name="rating"
+                                          starDimension="14px"
+                                          starSpacing="3px"
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type !== "b2bclient") && (
+                                    <div>
+                                      <Link
+                                        to={
+                                          this.props.match.params.guest_id
+                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                        }
+                                        className="text-dark"
+                                      >
+                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                          <b>{referrelFeeLab.name}</b>
+                                        </span>
+                                      </Link>
+                                      <div style={{ fontSize: "12px" }}>
+                                        <b>{referrelFeeLab.type}</b>
+                                      </div>
+                                      <div>
+                                        <StarRatings
+                                          rating={referrelFeeLab.rating}
+                                          starRatedColor="#F1B44C"
+                                          starEmptyColor="#2D363F"
+                                          numberOfStars={5}
+                                          name="rating"
+                                          starDimension="14px"
+                                          starSpacing="3px"
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {(this.state.user_id) && (this.state.user_type !== "CSR") && (this.state.user_type === "b2bclient") && (
+                                    <div>
+                                      <Link
+                                        to={
+                                          this.props.match.params.guest_id
+                                            ? `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                            : `/nearby-lab-detail/${referrelFeeLab.account_id}/${this.props.match.params.guest_id}`
+                                        }
+                                        className="text-dark"
+                                      >
+                                        <span className="text-primary" style={{ fontSize: "14px", display: 'block' }}>
+                                          <b>{referrelFeeLab.name}</b>
+                                        </span>
+                                      </Link>
+                                      <div style={{ fontSize: "12px" }}>
+                                        <b>{referrelFeeLab.type}</b>
+                                      </div>
+                                      <div>
+                                        <StarRatings
+                                          rating={referrelFeeLab.rating}
+                                          starRatedColor="#F1B44C"
+                                          starEmptyColor="#2D363F"
+                                          numberOfStars={5}
+                                          name="rating"
+                                          starDimension="14px"
+                                          starSpacing="3px"
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="text-start"
+                                  style={{ whiteSpace: "pre-wrap" }}
+                                >
+                                  {!isEmpty(referrelFeeLab.offered_tests) &&
+                                    referrelFeeLab.offered_tests.map(
+                                      (offeredTest, index) => (
+                                        <div key={index} style={{ background: 'transparent' }}>{offeredTest.test_name}</div>
+                                      )
+                                    )}
+                                </td>
+                                <td className="text-end">
+                                  {!isEmpty(referrelFeeLab.offered_tests) &&
+                                    referrelFeeLab.offered_tests.map(
+                                      (offeredTest, index) => (
+                                        <div key={index} style={{ background: 'transparent' }}>
+                                          {" "}
+                                          {offeredTest.duration_required}{" "}
+                                          {offeredTest.duration_type}
+                                        </div>
+                                      )
+                                    )}
+                                </td>
+                                <td className="text-end">
+                                  {!isEmpty(referrelFeeLab.offered_tests) &&
+                                    referrelFeeLab.offered_tests.map(
+                                      (offeredTest, index) => (
+                                        <div key={index} style={{ background: 'transparent' }}>
+                                          {" "}
+                                          {offeredTest.price
+                                            .toString()
+                                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </div>
+                                      )
+                                    )}
+                                </td>
+                                <td className="text-end">
+                                  {!isEmpty(referrelFeeLab.offered_tests) &&
+                                    referrelFeeLab.offered_tests.map((offeredTest, index) => (
+                                      // Use a Fragment to avoid wrapping with a div
+                                      <div key={index} style={{ background: 'transparent' }}>
+                                        {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
+                                          <span>
+                                            {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
                                           </span>
                                         ) : (
                                           '--'
@@ -2032,20 +2153,20 @@ class MedicalTestList extends Component {
                                 </td>
                               </tr>
                             )
-                          ):(
+                          ) : (
                             <div className=" mt-4" >
-                            <h4 className="text-primary" style={{fontSize: "18px"}}>
-    &quot;Labhazir will only show labs that offer All the tests you&lsquo;ve selected.&quot;
-</h4>
+                              <h4 className="text-primary" style={{ fontSize: "18px" }}>
+                                &quot;Labhazir will only show labs that offer All the tests you&lsquo;ve selected.&quot;
+                              </h4>
 
-                          </div>
+                            </div>
                           )}
                         {isEmpty(quotes) && (
                           <Row style={{ background: 'transparent' }}>
                             <div className=" mt-4" >
-                            <h4 className="text-primary" style={{fontSize: "18px"}}>
-    &quot;Labhazir will only show labs that offer all the tests you&lsquo;ve selected.&quot;
-</h4>
+                              <h4 className="text-primary" style={{ fontSize: "18px" }}>
+                                &quot;Labhazir will only show labs that offer all the tests you&lsquo;ve selected.&quot;
+                              </h4>
                             </div>
                           </Row>
                         )}
@@ -2062,16 +2183,16 @@ class MedicalTestList extends Component {
                             <th className="text-end">Reporting Time</th>
                             <th className="text-center">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
-                            <th className="text-center"> Discount</th>
+                            <th className="text-center"> Discount (Rs)</th>
                             <th className="text-center"> Price after Discount</th>
                             <th className="text-center">
-                            Net Payable
+                              Net Payable
                             </th>
                             <th></th>
                           </tr>
                         </thead>
                         <div className="mt-4">
-                          <h4 className="text-primary" style={{fontSize: "18px"}}>
+                          <h4 className="text-primary" style={{ fontSize: "18px" }}>
                             Select Your Location or City and Test Names to book an appointment.
                           </h4>
                         </div>
@@ -2124,7 +2245,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetonlyMedicalTestList: () => dispatch(onlyMedicalTestList()),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
-  onGetQuotes: (city_id, test_id, search_type, longitude, latitude, km, locationAccessAllowed) => dispatch(getQuotes(city_id, test_id, search_type, longitude, latitude, km, locationAccessAllowed)),
+  onGetQuotes: (city_id, test_id, search_type, address, longitude, latitude, km, locationAccessAllowed) => dispatch(getQuotes(city_id, test_id, search_type, address, longitude, latitude, km, locationAccessAllowed)),
   onAddToCart: (cart, id) => dispatch(addToCart(cart, id)),
   onGetCarts: id => dispatch(getCarts(id)),
 
