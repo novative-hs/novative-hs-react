@@ -758,7 +758,7 @@ class SidebarContent extends Component {
                     </li>
                     <li>
                       <Link to="/#" className="has-arrow">
-                        <span>{this.props.t("InProcess Complaints")}</span>
+                        <span>{this.props.t("Open Complaints")}</span>
                       </Link>
                       <ul>
                         <li>
@@ -785,7 +785,7 @@ class SidebarContent extends Component {
                     </li> */}
                     <li>
                       <Link to="/#" className="has-arrow">
-                        <span>{this.props.t("Resolved Complaints")}</span>
+                        <span>{this.props.t("Closed Complaints")}</span>
                       </Link>
                       <ul>
                         <li>

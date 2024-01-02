@@ -2049,7 +2049,7 @@ shouldHighlightTestsLink() {
                                   onChange={this.onChangeCity}
                                   className="defautSelectParent is-invalid"
                                   options={cityList}
-                                  placeholder=""
+                                  placeholder="City.."
                                   styles={{
                                     control: (provided, state) => ({
                                       ...provided,
@@ -2082,7 +2082,7 @@ shouldHighlightTestsLink() {
                                   id="pac-input"
                                   type="text"
                                   className="form-control"
-                                  placeholder=""
+                                  placeholder="Address.."
                                   style={{
                                     border: '2px solid yellow',
                                     borderRadius: '5px',
@@ -2113,7 +2113,7 @@ shouldHighlightTestsLink() {
                                 id="pac-input"
                                 type="number"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="km.."
                                 style={{
                                   border: '2px solid yellow',
                                   borderRadius: '5px',
@@ -2145,7 +2145,7 @@ shouldHighlightTestsLink() {
                                 id="pac-input"
                                 type="number"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="km.."
                                 style={{
                                   border: '2px solid red',
                                   borderRadius: '5px',
@@ -2175,6 +2175,7 @@ shouldHighlightTestsLink() {
                               name="profile"
                               component="Select"
                               onChange={this.onchangename}
+                              placeholder="Package Name.."
                               isSearchable={true}
                               isClearable={true}
                               components={{
@@ -2211,6 +2212,7 @@ shouldHighlightTestsLink() {
                                component="Select"
                                onChange={this.onChangeLabName}
                                isSearchable={true}
+                               placeholder="Lab Name.."
                                isClearable={true}
                                components={{
                                  ClearIndicator,

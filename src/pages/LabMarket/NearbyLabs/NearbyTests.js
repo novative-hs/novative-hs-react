@@ -2067,7 +2067,7 @@ class NearbyTests extends Component {
                                 id="pac-input"
                                 type="number"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="km.."
                                 style={{
                                   border: '2px solid yellow',
                                   borderRadius: '5px',
@@ -2099,7 +2099,7 @@ class NearbyTests extends Component {
                                 id="pac-input"
                                 type="number"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="km.."
                                 style={{
                                   border: '2px solid red',
                                   borderRadius: '5px',
@@ -2132,6 +2132,7 @@ class NearbyTests extends Component {
                                 className="defautSelectParent"
                                 options={testssList}
                                 isSearchable={true}
+                                placeholder="Test Name.."
                                 isClearable={true}
                                 components={{
                                   ClearIndicator,
@@ -2172,6 +2173,7 @@ class NearbyTests extends Component {
                                 options={labNames}
                                 isSearchable={true}
                                 isClearable={true}
+                                placeholder="Lab Name.."
                                 components={{
                                   ClearIndicator,
                                 }}

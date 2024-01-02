@@ -385,7 +385,7 @@ class PendingComplaints extends Component {
             <Breadcrumbs title="Complaints" breadcrumbItem="Pending" />
             <Row>
             <div className="mb-3">
-                                                <p><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
+                                                <p className="test-danger"><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>
                                                 </div>
               <Col lg="12">
                 <Card>
@@ -409,10 +409,10 @@ class PendingComplaints extends Component {
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
-                                      <SearchBar
+                                      {/* <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
-                                      <i className="bx bx-search-alt search-icon" />
+                                      <i className="bx bx-search-alt search-icon" /> */}
                                     </div>
                                   </div>
                                   <Modal

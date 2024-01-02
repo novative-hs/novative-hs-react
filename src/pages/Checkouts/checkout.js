@@ -459,14 +459,27 @@ class Checkout extends Component {
     const { patientProfile } = this.props;
 
     // Update the state with the fetched patientProfile
-    setTimeout(() => {
-      this.setState({
-        patientProfile,
-        patient_name: this.props.patientProfile.name, // Set patient_name if needed
-        patient_phone: this.props.patientProfile.phone, // Set patient_name if needed
-        // Add other state updates as needed
-      });
-    }, 1000);
+    if (this.state.user_id && this.state.user_type !== "CSR") {
+      setTimeout(() => {
+        this.setState({
+          patientProfile,
+          patient_name: this.props.patientProfile.name, // Set patient_name if needed
+          patient_phone: this.props.patientProfile.phone, // Set patient_name if needed
+          // Add other state updates as needed
+        });
+      }, 1000);
+    } else if (this.state.user_id && this.state.user_type === "CSR") {
+      setTimeout(() => {
+        this.setState({
+          patientProfile,
+          patient_name: this.state.patient_name, // Set patient_name if needed
+          patient_phone: this.state.patient_phone, // Set patient_name if needed
+          // Add other state updates as needed
+        });
+      }, 1000);
+    }
+    
+    
     console.log("state in the componentdidmount", patientProfile, this.state.patient_name);
     const { onGetDonationCheck } = this.props;
     if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {

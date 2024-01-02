@@ -73,6 +73,9 @@ class MedicalTestList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      user_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
       loading: true, // Add loading state proper
       page: "1",
     };
@@ -365,59 +368,59 @@ class MedicalTestList extends Component {
           // Skip adding to the cart if the test already exists
           return;
         }
-        // const { id:id } = offeredTest;
-        if (!this.state.user_id) {
-          // Check if the item is already in the cart
-          if (offeredTest.guest_id === this.props.match.params.guest_id) {
-            this.showErrorMessage("Item is already added to the cart");
-            return;
-          }
-
-          this.setState({ guest_id: this.props.match.params.guest_id });
-          offeredTest.guest_id = this.props.match.params.guest_id;
-          onAddToCart(offeredTest, offeredTest.guest_id);
-
-          console.log(
-            "uuid:",
-            offeredTest.guest_id,
-            this.props.match.params.guest_id
-          );
-        } else if (
-          this.state.user_type !== "CSR" &&
-          this.state.user_type !== "b2bclient"
-        ) {
-          // Check if the item is already in the cart
-          if (offeredTest.user_id === this.state.user_id) {
-            this.showErrorMessage("Item is already added to the cart");
-            return;
-          }
-
-          onAddToCart(offeredTest, this.state.user_id);
-        } else if (
-          this.state.user_type === "CSR" &&
-          this.state.user_type !== "b2bclient"
-        ) {
-          // Check if the item is already in the offeredTest
-          if (offeredTest.guest_id === this.props.match.params.guest_id) {
-            this.showErrorMessage("Item is already added to the cart");
-            return;
-          }
-
-          onAddToCart(offeredTest, this.props.match.params.guest_id);
-        } else if (
-          this.state.user_type === "b2bclient" &&
-          this.state.user_type !== "CSR"
-        ) {
-          // Check if the item is already in the offeredTest
-          if (offeredTest.user_id === this.state.user_id) {
-            this.showErrorMessage("Item is already added to the cart");
-            return;
-          }
-
-          onAddToCart(offeredTest, this.props.match.params.uuid);
+       // const { id:id } = offeredTest;
+       if (!this.state.user_id) {
+        // Check if the item is already in the cart
+        if (offeredTest.guest_id === this.props.match.params.guest_id) {
+          this.showErrorMessage("Item is already added to the cart");
+          return;
         }
-      });
-      this.showSuccessMessage("Item added Successfully");
+
+        this.setState({ guest_id: this.props.match.params.guest_id });
+        offeredTest.guest_id = this.props.match.params.guest_id;
+        onAddToCart(offeredTest, offeredTest.guest_id);
+
+        console.log(
+          "uuid:",
+          offeredTest.guest_id,
+          this.props.match.params.guest_id
+        );
+      } else if (
+        this.state.user_type !== "CSR" &&
+        this.state.user_type !== "b2bclient"
+      ) {
+        // Check if the item is already in the cart
+        if (offeredTest.user_id === this.state.user_id) {
+          this.showErrorMessage("Item is already added to the cart");
+          return;
+        }
+
+        onAddToCart(offeredTest, this.state.user_id);
+      } else if (
+        this.state.user_type === "CSR" &&
+        this.state.user_type !== "b2bclient"
+      ) {
+        // Check if the item is already in the offeredTest
+        if (offeredTest.guest_id === this.props.match.params.guest_id) {
+          this.showErrorMessage("Item is already added to the cart");
+          return;
+        }
+
+        onAddToCart(offeredTest, this.props.match.params.guest_id);
+      } else if (
+        this.state.user_type === "b2bclient" &&
+        this.state.user_type !== "CSR"
+      ) {
+        // Check if the item is already in the offeredTest
+        if (offeredTest.user_id === this.state.user_id) {
+          this.showErrorMessage("Item is already added to the cart");
+          return;
+        }
+
+        onAddToCart(offeredTest, this.props.match.params.uuid);
+      }
+    });
+    this.showSuccessMessage("Item added Successfully");
     } else {
       // Show error message if there are no offered tests
       this.showErrorMessage("No offered tests to add to the cart");
@@ -1406,7 +1409,7 @@ class MedicalTestList extends Component {
                           <tr >
                             <th className="text-start">Lab Name</th>
                             <th className="text-start">Test Name</th>
-                            <th className="text-start">Reporting Time</th>
+                            <th className="text-end">Reporting Time</th>
                             <th className="text-end">Price</th>
                             {/* <th className="text-center"> Total Price</th> */}
                             <th className="text-center"> Discount</th>
@@ -1694,7 +1697,7 @@ class MedicalTestList extends Component {
                                         style={{
                                           backgroundColor: 'primary', // Primary color
                                           borderColor: 'primary', // Primary color
-                                          fontSize: '20px',
+                                          fontSize: '10px',
 
                                         }}
                                       >
@@ -1710,7 +1713,7 @@ class MedicalTestList extends Component {
                           <Row style={{ background: 'transparent' }}>
                             <div className=" mt-4" >
                               <h4 className="text-uppercase">
-                                Sorry no result found.
+                              Labhazir will only show labs offering All selected tests.
                               </h4>
                             </div>
                           </Row>
@@ -2012,7 +2015,7 @@ class MedicalTestList extends Component {
                                         style={{
                                           backgroundColor: 'primary', // Primary color
                                           borderColor: 'primary', // Primary color
-                                          fontSize: '20px',
+                                          fontSize: '10px',
                                         }}
                                       >
                                         <i className="bx bx-cart me-2" /> {areAllTestIdsInCart ? 'Already Added' : 'Add to cart'}
@@ -2027,7 +2030,7 @@ class MedicalTestList extends Component {
                           <Row style={{ background: 'transparent' }}>
                             <div className=" mt-4" >
                               <h4 className="text-uppercase">
-                                Sorry no result found.
+                              Labhazir will only show labs offering All selected tests.
                               </h4>
                             </div>
                           </Row>

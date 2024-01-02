@@ -1876,7 +1876,7 @@ class NearbyLabs extends Component {
                                 id="pac-input"
                                 type="number"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="km.."
                                 style={{
                                   border: '2px solid yellow',
                                   borderRadius: '5px',
@@ -1908,7 +1908,7 @@ class NearbyLabs extends Component {
                                 id="pac-input"
                                 type="number"
                                 className="form-control"
-                                placeholder=""
+                                placeholder="km.."
                                 style={{
                                   border: '2px solid red',
                                   borderRadius: '5px',
