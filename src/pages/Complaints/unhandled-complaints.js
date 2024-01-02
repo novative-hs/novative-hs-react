@@ -16,6 +16,7 @@ import {
   ModalBody,
   ModalHeader,
   Input,
+  Button,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -216,36 +217,48 @@ class UnhandledComplaints extends Component {
           text: "Action",
           formatter: (cellContent, complaint) => (
             <>
-            <Tooltip title="Update">
-              {/* <Link
-                className="di mdi-pencil font-size-18"
-                to="#"
-                onClick={e => this.onClickAuditedEvent(e, complaint.id)}
-              >
-              </Link> */}
-               <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e => this.onClickAuditedEvent(e, complaint.id)}
+            <div className="d-flex align-items-center">
+  <Tooltip title="Update">
+    <Button
+      color="success"
+      className="mdi mdi-pencil font-size-14"
+      id="edittooltip"
+      onClick={() => this.handleResolveClick(complaint.id)}
+    >
+    </Button>
+  </Tooltip>
 
-                  ></i>
-            </Tooltip>
-              <Tooltip title="Add Comment">
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/csr-notes-complains/${complaint.id}`}
-                ></Link>
-              </Tooltip>
+  <Tooltip title="Add Comment">
+    <Link
+      style={{
+        marginLeft: '5px',
+      }}
+      className="fas fa-comment font-size-18"
+      to={`/csr-notes-complains/${complaint.id}`}
+    >
+    </Link>
+  </Tooltip>
+</div>
+
             </>
           ),
         },
       ],
     };
     // this.toggle = this.toggle.bind(this);
-    this.onClickAuditedEvent = this.onClickAuditedEvent.bind(this);
+    // this.onClickAuditedEvent = this.onClickAuditedEvent.bind(this);
     this.toggleMessageModal.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
   }
+  handleResolveClick = (complaintId) => {
+    // Dispatch an action to update the status in Redux
+    const { onUpdateUnhandledComplaints, onGetUnhandledComplaints} = this.props;
+    onUpdateUnhandledComplaints({ id: complaintId, status: "Resolved" });
+
+    setTimeout(() => {
+      onGetUnhandledComplaints(this.state.user_id);
+    }, 1000);
+  };
 
   toggleHandleModal = () => {
     this.setState(prevState => ({
@@ -301,13 +314,6 @@ class UnhandledComplaints extends Component {
     this.state.btnText === "Copy"
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
-  };
-  onClickAuditedEvent = (e, arg) => {
-    this.setState({
-      id: arg,
-    });
-
-    this.setState({ auditModal: true });
   };
 
   // handleAPICall = () => {
@@ -618,126 +624,6 @@ class UnhandledComplaints extends Component {
                                               </Col>
                                             </Row>
                                           </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
-                                    <Modal
-                                      isOpen={this.state.auditModal}
-                                      className={this.props.className}
-                                    >
-                                      <div className="modal-header">
-                                        <button
-                                          type="button"
-                                          className="btn-close"
-                                          onClick={() =>
-                                            this.setState({
-                                              auditModal: false,
-                                            })
-                                          }
-                                          data-bs-dismiss="modal"
-                                          aria-label="Close"
-                                        ></button>
-                                      </div>
-                                      <ModalBody>
-                                        <Formik
-                                          enableReinitialize={true}
-                                          initialValues={{
-                                            
-                                            status:
-                                              (this.state &&
-                                                this.state.status) ||
-                                              "",
-                                          }}
-                                          validationSchema={Yup.object().shape({
-                                           
-                                            status: Yup.string().required(
-                                              "Please enter your comments/reason of result"
-                                            ),
-                                          })}
-                                          onSubmit={values => {
-                                            const {
-                                              onUpdateUnhandledComplaints,
-                                              onGetUnhandledComplaints,
-                                            } = this.props;
-
-                                            const data = {
-                                              id: this.state.id,
-                                              status: values.status,
-                                            };
-
-                                            console.log(data);
-
-                                            onUpdateUnhandledComplaints(data);
-                                            setTimeout(() => {
-                                              onGetUnhandledComplaints(
-                                                this.state.user_id
-                                              );
-                                            }, 1000);
-
-                                            this.setState({
-                                              auditModal: false,
-                                            });
-                                            setTimeout(() => {
-                                              onGetUnhandledComplaints(
-                                                this.state.user_id
-                                              );
-                                            }, 100);
-                                          }}
-                                        >
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  
-                                                    <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        Update Status
-                                                      </Label>
-                                                      <Field
-                                                      name="status"
-                                                      component="select"
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          status:
-                                                            e.target.value,
-                                                        })
-                                                      }
-                                                      value={
-                                                        this.state
-                                                          .status
-                                                      }
-                                                      className="form-select"
-                                                    >
-                                                      <option value="">
-                                                        --- Please Select---
-                                                      </option>
-
-                                                      <option value="Change">
-                                                        Resolved
-                                                      </option>
-                                                    </Field>
-                                                      <ErrorMessage
-                                                        name="status"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
                                         </Formik>
                                       </ModalBody>
                                     </Modal>

@@ -43,7 +43,6 @@ import {
 } from "store/csr-admin-appointments/actions";
 
 import { isEmpty, size } from "lodash";
-import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import "assets/scss/table.scss";
 
 class csrAppointments extends Component {
@@ -56,7 +55,6 @@ class csrAppointments extends Component {
       status: "",
       modal: false,
       btnText: "Copy",
-      unapprovedModal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -184,31 +182,35 @@ class csrAppointments extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, csrAppointment) => (
-            <div className="d-flex gap-3">
-              
-              <Tooltip title="Delete">
-              <Link
-                className="btn btn-danger btn-rounded"
-                to="#"
-                onClick={e => this.handleApprovedEvent(csrAppointment.id)}
-              >
-                <i className="mdi mdi-close-circle font-size-14"></i>
-              </Link>
-              </Tooltip>
-              <Tooltip title="Add Comment">
+            <>
+            <div className="d-flex align-items-center">
+  <Tooltip title="Cancel Appointment">
+    <Button
+      color="danger"
+      className="mdi mdi-cancel font-size-14"
+      id="edittooltip"
+      onClick={() => this.handleResolveClick(csrAppointment.id)}
+    >
+    </Button>
+  </Tooltip>
+
+  <Tooltip title="Add Comment">
                 <Link
+                style={{
+                  marginLeft: '5px',
+                }}
                   className="fas fa-comment font-size-18"
                   to={`/csr-notes-lists/${csrAppointment.id}`}
                 ></Link>
               </Tooltip>
-            </div>
+</div>
+            </>
           ),
         },
       ],
     };
     // this.handlePaymentStatusClick = this.handlePaymentStatusClick.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
-    this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
     this.toggleLabModal = this.toggleLabModal.bind(this);
     this.toggle = this.toggle.bind(this);
   }
@@ -217,26 +219,16 @@ class csrAppointments extends Component {
     onGetCsrAppointments(this.state.user_id);
     this.setState({ csrAppointments });
   }
-  callOnApproveUnapproveLab = () => {
-    const { onGetCsrAppointments } = this.props;
-  
-    const data = {
-      id: this.state.id,
-      appointment_requested_at: this.state.appointment_requested_at,
-      status: this.state.status,
-    };
-  
-    // Calling to unapprove lab
-    onGetCsrAppointments(data);
-  
-    // Note: Assuming onGetCsrAppointments updates the state with the new data
-  
-    // Remove the attempt to call csrAppointments here
-    // setTimeout(() => {
-    //   csrAppointments();
-    // }, 1000);
+  handleResolveClick = (complaintId) => {
+    // Dispatch an action to update the status in Redux
+    const { onUpdateCsrAppointments, onGetCsrAppointments} = this.props;
+    onUpdateCsrAppointments({ id: complaintId, status: "Cancel" });
+
+    setTimeout(() => {
+      onGetCsrAppointments(this.state.user_id);
+    }, 1000);
   };
-  
+
 
   toggle() {
     this.setState(prevState => ({
@@ -312,23 +304,6 @@ class csrAppointments extends Component {
       deleteModal: !prevState.deleteModal,
     }));
   };
-  handleApprovedEvent = id => {
-    this.setState({ id: id, status: "Cancel", unapprovedModal: true });
-
-  };
-  // handlePaymentStatusClick = (e, arg) => {
-  //   this.setState({
-  //     csrAppointment: {
-  //       id: arg.id,
-  //       // cleared_at: arg.cleared_at,
-  //       appointment_requested_at: arg.appointment_requested_at,
-  //     },
-  //     isEdit: true,
-  //   });
-
-  //   this.toggle();
-  // };
-
   render() {
     const { SearchBar } = Search;
 
@@ -354,11 +329,6 @@ class csrAppointments extends Component {
 
     return (
       <React.Fragment>
-         <ApproveUnapproveModal
-            show={this.state.unapprovedModal}
-            onYesClick={this.callOnApproveUnapproveLab}
-            onCloseClick={() => this.setState({ unapprovedModal: false })}
-          />
         <div className="page-content">
           <MetaTags>
             <title>Pending Cancellation List | Lab Hazir</title>
