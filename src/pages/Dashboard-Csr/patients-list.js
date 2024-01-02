@@ -122,11 +122,11 @@ class PatientsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Patients List | Lab Hazir</title>
+            <title>Patients Search | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Patients" breadcrumbItem=" List" />
+            <Breadcrumbs title="Patients" breadcrumbItem="Patients Search" />
             <Row className="mb-2 g-0">
                                 <Col sm="2" lg="2">
                                   <div className="d-flex flex-column mb-2">
@@ -176,47 +176,68 @@ class PatientsList extends Component {
                             <tr>
                               <th className="text-start">Account id</th>
                               <th className="text-start">Name</th>
-                              <th className="text-start">Phone</th>
+                              <th className="text-start">Email</th>
                               <th className="text-start">City</th>
+                              <th className="text-start">Appointments</th>
+                              <th className="text-start"></th>
+
+
 
                             </tr>
                           </thead>
-                          {!isEmpty(patients) ? (
-                  patients.map((patient, key) => (
-                    <tr key={"_row_" + key}>
-                      <td className="text-start py-2 pl-3 pr-4">{patient.account_id}</td>
-                      <td className="text-start py-2 pl-3 pr-4">
-                        <Link
-                          to={
-                            this.props.match.params.uuid
-                              ? `/nearby-labs/${this.props.match.params.uuid}/${patient.account_id}`
-                              : `/nearby-labs/${patient.account_id}`
-                          }
-                        >
-                          {patient.name}
-                        </Link>
-                      </td>
-                      <td className="text-start py-2 pl-3 pr-4">{patient.phone}</td>
-                      <td className="text-start py-2 pl-3 pr-4">{patient.city}</td>
-                    </tr>
-                  ))): (
-                    <div className=" mt-5">
-                    <h4 className="text-uppercase text-primary">
-                      Sorry no result found.
-                    </h4>
-                  </div>
-                  )
-                  
-                  }
-                  {/* {this.state.showNoResultMessage && (
+                          {patients.length > 0 ? (
+                            patients.map((patient, key) => (
+                              <tr key={"_row_" + key}>
+                                <td className="text-start py-2 pl-3 pr-4">{patient.account_id}</td>
+                                <td className="text-start py-2 pl-3 pr-4">
+                                {patient.name}
+                                </td>
+                                <td className="text-start py-2 pl-3 pr-4">{patient.email}</td>
+                                <td className="text-start py-2 pl-3 pr-4">{patient.city}</td>
+                                <td className="text-center py-2 pl-3 pr-4">
+
+                <Link
+                style={{ background: 'transparent' }}
+                  className="fas fa-calendar font-size-18"
+                  to={
+                    this.props.match.params.uuid
+                    ? `/test-appointments/${this.props.match.params.uuid}/${patient.account_id}`
+                  : `/test-appointments/${patient.account_id}`}
+                ></Link>
+            </td>
+            <td className="text-center py-2 pl-3 pr-4">
+  <button
+    className="btn btn-primary font-size-14"
+    onClick={() => {
+      const uuid = this.props.match.params.uuid;
+      const accountId = patient.account_id;
+      const url = uuid
+        ? `/tests-offered-labhazir/${uuid}/${accountId}`
+        : `/tests-offered-labhazir/${accountId}`;
+
+      // Perform any additional actions or navigation logic here
+
+      // For navigation, you can use react-router-dom's history or other navigation methods
+      this.props.history.push(url);
+    }}
+  >
+    Book Appointment
+  </button>
+</td>
+
+                              </tr>
+                            ))
+                          ) : null}
+
+                  {isEmpty(patients) && (
               <Row>
-                  <div className=" mb-5">
-                    <h4 className="text-uppercase">
-                      Sorry no result fou
-                    </h4>
+                  <div className=" mt-5">
+                    <h4 className="text-primary" style={{fontSize: "18px"}}>
+    &quot;Labhazir will display patient details only when you provide the correct phone number.&quot;
+</h4>                  
                   </div>
               </Row>
-            )} */}
+            )}
                         </Table>
                       </div>
                          </CardBody>
@@ -235,6 +256,7 @@ PatientsList.propTypes = {
   patients: PropTypes.array,
   className: PropTypes.any,
   onGetPatientsList: PropTypes.func,
+  history: PropTypes.any,
 };
 const mapStateToProps = ({ patients }) => ({
   patients: patients.patientsList,

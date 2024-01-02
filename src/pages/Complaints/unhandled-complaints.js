@@ -95,7 +95,7 @@ class UnhandledComplaints extends Component {
         },
         {
           dataField: "name",
-          text: "Complainant",
+          text: "Complainant Name",
           sort: true,
           formatter: (cellContent, unhandledComplaint) => (
             <>
@@ -130,9 +130,16 @@ class UnhandledComplaints extends Component {
           sort: true,
           formatter: (cellContent, unhandledComplaint) => (
             <>
-                  {/* {unhandledComplaint.complainee},{" "} */}
+                  {/* {unhandledComplaint.complainee},{" "}
                   {unhandledComplaint.labhazir_complainee}{" "}
-                  {unhandledComplaint.lab_name}
+                  {unhandledComplaint.lab_name} */}
+                  <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openLabMessageModal(e, unhandledComplaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
+                {unhandledComplaint.lab_name}
+              </Link>{" "}
             </>
           ),
           filter: textFilter(),
@@ -174,19 +181,19 @@ class UnhandledComplaints extends Component {
         //   ),
         //   filter: textFilter(),
         // },
-        {
-          dataField: "registered_at",
-          text: "Registered at",
-          sort: true,
-          formatter: (cellContent, complaint) => (
-            <>
-              <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          filter: textFilter(),
-        },
+        // {
+        //   dataField: "registered_at",
+        //   text: "Registered at",
+        //   sort: true,
+        //   formatter: (cellContent, complaint) => (
+        //     <>
+        //       <span>
+        //         {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+        //       </span>
+        //     </>
+        //   ),
+        //   filter: textFilter(),
+        // },
         {
           dataField: "registered_at",
           text: "Pending Since",
@@ -268,7 +275,24 @@ class UnhandledComplaints extends Component {
       PatientModal: false,
       isHovered: false,
       messageModal: false,
+      labModal: false,
     });
+  };
+  toggleLabMessageModal = () => {
+    this.setState(prevState => ({
+      labModal: !prevState.labModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+
+  openLabMessageModal = (e, arg) => {
+    this.setState({ labModal: true, 
+      lab_email: arg.lab_email,
+      lab_phone: arg.lab_phone,
+
+     });
   };
   togglePatientModal = () => {
     this.setState(prevState => ({
@@ -349,11 +373,11 @@ class UnhandledComplaints extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>Unhandled Complaints| Lab Hazir</title>
+            <title>open Complaints| Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="CSR" breadcrumbItem="Unhandled Complaints" />
+            <Breadcrumbs title="CSR" breadcrumbItem="open Complaints" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -446,6 +470,82 @@ class UnhandledComplaints extends Component {
                                       </div>
                                     </Modal>
                                     <Modal
+                                      isOpen={this.state.labModal}
+                                      onPointerLeave={this.handleMouseExit}
+                                      toggle={this.toggleLabMessageModal}
+                                    >
+                                    <ModalHeader
+                                        toggle={this.toggleLabMessageModal}
+                                        tag="h4"
+                                      >
+                                        <span>Lab details: </span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                        <Row>
+                                        <Col className="col-12">
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Email
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_email
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state
+                                                            .lab_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                        </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                    <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
                                       onPointerLeave={this.handleMouseExit}
@@ -454,54 +554,18 @@ class UnhandledComplaints extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Patient details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
-
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      E-mail
+                                                      Email
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">

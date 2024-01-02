@@ -953,7 +953,9 @@ class TestAppointmentsCompletedList extends Component {
                                                   <input
                                                     type="text"
                                                     value={
-                                                      this.state.appointment_requested_at
+                                                      // this.state.appointment_requested_at
+                                                      moment(this.state.appointment_requested_at).format("DD MMM YYYY, h:mm A")
+
                                                     }
                                                     className="form-control"
                                                     readOnly={true}
@@ -970,7 +972,7 @@ class TestAppointmentsCompletedList extends Component {
                                                   <input
                                                     type="text"
                                                     value={
-                                                      this.state.booked_at
+                                                      moment(this.state.booked_at).format("DD MMM YYYY, h:mm A")
                                                     }
                                                     className="form-control"
                                                     readOnly={true}

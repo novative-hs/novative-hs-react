@@ -1390,7 +1390,7 @@ class MedicalTestList extends Component {
                               // Add more style overrides as needed
                             }}
                           />
-                          <p className="text-danger">You may Select Single or Multiple Tests to Book.</p>
+                          <p className="text-danger font-size-10">You may Select Single or Multiple Tests to Book.</p>
                         </div>
 
                       </Col>

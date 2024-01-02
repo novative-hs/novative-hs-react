@@ -551,12 +551,11 @@ class TestAppointmentsInProcessList extends Component {
         //     </>
         //   ),
         // },
-
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
-          text: "Action",
+          text: "Menu",
           formatter: (cellContent, testAppointment) => (
 
 
@@ -589,6 +588,21 @@ class TestAppointmentsInProcessList extends Component {
                 >
                 </Link>
               </Tooltip>
+            </div>
+          ),
+        },
+
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, testAppointment) => (
+
+
+            <div className="d-flex gap-2">
+              
+              
               <Link className="text-success" to="#">
                 <Tooltip title="Update">
                   <i
@@ -1021,7 +1035,8 @@ class TestAppointmentsInProcessList extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.appointment_requested_at
+                                                        // this.state.appointment_requested_at
+                                                        moment(this.state.appointment_requested_at).format("DD MMM YYYY, h:mm A")
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
@@ -1038,7 +1053,9 @@ class TestAppointmentsInProcessList extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.booked_at
+                                                        // this.state.booked_at
+                                                        moment(this.state.booked_at).format("DD MMM YYYY, h:mm A")
+
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

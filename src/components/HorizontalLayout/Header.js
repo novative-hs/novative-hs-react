@@ -679,12 +679,16 @@ class Header extends Component {
                   {this.state.user_type == "CSR" && (
                     <div className="dropdown d-lg-inline-block ms-4 mt-4">
 
-                      <Link
-                        to={"/dashboard-csr"}
-                        className="btn header-items noti-icon right-bar-toggle"
-                      >
-                        <i className="mdi mdi-home me-1 font-size-24" />{" "}
-                      </Link>
+<Link
+  to="/dashboard-csr"
+  className="btn btn-sm header-items noti-icon right-bar-toggle rounded-pill"
+  style={{ backgroundColor: 'red', color: 'white', textDecoration: 'none', width: '160px', height: '30px', fontWeight: 'bold', fontSize: '10px' , marginTop: '-27px'}}
+>
+  {/* <i className="mdi mdi-home me-1 font-size-24" />{" "} */}
+  Go back to CSR Dashboard
+</Link>
+
+
                       <Link
                         to={
                           this.props.match.params.guest_id

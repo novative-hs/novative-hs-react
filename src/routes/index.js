@@ -109,6 +109,7 @@ import LabPathologists from "../pages/LabMarket/NearbyLabs/NearbyLabDetails/path
 
 // Patient Components
 import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
+import TestAppointmentsCSRList from "../pages/Dashboard-Csr/test-appointments-list";
 import TestsOfferedbyLab from "pages/LabMarket/NearbyLabs/TestsOfferedbyLab";
 import CartsList from "../pages/Carts/carts-list";
 import QuoteList from "../pages/Carts/quotes-list";
@@ -666,6 +667,10 @@ const csrAuthProtectedRoutes = [
     path: "/checkout-csr/:id",
     component: checkoutcsr,
   },
+  {
+    path: "/test-appointments/:id",
+    component: TestAppointmentsCSRList,
+  },
 ];
 
 const csrAdminAuthProtectedRoutes = [
@@ -812,6 +817,10 @@ const patientPublicRoutes = [
     component: LabPathologists,
   },
   { path: "/test-descriptions/:test_id/:uuid?", component: TestDescriptions },  
+  {
+    path: "/test-appointments/:uuid?",
+    component: TestAppointmentsList,
+  },
 ];
 
 const corporateAuthProtectedRoutes = [
