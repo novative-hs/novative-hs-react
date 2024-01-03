@@ -2162,7 +2162,7 @@ class MedicalTestList extends Component {
 
                             </div>
                           )}
-                        {isEmpty(quotes) && (
+                        {/* {isEmpty(quotes) && (
                           <Row style={{ background: 'transparent' }}>
                             <div className=" mt-4" >
                               <h4 className="text-primary" style={{ fontSize: "18px" }}>
@@ -2170,7 +2170,7 @@ class MedicalTestList extends Component {
                               </h4>
                             </div>
                           </Row>
-                        )}
+                        )} */}
                       </Table>
                     </div>
 
