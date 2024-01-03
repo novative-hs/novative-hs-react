@@ -178,12 +178,12 @@ class InProcessComplaintsLabhazir extends Component {
             </>
           ),filter: textFilter(),
         },
-        {
-          dataField: "city",
-          text: "Office",
-          sort: true, 
-          filter: textFilter(),    
-        },
+        // {
+        //   dataField: "city",
+        //   text: "Office",
+        //   sort: true, 
+        //   filter: textFilter(),    
+        // },
         {
           dataField: "data",
           text: "id",
