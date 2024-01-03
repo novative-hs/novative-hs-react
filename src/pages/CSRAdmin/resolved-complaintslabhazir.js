@@ -115,8 +115,8 @@ class ResolvedComplaintsLabhazir extends Component {
           formatter: (cellContent, resolvedComplaintLabhazir) => (
             <>
                   {/* {resolvedComplaintLabhazir.complainee},{" "} */}
-                  {resolvedComplaintLabhazir.labhazir_complainee}{" "}
-                  {resolvedComplaintLabhazir.lab_name}
+                  <strong className="text-danger">{resolvedComplaintLabhazir.complainee}</strong><br></br>
+                  {resolvedComplaintLabhazir.labhazir_complainee}
             </>
           ),filter: textFilter(),
         },

@@ -125,8 +125,8 @@ class PendingComplaintsLabhazir extends Component {
           formatter: (cellContent, pendingComplaintLabhazir) => (
             <>
                   {/* {pendingComplaintLabhazir.complainee},{" "} */}
-                  {pendingComplaintLabhazir.labhazir_complainee}{" "}
-                  {pendingComplaintLabhazir.lab_name}
+                  <strong className="text-danger">{pendingComplaintLabhazir.complainee}</strong><br></br>
+                  {pendingComplaintLabhazir.labhazir_complainee}
             </>
           ),filter: textFilter(),
         },
