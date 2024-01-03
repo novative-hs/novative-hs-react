@@ -286,7 +286,7 @@ class Contact extends Component {
                               {/* Type field */}
                               <div className="mb-3">
                                 <Label for="complainant" className="form-label">
-                                Complaint From
+                                  Complaint From
                                 </Label>
                                 <Field
                                   name="complainant"
@@ -388,31 +388,38 @@ class Contact extends Component {
 
                             ) : null}
                             {/* City field */}
-                            {/* Check for any duplicated code or extra surrounding structure */}
-<div className="mb-3">
-  {/* Label for "city" */}
-  <Label for="city" className="form-label">
-    City
-  </Label>
-  {/* Field for "city" */}
-  <Field
-    name="city"
-    as={Select}
-    required
-    placeholder="Select City..."
-    options={cityList}
-  />
-  {/* ErrorMessage for "city" */}
-  <ErrorMessage
-    name="city"
-    component="div"
-    className="invalid-feedback"
-  />
-</div>
+                            <div className="mb-3">
+                              <Label for="city" className="form-label">
+                                City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                onChange={selectedGroup =>
+                                  this.setState({
+                                    city: selectedGroup.value,
+                                  })
+                                }
+                                placeholder="Select City..."
+                                className="defautSelectParent"
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                    this.state.city,
+                                  value:
+                                    this.state.office,
+                                }}
 
+                              />
 
-
-
+                              <ErrorMessage
+                                name="city"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+                            </div>
 
                             {this.state.complainee === "LabHazir" && (
                               <div className="mb-3">
