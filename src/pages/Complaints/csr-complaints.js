@@ -189,11 +189,11 @@ class csrComplaints extends Component {
           text: "Action",
           formatter: (cellContent, csrComplaint) => (
             <div className="d-flex gap-3">
-              <Tooltip title="Invoice">
+              <Tooltip title="Appointment Detail">
                 <Link
                   className="mdi mdi-receipt font-size-18"
-                  to={`/appointment-detail/${patientTestAppointment.id}`}
-                  ></Link>
+                  to={`/appointment-detail/${csrComplaint.id}`}
+                ></Link>
               </Tooltip>
               <Link className="text-success" to="#">
                 <Tooltip title="Update">
@@ -404,7 +404,7 @@ class csrComplaints extends Component {
                                         toggle={this.toggleLabModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Lab Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
@@ -478,7 +478,7 @@ class csrComplaints extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span>Lab Details: </span>
+                                        <span>Patient Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
