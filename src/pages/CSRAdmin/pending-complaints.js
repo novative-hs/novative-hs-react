@@ -472,7 +472,7 @@ class PendingComplaints extends Component {
                                               </div>
                                             </div>
 
-                                            <div className="row justify-content-center">
+                                            <div className="row justify-content-center" style={{width: "20px"}}>
                                               <div className="col-xl-10">
                                                 <h4 className="text-primary">
                                                 {this.state.subject}
@@ -495,7 +495,7 @@ class PendingComplaints extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Complainant Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
@@ -571,7 +571,7 @@ class PendingComplaints extends Component {
                                         toggle={this.toggleMessageModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Complainant Against: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
