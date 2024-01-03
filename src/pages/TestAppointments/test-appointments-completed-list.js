@@ -58,13 +58,32 @@ class TestAppointmentsCompletedList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              <strong>{testAppointment.order_id}</strong><br></br>
-              <strong>
+              {testAppointment.order_id}
+              {/* <strong>
                 {testAppointment.type}{" ("}
                 {testAppointment.address}{")"}
-              </strong>
+              </strong> */}
             </>
-          ),filter: textFilter(),
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "address",
+          text: "Lab Address",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <span style={{
+              width: '200px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
+                            {testAppointment.address}
+
+            </span>
+          ), filter: textFilter(),
         },
         {
           dataField: "patient_name",
@@ -823,6 +842,8 @@ class TestAppointmentsCompletedList extends Component {
                                         <option value="Collection">Collection</option>
                                         <option value="Both">Both</option>
                                       </select>
+                                      <p className="text-danger font-size-10">Filter all completed appointments at your collection points.</p>
+
                                     </div>
                                   )}
                                     </div>

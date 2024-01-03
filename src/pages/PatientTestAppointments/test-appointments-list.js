@@ -109,10 +109,27 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
+        // {
+        //   dataField: "lab_name",
+        //   text: "Lab Name",
+        //   sort: true,
+        // },
         {
           dataField: "lab_name",
           text: "Lab Name",
           sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              <span>
+                <Link to="#"
+                //  onClick={e => this.openLabModal(e, testAppointment)}
+                onMouseEnter={e =>  this.openLabModal(e, testAppointment)}
+                 >
+                  {testAppointment.lab_name}
+                </Link>
+              </span>
+            </>
+          ),
         },
         // {
         //   dataField: "patient_district",
@@ -614,6 +631,7 @@ class TestAppointmentsList extends Component {
     this.togglePatientModal2 = this.togglePatientModal2.bind(this);
     this.togglecancelModal = this.togglecancelModal.bind(this);
     this.toggleReshedualModal = this.toggleReshedualModal.bind(this);
+    this.toggleLabModal = this.toggleLabModal.bind(this);
 
     // this.handlePatientFeedbackClicks = this.handlePatientFeedbackClicks.bind(this);
   }
@@ -638,6 +656,22 @@ class TestAppointmentsList extends Component {
       modal: !prevState.modal,
     }));
   }
+  openLabModal = (e, arg) => {
+    this.setState({
+      LabModal: true,
+
+      lab_phone: arg.lab_phone,
+      lab_city: arg.lab_city,
+    });
+  };
+  toggleLabModal = () => {
+    this.setState(prevState => ({
+      LabModal: !prevState.LabModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
   toggleReshedualModal = () => {
     this.setState(prevState => ({
       ReshedualModal: !prevState.ReshedualModal,
@@ -959,6 +993,79 @@ downloadFile = async (url) => {
                                       </ModalBody>
                                     </Modal>
                                     <Modal
+                                      isOpen={this.state.LabModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleLabModal}
+                                        tag="h4"
+                                      >
+                                        <span>Lab Details: </span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state.lab_phone
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                    <Modal
                                       isOpen={this.state.ReshedualModal}
                                       className={this.props.className}
                                     >
@@ -978,7 +1085,7 @@ downloadFile = async (url) => {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    reschedule_reason
+                                                    Reason
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -999,7 +1106,7 @@ downloadFile = async (url) => {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Reason
+                                                    Comment
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">

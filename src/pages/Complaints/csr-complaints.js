@@ -478,7 +478,7 @@ class csrComplaints extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Lab Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>

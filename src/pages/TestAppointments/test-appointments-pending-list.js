@@ -96,7 +96,7 @@ class TestAppointmentsPendingList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <span style={{
-              width: '300px', // Set your desired width here
+              width: '200px', // Set your desired width here
               fontSize: '14px',
             
               textOverflow: 'ellipsis',
@@ -516,7 +516,7 @@ class TestAppointmentsPendingList extends Component {
                                         <option value="Collection">Collection</option>
                                         <option value="Both">Both</option>
                                       </select>
-                                      <p className="text-danger">Note: Filter and manage your all collection points appointments.</p>
+                                      <p className="text-danger font-size-10">Filter and manage all collection point appointments, and confirm them.</p>
 
                                     </div>
                                   )}

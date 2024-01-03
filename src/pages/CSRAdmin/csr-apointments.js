@@ -391,7 +391,7 @@ class csrAppointments extends Component {
                                         toggle={this.toggleLabModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Lab Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
@@ -465,49 +465,14 @@ class csrAppointments extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Patient Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                {/* <div className="mb-3 row">
-<div className="col-md-3">
-<Label className="form-label">
-Age
-</Label>
-</div>
-<div className="col-md-9">
-<input
-type="text"
-value={
-this.state.patient_age
-}
-className="form-control"
-readOnly={true}
-/>
-</div>
-</div> */}
-
-                                                {/* <div className="mb-3 row">
-<div className="col-md-3">
-<Label className="form-label">
-Address
-</Label>
-</div>
-<div className="col-md-9">
-<input
-type="text"
-value={
-this.state
-.patient_address
-}
-className="form-control"
-readOnly={true}
-/>
-</div>
-</div> */}
+                                                
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -565,161 +530,6 @@ readOnly={true}
                                               </Col>
                                             </Row>
                                           </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
-                                    <Modal
-                                      isOpen={this.state.modal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.toggle}
-                                        tag="h4"
-                                      >
-                                        {!!isEdit
-                                          ? "Edit Pending Appointment"
-                                          : "Add Quality Certificate"}
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik
-                                          enableReinitialize={true}
-                                          initialValues={{
-                                            hiddenEditFlag: isEdit,
-                                            status:
-                                              (this.state.csrAppointment &&
-                                                this.state.csrAppointment
-                                                  .status) ||
-                                              "",
-                                            appointment_option:
-                                              (this.state &&
-                                                this.state
-                                                  .appointment_option) ||
-                                              "",
-                                            comments:
-                                              (this.state &&
-                                                this.state.comments) ||
-                                              "",
-                                          }}
-                                          validationSchema={Yup.object().shape({
-                                            hiddentEditFlag: Yup.boolean(),
-                                          })}
-                                          onSubmit={values => {
-                                            const updateCsrAppointments = {
-                                              id: csrAppointment.id,
-                                              status:
-                                                values.status,
-                                              comments:
-                                                values.comments,
-                                              staff: this.state.user_id,
-                                            };
-
-                                            // update PaymentStatus
-                                            onUpdateCsrAppointments(
-                                              updateCsrAppointments
-                                            );
-                                            setTimeout(() => {
-                                              onGetCsrAppointments(
-                                                this.state.user_id
-                                              );
-                                            }, 1000);
-                                            this.toggle();
-                                          }}
-                                        >
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-                                                  <div className="mb-3">
-                                                    <Label
-                                                      for="status"
-                                                      className="form-label"
-                                                    >
-                                                      Select
-                                                    </Label>
-                                                    <Field
-                                                      name="status"
-                                                      component="select"
-                                                      // onChange={e =>
-                                                      //   this.setState({
-                                                      //     status:
-                                                      //       e.target.value,
-                                                      //   })
-                                                      // }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          csrAppointment: {
-                                                            id: csrAppointment.id,
-                                                            status:
-                                                              e.target.value,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className="form-select"
-                                                    > <option value="">
-                                                    --- Please Select---
-                                                  </option>
-                                                      <option value="Cancel">
-                                                        Cancel
-                                                      </option>
-                                                    </Field>
-                                                  </div>
-                                                  {this.state.status=="Cancel" ? (
-                                                    <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        <b>Comment</b>
-                                                      </Label>
-                                                      <Field
-                                                        name="comments"
-                                                        as="textarea"
-                                                        rows="2"
-                                                        cols="20"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.comments &&
-                                                          touched.comments
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        value={
-                                                          this.state.comments
-                                                        }
-                                                        onChange={e =>
-                                                          this.setState({
-                                                            comments:
-                                                              e.target.value,
-                                                          })
-                                                        }
-                                                      />
-                                                      <ErrorMessage
-                                                        name="comments"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  ):null}
-                                                </Col>
-
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
                                         </Formik>
                                       </ModalBody>
                                     </Modal>

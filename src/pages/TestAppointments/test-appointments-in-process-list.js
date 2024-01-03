@@ -91,12 +91,31 @@ class TestAppointmentsInProcessList extends Component {
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-              <strong>{testAppointment.order_id}</strong><br></br>
-              <strong>
+              {testAppointment.order_id}
+              {/* <strong>
                 {testAppointment.type}{" ("}
                 {testAppointment.address}{")"}
-              </strong>
+              </strong> */}
             </>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "address",
+          text: "Lab Address",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <span style={{
+              width: '200px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
+                            {testAppointment.address}
+
+            </span>
           ), filter: textFilter(),
         },
         {
@@ -916,6 +935,8 @@ class TestAppointmentsInProcessList extends Component {
                                             <option value="Collection">Collection</option>
                                             <option value="Both">Both</option>
                                           </select>
+                                          <p className="text-danger font-size-10">Filter and manage all collection point appointments, and process them.</p>
+
                                         </div>
                                       )}
                                     </div>
