@@ -153,22 +153,22 @@ class PendingComplaintsLabhazir extends Component {
             </>
           ),filter: textFilter(),
         },
-        // {
-        //   dataField: "message",
-        //   text: "Message",
-        //   sort: true,
-        //   formatter: (cellContent, complaint) => (
-        //     <>
-        //       <Link to="#" 
-        //       // onClick={e => this.openMessageModal(e, complaint)}
-        //       onMouseEnter={e => this.openMessageModal(e, complaint)}
-        //       onPointerLeave={this.handleMouseExit()}
-        //       >
-        //         {complaint.message.slice(0, 10) + "..."}
-        //       </Link>{" "}
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: "message",
+          text: "Message",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMessageModal(e, complaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
+                {complaint.message.slice(0, 10) + "..."}
+              </Link>{" "}
+            </>
+          ),
+        },
        
 
         {

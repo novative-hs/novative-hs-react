@@ -168,22 +168,22 @@ class PendingComplaints extends Component {
         //   sort: true,
         // },
       
-        // {
-        //   dataField: "message",
-        //   text: "Message",
-        //   sort: true,
-        //   formatter: (cellContent, complaint) => (
-        //     <>
-        //       <Link to="#" 
-        //       // onClick={e => this.openMessageModal(e, complaint)}
-        //       onMouseEnter={e => this.openMessageModal(e, complaint)}
-        //       onPointerLeave={this.handleMouseExit()}
-        //       >
-        //         {complaint.message.slice(0, 10) + "..."}
-        //       </Link>{" "}
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: "message",
+          text: "Message",
+          sort: true,
+          formatter: (cellContent, complaint) => (
+            <>
+              <Link to="#" 
+              // onClick={e => this.openMessageModal(e, complaint)}
+              onMouseEnter={e => this.openMModal(e, complaint)}
+              onPointerLeave={this.handleMouseExit()}
+              >
+                {complaint.message.slice(0, 10) + "..."}
+              </Link>{" "}
+            </>
+          ),
+        },
        
         
         {
@@ -231,6 +231,7 @@ class PendingComplaints extends Component {
     };
     this.toggle = this.toggle.bind(this);
     this.toggleMessageModal.bind(this);
+    this.toggleMModal.bind(this);
     this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
   }
 
@@ -273,6 +274,8 @@ class PendingComplaints extends Component {
       PatientModal: false,
       messageModal: false,
       isHovered: false,
+      mModal: false,
+
     });
   }; 
   togglePatientModal = () => {
@@ -288,6 +291,18 @@ class PendingComplaints extends Component {
       modal: !prevState.modal,
     }));
   }
+  toggleMModal = () => {
+    this.setState(prevState => ({
+      mModal: !prevState.mModal,
+    }));
+  };
+
+  openMModal = (e, arg) => {
+    this.setState({ mModal: true, 
+      message: arg.message,
+      subject: arg.subject,
+    });
+  };
 
   toggleMessageModal = () => {
     this.setState(prevState => ({
@@ -427,6 +442,51 @@ class PendingComplaints extends Component {
                                     </div>
                                   </div>
                                   <Modal
+                                      isOpen={this.state.mModal}
+                                      role="dialog"
+                                      autoFocus={true}
+                                      data-toggle="modal"
+                                      centered
+                                      toggle={this.toggleMModal}
+                                      onPointerLeave={this.handleMouseExit}
+                                    >
+                                      <div className="modal-content">
+                                        <div className="modal-header border-bottom-0">
+                                          <button
+                                            type="button"
+                                            className="btn-close"
+                                            onClick={() =>
+                                              this.setState({
+                                                mModal: false,
+                                              })
+                                            }
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                          ></button>
+                                        </div>
+                                        <div className="modal-body">
+                                          <div className="text-center mb-4">
+                                            <div className="avatar-md mx-auto mb-4">
+                                              <div className="avatar-title bg-light rounded-circle text-primary h3">
+                                                <i className="mdi mdi-email-open"></i>
+                                              </div>
+                                            </div>
+
+                                            <div className="row justify-content-center">
+                                              <div className="col-xl-10">
+                                                <h4 className="text-primary">
+                                                {this.state.subject}
+                                                </h4>
+                                                <p className="text-muted font-size-14 mb-4">
+                                                  {this.state.message}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Modal>
+                                  <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
                                       onPointerLeave={this.handleMouseExit}
@@ -442,47 +502,11 @@ class PendingComplaints extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Age
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_age
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
-
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      E-mail
+                                                      Email
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">

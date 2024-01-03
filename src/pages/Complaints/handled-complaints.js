@@ -130,20 +130,25 @@ class handledComplaintsList extends Component {
           sort: true,
           formatter: (cellContent, unhandledComplaint) => (
             <>
-                  {/* {unhandledComplaint.complainee},{" "}
-                  {unhandledComplaint.labhazir_complainee}{" "}
-                  {unhandledComplaint.lab_name} */}
-                  <Link to="#" 
-              // onClick={e => this.openMessageModal(e, complaint)}
-              onMouseEnter={e => this.openLabMessageModal(e, unhandledComplaint)}
-              onPointerLeave={this.handleMouseExit()}
-              >
-                {unhandledComplaint.lab_name}
-              </Link>{" "}
+              {unhandledComplaint.lab_name ? (
+                <Link
+                  to="#"
+                  onMouseEnter={e => this.openLabMessageModal(e, unhandledComplaint)}
+                  onPointerLeave={this.handleMouseExit()}
+                >
+                  <strong className="text-danger">{unhandledComplaint.complainee}</strong> <br></br>
+                  {unhandledComplaint.lab_name}
+                </Link>
+              ) : (
+                <>
+                  <strong className="text-danger">{unhandledComplaint.complainee}</strong> <br></br>
+                  {unhandledComplaint.labhazir_complainee}
+                </>
+              )}
             </>
           ),
           filter: textFilter(),
-        },
+        },        
         // {
         //   dataField: "message",
         //   text: "Message",
