@@ -14,11 +14,11 @@ import {
 } from "./actionTypes";
 
 // ----------- Cart list APIs actions -----------------
-export const getQuotes = (city_id, test_id, search_type, longitude, latitude, km, locationAccessAllowed) => (
-  console.log("action", city_id, test_id, search_type, longitude, latitude, km, locationAccessAllowed),
+export const getQuotes = (city_id, test_id, search_type, address, longitude, latitude, km, locationAccessAllowed) => (
+  console.log("action", city_id, test_id, search_type, address, longitude, latitude, km, locationAccessAllowed),
   {
   type: GET_QUOTES,
-  payload: {city_id, test_id, search_type, longitude, latitude, km, locationAccessAllowed}, 
+  payload: {city_id, test_id, search_type, address, longitude, latitude, km, locationAccessAllowed}, 
 });;
 
 export const getQuotesSuccess = quotes => (
