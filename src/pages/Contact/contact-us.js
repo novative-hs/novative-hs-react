@@ -234,25 +234,20 @@ class Contact extends Component {
                       validationSchema={Yup.object().shape({
                         complainant: Yup.string(),
                         complainee: Yup.string(),
-                        name: Yup.string()
-                          .trim()
-                          .required("Please enter your name"),
-                        email: Yup.string()
-                          .required("Please enter your email")
-                          .email("Please enter valid email"),
+                        name: Yup.string().trim().required("Please enter your name"),
+                        // email: Yup.string().required("Please enter your email").email("Please enter valid email"),
                         phone: Yup.string()
                           .required("Please enter your mobile number")
                           .matches(
                             /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                             "Please enter a valid Pakistani mobile number e.g. 03123456789"
                           ),
-                        subject: Yup.string()
-                          .trim()
-                          .required("Please enter your subject"),
-                        message: Yup.string()
-                          .trim()
-                          .required("Please enter your message"),
+                        subject: Yup.string().trim().required("Please enter your subject"),
+                        message: Yup.string().trim().required("Please enter your message"),
+                        city: Yup.string().required('Please select your city'),
+
                       })}
+                      
                       onSubmit={values => {
                         onAddNewComplaint(values);
                         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -291,7 +286,7 @@ class Contact extends Component {
                               {/* Type field */}
                               <div className="mb-3">
                                 <Label for="complainant" className="form-label">
-                                  Select Complainant
+                                  Complainant From
                                 </Label>
                                 <Field
                                   name="complainant"
@@ -315,7 +310,7 @@ class Contact extends Component {
                             <Col lg="6">
                               <div className="mb-3">
                                 <Label for="complainee" className="form-label">
-                                  Select Complainee
+                                Complainant Againest
                                 </Label>
                                 <Field
                                   name="complainee"
@@ -393,38 +388,32 @@ class Contact extends Component {
 
                             ) : null}
                             {/* City field */}
-                            <div className="mb-3">
-                              <Label for="city" className="form-label">
-                                City
-                              </Label>
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    city: selectedGroup.value,
-                                  })
-                                }
-                                placeholder="Select City..."
-                                className="defautSelectParent"
-                                options={
-                                  cityList
-                                }
-                                defaultValue={{
-                                  label:
-                                    this.state.city,
-                                  value:
-                                    this.state.office,
-                                }}
+                            {/* Check for any duplicated code or extra surrounding structure */}
+<div className="mb-3">
+  {/* Label for "city" */}
+  <Label for="city" className="form-label">
+    City
+  </Label>
+  {/* Field for "city" */}
+  <Field
+    name="city"
+    as={Select}
+    required
+    placeholder="Select City..."
+    options={cityList}
+  />
+  {/* ErrorMessage for "city" */}
+  <ErrorMessage
+    name="city"
+    component="div"
+    className="invalid-feedback"
+  />
+</div>
 
-                              />
 
-                              <ErrorMessage
-                                name="city"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </div>
+
+
+
                             {this.state.complainee === "LabHazir" && (
                               <div className="mb-3">
                                 <Label
