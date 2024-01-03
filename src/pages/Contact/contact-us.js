@@ -286,7 +286,7 @@ class Contact extends Component {
                               {/* Type field */}
                               <div className="mb-3">
                                 <Label for="complainant" className="form-label">
-                                  Complainant From
+                                Complaint From
                                 </Label>
                                 <Field
                                   name="complainant"
@@ -310,7 +310,7 @@ class Contact extends Component {
                             <Col lg="6">
                               <div className="mb-3">
                                 <Label for="complainee" className="form-label">
-                                Complainant Againest
+                                Complaint Againest
                                 </Label>
                                 <Field
                                   name="complainee"
