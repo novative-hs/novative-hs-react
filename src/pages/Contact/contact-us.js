@@ -242,7 +242,7 @@ class Contact extends Component {
                             /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                             "Please enter a valid Pakistani mobile number e.g. 03123456789"
                           ),
-                        subject: Yup.string().trim().required("Please enter your subject"),
+                        // subject: Yup.string().trim().required("Please enter your subject"),
                         message: Yup.string().trim().required("Please enter your message"),
                         city: Yup.string().required('Please select your city'),
 
@@ -387,39 +387,34 @@ class Contact extends Component {
                               )
 
                             ) : null}
-                            {/* City field */}
-                            <div className="mb-3">
-                              <Label for="city" className="form-label">
-                                City
-                              </Label>
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    city: selectedGroup.value,
-                                  })
-                                }
-                                placeholder="Select City..."
-                                className="defautSelectParent"
-                                options={
-                                  cityList
-                                }
-                                defaultValue={{
-                                  label:
-                                    this.state.city,
-                                  value:
-                                    this.state.office,
-                                }}
-
-                              />
-
-                              <ErrorMessage
-                                name="city"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                            </div>
+                          {this.state.complainee == "Lab" ? (
+                           <div className="mb-3">
+                           <Label for="city" className="form-label">
+                             City
+                           </Label>
+                           <Select
+                             name="city"
+                             component="Select"
+                             onChange={(selectedGroup) =>
+                               this.setState({
+                                 city: selectedGroup.value,
+                               })
+                             }
+                             placeholder="Select City..."
+                             className={`defautSelectParent ${!this.state.city ? "is-invalid" : ""}`}
+                             options={cityList}
+                             value={{
+                               label: this.state.city || "Select City...", // Set a default label for placeholder
+                               value: this.state.city,
+                             }}
+                           />
+                           {!this.state.city && (
+                             <div className="invalid-feedback">
+                               Please select City
+                             </div>
+                           )}
+                         </div>                         
+                         ):null}
 
                             {this.state.complainee === "LabHazir" && (
                               <div className="mb-3">
@@ -532,7 +527,7 @@ class Contact extends Component {
                                 />
                               </div>
                             </Col>
-                            <Col lg="6">
+                            {/* <Col lg="6">
                               <div className="mb-3">
                                 <Label for="subject">Subject</Label>
                                 <Input
@@ -559,7 +554,7 @@ class Contact extends Component {
                                   className="invalid-feedback"
                                 />
                               </div>
-                            </Col>
+                            </Col> */}
                           </Row>
                           <Row>
                             <Col lg="12">
