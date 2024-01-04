@@ -184,17 +184,19 @@ class csrAppointments extends Component {
           formatter: (cellContent, csrAppointment) => (
             <>
             <div className="d-flex align-items-center">
-  <Tooltip title="Cancel Appointment">
-    <Button
-      color="danger"
-      className="mdi mdi-cancel font-size-14"
-      id="edittooltip"
-      onClick={() => this.handleResolveClick(csrAppointment.id)}
-    >
-    </Button>
-  </Tooltip>
-
-  <Tooltip title="Add Comment">
+              {csrAppointment.status === "Pending Cancel" ? (
+                <Tooltip title="Cancel Appointment">
+                <Button
+                  color="danger"
+                  className="mdi mdi-cancel font-size-14"
+                  id="edittooltip"
+                  onClick={() => this.handleResolveClick(csrAppointment.id)}
+                >
+                </Button>
+              </Tooltip>
+              ) : null }
+              
+              <Tooltip title="Add Comment">
                 <Link
                 style={{
                   marginLeft: '5px',
@@ -335,7 +337,7 @@ class csrAppointments extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Pending Cancellation" />
+            <Breadcrumbs title="List" breadcrumbItem="Cancelled / Pending Cancellation" />
             <Row>
               <Col lg="12">
                 <Card>

@@ -252,15 +252,20 @@ class Contact extends Component {
                         onAddNewComplaint(values);
                         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
-                        // If no error messages then show wait message
                         setTimeout(() => {
                           if (this.props.complaint) {
                             this.setState({
                               complaintSuccess:
                                 "Thank you for contacting us. Our customer service representative will get back to you soon.Check your email for Complaint ID",
+                            }, () => {
+                              // Reload the window after 2 seconds
+                              setTimeout(() => {
+                                window.location.reload();
+                              }, 2000);
                             });
                           }
-                        }, 1000);
+                        }, 1000);                        
+                        
 
                         setTimeout(() => {
                           this.setState({
@@ -507,7 +512,6 @@ class Contact extends Component {
                               <Select
                                 name="city"
                                 component="Select"
-                                required
                                 onChange={selectedGroup =>
                                   this.setState({
                                     city: selectedGroup.value,
@@ -521,11 +525,19 @@ class Contact extends Component {
                                 options={
                                   cityList
                                 }
-                                defaultValue={{
-                                  label:
-                                    this.state.city,
-                                  value:
-                                    this.state.office,
+                                // defaultValue={{
+                                //   label:
+                                //     this.state.city,
+                                //   value:
+                                //     this.state.office,
+                                // }}
+                                styles={{
+                                  control: (base, state) => ({
+                                    ...base,
+                                    borderColor: !this.state.city
+                                      ? "#f46a6a"
+                                      : "#ced4da",
+                                  }),
                                 }}
 
                               />
@@ -571,7 +583,7 @@ class Contact extends Component {
                                   className="btn btn-success save-user"
                                   disabled={this.state.complaintSuccess}
                                 >
-                                  Save
+                                  Submit
                                 </button>
                               </div>
                             </Col>

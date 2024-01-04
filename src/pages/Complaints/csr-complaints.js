@@ -329,11 +329,11 @@ class csrComplaints extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending Appointment List | Lab Hazir</title>
+            <title>All Appointments List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Pending Appointment" />
+            <Breadcrumbs title="List" breadcrumbItem="All Appointments" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -575,7 +575,7 @@ readOnly={true}
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Pending Appointment"
+                                          ? "Edit Appointment"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>
@@ -663,7 +663,7 @@ readOnly={true}
                                                       </option>
 
                                                       <option value="Change">
-                                                        Appointment Time Change
+                                                        Appointment Request Time by Patient
                                                       </option>
                                                       <option value="Cancel">
                                                         Appointment Cancellation

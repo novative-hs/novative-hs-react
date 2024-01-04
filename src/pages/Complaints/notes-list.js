@@ -170,6 +170,13 @@ class NotesList extends Component {
                            </p>
                          </div>
                           )}
+                          {note.field_name == "appointment_requested_at" &&(
+                           <div >
+                           <p>
+                             <b>{note.staff_name}</b>{" "} changes Appointment Request Time by Patient <b>{moment(note.old_value).format("DD MMM YYYY, h:mm A")}</b> <span className="text-danger">to</span>  <b>{moment(note.new_value).format("DD MMM YYYY, h:mm A")}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                           </p>
+                         </div>
+                          )}
                           {note.field_name == "collection_status" &&(
                            <div >
                            <p>
