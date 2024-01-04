@@ -950,7 +950,7 @@ class AccountStatements extends Component {
                                       <td>
                                         {accountStatement.labhazir_share == 0 ? (
                                           <p className="d-none">
-                                            {accountStatement.payment_method == "Cash" ? (
+                                            {accountStatement.payment_method == "Cash" || accountStatement.payment_method == "Donation" ? (
                                               <span>
                                                 {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                               </span>
@@ -960,27 +960,16 @@ class AccountStatements extends Component {
 
                                         ) : (
                                           <p className="float-end">
-                                            {accountStatement.payment_method == "Cash" ? (
+                                            {accountStatement.payment_method == "Cash"  || accountStatement.payment_method == "Donation" ? (
                                               <span>
                                                 {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                               </span>
                                             ) : (
                                               null
-                                            )}                                        </p>
+                                            )} </p>
                                         )}
 
                                       </td>
-                                      {/* <td>
-                                      <p>
-                                        {accountStatement.payment_method == "Cash" ? (
-                                          <span>
-                                            {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td> */}
 
                                       <td>
                                         <p className="float-end">
@@ -991,18 +980,19 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {accountStatement.payment_method == "Donation" ? (
-                                            <span>
-                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}
+                                          
                                         </p>
                                       </td>
                                       <td>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {accountStatement.payment_method == "Donation" ? (
                                             <span>
                                               {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
@@ -1020,13 +1010,13 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {accountStatement.payment_method == "Donation" ? (
+                                          {/* {accountStatement.payment_method == "Donation" ? (
                                             <span>
                                               {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
                                             null
-                                          )}
+                                          )} */}
                                         </p>
                                       </td>
                                       <td>
@@ -1248,13 +1238,13 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {accountStatement.payment_method == "Donation" ? (
+                                          {/* {accountStatement.payment_method == "Donation" ? (
                                             <span>
                                               {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
                                             null
-                                          )}
+                                          )} */}
                                         </p>
                                       </td>
                                       <td>
@@ -1266,13 +1256,13 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {accountStatement.payment_method == "Donation" ? (
+                                          {/* {accountStatement.payment_method == "Donation" ? (
                                             <span>
                                               {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
                                             null
-                                          )}
+                                          )} */}
                                         </p>
                                       </td>
                                       <td>
