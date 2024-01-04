@@ -387,35 +387,7 @@ class Contact extends Component {
                               )
 
                             ) : null}
-                          {this.state.complainee == "Lab" ? (
-                           <div className="mb-3">
-                           <Label for="city" className="form-label">
-                             City
-                           </Label>
-                           <Select
-                             name="city"
-                             component="Select"
-                             onChange={(selectedGroup) =>
-                               this.setState({
-                                 city: selectedGroup.value,
-                               })
-                             }
-                             placeholder="Select City..."
-                             className={`defautSelectParent ${!this.state.city ? "is-invalid" : ""}`}
-                             options={cityList}
-                             value={{
-                               label: this.state.city || "Select City...", // Set a default label for placeholder
-                               value: this.state.city,
-                             }}
-                           />
-                           {!this.state.city && (
-                             <div className="invalid-feedback">
-                               Please select City
-                             </div>
-                           )}
-                         </div>                         
-                         ):null}
-
+                          
                             {this.state.complainee === "LabHazir" && (
                               <div className="mb-3">
                                 <Label
@@ -527,34 +499,42 @@ class Contact extends Component {
                                 />
                               </div>
                             </Col>
-                            {/* <Col lg="6">
-                              <div className="mb-3">
-                                <Label for="subject">Subject</Label>
-                                <Input
-                                  name="subject"
-                                  type="text"
-                                  id="subject"
-                                  placeholder="Enter your subject"
-                                  onChange={e =>
-                                    this.setState({
-                                      subject: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.subject}
-                                  className={
-                                    "form-control" +
-                                    (errors.subject && touched.subject
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="subject"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col> */}
+                            <Col lg="6">
+                            <div className="mb-3">
+                              <Label for="city" className="form-label">
+                                City
+                              </Label>
+                              <Select
+                                name="city"
+                                component="Select"
+                                required
+                                onChange={selectedGroup =>
+                                  this.setState({
+                                    city: selectedGroup.value,
+                                  })
+                                }
+                                placeholder="Select City..."
+                                className={
+                                  "defautSelectParent" +
+                                  (!this.state.city ? " is-invalid" : "")
+                                }
+                                options={
+                                  cityList
+                                }
+                                defaultValue={{
+                                  label:
+                                    this.state.city,
+                                  value:
+                                    this.state.office,
+                                }}
+
+                              />
+
+                                  <div className="invalid-feedback">
+                                    Please select City
+                                  </div>
+                            </div>
+                            </Col>
                           </Row>
                           <Row>
                             <Col lg="12">

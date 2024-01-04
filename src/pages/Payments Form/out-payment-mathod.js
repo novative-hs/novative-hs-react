@@ -270,7 +270,7 @@ class OutPaymentsForm extends Component {
 
   render() {
     const { SearchBar } = Search;
-
+    const isDonation = this.state.transection_type === "Donation";
     const { outPayments } = this.props;
     const { labsMof } = this.props;
     const { listDonation } = this.props;
@@ -377,23 +377,39 @@ class OutPaymentsForm extends Component {
       }
     }
 
+    // const { bankAccounts } = this.props;
+    // const bankaccountList = [];
+    // for (let i = 0; i < bankAccounts.length; i++) {
+    //   let flag = 0;
+    //   if (!flag) {
+    //     bankaccountList.push(
+    //       {
+    //         label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
+    //         value: `${bankAccounts[i].id}`,
+    //       }
+    //     );
+    //   }
+    // }
     const { bankAccounts } = this.props;
     const bankaccountList = [];
+
     for (let i = 0; i < bankAccounts.length; i++) {
-      let flag = 0;
-      // for (let j = 0; j < bankAccounts.length; j++) {
-      //   if (banks[i].id == bankAccounts[j].bank_id) {
-      //     flag = 1;
-      //   }
-      // }
-      if (!flag) {
-        bankaccountList.push(
-          {
-            label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
+      if (isDonation) {
+        if (bankAccounts[i].account_type === "DONATION") {
+          bankaccountList.push({
+            label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
             value: `${bankAccounts[i].id}`,
-          }
-        );
+          });
+        }
+      }else {
+        if (bankAccounts[i].account_type != "DONATION") {
+          bankaccountList.push({
+            label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
+            value: `${bankAccounts[i].id}`,
+          });
+        }
       }
+      
     }
 
     const { banks } = this.props;
@@ -412,7 +428,6 @@ class OutPaymentsForm extends Component {
         });
       }
     }
-
 
     return (
       <React.Fragment>
@@ -915,81 +930,62 @@ class OutPaymentsForm extends Component {
                             </div>
                           )} */}
 
-                          {outPayment.bankaccount_id &&
-                            outPayment.bankaccount_id ? (
-                            <div className="mb-3">
-                              <Label
-                                className="col-form-label"
-                              >
-                                Bank Account Name</Label>
+{isDonation ? (
+  <>
+  <Label className="col-form-label">Bank Name</Label>
+  <Field
+    name="bankaccount_id"
+    as="select"
+    onChange={(selectedGroup) =>
+      this.setState({
+        bankaccount_id: selectedGroup.value,
+      })
+    }
+    value={this.state.bankaccount_id || (bankaccountList.length > 0 ? bankaccountList[0].value : "")}
+    className="form-control"
+    readOnly={true}
+    multiple={false}
+  >
+    {bankaccountList.map((account) => (
+      <option key={account.value} value={account.value}>
+        {account.label}
+      </option>
+    ))}
+  </Field>
+</>
+) : (
+  <>
+  <Label
+    className="col-form-label"
+  >
+    Bank Name</Label>
+  <Select
+    name="bankaccount_id"
+    component="Select"
+    onChange={(selectedGroup) =>
+      this.setState({
+        bankaccount_id: selectedGroup.value,
+      })
+    }
+    className={
+      "defautSelectParent" +
+      (!this.state.bankaccount_id ? " is-invalid" : "")
+    }
+    styles={{
+      control: (base, state) => ({
+        ...base,
+        borderColor: !this.state.bankaccount_id ? "#f46a6a" : "#ced4da",
+      }),
+    }}
+    options={bankaccountList}
+    placeholder="Select Bank Account..."
+  /></>
+)}
 
-                              <Field
-                                name="bankaccount_id"
-                                as="select"
-                                defaultValue={
-                                  outPayment.bankaccount_id
-                                }
-                                className="form-control"
-                                readOnly={true}
-                                multiple={false}
-                              >
-                                <option
-                                  key={
-                                    outPayment.bankaccount_id
-                                  }
-                                  value={
-                                    outPayment.bankaccount_id
-                                  }
-                                >
-                                  {
-                                    outPayment.account_no
+{!isDonation && (
+  <div className="invalid-feedback">Please select your Bank Account</div>
+)}
 
-                                  }
-                                </option>
-                              </Field>
-                            </div>
-                          ) : (
-                            <div className="mb-3 select2-container">
-                              <Label
-                                className="col-form-label fw-bolder"
-                              >
-                                Bank Account Name</Label>
-
-                              <Select
-                                name="bankaccount_id"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    bankaccount_id:
-                                      selectedGroup.value,
-                                  })
-                                }
-                                className={
-                                  "defautSelectParent" +
-                                  (!this.state.bankaccount_id
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                                styles={{
-                                  control: (
-                                    base,
-                                    state
-                                  ) => ({
-                                    ...base,
-                                    borderColor: !this
-                                      .state.bankaccount_id
-                                      ? "#f46a6a"
-                                      : "#ced4da",
-                                  }),
-                                }}
-                                options={bankaccountList}
-                                placeholder="Select Bank Account..."
-                              />
-                              <div className="invalid-feedback">
-                                Please select your Bank Account
-                              </div>
-                            </div>
-                          )}
 
                           <FormGroup className=" mt-4 mb-0">
                             <Label htmlFor="expirydateInput" className="fw-bolder">
