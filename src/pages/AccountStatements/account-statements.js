@@ -88,7 +88,9 @@ class AccountStatements extends Component {
     ];
     const thStyle = {
       border: '1px solid white',
-    };
+      textAlign: 'center',
+      verticalAlign: 'middle',
+    };    
 
     // var total_testby_labhazir = this.props.accountStatements.total_testby_labhazir
     // // var authenticated = "{{total_testby_labhazir}}"
@@ -179,25 +181,23 @@ class AccountStatements extends Component {
                   </strong>
                   </span> */}
                   <div>
-                    <strong>
-                      Credit: Lab need to Pay LabHazir. <br></br>
-                      Debit: LabHazir need to Pay Lab.
-                    </strong>
+                      <strong className="text-primary">Credit:</strong> Amount that Lab has to pay LabHazir. <br></br>
+                      <strong className="text-primary">Debit: </strong>  Amount that Lab will receive from LabHazir.
                   </div>
-                  <div> <span className="text-danger font-size-12">
-                    <strong>
-                      Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
-                    </strong>
+                  <div> <span className="font-size-12">
+                    <strong className="text-danger ">
+                      Note:</strong> If Balance is positive value that means Lab will pay the same amount to LabHazir and if Balance is negative that means Lab will receive the same amount from Lab Hazir.
+                    
                   </span>
                   </div>
                   <div>
                     <span className="font-size-12">
-                      <strong><span className="text-danger">Account Statement formula is: </span></strong> <strong>If have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.</strong>
+                      <strong><span className="text-danger">Margin of Lab  </span></strong> <span>= Total without Discount - (LH Referral fee) - (Discount by Lab) - (Counter Discount by Lab) + (Home Sampling Amount)</span>
                     </span>
                   </div>
                   <div>
                     <span className="font-size-12">
-                      <strong><span className="text-danger">Account Statement formula is: </span></strong> <strong>If have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir).</strong>
+                      <strong><span className="text-danger">Referral Fee of Lab Hazir </span></strong> <span>= Decided Percentage referral free of Total without Discount - (Discount by Lab Hazir)</span>
                     </span>
                   </div>
 
@@ -229,14 +229,14 @@ class AccountStatements extends Component {
                               {/* <th scope="col">Is Settled</th> */}
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody style={{ textAlign: "center", verticalAlign: "middle"}}>
                             {accountStatements.map((accountStatement, i) => (
                               <>
                                 {accountStatement.transaction_type == "In" ? (
                                   <tr key={i} className="badge-soft-primary">
                                     <td>
                                       <p className="text-muted mb-0">
-                                        {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
+                                        {moment(accountStatement.ordered_at).format("DD MMM YYYY")}
                                       </p>
                                     </td>
                                     <td>
@@ -454,7 +454,7 @@ class AccountStatements extends Component {
                                         )}
                                       </p>
                                     </td> */}
-                                    <td style={{ backgroundColor: '#dfc3ac' }}>
+                                    <td style={{ backgroundColor: '#ffc09f' }}>
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
@@ -472,7 +472,7 @@ class AccountStatements extends Component {
                                         )}
                                       </p>
                                     </td>
-                                    <td style={{ backgroundColor: '#acdfdd' }}>
+                                    <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
@@ -510,7 +510,7 @@ class AccountStatements extends Component {
                                       )} */}
                                       </p>
                                     </td>
-                                    <td style={{ backgroundColor: '#dcacdf' }}>
+                                    <td style={{ backgroundColor: '#adf7b6' }}>
                                       <p className="float-end">
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
@@ -521,7 +521,7 @@ class AccountStatements extends Component {
                                   <tr key={i} className="badge-soft-danger">
                                     <td>
                                       <p className="text-muted mb-0">
-                                        {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
+                                        {moment(accountStatement.ordered_at).format("DD MMM YYYY")}
                                       </p>
                                     </td>
                                     <td>
@@ -723,7 +723,7 @@ class AccountStatements extends Component {
                                   </td> */}
 
                                     
-                                    <td style={{ backgroundColor: '#dfc3ac' }}>
+                                    <td style={{ backgroundColor: '#ffc09f' }}>
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
@@ -734,7 +734,7 @@ class AccountStatements extends Component {
                                         )}
                                       </p>
                                     </td>
-                                    <td style={{ backgroundColor: '#acdfdd' }}>
+                                    <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
@@ -759,7 +759,7 @@ class AccountStatements extends Component {
                                         )}
                                       </p>
                                     </td>
-                                    <td style={{ backgroundColor: '#dcacdf' }}>
+                                    <td style={{ backgroundColor: '#adf7b6' }}>
                                       <p className="float-end">
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
@@ -771,7 +771,7 @@ class AccountStatements extends Component {
                                     <tr key={i}>
                                       <td>
                                         <p className="text-muted mb-0">
-                                          {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
+                                          {moment(accountStatement.ordered_at).format("DD MMM YYYY")}
                                         </p>
                                       </td>
                                       <td>
@@ -948,7 +948,7 @@ class AccountStatements extends Component {
                                             )}                                        </p>
 
                                         ) : (
-                                          <p className="float-end text-danger">
+                                          <p className="float-center text-danger">
                                             {accountStatement.payment_method == "Cash"  || accountStatement.payment_method == "Donation" ? (
                                               <span>
                                                 {"Lab"}
@@ -967,7 +967,7 @@ class AccountStatements extends Component {
                                               null
                                             )} </p>
                                         ) : (
-                                          <p className="float-end text-success">
+                                          <p className="float-center text-success">
                                           {accountStatement.payment_method == "Card"? (
                                               <span>
                                                 {"Labhazir"}
@@ -992,7 +992,7 @@ class AccountStatements extends Component {
                                           
                                         </p>
                                       </td> */}
-                                      <td style={{ backgroundColor: '#dfc3ac' }}>
+                                      <td style={{ backgroundColor: '#ffc09f' }}>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
@@ -1010,7 +1010,7 @@ class AccountStatements extends Component {
                                           )}
                                         </p>
                                       </td>
-                                      <td style={{ backgroundColor: '#acdfdd' }}>
+                                      <td style={{ backgroundColor: '#ffee93' }}>
                                         <p>
                                           {accountStatement.payment_method == "Card" ? (
                                             <span>
@@ -1028,7 +1028,7 @@ class AccountStatements extends Component {
                                           )} */}
                                         </p>
                                       </td>
-                                      <td style={{ backgroundColor: '#dcacdf' }}>
+                                      <td style={{ backgroundColor: '#adf7b6' }}>
                                         <p className="float-end">
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
@@ -1039,7 +1039,7 @@ class AccountStatements extends Component {
                                     <tr key={i}>
                                       <td>
                                         <p className="text-muted mb-0">
-                                          {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
+                                          {moment(accountStatement.ordered_at).format("DD MMM YYYY")}
                                         </p>
                                       </td>
                                       <td>
@@ -1222,7 +1222,7 @@ class AccountStatements extends Component {
                                                 {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                               </span>
                                             ) : (
-                                              null
+                                              <span className="text-primary">Inprocess</span>
                                             )}                                        </p>
                                         )}
 
@@ -1249,7 +1249,7 @@ class AccountStatements extends Component {
                                             null
                                         </p>
                                       </td> */}
-                                      <td style={{ backgroundColor: '#dfc3ac' }}>
+                                      <td style={{ backgroundColor: '#ffc09f' }}>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
@@ -1267,7 +1267,7 @@ class AccountStatements extends Component {
                                           )} */}
                                         </p>
                                       </td>
-                                      <td style={{ backgroundColor: '#acdfdd' }}>
+                                      <td style={{ backgroundColor: '#ffee93' }}>
                                         <p>
                                           {accountStatement.payment_method == "Card" ? (
                                             <span>
@@ -1279,7 +1279,7 @@ class AccountStatements extends Component {
                                           
                                         </p>
                                       </td>
-                                      <td style={{ backgroundColor: '#dcacdf' }}>
+                                      <td style={{ backgroundColor: '#adf7b6' }}>
                                         <p className="float-end">
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
