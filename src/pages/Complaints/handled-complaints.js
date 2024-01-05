@@ -168,13 +168,14 @@ class handledComplaintsList extends Component {
         // },
         
         {
-          dataField: "handled_at",
-          text: "Open at",
+          dataField: "time_difference_hours",
+          text: "Response Time in Hours",
           sort: true,
-          formatter: (cellContent, complaint) => (
+          formatter: (cellContent, handledComplaint) => (
             <>
               <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+                {handledComplaint.time_difference_hours.toFixed().toString()}
+                {/* {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")} */}
               </span>
             </>
           ),

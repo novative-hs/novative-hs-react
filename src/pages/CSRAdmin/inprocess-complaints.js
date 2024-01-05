@@ -166,7 +166,7 @@ class InProcessComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+                {moment(complaint.assigned_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),
