@@ -1,600 +1,1402 @@
 import React, { Component } from "react";
-import MetaTags from "react-meta-tags";
 import PropTypes from "prop-types";
-import Select from "react-select";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import MetaTags from "react-meta-tags";
+import { withRouter, Link } from "react-router-dom";
+import { Card, CardBody, Col, Table, Container, Row } from "reactstrap";
+import { isEmpty, map } from "lodash";
 
-import {
-  Alert,
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Input,
-  Label,
-  Row,
-  FormGroup,
-  Button,
-} from "reactstrap";
 
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import paginationFactory, {
+  PaginationProvider,
+  PaginationListStandalone,
+} from "react-bootstrap-table2-paginator";
+
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from "react-bootstrap-table-next";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb";
-import { addNewComplaint } from "store/complaints/actions";
-import {
-  getLabs,
-} from "store/inpayments/actions";
-import {
-  getTerritoriesList
-} from "store/territories-list/actions";
+import Breadcrumbs from "components/Common/Breadcrumb";
 
-class Contact extends Component {
+import { getAccountStatements } from "store/account-statements/actions";
+
+import "assets/scss/table.scss";
+
+class AccountStatements extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      territoriesList: [],
-      complaint: "",
-      lab_id: "",
-      labhazir_complainee: "",
-      name: "",
-      email: "",
-      city: "",
-      phone: "",
-      subject: "",
-      message: "",
-      complainant: "",
-      complainee: "",
-      complaintSuccess: "",
+      accountStatements: [],
+      accountStatement: "",
+      user_id: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : "",
+      account_type: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
     };
-  }
-  handleSelectGroup = selectedGroup => {
-    this.setState({ complaint: selectedGroup.value });
-  };
-  componentDidMount() {
-    const { territoriesList, onGetTerritoriesList } = this.props;
-    if (territoriesList && !territoriesList.length) {
-      console.log(onGetTerritoriesList(this.state.user_id));
-    }
-    const { labs, onGetlabs } = this.props;
-    if (labs && !labs.length) {
-      onGetlabs();
-    }
-    this.setState({ labs });
+    this.toggle = this.toggle.bind(this);
   }
 
+  componentDidMount() {
+    if (this.state.user_id && this.state.account_type === "labowner") {
+      const { onGetAccountStatements } = this.props;
+      onGetAccountStatements(this.state.user_id);
+      this.setState({ accountStatements: this.props.accountStatements });
+    } else if (this.state.user_id && this.state.account_type !== "labowner") {
+      const { onGetAccountStatements } = this.props;
+      onGetAccountStatements(this.props.match.params.id);
+      this.setState({ accountStatements: this.props.accountStatements });
+    }
+  }
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal,
+    }));
+  }
+
+  onPaginationPageChange = page => {
+    if (
+      this.node &&
+      this.node.current &&
+      this.node.current.props &&
+      this.node.current.props.pagination &&
+      this.node.current.props.pagination.options
+    ) {
+      this.node.current.props.pagination.options.onPageChange(page);
+    }
+  };
 
   render() {
-    const complaint = this.state.complaint;
-    const { onAddNewComplaint } = this.props;
-    const { labs } = this.props;
+    const { SearchBar } = Search;
 
-    const labList = [];
-    for (let i = 0; i < labs.length; i++) {
-      let flag = 0;
-      if (!flag) {
-        labList.push({
-          label: labs[i].name,
-          value: labs[i].id,
-        });
-      }
-    }
+    const { accountStatements } = this.props;
 
-    const cityList = [];
-    for (let i = 0; i < this.props.territoriesList.length; i++) {
-      cityList.push({
-        label: this.props.territoriesList[i].city,
-        value: this.props.territoriesList[i].office,
-      });
-    }
-    function togglePopup(){
-      document.getElementById("popup1").classList.toggle("active");
-    }
+    const pageOptions = {
+      sizePerPage: 10,
+      totalSize: accountStatements.length, // replace later with size(accountStatements),
+      custom: true,
+    };
+
+    const defaultSorted = [
+      {
+        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+        order: "desc", // desc or asc
+      },
+    ];
+
+    // var total_testby_labhazir = this.props.accountStatements.total_testby_labhazir
+    // // var authenticated = "{{total_testby_labhazir}}"
+    // console.log(total_testby_labhazir)
 
     return (
       <React.Fragment>
         <div className="page-content">
-         
           <MetaTags>
-            <title> Lab Hazir | Contact Form</title>
+            <title>Account Statements | Lab Hazir</title>
           </MetaTags>
-          <Container fluid={true}>
-            <Breadcrumbs title="Contact" breadcrumbItem="Contact Us" />
-            {this.state.complaintSuccess && (
-              <Alert color="success" className="col-md-8">
-                {this.state.complaintSuccess}
-              </Alert>
-            )}    
-              <Button
-                color="primary"
-                className=" btn btn-primary float-end btn-responsive"
-                style={{ position: "relative"}}
-              >
-                <a onClick={togglePopup}>
-                  <span className="pt-4" style={{ fontWeight: 'bold', }}>
-                    Call / Email HelpLine</span>
-                  <hr style={{ margin: '0 0' }} />
-                </a> 
-              </Button>
-                  <div id="popup1" className="popup">
-                    <div className='overlay1'></div>
-                        <div className="modal-header">
-                        </div>
-                          <div className="content" style={{textAlign: 'start', fontSize:"14px"}}>
-                            <span className="text-danger">
-                              <i className="mdi mdi-phone" style={{fontSize: "12px", backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px' }}></i>{" "}
-                              <span style={{ padding: '2px', fontSize:"16px"}}>0321 8543111</span>
-                            </span><br />
-                            <span className="text-danger">
-                              <i className="mdi mdi-mail" style={{fontSize: "12px", backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px' }}></i>{" "}
-                              <span style={{ padding: '2px', fontSize:"16px"}}>labhazir@gmail.com</span><br />
-                            </span>
-                            <span className="text-danger">
-                              <i className="mdi mdi-mail my-3" style={{ fontSize: "12px", backgroundColor: 'blue', color: 'white', borderRadius: '5px', padding: '2px', marginRight: '5px' }}></i>{" "}
-                              <span style={{padding: '2px',fontSize: "16px" }}>info@labhazir.com</span>
-                            </span>
-          
-                            <div className="modal-header">
-                              <h5 className="modal-title" style={{ margin: '15px', fontSize:"12px"  }}>Available 24/7 for your convenience and peace of mind.</h5>
-                            </div>
-
-                            <div className="modal-footer">
-                                  <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    onClick={togglePopup}
-                                  >
-                                    Close
-                                  </button> 
-                            </div> 
-                          </div>
-                  </div>        
-              <style>
-                        {`
-                          .popup .overlay1 {
-                            position: fixed;
-                            top: 0px;
-                            left: 0px;
-                            width: 100vw;
-                            height: 100vh;
-                            background: rgba(0, 0, 0, 0.7);
-                            z-index: 1;
-                            display: none; /* initially hide the overlay */
-                          }
-                          .popup .content {
-                            position: fixed;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%) scale(0); /* initially scale down */
-                            background: #fff;
-                            width: 310px;
-                            height: 200px;
-                            z-index: 2;
-                            text-align: center;
-                            padding: 20px;
-                            box-sizing: border-box;
-                          }
-                          .popup.active .overlay1 {
-                            display: block;
-                          }
-                          .popup.active .content {
-                            transition: 300ms ease-in-out;
-                            transform: translate(-50%, -50%) scale(1);
-                          }
-
-                          .btn-responsive {
-                            font-size: 15px;
-                          }
-
-                          @media (max-width: 1100px) {
-                            .btn-responsive {
-                              font-size: 14px;
-                              width: 42%;
-                            }
-                          }
-
-                          @media (max-width: 1000px) {
-                            .btn-responsive {
-                              font-size: 10px;
-                              width: 20%;
-                            }
-                          }
-
-                          @media (max-width: 355px) {
-                            .btn-responsive {
-                              font-size: 6px;
-                              width: 15%;
-                            }
-                          }
-                      `}
-              </style>
+          <Container fluid>
+            {/* Render Breadcrumbs */}
+            <Breadcrumbs title="Lab" breadcrumbItem="Account Statements" />
+            {isEmpty(this.props.accountStatements) && (
             <Row>
-              <Col lg="12">
-                <Card>
-                  <CardBody>
-                    <Formik
-                      enableReinitialize={true}
-                      initialValues={{
-                        complainant:
-                          (this.state && this.state.complainant) || "",
-                        complainee: (this.state && this.state.complainee) || "",
-                        lab_id: (this.state && this.state.lab_id) || "",
-                        name: (this.state && this.state.name) || "",
-                        labhazir_complainee:
-                          (this.state && this.state.labhazir_complainee) || "",
-                        email: (this.state && this.state.email) || "",
-                        city: (this.state && this.state.city) || "",
-                        phone: (this.state && this.state.phone) || "",
-                        subject: (this.state && this.state.subject) || "",
-                        message: (this.state && this.state.message) || "",
-                      }}
-                      validationSchema={Yup.object().shape({
-                        complainant: Yup.string(),
-                        complainee: Yup.string(),
-                        name: Yup.string().trim().required("Please enter your name"),
-                        // email: Yup.string().required("Please enter your email").email("Please enter valid email"),
-                        phone: Yup.string()
-                          .required("Please enter your mobile number")
-                          .matches(
-                            /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
-                            "Please enter a valid Pakistani mobile number e.g. 03123456789"
-                          ),
-                        // subject: Yup.string().trim().required("Please enter your subject"),
-                        message: Yup.string().trim().required("Please enter your message"),
-                        city: Yup.string().required('Please select your city'),
+                <div> <span className="text-danger font-size-12">
+                  <strong>
+                    Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
+                  </strong>
+                  </span>
+                  <div>
+                    <strong>
+                      Credit: Lab need to Pay LabHazir. <br></br>
+                      Debit: LabHazir need to Pay Lab.
+                    </strong>
+                  </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
+                    </strong>
+                  </span>
+                  </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: Account Statement formula is: if have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.
+                    </strong>
+                  </span>
+                  </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: Account Statement formula is: if have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir)
+                    </strong>
+                  </span>
+                  </div>
+                </div>
+                <Col lg="12">
+                  <Card>
+                    <CardBody>
+                      <div className="table-responsive">
+                        <Table>
+                          <thead className="table-light">
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">ID</th>
+                              <th scope="col">Patient Name</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Total Without Discount</th>
+                              <th scope="col">Home Sampling Amount</th>
+                              <th scope="col">Discount By Lab</th>
+                              <th scope="col">Counter Discount By Lab</th>
+                              <th scope="col">Discount By LabHazir</th>
+                              <th scope="col">Payable After Discount</th>
+                              <th scope="col">Margin of Lab</th>
+                              <th scope="col">Referrel Fee of LabHazir</th>
+                              {/* <th scope="col">Payment Received By LabHazir</th> */}
+                              {/* <th scope="col">Payment Received By Lab</th>
+                              <th scope="col">Payment Received By LabHazir</th> */}
+                              <th scope="col">Credit</th>
+                              <th scope="col">Debit</th>
+                              <th scope="col">Balance</th>
+                              {/* <th scope="col">Is Settled</th> */}
+                            </tr>
+                          </thead>
+                          </Table>
+                          </div>
+                          </CardBody>
+                          </Card>
+                          </Col>
+                          </Row>
+            )}
+            {!isEmpty(this.props.accountStatements) && (
+              <Row>
+                <div> 
+                  {/* <span className="text-danger font-size-12">
+                  <strong>
+                    Note: Discount By Lab, Sum of Counter Discount and Discount offered Lab.
+                  </strong>
+                  </span> */}
+                  <div>
+                    <strong>
+                      Credit: Lab need to Pay LabHazir. <br></br>
+                      Debit: LabHazir need to Pay Lab.
+                    </strong>
+                  </div>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
+                    </strong>
+                  </span>
+                  </div>
+                  <div>
+                    <span className="font-size-12">
+                      <strong><span className="text-danger">Account Statement formula is: </span></strong> <strong>If have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.</strong>
+                    </span>
+                  </div>
+                  <div>
+                    <span className="font-size-12">
+                      <strong><span className="text-danger">Account Statement formula is: </span></strong> <strong>If have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir).</strong>
+                    </span>
+                  </div>
 
-                      })}
-                      
-                      onSubmit={values => {
-                        onAddNewComplaint(values);
-                        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                </div>
+                <Col lg="12">
+                  <Card>
+                    <CardBody>
+                      <div className="table-responsive">
+                        <Table>
+                          <thead style={{ position: 'flex'}}className="table-light">
+                            <tr>
+                              <th scope="col">Date</th>
+                              <th scope="col">ID</th>
+                              <th scope="col">Patient Name</th>
+                              <th scope="col">Status</th>
+                              <th scope="col">Total Without Discount</th>
+                              <th scope="col">Home Sampling Amount</th>
+                              <th scope="col">Discount By Lab</th>
+                              <th scope="col">Counter Discount By Lab</th>
+                              <th scope="col">Discount By LabHazir</th>
+                              <th scope="col">Payable After Discount</th>
+                              <th scope="col">Margin of Lab</th>
+                              <th scope="col">Referrel Fee of LabHazir</th>
+                              {/* <th scope="col">Payment Received By LabHazir</th> */}
+                              <th scope="col">Payment Received By</th>
+                              <th scope="col">Credit</th>
+                              <th scope="col">Debit</th>
+                              <th scope="col">Balance</th>
+                              {/* <th scope="col">Is Settled</th> */}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {accountStatements.map((accountStatement, i) => (
+                              <>
+                                {accountStatement.transaction_type == "In" ? (
+                                  <tr key={i} className="badge-soft-primary">
+                                    <td>
+                                      <p className="text-muted mb-0">
+                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <h5 className="font-size-14 text-truncate">
+                                        <strong>{accountStatement.order_id}</strong>
+                                      </h5>
+                                    </td>
+                                    <td>
+                                      <p className="text-muted mb-0">
+                                        {accountStatement.patient_name}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      {/* <p className="float-end"> */}
+                                      {accountStatement.payment_status == "Not Paid" ? (
+                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </span>
+                                      ) : (
+                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </span>
+                                      )}
+                                      {/* </p> */}
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.dues_before_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
 
-                        setTimeout(() => {
-                          if (this.props.complaint) {
-                            this.setState({
-                              complaintSuccess:
-                                "Thank you for contacting us. Our customer service representative will get back to you soon.Check your email for Complaint ID",
-                            }, () => {
-                              // Reload the window after 2 seconds
-                              setTimeout(() => {
-                                window.location.reload();
-                              }, 2000);
-                            });
-                          }
-                        }, 1000);                        
-                        
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
 
-                        setTimeout(() => {
-                          this.setState({
-                            complaintSuccess: "",
-                            complainant: "",
-                            complainee: "",
-                            lab_id: "",
-                            labhazir_complainee: "",
-                            name: "",
-                            email: "",
-                            city: "",
-                            phone: "",
-                            subject: "",
-                            message: "",
-                          });
-                        }, 5000);
-                      }}
-                    >
-                      {({ errors, status, touched }) => (
-                        <Form className="form-horizontal">
-                          <Row>
-                            <Col lg="6">
-                              {/* Type field */}
-                              <div className="mb-3">
-                                <Label for="complainant" className="form-label">
-                                  Complaint From
-                                </Label>
-                                <Field
-                                  name="complainant"
-                                  component="select"
-                                  onChange={e =>
-                                    this.setState({
-                                      complainant: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.complainant}
-                                  className="form-select"
-                                >
-                                  <option value="">--- Please Select---</option>
-                                  <option value="Lab">Lab</option>
-                                  <option value="Patient">Patient</option>
-                                  <option value="B2B">B2B</option>
-                                  <option value="Donor">Donor</option>
-                                </Field>
-                              </div>
-                            </Col>
-                            <Col lg="6">
-                              <div className="mb-3">
-                                <Label for="complainee" className="form-label">
-                                Complaint Againest
-                                </Label>
-                                <Field
-                                  name="complainee"
-                                  component="select"
-                                  onChange={e =>
-                                    this.setState({
-                                      complainee: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.complainee}
-                                  className="form-select"
-                                >
-                                  <option value="">--- Please Select---</option>
-                                  <option value="Lab">Lab</option>
-                                  <option value="LabHazir">LabHazir</option>
-                                </Field>
-                              </div>
-                            </Col>
-                            {this.state.complainee == "Lab" ? (
+                                    </td>
 
-                              complaint.lab_id ? (
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.sample_collector_amount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
 
-                                <div className="mb-3">
-                                  <Label className="form-label">lab name</Label>
-                                  <Field
-                                    name="lab_id"
-                                    as="select"
-                                    defaultValue={complaint.lab_id}
-                                    className="form-control"
-                                    readOnly={true}
-                                    multiple={false}
-                                  >
-                                    <option
-                                      key={complaint.lab_id}
-                                      value={complaint.lab_id}
-                                    >
-                                      {complaint.name}
-                                    </option>
-                                  </Field>
-                                </div>
-                              ) : (
-                                <div className="mb-3 select2-container">
-                                  <Label>Lab Name</Label>
-                                  <Select
-                                    name="lab_id"
-                                    component="Select"
-                                    onChange={selectedGroup =>
-                                      this.setState({
-                                        lab_id: selectedGroup.value,
-                                      })
-                                    }
-                                    className={
-                                      "defautSelectParent" +
-                                      (!this.state.lab_id ? " is-invalid" : "")
-                                    }
-                                    styles={{
-                                      control: (base, state) => ({
-                                        ...base,
-                                        borderColor: !this.state.lab_id
-                                          ? "#f46a6a"
-                                          : "#ced4da",
-                                      }),
-                                    }}
-                                    options={labList}
-                                    placeholder="Select Lab..."
-                                  />
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
 
-                                  <div className="invalid-feedback">
-                                    Please select lab
-                                  </div>
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.discounted_by_lab == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
 
-                                </div>
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
 
-                              )
+                                    </td>
+                                    <td>
+                                      {accountStatement.lab_counter_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
 
-                            ) : null}
-                          
-                            {this.state.complainee === "LabHazir" && (
-                              <div className="mb-3">
-                                <Label
-                                  for="labhazir_complainee"
-                                  className="form-label"
-                                >
-                                  Select Department
-                                </Label>
-                                <Field
-                                  name="labhazir_complainee"
-                                  component="select"
-                                  onChange={e =>
-                                    this.setState({
-                                      labhazir_complainee: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.labhazir_complainee}
-                                  className="form-select"
-                                >
-                                  <option value="Customer Service Representative">
-                                    Customer Service Representative
-                                  </option>
-                                  <option value="Accounts">Accounts</option>
-                                  <option value="Marketing">Marketing</option>
-                                  <option value="Auditor">Auditor</option>
-                                  <option value="Others">Others</option>
-                                </Field>
-                              </div>
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.discounted_by_labhazir == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.dues == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    
+                                    <td>
+                                      {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.labhazir_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.labhazir_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.payment_method == "Cash" ? (
+                                        <span>
+                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )}
+                                    </p>
+                                  </td> */}
+
+                                    {/* <td>
+                                      <p className="float-end">
+                                        {accountStatement.payment_method == "Card" ? (
+                                          <span>
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td> */}
+                                    <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Card" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <p className="d-none">
+                                            {accountStatement.Receivable == 0 ? (
+                                              <span>
+                                                {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.Receivable != 0 ? (
+                                              <span>
+                                                {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+                                        )}
+                                        {/* {accountStatement.payment_method == "Donation" ? (
+                                        <span>
+                                          {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )} */}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <p className="float-end">
+                                        {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td>
+                                  </tr>
+                                ) : accountStatement.transaction_type == "Out" ? (
+
+                                  <tr key={i} className="badge-soft-danger">
+                                    <td>
+                                      <p className="text-muted mb-0">
+                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <h5 className="font-size-14 text-truncate">
+                                        <strong>{accountStatement.order_id}</strong>
+                                      </h5>
+                                    </td>
+                                    <td>
+                                      <p className="text-muted mb-0">
+                                        {accountStatement.patient_name}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      {/* <p className="float-end"> */}
+                                      {accountStatement.payment_status == "Not Paid" ? (
+                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </span>
+                                      ) : (
+                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status},{" ("}
+                                          {accountStatement.cancel_appintment_status}{")"}
+                                        </span>
+                                      )}
+                                      {/* </p> */}
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.dues_before_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.sample_collector_amount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.discounted_by_lab == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.lab_counter_discount == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.discounted_by_labhazir == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.dues == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                   
+                                    <td>
+                                      {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                    <td>
+                                      {accountStatement.labhazir_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      )}
+
+                                    </td>
+                                    <td>
+                                      {accountStatement.labhazir_share == 0 ? (
+                                        <p className="d-none">
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}                                        </p>
+
+                                      ) : (
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}                                        </p>
+                                      )}
+
+                                    </td>
+                                    {/* <td>
+                                    <p>
+                                      {accountStatement.payment_method == "Cash" ? (
+                                        <span>
+                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )}
+                                    </p>
+                                  </td> */}
+
+                                    
+                                    <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <p>
+                                        {accountStatement.payment_method == "Card" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Cheque" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td>
+                                    <td>
+                                      <p className="float-end">
+                                        {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td>
+                                  </tr>
+                                ) :
+                                  accountStatement.payment_status == "Paid" ? (
+
+                                    <tr key={i}>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <h5 className="font-size-14 text-truncate">
+                                          <strong>{accountStatement.order_id}</strong>
+                                        </h5>
+                                      </td>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {accountStatement.patient_name}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        {/* <p className="float-end"> */}
+                                        {accountStatement.payment_status == "Not Paid" ? (
+                                          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        ) : (
+                                          <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        )}
+                                        {/* </p> */}
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.dues_before_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.sample_collector_amount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_lab == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.lab_counter_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_labhazir == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.dues == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      
+                                      <td>
+                                        {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {!isEmpty(accountStatement.Receivable) ? (
+                                          <p className="d-none">
+                                            {accountStatement.payment_method == "Card"? (
+                                              <span>
+                                                {"Labhazir"}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end text-danger">
+                                            {accountStatement.payment_method == "Cash"  || accountStatement.payment_method == "Donation" ? (
+                                              <span>
+                                                {"Lab"}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )} </p>
+                                        )}
+                                        {!isEmpty(accountStatement.payable) ? (
+                                          <p className="d-none">
+                                            {accountStatement.payment_method == "Cash"  || accountStatement.payment_method == "Donation" ? (
+                                              <span>
+                                                {"Lab"}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )} </p>
+                                        ) : (
+                                          <p className="float-end text-success">
+                                          {accountStatement.payment_method == "Card"? (
+                                              <span>
+                                                {"Labhazir"}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {"Labhazir"}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          
+                                        </p>
+                                      </td> */}
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {/* {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )} */}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="float-end">
+                                          {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      </td>
+                                    </tr>
+
+                                  ) : accountStatement.payment_status == "Allocate" ? (
+                                    <tr key={i}>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <h5 className="font-size-14 text-truncate">
+                                          <strong>{accountStatement.order_id}</strong>
+                                        </h5>
+                                      </td>
+                                      <td>
+                                        <p className="text-muted mb-0">
+                                          {accountStatement.patient_name}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        {/* <p className="float-end"> */}
+                                        {accountStatement.payment_status == "Not Paid" ? (
+                                          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        ) : (
+                                          <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-success">
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </span>
+                                        )}
+                                        {/* </p> */}
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.dues_before_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.sample_collector_amount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_lab == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.lab_counter_discount == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.discounted_by_labhazir == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.dues == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      
+                                      <td>
+                                        {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                    </p>
+                                  </td> */}
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </p>
+                                        )}
+
+                                      </td>
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+                                        )}
+
+                                      </td>
+                                      {/* <td>
+                                    <p>
+                                      {accountStatement.payment_method == "Cash" ? (
+                                        <span>
+                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </span>
+                                      ) : (
+                                        null
+                                      )}
+                                    </p>
+                                  </td> */}
+
+                                      {/* <td>
+                                        <p className="float-end">
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                        </p>
+                                      </td> */}
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Cash" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          {/* {accountStatement.payment_method == "Donation" ? (
+                                            <span>
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )} */}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p>
+                                          {accountStatement.payment_method == "Card" ? (
+                                            <span>
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            </span>
+                                          ) : (
+                                            null
+                                          )}
+                                          
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <p className="float-end">
+                                          {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
+                                      </td>
+                                    </tr>
+                                  ) : (null)
+                                }
+                              </>
+                            )
                             )}
-                            <Col lg="6">
-                              <div className="mb-3">
-                                <Label for="name">Name</Label>
-                                <Input
-                                  name="name"
-                                  type="text"
-                                  id="name"
-                                  placeholder="Enter your name"
-                                  onChange={e =>
-                                    this.setState({ name: e.target.value })
+                            <tr className="bg-success bg-soft">
+                              <td colSpan="4" className="border-0 text-end">
+                                <strong>Total</strong>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_testby_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
-                                  value={this.state.name}
-                                  className={
-                                    "form-control" +
-                                    (errors.name && touched.name
-                                      ? " is-invalid"
-                                      : "")
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_sample_collector.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
-                                />
-                                <ErrorMessage
-                                  name="name"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col lg="6">
-                              <div className="mb-3">
-                                <Label for="email">Email</Label>
-                                <Input
-                                  name="email"
-                                  type="email"
-                                  id="email"
-                                  placeholder="Enter your email address"
-                                  onChange={e =>
-                                    this.setState({ email: e.target.value })
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_discount_lab.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
-                                  value={this.state.email}
-                                  className={
-                                    "form-control" +
-                                    (errors.email && touched.email
-                                      ? " is-invalid"
-                                      : "")
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_labcounterdiscount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
-                                />
-                                <ErrorMessage
-                                  name="email"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-
-                            </Col>
-                          </Row>
-
-                          <Row>
-                            <Col lg="6">
-                              <div className="mb-3">
-                                <Label for="phoneno">Mobile No.</Label>
-                                <Input
-                                  name="phone"
-                                  type="text"
-                                  id="phone"
-                                  placeholder="Enter your mobile no."
-                                  onChange={e =>
-                                    this.setState({ phone: e.target.value })
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_discount_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
-                                  value={this.state.phone}
-                                  className={
-                                    "form-control" +
-                                    (errors.phone && touched.phone
-                                      ? " is-invalid"
-                                      : "")
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
-                                />
-                                <ErrorMessage
-                                  name="phone"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col lg="6">
-                            <div className="mb-3">
-                              <Label for="city" className="form-label">
-                                City
-                              </Label>
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={selectedGroup =>
-                                  this.setState({
-                                    city: selectedGroup.value,
-                                  })
+                                </p>
+                              </td>
+                             
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_labshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_labhazirshare.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    "--"                                  }
+                                </p>
+                              </td>
+                              {/* <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_payment_labhazir.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td> */}
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().total_Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    this.props.accountStatements.slice(-1).pop().statement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                  }
+                                </p>
+                              </td>
+                              <td className="border-10">
+                                {
                                 }
-                                placeholder="Select City..."
-                                className={
-                                  "defautSelectParent" +
-                                  (!this.state.city ? " is-invalid" : "")
-                                }
-                                options={
-                                  cityList
-                                }
-                                // defaultValue={{
-                                //   label:
-                                //     this.state.city,
-                                //   value:
-                                //     this.state.office,
-                                // }}
-                                styles={{
-                                  control: (base, state) => ({
-                                    ...base,
-                                    borderColor: !this.state.city
-                                      ? "#f46a6a"
-                                      : "#ced4da",
-                                  }),
-                                }}
+                              </td>
+                            </tr>
+                          </tbody>
 
-                              />
+                        </Table>
+                      </div>
 
-                                  <div className="invalid-feedback">
-                                    Please select City
-                                  </div>
-                            </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg="12">
-                              <div className="mb-3">
-                                <Label for="address">Message</Label>
-                                <textarea
-                                  name="message"
-                                  id="message"
-                                  rows="2"
-                                  cols="5"
-                                  placeholder="Enter your message"
-                                  onChange={e =>
-                                    this.setState({
-                                      message: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.message}
-                                  className={
-                                    "form-control" +
-                                    (errors.message && touched.message
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="message"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                              <div className="text-end">
-                                <button
-                                  type="submit"
-                                  className="btn btn-success save-user"
-                                  disabled={this.state.complaintSuccess}
-                                >
-                                  Submit
-                                </button>
-                              </div>
-                            </Col>
-                          </Row>
-                        </Form>
-                      )}
-                    </Formik>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            )}
+
           </Container>
         </div>
       </React.Fragment>
@@ -602,28 +1404,22 @@ class Contact extends Component {
   }
 }
 
-Contact.propTypes = {
+AccountStatements.propTypes = {
   match: PropTypes.object,
+  accountStatements: PropTypes.array,
   className: PropTypes.any,
-  complaint: PropTypes.any,
-  labs: PropTypes.array,
-  onGetlabs: PropTypes.func,
-  onAddNewComplaint: PropTypes.func,
-  addNewComplaint: PropTypes.func,
-  onGetTerritoriesList: PropTypes.func,
-  territoriesList: PropTypes.array,
+  onGetAccountStatements: PropTypes.func,
 };
-const mapStateToProps = ({ complaints, territoriesList }) => ({
-  complaint: complaints.complaint,
-  labs: complaints.labs,
-  territoriesList: territoriesList.territoriesList,
+
+const mapStateToProps = ({ accountStatements }) => ({
+  accountStatements: accountStatements.accountStatements,
 });
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onAddNewComplaint: complaint => dispatch(addNewComplaint(complaint)),
-  onGetlabs: () => dispatch(getLabs()),
-  onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
+  onGetAccountStatements: id => dispatch(getAccountStatements(id)),
 });
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Contact));
+)(withRouter(AccountStatements));
