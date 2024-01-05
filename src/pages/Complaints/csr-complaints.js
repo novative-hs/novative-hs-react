@@ -335,6 +335,7 @@ class csrComplaints extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="All Appointments" />
             <Row>
+              <p className="text-danger">Note: This page will show all Appointments in all territories that are not status complete.</p>
               <Col lg="12">
                 <Card>
                   <CardBody>

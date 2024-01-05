@@ -489,7 +489,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to={"/csr-pending-appointments"}>
                     <i className="mdi mdi-chat-remove" />
-                    <span>{this.props.t("Pending Appointments")}</span>
+                    <span>{this.props.t("All Appointments")}</span>
                   </Link>
                 </li>
               </ul>
