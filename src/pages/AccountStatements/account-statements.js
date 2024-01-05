@@ -5,6 +5,7 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Card, CardBody, Col, Table, Container, Row } from "reactstrap";
 import { isEmpty, map } from "lodash";
+import moment from 'moment';
 
 
 import paginationFactory, {
@@ -232,7 +233,7 @@ class AccountStatements extends Component {
                                   <tr key={i} className="badge-soft-primary">
                                     <td>
                                       <p className="text-muted mb-0">
-                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                        {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
                                       </p>
                                     </td>
                                     <td>
@@ -517,7 +518,7 @@ class AccountStatements extends Component {
                                   <tr key={i} className="badge-soft-danger">
                                     <td>
                                       <p className="text-muted mb-0">
-                                        {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                        {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
                                       </p>
                                     </td>
                                     <td>
@@ -767,7 +768,7 @@ class AccountStatements extends Component {
                                     <tr key={i}>
                                       <td>
                                         <p className="text-muted mb-0">
-                                          {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                          {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
                                         </p>
                                       </td>
                                       <td>
@@ -1035,7 +1036,7 @@ class AccountStatements extends Component {
                                     <tr key={i}>
                                       <td>
                                         <p className="text-muted mb-0">
-                                          {new Date(accountStatement.ordered_at).toLocaleString("en-US")}
+                                          {moment(accountStatement.ordered_at).format("DD MMM YYYY, h:mm A")}
                                         </p>
                                       </td>
                                       <td>
