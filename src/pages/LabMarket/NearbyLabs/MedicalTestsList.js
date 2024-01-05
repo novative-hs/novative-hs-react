@@ -1730,9 +1730,9 @@ class MedicalTestList extends Component {
                                     referrelFeeLab.offered_tests.map((offeredTest, index) => (
                                       // Use a Fragment to avoid wrapping with a div
                                       <div key={index} style={{ background: 'transparent' }}>
-                                        {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
+                                        {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0) + (offeredTest.test_discount || 0)) !== 0) ? (
                                           <span>
-                                            {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
+                                            {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0) + (offeredTest.test_discount || 0)) * 100)} %
                                           </span>
                                         ) : (
                                           '--'
@@ -1746,7 +1746,8 @@ class MedicalTestList extends Component {
                                     .map((offeredTest, index) => {
                                       const discountByTest = offeredTest.discount || 0;
                                       const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
-                                      const totalDiscount = discountByTest + discountByLabhazir;
+                                      const discountByAllLabhazir = offeredTest.test_discount || 0;
+                                      const totalDiscount = discountByTest + discountByLabhazir + discountByAllLabhazir;
                                       const discountedPrice =
                                         offeredTest.price -
                                         (offeredTest.price * (totalDiscount * 100)) / 100;
@@ -1767,7 +1768,8 @@ class MedicalTestList extends Component {
                                       .reduce((total, offeredTest) => {
                                         const discountByTest = offeredTest.discount || 0;
                                         const discountByLabhazir = offeredTest.discount_by_labhazir || 0;
-                                        const totalDiscount = discountByTest + discountByLabhazir;
+                                        const discountByAllLabhazir = offeredTest.test_discount || 0;
+                                        const totalDiscount = discountByTest + discountByLabhazir
                                         const discountedPrice = (
                                           offeredTest.price -
                                           (offeredTest.price * (totalDiscount * 100)) / 100
@@ -2057,7 +2059,7 @@ class MedicalTestList extends Component {
                                       <div key={index} style={{ background: 'transparent' }}>
                                         {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) !== 0) ? (
                                           <span>
-                                            {((offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
+                                            {(offeredTest.price - (offeredTest.discount + (offeredTest.discount_by_labhazir || 0)) * 100)}
                                           </span>
                                         ) : (
                                           '--'
