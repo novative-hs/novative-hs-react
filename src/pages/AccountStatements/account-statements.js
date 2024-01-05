@@ -86,6 +86,9 @@ class AccountStatements extends Component {
         order: "desc", // desc or asc
       },
     ];
+    const thStyle = {
+      border: '1px solid white',
+    };
 
     // var total_testby_labhazir = this.props.accountStatements.total_testby_labhazir
     // // var authenticated = "{{total_testby_labhazir}}"
@@ -139,24 +142,24 @@ class AccountStatements extends Component {
                         <Table>
                           <thead className="table-light">
                             <tr>
-                              <th scope="col">Date</th>
-                              <th scope="col">ID</th>
-                              <th scope="col">Patient Name</th>
-                              <th scope="col">Status</th>
-                              <th scope="col">Total Without Discount</th>
-                              <th scope="col">Home Sampling Amount</th>
-                              <th scope="col">Discount By Lab</th>
-                              <th scope="col">Counter Discount By Lab</th>
-                              <th scope="col">Discount By LabHazir</th>
-                              <th scope="col">Payable After Discount</th>
-                              <th scope="col">Margin of Lab</th>
-                              <th scope="col">Referrel Fee of LabHazir</th>
+                              <th style={thStyle} scope="col">Date</th>
+                              <th style={thStyle} scope="col">ID</th>
+                              <th style={thStyle} scope="col">Patient Name</th>
+                              <th style={thStyle} scope="col">Status</th>
+                              <th style={thStyle} scope="col">Total Without Discount</th>
+                              <th style={thStyle} scope="col">Home Sampling Amount</th>
+                              <th style={thStyle} scope="col">Discount By Lab</th>
+                              <th style={thStyle} scope="col">Counter Discount By Lab</th>
+                              <th style={thStyle} scope="col">Discount By LabHazir</th>
+                              <th style={thStyle} scope="col">Payable After Discount</th>
+                              <th style={thStyle} scope="col">Margin of Lab</th>
+                              <th style={thStyle} scope="col">Referrel Fee of LabHazir</th>
                               {/* <th scope="col">Payment Received By LabHazir</th> */}
                               {/* <th scope="col">Payment Received By Lab</th>
                               <th scope="col">Payment Received By LabHazir</th> */}
-                              <th scope="col">Credit</th>
-                              <th scope="col">Debit</th>
-                              <th scope="col">Balance</th>
+                              <th style={thStyle} scope="col">Credit</th>
+                              <th style={thStyle} scope="col">Debit</th>
+                              <th style={thStyle} scope="col">Balance</th>
                               {/* <th scope="col">Is Settled</th> */}
                             </tr>
                           </thead>
@@ -206,23 +209,23 @@ class AccountStatements extends Component {
                         <Table>
                           <thead style={{ position: 'flex'}}className="table-dark" >
                             <tr>
-                              <th scope="col">Date</th>
-                              <th scope="col">ID</th>
-                              <th scope="col">Patient Name</th>
-                              <th scope="col">Status</th>
-                              <th scope="col">Total Without Discount</th>
-                              <th scope="col">Home Sampling Amount</th>
-                              <th scope="col">Discount By Lab</th>
-                              <th scope="col">Counter Discount By Lab</th>
-                              <th scope="col">Discount By LabHazir</th>
-                              <th scope="col">Payable After Discount</th>
-                              <th scope="col">Margin of Lab</th>
-                              <th scope="col">Referrel Fee of LabHazir</th>
+                              <th style={thStyle} scope="col">Date</th>
+                              <th style={thStyle} scope="col">ID</th>
+                              <th style={thStyle} scope="col">Patient Name</th>
+                              <th style={thStyle} scope="col">Status</th>
+                              <th style={thStyle} scope="col">Total Without Discount</th>
+                              <th style={thStyle} scope="col">Home Sampling Amount</th>
+                              <th style={thStyle} scope="col">Discount By Lab</th>
+                              <th style={thStyle} scope="col">Counter Discount By Lab</th>
+                              <th style={thStyle} scope="col">Discount By LabHazir</th>
+                              <th style={thStyle} scope="col">Payable After Discount</th>
+                              <th style={thStyle} scope="col">Margin of Lab</th>
+                              <th style={thStyle} scope="col">Referrel Fee of LabHazir</th>
                               {/* <th scope="col">Payment Received By LabHazir</th> */}
-                              <th scope="col">Payment Received By</th>
-                              <th scope="col">Credit</th>
-                              <th scope="col">Debit</th>
-                              <th scope="col">Balance</th>
+                              <th style={thStyle} scope="col">Payment Received By</th>
+                              <th style={thStyle} scope="col">Credit</th>
+                              <th style={thStyle} scope="col">Debit</th>
+                              <th style={thStyle} scope="col">Balance</th>
                               {/* <th scope="col">Is Settled</th> */}
                             </tr>
                           </thead>
