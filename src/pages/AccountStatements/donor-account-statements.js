@@ -190,6 +190,7 @@ class AccountStatements extends Component {
                                   // <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
                                   <tr key={i} className="badge-soft-primary">
                                     <td>
+                                      {donoraccountStatement.clearedat ? ( 
                                       <p className="text-muted mb-0">
                                         {/* {donoraccountStatement.PaidAt} */}
                                         {/* {new Date(donoraccountStatement.PaidAt).toLocaleString("en-US")} */}
@@ -197,14 +198,21 @@ class AccountStatements extends Component {
 
 
                                       </p>
+                                      ) : <p className="text-muted mb-0">
+                                      {/* {donoraccountStatement.PaidAt} */}
+                                      {/* {new Date(donoraccountStatement.PaidAt).toLocaleString("en-US")} */}
+                                      {moment(donoraccountStatement.generated_at).format("DD MMM YYYY")}
+
+
+                                    </p>}
                                     </td>
                                     
                                     <td>
                                         <span className="float-start">
-                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod}</span>, Payment Date: {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
-                                        <span style={{ color: 'blue' }}>
-                                        {moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
-                                        </span>
+                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod}</span>, {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
+                                        <p>
+                                        Payment Date: <span style={{ color: 'blue' }}>{moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
+                                        </span></p>
 
                                       ):(
                                         <p>
