@@ -82,6 +82,12 @@ class AccountStatements extends Component {
       custom: true,
     };
 
+    const thStyle = {
+      border: '1px solid white',
+      textAlign: 'center',
+      verticalAlign: 'middle',
+    }; 
+
     const defaultSorted = [
       {
         dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
@@ -118,12 +124,13 @@ class AccountStatements extends Component {
                         <Table>
                           <thead className="table-light">
                             <tr>
-                              <th scope="col">Date Time</th>
+                              <th style={thStyle} scope="col">Date Time</th>
+                              {/* <th scope="col">Payment Date</th> */}
                               {/* <th scope="col">ID</th> */}
-                              <th scope="col">Description</th>
-                              <th scope="col">Credit</th>
-                              <th scope="col">Debit</th>
-                              <th scope="col">Balance</th>
+                              <th style={thStyle} scope="col">Description</th>
+                              <th style={thStyle} scope="col">Credit</th>
+                              <th style={thStyle} scope="col">Debit</th>
+                              <th style={thStyle} scope="col">Balance</th>
 
                               {/* <th scope="col">Is Settled</th> */}
                             </tr>
@@ -139,6 +146,11 @@ class AccountStatements extends Component {
                  <div> <span className="text-danger font-size-12">
                   <strong>
                     Note: Only MIF with the Cleared and Approved status will show here.
+
+                  </strong>
+                  <br></br>
+                  <strong>
+                    Note: If patient appointment is canceled the money will be refunded back, entry from the statement will be deleted. All such cancel Appointments can be tracked in the Appointment Tracibility page.
 
                   </strong>
                   </span>
@@ -158,20 +170,20 @@ class AccountStatements extends Component {
                     <CardBody>
                       <div className="table-responsive">
                         <Table>
-                          <thead className="table-light">
+                          <thead style={{ position: 'flex'}} className="table-dark">
                             <tr>
-                              <th scope="col">Date</th>
-                              <th scope="col">Payment Date</th>
+                              <th style={thStyle} scope="col">Date</th>
+                              {/* <th scope="col">Payment Date</th> */}
                               {/* <th scope="col">ID</th> */}
-                              <th scope="col">Description</th>
-                              <th scope="col">Credit</th>
-                              <th scope="col">Debit</th>
-                              <th scope="col">Balance</th>
+                              <th style={thStyle} scope="col">Description</th>
+                              <th style={thStyle} scope="col">Credit</th>
+                              <th style={thStyle} scope="col">Debit</th>
+                              <th style={thStyle} scope="col">Balance</th>
 
                               {/* <th scope="col">Is Settled</th> */}
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody style={{ textAlign: "center", verticalAlign: "middle"}}>
                             {donoraccountStatements.map((donoraccountStatement, i) => (
                               <>
                                 {donoraccountStatement.transaction_type == "In" ? (
@@ -186,20 +198,19 @@ class AccountStatements extends Component {
 
                                       </p>
                                     </td>
+                                    
                                     <td>
-                                      {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" ? (
-                                        <p className="text-muted mb-0">
+                                        <span className="float-start">
+                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod}</span>, Payment Date: {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
+                                        <span style={{ color: 'blue' }}>
                                         {moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
-                                        </p>
+                                        </span>
 
                                       ):(
                                         <p>
                                          {"--"}
                                         </p>
-                                      )}</td>
-                                    <td>
-                                        <span>
-                                          {<span><span style={{ color: 'red' }}>MIF ID: </span> {donoraccountStatement.paymentin} , <span style={{ color: 'red' }}>Payment Method: </span> {donoraccountStatement.PaidMethod}</span>}{" "}
+                                      )}</span>},{" "}
                                           {/* {donoraccountStatement.Status} */}
                                         </span>
                                       {/* </p> */}
@@ -211,7 +222,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -223,7 +234,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -236,7 +247,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -249,7 +260,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -267,19 +278,15 @@ class AccountStatements extends Component {
 
                                       </p>
                                     </td>
-                                    <td>
-                                        <p>
-                                         {"--"}
-                                        </p>
-                                      </td>
+                                    
                                     {/* <td>
                                       <h5 className="font-size-14 text-truncate">
                                         <strong>{donoraccountStatement.paymentin}</strong>
                                       </h5>
                                     </td> */}
                                     <td>
-                                        <span>
-                                          {<span><span style={{ color: 'red' }}>Lab Name: </span> {donoraccountStatement.lab_name} ,<span style={{ color: 'red' }}>Lab City: </span> {donoraccountStatement.lab_name} ,<span style={{ color: 'red' }}>Patient Name: </span> {donoraccountStatement.patient_name} ,<span style={{ color: 'red' }}>INVOICE ID: </span> {donoraccountStatement.paymentin}</span>}{" "}
+                                        <span className="float-start">
+                                          {<span>Lab Name: <span style={{ color: 'blue' }}>{donoraccountStatement.lab_name}</span> ,Lab City: <span style={{ color: 'blue' }}>{donoraccountStatement.lab_city}</span> ,Patient Name: <span style={{ color: 'blue' }}> {donoraccountStatement.patient_name}</span> ,INVOICE ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span></span>}{" "}
                                           {/* {donoraccountStatement.Status} */}
                                         </span>
                                       {/* </p> */}
@@ -291,7 +298,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Credit.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -304,7 +311,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Debit.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -317,7 +324,7 @@ class AccountStatements extends Component {
                                          {donoraccountStatement.Balance.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       ):(
-                                        <p>
+                                        <p className="float-end">
                                          {donoraccountStatement.Balance.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
@@ -329,22 +336,28 @@ class AccountStatements extends Component {
                             )
                             )}
                             <tr className="bg-success bg-soft">
-                              <td colSpan="3" className="border-0 text-end">
+                              <td colSpan="2" className="border-0 text-end">
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10">
+                                <p className="float-end">
                                 {
                                   this.props.donoraccountStatements.slice(-1).pop().total_Credit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
+                                </p>
                               </td>
                               <td className="border-10">
+                                <p className="float-end">
                                 {
                                   this.props.donoraccountStatements.slice(-1).pop().total_Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
+                                </p>
                               </td> <td className="border-10">
+                                <p className="float-end">
                                 {
                                   this.props.donoraccountStatements.slice(-1).pop().Balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 }
+                                </p>
                               </td>
                             </tr>
                           </tbody>
