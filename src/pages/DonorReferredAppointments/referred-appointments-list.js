@@ -47,6 +47,24 @@ class ReferredPatientsList extends Component {
         : "",
       donorReferredAppointmentListColumns: [
         {
+          dataField: "booked_at",
+          text: "Booked at",
+          sort: true,
+          formatter: (cellContent, donorReferredAppointment) => {
+            const date = new Date(donorReferredAppointment.booked_at);
+            const day = date.getDate();
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames[date.getMonth()];
+            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+            return (
+              <p className="text-muted mb-0">
+                {`${day}-${month}-${year}`}
+              </p>
+            );
+          },filter: textFilter(),
+        },
+        {
           dataField: "order_id",
           text: "Order ID",
           sort: true,
@@ -113,36 +131,9 @@ class ReferredPatientsList extends Component {
             </>
           ),filter: textFilter(),
           },
-        {
-          dataField: "dues",
-          text: "Payment",
-          sort: true,
-          formatter: (cellContent, donorReferredAppointment) => (
-            <>
-              <div className="text-end">
-                <strong>{donorReferredAppointment.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-            </>
-          ), filter: textFilter(),
-        },
+        
 
-        {
-          dataField: "booked_at",
-          text: "Booked at",
-          sort: true,
-          formatter: (cellContent, donorReferredAppointment) => {
-            const date = new Date(donorReferredAppointment.booked_at);
-            const day = date.getDate();
-            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const month = monthNames[date.getMonth()];
-            const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-
-            return (
-              <p className="text-muted mb-0">
-                {`${day}-${month}-${year}`}
-              </p>
-            );
-          },filter: textFilter(),
-        },
+        
         // {
         //   dataField: "payment_method",
         //   text: "Payment method",
@@ -197,6 +188,17 @@ class ReferredPatientsList extends Component {
               ) : null}
             </>
           ),filter: textFilter(),
+        },
+        {
+          dataField: "dues",
+          text: "Invoice Amount",
+          sort: true,
+          formatter: (cellContent, donorReferredAppointment) => (
+            <>
+              <div className="text-end">
+                <strong>{donorReferredAppointment.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+          ), filter: textFilter(),
         },
       ],
     };

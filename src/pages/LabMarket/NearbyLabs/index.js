@@ -1044,7 +1044,6 @@ class NearbyLabs extends Component {
               locationAccessAllowed: this.state.locationAccessAllowed,
             };
 
-            const { onGetNearbyLabs } = this.props;
             onGetNearbyLabs(locationDetails);
             onGetAdvLive(locationDetails);
             onGetRegionWiseAdvertisement(locationDetails);
@@ -1072,8 +1071,8 @@ class NearbyLabs extends Component {
     // Call nearby labs API only if the search type changes to current location
 
     const { onGetNearbyLabs } = this.props;
-    // const { onGetAdvLive } = this.props;
-    // const { onGetRegionWiseAdvertisement } = this.props;
+    const { onGetAdvLive } = this.props;
+    const { onGetRegionWiseAdvertisement } = this.props;
 
     var locationDetails = {
       latitude: this.state.currentLatitude,
@@ -1088,8 +1087,8 @@ class NearbyLabs extends Component {
     };
     // region wise advertisement
     onGetNearbyLabs(locationDetails);
-    // onGetAdvLive(locationDetails);
-    // onGetRegionWiseAdvertisement(locationDetails);
+    onGetAdvLive(locationDetails);
+    onGetRegionWiseAdvertisement(locationDetails);
 
     setTimeout(() => {
       this.setState({ nearbyLabs: this.props.nearbyLabs });
@@ -1214,6 +1213,7 @@ class NearbyLabs extends Component {
         regionWiseAdvertisement: this.props.regionWiseAdvertisement,
       });
     }, 1000);
+    // ------------- Call API on city name END -------------
 
     var latitude = "";
     var longitude = "";

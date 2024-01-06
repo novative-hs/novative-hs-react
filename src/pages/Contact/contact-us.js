@@ -315,7 +315,7 @@ class Contact extends Component {
                             <Col lg="6">
                               <div className="mb-3">
                                 <Label for="complainee" className="form-label">
-                                Complaint Againest
+                                Complaint Against
                                 </Label>
                                 <Field
                                   name="complainee"

@@ -157,11 +157,19 @@ class csrComplaints extends Component {
           sort: true,
           formatter: (cellContent, complaint) => (
             <>
-              <span>
+            {complaint.estimated_sample_collection_at >  complaint.appointment_requested_at ? (
+              <span className="text-danger">
                 {complaint.estimated_sample_collection_at
                   ? moment(complaint.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
                   : "--"}
               </span>
+            ) : 
+            <span>
+            {complaint.estimated_sample_collection_at
+              ? moment(complaint.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+              : "--"}
+          </span>}
+              
             </>
           ),
           filter: textFilter(),

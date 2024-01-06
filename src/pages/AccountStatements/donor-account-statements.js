@@ -5,6 +5,8 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Card, CardBody, Col, Table, Container, Row } from "reactstrap";
 import { isEmpty, map } from "lodash";
+import moment from 'moment';
+
 
 
 import paginationFactory, {
@@ -136,12 +138,12 @@ class AccountStatements extends Component {
               <Row>
                  <div> <span className="text-danger font-size-12">
                   <strong>
-                    Note: Only payments with the Cleared and Approved status will show here.
+                    Note: Only MIF with the Cleared and Approved status will show here.
 
                   </strong>
                   </span>
                 </div>
-                <div>
+                {/* <div>
                     <span className="font-size-12">
                       <strong><span className="text-danger">Note:</span></strong> <strong>MIF Payments Means: (Payment Credited in Account) </strong>
                     </span>
@@ -150,7 +152,7 @@ class AccountStatements extends Component {
                     <span className="font-size-12">
                       <strong><span className="text-danger">Note:</span></strong> <strong>INVOICE Payments Means: (Payment Debited in Account) </strong>
                     </span>
-                  </div>
+                  </div> */}
                 <Col lg="12">
                   <Card>
                     <CardBody>
@@ -158,7 +160,8 @@ class AccountStatements extends Component {
                         <Table>
                           <thead className="table-light">
                             <tr>
-                              <th scope="col">Date Time</th>
+                              <th scope="col">Date</th>
+                              <th scope="col">Payment Date</th>
                               {/* <th scope="col">ID</th> */}
                               <th scope="col">Description</th>
                               <th scope="col">Credit</th>
@@ -177,10 +180,23 @@ class AccountStatements extends Component {
                                     <td>
                                       <p className="text-muted mb-0">
                                         {/* {donoraccountStatement.PaidAt} */}
-                                        {new Date(donoraccountStatement.PaidAt).toLocaleString("en-US")}
+                                        {/* {new Date(donoraccountStatement.PaidAt).toLocaleString("en-US")} */}
+                                        {moment(donoraccountStatement.clearedat).format("DD MMM YYYY")}
+
 
                                       </p>
                                     </td>
+                                    <td>
+                                      {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" ? (
+                                        <p className="text-muted mb-0">
+                                        {moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
+                                        </p>
+
+                                      ):(
+                                        <p>
+                                         {"--"}
+                                        </p>
+                                      )}</td>
                                     <td>
                                         <span>
                                           {<span><span style={{ color: 'red' }}>MIF ID: </span> {donoraccountStatement.paymentin} , <span style={{ color: 'red' }}>Payment Method: </span> {donoraccountStatement.PaidMethod}</span>}{" "}
@@ -245,10 +261,17 @@ class AccountStatements extends Component {
                                     <td>
                                       <p className="text-muted mb-0">
                                         {/* {donoraccountStatement.PaidAt} */}
-                                        {new Date(donoraccountStatement.PaidAt).toLocaleString("en-US")}
+                                        {/* {new Date(donoraccountStatement.PaidAt).toLocaleString("en-US")} */}
+                                        {moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
+
 
                                       </p>
                                     </td>
+                                    <td>
+                                        <p>
+                                         {"--"}
+                                        </p>
+                                      </td>
                                     {/* <td>
                                       <h5 className="font-size-14 text-truncate">
                                         <strong>{donoraccountStatement.paymentin}</strong>
@@ -256,7 +279,7 @@ class AccountStatements extends Component {
                                     </td> */}
                                     <td>
                                         <span>
-                                          {<span><span style={{ color: 'red' }}>INVOICE ID: </span> {donoraccountStatement.paymentin} , <span style={{ color: 'red' }}>Payment Method: </span> {donoraccountStatement.PaidMethod}</span>}{" "}
+                                          {<span><span style={{ color: 'red' }}>Lab Name: </span> {donoraccountStatement.lab_name} ,<span style={{ color: 'red' }}>Lab City: </span> {donoraccountStatement.lab_name} ,<span style={{ color: 'red' }}>Patient Name: </span> {donoraccountStatement.patient_name} ,<span style={{ color: 'red' }}>INVOICE ID: </span> {donoraccountStatement.paymentin}</span>}{" "}
                                           {/* {donoraccountStatement.Status} */}
                                         </span>
                                       {/* </p> */}
@@ -306,7 +329,7 @@ class AccountStatements extends Component {
                             )
                             )}
                             <tr className="bg-success bg-soft">
-                              <td colSpan="2" className="border-0 text-end">
+                              <td colSpan="3" className="border-0 text-end">
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10">

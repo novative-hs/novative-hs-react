@@ -50,6 +50,7 @@ class PendingB2BClients extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       pendingB2BClientListColumns: [
+       
         {
           text: "Lab ID",
           dataField: "id",
@@ -57,6 +58,28 @@ class PendingB2BClients extends Component {
           // hidden: true,
           formatter: (cellContent, pendingB2BClient) => (
             <>{pendingB2BClient.id}</>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "type",
+          text: "Lab Type",
+          sort: true,
+
+          formatter: (cellContent, pendingB2BClient) => (
+            <>
+              <span style={{
+                width: '300px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
+              {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
+                {pendingB2BClient.type}
+              </span>
+            </>
           ),filter: textFilter(),
         },
         // {
@@ -270,6 +293,7 @@ class PendingB2BClients extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="B2B Clients" breadcrumbItem="Labs List" />
             <Row>
+
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -299,6 +323,22 @@ class PendingB2BClients extends Component {
                                     </div>
                                   </div>
                                 </Col>
+                                <Col sm="4"></Col>
+                                <Col sm="4">
+  {allLabsList.map((lab, index) => {
+    if (lab.donor_balance !== undefined && lab.donor_balance !== null) {
+      return (
+        <div key={index} className="float-end">
+          <strong>Donation Available Balance: <span className="text-danger">{lab.donor_balance}</span></strong>
+        </div>
+      );
+    }
+    return null; // Don't render anything for labs without donor_balance
+  })}
+</Col>
+
+
+
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
