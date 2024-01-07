@@ -98,13 +98,13 @@ class TestAppointmentsPendingList extends Component {
             <span style={{
               width: '200px', // Set your desired width here
               fontSize: '14px',
-            
+
               textOverflow: 'ellipsis',
               whiteSpace: 'prewrap',
               textAlign: 'left', // Align text to the left
               display: 'block',
             }}>
-                            {testAppointment.address}
+              {testAppointment.address}
 
             </span>
           ), filter: textFilter(),
@@ -116,15 +116,15 @@ class TestAppointmentsPendingList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-              <Tooltip title="Patient Info">
-                <Link
-                  to="#"
-                  onClick={e => this.openPatientModal(e, testAppointment)}
+                <Tooltip title="Patient Info">
+                  <Link
+                    to="#"
+                    onClick={e => this.openPatientModal(e, testAppointment)}
                   // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
                   // onPointerLeave={this.handleMouseExit()}
-                >
-                  {testAppointment.patient_name}
-                </Link>
+                  >
+                    {testAppointment.patient_name}
+                  </Link>
                 </Tooltip>
               </span>
             </>
@@ -229,16 +229,16 @@ class TestAppointmentsPendingList extends Component {
           text: "Action",
           formatter: (cellContent, testAppointment) => (
             <div className="d-flex gap-3">
-               <Tooltip title="Update">
-              <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={() =>
-                    this.handleTestAppointmentClick(testAppointment)
-                  }
-                ></i>
-              </Link></Tooltip>
+              <Tooltip title="Update">
+                <Link className="text-success" to="#">
+                  <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={() =>
+                      this.handleTestAppointmentClick(testAppointment)
+                    }
+                  ></i>
+                </Link></Tooltip>
               <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"
@@ -262,18 +262,18 @@ class TestAppointmentsPendingList extends Component {
   componentDidMount() {
     const { testAppointments, onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
     onGetTestAppointmentsPendingList(this.state.user_id);
-  
+
     // Assign the value to main_lab_appointments
     testAppointments.main_lab_appointments = "Main";
-  
+
     // Call the function with the updated value
     onAddNewCollectionPointTestAppointment(testAppointments, this.state.user_id);
-  
+
     this.setState({
       testAppointments
       // appointmentmodal: true,
     });
-  
+
 
     const { labProfiles, onGetLabProfile } = this.props;
     onGetLabProfile(this.state.user_id);
@@ -315,9 +315,9 @@ class TestAppointmentsPendingList extends Component {
     }));
   };
   rowStyleFormat = (row, rowIdx) => {
-     if (row.is_state_sampling_availed === true) {
-                return {color: 'red' };
-            }
+    if (row.is_state_sampling_availed === true) {
+      return { color: 'red' };
+    }
   };
   toggleConfirmModal = () => {
     this.setState(prevState => ({
@@ -339,7 +339,7 @@ class TestAppointmentsPendingList extends Component {
   //   this.setState({
   //     PatientModal: false,
   //     isHovered: false,
-    
+
   //   });
   // };
   togglePatientModal = () => {
@@ -406,35 +406,35 @@ class TestAppointmentsPendingList extends Component {
         id: testAppointment.id,
         estimated_sample_collection_at:
           testAppointment.estimated_sample_collection_at,
-        // estimated_result_uploading_at:
-        //   testAppointment.estimated_result_uploading_at,
+        appointment_requested_at:
+          testAppointment.appointment_requested_at,
       },
     });
 
     this.toggle();
   };
- 
- 
+
+
   handleTestAppointmentType = e => {
     // const { id } = useParams();
     // console.log("id is",id);
-      this.setState({
-        testAppointments: {
-          main_lab_appointments: e.target.value,
-        },
-      });
+    this.setState({
+      testAppointments: {
+        main_lab_appointments: e.target.value,
+      },
+    });
 
-      // API call to get the checkout items
+    // API call to get the checkout items
 
-      const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
-      setTimeout(() => {
-        console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
-      });
-      setTimeout(() => {
-        onGetTestAppointmentsPendingList(this.state.user_id);
-      }, 1000);
+    const { onAddNewCollectionPointTestAppointment, onGetTestAppointmentsPendingList } = this.props;
+    setTimeout(() => {
+      console.log(onAddNewCollectionPointTestAppointment(this.state.testAppointments, this.state.user_id));
+    });
+    setTimeout(() => {
+      onGetTestAppointmentsPendingList(this.state.user_id);
+    }, 1000);
   };
- 
+
   render() {
     const { SearchBar } = Search;
 
@@ -500,26 +500,26 @@ class TestAppointmentsPendingList extends Component {
                                 <Col sm="3" lg="3">
                                   <div className="ms-2 mb-4">
                                     <div className="position-relative">
-                                    {this.props.labProfiles.type === "Main Lab" && (
-                                    <div>
-                                      <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Search By Lab Type</strong>
-                                      </Label>
-                                      <select
-                                        className="form-control select2"
-                                        title="main_lab_appointments"
-                                        name="main_lab_appointments"
-                                        onChange={this.handleTestAppointmentType}
-                                        
-                                      >
-                                        <option value="Main">Main</option>
-                                        <option value="Collection">Collection</option>
-                                        <option value="Both">Both</option>
-                                      </select>
-                                      <p className="text-danger font-size-10">Filter and manage all collection point appointments, and confirm them.</p>
+                                      {this.props.labProfiles.type === "Main Lab" && (
+                                        <div>
+                                          <Label for="main_lab_appointments" className="form-label">
+                                            <strong>Search By Lab Type</strong>
+                                          </Label>
+                                          <select
+                                            className="form-control select2"
+                                            title="main_lab_appointments"
+                                            name="main_lab_appointments"
+                                            onChange={this.handleTestAppointmentType}
 
-                                    </div>
-                                  )}
+                                          >
+                                            <option value="Main">Main</option>
+                                            <option value="Collection">Collection</option>
+                                            <option value="Both">Both</option>
+                                          </select>
+                                          <p className="text-danger font-size-10">Filter and manage all collection point appointments, and confirm them.</p>
+
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 </Col>
@@ -536,7 +536,7 @@ class TestAppointmentsPendingList extends Component {
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
-                                      rowStyle={this.rowStyleFormat} 
+                                      rowStyle={this.rowStyleFormat}
                                       ref={this.node}
                                       filter={filterFactory()}
 
@@ -612,41 +612,41 @@ class TestAppointmentsPendingList extends Component {
                                           <Form>
                                             <Row>
                                               <Col className="col-12">
-                                              <div className="mb-3 row">
-                                                <div className="col-md-3">
-                                                  <Label className="form-label">
-                                                    Age
-                                                  </Label>
-                                                </div>
-                                                <div className="col-md-9">
-                                                  <input
-                                                    type="text"
-                                                    value={`${this.state.patient_age} ${this.state.ageFormat}`}
-                                                    className="form-control"
-                                                    readOnly={true}
-                                                  />
-                                                </div>
-                                                </div>
-                                                {this.state.patient_address && this.state.patient_address !== "undefined" ? (
-                                                  <div className="mb-3 row">
+                                                <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Address
+                                                      Age
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
+                                                      value={`${this.state.patient_age} ${this.state.ageFormat}`}
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
                                                   </div>
                                                 </div>
-                                                ): null}
+                                                {this.state.patient_address && this.state.patient_address !== "undefined" ? (
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Address
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state
+                                                            .patient_address
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                ) : null}
 
 
                                                 {/* <div className="mb-3 row">
@@ -895,24 +895,12 @@ class TestAppointmentsPendingList extends Component {
                                                       type="datetime-local"
                                                       id="estimated_sample_collection_at"
                                                       name="estimated_sample_collection_at"
-                                                      min={new Date(
-                                                        new Date()
-                                                          .toString()
-                                                          .split("GMT")[0] +
-                                                        " UTC"
-                                                      )
-                                                        .toISOString()
-                                                        .slice(0, -8)}
-                                                      onChange={e => {
+                                                      min={testAppointment.appointment_requested_at.slice(0, 16)} // Use slice to get the correct format
+                                                      onChange={(e) => {
                                                         this.setState({
                                                           testAppointment: {
                                                             id: testAppointment.id,
-                                                            estimated_sample_collection_at:
-                                                              e.target.value 
-                                                              // +
-                                                              // ":00Z",
-                                                            // estimated_result_uploading_at:
-                                                            //   testAppointment.estimated_result_uploading_at,
+                                                            estimated_sample_collection_at: e.target.value,
                                                           },
                                                         });
                                                       }}
@@ -924,6 +912,8 @@ class TestAppointmentsPendingList extends Component {
                                                           : "")
                                                       }
                                                     />
+
+
                                                     <ErrorMessage
                                                       name="estimated_sample_collection_at"
                                                       component="div"

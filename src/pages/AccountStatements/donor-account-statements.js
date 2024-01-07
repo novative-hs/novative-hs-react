@@ -115,6 +115,11 @@ class AccountStatements extends Component {
                     Note: Only payments with the Cleared and Approved status will show here.
 
                   </strong>
+                  <br></br>
+                  <strong>
+                    Note: If patient appointment is canceled the money will be refunded back. All such cancel Appointments can be tracked in the Appointment Tracibility page.
+
+                  </strong>
                   </span>
                 </div>
                 <Col lg="12">
@@ -150,7 +155,7 @@ class AccountStatements extends Component {
                   </strong>
                   <br></br>
                   <strong>
-                    Note: If patient appointment is canceled the money will be refunded back, entry from the statement will be deleted. All such cancel Appointments can be tracked in the Appointment Tracibility page.
+                    Note: If patient appointment is canceled the money will be refunded back. All such cancel Appointments can be tracked in the Appointment Tracibility page.
 
                   </strong>
                   </span>
@@ -209,7 +214,7 @@ class AccountStatements extends Component {
                                     
                                     <td>
                                         <span className="float-start">
-                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod}</span>, {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
+                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , {" "} Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod} <span style={{ color: 'green' }}>{donoraccountStatement.Status}</span></span>, {" "} {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
                                         <p>
                                         Payment Date: <span style={{ color: 'blue' }}>{moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
                                         </span></p>
@@ -218,7 +223,7 @@ class AccountStatements extends Component {
                                         <p>
                                          {"--"}
                                         </p>
-                                      )}</span>},{" "}
+                                      )}</span>}
                                           {/* {donoraccountStatement.Status} */}
                                         </span>
                                       {/* </p> */}
@@ -294,7 +299,7 @@ class AccountStatements extends Component {
                                     </td> */}
                                     <td>
                                         <span className="float-start">
-                                          {<span>Lab Name: <span style={{ color: 'blue' }}>{donoraccountStatement.lab_name}</span> ,Lab City: <span style={{ color: 'blue' }}>{donoraccountStatement.lab_city}</span> ,Patient Name: <span style={{ color: 'blue' }}> {donoraccountStatement.patient_name}</span> ,INVOICE ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span></span>}{" "}
+                                          {<span>Lab Name: <span style={{ color: 'blue' }}>{donoraccountStatement.lab_name}</span> , {" "} Lab City: <span style={{ color: 'blue' }}>{donoraccountStatement.lab_city}</span> , {" "} Patient Name: <span style={{ color: 'blue' }}> {donoraccountStatement.patient_name}</span> , {" "} INVOICE ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span></span>}{" "}
                                           {/* {donoraccountStatement.Status} */}
                                         </span>
                                       {/* </p> */}

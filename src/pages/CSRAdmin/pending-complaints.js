@@ -22,7 +22,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import filterFactory, {textFilter, selectFilter} from "react-bootstrap-table2-filter";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -91,7 +91,7 @@ class PendingComplaints extends Component {
           filter: textFilter(),
         },
         {
-          dataField: "",
+          dataField: "complaint_id",
           text: "Complaint ID",
           sort: true,
           formatter: (cellContent, complaint) => (
@@ -112,7 +112,7 @@ class PendingComplaints extends Component {
           sort: true,
           formatter: (cellContent, pendingComplaint) => (
             <>
-              <span>
+              <span className="float-start">
                   <Link
                     to="#"
                     // onClick={e => this.openPatientModal(e, pendingComplaint)}
@@ -131,19 +131,32 @@ class PendingComplaints extends Component {
           sort: true,
           formatter: (cellContent, pendingComplaint) => (
             <>
-            <Link to="#" 
-              // onClick={e => this.openMessageModal(e, complaint)}
-              onMouseEnter={e => this.openMessageModal(e, pendingComplaint)}
-              onPointerLeave={this.handleMouseExit()}
-              >
-                {pendingComplaint.lab_name}
-              </Link>{" "}
-                  {/* {pendingComplaint.complainee},{" "} */}
-                  {/* {pendingComplaint.lab_name} */}
+              {pendingComplaint.complainee === "Lab" ? (
+                <Link to="#" 
+                  onMouseEnter={e => this.openMessageModal(e, pendingComplaint)}
+                  onPointerLeave={this.handleMouseExit}
+                >
+                  <strong className="text-danger float-start">{pendingComplaint.complainee}</strong><br></br>
+                  <span className="float-start">{pendingComplaint.lab_name}</span>
+                </Link>
+              ) : (
+                <>
+                  <strong className="text-danger float-start">{pendingComplaint.complainee}</strong><br></br>
+                  <span className="float-start">{pendingComplaint.labhazir_complainee}</span>
+                </>
+              )}
             </>
-          ),filter: textFilter(),
+          ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'Lab': 'Lab',
+              'LabHazir': 'LabHazir',
+            },
+            defaultValue: 'All',
+          }),
+          
         },
-       
         {
           dataField: "registered_at",
           text: "Pending Since",
@@ -403,12 +416,12 @@ class PendingComplaints extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Open Complaints | Complaint Hazir</title>
+            <title>Pending Complaints | Complaint Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Complaints" breadcrumbItem="Open" />
+            <Breadcrumbs title="Complaints" breadcrumbItem="Pending" />
             <Row>
             <div className="mb-3">
                                                 <p className="text-danger"><b>Note: When you assign a complaint to CSR it will move to Inprocess Complaints.</b></p>

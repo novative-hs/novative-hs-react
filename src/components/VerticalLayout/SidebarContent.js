@@ -740,21 +740,21 @@ class SidebarContent extends Component {
 
                   <ul className="sub-menu" aria-expanded="false">
                     <li>
-                      <Link to="/#" className="has-arrow">
+                      <Link to="/pending-complaints-lab">
                         <span>{this.props.t("Pending Complaints")}</span>
                       </Link>
-                      <ul>
+                      {/* <ul>
                         <li>
                           <Link to={"/pending-complaints-lab"}>
                             {this.props.t("Lab")}
                           </Link>
                         </li>
-                        <li>
+                        {/* <li>
                           <Link to={"/pending-complaints-labhazir"}>
                             {this.props.t("LabHazir")}
                           </Link>
-                        </li>
-                      </ul>
+                        </li> 
+                      </ul> */}
                     </li>
                     <li>
                       <Link to="/#" className="has-arrow">

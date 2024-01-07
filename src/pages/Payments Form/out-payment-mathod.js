@@ -401,7 +401,7 @@ class OutPaymentsForm extends Component {
             value: `${bankAccounts[i].id}`,
           });
         }
-      }else {
+      } else {
         if (bankAccounts[i].account_type != "DONATION") {
           bankaccountList.push({
             label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
@@ -409,7 +409,7 @@ class OutPaymentsForm extends Component {
           });
         }
       }
-      
+
     }
 
     const { banks } = this.props;
@@ -441,13 +441,13 @@ class OutPaymentsForm extends Component {
               <div className="checkout-tabs">
                 {this.state.successMessage && <div>{this.state.successMessage}</div>}
                 <Row>
-                <div> <span className="text-danger font-size-12">
-                  <strong>
-                    Note: There will be that Labs, Donors and B2b Clients whose terriotory will match this staff.
-                  </strong>
+                  <div> <span className="text-danger font-size-12">
+                    <strong>
+                      Note: There will be that Labs, Donors and B2b Clients whose terriotory will match this staff.
+                    </strong>
                   </span>
-                  <br></br>
-                </div>
+                    <br></br>
+                  </div>
                   <Col lg="1" sm="1">
                   </Col>
                   <Col lg="10" sm="9">
@@ -930,61 +930,63 @@ class OutPaymentsForm extends Component {
                             </div>
                           )} */}
 
-{isDonation ? (
-  <>
-  <Label className="col-form-label">Bank Name</Label>
-  <Field
-    name="bankaccount_id"
-    as="select"
-    onChange={(selectedGroup) =>
-      this.setState({
-        bankaccount_id: selectedGroup.value,
-      })
-    }
-    value={this.state.bankaccount_id || (bankaccountList.length > 0 ? bankaccountList[0].value : "")}
-    className="form-control"
-    readOnly={true}
-    multiple={false}
-  >
-    {bankaccountList.map((account) => (
-      <option key={account.value} value={account.value}>
-        {account.label}
-      </option>
-    ))}
-  </Field>
-</>
-) : (
-  <>
-  <Label
-    className="col-form-label"
-  >
-    Bank Name</Label>
-  <Select
-    name="bankaccount_id"
-    component="Select"
-    onChange={(selectedGroup) =>
-      this.setState({
-        bankaccount_id: selectedGroup.value,
-      })
-    }
-    className={
-      "defautSelectParent" +
-      (!this.state.bankaccount_id ? " is-invalid" : "")
-    }
-    styles={{
-      control: (base, state) => ({
-        ...base,
-        borderColor: !this.state.bankaccount_id ? "#f46a6a" : "#ced4da",
-      }),
-    }}
-    options={bankaccountList}
-    placeholder="Select Bank Account..."
-  /></>
-)}
+                          {isDonation ? (
+                            <>
+                              <Label className="col-form-label">Bank Name</Label>
+                              <Select
+                                name="bankaccount_id"
+                                component="Select"
+                                onChange={(selectedGroup) =>
+                                  this.setState({
+                                    bankaccount_id: selectedGroup.value,
+                                  })
+                                }
+                                className={
+                                  "defautSelectParent" +
+                                  (!this.state.bankaccount_id ? " is-invalid" : "")
+                                }
+                                styles={{
+                                  control: (base, state) => ({
+                                    ...base,
+                                    borderColor: !this.state.bankaccount_id ? "#f46a6a" : "#ced4da",
+                                  }),
+                                }}
+                                options={bankaccountList}
+                                placeholder="Select Bank Account..."
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Label
+                                className="col-form-label"
+                              >
+                                Bank Name</Label>
+                              <Select
+                                name="bankaccount_id"
+                                component="Select"
+                                onChange={(selectedGroup) =>
+                                  this.setState({
+                                    bankaccount_id: selectedGroup.value,
+                                  })
+                                }
+                                className={
+                                  "defautSelectParent" +
+                                  (!this.state.bankaccount_id ? " is-invalid" : "")
+                                }
+                                styles={{
+                                  control: (base, state) => ({
+                                    ...base,
+                                    borderColor: !this.state.bankaccount_id ? "#f46a6a" : "#ced4da",
+                                  }),
+                                }}
+                                options={bankaccountList}
+                                placeholder="Select Bank Account..."
+                              /></>
+                          )}
 
-{!isDonation && (
-  <div className="invalid-feedback">Please select your Bank Account</div>
-)}
+                          {!isDonation && (
+                            <div className="invalid-feedback">Please select your Bank Account</div>
+                          )}
 
 
                           <FormGroup className=" mt-4 mb-0">
@@ -1020,7 +1022,7 @@ class OutPaymentsForm extends Component {
                             />
                           </FormGroup>
 
-                          
+
 
                           {/* <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput">

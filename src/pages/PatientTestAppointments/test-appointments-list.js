@@ -69,15 +69,15 @@ class TestAppointmentsList extends Component {
           dataField: "order_id",
           text: "Order ID",
           sort: true,
-        
+
           formatter: (cellContent, patientTestAppointment) => (
             <>
               <span>
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal(e, patientTestAppointment)}
-                  // onMouseEnter={e => this.openPatientModal(e, patientTestAppointment)}
-                  // onPointerLeave={this.handleMouseExit()}
+                // onMouseEnter={e => this.openPatientModal(e, patientTestAppointment)}
+                // onPointerLeave={this.handleMouseExit()}
                 >
                   {patientTestAppointment.order_id}
                 </Link>
@@ -100,8 +100,8 @@ class TestAppointmentsList extends Component {
                 <Link
                   to="#"
                   onClick={e => this.openPatientModal2(e, testAppointment)}
-                  // onMouseEnter={e => this.openPatientModal2(e, testAppointment)}
-                  // onPointerLeave={this.handleMouseExit()}
+                // onMouseEnter={e => this.openPatientModal2(e, testAppointment)}
+                // onPointerLeave={this.handleMouseExit()}
                 >
                   {testAppointment.patient_name}
                 </Link>
@@ -122,9 +122,9 @@ class TestAppointmentsList extends Component {
             <>
               <span>
                 <Link to="#"
-                //  onClick={e => this.openLabModal(e, testAppointment)}
-                onMouseEnter={e =>  this.openLabModal(e, testAppointment)}
-                 >
+                  //  onClick={e => this.openLabModal(e, testAppointment)}
+                  onMouseEnter={e => this.openLabModal(e, testAppointment)}
+                >
                   {testAppointment.lab_name}
                 </Link>
               </span>
@@ -205,8 +205,8 @@ class TestAppointmentsList extends Component {
                     patientTestAppointment.estimated_sample_collection_at
                   ).toLocaleString("en-US")} */}
                   {patientTestAppointment.estimated_sample_collection_at
-                  ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
-                  : "--"}
+                    ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+                    : "--"}
                 </span>
               )}
             </>
@@ -233,60 +233,60 @@ class TestAppointmentsList extends Component {
         //     </>
         //   ),
         // },
-      
+
         {
           dataField: "collection_status",
           text: "Sampling Status",
           sort: true,
           formatter: (cellContent, testAppointment) => (
             <>
-             <span>
-                  {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
-                    !testAppointment.collector_name ? (
-                      <span >
-                  
-                      </span>
-                    ):(
-                      <span>{testAppointment.collector_name}</span>
-                    )}
-                  {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
-                    !testAppointment.collection_status ? (
-                      <span>
-                        --
-                      </span>
-                    ): testAppointment.collection_status == "Assigned" ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
-                        {testAppointment.collection_status}
-                      </span>
-                    ): testAppointment.collection_status == "On way" ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
-                        {testAppointment.collection_status}
-                      </span>
-                    ): testAppointment.collection_status == "Reached" ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                        {testAppointment.collection_status}
-                      </span>
-                    ): testAppointment.collection_status == "Patient Unavailable" ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        {testAppointment.collection_status}
-                      </span>
-                    ): testAppointment.collection_status == "Sample+Payment Collected" ? (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                        {testAppointment.collection_status}
-                      </span>
-                    ): testAppointment.collection_status == "Sample+Payment Delivered" && (
-                      <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                        {testAppointment.collection_status}
-                      </span>
-                    )}
+              <span>
+                {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
+                  !testAppointment.collector_name ? (
+                  <span >
 
-                  {!testAppointment.is_home_sampling_availed &&
-                   !testAppointment.is_state_sampling_availed && (
+                  </span>
+                ) : (
+                  <span>{testAppointment.collector_name}</span>
+                )}
+                {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
+                  !testAppointment.collection_status ? (
+                  <span>
+                    --
+                  </span>
+                ) : testAppointment.collection_status == "Assigned" ? (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
+                    {testAppointment.collection_status}
+                  </span>
+                ) : testAppointment.collection_status == "On way" ? (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+                    {testAppointment.collection_status}
+                  </span>
+                ) : testAppointment.collection_status == "Reached" ? (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
+                    {testAppointment.collection_status}
+                  </span>
+                ) : testAppointment.collection_status == "Patient Unavailable" ? (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                    {testAppointment.collection_status}
+                  </span>
+                ) : testAppointment.collection_status == "Sample+Payment Collected" ? (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                    {testAppointment.collection_status}
+                  </span>
+                ) : testAppointment.collection_status == "Sample+Payment Delivered" && (
+                  <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                    {testAppointment.collection_status}
+                  </span>
+                )}
+
+                {!testAppointment.is_home_sampling_availed &&
+                  !testAppointment.is_state_sampling_availed && (
                     <span>
                       --
                     </span>
                   )}
-                </span>
+              </span>
             </>
           ),
         },
@@ -391,7 +391,7 @@ class TestAppointmentsList extends Component {
         //     </>
         //   ),
         // },
-       
+
         {
           dataField: "status",
           text: "Appointment Status",
@@ -403,7 +403,11 @@ class TestAppointmentsList extends Component {
                   {testAppointment.status}
                 </span>
               )}
-
+              {testAppointment.status == "Cancel" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {testAppointment.status}
+                </span>
+              )}
               {testAppointment.status == "Confirmed" && (
                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
                   {testAppointment.status}
@@ -419,7 +423,7 @@ class TestAppointmentsList extends Component {
               {testAppointment.status == "Rescheduled" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
                   {testAppointment.status}
-                  
+
                 </span>
               )}
 
@@ -487,9 +491,9 @@ class TestAppointmentsList extends Component {
                   {/* {new Date(
                     patientTestAppointment.estimated_result_uploading_at
                   ).toLocaleString("en-US")} */}
-                   {patientTestAppointment.estimated_result_uploading_at
-                  ? moment(patientTestAppointment.estimated_result_uploading_at).format("DD MMM YYYY, h:mm A")
-                  : "--"}
+                  {patientTestAppointment.estimated_result_uploading_at
+                    ? moment(patientTestAppointment.estimated_result_uploading_at).format("DD MMM YYYY, h:mm A")
+                    : "--"}
                 </span>
               )}
             </>
@@ -502,7 +506,7 @@ class TestAppointmentsList extends Component {
           formatter: (cellContent, patientTestAppointment) => (
             <>
               {patientTestAppointment.status === "Result Uploaded" &&
-              (patientTestAppointment.result_type === "File" || patientTestAppointment.result_type === "Link") ? (
+                (patientTestAppointment.result_type === "File" || patientTestAppointment.result_type === "Link") ? (
                 <button
                   className="btn btn-link"
                   onClick={() => this.downloadFile(process.env.REACT_APP_BACKENDURL + patientTestAppointment.result)}
@@ -515,7 +519,7 @@ class TestAppointmentsList extends Component {
             </>
           ),
         },
-               
+
         {
           dataField: "collector_name",
           text: "Collector Detail",
@@ -533,12 +537,12 @@ class TestAppointmentsList extends Component {
                 testAppointment.collector_name && (
                   <Tooltip title="Sample Collector Details">
 
-                  <Link
-                    to="#"
-                    onClick={e => this.openCollectorModal(e, testAppointment)}
-                  >
-                    <i className="mdi mdi-eye font-size-14"></i> View
-                  </Link>
+                    <Link
+                      to="#"
+                      onClick={e => this.openCollectorModal(e, testAppointment)}
+                    >
+                      <i className="mdi mdi-eye font-size-14"></i> View
+                    </Link>
                   </Tooltip>
                 )}
 
@@ -556,67 +560,73 @@ class TestAppointmentsList extends Component {
           isDummyField: true,
           editable: false,
           formatter: (cellContent, patientTestAppointment, testAppointment) => (
-            <> 
-          <div>
-          <Tooltip title="Feedback">
-            {patientTestAppointment.status == "Result Uploaded" &&
-            !patientTestAppointment.does_feedback_exist ? (
-              <Link
-                className="text-warning font-size-12"
-                to="#"
-                onClick={e =>
-                  this.handlePatientFeedbackClick(
-                    e,
-                    patientTestAppointment.id
-                  )
-                }
-              >
-                <i className="bx bxs-star font-size-14"></i>
-              </Link>
-            ) : patientTestAppointment.status == "Result Uploaded" &&
-              patientTestAppointment.does_feedback_exist ? (
-              <span className="text-success font-size-12">
-                <i className="bx bxs-happy-alt font-size-14"></i> 
-              </span>
-            ) : (
-              <span className="text-secondary font-size-12">
-                {/* <i className="bx bxs-star font-size-14"></i>  */}
-              </span>
-            )}
-          </Tooltip>
-          <Tooltip title="Reschedual Appoitment Info">
+            <>
+              <div>
+                <Tooltip title="Feedback">
+                  {patientTestAppointment.status == "Result Uploaded" &&
+                    !patientTestAppointment.does_feedback_exist ? (
+                    <Link
+                      className="text-warning font-size-12"
+                      to="#"
+                      onClick={e =>
+                        this.handlePatientFeedbackClick(
+                          e,
+                          patientTestAppointment.id
+                        )
+                      }
+                    >
+                      <i className="bx bxs-star font-size-14"></i>
+                    </Link>
+                  ) : patientTestAppointment.status == "Result Uploaded" &&
+                    patientTestAppointment.does_feedback_exist ? (
+                    <span className="text-success font-size-12">
+                      <i className="bx bxs-happy-alt font-size-14"></i>
+                    </span>
+                  ) : (
+                    <span className="text-secondary font-size-12">
+                      {/* <i className="bx bxs-star font-size-14"></i>  */}
+                    </span>
+                  )}
+                </Tooltip>
+                <Tooltip title="Reschedual Appoitment Info">
 
-          {patientTestAppointment.reschedule_count == 0 ?(
-            <span className="text-secondary font-size-12">
-              </span>
-          ): <Link className="text-success" to="#">
-            <i
-              className="mdi mdi-calendar-clock font-size-18"
-              id="edittooltip"
-              onClick={e => this.openReshedualModal(e, patientTestAppointment)
-              }
-            ></i>
-        </Link> }          
-        </Tooltip>
-        
-              {patientTestAppointment.payment_status === "Not Paid" ? (
-  <Tooltip title="Appointment Detail">
-    <Link
-      className="mdi mdi-receipt font-size-18"
-      to={`/appointment-detail/${patientTestAppointment.id}`}
-    ></Link>
-  </Tooltip>
-) : (
-  <Tooltip title="Invoice Detail">
-    <Link
-      className="mdi mdi-receipt font-size-18"
-      to={`/invoice-detail/${patientTestAppointment.id}`}
-    ></Link>
-  </Tooltip>
-)}
+                  {patientTestAppointment.reschedule_count == 0 ? (
+                    <span className="text-secondary font-size-12">
+                    </span>
+                  ) : <Link className="text-success" to="#">
+                    <i
+                      className="mdi mdi-calendar-clock font-size-18"
+                      id="edittooltip"
+                      onClick={e => this.openReshedualModal(e, patientTestAppointment)
+                      }
+                    ></i>
+                  </Link>}
+                </Tooltip>
+
+                {patientTestAppointment.payment_status === "Not Paid" ? (
+                  <Tooltip title="Appointment Detail">
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/appointment-detail/${patientTestAppointment.id}`}
+                    ></Link>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Invoice Detail">
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/invoice-detail/${patientTestAppointment.id}`}
+                    ></Link>
+                  </Tooltip>
+                )}
+                <Tooltip title="Add Comment">
+                  <Link
+                    className="fas fa-comment font-size-18"
+                    to={`/csr-patient-notes-list/${patientTestAppointment.id}`}
+                  ></Link>
+                </Tooltip>
 
 
-          </div>
+              </div>
             </>
           ),
         },
@@ -691,22 +701,22 @@ class TestAppointmentsList extends Component {
       // patient_phone: arg.patient_phone,
     });
   };
-// Add this method to your class component
-downloadFile = async (url) => {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
+  // Add this method to your class component
+  downloadFile = async (url) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
 
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'report';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (error) {
-    console.error('Error downloading file:', error);
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = 'report';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
   }
-}
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -743,7 +753,7 @@ downloadFile = async (url) => {
   //     PatientModal: false,
   //     PatientModal2: false,
   //     isHovered: false,
-    
+
   //   });
   // };
   togglePatientModal2 = () => {
@@ -865,12 +875,12 @@ downloadFile = async (url) => {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Test Appointments" breadcrumbItem="Test Appointments List" />
             <Row>
-            <div> <span className="text-danger font-size-12">
-                  <strong>
-                    Note: If you want to reschedule your appointment, please call the Lab.
-                  </strong>
-                  </span>
-                </div>
+              <div> <span className="text-danger font-size-12">
+                <strong>
+                  Note: If you want to reschedule your appointment, please call the Lab.
+                </strong>
+              </span>
+              </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -915,11 +925,11 @@ downloadFile = async (url) => {
                                       responsive
                                       ref={this.node}
                                     />
-                                  
+
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
-                                      // onPointerLeave={this.handleMouseExit}
+                                    // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -980,7 +990,7 @@ downloadFile = async (url) => {
                                                       value={this.state.appointment_requested_at
                                                         ? moment(this.state.appointment_requested_at).format("DD MMM YYYY, h:mm A")
                                                         : "--"}
-                                                      
+
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -1085,7 +1095,7 @@ downloadFile = async (url) => {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    Reason
+                                                      Reason
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1099,32 +1109,32 @@ downloadFile = async (url) => {
                                                     />
                                                   </div>
                                                 </div>
-                                                
+
                                                 {this.state
-                                                    .reschedule_reason ==
-                                                    "Other" &&
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                    Comment
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.reason
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>}
+                                                  .reschedule_reason ==
+                                                  "Other" &&
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Comment
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.reason
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
+                                                  </div>}
 
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    Reschedule Count
+                                                      Reschedule Count
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1150,7 +1160,7 @@ downloadFile = async (url) => {
                                                       value={this.state.rescheduled_at
                                                         ? moment(this.state.rescheduled_at).format("DD MMM YYYY, h:mm A")
                                                         : "--"}
-                                                      
+
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -1279,7 +1289,7 @@ downloadFile = async (url) => {
                                                       className={
                                                         "form-control" +
                                                         (errors.review &&
-                                                        touched.review
+                                                          touched.review
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -1420,7 +1430,7 @@ downloadFile = async (url) => {
                                     <Modal
                                       isOpen={this.state.PatientModal2}
                                       className={this.props.className}
-                                      // onPointerLeave={this.handleMouseExit}
+                                    // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal2}
@@ -1470,24 +1480,24 @@ downloadFile = async (url) => {
 
                                                 {this.state.patient_address && this.state.patient_address !== "undefined" ? (
                                                   <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Address
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state
+                                                            .patient_address
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
                                                   </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                ): null}
+                                                ) : null}
 
                                                 {/* <div className="mb-3 row">
                                                   <div className="col-md-3">
@@ -1638,24 +1648,24 @@ downloadFile = async (url) => {
                                                   </div>
                                                 </div>
                                                 {this.state.sample_collected_at != null ? (
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                    Sample Collected At
-                                                    </Label>
+                                                  <div className="mb-3 row">
+                                                    <div className="col-md-3">
+                                                      <Label className="form-label">
+                                                        Sample Collected At
+                                                      </Label>
+                                                    </div>
+                                                    <div className="col-md-9">
+                                                      <input
+                                                        type="text"
+                                                        value={
+                                                          this.state.sample_collected_at
+                                                        }
+                                                        className="form-control"
+                                                        readOnly={true}
+                                                      />
+                                                    </div>
                                                   </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.sample_collected_at
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                ): null}
+                                                ) : null}
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
@@ -1768,7 +1778,7 @@ downloadFile = async (url) => {
                                                       className={
                                                         "form-control" +
                                                         (errors.reschedule_reason &&
-                                                        touched.reschedule_reason
+                                                          touched.reschedule_reason
                                                           ? " is-invalid"
                                                           : "")
                                                       }

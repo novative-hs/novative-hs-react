@@ -74,7 +74,20 @@ class InProcessComplaintsLabhazir extends Component {
           ),filter: textFilter(),
         },
         {
-          dataField: "",
+                    dataField: "registered_at",
+                    text: "Registered at",
+                    sort: true,
+                    formatter: (cellContent, complaint) => (
+                      <>
+                        <span>
+                          {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+                        </span>
+                      </>
+                    ),
+                    filter: textFilter(),
+                  },
+        {
+          dataField: "complaint_id",
           text: "Complaint ID",
           sort: true,
           formatter: (cellContent, complaint) => (

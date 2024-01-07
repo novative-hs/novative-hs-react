@@ -235,6 +235,7 @@ import HandledComplaints from "pages/Complaints/handled-complaints";
 import csrComplaints from "pages/Complaints/csr-complaints";
 import NotesList from "pages/Complaints/notes-list";
 import NotesLists from "pages/Complaints/notes-list";
+import PatientCsrNotesList from "pages/Complaints/notes-list";
 import NotesComplains from "pages/Complaints/notes-list-complain";
 import NotesComplainsAdmin from "pages/Complaints/notes-list-complain"
 import labnotes from "pages/Complaints/notes-list";
@@ -710,6 +711,7 @@ const hrAdminAuthProtectedRoutes = [
 // All authenticated routes of the patient module will be listed here
 const patientAuthProtectedRoutes = [
   { path: "/dashboard-patient/:uuid?", component: DashboardPatient },
+  { path: "/csr-patient-notes-list/:id", component: PatientCsrNotesList },
   {
     path: "/test-appointments/:uuid?",
     component: TestAppointmentsList,

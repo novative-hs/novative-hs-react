@@ -199,6 +199,29 @@ class TestAppointmentsInProcessList extends Component {
           ), filter: textFilter(),
         },
         {
+          dataField: "estimated_result_uploading_at",
+          text: "Reporting Time by Lab",
+          sort: true,
+          formatter: (cellContent, testAppointment) => (
+            <>
+              {testAppointment.status == "Pending" ? (
+                <span>Not available yet</span>
+              ) : null}
+
+              {testAppointment.status != "Pending" ? (
+                <span>
+                  {/* {new Date(
+                    testAppointment.estimated_result_uploading_at
+                  ).toLocaleString("en-US")} */}
+                  {testAppointment.estimated_result_uploading_at
+                  ? moment(testAppointment.estimated_result_uploading_at).format("DD MMM YYYY, h:mm A")
+                  : "--"}
+                </span>
+              ) : null}
+            </>
+          ),filter: textFilter(),
+        },
+        {
           dataField: "sample_collected_at",
           text: "Sample collected at",
           sort: true,
@@ -222,6 +245,7 @@ class TestAppointmentsInProcessList extends Component {
             </>
           ), filter: textFilter(),
         },
+        
         // {
         //   dataField: "sample_collector",
         //   text: "Sample Collector",

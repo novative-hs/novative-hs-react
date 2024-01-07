@@ -245,9 +245,18 @@ class Contact extends Component {
                         // subject: Yup.string().trim().required("Please enter your subject"),
                         message: Yup.string().trim().required("Please enter your message"),
                         city: Yup.string().required('Please select your city'),
-
+                        lab_id: Yup.string().when('complainee', {
+                          is: 'Lab',
+                          then: Yup.string().required('Please select lab'),
+                          otherwise: Yup.string(),
+                        }),
+                        labhazir_complainee: Yup.string().when('complainee', {
+                          is: 'LabHazir',
+                          then: Yup.string().required('Please select labhazir complainee'),
+                          otherwise: Yup.string(),
+                        }),
                       })}
-                      
+                                            
                       onSubmit={values => {
                         onAddNewComplaint(values);
                         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -343,10 +352,13 @@ class Contact extends Component {
                                   <Field
                                     name="lab_id"
                                     as="select"
+                                    
                                     defaultValue={complaint.lab_id}
                                     className="form-control"
                                     readOnly={true}
                                     multiple={false}
+                                    required={true} // Make the field required
+
                                   >
                                     <option
                                       key={complaint.lab_id}
@@ -362,6 +374,7 @@ class Contact extends Component {
                                   <Select
                                     name="lab_id"
                                     component="Select"
+                                    required={true}
                                     onChange={selectedGroup =>
                                       this.setState({
                                         lab_id: selectedGroup.value,
@@ -392,36 +405,45 @@ class Contact extends Component {
                               )
 
                             ) : null}
-                          
-                            {this.state.complainee === "LabHazir" && (
-                              <div className="mb-3">
-                                <Label
-                                  for="labhazir_complainee"
-                                  className="form-label"
-                                >
-                                  Select Department
-                                </Label>
-                                <Field
-                                  name="labhazir_complainee"
-                                  component="select"
-                                  onChange={e =>
-                                    this.setState({
-                                      labhazir_complainee: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.labhazir_complainee}
-                                  className="form-select"
-                                >
-                                  <option value="Customer Service Representative">
-                                    Customer Service Representative
-                                  </option>
-                                  <option value="Accounts">Accounts</option>
-                                  <option value="Marketing">Marketing</option>
-                                  <option value="Auditor">Auditor</option>
-                                  <option value="Others">Others</option>
-                                </Field>
-                              </div>
-                            )}
+                          {this.state.complainee === "LabHazir" && (
+  <div className="mb-3">
+    <Label for="labhazir_complainee" className="form-label">
+      Select Department
+    </Label>
+    <Field
+      name="labhazir_complainee"
+      component="select"
+      onChange={e =>
+        this.setState({
+          labhazir_complainee: e.target.value,
+        })
+      }
+      value={this.state.labhazir_complainee}
+      className={
+        "form-select" +
+        (errors.labhazir_complainee && touched.labhazir_complainee
+          ? " is-invalid"
+          : "")
+      }
+    >
+      <option value="">Please Select Department..</option>
+      <option value="Customer Service Representative">
+        Customer Service Representative
+      </option>
+      <option value="Accounts">Accounts</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Auditor">Auditor</option>
+      <option value="Others">Others</option>
+    </Field>
+    <ErrorMessage
+      name="labhazir_complainee"
+      component="div"
+      className="invalid-feedback"
+    />
+  </div>
+)}
+
+                            
                             <Col lg="6">
                               <div className="mb-3">
                                 <Label for="name">Name</Label>

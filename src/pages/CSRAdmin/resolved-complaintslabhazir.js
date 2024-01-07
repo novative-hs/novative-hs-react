@@ -74,7 +74,20 @@ class ResolvedComplaintsLabhazir extends Component {
           ),
         },
         {
-          dataField: "",
+                    dataField: "registered_at",
+                    text: "Registered at",
+                    sort: true,
+                    formatter: (cellContent, complaint) => (
+                      <>
+                        <span>
+                          {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+                        </span>
+                      </>
+                    ),
+                    filter: textFilter(),
+                  },
+        {
+          dataField: "complaint_id",
           text: "Complaint ID",
           sort: true,
           formatter: (cellContent, complaint) => (
@@ -159,22 +172,33 @@ class ResolvedComplaintsLabhazir extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+                {moment(complaint.assigned_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),
           filter: textFilter(),
         },
-
-       
+        // {
+        //   dataField: "handled_at",
+        //   text: "Handled at",
+        //   sort: true,
+        //   formatter: (cellContent, complaint) => (
+        //     <>
+        //       <span>
+        //         {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+        //       </span>
+        //     </>
+        //   ),
+        //   filter: textFilter(),
+        // },
         {
-          dataField: "handled_at",
-          text: "Handled at",
+          dataField: "time_difference_hours",
+          text: "Response Time in Hours",
           sort: true,
           formatter: (cellContent, complaint) => (
             <>
               <span>
-                {moment(complaint.registered_at).format("DD MMM YYYY, h:mm A")}
+                {complaint.time_difference_hours.toFixed().toString()}
               </span>
             </>
           ),
