@@ -885,41 +885,37 @@ class TestAppointmentsPendingList extends Component {
                                                     />
                                                   </div> */}
 
-                                                  <div className="mb-3">
-                                                    <Label
-                                                      for="estimated_sample_collection_at"
-                                                    >
-                                                      Please select date and time for sample collection
-                                                    </Label>
-                                                    <input
-                                                      type="datetime-local"
-                                                      id="estimated_sample_collection_at"
-                                                      name="estimated_sample_collection_at"
-                                                      min={testAppointment.appointment_requested_at.slice(0, 16)} // Use slice to get the correct format
-                                                      onChange={(e) => {
-                                                        this.setState({
-                                                          testAppointment: {
-                                                            id: testAppointment.id,
-                                                            estimated_sample_collection_at: e.target.value,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.estimated_sample_collection_at &&
-                                                          touched.estimated_sample_collection_at
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
+<div className="mb-3">
+  <Label for="estimated_sample_collection_at">
+    Please select date and time for sample collection
+  </Label>
+  <input
+    type="datetime-local"
+    id="estimated_sample_collection_at"
+    name="estimated_sample_collection_at"
+    min={testAppointment.appointment_requested_at ? testAppointment.appointment_requested_at.slice(0, 16) : ""}
+    onChange={(e) => {
+      this.setState({
+        testAppointment: {
+          id: testAppointment.id,
+          estimated_sample_collection_at: e.target.value,
+        },
+      });
+    }}
+    className={
+      "form-control" +
+      (errors.estimated_sample_collection_at && touched.estimated_sample_collection_at
+        ? " is-invalid"
+        : "")
+    }
+  />
+  <ErrorMessage
+    name="estimated_sample_collection_at"
+    component="div"
+    className="invalid-feedback"
+  />
+</div>
 
-
-                                                    <ErrorMessage
-                                                      name="estimated_sample_collection_at"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
 
                                                   {/* <div className="mb-3">
                                                     <Label

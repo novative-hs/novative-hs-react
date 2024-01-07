@@ -109,11 +109,11 @@ class ResolvedComplaints extends Component {
         },
         {
           dataField: "name",
-          text: "Name",
+          text: "Complainant Name",
           sort: true,
           formatter: (cellContent, resolvedComplaint) => (
             <>
-              <span>
+              <span className="text-danger float-start">
                   <Link
                     to="#"
                     // onClick={e => this.openPatientModal(e, resolvedComplaint)}
@@ -490,7 +490,7 @@ class ResolvedComplaints extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      E-mail
+                                                      Email
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">

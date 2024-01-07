@@ -24,6 +24,8 @@ class Login extends Component {
     this.state = {
       count: 0,
       guest_id: "",
+      submittedMessage: null,
+
     };
   }
 
@@ -114,6 +116,14 @@ class Login extends Component {
                           {this.props.error && this.props.error && (
                             <Alert color="danger">{this.props.error}</Alert>
                           )}
+                          {/* {this.state.submittedMessage && this.props.error && (
+                            <Alert
+                              color="success"
+                              style={{ marginTop: "13px" }}
+                            >
+                              {this.state.submittedMessage}
+                            </Alert>
+                          )} */}
 
                           <Formik
                             enableReinitialize={true}
@@ -133,43 +143,187 @@ class Login extends Component {
                               password: Yup.string().required(
                                 "Please enter your password"
                               ),
-                            })}
-                            onSubmit={async (values, { setSubmitting }) => {
+                            })
+                          }
+                            // onSubmit={async (values) => {
+                            //   // Check if login is already in progress
+                            //   if (this.state.isLoginInProgress) {
+                            //     return;
+                            //   }
+                            
+                            //   // Set the flag to indicate login is in progress
+                            //   this.setState({ isLoginInProgress: true });
+                            
+                            //   try {
+                            //     // Call loginUser asynchronously
+                            //     await this.props.loginUser(values, this.props.history);
+                            
+                            //     // Handle success logic if needed
+                            
+                            //     setTimeout(() => {
+                            //       const success = this.props.success;
+                            //       const error = this.props.error;
+                            
+                            //       if (error) {
+                            //         // Handle the error without triggering redirection
+                            //         console.error("Error:", error);
+                            //         this.props.apiError(error.message); // Dispatch the error message to state
+                            
+                            //         // Automatically remove the error message after 4 minutes (240,000 milliseconds)
+                            //         setTimeout(() => {
+                            //           this.props.apiError(null); // Clear the error message
+                            //         }, 240000);
+                            //       } else {
+                            //         // No error, redirect logic here
+                                    // const isLargeScreen = window.innerWidth > 470;
+                            
+                                    // if (!isLargeScreen && this.state.finalUrl) {
+                                    //   console.log("finalUrl in mobile app else case", this.state.finalUrl);
+                                    //   if (success.account_type === "patient") {
+                                    //     this.props.history.push(
+                                    //       this.state.finalUrl
+                                    //         ? `/nearby-labs/${this.state.finalUrl}`
+                                    //         : `/nearby-labs/${this.state.finalUrl}`
+                                    //     );
+                                    //   } else if (success.account_type === "samplecollector") {
+                                    //     this.props.history.push("/dashboard-samplecollector");
+                                    //   }
+                                    // } else if (
+                                    //   isLargeScreen &&
+                                    //   success.account_type === "patient" &&
+                                    //   !this.state.finalUrl
+                                    // ) {
+                                    //   this.props.history.push(
+                                    //     this.props.match.params.uuid
+                                    //       ? `/nearby-labs/${this.props.match.params.uuid}`
+                                    //       : `/nearby-labs`
+                                    //   );
+                                    //   console.log(this.props.match.params.uuid);
+                                    // } else if (
+                                    //   !isLargeScreen &&
+                                    //   success.account_type === "patient" &&
+                                    //   !this.state.finalUrl
+                                    // ) {
+                                    //   this.props.history.push(
+                                    //     this.props.match.params.uuid
+                                    //       ? `/nearby-labs/${this.props.match.params.uuid}`
+                                    //       : `/nearby-labs`
+                                    //   );
+                                    //   console.log(this.props.match.params.uuid);
+                                    // } else if (success.account_type === "labowner") {
+                                    //   this.props.history.push("/dashboard-lab");
+                                    // } else if (success.account_type === "b2b-admin") {
+                                    //   this.props.history.push("/b2b-clients-list");
+                                    // } else if (success.account_type === "b2bclient") {
+                                    //   this.props.history.push("/dashboard-b2bclient");
+                                    // } else if (success.account_type === "CSR") {
+                                    //   this.props.history.push("/dashboard-csr");
+                                    // } else if (success.account_type === "finance-officer") {
+                                    //   this.props.history.push("/dashboard-finance");
+                                    // } else if (success.account_type === "finance-admin") {
+                                    //   this.props.history.push("/dashboard-financeadmin");
+                                    // } else if (success.account_type === "auditor") {
+                                    //   this.props.history.push("/dashboard-auditor");
+                                    // } else if (success.account_type === "registration-admin") {
+                                    //   this.props.history.push("/pending-labs");
+                                    // } else if (success.account_type === "marketer-admin") {
+                                    //   this.props.history.push("/discount-labhazir");
+                                    // } else if (success.account_type === "samplecollector") {
+                                    //   this.props.history.push("/dashboard-samplecollector");
+                                    // } else if (success.account_type === "csr-admin") {
+                                    //   this.props.history.push("/pending-complaints-lab");
+                                    // } else if (success.account_type === "auditor-admin") {
+                                    //   this.props.history.push("/pending-audits");
+                                    // } else if (success.account_type === "hr-admin") {
+                                    //   this.props.history.push("/add-staff");
+                                    // } else if (success.account_type === "donor") {
+                                    //   this.props.history.push("/dashboard-donor");
+                                    // } else if (success.account_type === "corporate") {
+                                    //   this.props.history.push("/dashboard-corporate");
+                                    // }
+                            //       }
+                            //     }, 1000);
+                            //   } catch (error) {
+                            //     // Handle the error without triggering redirection
+                            //     console.error("Error:", error);
+                            //     this.props.apiError(error.message); // Dispatch the error message to state
+                            
+                            //     // Automatically remove the error message after 4 minutes (240,000 milliseconds)
+                            //     setTimeout(() => {
+                            //       this.props.apiError(null); // Clear the error message
+                            //     }, 240000);
+                            //   } finally {
+                            //     // Reset the flag after login attempt
+                            //     this.setState({ isLoginInProgress: false });
+                            //   }
+                            // }}
+                            // >    
+                            onSubmit={async (values) => {
+                              // Check if login is already in progress
+                              if (this.state.isLoginInProgress) {
+                                return;
+                              }
+                            
+                              // Set the flag to indicate login is in progress
+                              this.setState({ isLoginInProgress: true });
+                            
                               try {
+                                // Call loginUser asynchronously
                                 await this.props.loginUser(values, this.props.history);
                             
-                                const success = this.props.success;
+                                // Handle success logic if needed
                             
-                                // Rest of your logic for redirection based on success
                                 setTimeout(() => {
-                                  if (!isLargeScreen && this.state.finalUrl) {
-                                    console.log("finalUrl in mobile app else case", this.state.finalUrl)
-                                    if (success.account_type === "patient") {
+                                  const success = this.props.success;
+                                  const error = this.props.error;
+                            
+                                  if (error) {
+                                    // Handle the error without triggering redirection
+                                    console.error("Error:", error);
+                                    this.props.apiError(error.message); // Dispatch the error message to state
+                            
+                                    // Automatically remove the error message after 4 minutes (240,000 milliseconds)
+                                    setTimeout(() => {
+                                      this.props.apiError(null); // Clear the error message
+                                    }, 240000);
+                                  } else {
+                                    // No error, redirect logic here
+                                    const isLargeScreen = window.innerWidth > 470;
+                            
+                                    if (!isLargeScreen && this.state.finalUrl) {
+                                      console.log("finalUrl in mobile app else case", this.state.finalUrl);
+                                      if (success.account_type === "patient") {
+                                        this.props.history.push(
+                                          this.state.finalUrl
+                                            ? `/nearby-labs/${this.state.finalUrl}`
+                                            : `/nearby-labs/${this.state.finalUrl}`
+                                        );
+                                      } else if (success.account_type === "samplecollector") {
+                                        this.props.history.push("/dashboard-samplecollector");
+                                      }
+                                    } else if (
+                                      isLargeScreen &&
+                                      success.account_type === "patient" &&
+                                      !this.state.finalUrl
+                                    ) {
                                       this.props.history.push(
-                                        this.state.finalUrl
-                                          ? `/nearby-labs/${this.state.finalUrl}`
-                                          : `/nearby-labs/${this.state.finalUrl}`
+                                        this.props.match.params.uuid
+                                          ? `/nearby-labs/${this.props.match.params.uuid}`
+                                          : `/nearby-labs`
                                       );
-                                    } else if (success.account_type === "samplecollector") {
-                                      this.props.history.push("/dashboard-samplecollector");
-                                    }
-                                  } 
-                                  if (isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
-                                    this.props.history.push(
-                                      this.props.match.params.uuid
-                                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                                        : `/nearby-labs`
-                                    );
-                                    console.log(this.props.match.params.uuid);
-                                  } 
-                                  if (!isLargeScreen && success.account_type === "patient" && !this.state.finalUrl) {
-                                    this.props.history.push(
-                                      this.props.match.params.uuid
-                                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                                        : `/nearby-labs`
-                                    );
-                                    console.log(this.props.match.params.uuid);
-                                  } else if (success.account_type === "labowner") {
+                                      console.log(this.props.match.params.uuid);
+                                    } else if (
+                                      !isLargeScreen &&
+                                      success.account_type === "patient" &&
+                                      !this.state.finalUrl
+                                    ) {
+                                      this.props.history.push(
+                                        this.props.match.params.uuid
+                                          ? `/nearby-labs/${this.props.match.params.uuid}`
+                                          : `/nearby-labs`
+                                      );
+                                      console.log(this.props.match.params.uuid);
+                                    } else if (success.account_type === "labowner") {
                                       this.props.history.push("/dashboard-lab");
                                     } else if (success.account_type === "b2b-admin") {
                                       this.props.history.push("/b2b-clients-list");
@@ -200,17 +354,24 @@ class Login extends Component {
                                     } else if (success.account_type === "corporate") {
                                       this.props.history.push("/dashboard-corporate");
                                     }
+                                  }
                                 }, 1000);
-                            
                               } catch (error) {
-                                // Handle the error, e.g., display an error message on the login page
-                                console.error("Login failed:", error);
-                                this.props.apiError("Login failed. Please check your credentials.");
+                                // Handle the error without triggering redirection
+                                console.error("Error:", error);
+                                this.props.apiError(error.message); // Dispatch the error message to state
+                            
+                                // Automatically remove the error message after 4 minutes (240,000 milliseconds)
+                                setTimeout(() => {
+                                  this.props.apiError(null); // Clear the error message
+                                }, 240000);
                               } finally {
-                                setSubmitting(false);
+                                // Reset the flag after login attempt
+                                this.setState({ isLoginInProgress: false });
                               }
                             }}
-                          >
+                            
+                          >                                                 
                             {({ errors, status, touched }) => (
                               <Form className="form-horizontal">
                                 <div className="mb-3">

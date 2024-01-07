@@ -757,7 +757,7 @@ class SidebarContent extends Component {
                       </ul> */}
                     </li>
                     <li>
-                      <Link to="inprocess-complaints-lab">
+                      <Link to="/inprocess-complaints-lab">
                         <span>{this.props.t("Open Complaints")}</span>
                       </Link>
                       {/* <ul>
