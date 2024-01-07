@@ -757,10 +757,10 @@ class SidebarContent extends Component {
                       </ul> */}
                     </li>
                     <li>
-                      <Link to="/#" className="has-arrow">
+                      <Link to="inprocess-complaints-lab">
                         <span>{this.props.t("Open Complaints")}</span>
                       </Link>
-                      <ul>
+                      {/* <ul>
                         <li>
                           <Link to={"/inprocess-complaints-lab"}>
                             {this.props.t("Lab")}
@@ -771,7 +771,7 @@ class SidebarContent extends Component {
                             {this.props.t("LabHazir")}
                           </Link>
                         </li>
-                      </ul>
+                      </ul> */}
                     </li>
                     {/* <li>
                       <Link to={"/inprocess-complaints-lab"}>
@@ -784,10 +784,10 @@ class SidebarContent extends Component {
                       </Link>
                     </li> */}
                     <li>
-                      <Link to="/#" className="has-arrow">
+                      <Link to="/resolved-complaints-lab">
                         <span>{this.props.t("Closed Complaints")}</span>
                       </Link>
-                      <ul>
+                      {/* <ul>
                         <li>
                           <Link to={"/resolved-complaints-lab"}>
                             {this.props.t("Lab")}
@@ -798,7 +798,7 @@ class SidebarContent extends Component {
                             {this.props.t("LabHazir")}
                           </Link>
                         </li>
-                      </ul>
+                      </ul> */}
                     </li>
                   </ul>
                 </li>

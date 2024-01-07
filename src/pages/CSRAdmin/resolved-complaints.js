@@ -17,7 +17,7 @@ import {
   ModalHeader,
   ModalBody,
 } from "reactstrap";
-import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import filterFactory, {textFilter, selectFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -57,6 +57,7 @@ class ResolvedComplaints extends Component {
       ResolvedComplaints: "",
       resolvedComplaint: "",
       assignedTo: "",
+      isUrgent: false, 
       PendingComplaints: "",
       resolvedComplaint: "",
       csrList: [],
@@ -125,17 +126,45 @@ class ResolvedComplaints extends Component {
             </>
           ),filter: textFilter(),
         },
+        // {
+        //   dataField: "complainee",
+        //   text: "Complaint Against",
+        //   sort: true,
+        //   formatter: (cellContent, resolvedComplaint) => (
+        //     <>
+        //           {/* {resolvedComplaint.complainee},{" "} */}
+        //           {resolvedComplaint.labhazir_complainee}{" "}
+        //           {resolvedComplaint.lab_name}
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         {
           dataField: "complainee",
           text: "Complaint Against",
           sort: true,
           formatter: (cellContent, resolvedComplaint) => (
             <>
-                  {/* {resolvedComplaint.complainee},{" "} */}
-                  {resolvedComplaint.labhazir_complainee}{" "}
-                  {resolvedComplaint.lab_name}
+              {resolvedComplaint.complainee === "Lab" ? (
+                <>
+                  <strong className="text-danger float-start">{resolvedComplaint.complainee}</strong><br></br>
+                  <span className="float-start">{resolvedComplaint.lab_name}</span></>
+              ) : (
+                <>
+                  <strong className="text-danger float-start">{resolvedComplaint.complainee}</strong><br></br>
+                  <span className="float-start">{resolvedComplaint.labhazir_complainee}</span>
+                </>
+              )}
             </>
-          ),filter: textFilter(),
+          ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'Lab': 'Lab',
+              'LabHazir': 'LabHazir',
+            },
+            defaultValue: 'All',
+          }),
+          
         },
         {
           dataField: "csr_name",
@@ -376,8 +405,8 @@ class ResolvedComplaints extends Component {
             <Breadcrumbs title="Complaints" breadcrumbItem="Closed" />
             <Row>
             <div className="mb-3">
-                                                <p><b>Note: When you Reopen a complaint it will move to Inprocess Complaints.</b></p>
-                                                </div>
+            <p className="text-danger"><b>Note: When you Reopen a complaint it will move to Inprocess Complaints.</b></p>
+            </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -573,6 +602,8 @@ class ResolvedComplaints extends Component {
                                             const data = {
                                               id: this.state.id,
                                               assignedTo: values.assignedTo,
+                                              is_it_urgent: this.state.isUrgent, // Include the checkbox value
+
                                             };
 
                                             // Assign complaint
@@ -759,7 +790,20 @@ class ResolvedComplaints extends Component {
                                                   </div>
                                                 )} 
                                                 </Col>
-                                              
+                                                <Col className="col-12">
+                                              <div className="mb-3 form-check">
+                                                <label htmlFor="isUrgentCheckbox" className="form-check-label">
+                                                  This Complaint Requires Immediate Attention!
+                                                </label>
+                                                <input
+                                                  type="checkbox"
+                                                  id="isUrgentCheckbox"
+                                                  className="form-check-input"
+                                                  checked={this.state.isUrgent}
+                                                  onChange={(e) => this.setState({ isUrgent: e.target.checked })}
+                                                />
+                                              </div>
+                                            </Col>
                                               </Row>
                                             
                                               <Row>

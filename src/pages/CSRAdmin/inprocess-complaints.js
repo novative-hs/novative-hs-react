@@ -19,7 +19,7 @@ import {
   Button,
   ModalHeader,
 } from "reactstrap";
-import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
+import filterFactory, {textFilter, selectFilter} from "react-bootstrap-table2-filter";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -127,17 +127,45 @@ class InProcessComplaints extends Component {
             </>
           ),filter: textFilter(),
         },
+        // {
+        //   dataField: "complainee",
+        //   text: "Complaint Against",
+        //   sort: true,
+        //   formatter: (cellContent, inProcessComplaint) => (
+        //     <>
+        //           {/* {inProcessComplaint.complainee},{" "} */}
+        //           {inProcessComplaint.labhazir_complainee}{" "}
+        //           {inProcessComplaint.lab_name}
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         {
           dataField: "complainee",
           text: "Complaint Against",
           sort: true,
           formatter: (cellContent, inProcessComplaint) => (
             <>
-                  {/* {inProcessComplaint.complainee},{" "} */}
-                  {inProcessComplaint.labhazir_complainee}{" "}
-                  {inProcessComplaint.lab_name}
+              {inProcessComplaint.complainee === "Lab" ? (
+                <>
+                  <strong className="text-danger float-start">{inProcessComplaint.complainee}</strong><br></br>
+                  <span className="float-start">{inProcessComplaint.lab_name}</span></>
+              ) : (
+                <>
+                  <strong className="text-danger float-start">{inProcessComplaint.complainee}</strong><br></br>
+                  <span className="float-start">{inProcessComplaint.labhazir_complainee}</span>
+                </>
+              )}
             </>
-          ),filter: textFilter(),
+          ),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'Lab': 'Lab',
+              'LabHazir': 'LabHazir',
+            },
+            defaultValue: 'All',
+          }),
+          
         },
         // {
         //   dataField: "email",
