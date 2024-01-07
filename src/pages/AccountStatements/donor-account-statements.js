@@ -221,7 +221,7 @@ class AccountStatements extends Component {
 
                                       ):(
                                         <p>
-                                         {"--"}
+                                         {/* {"--"} */}
                                         </p>
                                       )}</span>}
                                           {/* {donoraccountStatement.Status} */}
