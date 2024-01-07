@@ -58,6 +58,7 @@ class InProcessComplaints extends Component {
       assignedTo: "",
       btnText: "Copy",
       message: "",
+      isUrgent: false, 
       InProcessComplaints: "",
       inProcessComplaint: "",
       csrList: [],
@@ -114,7 +115,7 @@ class InProcessComplaints extends Component {
           sort: true,
           formatter: (cellContent, inProcessComplaint) => (
             <>
-              <span>
+              <span className="float-start">
                   <Link
                     to="#"
                     // onClick={e => this.openPatientModal(e, inProcessComplaint)}
@@ -514,7 +515,7 @@ class InProcessComplaints extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      E-mail
+                                                      Email
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -622,6 +623,8 @@ class InProcessComplaints extends Component {
                                             const data = {
                                               id: this.state.id,
                                               assignedTo: values.assignedTo,
+                                              is_it_urgent: this.state.isUrgent, // Include the checkbox value
+
                                             };
 
                                             // Assign complaint
@@ -806,6 +809,20 @@ class InProcessComplaints extends Component {
                                                   </div>
                                                 )} 
                                                 </Col>
+                                                <Col className="col-12">
+                                              <div className="mb-3 form-check">
+                                                <label htmlFor="isUrgentCheckbox" className="form-check-label">
+                                                  This Complaint Requires Immediate Attention!
+                                                </label>
+                                                <input
+                                                  type="checkbox"
+                                                  id="isUrgentCheckbox"
+                                                  className="form-check-input"
+                                                  checked={this.state.isUrgent}
+                                                  onChange={(e) => this.setState({ isUrgent: e.target.checked })}
+                                                />
+                                              </div>
+                                            </Col>
                                               </Row>
                                               <Row>
                                                 <Col>
