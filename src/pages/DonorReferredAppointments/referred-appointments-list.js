@@ -164,10 +164,20 @@ class ReferredPatientsList extends Component {
           formatter: (cellContent, donorReferredAppointment) => (
             <>
               {donorReferredAppointment.status == "Pending" ? (
+                <span className="pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary" style={{ width: "150px" }}>
+                  {donorReferredAppointment.status}
+                </span>
+              ) : null}
+              {donorReferredAppointment.status == "Cancel" ? (
                 <span className="pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger" style={{ width: "150px" }}>
                   {donorReferredAppointment.status}
                 </span>
               ) : null}
+              {donorReferredAppointment.status == "Pending Cancel" && (
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+                  {donorReferredAppointment.status}
+                </span>
+              )}
 
               {donorReferredAppointment.status == "Confirmed" ? (
                 <span className="pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-info" style={{ width: "150px" }}>

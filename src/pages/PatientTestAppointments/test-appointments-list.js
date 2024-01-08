@@ -399,12 +399,17 @@ class TestAppointmentsList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               {testAppointment.status == "Pending" && (
-                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-primary">
                   {testAppointment.status}
                 </span>
               )}
               {testAppointment.status == "Cancel" && (
                 <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {testAppointment.status}
+                </span>
+              )}
+               {testAppointment.status == "Pending Cancel" && (
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
                   {testAppointment.status}
                 </span>
               )}

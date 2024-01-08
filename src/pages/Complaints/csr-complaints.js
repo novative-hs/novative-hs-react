@@ -181,14 +181,15 @@ class csrComplaints extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, csrComplaint) => (
-            <div className="d-flex gap-3">
+            <div className="d-flex gap-3 float-end">
               <Tooltip title="Appointment Detail">
                 <Link
                   className="mdi mdi-receipt font-size-18"
                   to={`/appointment-detail/${csrComplaint.id}`}
                 ></Link>
               </Tooltip>
-              <Link className="text-success" to="#">
+              {csrComplaint.status !== "Cancel" && csrComplaint.status !== "Pending Cancel" ? (
+                <Link className="text-success" to="#">
                 <Tooltip title="Update">
                   <i
                     className="mdi mdi-pencil font-size-18"
@@ -199,6 +200,8 @@ class csrComplaints extends Component {
                   ></i>
                 </Tooltip>
               </Link>
+              ) : null}
+              
               <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"
