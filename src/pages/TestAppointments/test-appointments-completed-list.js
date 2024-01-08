@@ -433,6 +433,18 @@ class TestAppointmentsCompletedList extends Component {
                 </span>
 
               )}
+              {testAppointment.status == "Pending Cancel" && (
+                <span className="badge rounded-pill badge-soft-warning font-size-12 badge-soft-warning">
+                  {testAppointment.status}
+                </span>
+
+              )}
+              {testAppointment.status == "Cancel" && (
+                <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                  {testAppointment.status}
+                </span>
+
+              )}
               {testAppointment.status == "Confirmed" && (
                 <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
                   {testAppointment.status}
@@ -460,17 +472,15 @@ class TestAppointmentsCompletedList extends Component {
 
             </>
           ),
-          // filter: selectFilter({
-          //   options: {
-          //     '': 'All',
-          //     'Pending': 'Pending',
-          //     'Confirmed': 'Confirmed',
-          //     'Sample Collected': 'Sample Collected',
-          //     'Rescheduled': 'Rescheduled',
-          //     'Result Uploaded': 'Result Uploaded',
-          //   },
-          //   defaultValue: 'All',
-          // }),
+          filter: selectFilter({
+            options: {
+              '': 'All',
+              'Cancel': 'Cancel',
+              'Pending Cancel': 'Pending Cancel',
+              'Result Uploaded': 'Result Uploaded',
+            },
+            defaultValue: 'All',
+          }),
         },
 
         //         {
@@ -623,26 +633,28 @@ class TestAppointmentsCompletedList extends Component {
               </Tooltip>
 
                 </Link>
-                {testAppointment.result_type == "File" ? (
-                  <Link
-                    to={{
-                      pathname:
-                        process.env.REACT_APP_BACKENDURL + testAppointment.result,
-                    }}
-                    target="_blank"
-                  >
-                    Report
-                  </Link>
-                ) : (
-                  <Link
-                    to={{
-                      pathname: testAppointment.url,
-                    }}
-                    target="_blank"
-                  >
-                    View
-                  </Link>
+                {testAppointment.status !== "Pending Cancel" && testAppointment.status !== "Cancel" && (
+                  testAppointment.result_type === "File" ? (
+                    <Link
+                      to={{
+                        pathname: process.env.REACT_APP_BACKENDURL + testAppointment.result,
+                      }}
+                      target="_blank"
+                    >
+                      Report
+                    </Link>
+                  ) : (
+                    <Link
+                      to={{
+                        pathname: testAppointment.url,
+                      }}
+                      target="_blank"
+                    >
+                      View
+                    </Link>
+                  )
                 )}
+   
               </div>
             </>
           ),

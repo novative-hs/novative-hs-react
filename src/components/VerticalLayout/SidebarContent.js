@@ -958,7 +958,7 @@ class SidebarContent extends Component {
                     </li>
                     <li>
                       <Link to={"/completed-test-appointments"}>
-                        {this.props.t("Completed")}
+                        {this.props.t("Completed/ Cancelled")}
                       </Link>
                     </li>
                   </ul>
