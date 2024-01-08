@@ -284,6 +284,7 @@ import msgBoxFo from "pages/Complaints/msg-box";
 import ProfilesOfferedbyLab from "pages/LabMarket/NearbyLabs/ProfilesOfferedbyLab";
 import PackagesOfferedbyLab from "pages/LabMarket/NearbyLabs/PackagesOfferedbyLab";
 import RadiologyOfferedbyLab from "pages/LabMarket/NearbyLabs/RadiologyOfferedbyLab"
+import advLabChatBox from "pages/LabAdvertisements/adv-lab-chat-box";
 
 
 // All general public routes will be listed here
@@ -632,6 +633,7 @@ const marketerAdminAuthProtectedRoutes = [
   { path: "/discount-labhazir", component: DiscountLabHazir },
   { path: "/labs-list", component: labsList},
   { path: "/comments-list/:id", component: msgBox },
+  { path: "/adv-lab-chat-box/:id", component: advLabChatBox },
   {
     path: "/activity-log-marketer",
     component: activityLogMarketer,

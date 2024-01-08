@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import moment from 'moment';
 
 import {
   Card,
@@ -101,20 +100,6 @@ class QualityCertificatesList extends Component {
               >
                 View Certificate
               </Link>
-            </>
-          ),
-        },
-        {
-          dataField: "expiry_date",
-          text: "Expiry at",
-          sort: true,
-          formatter: (cellContent, qualityCertificate) => (
-            <>
-              <span>
-                {/* {new Date(qualityCertificate.expiry_date).toLocaleString("en-US")} */}
-                {moment(qualityCertificate.expiry_date).format("DD MMM YYYY, h:mm A")}
-
-              </span>
             </>
           ),
         },
@@ -264,7 +249,6 @@ class QualityCertificatesList extends Component {
       qualityCertificate: {
         id: arg.id,
         certificate_type: arg.certificate_type,
-        sub_certificate_type: arg.sub_certificate_type,
         name: arg.name,
         type: arg.type,
         certificate: process.env.REACT_APP_BACKENDURL + arg.certificate,
@@ -351,8 +335,6 @@ class QualityCertificatesList extends Component {
               breadcrumbItem="Certificates List"
             />
             <Row>
-            <p className="text-danger">Note: Certificate will scale the rating of your lab.</p>
-
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -434,11 +416,6 @@ class QualityCertificatesList extends Component {
                                                 this.state.qualityCertificate
                                                   .certificate_type) ||
                                               "",
-                                            sub_certificate_type:
-                                            (this.state.qualityCertificate &&
-                                              this.state.qualityCertificate
-                                                .sub_certificate_type) ||
-                                            "",
                                             name:
                                               (this.state.qualityCertificate &&
                                                 this.state.qualityCertificate
@@ -511,10 +488,6 @@ class QualityCertificatesList extends Component {
                                               Yup.string().required(
                                                 "Please select certificate type"
                                               ),
-                                            sub_certificate_type:
-                                              Yup.string().required(
-                                                "Please select EQA type"
-                                              ),
 
                                             type: Yup.string().required(
                                               "Please select certificate is for lab or test"
@@ -551,7 +524,6 @@ class QualityCertificatesList extends Component {
                                                       id: qualityCertificate.id,
                                                       certificate_type:
                                                         values.certificate_type,
-                                                      sub_certificate_type: values.sub_certificate_type,
                                                       name: values.name,
                                                       type: values.type,
                                                       certificate:
@@ -581,7 +553,6 @@ class QualityCertificatesList extends Component {
                                                     id: qualityCertificate.id,
                                                     certificate_type:
                                                       values.certificate_type,
-                                                      sub_certificate_type: values.sub_certificate_type,
                                                     name: values.name,
                                                     type: values.type,
                                                     certificate:
@@ -616,7 +587,6 @@ class QualityCertificatesList extends Component {
                                               const newQualityCertificate = {
                                                 certificate_type:
                                                   values.certificate_type,
-                                                  sub_certificate_type: values.sub_certificate_type,
                                                 name: values.name,
                                                 type: values.type,
                                                 certificate:
@@ -677,7 +647,6 @@ class QualityCertificatesList extends Component {
                                                             id: qualityCertificate.id,
                                                             certificate_type:
                                                               e.target.value,
-                                                            sub_certificate_type: qualityCertificate.sub_certificate_type,
                                                             name: qualityCertificate.name,
                                                             type: qualityCertificate.type,
                                                             certificate:
@@ -734,7 +703,7 @@ class QualityCertificatesList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                               
+
                                                   {this.state.qualityCertificate
                                                     .certificate_type ===
                                                     "EQA Certificate" && (
@@ -823,6 +792,62 @@ class QualityCertificatesList extends Component {
                                                       />
                                                     </div>
                                                   )}
+                                               
+                                                  {/* Certificate Title field
+                                                  {this.state.qualityCertificate
+                                                    .certificate_type ===
+                                                    "Others" && (
+                                                    <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Certificate title
+                                                        <span className="text-danger font-size-12">
+                                                          *
+                                                        </span>
+                                                      </Label>
+                                                      <Field
+                                                        name="name"
+                                                        type="text"
+                                                        value={
+                                                          this.state
+                                                            .qualityCertificate
+                                                            .name
+                                                        }
+                                                        onChange={e => {
+                                                          this.setState({
+                                                            qualityCertificate:
+                                                              {
+                                                                id: qualityCertificate.id,
+                                                                certificate_type:
+                                                                  qualityCertificate.certificate_type,
+                                                                name: e.target
+                                                                  .value,
+                                                                type: qualityCertificate.type,
+                                                                certificate:
+                                                                  qualityCertificate.certificate,
+                                                                expiry_date:
+                                                                  qualityCertificate.expiry_date,
+                                                                start_date:
+                                                                  qualityCertificate.start_date,
+                                                                end_date:
+                                                                  qualityCertificate.end_date,
+                                                              },
+                                                          });
+                                                        }}
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.name &&
+                                                          touched.name
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                      />
+                                                      <ErrorMessage
+                                                        name="name"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  )} */}
 
                                                   {/* Type field */}
                                                   <div className="mb-3">
@@ -850,7 +875,6 @@ class QualityCertificatesList extends Component {
                                                             id: qualityCertificate.id,
                                                             certificate_type:
                                                               qualityCertificate.certificate_type,
-                                                              sub_certificate_type: qualityCertificate.sub_certificate_type,
                                                             name: qualityCertificate.name,
                                                             type: e.target
                                                               .value,
@@ -957,7 +981,6 @@ class QualityCertificatesList extends Component {
                                                             id: qualityCertificate.id,
                                                             certificate_type:
                                                               qualityCertificate.certificate_type,
-                                                              sub_certificate_type: qualityCertificate.sub_certificate_type,
                                                             name: qualityCertificate.name,
                                                             type: qualityCertificate.type,
                                                             certificate:
@@ -1003,7 +1026,7 @@ class QualityCertificatesList extends Component {
                                                       <Field
                                                         name="start_date"
                                                         type="date"
-                                                        max={new Date(
+                                                        min={new Date(
                                                           new Date()
                                                             .toString()
                                                             .split("GMT")[0] +
@@ -1022,7 +1045,6 @@ class QualityCertificatesList extends Component {
                                                               id: qualityCertificate.id,
                                                               certificate_type:
                                                                 qualityCertificate.certificate_type,
-                                                                sub_certificate_type: qualityCertificate.sub_certificate_type,
                                                               name: qualityCertificate.name,
                                                               type: qualityCertificate.type,
                                                               certificate:
@@ -1054,7 +1076,7 @@ class QualityCertificatesList extends Component {
                                                     "EQA Certificate" && (
                                                       <div className="mb-3">
                                                       <Label className="form-label">
-                                                        End Date
+                                                        Start Date
                                                       </Label>
                                                       <Field
                                                         name="end_date"
@@ -1078,7 +1100,6 @@ class QualityCertificatesList extends Component {
                                                               id: qualityCertificate.id,
                                                               certificate_type:
                                                                 qualityCertificate.certificate_type,
-                                                                sub_certificate_type: qualityCertificate.sub_certificate_type,
                                                               name: qualityCertificate.name,
                                                               type: qualityCertificate.type,
                                                               certificate:

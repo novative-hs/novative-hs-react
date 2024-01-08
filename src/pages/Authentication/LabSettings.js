@@ -43,6 +43,7 @@ class LabSettings extends Component {
       health_dept_certificate: "",
       registration_no: "",
       license_no: "",
+      lab_experience: "",
       complaint_handling_email: "",
       complaint_handling_phone: "",
       is_digital_payment_accepted: "",
@@ -931,12 +932,12 @@ class LabSettings extends Component {
                               type="number"
                               onChange={(e) =>
                                 this.setState({
-                                  state_sampling_time: Math.max(1, Math.min(3, e.target.value)),
+                                  state_sampling_time: Math.max(0, Math.min(3, e.target.value)),
                                 })
                               }
                               value={this.state.state_sampling_time}
                               placeholder="Please enter Urgent Home Sampling Time (In Hours)"
-                              min={1}
+                              min={0}
                               max={3}
                               // step={1}
                               className={

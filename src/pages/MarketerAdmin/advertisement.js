@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
 import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 // import MultiSelectCheckBox from 'react-multiselect-checkboxes';
 import { Tooltip } from "@material-ui/core";
@@ -54,6 +55,7 @@ import {
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 
+
 class AdvertisementsList extends Component {
   constructor(props) {
     super(props);
@@ -70,13 +72,66 @@ class AdvertisementsList extends Component {
         : "",
       advertisementListColumns: [
         {
-          text: "Advertisement ID",
+          text: "Adv ID",
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, advertisement) => <>{advertisement.id}
-         </>,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.id}</>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter Adv ID',
+          }),
+        },
+        {
+          dataField: "title",
+          text: "Title",
+          sort: true,
           filter: textFilter(),
+        },
+        {
+          text: "Start Time",
+          dataField: "posted_at",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                {moment(labAdvertisementRequest.posted_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter Start Date',
+          }),
+        },
+        {
+          text: "End Time",
+          dataField: "posted_till",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                {moment(labAdvertisementRequest.posted_till).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter End Date',
+          }),
+        },
+        {
+          text: "City",
+          dataField: "city",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.city}</>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter City',
+          }),
         },
         {
           dataField: "poster",
@@ -128,12 +183,6 @@ class AdvertisementsList extends Component {
               )}
             </>
           ),filter: textFilter(),
-        },
-        {
-          dataField: "title",
-          text: "Title",
-          sort: true,
-          filter: textFilter(),
         },
         {
           dataField: "menu",
@@ -396,20 +445,17 @@ class AdvertisementsList extends Component {
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
-                                    <BootstrapTable
+                                  <BootstrapTable
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={
-                                        "table align-middle table-nowrap table-hover"
-                                      }
+                                      classes={"table align-middle table-hover"}
                                       bordered={false}
-                                      striped={false}
+                                      striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                              
-                                      filter={filterFactory()}
+                                      filter={ filterFactory()}
                                     />
 
                                     <Modal

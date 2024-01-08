@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
 import { withRouter, Link } from "react-router-dom";
 import {
   Card,
@@ -78,6 +79,56 @@ class LabAdvertisementRequestsList extends Component {
           ),filter: textFilter(),
         },
         {
+          text: "Lab City",
+          dataField: "lab_address",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.lab_address}</>
+          ),filter: textFilter(),
+        },
+        {
+          text: "Advertisement Km",
+          dataField: "km",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.km}</>
+          ),filter: textFilter(),
+        },
+        {
+          text: "Start Time",
+          dataField: "posted_at",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                {moment(labAdvertisementRequest.posted_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter Start Date',
+          }),
+        },
+        {
+          text: "End Time",
+          dataField: "posted_till",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                {moment(labAdvertisementRequest.posted_till).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter End Date',
+          }),
+        },
+        {
           dataField: "poster",
           text: "Adv Image",
           formatter: (cellContent, labAdvertisementRequest) => (
@@ -139,10 +190,10 @@ class LabAdvertisementRequestsList extends Component {
                 ></i>
               </Link>
               </Tooltip>
-              <Tooltip title="Add Comment">
+              <Tooltip title="Added">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/comments-list/${labAdvertisementRequest.id}`}
+                  to={`/adv-lab-chat-box/${labAdvertisementRequest.id}`}
                 ></Link>
               </Tooltip>
             </div>

@@ -206,26 +206,35 @@ class AdvertisementsList extends Component {
           text: "Action",
           formatter: (cellContent, labAdvertisement) => (
             <div>
-              {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced"&& ( 
-             <Tooltip title="Update"> 
-             <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={e => this.handleAdvertisementClick(e, labAdvertisement)}
-                ></i>
-              </Link></Tooltip>
+              
+              {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced" && labAdvertisement.request_status === "Pending" && ( 
+                <Tooltip title="Update"> 
+                  <Link className="text-success" to="#">
+                    <i
+                      className="mdi mdi-pencil font-size-18"
+                      id="edittooltip"
+                      onClick={e => this.handleAdvertisementClick(e, labAdvertisement)}
+                    ></i>
+                  </Link>
+                </Tooltip>
               )}
-              {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced" && ( 
-              <Tooltip title="Delete"> 
-              <Link className="text-danger" to="#">
-                <i
-                  className="mdi mdi-delete font-size-18"
-                  id="deletetooltip"
-                  onClick={() => this.onClickDelete(labAdvertisement)}
-                ></i>
-              </Link></Tooltip>
+              {labAdvertisement.payment_status !== "Cleared" && labAdvertisement.payment_status !== "Created" && labAdvertisement.payment_status !== "Bounced"  && labAdvertisement.request_status === "Pending" && ( 
+                <Tooltip title="Delete"> 
+                  <Link className="text-danger" to="#">
+                    <i
+                      className="mdi mdi-delete font-size-18"
+                      id="deletetooltip"
+                      onClick={() => this.onClickDelete(labAdvertisement)}
+                    ></i>
+                  </Link>
+                </Tooltip>
               )}
+               <Tooltip title="Chat">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/adv-lab-chat-box/${labAdvertisement.id}`}
+                  ></Link>
+              </Tooltip>
             </div>
           ),
         },
