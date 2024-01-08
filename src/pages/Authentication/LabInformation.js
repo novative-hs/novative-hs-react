@@ -64,6 +64,10 @@ class LabInformation extends Component {
       logo: "",
       national_taxation_no: "",
       lab_experience: "",
+      is_homesampling_offered: "No",
+      home_sampling_charges: "",
+      state_sampling_charges: "",
+      state_sampling_time: "",
       landline: "",
       address: "",
       city_id: "",
@@ -218,9 +222,9 @@ class LabInformation extends Component {
                                   this.state.main_lab_account_id) ||
                                 "",
                               email:
-                              (this.state &&
-                                this.state.email) ||
-                              "",
+                                (this.state &&
+                                  this.state.email) ||
+                                "",
                               logo: (this.state && this.state.logo) || "",
                               national_taxation_no:
                                 (this.state &&
@@ -228,6 +232,14 @@ class LabInformation extends Component {
                                 "",
                               lab_experience:
                                 (this.state && this.state.lab_experience) || "",
+                              is_homesampling_offered:
+                                (this.state && this.state.is_homesampling_offered) || "No",
+                              home_sampling_charges:
+                                (this.state && this.state.home_sampling_charges) || "",
+                              state_sampling_charges:
+                                (this.state && this.state.state_sampling_charges) || "",
+                              state_sampling_time:
+                                (this.state && this.state.state_sampling_time) || "",
                               landline:
                                 (this.state && this.state.landline) || "",
                               address: (this.state && this.state.address) || "",
@@ -380,7 +392,7 @@ class LabInformation extends Component {
                                       255,
                                       "Please enter maximum 255 characters"
                                     ),
-                                   
+
                                 }
                               ),
 
@@ -420,7 +432,7 @@ class LabInformation extends Component {
                                       255,
                                       "Please enter maximum 255 characters"
                                     ),
-                                   
+
                                 }
                               ),
                               marketer_cnic: Yup.string().when(
@@ -457,7 +469,7 @@ class LabInformation extends Component {
                                 .required("Please enter your email")
                                 .email("Please enter valid email"),
                               marketer_phone: Yup.string().when(
-                                
+
                                 "is_registering_for_first_time",
                                 {
                                   is: val => val == "Yes",
@@ -553,7 +565,7 @@ class LabInformation extends Component {
                                       Collection Point
                                     </option>
                                   </Field>
-                                  <p className="text-danger">Note: once the lab type is selected (Main Lab / Collection Point) cannot be changed at any later stage.</p>
+                                  <p className="text-danger">Note: once the lab type is selected such as Main Lab or Collection Point, it cannot be changed at any later stage.</p>
                                 </div>
 
                                 {/* Branch name field */}
@@ -1038,6 +1050,135 @@ class LabInformation extends Component {
                                     <option value="No">No</option>
                                   </Field>
                                 </div>
+
+                                <div className="mb-3">
+                                  <Label
+                                    for="is_homesampling_offered"
+                                    className="form-label"
+                                  >
+                                    Are you Offering Home Sampling?
+                                  </Label>
+                                  <Field
+                                    name="is_homesampling_offered"
+                                    component="select"
+                                    onChange={e =>
+                                      this.setState({
+                                        is_homesampling_offered:
+                                          e.target.value,
+                                      })
+                                    }
+                                    value={
+                                      this.state.is_homesampling_offered
+                                    }
+
+                                    className="form-select"
+                                  >
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                  </Field>
+                                </div>
+                                {this.state.is_homesampling_offered == "Yes" ? (
+                                  <div>
+                                    <div className="mb-3">
+                                      <Label
+                                        for="home_sampling_charges"
+                                        className="form-label"
+                                      >
+                                        Charges for Offering Routine Home Sampling
+                                      </Label>
+                                      <Field
+                                        id="home_sampling_charges"
+                                        name="home_sampling_charges"
+                                        type="number"
+                                        onChange={e =>
+                                          this.setState({
+                                            home_sampling_charges: e.target.value,
+                                          })
+                                        }
+                                        placeholder="Please enter the Normal Home Sampling Charges"
+                                        value={this.state.home_sampling_charges}
+                                        className={
+                                          "form-control" +
+                                          (errors.home_sampling_charges &&
+                                            touched.home_sampling_charges
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="home_sampling_charges"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+                                    <div className="mb-3">
+                                      <Label
+                                        for="state_sampling_charges"
+                                        className="form-label"
+                                      >
+                                        Charges for Offering Urgent Home Sampling
+                                      </Label>
+                                      <Field
+                                        id="state_sampling_charges"
+                                        name="state_sampling_charges"
+                                        type="number"
+                                        onChange={e =>
+                                          this.setState({
+                                            state_sampling_charges: e.target.value,
+                                          })
+                                        }
+                                        value={this.state.state_sampling_charges}
+                                        placeholder="Please enter the Urgent Home Sampling Charges"
+                                        className={
+                                          "form-control" +
+                                          (errors.state_sampling_charges &&
+                                            touched.state_sampling_charges
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <ErrorMessage
+                                        name="state_sampling_charges"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+                                    <div className="mb-3">
+                                      <Label for="state_sampling_time" className="form-label">
+                                        Sampling Collection Time in case of Urgent Home Sampling (In hours)
+                                      </Label>
+                                      <Field
+                                        id="state_sampling_time"
+                                        name="state_sampling_time"
+                                        type="number"
+                                        onChange={(e) =>
+                                          this.setState({
+                                            state_sampling_time: Math.max(1, Math.min(3, e.target.value)),
+                                          })
+                                        }
+                                        value={this.state.state_sampling_time}
+                                        placeholder="Please enter Urgent Home Sampling Time (In Hours)"
+                                        min={1}
+                                        max={3}
+                                        // step={1}
+                                        className={
+                                          "form-control" +
+                                          (errors.state_sampling_time && touched.state_sampling_time
+                                            ? " is-invalid"
+                                            : "")
+                                        }
+                                      />
+                                      <p className="text-primary">Note: Urgent Home Sampling can be more than 3 hours.</p>
+                                      <ErrorMessage
+                                        name="state_sampling_time"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+
+                                  </div>
+                                ) : null}
+
 
                                 {/* Registered by field */}
                                 <div className="mb-3">

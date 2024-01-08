@@ -220,6 +220,10 @@ export const postLabInformation = (id, lab) => {
   // formData.append("is_iso_certified", lab.is_iso_certified);
   // formData.append("iso_certificate", lab.iso_certificate);
   formData.append("lab_experience", lab.lab_experience);
+  formData.append("is_homesampling_offered", lab.is_homesampling_offered);
+  formData.append("home_sampling_charges", lab.home_sampling_charges);
+  formData.append("state_sampling_charges", lab.state_sampling_charges);
+  formData.append("state_sampling_time", lab.state_sampling_time);
   // formData.append("phone", lab.phone);
   formData.append("landline", lab.landline);
   formData.append("address", lab.address);
@@ -898,6 +902,7 @@ export const updateLabSettings = (labSettings, id) => {
   formData.append("lab_experience", labSettings.lab_experience);
   formData.append("registration_no", labSettings.registration_no);
   formData.append("license_no", labSettings.license_no);
+  formData.append("is_homesampling_offered", labSettings.is_homesampling_offered);
   formData.append(
     "health_dept_certificate",
     labSettings.health_dept_certificate

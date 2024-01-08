@@ -1561,7 +1561,7 @@ class Checkout extends Component {
                                   </span>
                                   <div className="d-flex" style={{ marginBottom: '20px', marginTop: '20px' }}>
                                     <strong>Home Sampling: </strong>
-                                    {this.state.homeSampledTests.find(homeSampledTest => homeSampledTest.home_sampling_charges > 0) ? (
+                                    {this.state.homeSampledTests.find(homeSampledTest => homeSampledTest.is_homesampling_offered == "Yes") ? (
                                       <div className="form-check form-check-inline font-size-16" style={{ marginLeft: '14px' }}>
                                         <Input
                                           type="radio"

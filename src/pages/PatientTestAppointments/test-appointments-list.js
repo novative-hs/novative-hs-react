@@ -612,7 +612,7 @@ class TestAppointmentsList extends Component {
                   <Tooltip title="Appointment Detail">
                     <Link
                       className="mdi mdi-receipt font-size-18"
-                      to={`/appointment-detail/${patientTestAppointment.id}`}
+                      to={`/patient-appointment-detail/${patientTestAppointment.id}`}
                     ></Link>
                   </Tooltip>
                 ) : (

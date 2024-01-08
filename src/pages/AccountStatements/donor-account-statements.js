@@ -214,21 +214,22 @@ class AccountStatements extends Component {
                                     
                                     <td>
                                         <span className="float-start">
-                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , {" "} Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod} <span style={{ color: 'green' }}>{donoraccountStatement.Status}</span></span>, {" "} {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
-                                        <p>
-                                        Payment Date: <span style={{ color: 'blue' }}>{moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
-                                        </span></p>
+                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , {" "} Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod} <span style={{ color: 'green' }}>{donoraccountStatement.Status}</span></span>, {" "}
+                                          {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
+                                          <span>
+                                          Payment Date: <span style={{ color: 'blue' }}>{moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
+                                          </span></span>
 
-                                      ):(
-                                        <p>
-                                         {/* {"--"} */}
-                                        </p>
+                                          ):(
+                                        <span className="text-danger">
+                                          {donoraccountStatement.cancel_appintment_status}
+                                        </span>
                                       )}</span>}
                                           {/* {donoraccountStatement.Status} */}
                                         </span>
                                       {/* </p> */}
                                     </td>
-                                     <td>
+                                     <td style={{ backgroundColor: '#ffc09f' }}>
                                       {donoraccountStatement.Debit == 0 ? (
                                         <p className="d-none">
                                          {donoraccountStatement.Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -253,7 +254,7 @@ class AccountStatements extends Component {
                                       )}
                                      
                                     </td>
-                                     <td>
+                                     <td style={{ backgroundColor: '#ffee93' }}>
                                       {donoraccountStatement.Debit == 0 ? (
                                         <p className="d-none">
                                          {donoraccountStatement.Debit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -266,7 +267,7 @@ class AccountStatements extends Component {
                                       )}
                                      
                                     </td>
-                                     <td>
+                                     <td style={{ backgroundColor: '#adf7b6' }}>
                                       {donoraccountStatement.Balance == 0 ? (
                                         <p className="d-none">
                                          {donoraccountStatement.Balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -304,7 +305,7 @@ class AccountStatements extends Component {
                                         </span>
                                       {/* </p> */}
                                     </td>
-                                     <td>
+                                     <td style={{ backgroundColor: '#ffc09f' }}>
                                       {donoraccountStatement.Credit == 0 ? (
                                         <p className="d-none">
                                          {donoraccountStatement.Credit.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -317,7 +318,7 @@ class AccountStatements extends Component {
                                       )}
                                      
                                     </td>
-                                     <td>
+                                     <td style={{ backgroundColor: '#ffee93' }}>
                                       {donoraccountStatement.Debit == 0 ? (
                                         <p className="d-none">
                                          {donoraccountStatement.Debit.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -330,7 +331,7 @@ class AccountStatements extends Component {
                                       )}
                                      
                                     </td>
-                                     <td>
+                                     <td style={{ backgroundColor: '#adf7b6' }}>
                                       {donoraccountStatement.Balance == 0 ? (
                                         
                                         <p className="d-none">
