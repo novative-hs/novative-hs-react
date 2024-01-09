@@ -2,9 +2,9 @@ import {
   GET_LABS_LIST,
   GET_LABS_LIST_SUCCESS,
   GET_LABS_LIST_FAIL,
-  GET_DONORS,
-  GET_DONORS_SUCCESS,
-  GET_DONORS_FAIL,
+  GET_DONORSA,
+  GET_DONORSA_SUCCESS,
+  GET_DONORSA_FAIL,
 } from "./actionTypes";
 
 export const getLabsList = () => ({
@@ -22,16 +22,16 @@ export const getLabsListFail = error => ({
   type: GET_LABS_LIST_FAIL,
   payload: error,
 });
-export const getDonors = () => ({
-  type: GET_DONORS,
+export const getDonorsA = () => ({
+  type: GET_DONORSA,
 });
 
-export const getDonorsSuccess = donors => ({
-  type: GET_DONORS_SUCCESS,
+export const getDonorsASuccess = donors => ({
+  type: GET_DONORSA_SUCCESS,
   payload: donors,
 });
 
-export const getDonorsFail = error => ({
-  type: GET_DONORS_FAIL,
+export const getDonorsAFail = error => ({
+  type: GET_DONORSA_FAIL,
   payload: error,
 });

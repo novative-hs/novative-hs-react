@@ -1,17 +1,17 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_LABS_LIST, GET_DONORS } from "./actionTypes";
+import { GET_LABS_LIST, GET_DONORSA } from "./actionTypes";
 
 import {
   getLabsListSuccess,
   getLabsListFail,
-  getDonorsSuccess,
-  getDonorsFail,
+  getDonorsASuccess,
+  getDonorsAFail,
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getLabsList , getDonors } from "../../helpers/django_api_helper";
+import { getLabsList , getDonorsA } from "../../helpers/django_api_helper";
 
 function* fetchLabsList(object) {
   try {
@@ -21,12 +21,12 @@ function* fetchLabsList(object) {
     yield put(getLabsListFail(error));
   }
 }
-function* fetchDonors() {
+function* fetchDonorsA(object) {
   try {
-    const response = yield call(getDonors);
-    yield put(getDonorsSuccess(response));
+    const response = yield call(getDonorsA, object.payload);
+    yield put(getDonorsASuccess(response));
   } catch (error) {
-    yield put(getDonorsFail(error));
+    yield put(getDonorsAFail(error));
   }
 }
 
@@ -35,7 +35,7 @@ function* LabsSaga() {
     GET_LABS_LIST,
     fetchLabsList
   );
-yield takeEvery(GET_DONORS, fetchDonors);
+yield takeEvery(GET_DONORSA, fetchDonorsA);
 
 }
 

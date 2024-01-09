@@ -190,7 +190,7 @@ class DonorProfile extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Add Amount</p>
+                      <p className="text-muted fw-medium">Give Donation</p>
                       {/* Converting number to thousands separator string for readability */}
                       {/* <h4 className="mb-0">
                         $

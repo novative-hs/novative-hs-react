@@ -249,21 +249,22 @@ class AccountStatements extends Component {
                                         {accountStatement.patient_name}
                                       </p>
                                     </td>
-                                    <td>
-                                      {/* <p className="float-end"> */}
-                                      {accountStatement.payment_status == "Not Paid" ? (
-                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      ) : (
-                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      )}
-                                      {/* </p> */}
-                                    </td>
+                                    {accountStatement.payment_status == "Not Paid" ? (
+                                          <td style={{ backgroundColor: '#F58D77' }}>
+
+                                          <b>
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </b></td>
+                                        ) : (
+                                          <td style={{backgroundColor: '#EBD3EF'}}>
+
+                                          <b>
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </b>                                      </td>
+
+                                        )}
                                     {/* <td>
                                     <p>
                                       {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -534,22 +535,22 @@ class AccountStatements extends Component {
                                         {accountStatement.patient_name}
                                       </p>
                                     </td>
-                                    <td>
-                                      {/* <p className="float-end"> */}
-                                      {accountStatement.payment_status == "Not Paid" ? (
-                                        <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status}
-                                        </span>
-                                      ) : (
-                                        <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
-                                          {accountStatement.payment_method},{" "}
-                                          {accountStatement.payment_status},{" ("}
-                                          {accountStatement.cancel_appintment_status}{")"}
-                                        </span>
-                                      )}
-                                      {/* </p> */}
-                                    </td>
+                                    {accountStatement.payment_status == "Not Paid" ? (
+                                          <td style={{ backgroundColor: '#F58D77' }}>
+
+                                          <b>
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </b></td>
+                                        ) : (
+                                          <td style={{backgroundColor: '#FAE9A3'}}>
+
+                                          <b>
+                                            {accountStatement.payment_method},{" "}
+                                            {accountStatement.payment_status}
+                                          </b>                                      </td>
+
+                                        )}
                                     {/* <td>
                                     <p>
                                       {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -784,21 +785,24 @@ class AccountStatements extends Component {
                                           {accountStatement.patient_name}
                                         </p>
                                       </td>
-                                      <td>
                                         {/* <p className="float-end"> */}
                                         {accountStatement.payment_status == "Not Paid" ? (
-                                          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                          <td style={{ backgroundColor: '#F58D77' }}>
+
+                                          <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
-                                          </span>
+                                          </b></td>
                                         ) : (
-                                          <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-primary">
+                                          <td style={{backgroundColor: '#adf7b6'}}>
+
+                                          <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
-                                          </span>
+                                          </b>                                      </td>
+
                                         )}
                                         {/* </p> */}
-                                      </td>
                                       {/* <td>
                                       <p>
                                         {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -1052,26 +1056,22 @@ class AccountStatements extends Component {
                                           {accountStatement.patient_name}
                                         </p>
                                       </td>
-                                      <td>
-                                        {/* <p className="float-end"> */}
-                                        {accountStatement.payment_status == "Not Paid" ? (
-                                          <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
+                                      {accountStatement.payment_status == "Not Paid" ? (
+                                          <td style={{ backgroundColor: '#F58D77' }}>
+
+                                          <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
-                                          </span>
+                                          </b></td>
                                         ) : (
-                                          <span className="w-100 pr-4 pl-4 badge badge-dark rounded-pill badge badge-dark font-size-12 badge-soft-success">
+                                          <td style={{ backgroundColor: '#AFD9E8' }}>
+
+                                          <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
-                                          </span>
+                                          </b>                                      </td>
+
                                         )}
-                                        {/* </p> */}
-                                      </td>
-                                      {/* <td>
-                                    <p>
-                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
                                       <td>
                                         {accountStatement.dues_before_discount == 0 ? (
                                           <p className="d-none">

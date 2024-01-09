@@ -323,6 +323,8 @@ export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/region-wise-advertisements`;
 
 export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
+export const GET_DONORSA = `${API_ENDPOINT}/api/finance-admin/donationappointment-list`;
+
 
 
 // NEARBY TESTS

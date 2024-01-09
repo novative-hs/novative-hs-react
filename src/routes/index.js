@@ -211,6 +211,7 @@ import DiscountLabHazir from "pages/MarketerAdmin/discount-labhazir";
 import labsList from "pages/MarketerAdmin/labs-list";
 import labList from "pages/FinanceAdmin/labs-list";
 import donorList from "pages/FinanceAdmin/donors-list";
+import donorappointmentsList from "pages/FinanceAdmin/donos-appointments"
 import b2bList from "pages/FinanceAdmin/b2bclients-list";
 import discountLab from "pages/MarketerAdmin/discount-lab";
 import LabAdvertisementRequests from "pages/MarketerAdmin/pending-lab-advertisement-requests";
@@ -536,6 +537,7 @@ const financeAdminAuthProtectedRoutes = [
   {path: "/bankaccounts-list", component: BankAccountsList},
   { path: "/lab-details", component: labList},
   { path: "/donor-details", component: donorList},
+  { path: "/donors-appointments-list", component: donorappointmentsList},
   { path: "/b2bclients-details", component: b2bList},
   {path: "/bank-account-statements/:id", component: BankAccountStatements},
 

@@ -6,9 +6,9 @@ export const GET_LABS_LIST_SUCCESS =
   "GET_LABS_LIST_SUCCESS";
 export const GET_LABS_LIST_FAIL =
   "GET_LABS_LIST_FAIL";
-  export const GET_DONORS = "get_donors";
-  export const GET_DONORS_SUCCESS = "get_donors_success";
-  export const GET_DONORS_FAIL = "get_donors_fail";
+  export const GET_DONORSA = "GET_DONORSA";
+  export const GET_DONORSA_SUCCESS = "GET_DONORSA_SUCCESS";
+  export const GET_DONORSA_FAIL = "GET_DONORSA_FAIL";
 
 
   
