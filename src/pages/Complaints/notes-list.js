@@ -150,162 +150,185 @@ class NotesList extends Component {
               <Col lg="12">
                 <Card>
                   <CardBody>
-                  
-                {!isEmpty(this.props.notes) &&
-                  this.props.notes.map((note, key) => (
-                    <Col xl="3" md="3" sm="6" key={"_col_" + key}>
-                      <Card className="mb-2" style={{ backgroundColor: "#f2f2f2" }}>
-                        <CardBody className="p-3">
-                          {note.note &&(
-                          <div >
-                            <p>
-                              <b>{note.staff_name}</b>{" "}{note.note} at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
-                            </p>
-                          </div> 
-                          )}
-                          {note.field_name == "status" && note.old_value != "Not Paid" &&(
-                           <div >
-                           <p>
-                             <b>{note.staff_name}</b>{" "} changes status of appointment to <b>{note.new_value}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
-                           </p>
-                         </div>
-                          )}
-                          {note.field_name == "appointment_requested_at" &&(
-                           <div >
-                           <p>
-                             <b>{note.staff_name}</b>{" "} changes Appointment Request Time by Patient <b>{moment(note.old_value).format("DD MMM YYYY, h:mm A")}</b> <span className="text-danger">to</span>  <b>{moment(note.new_value).format("DD MMM YYYY, h:mm A")}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
-                           </p>
-                         </div>
-                          )}
-                          {note.field_name == "collection_status" &&(
-                           <div >
-                           <p>
-                             <b>{note.staff_name}</b>{" "} changes collection status to <b>{note.new_value}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
-                           </p>
-                         </div>
-                          )}
-                           {note.field_name == "assigned_to" &&(
-                           <div >
-                           <p>
-                             <b>{note.staff_name}</b>{" "} assigned appointment to sample collector <b>{note.collector_name}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
-                           </p>
-                         </div>
-                          )}
-                           {note.old_value == "Not Paid" &&(
-                           <div >
-                           <p>
-                             <b>{note.staff_name}</b>{" "} changes payment status to <b>{note.new_value}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
-                           </p>
-                         </div>
-                          )}
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
-                     <Formik
-                                          enableReinitialize={true}
-                                          initialValues={{
-                                            hiddenEditFlag: isEdit,
-                                            note:
-                                              (this.state &&
-                                                this.state.note) ||
-                                              "",
-                                          }}
-                                          validationSchema={Yup.object().shape({
-                                            hiddentEditFlag: Yup.boolean(),
-                                            note: Yup.string().required(
-                                              "Please enter your comment"
-                                            ),
-                                          })}
-                                          onSubmit={values => {
-                                            {
-                                              const newNote = {
-                                                note:
-                                                  values.note,
-                                                appointment_id:
-                                                  this.props.match.params.id,
-                                              };
 
-                                              // save new Note
-                                              onAddNewNote(
-                                                newNote,
-                                                this.state.user_id
-                                              );
-                                              setTimeout(() => {
-                                                this.setState({
-                                                  note: "",
-                                                });
-                                              }, 1000);
-                                              setTimeout(() => {
-                                                onGetNotes(
-                                                  this.props.match.params.id
-                                                );
-                                              }, 2000);
-                                            }
-                                            this.toggle();
-                                          }}
-                                        >
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-                                                   <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        <b>Comment</b>
-                                                      </Label>
-                                                      <Field
-                                                        name="note"
-                                                        as="textarea"
-                                                        rows="2"
-                                                        cols="20"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.note &&
-                                                          touched.note
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        value={
-                                                          this.state.note
-                                                        }
-                                                        onChange={e =>
-                                                          this.setState({
-                                                            note:
-                                                              e.target.value,
-                                                          })
-                                                        }
-                                                      />
-                                                      <ErrorMessage
-                                                        name="note"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <Tooltip title="Send">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                    >
-                                                      <i className="fas fa-paper-plane"></i>
-                                                    </button>
-                                                    </Tooltip>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
-                                        </Formik>
+                    {!isEmpty(this.props.notes) &&
+                      this.props.notes.map((note, key) => (
+                        <Col xl="3" md="3" sm="6" key={"_col_" + key}>
+                          <Card className="mb-2" style={{ backgroundColor: "#f2f2f2" }}>
+                            <CardBody className="p-3">
+                              {note.note && (
+                                <div >
+                                  <p>
+                                    <b>{note.staff_name}</b>{" "}{note.note} at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                  </p>
+                                </div>
+                              )}
+                              {note.field_name === "status" && note.old_value !== "Not Paid" && (
+                                <div>
+                                  <p>
+                                    <b>{note.staff_name}</b>{" "} changes status of appointment to{" "}
+                                    {note.new_value === "Rescheduled" && note.payment_status === "Paid" ? (
+                                      <span>
+                                        <b>{note.new_value}</b>{" "} Invoice status is already{" "}
+                                        <span className="text-danger">Paid</span>{" "} Rs. <b>{note.amount}</b> {" "}
+                                        <span>
+                                          so the sample will be collected{" "}
+                                          <span className="text-danger">without amount</span>
+                                        </span>{" "}
+                                        at {" "}
+                                        {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                      </span>
+                                    ) : (
+                                      <span>
+                                        <b>{note.new_value}</b> at {" "}
+                                        {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                      </span>
+                                    )}
+                                  </p>
+                                </div>
+                              )}
+
+                              {note.field_name == "appointment_requested_at" && (
+                                <div >
+                                  <p>
+                                    <b>{note.staff_name}</b>{" "} changes Appointment Request Time by Patient <b>{moment(note.old_value).format("DD MMM YYYY, h:mm A")}</b> <span className="text-danger">to</span>  <b>{moment(note.new_value).format("DD MMM YYYY, h:mm A")}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                  </p>
+                                </div>
+                              )}
+                              {note.field_name === "collection_status" && (
+                                <div>
+                                  <p>
+                                    <b>{note.staff_name}</b> changes collection status to <b>{note.new_value}</b>{" "}
+                                    {note.amount ? (
+                                      <spam>
+                                        <span className="text-danger">Amount is</span> {" "} Rs. <b>{note.amount}</b></spam>
+                                    ) : null} at {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                  </p>
+                                </div>
+                              )}
+
+                              {note.field_name == "assigned_to" && (
+                                <div >
+                                  <p>
+                                    <b>{note.staff_name}</b>{" "} assigned appointment to sample collector <b>{note.collector_name}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                  </p>
+                                </div>
+                              )}
+                              {note.old_value == "Not Paid" && (
+                                <div >
+                                  <p>
+                                    <b>{note.staff_name}</b>{" "} changes payment status to <b>{note.new_value}</b> at {" "} {moment(note.added_at).format("DD MMM YYYY, h:mm A")}
+                                  </p>
+                                </div>
+                              )}
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      ))}
+                    <Formik
+                      enableReinitialize={true}
+                      initialValues={{
+                        hiddenEditFlag: isEdit,
+                        note:
+                          (this.state &&
+                            this.state.note) ||
+                          "",
+                      }}
+                      validationSchema={Yup.object().shape({
+                        hiddentEditFlag: Yup.boolean(),
+                        note: Yup.string().required(
+                          "Please enter your comment"
+                        ),
+                      })}
+                      onSubmit={values => {
+                        {
+                          const newNote = {
+                            note:
+                              values.note,
+                            appointment_id:
+                              this.props.match.params.id,
+                          };
+
+                          // save new Note
+                          onAddNewNote(
+                            newNote,
+                            this.state.user_id
+                          );
+                          setTimeout(() => {
+                            this.setState({
+                              note: "",
+                            });
+                          }, 1000);
+                          setTimeout(() => {
+                            onGetNotes(
+                              this.props.match.params.id
+                            );
+                          }, 2000);
+                        }
+                        this.toggle();
+                      }}
+                    >
+                      {({ errors, status, touched }) => (
+                        <Form>
+                          <Row>
+                            <Col className="col-12">
+                              <Field
+                                type="hidden"
+                                className="form-control"
+                                name="hiddenEditFlag"
+                                value={isEdit}
+                              />
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  <b>Comment</b>
+                                </Label>
+                                <Field
+                                  name="note"
+                                  as="textarea"
+                                  rows="2"
+                                  cols="20"
+                                  className={
+                                    "form-control" +
+                                    (errors.note &&
+                                      touched.note
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  value={
+                                    this.state.note
+                                  }
+                                  onChange={e =>
+                                    this.setState({
+                                      note:
+                                        e.target.value,
+                                    })
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="note"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <div className="text-end">
+                                <Tooltip title="Send">
+                                  <button
+                                    type="submit"
+                                    className="btn btn-success save-user"
+                                  >
+                                    <i className="fas fa-paper-plane"></i>
+                                  </button>
+                                </Tooltip>
+                              </div>
+                            </Col>
+                          </Row>
+                        </Form>
+                      )}
+                    </Formik>
                   </CardBody>
                 </Card>
               </Col>

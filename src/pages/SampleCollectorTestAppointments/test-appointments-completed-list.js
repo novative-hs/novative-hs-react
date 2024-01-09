@@ -6,6 +6,7 @@ import { withRouter, Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row, Label,ModalHeader, Modal,ModalBody } from "reactstrap";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import moment from 'moment';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
 
 import paginationFactory, {
@@ -50,7 +51,7 @@ class TestAppointmentsCompletedList extends Component {
             <>
               <strong>{patientTestAppointment.order_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -69,7 +70,7 @@ class TestAppointmentsCompletedList extends Component {
                   </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "booked_at",
@@ -118,7 +119,7 @@ class TestAppointmentsCompletedList extends Component {
                 </span>
               ) : null}
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "handovered_at",
@@ -135,7 +136,7 @@ class TestAppointmentsCompletedList extends Component {
                   : "--"}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "dues",
@@ -150,7 +151,7 @@ class TestAppointmentsCompletedList extends Component {
             <>             
              <div className="text-end">
             {testAppointment.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
-        ),
+        ),filter: textFilter(),
         },
         {
           dataField: "payment_status",
@@ -170,7 +171,15 @@ class TestAppointmentsCompletedList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'Paid': 'Paid',
+              'Not Paid': 'Not Paid',
+              'Allocate': 'Allocate',
+            },
+            defaultValue: 'All',
+          }),
         },
         // {
         //   dataField: process.env.REACT_APP_BACKENDURL + "result",
@@ -284,9 +293,22 @@ class TestAppointmentsCompletedList extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Sample Collection"
-              breadcrumbItem="Completed List"
-            />
+              title="Completed List"
+              breadcrumbItem={testAppointments.map((lab, index) => {
+                // Check if lab_name is defined and not null
+                if (lab.lab_name !== undefined && lab.lab_name !== null) {
+                  // Return a div for each lab_name
+                  return (
+                    <div key={index} className="float-end">
+                      <span className="text-danger">{lab.lab_name}</span>
+                      <span>-Sample Collector</span>
+                    </div>
+                  );
+                }
+                // Don't render anything for labs without lab_name
+                return null;
+              })}
+            ></Breadcrumbs>
             <Row>
               <Col lg="12">
                 <Card>
@@ -331,6 +353,8 @@ class TestAppointmentsCompletedList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}

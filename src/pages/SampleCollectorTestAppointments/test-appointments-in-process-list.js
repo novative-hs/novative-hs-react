@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import moment from 'moment';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+
 
 import {
   Card,
@@ -74,7 +76,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
             <>
               <strong>{patientTestAppointment.order_id}</strong>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "name",
@@ -93,7 +95,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                 </Link>
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "booked_at",
@@ -136,7 +138,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                   : "--"}
               </span>
             </>
-          ),
+          ),filter: textFilter(),
         },
         {
           dataField: "status",
@@ -174,7 +176,17 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'Pending': 'Pending',
+              'Confirmed': 'Confirmed',
+              'Sample Collected': 'Sample Collected',
+              'Rescheduled': 'Rescheduled',
+              'Result Uploaded': 'Result Uploaded',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "collection_status",
@@ -219,7 +231,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: textFilter(),
         },
         // {
         //   dataField: "dues",
@@ -249,7 +261,15 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'Paid': 'Paid',
+              'Not Paid': 'Not Paid',
+              'Allocate': 'Allocate',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "invoice",
@@ -258,12 +278,27 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
           editable: false,
           formatter: (cellContent, sampleCollector) => (
             <>
-              <Link
+             {sampleCollector.payment_status === "Not Paid" ? (
+                  <Tooltip title="Appointment Detail">
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/sampleC-appointment-detail/${sampleCollector.id}`}
+                    ></Link>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Invoice Detail">
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/collector-invoice-detail/${sampleCollector.id}`}
+                    ></Link>
+                  </Tooltip>
+                )}
+              {/* <Link
                 className="btn btn-primary btn-rounded font-size-10"
                 to={`/collector-invoice-detail/${sampleCollector.id}`}
               >
                 Invoice
-              </Link>
+              </Link> */}
             </>
           ),
         },
@@ -436,8 +471,22 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Sample Collection"
-              breadcrumbItem="Assigned List"
+              title="Assigned List"
+              breadcrumbItem={testAppointments.map((lab, index) => {
+                // Check if lab_name is defined and not null
+                if (lab.lab_name !== undefined && lab.lab_name !== null) {
+                  // Return a div for each lab_name
+                  return (
+                    <div key={index} className="float-end">
+                      <span className="text-danger">{lab.lab_name}</span>
+                      <span>-Sample Collector</span>
+                    </div>
+                  );
+                }
+                // Don't render anything for labs without lab_name
+                return null;
+              })}
+              
             />
             <Row>
               <Col lg="12">
@@ -483,6 +532,8 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      filter={filterFactory()}
+
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}
@@ -493,7 +544,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                                         toggle={this.togglePatientModal}
                                         tag="h4"
                                       >
-                                        <span></span>
+                                        <span>Patient Details: </span>
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik>

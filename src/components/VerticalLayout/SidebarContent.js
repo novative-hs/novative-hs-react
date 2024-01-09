@@ -442,6 +442,12 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/donors-appointments-list">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Donors Appointments List")}</span>
+                  </Link>
+                </li>
+                <li>
                   <Link to="/b2bclients-details">
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("B2B Clients List")}</span>

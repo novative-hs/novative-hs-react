@@ -74,6 +74,7 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 import FeedbacksList from "../pages/Feedbacks/feedbacks-list";
 import LabInvoiceDetail from "pages/Checkouts/invoice-detail";
+import LabAppointmentDetail from "pages/Checkouts/appointment-detail"
 import AppointmentDetail from "pages/Checkouts/appointment-detail";
 import PatientAppointmentDetail from "pages/Checkouts/appointment-detail";
 import CsrInvoiceDetail from "pages/Checkouts/invoice-detail";
@@ -102,7 +103,7 @@ import PaymentOutBouncedStatussList from "pages/PaymentStatuss/paymentout-bounce
 import SampleCollectorTestAppointmentsInProcessList from "../pages/SampleCollectorTestAppointments/test-appointments-in-process-list";
 import SampleCollectorTestAppointmentsCompletedList from "../pages/SampleCollectorTestAppointments/test-appointments-completed-list";
 import CollectorInvoiceDetail from "pages/Checkouts/invoice-detail";
-
+import SampleCAppointmentDetail from "pages/Checkouts/appointment-detail"
 // Patient Lab Components
 import LabQualityCertificates from "../pages/LabMarket/NearbyLabs/NearbyLabDetails/quality-certificates-list";
 import LabSampleCollectors from "../pages/LabMarket/NearbyLabs/NearbyLabDetails/sample-collectors-list";
@@ -419,6 +420,10 @@ const labAuthProtectedRoutes = [
     path: "/lab-invoice-detail/:id",
     component: LabInvoiceDetail,
   },
+  {
+    path: "/lab-appointment-detail/:id",
+    component: LabAppointmentDetail,
+  },
   { path: "/account-statements", component: AccountStatements },
   { path: "/lab-advertisement", component: LabAdvertisements },
   // { path: "/lab-advertisement", component: LabAdvertisements },
@@ -581,6 +586,10 @@ const sampleCollectorAuthProtectedRoutes = [
   {
     path: "/collector-invoice-detail/:id",
     component: CollectorInvoiceDetail,
+  },
+  {
+    path: "/sampleC-appointment-detail/:id",
+    component: SampleCAppointmentDetail,
   },
   {
     path: "/sample-collector-completed",

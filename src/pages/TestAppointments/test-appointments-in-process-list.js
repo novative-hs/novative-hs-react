@@ -624,13 +624,21 @@ class TestAppointmentsInProcessList extends Component {
                 </Tooltip>
 
               </Link>
-              <Tooltip title="Invoice">
-                <Link
-                  className="mdi mdi-receipt font-size-18"
-                  to={`/lab-invoice-detail/${testAppointment.id}`}
-                >
-                </Link>
-              </Tooltip>
+              {testAppointment.payment_status === "Not Paid" ? (
+                  <Tooltip title="Appointment Detail">
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/lab-appointment-detail/${testAppointment.id}`}
+                    ></Link>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Invoice Detail">
+                    <Link
+                      className="mdi mdi-receipt font-size-18"
+                      to={`/lab-invoice-detail/${testAppointment.id}`}
+                    ></Link>
+                  </Tooltip>
+                )}
             </div>
           ),
         },
@@ -644,8 +652,6 @@ class TestAppointmentsInProcessList extends Component {
 
 
             <div className="d-flex gap-2">
-              
-              
               <Link className="text-success" to="#">
                 <Tooltip title="Update">
                   <i

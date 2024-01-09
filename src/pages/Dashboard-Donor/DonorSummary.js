@@ -15,11 +15,12 @@ class DonorProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // name: "",
-      // email: "",
-      // landline: "",
-      // website_url: "",
-      // business_logo:"",
+      current_amount: "",
+      name: "",
+      email: "",
+      landline: "",
+      website_url: "",
+      business_logo:"",
       completedAppointments: "",
       inProcessAppointments: "",
       monthlyRevenue: "",
@@ -36,11 +37,12 @@ class DonorProfile extends Component {
 
     setTimeout(() => {
       this.setState({
-        // name: this.props.success.name,
-        // business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
-        // email: this.props.success.email,
-        // landline: this.props.success.landline,
-        // website_url: this.props.success.website_url,
+        current_amount: this.props.success.current_amount,
+        name: this.props.success.name,
+        business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
+        email: this.props.success.email,
+        landline: this.props.success.landline,
+        website_url: this.props.success.website_url,
         completedAppointments: this.props.success.completed_appointments,
         inProcessAppointments: this.props.success.inprocess_appointments,
         monthlyRevenue: this.props.success.monthly_revenue,
@@ -60,7 +62,7 @@ class DonorProfile extends Component {
                 <Col xs="7">
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
-                    <p>Lab Hazir Dashboard</p>
+                    <p>Your Dashboard</p>
                   </div>
                 </Col>
                 <Col xs="5" className="align-self-end">
@@ -73,25 +75,18 @@ class DonorProfile extends Component {
                 <Col sm="12">
                   <div className="pt-4">
                     <Row>
-                      <Col xs="4">
-                      {/* <div className="avatar-md profile-user-wid mb-4">
-                  <img
-                    src={this.state.business_logo}
-                    alt=""
-                    className="img-thumbnail rounded-circle"
-                  />
-                </div>
+                      <Col xs="6">
                         <h5 className="font-size-15 text-truncate">
                           {this.state.name}
                         </h5>
                         <p className="text-muted mb-0 text-truncate">
-                          {this.state.website_url}
-                        </p> */}
+                          {this.state.email}
+                        </p>
                       </Col>
                       <Col xs="6">
                         <div className="mt-2">
                           <Link
-                            to={"/donor-profile"}
+                            to={"/staff-profile"}
                             className="btn btn-primary btn-sm"
                           >
                             View Profile{" "}
@@ -99,6 +94,18 @@ class DonorProfile extends Component {
                           </Link>
                         </div>
                       </Col>
+                      {/* <Col xs="6">
+                        <div className="mt-2">
+                          <Link
+                            to={"/csr-checkout"}
+                            className="btn btn-primary btn-sm"
+                          >
+                            Online Booking{" "}
+                            <i className="mdi mdi-arrow-right ms-1" />
+                          </Link>
+                        </div>
+                      </Col> */}
+
                     </Row>
                   </div>
                 </Col>
@@ -159,20 +166,20 @@ class DonorProfile extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Monthly Revenue</p>
-                      {/* <h4 className="mb-0">  */}
+                      <p className="text-muted fw-medium">
+                        Current Amount</p>
+                      <h4 className="mb-0 text-danger font-size-14"> 
                       {/* Converting number to thousands separator string for readability */}
-                      {/* $
-                        {this.state.monthlyRevenue
+                        {"Rs. "}{" "}{this.state.current_amount
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                       </h4>
                     </div>
-                    <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                    {/* <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
                         <i className={"bx bx-archive-in font-size-24"} />
-                      </span>*/}
-                    </div>
+                      </span>
+                    </div> */}
                   </div>
                 </CardBody>
               </Card>
@@ -183,19 +190,20 @@ class DonorProfile extends Component {
                 <CardBody>
                   <div className="d-flex">
                     <div className="flex-grow-1">
-                      <p className="text-muted fw-medium">Annual Revenue</p>
+                      <p className="text-muted fw-medium">Add Amount</p>
                       {/* Converting number to thousands separator string for readability */}
                       {/* <h4 className="mb-0">
                         $
                         {this.state.annualRevenue
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                      </h4>
+                      </h4>*/}
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
-                        <i className={"bx bx-archive-in font-size-24"} />
-                      </span>*/}
+                        {/* <i className={"bx bx-archive-in font-size-24"} /> */}
+                        Top Up
+                      </span>
                     </div>
                   </div>
                 </CardBody>
