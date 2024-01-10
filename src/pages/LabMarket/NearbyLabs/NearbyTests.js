@@ -91,7 +91,7 @@ class NearbyTests extends Component {
       location: "",
       km: "30",
       page: "1",
-      LabType: "Main",
+      LabType: "",
       success: "",
       error: "",
       locationAccessAllowed: "",
@@ -196,6 +196,7 @@ class NearbyTests extends Component {
           this.setState({ currentLongitude: longitude });
           this.setState({ locationAccessAllowed: true });
           this.setState({ search_type: "Current Location" });
+          this.setState({ LabType: "Main" });
           // near by labs
           if ((this.state.user_id || this.state.user_type === "CSR")) {
             const nearbyTestsLocationDetails = {
@@ -2189,7 +2190,7 @@ class NearbyTests extends Component {
                               />
                             </div>
                           </Col>
-                           <Col xs="3" sm="3" md="2" lg="2">
+                           {/* <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
                                 for="LabType2"
@@ -2219,7 +2220,72 @@ class NearbyTests extends Component {
                                 <option value="Others">Both</option>
                               </Field>
                             </div>
-                          </Col>
+                          </Col> */}
+                           {this.state.locationAccessAllowed === true ? (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                  <option value="Others">Both</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          ) : (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Others">Both</option>
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          )}
                         </Row>
                       </Form>
                     )}
@@ -2482,20 +2548,22 @@ class NearbyTests extends Component {
 
                               </div>
                             )}
+                            {nearbyTest.duration_required ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-stopwatch"></i> Reporting
                                 Time: {nearbyTest.duration_required}{" "}
                                 {nearbyTest.duration_type}
                               </span>
-                            </div>
+                            </div>) : null }
+                            {nearbyTest.is_home_sampling_available ? (
 
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-home"></i> Home Sampling:{" "}
                                 {nearbyTest.is_home_sampling_available}
                               </span>
-                            </div>
+                            </div>) : null }
                             <div className="my-0">
                               {" "}
 

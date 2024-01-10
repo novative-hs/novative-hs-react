@@ -87,7 +87,7 @@ class NearbyProfiles extends Component {
       location: "",
       km: "30",
       page: "1",
-      LabType: "Main",
+      LabType: "",
       locationAccessAllowed: "",
       success: "",
       error: "",
@@ -199,6 +199,7 @@ class NearbyProfiles extends Component {
           this.setState({ currentLongitude: longitude });
           this.setState({ locationAccessAllowed: true });
           this.setState({ search_type: "Current Location" });
+          this.setState({ LabType: "Main" });
           // near by labs
           if ((this.state.user_id || this.state.user_type === "CSR")) {
             const nearbyTestsLocationDetails = {
@@ -2264,9 +2265,10 @@ shouldHighlightTestsLink() {
                             />
                             </div>
                           </Col>
-                          <Col xs="3" sm="3" md="2" lg="2">
-                            <div className="mb-3">
-                              <Label
+                          {this.state.locationAccessAllowed === true ? (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
                                 for="LabType2"
                                 className="form-label"
                                 style={{
@@ -2277,24 +2279,57 @@ shouldHighlightTestsLink() {
                               >
                                 Search By Labs Type
                               </Label>
-                              <Field
-                                name="LabType"
-                                component="select"
-                                onChange={(e) => this.onChangeType(e)}
-                                value={this.state.LabType}
-                                className="form-select"
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                  <option value="Others">Both</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          ) : (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                for="LabType2"
+                                className="form-label"
                                 style={{
-                                  border: '2px solid blue',
-                                  borderRadius: '5px',
-                                  // Add more style overrides as needed
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
                                 }}
                               >
-                                <option value="Main">Main Labs</option>
-                                <option value="Collection">Collection Points</option>
-                                <option value="Others">Both</option>
-                              </Field>
-                            </div>
-                          </Col>
+                                Search By Labs Type
+                              </Label>
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Others">Both</option>
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          )}
                         </Row>
                       </Form>
                     )}
@@ -2493,12 +2528,53 @@ shouldHighlightTestsLink() {
                                 </span>
                               </Link>
                             </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Rs {nearbyProfile.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                              </span>
-                            </div>
+                            {(nearbyProfile.discount >= 0.01) && ((nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) >= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyProfile.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyProfile.price - (nearbyProfile.discount + nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) * nearbyProfile.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
+                            {(nearbyProfile.discount >= 0.01) && ((nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) <= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyProfile.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyProfile.price - (nearbyProfile.discount + nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) * nearbyProfile.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+                            {(nearbyProfile.discount <= 0.01) && ((nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) >= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyProfile.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyProfile.price - (nearbyProfile.discount + nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) * nearbyProfile.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
+                            {(nearbyProfile.discount <= 0.01) && ((nearbyProfile.all_discount_by_labhazir + nearbyProfile.discount_by_labhazir) <= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyProfile.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
                             {nearbyProfile.discount >= 0.01 && (
                               <div className="my-0">
                                 <span className="text-danger" >
@@ -2515,19 +2591,22 @@ shouldHighlightTestsLink() {
                                 </span>
                               </div>
                             )}
+                            {nearbyProfile.duration_required ? (
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-stopwatch"></i> Reporting
                                 Time: {nearbyProfile.duration_required}{" "}
                                 {nearbyProfile.duration_type}
                               </span>
-                            </div>
+                            </div>) : null }
+                            {nearbyProfile.is_home_sampling_available ? (
+
                             <div className="my-0">
                               <span className="text-muted me-2">
                                 <i className="fas fa-home"></i> Home Sampling:{" "}
                                 {nearbyProfile.is_home_sampling_available}
                               </span>
-                            </div>
+                            </div>) : null }
 
                             <div className="my-0">
                             {!this.state.user_id ? (

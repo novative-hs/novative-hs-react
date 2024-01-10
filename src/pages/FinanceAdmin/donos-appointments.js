@@ -198,42 +198,42 @@ class LabsLists extends Component {
             defaultValue: 'All',
           }),
         },
-        {
-          dataField: "appointment_requested_at",
-          text: "Sampling time by Patient",
-          sort: true,
-          formatter: (cellContent, labsList) => (
-            <>
-              <span>
-                {/* {new Date(
-                  labsList.appointment_requested_at
-                ).toLocaleString("en-US")} */}
-                {moment(labsList.appointment_requested_at).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "estimated_sample_collection_at",
-          text: "Sampling time by Lab",
-          sort: true,
-          formatter: (cellContent, labsList) => (
-            <>
-              {labsList.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {/* {new Date(
-                    labsList.estimated_sample_collection_at
-                  ).toLocaleString("en-US")} */}
-                   {labsList.estimated_sample_collection_at
-                  ? moment(labsList.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
-                  : "--"}
-                </span>
-              )}
-            </>
-          ), filter: textFilter(),
-        },
+        // {
+        //   dataField: "appointment_requested_at",
+        //   text: "Sampling time by Patient",
+        //   sort: true,
+        //   formatter: (cellContent, labsList) => (
+        //     <>
+        //       <span>
+        //         {/* {new Date(
+        //           labsList.appointment_requested_at
+        //         ).toLocaleString("en-US")} */}
+        //         {moment(labsList.appointment_requested_at).format("DD MMM YYYY, h:mm A")}
+        //       </span>
+        //     </>
+        //   ), filter: textFilter(),
+        // },
+        // {
+        //   dataField: "estimated_sample_collection_at",
+        //   text: "Sampling time by Lab",
+        //   sort: true,
+        //   formatter: (cellContent, labsList) => (
+        //     <>
+        //       {labsList.status == "Pending" ? (
+        //         <span>Not available yet</span>
+        //       ) : (
+        //         <span>
+        //           {/* {new Date(
+        //             labsList.estimated_sample_collection_at
+        //           ).toLocaleString("en-US")} */}
+        //            {labsList.estimated_sample_collection_at
+        //           ? moment(labsList.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+        //           : "--"}
+        //         </span>
+        //       )}
+        //     </>
+        //   ), filter: textFilter(),
+        // },
         {
           dataField: "dues",
           text: "Invoice Value",

@@ -148,30 +148,55 @@ class TestAppointmentsCompletedList extends Component {
           }),
         },
 
-        {
-          dataField: "estimated_sample_collection_at",
-          text: "Sampling time by Lab",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              {patientTestAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {/* {new Date(
-                    patientTestAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")} */}
-                 {patientTestAppointment.estimated_sample_collection_at
-                  ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
-                  : "--"}
-                </span>
-              )}
-            </>
-          ), filter: textFilter(),
-        },
+        // {
+        //   dataField: "estimated_sample_collection_at",
+        //   text: "Sampling time by Lab",
+        //   sort: true,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       {patientTestAppointment.status == "Pending" ? (
+        //         <span>Not available yet</span>
+        //       ) : (
+        //         <span>
+        //           {/* {new Date(
+        //             patientTestAppointment.estimated_sample_collection_at
+        //           ).toLocaleString("en-US")} */}
+        //          {patientTestAppointment.estimated_sample_collection_at
+        //           ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+        //           : "--"}
+        //         </span>
+        //       )}
+        //     </>
+        //   ), filter: textFilter(),
+        // },
+        // {
+        //   dataField: "sample_collected_at",
+        //   text: "Sample collected at",
+        //   sort: true,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       {patientTestAppointment.status == "Pending" ||
+        //         patientTestAppointment.status == "Confirmed" ||
+        //         // patientTestAppointment.status == "Sample Collected" ||
+        //         patientTestAppointment.status == "Rescheduled" ? (
+        //         <span>----</span>
+        //       ) : (
+        //         <span>
+        //           {/* {new Date(
+        //             patientTestAppointment.sample_collected_at
+        //           ).toLocaleString("en-US")} */}
+        //           {patientTestAppointment.sample_collected_at
+        //           ? moment(patientTestAppointment.sample_collected_at).format("DD MMM YYYY, h:mm A")
+        //           : "--"}
+
+        //         </span>
+        //       )}
+        //     </>
+        //   ), filter: textFilter(),
+        // },
         {
           dataField: "sample_collected_at",
-          text: "Sample collected at",
+          text: "Sampling Time",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -179,7 +204,8 @@ class TestAppointmentsCompletedList extends Component {
                 patientTestAppointment.status == "Confirmed" ||
                 // patientTestAppointment.status == "Sample Collected" ||
                 patientTestAppointment.status == "Rescheduled" ? (
-                <span>----</span>
+                <span>{moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")}
+                </span>
               ) : (
                 <span>
                   {/* {new Date(
@@ -188,12 +214,12 @@ class TestAppointmentsCompletedList extends Component {
                   {patientTestAppointment.sample_collected_at
                   ? moment(patientTestAppointment.sample_collected_at).format("DD MMM YYYY, h:mm A")
                   : "--"}
-
-                </span>
+               </span>
               )}
             </>
           ), filter: textFilter(),
         },
+
         // {
         //   dataField: "sample_collector",
         //   text: "Sample Collector",

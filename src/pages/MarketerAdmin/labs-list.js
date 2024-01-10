@@ -60,10 +60,10 @@ class LabsLists extends Component {
           dataField: "name",
           text: "Lab Name",
           sort: true,
-          style: {
-            width: "300px",
-            textAlign: "left",
-          },
+          // style: {
+          //   width: "300px",
+          //   textAlign: "left",
+          // },
           formatter: (cellContent, labsList) => (
             <>
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
@@ -77,10 +77,14 @@ class LabsLists extends Component {
           dataField: "email",
           text: "Email",
           sort: true,
+           style: {
+            // width: "300px",
+            textAlign: "left",
+          },
           filter: textFilter(),
         },
         {
-          dataField: "phone",
+          dataField: "landline",
           text: "Phone No.",
           sort: true,
           filter: textFilter(),
@@ -158,7 +162,7 @@ class LabsLists extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Labs List | Lab Hazir</title>
+            <title>Discount By Labhazir Against Specific Lab | Lab Hazir</title>
           </MetaTags>
 
           <Container fluid>

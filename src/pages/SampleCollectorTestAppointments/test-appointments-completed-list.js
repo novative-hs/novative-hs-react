@@ -243,11 +243,11 @@ class TestAppointmentsCompletedList extends Component {
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
+      btnText: prevState.btnText === "Copy" ? "Copied" : "Copy",
+      btnTextaddress: prevState.btnTextaddress === "Copy" ? "Copied" : "Copy",
     }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
   };
+  
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -390,94 +390,56 @@ class TestAppointmentsCompletedList extends Component {
                                                 </div>
 
                                                 <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .patient_phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
-                                                  </div>
-                                                </div>
+  <div className="col-md-3">
+    <Label className="form-label">Address</Label>
+  </div>
+  <div className="col-md-6">
+    <input
+      type="text"
+      value={this.state.patient_address}
+      className="form-control"
+      readOnly={true}
+    />
+  </div>
+  <div className="col-md-3">
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={() => {
+        navigator.clipboard.writeText(this.state.patient_address);
+        this.setState({ btnTextaddress: "Copied" });
+      }}
+    >
+      {this.state.btnTextaddress}
+    </button>
+  </div>
+</div>
 
-                                                {/* <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      City
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_city
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div> */}
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Mobile No.
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-6">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_phone
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-
-                                                  <div className="col-md-3">
-                                                    <button
-                                                      type="button"
-                                                      className="btn btn-secondary"
-                                                      onClick={() => {
-                                                        navigator.clipboard.writeText(
-                                                          this.state
-                                                            .patient_phone
-                                                        );
-                                                        this.setState({
-                                                          btnText: "Copied",
-                                                        });
-                                                      }}
-                                                    >
-                                                      {this.state.btnText}
-                                                    </button>
-                                                  </div>
-                                                </div>
+<div className="mb-3 row">
+  <div className="col-md-3">
+    <Label className="form-label">Mobile No.</Label>
+  </div>
+  <div className="col-md-6">
+    <input
+      type="text"
+      value={this.state.patient_phone}
+      className="form-control"
+      readOnly={true}
+    />
+  </div>
+  <div className="col-md-3">
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={() => {
+        navigator.clipboard.writeText(this.state.patient_phone);
+        this.setState({ btnText: "Copied" });
+      }}
+    >
+      {this.state.btnText}
+    </button>
+  </div>
+</div>
                                               </Col>
                                             </Row>
                                           </Form>

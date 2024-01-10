@@ -21,7 +21,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import moment from 'moment';
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
@@ -71,32 +71,34 @@ class DiscountLabHazirList extends Component {
           dataField: "test_name",
           text: "Test Name",
           sort: true,
-          headerStyle: {
-            // width: "330px",
-            textAlign: "left",
-          },
-          formatter: (cellContent, discountLabHazirToLab) => (
-            <>
-                <span>
-                <p className="float-start">
+          // headerStyle: {
+          //   // width: "330px",
+          //   textAlign: "center",
+          // },
+          // formatter: (cellContent, discountLabHazirToLab) => (
+          //   <>
+          //       <span>
+          //       <p className="float-start">
                  
-                    {discountLabHazirToLab.test_name}</p>
-                </span>
+          //           {discountLabHazirToLab.test_name}</p>
+          //       </span>
               
-            </>
-          ),filter: textFilter(),
+          //   </>
+          // ),
+          filter: textFilter(),
         },
         {
           dataField: "lab_name",
           text: "Lab Name",
           sort: true,
-          formatter: (cellContent, discountLabHazirToLab) => (
-            <>
-            <p className="text-start" style={{whiteSpace:"pre-wrap", width: "200px"}}>
-              <span>{discountLabHazirToLab.lab_name}</span>
-              </p>
-            </>
-          ),filter: textFilter(),
+          // formatter: (cellContent, discountLabHazirToLab) => (
+          //   <>
+          //   <p className="text-start" style={{whiteSpace:"pre-wrap", width: "200px"}}>
+          //     <span>{discountLabHazirToLab.lab_name}</span>
+          //     </p>
+          //   </>
+          // ),
+          filter: textFilter(),
         },
         {
           dataField: "price",
@@ -104,14 +106,12 @@ class DiscountLabHazirList extends Component {
           sort: true,
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
-                <span>
-                <p className="float-end">
-                 
-                    {discountLabHazirToLab.price}</p>
-                </span>
-              
+              {(
+                <span>{discountLabHazirToLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter(),
         },
         {
           dataField: "discount",
@@ -156,15 +156,14 @@ class DiscountLabHazirList extends Component {
           sort: true,
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
-              {!discountLabHazirToLab.start_date_by_labhazir ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Date not set
-                </span>
-              ) : (
-                <span>{discountLabHazirToLab.start_date_by_labhazir}</span>
-              )}
+              <span>
+                {moment(discountLabHazirToLab.start_date_by_labhazir).format("DD MMM YYYY, h:mm A")}
+              </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter({
+            placeholder: 'Enter Start Date',
+          }),
         },
         {
           dataField: "end_date_by_labhazir",
@@ -172,15 +171,14 @@ class DiscountLabHazirList extends Component {
           sort: true,
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
-              {!discountLabHazirToLab.end_date_by_labhazir ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Date not set
-                </span>
-              ) : (
-                <span>{discountLabHazirToLab.end_date_by_labhazir}</span>
-              )}
+              <span>
+                {moment(discountLabHazirToLab.end_date_by_labhazir).format("DD MMM YYYY, h:mm A")}
+              </span>
             </>
-          ),filter: textFilter(),
+          ),
+          filter: textFilter({
+            placeholder: 'Enter End Date',
+          }),
         },
       {
           dataField: "menu",
@@ -343,7 +341,7 @@ class DiscountLabHazirList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lab Hazir | Discount Lab Hazir</title>
+            <title>Discount For Lab By Labhazir | Discount Lab Hazir</title>
           </MetaTags>
           <ConfirmModal
           show={this.state.confirmModal}
@@ -556,8 +554,12 @@ class DiscountLabHazirList extends Component {
                                                         </Label>
                                                         <Field
                                                           name="start_date_by_labhazir"
-                                                          type="date"
-                                                          min={new Date().toISOString().split("T")[0]}
+                                                          type="datetime-local"                                                          min={new Date(
+                                                            new Date().toString().split("GMT")[0] +
+                                                            " UTC"
+                                                          )
+                                                            .toISOString()
+                                                            .slice(0, -8)}
 
                                                           value={
                                                             this.state
@@ -604,8 +606,12 @@ class DiscountLabHazirList extends Component {
                                                         </Label>
                                                         <Field
                                                           name="end_date_by_labhazir"
-                                                          type="date"
-                                                          min={new Date().toISOString().split("T")[0]}
+                                                          type="datetime-local"                                                          min={new Date(
+                                                            new Date().toString().split("GMT")[0] +
+                                                            " UTC"
+                                                          )
+                                                            .toISOString()
+                                                            .slice(0, -8)}
 
                                                           value={
                                                             this.state

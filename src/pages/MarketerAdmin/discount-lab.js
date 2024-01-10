@@ -21,7 +21,7 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-
+import moment from 'moment';
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
@@ -70,14 +70,14 @@ class DiscountLabHazirList extends Component {
           dataField: "test_name",
           text: "Test Name",
           sort: true,
-          headerStyle: () => {
-            return { 
-            style: {width: "30%",
-              textAlign: "left"
-          },
-        }
+        //   headerStyle: () => {
+        //     return { 
+        //     style: {width: "30%",
+        //       textAlign: "left"
+        //   },
+        // }
 
-          } 
+          // } 
           
         },
         {
@@ -123,13 +123,9 @@ class DiscountLabHazirList extends Component {
           sort: true,
           formatter: (cellContent, discountLab) => (
             <>
-              {!discountLab.start_date ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Date not set
-                </span>
-              ) : (
-                <span>{discountLab.start_date}</span>
-              )}
+              <span>
+                {moment(discountLab.start_date).format("DD MMM YYYY, h:mm A")}
+              </span>
             </>
           ),
         },
@@ -139,13 +135,9 @@ class DiscountLabHazirList extends Component {
           sort: true,
           formatter: (cellContent, discountLab) => (
             <>
-              {!discountLab.end_date ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-secondary font-size-12 badge-soft-secondary">
-                  Date not set
-                </span>
-              ) : (
-                <span>{discountLab.end_date}</span>
-              )}
+              <span>
+                {moment(discountLab.end_date).format("DD MMM YYYY, h:mm A")}
+              </span>
             </>
           ),
         },
@@ -529,8 +521,12 @@ class DiscountLabHazirList extends Component {
                                                         </Label>
                                                         <Field
                                                           name="start_date"
-                                                          type="date"
-                                                          min={new Date().toISOString().split("T")[0]}
+                                                          type="datetime-local"                                                          min={new Date(
+                                                            new Date().toString().split("GMT")[0] +
+                                                            " UTC"
+                                                          )
+                                                            .toISOString()
+                                                            .slice(0, -8)}
                                                           value={
                                                             this.state
                                                               .discountLab
@@ -575,8 +571,13 @@ class DiscountLabHazirList extends Component {
                                                         </Label>
                                                         <Field
                                                           name="end_date"
-                                                          type="date"
-                                                          min={new Date().toISOString().split("T")[0]}
+                                                          type="datetime-local"
+                                                          min={new Date(
+                                                            new Date().toString().split("GMT")[0] +
+                                                            " UTC"
+                                                          )
+                                                        .toISOString()
+                                                        .slice(0, -8)}
                                                           value={
                                                             this.state
                                                               .discountLab

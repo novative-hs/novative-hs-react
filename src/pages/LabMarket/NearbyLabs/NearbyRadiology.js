@@ -87,7 +87,7 @@ class nearbyRadiology extends Component {
       location: "",
       km: "30",
       page: "1",
-      LabType: "Main",
+      LabType: "",
       success: "",
       error: "",
       discountData: [],
@@ -197,6 +197,8 @@ class nearbyRadiology extends Component {
           this.setState({ currentLongitude: longitude });
           this.setState({ locationAccessAllowed: true });
           this.setState({ search_type: "Current Location" });
+          this.setState({ LabType: "Main" });
+
           // near by labs
           if ((this.state.user_id || this.state.user_type === "CSR")) {
             const nearbyTestsLocationDetails = {
@@ -2223,7 +2225,7 @@ shouldHighlightTestsLink() {
                           </Col>
                          
                          
-                           <Col xs="3" sm="3" md="2" lg="2">
+                           {/* <Col xs="3" sm="3" md="2" lg="2">
                             <div className="mb-3">
                               <Label
                                 for="LabType2"
@@ -2253,7 +2255,72 @@ shouldHighlightTestsLink() {
                                 <option value="Others">Both</option>
                               </Field>
                             </div>
-                          </Col>
+                          </Col> */}
+                           {this.state.locationAccessAllowed === true ? (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                  <option value="Others">Both</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          ) : (
+                            <Col xs="3" sm="3" md="2" lg="2">
+                              <div className="mb-3">
+                                <Label
+                                for="LabType2"
+                                className="form-label"
+                                style={{
+                                  fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                  color: 'black',
+                                  fontWeight: "bold",
+                                }}
+                              >
+                                Search By Labs Type
+                              </Label>
+                                <Field
+                                  name="LabType"
+                                  component="select"
+                                  onChange={(e) => this.onChangeType(e)}
+                                  value={this.state.LabType}
+                                  className="form-select"
+                                  style={{
+                                    border: '2px solid blue',
+                                    borderRadius: '5px',
+                                    // Add more style overrides as needed
+                                  }}
+                                >
+                                  <option value="Others">Both</option>
+                                  <option value="Main">Main Labs</option>
+                                  <option value="Collection">Collection Points</option>
+                                </Field>
+                              </div>
+                            </Col>
+                          )}
                         </Row>
                       </Form>
                     )}
@@ -2476,12 +2543,53 @@ shouldHighlightTestsLink() {
                                 </span>
                               </Link>
                             </div>
-                            <div className="my-0">
-                              <span className="text-muted me-2">
-                                <i className="fas fa-money-bill"></i>{" "}
-                                Rs {nearbyRadiology.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 
-                              </span>
-                            </div>
+                            {(nearbyRadiology.discount >= 0.01) && ((nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) >= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyRadiology.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyRadiology.price - (nearbyRadiology.discount + nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) * nearbyRadiology.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
+                            {(nearbyRadiology.discount >= 0.01) && ((nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) <= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyRadiology.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyRadiology.price - (nearbyRadiology.discount + nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) * nearbyRadiology.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+                            {(nearbyRadiology.discount <= 0.01) && ((nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) >= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {nearbyRadiology.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyRadiology.price - (nearbyRadiology.discount + nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) * nearbyRadiology.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
+                            {(nearbyRadiology.discount <= 0.01) && ((nearbyRadiology.all_discount_by_labhazir + nearbyRadiology.discount_by_labhazir) <= 0.01) && (
+                              <div className="my-0">
+                                <span className="text-muted me-2">
+                                  {/* <i className="fas fa-money-bill"></i>{" "} */}
+                                  Rs {((nearbyRadiology.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                </span>
+                              </div>
+                            )}
+
                             {nearbyRadiology.discount>=0.01 && (
                               <div className="my-0">
                               <span className="text-danger" >

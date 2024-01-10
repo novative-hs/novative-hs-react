@@ -340,13 +340,27 @@ class OutPaymentsForm extends Component {
 
     const DonationAppointmentList = [];
     for (let i = 0; i < listDonation.length; i++) {
-      if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
-        DonationAppointmentList.push({
-          label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
-          value: `${listDonation[i].id}`,
-        });
-      }
+      if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Donation" && listDonation[i].payment_status === "Allocate") {
+        if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
+          DonationAppointmentList.push({
+            label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
+            value: `${listDonation[i].id}`,
+          });
+        }
+     }
     }
+    const CardAppointmentList = [];
+    for (let i = 0; i < listDonation.length; i++) {
+      if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Card" && listDonation[i].payment_status === "Paid" && listDonation[i].is_settled == false) {
+        if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
+          CardAppointmentList.push({
+            label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
+            value: `${listDonation[i].id}`,
+          });
+        }
+     }
+    }
+
     // const b2bList = [];
     // for (let i = 0; i < b2bClients.length; i++) {
     //   let flag = 0;
@@ -639,6 +653,67 @@ class OutPaymentsForm extends Component {
                                     }),
                                   }}
                                   options={DonationAppointmentList}
+                                  placeholder="Select Appointment..."
+                                />
+
+                                <div className="invalid-feedback">
+                                  Please select Appointment
+                                </div>
+                              </div>)
+                          ) : null}
+                           {this.state.transection_type == "Other" && this.state.payment_for == "Lab" ? (
+                            outPayment.test_appointment_id ? (
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  Test Appointments
+                                </Label>
+                                <Field
+                                  name="test_appointment_id"
+                                  as="select"
+                                  defaultValue={outPayment.test_appointment_id}
+                                  className="form-control"
+                                  readOnly={true}
+                                  multiple={true} // Set to true to allow multiple selections
+                                >
+                                  {/* Render options for each selected test_appointment_id */}
+                                  {outPayment.test_appointment_id.map(value => (
+                                    <option key={value} value={value}>
+                                      {value}
+                                    </option>
+                                  ))}
+                                </Field>
+                              </div>
+                            ) : (
+                              <div className="mb-3 select2-container">
+                                <Label className="fw-bolder">Test Appointments</Label>
+                                <Select
+                                  name="test_appointment_id"
+                                  component="Select"
+                                  isMulti={true} // Uncomment this line
+                                  onChange={selectedGroup =>
+                                    this.setState({
+                                      test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
+                                    })
+                                  }
+                                  className={
+                                    "defautSelectParent" +
+                                    (!this.state.test_appointment_id
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  styles={{
+                                    control: (
+                                      base,
+                                      state
+                                    ) => ({
+                                      ...base,
+                                      borderColor: !this
+                                        .state.test_appointment_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                    }),
+                                  }}
+                                  options={CardAppointmentList}
                                   placeholder="Select Appointment..."
                                 />
 

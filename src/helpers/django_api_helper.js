@@ -2394,6 +2394,7 @@ console.log("api helper",advertisement )
     let formData = new FormData();
     formData.append("payment_for", inPayment.payment_for);
     formData.append("lab_id", inPayment.lab_id);
+    formData.append("test_appointment_id",   inPayment.test_appointment_id);
     formData.append("donor_id", inPayment.donor_id);
     formData.append("advertisement_id", inPayment.advertisement_id);
     formData.append("payment_method", inPayment.payment_method);

@@ -440,6 +440,7 @@ const labAuthProtectedRoutes = [
     path: "/corporates-List",
     component: CorporatesList,
   },
+  { path: "/lab-adv-chat-box/:id", component: advLabChatBox },
 ];
 
 const b2bclientAuthProtectedRoutes = [

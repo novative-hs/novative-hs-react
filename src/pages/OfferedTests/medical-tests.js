@@ -458,7 +458,7 @@ class TestsList extends Component {
                                             is_home_sampling_available:
                                               (offeredTest &&
                                                 offeredTest.is_home_sampling_available) ||
-                                              "",
+                                              "No",
                                             is_test_performed:
                                               (offeredTest &&
                                                 offeredTest.is_test_performed) ||

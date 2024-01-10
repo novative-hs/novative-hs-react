@@ -69,14 +69,35 @@ class LabAdvertisementRequestsList extends Component {
             <>{labAdvertisementRequest.id}</>
           ),filter: textFilter(),
         },
+        // {
+        //   text: "Lab Name",
+        //   dataField: "lab_name",
+        //   sort: true,
+        //   hidden: false,
+        //   formatter: (cellContent, labAdvertisementRequest) => (
+        //     <>{labAdvertisementRequest.lab_name}</>
+        //   ),filter: textFilter(),
+        // },
         {
-          text: "Lab Name",
           dataField: "lab_name",
+          text: " Lab Name",
           sort: true,
-          hidden: false,
           formatter: (cellContent, labAdvertisementRequest) => (
-            <>{labAdvertisementRequest.lab_name}</>
-          ),filter: textFilter(),
+            <>
+              <span>
+                <Tooltip title="Lab Info">
+                  <Link
+                    to="#"
+                    onClick={e => this.openLabModal(e, labAdvertisementRequest)}
+                  >
+                    {labAdvertisementRequest.lab_name}
+                  </Link>
+                </Tooltip>
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+
         },
         {
           text: "Lab City",
@@ -204,6 +225,7 @@ class LabAdvertisementRequestsList extends Component {
     this.handleLabAdvertisementRequestClick =
       this.handleLabAdvertisementRequestClick.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.toggleLabModal = this.toggleLabModal.bind(this);
     this.handleLabAdvertisementRequestClicks =
       this.handleLabAdvertisementRequestClicks.bind(this);
   }
@@ -317,6 +339,23 @@ class LabAdvertisementRequestsList extends Component {
 
     this.toggle();
   };
+openLabModal = (e, arg) => {
+  this.setState({
+    LabModal: true,
+    lab_name: arg.lab_name,
+    address: arg.address,
+    landline: arg.landline,
+  });
+};
+
+toggleLabModal = () => {
+  this.setState(prevState => ({
+    LabModal: !prevState.LabModal,
+  }));
+  this.state.btnText === "Copy"
+    ? this.setState({ btnText: "Copied" })
+    : this.setState({ btnText: "Copy" });
+};
 
   render() {
     const { SearchBar } = Search;
@@ -402,6 +441,80 @@ class LabAdvertisementRequestsList extends Component {
                                       ref={this.node}
                                       filter={ filterFactory()}
                                     />
+                                     <Modal
+                                      isOpen={this.state.LabModal}
+                                      className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleLabModal}
+                                        tag="h4"
+                                      >
+                                        <span>Lab Details: </span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                  
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.landline
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state.landline
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
 
                                     <Modal
                                       isOpen={this.state.modal}

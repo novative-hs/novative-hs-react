@@ -232,7 +232,7 @@ class AdvertisementsList extends Component {
                <Tooltip title="Chat">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/adv-lab-chat-box/${labAdvertisement.id}`}
+                  to={`/lab-adv-chat-box/${labAdvertisement.id}`}
                   ></Link>
               </Tooltip>
             </div>

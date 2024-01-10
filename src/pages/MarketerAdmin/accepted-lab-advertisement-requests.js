@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
 import Tooltip from "@material-ui/core/Tooltip";
 import {
   Card,
@@ -72,13 +73,75 @@ class LabAdvertisementRequestsList extends Component {
           ),filter: textFilter(),
         },
         {
-          text: "Lab Name",
           dataField: "lab_name",
+          text: " Lab Name",
+          sort: true,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                <Tooltip title="Lab Info">
+                  <Link
+                    to="#"
+                    onClick={e => this.openLabModal(e, labAdvertisementRequest)}
+                  >
+                    {labAdvertisementRequest.lab_name}
+                  </Link>
+                </Tooltip>
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+
+        },
+        {
+          text: "Lab City",
+          dataField: "lab_address",
           sort: true,
           hidden: false,
           formatter: (cellContent, labAdvertisementRequest) => (
-            <>{labAdvertisementRequest.lab_name}</>
+            <>{labAdvertisementRequest.lab_address}</>
           ),filter: textFilter(),
+        },
+        {
+          text: "Advertisement Km",
+          dataField: "km",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>{labAdvertisementRequest.km}</>
+          ),filter: textFilter(),
+        },
+        {
+          text: "Start Time",
+          dataField: "posted_at",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                {moment(labAdvertisementRequest.posted_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter Start Date',
+          }),
+        },
+        {
+          text: "End Time",
+          dataField: "posted_till",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              <span>
+                {moment(labAdvertisementRequest.posted_till).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          filter: textFilter({
+            placeholder: 'Enter End Date',
+          }),
         },
         {
           dataField: "poster",
@@ -155,6 +218,7 @@ class LabAdvertisementRequestsList extends Component {
     this.handleLabAdvertisementRequestClick =
     this.handleLabAdvertisementRequestClick.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.toggleLabModal = this.toggleLabModal.bind(this);
     this.handleLabAdvertisementRequestClicks =
       this.handleLabAdvertisementRequestClicks.bind(this);
   }
@@ -235,6 +299,23 @@ class LabAdvertisementRequestsList extends Component {
 
     this.toggle();
   };
+  openLabModal = (e, arg) => {
+    this.setState({
+      LabModal: true,
+      lab_name: arg.lab_name,
+      address: arg.address,
+      landline: arg.landline,
+    });
+  };
+
+toggleLabModal = () => {
+  this.setState(prevState => ({
+    LabModal: !prevState.LabModal,
+  }));
+  this.state.btnText === "Copy"
+    ? this.setState({ btnText: "Copied" })
+    : this.setState({ btnText: "Copy" });
+};
 
   onPaginationPageChange = page => {
     if (
@@ -331,6 +412,80 @@ class LabAdvertisementRequestsList extends Component {
                                       filter={ filterFactory()}
                                       ref={this.node}
                                     />
+ <Modal
+                                      isOpen={this.state.LabModal}
+                                      className={this.props.className}
+                                      onPointerLeave={this.handleMouseExit}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleLabModal}
+                                        tag="h4"
+                                      >
+                                        <span>Lab Details: </span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                  
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.landline
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+
+                                                  <div className="col-md-3">
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-secondary"
+                                                      onClick={() => {
+                                                        navigator.clipboard.writeText(
+                                                          this.state.landline
+                                                        );
+                                                        this.setState({
+                                                          btnText: "Copied",
+                                                        });
+                                                      }}
+                                                    >
+                                                      {this.state.btnText}
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
 
                                     <Modal
                                       isOpen={this.state.modal}

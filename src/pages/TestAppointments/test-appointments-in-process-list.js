@@ -177,27 +177,27 @@ class TestAppointmentsInProcessList extends Component {
           }),
         },
 
-        {
-          dataField: "estimated_sample_collection_at",
-          text: "Sampling time by Lab",
-          sort: true,
-          formatter: (cellContent, patientTestAppointment) => (
-            <>
-              {patientTestAppointment.status == "Pending" ? (
-                <span>Not available yet</span>
-              ) : (
-                <span>
-                  {/* {new Date(
-                    patientTestAppointment.estimated_sample_collection_at
-                  ).toLocaleString("en-US")} */}
-                   {patientTestAppointment.estimated_sample_collection_at
-                  ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
-                  : "--"}
-                </span>
-              )}
-            </>
-          ), filter: textFilter(),
-        },
+        // {
+        //   dataField: "estimated_sample_collection_at",
+        //   text: "Sampling time by Lab",
+        //   sort: true,
+        //   formatter: (cellContent, patientTestAppointment) => (
+        //     <>
+        //       {patientTestAppointment.status == "Pending" ? (
+        //         <span>Not available yet</span>
+        //       ) : (
+        //         <span>
+        //           {/* {new Date(
+        //             patientTestAppointment.estimated_sample_collection_at
+        //           ).toLocaleString("en-US")} */}
+        //            {patientTestAppointment.estimated_sample_collection_at
+        //           ? moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")
+        //           : "--"}
+        //         </span>
+        //       )}
+        //     </>
+        //   ), filter: textFilter(),
+        // },
         {
           dataField: "estimated_result_uploading_at",
           text: "Reporting Time by Lab",
@@ -223,7 +223,7 @@ class TestAppointmentsInProcessList extends Component {
         },
         {
           dataField: "sample_collected_at",
-          text: "Sample collected at",
+          text: "Sampling Time",
           sort: true,
           formatter: (cellContent, patientTestAppointment) => (
             <>
@@ -231,7 +231,8 @@ class TestAppointmentsInProcessList extends Component {
                 patientTestAppointment.status == "Confirmed" ||
                 // patientTestAppointment.status == "Sample Collected" ||
                 patientTestAppointment.status == "Rescheduled" ? (
-                <span>----</span>
+                <span>{moment(patientTestAppointment.estimated_sample_collection_at).format("DD MMM YYYY, h:mm A")}
+                </span>
               ) : (
                 <span>
                   {/* {new Date(
@@ -927,6 +928,7 @@ class TestAppointmentsInProcessList extends Component {
               breadcrumbItem="In Process Appointments List"
             />
             <Row>
+              <p className="text-danger">NOte: Sampling Time shows test appointment time by lab before sample collection and once the sample is collected the same column shows the Sample Collected Time.</p>
               <Col lg="12">
                 <Card>
                   <CardBody>

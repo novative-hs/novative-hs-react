@@ -48,6 +48,9 @@ import {
   getInPayment,
   getStaffProfile
 } from "store/inpayments/actions";
+import {
+  getListDonationAppointment,
+} from "store/outpayments/actions";
 
 
 import { isEmpty, size } from "lodash";
@@ -78,12 +81,14 @@ class InPaymentsForm extends Component {
       amount: "",
       paid_at: "",
       cheque_payment_date: "",
+
       // deposit_bank: "",
       payment_method: "Cash",
       // card_number: "",
       cheque_no: "",
       refered_no: "",
       cheque_image: "",
+      test_appointment_id: "",
       // invoice_id: "",
       // cleared_at: "",
       // verified_by: "",
@@ -155,6 +160,7 @@ class InPaymentsForm extends Component {
       inPayment: {
         payment_for: this.state.payment_for,
         lab_id: this.state.lab_id,
+        test_appointment_id: this.state.test_appointment_id,
         donor_id: this.state.donor_id,
         advertisement_id: this.state.advertisement_id,
         amount: this.state.amount,
@@ -204,6 +210,12 @@ class InPaymentsForm extends Component {
     });
     console.log("state",staffProfiles)
     
+    const { listDonation, onGetListDonationAppointment } = this.props;
+    if (listDonation && !listDonation.length) {
+      onGetListDonationAppointment();
+    }
+    this.setState({ listDonation });
+
     const { labs, onGetlabs } = this.props;
     if (labs && !labs.length) {
       onGetlabs();
@@ -287,6 +299,7 @@ class InPaymentsForm extends Component {
     const { inPayments } = this.props;
     const { labs } = this.props;
     const { advertisements } = this.props;
+    const { listDonation } = this.props;
     const {staffProfiles} = this.props;
     const { donors } = this.props;
 
@@ -353,7 +366,17 @@ class InPaymentsForm extends Component {
       }
     }
     
-
+    const CashAppointmentList = [];
+    for (let i = 0; i < listDonation.length; i++) {
+      if (listDonation[i].payment_method === "Cash" && listDonation[i].payment_status === "Paid" && listDonation[i].is_settled == false) {
+        if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
+          CashAppointmentList.push({
+            label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
+            value: `${listDonation[i].id}`,
+          });
+        }
+     }
+    }
 
     // const advertisementList = [];
     // for (let i = 0; i < advertisements.length; i++) {
@@ -522,6 +545,67 @@ class InPaymentsForm extends Component {
 
                                 <div className="invalid-feedback">
                                   Please select your Lab
+                                </div>
+                              </div>)
+                          ) : null}
+                           {this.state.payment_for == "Lab" ? (
+                            inPayment.test_appointment_id ? (
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  Test Appointments
+                                </Label>
+                                <Field
+                                  name="test_appointment_id"
+                                  as="select"
+                                  defaultValue={inPayment.test_appointment_id}
+                                  className="form-control"
+                                  readOnly={true}
+                                  multiple={true} // Set to true to allow multiple selections
+                                >
+                                  {/* Render options for each selected test_appointment_id */}
+                                  {inPayment.test_appointment_id.map(value => (
+                                    <option key={value} value={value}>
+                                      {value}
+                                    </option>
+                                  ))}
+                                </Field>
+                              </div>
+                            ) : (
+                              <div className="mb-3 select2-container">
+                                <Label className="fw-bolder">Test Appointments</Label>
+                                <Select
+                                  name="test_appointment_id"
+                                  component="Select"
+                                  isMulti={true} // Uncomment this line
+                                  onChange={selectedGroup =>
+                                    this.setState({
+                                      test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
+                                    })
+                                  }
+                                  className={
+                                    "defautSelectParent" +
+                                    (!this.state.test_appointment_id
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  styles={{
+                                    control: (
+                                      base,
+                                      state
+                                    ) => ({
+                                      ...base,
+                                      borderColor: !this
+                                        .state.test_appointment_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                    }),
+                                  }}
+                                  options={CashAppointmentList}
+                                  placeholder="Select Appointment..."
+                                />
+
+                                <div className="invalid-feedback">
+                                  Please select Appointment
                                 </div>
                               </div>)
                           ) : null}
@@ -1175,15 +1259,20 @@ InPaymentsForm.propTypes = {
   onGetAcceptedLabAdvertisements: PropTypes.func,
   onGetStaffProfile: PropTypes.func,
   staffProfiles: PropTypes.func,
+  onGetListDonationAppointment: PropTypes.func,
+  listDonation: PropTypes.array,
+
 
 };
 
-const mapStateToProps = ({ inPayments }) => ({
+const mapStateToProps = ({ inPayments, outPayments }) => ({
   inPayments: inPayments.inPayments,
   labs: inPayments.labs,
   donors: inPayments.donors,
   advertisements: inPayments.advertisements,
   staffProfiles: inPayments.staffProfiles,
+  listDonation: outPayments.listDonation,
+
 
   // units: inPayments.units,
 });
@@ -1194,6 +1283,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAcceptedLabAdvertisements: () => dispatch(getAcceptedLabAdvertisements()),
   onGetdonors: () => dispatch(getDonors()),
   onGetInPayment: id => dispatch(getInPayment(id)),
+  onGetListDonationAppointment: () => dispatch(getListDonationAppointment()),
   onAddInPaymentData: (inPayment, id) =>
     dispatch(addNewInPayment(inPayment, id)),
   onGetStaffProfile: id => dispatch(getStaffProfile(id)),
