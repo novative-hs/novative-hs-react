@@ -316,11 +316,16 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < labsMof.length; i++) {
       if (labsMof[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
-          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
+          label: labsMof[i].name,
           value: labsMof[i].id,
+          type: labsMof[i].type,
+          city: labsMof[i].city,
         });
       }
     }
+    
+    // Assuming you have a state variable to store the selected lab id (this.state.selectedLabId)
+    const selectedLab = labList.find(lab => lab.value === this.state.lab_id);
 
     // const DonationAppointmentList = [];
     // for (let i = 0; i < listDonation.length; i++) {
@@ -337,29 +342,61 @@ class OutPaymentsForm extends Component {
     //     });
     //   }
     // }
+    const DonationAppointmentList = listDonation
+    .filter(
+      donation =>
+        donation.payment_method === "Donation" &&
+        donation.payment_status === "Allocate" &&
+        donation.status === "Result Uploaded" &&
+        donation.lab_office === this.props.staffProfiles.territory_office &&
+        donation.dues !== undefined &&
+        donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
 
-    const DonationAppointmentList = [];
-    for (let i = 0; i < listDonation.length; i++) {
-      if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Donation" && listDonation[i].payment_status === "Allocate") {
-        if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
-          DonationAppointmentList.push({
-            label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
-            value: `${listDonation[i].id}`,
-          });
-        }
-     }
-    }
-    const CardAppointmentList = [];
-    for (let i = 0; i < listDonation.length; i++) {
-      if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Card" && listDonation[i].payment_status === "Paid" && listDonation[i].is_settled == false) {
-        if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
-          CardAppointmentList.push({
-            label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
-            value: `${listDonation[i].id}`,
-          });
-        }
-     }
-    }
+    )
+    .map(donation => ({
+      label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
+      value: donation.id,
+      data: { dues: donation.dues }, // Include the 'dues' property in the data field
+    }));
+
+    // const DonationAppointmentList = [];
+    // for (let i = 0; i < listDonation.length; i++) {
+    //   if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Donation" && listDonation[i].payment_status === "Allocate") {
+    //     if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
+    //       DonationAppointmentList.push({
+    //         label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
+    //         value: `${listDonation[i].id}`,
+    //       });
+    //     }
+    //  }
+    // }
+    const CardAppointmentList = listDonation
+    .filter(
+      donation =>
+        donation.payment_method === "Card" &&
+        donation.payment_status === "Paid" &&
+        donation.status === "Result Uploaded" &&
+        donation.is_settled == false &&
+        donation.lab_office === this.props.staffProfiles.territory_office &&
+        donation.dues !== undefined &&
+        donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
+    )
+    .map(donation => ({
+      label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
+      value: donation.id,
+      data: { dues: donation.dues }, // Include the 'dues' property in the data field
+    }));
+    // const CardAppointmentList = [];
+    // for (let i = 0; i < listDonation.length; i++) {
+    //   if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Card" && listDonation[i].payment_status === "Paid" && listDonation[i].is_settled == false) {
+    //     if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
+    //       CardAppointmentList.push({
+    //         label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
+    //         value: `${listDonation[i].id}`,
+    //       });
+    //     }
+    //  }
+    // }
 
     // const b2bList = [];
     // for (let i = 0; i < b2bClients.length; i++) {
@@ -629,11 +666,21 @@ class OutPaymentsForm extends Component {
                                   name="test_appointment_id"
                                   component="Select"
                                   isMulti={true} // Uncomment this line
-                                  onChange={selectedGroup =>
+                                  onChange={selectedGroup => {
                                     this.setState({
-                                      test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
-                                    })
-                                  }
+                                      test_appointment_id: selectedGroup.map(option => option.value),
+                                    });
+                                
+                                    const selectedData = selectedGroup.map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+                                      0
+                                    );
+                                
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }}
                                   className={
                                     "defautSelectParent" +
                                     (!this.state.test_appointment_id
@@ -690,11 +737,21 @@ class OutPaymentsForm extends Component {
                                   name="test_appointment_id"
                                   component="Select"
                                   isMulti={true} // Uncomment this line
-                                  onChange={selectedGroup =>
+                                  onChange={selectedGroup => {
                                     this.setState({
-                                      test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
-                                    })
-                                  }
+                                      test_appointment_id: selectedGroup.map(option => option.value),
+                                    });
+                                
+                                    const selectedData = selectedGroup.map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+                                      0
+                                    );
+                                
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }}
                                   className={
                                     "defautSelectParent" +
                                     (!this.state.test_appointment_id
@@ -820,29 +877,31 @@ class OutPaymentsForm extends Component {
                           ) : null} */}
 
 
-                          <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput" className="fw-bolder">
-                              Amount
-                              <span
-                                style={{ color: "#f46a6a" }}
-                                className="font-size-18"
-                              >
-                                *
-                              </span>
-                            </Label>
-                            <Input
-                              type="number"
-                              className="form-control"
-                              id="cardnumberInput"
-                              placeholder="Enter Amount"
-                              name="amount"
-                              onChange={e =>
-                                this.setState({
-                                  amount: e.target.value,
-                                })
-                              }
-                            />
-                          </FormGroup>
+<FormGroup className="mb-0">
+  <Label htmlFor="cardnumberInput" className="fw-bolder">
+    Amount
+    <span
+      style={{ color: "#f46a6a" }}
+      className="font-size-18"
+    >
+      *
+    </span>
+  </Label>
+  <Input
+    type="text"
+    className="form-control"
+    id="cardnumberInput"
+    placeholder="Enter Amount"
+    name="amount"
+    value={this.state.amount}
+    onChange={e =>
+      this.setState({
+        amount: e.target.value,
+      })
+    }
+  />
+</FormGroup>
+             
 
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">

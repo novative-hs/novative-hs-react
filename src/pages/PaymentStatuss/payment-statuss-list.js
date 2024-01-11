@@ -159,6 +159,7 @@ class PaymentStatussList extends Component {
                 verified_by: arg.verified_by,
                 bankaccount_id: arg.bankaccount_id,
                 deposit_slip: arg.deposit_slip,
+                payment_for: arg.payment_for,
                 payment_status: "Pending Clearance",
             },
             isEdit: true,
@@ -354,53 +355,7 @@ class PaymentStatussList extends Component {
                 style: { backgroundColor: '	#F0F0F0' },
               
             },
-            // {
-            // dataField: "bankaccount_id",
-            // text: "Deposit Bank",
-            // sort: true,
-            // },
-            // {
-            // dataField: "deposit_slip",
-            // text: "Certificate",
-            // sort: true,
-            // formatter: (cellContent, paymentStatus) => (
-            // <>
-            // <Link
-            // to={{
-            // pathname:
-            // process.env.REACT_APP_BACKENDURL +
-            // paymentStatus.deposit_slip,
-            // }}
-            // target="_blank"
-            // >
-            // View Slip
-            // </Link>
-            // </>
-            // ),
-            // },
-            // {
-            //     dataField: "cheque_image",
-            //     text: "Cheque Copy",
-            //     sort: true,
-            //     formatter: (cellContent, paymentStatus) => (
-            //         <>
-            //             <Link
-            //                 to={{
-            //                     pathname:
-            //                         process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
-            //                 }}
-            //                 target="_blank"
-            //             >
-            //                 View
-            //             </Link>
-            //         </>
-            //     ),
-            // },
-            // {
-            //     dataField: "payment_status",
-            //     text: "Status",
-            //     sort: true,
-            // },
+           
             {
                 dataField: "menu",
                 isDummyField: true,
@@ -422,6 +377,9 @@ class PaymentStatussList extends Component {
             },
         ];
         const { SearchBar } = Search;
+        const isDonation = this.state.paymentStatus.payment_for === "Donor";
+
+        console.log("what payment type", isDonation)
 
         const { paymentStatuss } = this.props;
 
@@ -451,20 +409,33 @@ class PaymentStatussList extends Component {
 
         const { bankAccounts } = this.props;
         const bankaccountList = [];
+        // for (let i = 0; i < bankAccounts.length; i++) {
+        //     let flag = 0;
+        //     if (!flag) {
+        //         bankaccountList.push({
+        //             label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
+        //             value: `${bankAccounts[i].id}`,
+        //         });
+        //     }
+        // }
         for (let i = 0; i < bankAccounts.length; i++) {
-            let flag = 0;
-            // for (let j = 0; j < bankAccounts.length; j++) {
-            // if (banks[i].id == bankAccounts[j].bank_id) {
-            // flag = 1;
-            // }
-            // }
-            if (!flag) {
+            if (isDonation) {
+              if (bankAccounts[i].account_type === "DONATION") {
                 bankaccountList.push({
-                    label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
-                    value: `${bankAccounts[i].id}`,
+                  label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
+                  value: `${bankAccounts[i].id}`,
                 });
+              }
+            } else {
+              if (bankAccounts[i].account_type != "DONATION") {
+                bankaccountList.push({
+                  label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
+                  value: `${bankAccounts[i].id}`,
+                });
+              }
             }
-        }
+      
+          }
 
         return (
             <React.Fragment>
@@ -554,6 +525,10 @@ class PaymentStatussList extends Component {
                                                                                     initialValues={{
                                                                                         hiddenEditFlag: isEdit,
 
+                                                                                        payment_for:
+                                                                                            (this.state &&
+                                                                                                this.state.payment_for) ||
+                                                                                            "",
                                                                                         bankaccount_id:
                                                                                             (this.state &&
                                                                                                 this.state.bankaccount_id) ||

@@ -103,46 +103,6 @@ class InPaymentsForm extends Component {
     // console.log("finance officer office", this.props.staffProfiles.territory_office);
 
   }
-
-  // handleProceedClicks = () => {
-  //   this.setState({
-  //     inPayment: {
-  //       payment_for: this.state.payment_for,
-  //       lab_id: this.state.lab_id,
-  //       donor_id: this.state.donor_id,
-  //       amount: this.state.amount,
-  //       payment_method: this.state.payment_method,
-  //       recieved_by: this.state.recieved_by,
-  //       handover_to: this.state.handover_to,
-  //       paid_at: this.state.paid_at,
-  //       // deposited_at: this.state.deposited_at,
-  //       // deposit_bank: this.state.deposit_bank,
-  //       cheque_no: this.state.cheque_no,
-  //       cheque_image: this.state.cheque_image,
-  //       refered_no: this.state.refered_no,
-  //       payment_status: "Deposited",
-  //     },
-  //   });
-
-  //   // API call to get the checkout items
-  //   const { onAddInPaymentData } = this.props;
-  //   setTimeout(() => {
-  //     console.log(
-  //       onAddInPaymentData(this.state.inPayment, this.state.user_id)
-  //     );
-  //   }, 2000);
-
-  //   // setTimeout(() => {
-  //   // this.setState({ inPayment: this.props.inPayment });
-
-  //   // // If checkout operation is successful.
-  //   // if (this.props.inPayment) {
-  //   // this.props.history.push("/donor-appointment");
-  //   // }
-  //   // }, 2000);
-  //   // }
-  // };
-
   dataURLtoFile = (dataurl, filename) => {
     var arr = dataurl.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
@@ -189,16 +149,6 @@ class InPaymentsForm extends Component {
       this.props.history.push("/payment-status");
       window.location.reload()
   }, 2000)
-
-    // setTimeout(() => {
-    // this.setState({ inPayment: this.props.inPayment });
-
-    // // If checkout operation is successful.
-    // if (this.props.inPayment) {
-    // this.props.history.push("/donor-appointment");
-    // }
-    // }, 2000);
-    // }
   };
 
   componentDidMount() {
@@ -292,6 +242,13 @@ class InPaymentsForm extends Component {
       patient_phone: arg.patient_phone,
     });
   };
+  calculateTotalAmount = selectedTestAppointments => {
+    const totalAmount = selectedTestAppointments.reduce(
+      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+      0
+    );
+    return totalAmount;
+  };
 
   render() {
     const { SearchBar } = Search;
@@ -321,79 +278,37 @@ class InPaymentsForm extends Component {
         order: "desc", // desc or asc
       },
     ];
-
-    // const labList = [];
-    // for (let i = 0; i < labs.length; i++) {
-    //   let flag = 0;
-    //   // for (let j = 0; j < inPayments.length; j++) {
-    //   //   if (labs[i].id == inPayments[j].lab_id) {
-    //   //     flag = 1;
-    //   //   }
-    //   // }
-    //   if (!flag) {
-    //     labList.push({
-    //       label: labs[i].name,
-    //       value: labs[i].id,
-    //     });
-    //   }
-    // }
-    // const labList = [];
-    // for (let i = 0; i < labs.length; i++) {
-    //   let flag = 0;
-    //   // for (let j = 0; j < inPayments.length; j++) {
-    //   //   if (labs[i].id == inPayments[j].lab_id) {
-    //   //     flag = 1;
-    //   //   }
-    //   // }
-    //   if (!flag) {
-    //     labList.push(
-    //       {
-    //         label: `${labs[i].name}`,
-    //         value: `${labs[i].id}`,
-    //       },
-    //     );
-    //   }
-    // }
     const labList = [];
     for (let i = 0; i < labs.length; i++) {
       if (labs[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
           label: labs[i].name,
           value: labs[i].id,
-          label: `${labs[i].name} - ${labs[i].type} - ${labs[i].city}`,
-          value: `${labs[i].id}`,
+          type: labs[i].type,
+          city: labs[i].city,
         });
       }
     }
     
-    const CashAppointmentList = [];
-    for (let i = 0; i < listDonation.length; i++) {
-      if (listDonation[i].payment_method === "Cash" && listDonation[i].payment_status === "Paid" && listDonation[i].is_settled == false) {
-        if (listDonation[i].lab_office === this.props.staffProfiles.territory_office) {
-          CashAppointmentList.push({
-            label: `${listDonation[i].id} - ${listDonation[i].lab_name} - ${listDonation[i].lab_type} - ${listDonation[i].lab_city}`,
-            value: `${listDonation[i].id}`,
-          });
-        }
-     }
-    }
-
-    // const advertisementList = [];
-    // for (let i = 0; i < advertisements.length; i++) {
-    //   let flag = 0;
-    //   for (let j = 0; j < inPayments.length; j++) {
-    //     if (advertisements[i].id == inPayments[j].advertisement_id) {
-    //       flag = 1;
-    //     }
-    //   }
-    //   if (!flag) {
-    //     // const optionValue = `${advertisements[i].id}-${advertisements[i].lab_id}`;
-    //     advertisementList.push({
-    //       label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name})`,
-    //       value: `${advertisements[i].id}`,
-    //     });
-    //   }
-    // }
+    // Assuming you have a state variable to store the selected lab id (this.state.selectedLabId)
+    const selectedLab = labList.find(lab => lab.value === this.state.lab_id);
+    
+    const CashAppointmentList = listDonation
+      .filter(
+        donation =>
+          donation.payment_method === "Cash" &&
+          donation.payment_status === "Paid" &&
+          donation.is_settled === false &&
+          donation.lab_office === this.props.staffProfiles.territory_office &&
+          donation.dues !== undefined &&
+          donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
+      )
+      .map(donation => ({
+        label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
+        value: donation.id,
+        data: { dues: donation.dues },
+      }));
+    
     const advertisementList = [];
     for (let i = 0; i < advertisements.length; i++) {
       if (advertisements[i].lab_office === this.props.staffProfiles.territory_office) {
@@ -438,13 +353,6 @@ class InPaymentsForm extends Component {
                     <Card >
                       <CardBody >
                         <div>
-                          {/* <CardTitle className="h4">
-                            Payment information
-                          </CardTitle>
-                          <p className="card-title-desc">
-                            Fill the Cheque payment only if your payment method
-                            is Cheque
-                          </p> */}
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment From
@@ -577,11 +485,22 @@ class InPaymentsForm extends Component {
                                   name="test_appointment_id"
                                   component="Select"
                                   isMulti={true} // Uncomment this line
-                                  onChange={selectedGroup =>
+                                  onChange={selectedGroup => {
                                     this.setState({
-                                      test_appointment_id: selectedGroup.map(option => option.value), // Update to store an array of selected values
-                                    })
-                                  }
+                                      test_appointment_id: selectedGroup.map(option => option.value),
+                                    });
+                                
+                                    const selectedData = selectedGroup.map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+                                      0
+                                    );
+                                
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }}
+                                
                                   className={
                                     "defautSelectParent" +
                                     (!this.state.test_appointment_id
@@ -755,29 +674,30 @@ class InPaymentsForm extends Component {
                             
                           ) : null}
 
-                          <FormGroup className="mb-0">
-                            <Label htmlFor="cardnumberInput" className="fw-bolder">
-                              Amount
-                              <span
-                                style={{ color: "#f46a6a" }}
-                                className="font-size-18"
-                              >
-                                *
-                              </span>
-                            </Label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              id="cardnumberInput"
-                              placeholder="Enter Amount"
-                              name="amount"
-                              onChange={e =>
-                                this.setState({
-                                  amount: e.target.value,
-                                })
-                              }
-                            />
-                          </FormGroup>
+<FormGroup className="mb-0">
+  <Label htmlFor="cardnumberInput" className="fw-bolder">
+    Amount
+    <span
+      style={{ color: "#f46a6a" }}
+      className="font-size-18"
+    >
+      *
+    </span>
+  </Label>
+  <Input
+    type="text"
+    className="form-control"
+    id="cardnumberInput"
+    placeholder="Enter Amount"
+    name="amount"
+    value={this.state.amount}
+    onChange={e =>
+      this.setState({
+        amount: e.target.value,
+      })
+    }
+  />
+</FormGroup>
                           <div>
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment Method
