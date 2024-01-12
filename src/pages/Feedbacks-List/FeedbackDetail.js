@@ -13,6 +13,8 @@ import { withTranslation } from "react-i18next";
 import { Row, Col, Card, CardBody } from "reactstrap";
 
 import { getFeedbacks } from "store/feedbacks/actions";
+import moment from 'moment';
+
 
 class FeedbackDetail extends Component {
   constructor(props) {
@@ -80,9 +82,10 @@ class FeedbackDetail extends Component {
                           <div className="text-muted font-size-12">
                             <i className="far fa-calendar-alt text-primary me-1" />
                             {/* {feedback.date} */}
-                            {new Date(feedback.rated_at).toLocaleString(
+                            {/* {new Date(feedback.rated_at).toLocaleString(
                               "en-US"
-                            )}
+                            )} */}
+                            {moment(feedback.rated_at).format("DD MMM YYYY, h:mm A")}
                           </div>
                         </Col>
                       </Row>

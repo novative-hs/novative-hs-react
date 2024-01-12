@@ -88,7 +88,9 @@ class AdvertisementsList extends Component {
           text: "Title",
           sort: true,
           filter: textFilter(),
-        },
+          headerStyle: { textAlign: 'left' }, // Add this line to left-align the column header
+          style: { textAlign: 'left' }, // Add this line to left-align the column content
+        },        
         {
           text: "Start Time",
           dataField: "posted_at",

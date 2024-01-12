@@ -6,6 +6,7 @@ import MetaTags from "react-meta-tags";
 import { any } from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import logo from "../../assets/images/logo-dark.png";
+import moment from 'moment';
 
 import {
   Alert,
@@ -195,6 +196,9 @@ class LabAudits extends Component {
                             <br />
                             Kilometers: {this.props.advinvoice[0].km} km&lsquo;s
                             <br />
+                            <br />
+                            Total: {this.props.advinvoice[0].price} price&lsquo;s
+                            <br />
                           </address>
                         </Col>
                         <Col sm="4" className="mt-3 text-sm-end">
@@ -208,10 +212,6 @@ class LabAudits extends Component {
                           <address>
                             <strong>Payment Detail:</strong>
                             <br />
-                            {this.props.advinvoice[0].payment_method}
-                            <br />
-                            {this.props.advinvoice[0].payment_status}
-                            <br />
                             {this.props.advinvoice[0].payment_method ==
                             "Card" ? (
                               <>
@@ -219,7 +219,14 @@ class LabAudits extends Component {
                                   this.props.advinvoice[0].paid_at
                                 ).toLocaleString("en-US")}
                               </>
-                            ) : null}
+                            ) : 
+                            <span>Not Paid</span>}
+                            <br />
+                            {this.props.advinvoice[0].payment_method}
+                            <br />
+                            {this.props.advinvoice[0].payment_status}
+                            <br />
+                          
                           </address>
                         </Col>
 
@@ -227,9 +234,7 @@ class LabAudits extends Component {
                           <address>
                             <strong>Order Detail:</strong>
                             <br />
-                            {new Date(
-                              this.props.advinvoice[0].invoice_generated_at
-                            ).toLocaleString("en-US")}
+                            {moment(this.props.advinvoice[0].invoice_generated_at).format("DD MMM YYYY, h:mm A")}
                             <br />
                             <br />
                           </address>
@@ -247,10 +252,12 @@ class LabAudits extends Component {
                           <thead>
                             <tr>
                               <th style={{ width: "70px" }}>No.</th>
-                              <th className="text-start">Advertisement id</th>
+                              <th className="text-start">Advertisement ID</th>
                               <th className="text-start">Advertisement name</th>
                               <th className="text-end">Days</th>
                               <th className="text-end">Kilometers</th>
+                              <th className="text-end">Total</th>
+
                               {/* <th className="text-end">Price</th> */}
                               {/* <th className="text-end">Discount</th> */}
                             
@@ -267,6 +274,8 @@ class LabAudits extends Component {
                                   <td className="text-start">{item.title}</td>
                                   <td className="text-end">{item.number_of_days}</td>
                                   <td className="text-end">{item.km}</td>
+                                  <td className="text-end">{item.price}</td>
+
                                   {/* <td className="text-end">{(item.discount_by_labhazir+item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td> */}
                                    {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
                                    {/* <td className="text-end">
@@ -280,7 +289,7 @@ class LabAudits extends Component {
                               )
                             )}
                            
-                            <tr>
+                            {/* <tr>
                               <td colSpan="6" className="border-10 text-end">
                                 <strong>Total</strong>
                               </td>
@@ -289,7 +298,7 @@ class LabAudits extends Component {
                                   {(this.props.advinvoice[0].price).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </h4>
                               </td>
-                            </tr>
+                            </tr> */}
                           </tbody>
                         </Table>
                       </div>

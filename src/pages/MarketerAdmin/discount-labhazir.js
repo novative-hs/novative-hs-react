@@ -288,7 +288,7 @@ class DiscountLabHazirList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Discount" breadcrumbItem="Lab Hazir" />
+            <Breadcrumbs title="Discount" breadcrumbItem="Lab Hazir Discount For All Tests" />
             <Row>
               <Col lg="12">
                 <Card>

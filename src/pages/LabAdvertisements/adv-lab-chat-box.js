@@ -30,7 +30,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 import images from "assets/images";
-
+import moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
@@ -156,21 +156,21 @@ class MsgsList extends Component {
                         {msg.chat &&(
                           <div >
                             <p>
-                              <b>{msg.name}</b>{" "}{msg.chat} at {" "} {new Date(msg.added_at).toLocaleString("en-US")}
+                              <b>{msg.name}</b>{" "}{msg.chat} at {" "} {moment(msg.added_at).format("DD MMM YYYY, h:mm A")}
                             </p>
                           </div> 
                         )}
                         {msg.field_name == "request_status" &&(
                           <div >
                           <p>
-                            <b>{msg.name}</b>{" "} changes advertisement status to {msg.field_name} at {" "} {new Date(msg.added_at).toLocaleString("en-US")}.
+                            <b>{msg.name}</b>{" "} changes advertisement status to {msg.field_name} at {" "} {moment(msg.added_at).format("DD MMM YYYY, h:mm A")}.
                           </p>
                         </div>
                         )}
                         {msg.actions == "Added" &&(
                           <div >
                           <p>
-                            <b>{msg.name}</b>{" "} submitted advertisement for approval on {" "} {new Date(msg.added_at).toLocaleString("en-US")}.
+                            <b>{msg.name}</b>{" "} submitted advertisement for approval on {" "} {moment(msg.added_at).format("DD MMM YYYY, h:mm A")}
                           </p>
                         </div>
                         )}

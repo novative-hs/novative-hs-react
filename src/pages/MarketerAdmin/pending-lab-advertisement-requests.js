@@ -55,6 +55,7 @@ class LabAdvertisementRequestsList extends Component {
       labAdvertisementRequest: "",
       certificateImg: "",
       modal: false,
+      btnText: "Copy",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -88,7 +89,8 @@ class LabAdvertisementRequestsList extends Component {
                 <Tooltip title="Lab Info">
                   <Link
                     to="#"
-                    onClick={e => this.openLabModal(e, labAdvertisementRequest)}
+                    onClick={(e) => this.openLabModal(e, labAdvertisementRequest)}
+                    style={{ textAlign: 'left' }} // Add this style
                   >
                     {labAdvertisementRequest.lab_name}
                   </Link>
@@ -97,7 +99,6 @@ class LabAdvertisementRequestsList extends Component {
             </>
           ),
           filter: textFilter(),
-
         },
         {
           text: "Lab City",
@@ -214,7 +215,7 @@ class LabAdvertisementRequestsList extends Component {
               <Tooltip title="Added">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/adv-lab-chat-box/${labAdvertisementRequest.id}`}
+                  to={`/adv-madmin-chat-box/${labAdvertisementRequest.id}`}
                 ></Link>
               </Tooltip>
             </div>

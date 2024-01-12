@@ -55,6 +55,7 @@ class LabAdvertisementRequestsList extends Component {
       labAdvertisementRequest: "",
       certificateImg: "",
       modal: false,
+      btnText: "Copy",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -82,7 +83,8 @@ class LabAdvertisementRequestsList extends Component {
                 <Tooltip title="Lab Info">
                   <Link
                     to="#"
-                    onClick={e => this.openLabModal(e, labAdvertisementRequest)}
+                    onClick={(e) => this.openLabModal(e, labAdvertisementRequest)}
+                    style={{ textAlign: 'left' }} // Add this style
                   >
                     {labAdvertisementRequest.lab_name}
                   </Link>
@@ -91,7 +93,6 @@ class LabAdvertisementRequestsList extends Component {
             </>
           ),
           filter: textFilter(),
-
         },
         {
           text: "Lab City",
@@ -198,15 +199,7 @@ class LabAdvertisementRequestsList extends Component {
                <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/comments-list/${labAdvertisementRequest.id}`}
-                ></Link>
-              </Tooltip>
-              )}
-              {this.state.account_type === "finance-officer" && (
-               <Tooltip title="Add Comment">
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/chat-list/${labAdvertisementRequest.id}`}
+                  to={`/adv-madmin-chat-box/${labAdvertisementRequest.id}`}
                 ></Link>
               </Tooltip>
               )}
@@ -412,7 +405,7 @@ toggleLabModal = () => {
                                       filter={ filterFactory()}
                                       ref={this.node}
                                     />
- <Modal
+                                    <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
                                       onPointerLeave={this.handleMouseExit}

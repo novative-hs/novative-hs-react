@@ -71,35 +71,25 @@ class DiscountLabHazirList extends Component {
           dataField: "test_name",
           text: "Test Name",
           sort: true,
-          // headerStyle: {
-          //   // width: "330px",
-          //   textAlign: "center",
-          // },
-          // formatter: (cellContent, discountLabHazirToLab) => (
-          //   <>
-          //       <span>
-          //       <p className="float-start">
-                 
-          //           {discountLabHazirToLab.test_name}</p>
-          //       </span>
-              
-          //   </>
-          // ),
+          formatter: (cellContent, discountLabHazirToLab) => (
+            <>
+              <span className="float-start"> {discountLabHazirToLab.test_name}</span>
+            </>),
           filter: textFilter(),
         },
-        {
-          dataField: "lab_name",
-          text: "Lab Name",
-          sort: true,
-          // formatter: (cellContent, discountLabHazirToLab) => (
-          //   <>
-          //   <p className="text-start" style={{whiteSpace:"pre-wrap", width: "200px"}}>
-          //     <span>{discountLabHazirToLab.lab_name}</span>
-          //     </p>
-          //   </>
-          // ),
-          filter: textFilter(),
-        },
+        // {
+        //   dataField: "lab_name",
+        //   text: "Lab Name",
+        //   sort: true,
+        //   // formatter: (cellContent, discountLabHazirToLab) => (
+        //   //   <>
+        //   //   <p className="text-start" style={{whiteSpace:"pre-wrap", width: "200px"}}>
+        //   //     <span>{discountLabHazirToLab.lab_name}</span>
+        //   //     </p>
+        //   //   </>
+        //   // ),
+        //   filter: textFilter(),
+        // },
         {
           dataField: "price",
           text: "Test Price",
@@ -349,7 +339,22 @@ class DiscountLabHazirList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Discount" breadcrumbItem="Lab Hazir" />
+            <Breadcrumbs title="Discount"
+            breadcrumbItem={discountLabHazirToLabs.map((lab, index) => {
+                // Check if lab_name is defined and not null
+                if (lab.lab_name_new !== undefined && lab.lab_name_new !== null) {
+                  // Return a div for each lab_name
+                  return (
+                    <div key={index} className="float-end">
+                       <span>Lab Hazir Discount for Lab: </span>{" "}
+                      <span className="text-danger">{lab.lab_name_new}</span>
+                    </div>
+                  );
+                }
+                // Don't render anything for labs without lab_name
+                return null;
+              })}
+             />
             <Row>
               <Col lg="12">
                 <Card>

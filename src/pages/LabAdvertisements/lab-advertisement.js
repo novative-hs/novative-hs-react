@@ -73,7 +73,7 @@ class AdvertisementsList extends Component {
         : "",
       advertisementListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           hidden: false,
@@ -155,13 +155,20 @@ class AdvertisementsList extends Component {
         },
         {
           dataField: "number_of_days",
-          text: "number of days",
+          text: "Duration In Days",
           sort: true,
         },
         {
           dataField: "amount",
           text: "Price",
           sort: true,
+          formatter: (cellContent, labAdvertisement) => (
+            <>
+              {(
+                <span>{labAdvertisement.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "payment_status",
@@ -169,16 +176,14 @@ class AdvertisementsList extends Component {
           sort: true,
           formatter: (cellContent, labAdvertisement) => (
             <>
-              {labAdvertisement.payment_status == "Not Paid" ? (
-                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-danger">
-                  {labAdvertisement.payment_method},{" "}
-                  {labAdvertisement.payment_status}
-                </span>
-              ) : (
+              {labAdvertisement.payment_status == "Paid" ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                  {labAdvertisement.payment_method},{" "}
-                  {labAdvertisement.payment_status}
-                </span>
+                {labAdvertisement.payment_method},{" "}
+                {labAdvertisement.payment_status}
+              </span>
+              ) : (
+                <span>--</span>
+
               )}
             </>
           ),

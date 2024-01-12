@@ -382,7 +382,7 @@ class InPaymentsForm extends Component {
                               </option>
                               <option value="Lab">Lab</option>
                               <option value="Donor">Donor</option>
-                              <option value="Advertisement">Advertisement</option>
+                              <option value="Advertisement">Lab-Advertisement</option>
                             </select>
 
                           </FormGroup>
