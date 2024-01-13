@@ -324,7 +324,7 @@ export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin
 
 export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 export const GET_DONORSA = `${API_ENDPOINT}/api/finance-admin/donationappointment-list`;
-
+export const GET_DONORS_LIST = `${API_ENDPOINT}/api/donor/list-donor`;
 
 
 // NEARBY TESTS

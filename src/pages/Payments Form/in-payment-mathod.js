@@ -315,6 +315,7 @@ class InPaymentsForm extends Component {
         advertisementList.push({
           label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name}) - (Price: ${advertisements[i].amount})`,
           value: `${advertisements[i].id}`,
+          data: {dues: `${advertisements[i].amount}`}  
         });
       }
     }
@@ -637,12 +638,17 @@ class InPaymentsForm extends Component {
                                 <Select
                                   name="advertisement_id"
                                   component="Select"
-                                  onChange={selectedGroup =>
+                                  onChange={selectedGroup => {
+                                    const selectedData = selectedGroup.data || {};
+                                    const totalAmount = parseFloat(selectedData.dues) || 0;
+                                  
                                     this.setState({
-                                      advertisement_id:
-                                        selectedGroup.value,
-                                    })
-                                  }
+                                      advertisement_id: selectedGroup.value,
+                                      amount: totalAmount || '0'
+                                    });
+                                  }}
+                                  
+                                  
                                   className={
                                     "defautSelectParent" +
                                     (!this.state.advertisement_id
@@ -673,8 +679,34 @@ class InPaymentsForm extends Component {
 
                             
                           ) : null}
+            {this.state.payment_for == "Advertisement" || this.state.payment_for == "Lab" ? (
 
 <FormGroup className="mb-0">
+  <Label htmlFor="cardnumberInput" className="fw-bolder">
+    Amount
+    <span
+      style={{ color: "#f46a6a" }}
+      className="font-size-18"
+    >
+      *
+    </span>
+  </Label>
+  <Input
+    type="text"
+    className="form-control"
+    id="cardnumberInput"
+    placeholder="Amount.."
+    name="amount"
+    value={this.state.amount}
+    onChange={e =>
+      this.setState({
+        amount: e.target.value,
+      })
+    }
+    readOnly // Set readOnly to true
+  />
+</FormGroup>) : (
+  <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
     Amount
     <span
@@ -698,6 +730,7 @@ class InPaymentsForm extends Component {
     }
   />
 </FormGroup>
+)}
                           <div>
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment Method

@@ -97,7 +97,7 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
               {(
-                <span>{discountLabHazirToLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                 <span className="float-end"> {discountLabHazirToLab.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               )}
             </>
           ),
@@ -134,7 +134,7 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
               {(
-                <span>{(discountLabHazirToLab.price-((discountLabHazirToLab.price*(discountLabHazirToLab.discount_by_labhazir + discountLabHazirToLab.discount)*100)/100)).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                 <span className="float-end"> {(discountLabHazirToLab.price-((discountLabHazirToLab.price*(discountLabHazirToLab.discount_by_labhazir + discountLabHazirToLab.discount)*100)/100)).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
                 // (discountLab.price-((discountLab.price*(discountLab.discount*100))/100))
               )}
             </>
@@ -425,7 +425,7 @@ class DiscountLabHazirList extends Component {
                                         tag="h4"
                                       >
                                         {!this.state.isEditAll
-                                          ? "Discount on one discountLabHazirToLab"
+                                          ? "Discount on Test"
                                           : "Discount on all tests"}
                                       </ModalHeader>
                                       <ModalBody>

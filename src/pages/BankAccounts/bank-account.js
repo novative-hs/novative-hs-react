@@ -186,11 +186,11 @@ class DonorPayment extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Bank Account | Lab Hazir - Dashboard</title>
+            <title>Create Bank Account | Lab Hazir - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Add" breadcrumbItem="Bank Account" />
+            <Breadcrumbs title="Create" breadcrumbItem="Create Bank Account" />
             {this.state.complaintSuccess && (
               <Alert color="success" className="col-md-8">
                 {this.state.complaintSuccess}
@@ -213,11 +213,11 @@ class DonorPayment extends Component {
                         <div>
 
                           <CardTitle className="h4">
-                            Bank Account Information
+                            {/* Bank Account Information */}
                           </CardTitle>
                           <p className="card-title-desc">
-                            Fill the Bank Account Information
-                          </p>
+                          <b>Fill in the necessary Information to create a Bank Account.</b>
+                                                    </p>
                           <FormGroup className="mb-4" row>
                             {/* Make field readonly in case of edit form */}
                             {bankAccount.bank_id &&

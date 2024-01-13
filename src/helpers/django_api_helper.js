@@ -2170,6 +2170,10 @@ export const getLabsList = ()=>
 get(`${url.GET_LABS_LIST}`, {
   headers: getHeader(authHeader()),
 });
+export const getDonorsList = ()=>
+get(`${url.GET_DONORS_LIST}`, {
+  headers: getHeader(authHeader()),
+});
 
 export const getDiscountLabHazirToLabs = id =>
   get(`${url.GET_DISCOUNT_LABHAZIRTOLABS}/${id}`, {

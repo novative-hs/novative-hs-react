@@ -66,7 +66,7 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-            <span>
+            <span className="float-start">
               <Link
                     to="#"
                     onClick={e => this.openNamePatientModal(e, labsList)}
@@ -83,7 +83,7 @@ class LabsLists extends Component {
           text: "Lab Name",
           sort: true,
           formatter: (cellContent, labsList) => (
-            <><span>
+            <><span className="float-start">
               <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, labsList)}
@@ -239,11 +239,17 @@ class LabsLists extends Component {
           text: "Invoice Value",
           sort: true,
           formatter: (cellContent, labsList) => (
-            <>             
-             <div className="text-end">
-            {labsList.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
-        ),filter: textFilter(),
+            <div className="text-end">
+              {labsList && typeof labsList.dues !== 'undefined' ? (
+                labsList.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              ) : (
+                'N/A' // or any default value you want to display when dues is undefined
+              )}
+            </div>
+          ),
+          filter: textFilter(),
         },
+               
         {
           dataField: "donor_name",
           text: "Donor Name",

@@ -7,6 +7,8 @@ import { Card, CardBody, Col, Table, Container, Row, Label } from "reactstrap";
 import { isEmpty, map } from "lodash";
 import Select from "react-select";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import moment from 'moment';
+
 
 import paginationFactory, {
   PaginationProvider,
@@ -73,8 +75,22 @@ class AccountStatements extends Component {
   }
 
   render() {
+    // Calculate the total balance for the footer
+    const { bankStatements } = this.props; // Use the prop directly
+
+    const totalCredit = bankStatements.reduce((acc, statement) => acc + (statement.credit || 0), 0);
+    const totalDebit = bankStatements.reduce((acc, statement) => acc + (statement.Debit || 0), 0);
+    // const totalBalance = bankStatements.length > 0
+    // ? bankStatements[bankStatements.length - 1].account_balance
+    // : 0;
+    console.log("Bank Statements:", bankStatements);
+    const totalBalance = bankStatements.length > 0
+      ? bankStatements[bankStatements.length - 1].account_balance
+      : 0;
+    console.log("Total Balance:", totalBalance);
+
+  
     const { SearchBar } = Search;
-    const { bankStatements } = this.props;
     const bankStatement = this.state.bankStatement;
     // const footer = {
     //   totalDebit: bankStatements[0].total_Debit, // Replace with the actual data from your backend
@@ -105,23 +121,12 @@ class AccountStatements extends Component {
         sort: true,
         footer: '', // Empty footer for this column
         formatter: (cellContent, bankStatement) => {
-          const date = new Date(bankStatement.clearence_datetime);
-          const day = date.getDate();
-          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-          const month = monthNames[date.getMonth()];
-          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-
-          // Format hours and minutes with leading zeros
-          const hours = ('0' + date.getHours()).slice(-2);
-          const minutes = ('0' + date.getMinutes()).slice(-2);
-
-          // Determine AM/PM
-          const ampm = date.getHours() >= 12 ? 'pm' : 'am';
 
           return (
-            <p className="text-muted mb-0">
-              {`${day}-${month}-${year} ${hours}:${minutes}${ampm}`}
-            </p>
+            <span className="float-start">
+                          {moment(bankStatement.clearence_datetime).format("DD MMM YYYY, h:mm A")}
+            </span>
+
           );
         },
         filter: textFilter(),
@@ -132,92 +137,110 @@ class AccountStatements extends Component {
         footer: '', // Empty footer for this column
         formatter: (cellContent, bankStatement) => (
           <>
-            <strong>
+            <strong className="float-start">
               {/* {bankStatement.account_name}{", "}
               {bankStatement.account_no}{", "} */}
               {bankStatement.mif_id && bankStatement.lab_name
-                ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
-                : bankStatement.mif_id && bankStatement.donor_name
-                  ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Donor Name: </span> {bankStatement.donor_name}</span>
-                  : bankStatement.mif_id && bankStatement.title
-                    ? <span><span style={{ color: 'red' }}>MIF ID: </span> {bankStatement.mif_id} , <span style={{ color: 'red' }}>Adv Title: </span> {bankStatement.title}</span>
-                    : bankStatement.mof_id && bankStatement.lab_name
-                      ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.lab_name}</span>
-                      : bankStatement.mof_id && bankStatement.business_name
-                        ? <span><span style={{ color: 'red' }}>MOF ID: </span> {bankStatement.mof_id} , <span style={{ color: 'red' }}>Lab Name: </span> {bankStatement.business_name}</span>
-                        : <span><span style={{ color: 'red' }}>BTD ID: </span> {bankStatement.btd_id}</span>
+               ? (
+                <span>
+                  MIF ID: <span style={{ color: 'blue' }}>{bankStatement.mif_id}</span>,
+                  Lab Name: <span style={{ color: 'blue' }}>{bankStatement.lab_name}</span>,
+                  Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>,
+                  Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
+                </span>
+              ): bankStatement.mif_id && bankStatement.donor_name
+              ? (
+                <span>
+                  MIF ID: <span style={{ color: 'blue' }}>{bankStatement.mif_id}</span>, 
+                  Donor Name: <span style={{ color: 'blue' }}>{bankStatement.donor_name}</span>, 
+                  Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>, 
+                  Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
+                </span>
+              ) : bankStatement.mif_id && bankStatement.title
+              ? (
+                <span>
+                  MIF ID: <span style={{ color: 'blue' }}>{bankStatement.mif_id}</span>, 
+                  Adv Title: <span style={{ color: 'blue' }}>{bankStatement.title}</span>, 
+                  Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>, 
+                  Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
+                </span>
+              ): bankStatement.mof_id && bankStatement.lab_name
+              ? (
+                <span>
+                  MOF ID: <span style={{ color: 'blue' }}>{bankStatement.mof_id}</span>, 
+                  Lab Name: <span style={{ color: 'blue' }}>{bankStatement.lab_name}</span>, 
+                  Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>, 
+                  Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
+                </span>
+              ): bankStatement.mof_id && bankStatement.business_name
+              ? (
+                <span>
+                  MOF ID: <span style={{ color: 'blue' }}>{bankStatement.mof_id}</span>, 
+                  Lab Name: <span style={{ color: 'blue' }}>{bankStatement.business_name}</span>, 
+                  Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>, 
+                  Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
+                </span>
+              ): <span>
+                    BTD ID: <span style={{ color: 'blue' }}>{bankStatement.btd_id}</span>, 
+                    Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>, 
+                    Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
+                  </span>
               }</strong>
           </>
         ), filter: textFilter(), // Add a text filter for this column // Add a text filter for this column
       },
-      {
-        dataField: 'Status',
-        text: 'Payment Mode',
-        footer: '', // Empty footer for this column
-        formatter: (cellContent, bankStatement) => (
-          <>
-            <strong>{bankStatement.payment_method}</strong>{", "}
-            <strong>{bankStatement.Status}</strong>
-          </>
-        ), filter: textFilter(), // Add a text filter for this column
-      },
+      // {
+      //   dataField: 'Status',
+      //   text: 'Payment Mode',
+      //   footer: '', // Empty footer for this column
+      //   formatter: (cellContent, bankStatement) => (
+      //     <>
+      //       <strong>{bankStatement.payment_method}</strong>{", "}
+      //       <strong>{bankStatement.Status}</strong>
+      //     </>
+      //   ), filter: textFilter(), // Add a text filter for this column
+      // },
       {
         dataField: 'credit',
         text: 'Credit',
-        footer: 'Total Credit', // Footer label for this column
-        footerdataField: 'total_Credit',
+        footer: `Total Credit: ${totalCredit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        footerClasses: 'text-end', // Set the color of the footer to red
         formatter: (cellContent, bankStatement) => (
-          <>
-            {bankStatement.credit == 0 ? (
-              <p className="d-none">
-                {bankStatement.credit}
-              </p>
-            ) : (
-              <div className="text-end">
-                <strong>{bankStatement.credit}</strong>
-              </div>
-
-            )}
-          </>
-        ), filter: textFilter(), // Add a text filter for this column
+          <div className="text-end">
+            <strong>{(bankStatement.credit || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+          </div>
+        ),
+        filter: textFilter(),
       },
       {
         dataField: 'Debit',
         text: 'Debit',
-        footer: 'Total Debit', // Footer label for this column
-        footerdataField: 'totalDebit',
+        footer: `Total Debit: ${totalDebit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        footerClasses: 'text-end', // Set the color of the footer to red
         formatter: (cellContent, bankStatement) => (
-          <>
-            {bankStatement.Debit == 0 ? (
-              <p className="d-none">
-                {bankStatement.Debit}
-              </p>
-
-            ) : (
-              <div className="text-end">
-                <strong>{bankStatement.Debit}</strong>
-              </div>
-
-            )}
-          </>
-        ), filter: textFilter(), // Add a text filter for this column
+          <div className="text-end">
+            <strong>{(bankStatement.Debit || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+          </div>
+        ),
+        filter: textFilter(),
       },
       {
         dataField: 'account_balance',
         text: 'Balance',
-        footer: 'Total Balance', // Footer label for this column
-        footerdataField: 'account_balance',
+        footer: `Total Balance: ${totalBalance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        footerClasses: 'text-end', // Set the color of the footer to red
         formatter: (cellContent, bankStatement) => (
-          <>              <div className="text-end">
-            <strong>{bankStatement.account_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
-          </>
-        ), filter: textFilter(), // Add a text filter for this column
+          <div className="text-end">
+            <strong>{bankStatement.account_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+          </div>
+        ),
+        filter: textFilter(),
       },
     ];
 
     // Check if bankStatements is empty
     const isDataEmpty = isEmpty(bankStatements);
-
+     // Calculate the total balance for the footer
     const { bankaccounts } = this.props;
     const bankaccountList = [];
     for (let i = 0; i < bankaccounts.length; i++) {
@@ -311,6 +334,8 @@ class AccountStatements extends Component {
                               defaultSorted={defaultSorted}
                               pagination={paginationFactory(pageOptions)}
                               filter={filterFactory()} // Enable filtering for the entire table
+                              footerClasses="footer-class"
+
                             />
                           </div>
                         )}

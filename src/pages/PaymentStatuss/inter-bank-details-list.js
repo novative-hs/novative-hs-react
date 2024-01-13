@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
+
 import {
   Card,
   CardBody,
@@ -335,16 +337,16 @@ class PaymentStatussList extends Component {
           if (bankTransfer.transfer_type === "Withdraw") {
             return <span>---</span>;
           } else {
-              const date = new Date(bankTransfer.deposit_datetime);
-              const day = date.getDate();
-              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-              const month = monthNames[date.getMonth()];
-              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+              // const date = new Date(bankTransfer.deposit_datetime);
+              // const day = date.getDate();
+              // const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              // const month = monthNames[date.getMonth()];
+              // const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
           
               return (
-                  <p className="text-muted mb-0">
-                      {`${day}-${month}-${year}`}
-                  </p>
+                moment(bankTransfer.deposit_datetime).format("DD MMM YYYY, h:mm A")
+
               );
           }
         },
@@ -378,15 +380,16 @@ class PaymentStatussList extends Component {
         text: "Payment DateTime",
         sort: true,
         formatter: (cellContent, bankTransfer) => {
-          const date = new Date(bankTransfer.payment_datetime);
-          const day = date.getDate();
-          const month = date.getMonth() + 1; // Adding 1 to get the correct month
-          const year = date.getFullYear();
+          moment(bankTransfer.payment_datetime).format("DD MMM YYYY, h:mm A")
+
+          // const date = new Date(bankTransfer.payment_datetime);
+          // const day = date.getDate();
+          // const month = date.getMonth() + 1; // Adding 1 to get the correct month
+          // const year = date.getFullYear();
           
           return (
-              <p className="text-muted mb-0">
-                  {`${day}/${month}/${year}`}
-              </p>
+            moment(bankTransfer.payment_datetime).format("DD MMM YYYY, h:mm A")
+
           );
       },filter: textFilter(),
       headerStyle: { backgroundColor: '#DCDCDC' },
@@ -413,15 +416,15 @@ class PaymentStatussList extends Component {
           if (bankTransfer.clearence_datetime === "null") {
             return <span>---</span>;
           } else {
-            const date = new Date(bankTransfer.deposit_datetime);
-            const day = date.getDate();
-            const month = date.getMonth() + 1;
-            const year = date.getFullYear();
+
+            // const date = new Date(bankTransfer.deposit_datetime);
+            // const day = date.getDate();
+            // const month = date.getMonth() + 1;
+            // const year = date.getFullYear();
             
             return (
-              <p className="text-muted mb-0">
-                {`${day}/${month}/${year}`}
-              </p>
+              moment(bankTransfer.deposit_datetime).format("DD MMM YYYY, h:mm A")
+
             );
           }
         }, filter: textFilter(),

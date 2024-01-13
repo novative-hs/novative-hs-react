@@ -132,7 +132,7 @@ class DonorPayment extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Add" breadcrumbItem="Bank" />
+            <Breadcrumbs title="Register" breadcrumbItem="Register Bank" />
             <Formik>
               <div className="checkout-tabs">
                 <Row>
@@ -155,11 +155,11 @@ class DonorPayment extends Component {
                         <div>
 
                           <CardTitle className="h4">
-                            Bank Information
+                            {/* Bank Information */}
                           </CardTitle>
-                          <p className="card-title-desc">
+                          {/* <p className="card-title-desc">
                             Fill the Bank Information
-                          </p>
+                          </p> */}
                           <FormGroup className="mb-4" row>
                             <Label
                               htmlFor="name"
@@ -311,7 +311,7 @@ class DonorPayment extends Component {
                             to="/donor-appointment"
                             className="btn btn-success mb-4"
                           >
-                            <i className="mdi mdi-truck-fast me-1" /> Create{" "}
+                            <i className="mdi mdi-truck-fast me-1" /> Register Bank{" "}
                           </button>
                         </div>
                       </Col>

@@ -33,6 +33,7 @@ class TestAppointmentsCompletedList extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
         btnText: "Copy",
+        btnTextaddress: "Copy",
       testAppointmentListColumns: [
         {
           text: "id",

@@ -79,7 +79,7 @@ class LabAdvertisementRequestsList extends Component {
           sort: true,
           formatter: (cellContent, labAdvertisementRequest) => (
             <>
-              <span>
+              <span className="float-start">
                 <Tooltip title="Lab Info">
                   <Link
                     to="#"

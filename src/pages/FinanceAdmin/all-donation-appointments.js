@@ -87,6 +87,12 @@ class DonationAppointmentsList extends Component {
           dataField: "amount",
           text: "Amount",
           sort: true,
+          formatter: (cellContent, b2bLabShare) => (
+            <>
+              <div className="text-end">
+                  <strong>{b2bLabShare.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+            ),
           filter: textFilter(),
         },
         // {
@@ -293,7 +299,7 @@ class DonationAppointmentsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lab Hazir | B2B Client Shares</title>
+            <title>Appointments | Donation Allocate Appointments</title>
           </MetaTags>
           <ConfirmModal
           // show={this.state.confirmModal}
@@ -301,7 +307,25 @@ class DonationAppointmentsList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B Client" breadcrumbItem="Shares"
+            {/* <Breadcrumbs title="Appointments" breadcrumbItem="Donation Allocate Appointments "
+            /> */}
+            <Breadcrumbs
+              title="Appointments"
+              breadcrumbItem={allDonationAppointment.map((lab, index) => {
+                // Check if lab_name is defined and not null
+                if (lab.lab_name !== undefined && lab.lab_name !== null) {
+                  // Return a div for each lab_name
+                  return (
+                    <div key={index} className="float-end">
+                      <span className="text-danger">{lab.lab_name}</span>
+                      <span>-Donation Allocate Appointments</span>
+                    </div>
+                  );
+                }
+                // Don't render anything for labs without lab_name
+                return null;
+              })}
+              
             />
             <Row>
               <Col lg="12">

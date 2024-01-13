@@ -290,6 +290,7 @@ class DiscountLabHazirList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Discount" breadcrumbItem="Lab Hazir Discount For All Tests" />
             <Row>
+              <p className="text-danger">Note: The Price of Test is not shown in the following table beacuse discount entered Against any specific Test is for all Labs.</p>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -359,7 +360,7 @@ class DiscountLabHazirList extends Component {
                                         tag="h4"
                                       >
                                         {!this.state.isEditAll
-                                          ? "Discount on one test"
+                                          ? "Discount on one test for all Labs"
                                           : "Discount on all tests"}
                                       </ModalHeader>
                                       <ModalBody>

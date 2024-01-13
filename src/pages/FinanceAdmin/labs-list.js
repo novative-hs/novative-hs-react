@@ -65,8 +65,10 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <span>{labsList.name}</span>{" - "}
-              <span>{labsList.type}</span>
+            <span className="float-start">
+              {labsList.name}{" - "}
+              {labsList.type}</span>
+              
 
             </>
           ),filter: textFilter(), // Add a text filter for this column
@@ -89,7 +91,7 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <span>{labsList.landline}</span>
+              <span className="float-start">{labsList.landline}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -99,7 +101,7 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <span>{labsList.email}</span>
+              <span className="float-start">{labsList.email}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -115,11 +117,11 @@ class LabsLists extends Component {
         },
         {
           dataField: "address",
-          text: "City",
+          text: "Address",
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <span>{labsList.address}</span>
+              <span className="float-start">{labsList.address}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -227,7 +229,7 @@ class LabsLists extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Labs List" />
+            <Breadcrumbs title="List" breadcrumbItem="Labs List with Current Amounts" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -250,12 +252,12 @@ class LabsLists extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </Col>
                               </Row>

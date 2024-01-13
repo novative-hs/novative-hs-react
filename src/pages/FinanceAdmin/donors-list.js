@@ -30,53 +30,51 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import {
-  getDonors,
-} from "store/inpayments/actions";
+  getDonorsList,
+} from "store/labs-list/actions";
 
 
-
-class donors extends Component {
+class LabsLists extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      donors: [],
+      labsList: [],
       id: "",
-      donors: "",
+      LabsLists: "",
       btnText: "Copy",
-      donors: "",
+      labsList: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       labsListListColumns: [
-
         {
           dataField: "id",
           text: "Donor ID",
           sort: true,
-          formatter: (cellContent, donors) => (
+          formatter: (cellContent, labsList) => (
             <>
-              <strong>{donors.id}</strong>
+              <strong>{labsList.id}</strong>
             </>
-          ),
+          ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "name",
           text: "Donor Name",
           sort: true,
-          formatter: (cellContent, donors) => (
+          formatter: (cellContent, labsList) => (
             <>
-              <strong>{donors.name}</strong>
+              <span className="float-start">{labsList.name}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
-          // formatter: (cellContent, donors) => (
+          // formatter: (cellContent, labsList) => (
           //   <>
           //     <span>
           //         <Link
           //           to="#"
-          //           onClick={e => this.openPatientModal(e, donors)}
+          //           onClick={e => this.openPatientModal(e, labsList)}
           //         >
-          //          {donors.name}
+          //          {labsList.name}
           //         </Link>
           //     </span>
           //   </>
@@ -86,9 +84,9 @@ class donors extends Component {
           dataField: "phone",
           text: "Phone",
           sort: true,
-          formatter: (cellContent, donors) => (
+          formatter: (cellContent, labsList) => (
             <>
-              <strong>{donors.phone}</strong>
+              <span  className="float-start">{labsList.phone}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -96,9 +94,9 @@ class donors extends Component {
           dataField: "email",
           text: "Email",
           sort: true,
-          formatter: (cellContent, donors) => (
+          formatter: (cellContent, labsList) => (
             <>
-              <strong>{donors.email}</strong>
+              <span  className="float-start">{labsList.email}</span >
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -106,9 +104,9 @@ class donors extends Component {
           dataField: "city",
           text: "City",
           sort: true,
-          formatter: (cellContent, donors) => (
+          formatter: (cellContent, labsList) => (
             <>
-              <strong>{donors.city}</strong>
+              <span>{labsList.city}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -116,9 +114,9 @@ class donors extends Component {
           dataField: "type",
           text: "Type",
           sort: true,
-          formatter: (cellContent, donors) => (
+          formatter: (cellContent, labsList) => (
             <>
-              <strong>{donors.type}</strong>
+              <span>{labsList.type}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -126,36 +124,37 @@ class donors extends Component {
           dataField: "current_amount",
           text: "Current Amount",
           sort: true,
-          formatter: (cellContent, donors) => (
-            <p className="text-end">
-            {donors.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </p>
+          formatter: (cellContent, labsList) => (
+            <span  className="float-end">
+            {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
           ),filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "account_no",
           text: "Account Statement",
           sort: true,
-          formatter: (cellContent, donors) => (
-            <Link to={`/account-statement-donor/${donors.account_id}`}>
+          formatter: (cellContent, labsList) => (
+            <Link to={`/account-statement-donor/${labsList.account_id}`}>
                                     Account statement
                                   </Link>
           ),filter: textFilter(), // Add a text filter for this column
         },
+
       ],
     };
   }
 
   // componentDidMount() {
-  //   const { donors, onGetdonors } = this.props;
-  //   console.log(onGetdonors());
-  //   this.setState({ donors });
+  //   const { labsList, onGetDonorsList } = this.props;
+  //   console.log(onGetDonorsList());
+  //   this.setState({ labsList });
   // }
   componentDidMount() {
-    const { donors, onGetdonors } = this.props;
-    onGetdonors(this.state.user_id);
-    console.log(onGetdonors());
-    this.setState({ donors });
+    const { labsList, onGetDonorsList } = this.props;
+    onGetDonorsList(this.state.user_id);
+    console.log(onGetDonorsList());
+    this.setState({ labsList });
   }
   // componentDidMount() {
   //   const { b2bAllClients, onGetB2bAllClientsList } = this.props;
@@ -171,9 +170,9 @@ class donors extends Component {
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
-      lab_address: arg.type,
+      lab_address: arg.address,
       lab_city: arg.city,
-      lab_phone: arg.phone,
+      lab_phone: arg.landline,
       lab_email: arg.email,
     });
   };
@@ -200,13 +199,13 @@ class donors extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { donors } = this.props;
+    const { labsList } = this.props;
     const data = this.state.data;
-    const { onGetdonors } = this.props;
+    const { onGetDonorsList } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: donors.length, // replace later with size(donors),
+      totalSize: labsList.length, // replace later with size(labsList),
       custom: true,
     };
 
@@ -220,12 +219,12 @@ class donors extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Labs List | Lab Hazir</title>
+            <title>Donors List | Lab Hazir</title>
           </MetaTags>
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Donors List" />
+            <Breadcrumbs title="List" breadcrumbItem="Donors List with Current Amounts" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -234,13 +233,13 @@ class donors extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.labsListListColumns}
-                      data={donors}
+                      data={labsList}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.labsListListColumns}
-                          data={donors}
+                          data={labsList}
                           search
                         >
                           {toolkitprops => (
@@ -248,12 +247,12 @@ class donors extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </Col>
                               </Row>
@@ -290,7 +289,7 @@ class donors extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Type
+                                                      Lab Address
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -406,20 +405,21 @@ class donors extends Component {
   }
 }
 
-donors.propTypes = {
+LabsLists.propTypes = {
   match: PropTypes.object,
-  donors: PropTypes.array,
+  labsList: PropTypes.array,
   className: PropTypes.any,
-  onGetdonors: PropTypes.func,
+  onGetDonorsList: PropTypes.func,
 };
 const mapStateToProps = ({ labsList}) => ({
-  donors: labsList.donors,
+  labsList: labsList.labsList,
 });
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetdonors: () => dispatch(getDonors()),
+  onGetDonorsList: id => dispatch(getDonorsList(id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(donors));
+)(withRouter(LabsLists));

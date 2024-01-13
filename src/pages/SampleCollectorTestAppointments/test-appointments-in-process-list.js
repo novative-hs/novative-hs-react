@@ -51,6 +51,7 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
       testAppointments: [],
       patient: [],
       btnText: "Copy",
+      btnTextaddress: "Copy",
       sampleCollector: "",
       resultFile: "",
       testAppointment: "",

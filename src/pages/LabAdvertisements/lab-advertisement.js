@@ -165,7 +165,7 @@ class AdvertisementsList extends Component {
           formatter: (cellContent, labAdvertisement) => (
             <>
               {(
-                <span>{labAdvertisement.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+                <span className="float-end">{labAdvertisement.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
               )}
             </>
           ),

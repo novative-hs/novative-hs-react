@@ -127,7 +127,12 @@ class PendingB2BClients extends Component {
           dataField: "donation_amount",
           text: "Total Donation Appointment Amount",
           sort: true,
-          filter: textFilter(),
+          formatter: (cellContent, pendingB2BClient) => (
+            <>
+              <div className="text-end">
+                  <strong>{pendingB2BClient.donation_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            </>
+            ),filter: textFilter(),
         },
       //   {
       //     dataField: "email",
@@ -291,7 +296,7 @@ class PendingB2BClients extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="B2B Clients" breadcrumbItem="Labs List" />
+            <Breadcrumbs title="List" breadcrumbItem="Labs List" />
             <Row>
 
               <Col lg="12">
@@ -315,12 +320,12 @@ class PendingB2BClients extends Component {
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
+                                    {/* <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </Col>
                                 <Col sm="4"></Col>

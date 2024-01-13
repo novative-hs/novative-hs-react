@@ -351,13 +351,7 @@ class SidebarContent extends Component {
                     </li>
                   </ul>
                 </li>
-                <li>
-                      <Link to= "/accepted-lab-advertisements"
-                      >
-                        <i className="bx bx-image-add"/>
-                        <span>{this.props.t("Advertisement List")}</span>
-                      </Link>
-                    </li>
+                
                 </ul>
               </div>
             </SimpleBar>
@@ -451,6 +445,13 @@ class SidebarContent extends Component {
                   <Link to="/b2bclients-details">
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("B2B Clients List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to= "/accepted-lab-advertisements"
+                  >
+                    <i className="bx bx-image-add"/>
+                    <span>{this.props.t("Advertisement List")}</span>
                   </Link>
                 </li>
                 
@@ -710,7 +711,7 @@ class SidebarContent extends Component {
                 <li>
                   <Link to="/#" className="has-arrow">
                     <i className="bx bx-test-tube" />
-                    <span>{this.props.t("Discounts")}</span>
+                    <span>{this.props.t("LabHazir Discounts")}</span>
                   </Link>
                   <ul className="sub-menu" aria-expanded="false">
                     <li>

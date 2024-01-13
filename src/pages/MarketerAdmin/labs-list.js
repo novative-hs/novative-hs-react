@@ -65,12 +65,12 @@ class LabsLists extends Component {
           //   textAlign: "left",
           // },
           formatter: (cellContent, labsList) => (
-            <>
+            <span className="float-start">
               {/* {patientTestAppointment.payment_status == "Not Paid" ? ( */}
               <Link to={`/discountlab/${labsList.id}`}>
                 {labsList.name}
               </Link>
-            </>
+            </span>
           ),filter: textFilter(),
         },
         {

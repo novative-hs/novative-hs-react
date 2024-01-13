@@ -476,7 +476,6 @@ const financeOfficerAuthProtectedRoutes = [
   { path: "/dashboard-finance", component: DashboardFinance},
   { path: "/financeofficer-profile", component: FinanceOfficerProfile },
   { path: "/in-payment", component: InPayments },
-  { path: "/accepted-lab-advertisements", component: LabAdvertisementRequestsAcceptedMA},
   { path: "/out-payment", component: OutPayments },
   { path: "/chat-list/:id", component: msgBoxFo },
   {
@@ -541,6 +540,7 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/donors-appointments-list", component: donorappointmentsList},
   { path: "/b2bclients-details", component: b2bList},
   {path: "/bank-account-statements/:id", component: BankAccountStatements},
+  { path: "/accepted-lab-advertisements", component: LabAdvertisementRequestsAcceptedMA},
 
 
 

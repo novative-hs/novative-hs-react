@@ -2188,7 +2188,7 @@ class Checkout extends Component {
                                             Price
                                           </th>
                                           <th scope="col" style={{ width: "25%" }} className="text-end">
-                                            Sum Of Discount (Lab + Labhazir)
+                                            Sum Of Discounts <br /> (Lab + Labhazir)
                                           </th>
                                           <th scope="col" style={{ width: "25%" }} className="text-end">
                                             Net Payable
