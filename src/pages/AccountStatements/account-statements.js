@@ -983,7 +983,7 @@ class AccountStatements extends Component {
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
-                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
                                             null
