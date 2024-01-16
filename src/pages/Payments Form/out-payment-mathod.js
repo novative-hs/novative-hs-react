@@ -79,6 +79,7 @@ class OutPaymentsForm extends Component {
       bankaccount_id: "",
       bank_id: "",
       amount: "",
+      tax: "",
       payment_at: "",
       payment_method: "Cheque",
       cheque_no: "",
@@ -116,7 +117,7 @@ class OutPaymentsForm extends Component {
         lab_id: this.state.lab_id,
         test_appointment_id: this.state.test_appointment_id,
         b2b_id: this.state.b2b_id,
-        // bank_id: this.state.bank_id,
+        tax: this.state.tax,
         bankaccount_id: this.state.bankaccount_id,
         amount: this.state.amount,
         payment_method: this.state.payment_method,
@@ -154,6 +155,7 @@ class OutPaymentsForm extends Component {
         bank_id: this.state.bank_id,
         bankaccount_id: this.state.bankaccount_id,
         amount: this.state.amount,
+        tax: this.state.tax,
         payment_method: this.state.payment_method,
         payment_at: this.state.payment_at,
         cheque_no: this.state.cheque_no,
@@ -877,6 +879,8 @@ class OutPaymentsForm extends Component {
                           ) : null} */}
 
 
+{this.state.payment_for == "Lab" ? (
+
 <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
     Amount
@@ -891,12 +895,64 @@ class OutPaymentsForm extends Component {
     type="text"
     className="form-control"
     id="cardnumberInput"
+    required={true}
+    placeholder="Amount.."
+    name="amount"
+    value={this.state.amount}
+    onChange={e =>
+      this.setState({
+        amount: e.target.value,
+      })
+    }
+    readOnly // Set readOnly to true
+  />
+</FormGroup>) : (
+  <FormGroup className="mb-0">
+  <Label htmlFor="cardnumberInput" className="fw-bolder">
+    Amount
+    <span
+      style={{ color: "#f46a6a" }}
+      className="font-size-18"
+    >
+      *
+    </span>
+  </Label>
+  <Input
+    type="text"
+    className="form-control"
+    id="cardnumberInput"
+    required={true}
     placeholder="Enter Amount"
     name="amount"
     value={this.state.amount}
     onChange={e =>
       this.setState({
         amount: e.target.value,
+      })
+    }
+  />
+</FormGroup>
+)}
+<FormGroup className="mb-0">
+  <Label htmlFor="cardnumberInput" className="fw-bolder">
+    Tax
+    <span
+      style={{ color: "#f46a6a" }}
+      className="font-size-18"
+    >
+      
+    </span>
+  </Label>
+  <Input
+    type="text"
+    className="form-control"
+    id="cardnumberInput"
+    placeholder="Enter Tax"
+    name="tax"
+    value={this.state.tax}
+    onChange={e =>
+      this.setState({
+        tax: e.target.value,
       })
     }
   />

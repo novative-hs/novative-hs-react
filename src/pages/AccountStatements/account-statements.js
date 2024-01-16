@@ -234,17 +234,17 @@ class AccountStatements extends Component {
                               <>
                                 {accountStatement.transaction_type == "In" ? (
                                   <tr key={i} className="badge-soft-primary">
-                                    <td>
+                                    <td >
                                       <p className="text-muted mb-0">
                                         {moment(accountStatement.ordered_at).format("DD MMM YYYY")}
                                       </p>
                                     </td>
-                                    <td>
+                                    <td >
                                       <h5 className="font-size-14 text-truncate">
                                         <strong>{accountStatement.order_id}</strong>
                                       </h5>
                                     </td>
-                                    <td>
+                                    <td >
                                       <p className="text-muted mb-0">
                                         {accountStatement.patient_name}
                                       </p>
@@ -339,15 +339,15 @@ class AccountStatements extends Component {
                                     </p>
                                   </td> */}
                                     <td>
-                                      {accountStatement.discounted_by_labhazir == 0 ? (
+                                      {accountStatement.tax_amount == 0 ? (
                                         <p className="d-none">
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
 
                                       ) : (
                                         <p className="float-end">
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
+                                        <b>Tax =</b>
+                                         </p>
                                       )}
 
                                     </td>
@@ -356,15 +356,15 @@ class AccountStatements extends Component {
                                       {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                     </p>
                                   </td> */}
-                                    <td>
-                                      {accountStatement.dues == 0 ? (
+                                    <td >
+                                      {accountStatement.tax_amount == 0 ? (
                                         <p className="d-none">
-                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.tax_amount}
                                         </p>
 
                                       ) : (
-                                        <p className="float-end">
-                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        <p className="float-start">
+                                         {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
 
@@ -533,17 +533,17 @@ class AccountStatements extends Component {
                                 ) : accountStatement.transaction_type == "Out" ? (
 
                                   <tr key={i} className="badge-soft-danger">
-                                    <td>
+                                    <td >
                                       <p className="text-muted mb-0">
                                         {moment(accountStatement.ordered_at).format("DD MMM YYYY")}
                                       </p>
                                     </td>
-                                    <td>
+                                    <td >
                                       <h5 className="font-size-14 text-truncate">
                                         <strong>{accountStatement.order_id}</strong>
                                       </h5>
                                     </td>
-                                    <td>
+                                    <td >
                                       <p className="text-muted mb-0">
                                         {accountStatement.patient_name}
                                       </p>
@@ -564,12 +564,7 @@ class AccountStatements extends Component {
                                           </b>                                      </td>
 
                                         )}
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
-                                    <td>
+                                    <td >
                                       {accountStatement.dues_before_discount == 0 ? (
                                         <p className="d-none">
                                           {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -582,13 +577,7 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
-                                    <td>
+                                    <td >
                                       {accountStatement.sample_collector_amount == 0 ? (
                                         <p className="d-none">
                                           {accountStatement.sample_collector_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -601,12 +590,7 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
-                                    <td>
+                                    <td >
                                       {accountStatement.discounted_by_lab == 0 ? (
                                         <p className="d-none">
                                           {accountStatement.discounted_by_lab.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -619,7 +603,7 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    <td>
+                                    <td >
                                       {accountStatement.lab_counter_discount == 0 ? (
                                         <p className="d-none">
                                           {accountStatement.lab_counter_discount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -632,38 +616,28 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
-                                    <td>
-                                      {accountStatement.discounted_by_labhazir == 0 ? (
+                                    <td >
+                                      {accountStatement.tax_amount == 0 ? (
                                         <p className="d-none">
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.tax_amount}
                                         </p>
 
                                       ) : (
                                         <p className="float-end">
-                                          {accountStatement.discounted_by_labhazir.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
+                                        <b>Tax =</b>
+                                         </p>
                                       )}
 
                                     </td>
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
-                                    <td>
-                                      {accountStatement.dues == 0 ? (
+                                    <td >
+                                      {accountStatement.tax_amount == 0 ? (
                                         <p className="d-none">
-                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.tax_amount}
                                         </p>
 
                                       ) : (
-                                        <p className="float-end">
-                                          {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        <p className="float-start">
+                                          {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       )}
 
@@ -682,12 +656,6 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                    </p>
-                                  </td> */}
                                     <td>
                                       {accountStatement.labhazir_share == 0 ? (
                                         <p className="d-none">
@@ -724,17 +692,6 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    {/* <td>
-                                    <p>
-                                      {accountStatement.payment_method == "Cash" ? (
-                                        <span>
-                                          {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </span>
-                                      ) : (
-                                        null
-                                      )}
-                                    </p>
-                                  </td> */}
 
                                     
                                     <td style={{ backgroundColor: '#ffc09f' }}>

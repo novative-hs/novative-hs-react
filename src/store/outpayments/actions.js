@@ -20,6 +20,9 @@ import {
   ADD_NEW_OUT_PAYMENT,
   ADD_OUT_PAYMENT_SUCCESS,
   ADD_OUT_PAYMENT_FAIL,
+  ADD_NEW_INVOICE_ADJUSTMENT,
+  ADD_INVOICE_ADJUSTMENT_SUCCESS,
+  ADD_INVOICE_ADJUSTMENT_FAIL,
   GET_STAFF_PROFILE,
   GET_STAFF_PROFILE_FAIL,
   GET_STAFF_PROFILE_SUCCESS,
@@ -150,5 +153,19 @@ export const addOutPaymentSuccess = outPayment => ({
 
 export const addOutPaymentFail = error => ({
   type: ADD_OUT_PAYMENT_FAIL,
+  payload: error,
+});
+export const addNewInvoiceAdjustment = (outPayment, id) => ({
+  type: ADD_NEW_INVOICE_ADJUSTMENT,
+  payload: { outPayment, id },
+});
+
+export const addInvoiceAdjustmentSuccess = outPayment => ({
+  type: ADD_INVOICE_ADJUSTMENT_SUCCESS,
+  payload: outPayment,
+});
+
+export const addInvoiceAdjustmentFail = error => ({
+  type: ADD_INVOICE_ADJUSTMENT_FAIL,
   payload: error,
 });

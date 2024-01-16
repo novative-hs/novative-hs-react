@@ -67,6 +67,7 @@ class BankTransfersForm extends Component {
         : "",
       transfer_type: "",
       deposit_type: "",
+      withdraw_type: "",
       bankaccount_id: "",
       from_bankaccount_id: "",
       bank_id: "",
@@ -105,6 +106,7 @@ class BankTransfersForm extends Component {
       bankTransfer: {
         transfer_type: this.state.transfer_type,
         deposit_type: this.state.deposit_type,
+        withdraw_type: this.state.withdraw_type,
         bankaccount_id: this.state.bankaccount_id,
         from_bankaccount_id: this.state.from_bankaccount_id,
         amount: this.state.amount,
@@ -139,6 +141,7 @@ class BankTransfersForm extends Component {
       bankTransfer: {
         transfer_type: this.state.transfer_type,
         deposit_type: this.state.deposit_type,
+        withdraw_type: this.state.withdraw_type,
         bankaccount_id: this.state.bankaccount_id,
         from_bankaccount_id: this.state.from_bankaccount_id,
         amount: this.state.amount,
@@ -379,6 +382,53 @@ class BankTransfersForm extends Component {
                                <option value="Others">Others</option>
  
  
+                             </select>
+ 
+                           </FormGroup>
+                          ) : null}
+                          {this.state.transfer_type == "Withdraw" ? (
+                             <FormGroup className="mb-0">
+                             <Label htmlFor="cardnumberInput" className="fw-bolder">
+                               Withdraw Type
+                               <span
+                                 style={{ color: "#f46a6a" }}
+                                 className="font-size-18"
+                               >
+                                 *
+                               </span>
+                             </Label>
+                             <select
+                               name="withdraw_type"
+                               component="select"
+                               onChange={e =>
+                                 this.setState({
+                                   withdraw_type: e.target.value,
+                                 })
+                               }
+                               defaultValue={this.state.withdraw_type}
+                               className="form-select"
+                             >
+                               <option
+                                 value=""
+                               >
+                                 --- Please select the withdraw Type
+                                 ---
+                               </option>
+                               <option value="Loan">Loan</option>
+                               <option value="Tax">Tax</option>
+                               <option value="Legal and Professional Expenses">Legal and Professional Expenses</option>
+                               <option value="Investments">Investments</option>
+                               <option value="Utilities">Utilities</option>
+                               <option value="Salary and Wages">Salary and Wages</option>
+                               <option value="Rent">Rent</option>
+                               <option value="Marketing">Marketing</option>
+                               <option value="Insurance and Securities">Insurance and Securities</option>
+                               <option value="Employee Expense">Employee Expense</option>
+                               <option value="Donation and Charity">Donation and Charity</option>
+                               <option value="Delivery Expense">Delivery Expense</option>
+                               <option value="Telecommunication">Telecommunication</option>
+                               <option value="Travel and Tours">Travel and Tours</option>
+                               <option value="Others">Others</option>
                              </select>
  
                            </FormGroup>

@@ -74,6 +74,7 @@ class InPaymentsForm extends Component {
         : "",
       payment_for: "",
       lab_id: "",
+      tax: "",
       donor_id: "",
       advertisement_id: "",
       recieved_by: "",
@@ -124,6 +125,7 @@ class InPaymentsForm extends Component {
         donor_id: this.state.donor_id,
         advertisement_id: this.state.advertisement_id,
         amount: this.state.amount,
+        tax: this.state.tax,
         payment_method: this.state.payment_method,
         recieved_by: this.state.recieved_by,
         handover_to: this.state.handover_to,
@@ -695,6 +697,7 @@ class InPaymentsForm extends Component {
     type="text"
     className="form-control"
     id="cardnumberInput"
+    required={true}
     placeholder="Amount.."
     name="amount"
     value={this.state.amount}
@@ -720,6 +723,7 @@ class InPaymentsForm extends Component {
     type="text"
     className="form-control"
     id="cardnumberInput"
+    required={true}
     placeholder="Enter Amount"
     name="amount"
     value={this.state.amount}
@@ -731,6 +735,30 @@ class InPaymentsForm extends Component {
   />
 </FormGroup>
 )}
+<FormGroup className="mb-0">
+  <Label htmlFor="cardnumberInput" className="fw-bolder">
+    Tax
+    <span
+      style={{ color: "#f46a6a" }}
+      className="font-size-18"
+    >
+      
+    </span>
+  </Label>
+  <Input
+    type="text"
+    className="form-control"
+    id="cardnumberInput"
+    placeholder="Enter Tax"
+    name="tax"
+    value={this.state.tax}
+    onChange={e =>
+      this.setState({
+        tax: e.target.value,
+      })
+    }
+  />
+</FormGroup>
                           <div>
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment Method

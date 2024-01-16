@@ -268,6 +268,8 @@ export const GET_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`
 export const DELETE_PAYMENTOUT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const GET_LIST_DONATIONAPPOINTMENT = `${API_ENDPOINT}/api/finance-officer/alldonation-Appointments`;
 
+export const ADD_NEW_INVOICE_ADJUSTMENT = `${API_ENDPOINT}/api/finance-officer/invoice-adjustment-detail`;
+
 
 // Get DONATION Appointments
 export const GET_ALL_DONATION_APPOINTMENTS = `${API_ENDPOINT}/api/finance-officer/donation-Appointments`;

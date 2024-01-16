@@ -203,6 +203,7 @@ import ApprovedInPayments from "pages/FinanceAdmin/approved-in-payments";
 import UnapprovedInPayments from "pages/FinanceAdmin/unapproved-in-payments";
 import bankTransferDetail from "pages/Payments Form/bank-transfer-detail";
 import interBankDetailsList from "pages/PaymentStatuss/inter-bank-details-list";
+import invoiceAdjustmentDetail from "pages/Payments Form/invoice-adjustment-detail";
 
 // Maeketer Admin routes
 import Advertisements from "pages/MarketerAdmin/advertisement";
@@ -516,6 +517,7 @@ const financeOfficerAuthProtectedRoutes = [
   },
   { path: "/all-labs-list", component: AllLabsList },
   { path: "/bank-transfer", component: bankTransferDetail },
+  { path: "/invoice-adjustment", component: invoiceAdjustmentDetail },
   {path : "/inter-bank-details-list", component: interBankDetailsList},
   { path: "/All-Donation-Appointments/:id", component: allDonationAppointments }
 

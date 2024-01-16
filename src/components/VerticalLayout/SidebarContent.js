@@ -268,6 +268,9 @@ class SidebarContent extends Component {
                   <Link to="/bank-transfer">{this.props.t("Bank Transfer Details")}
                   </Link>
                 </li>
+                <li>
+                  <Link to={"/invoice-adjustment"}>{this.props.t("Invoice Adjustment Form")}</Link>
+                </li>
                 </ul>
                 </li>
                   {/* Payments Status Links */}

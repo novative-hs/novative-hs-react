@@ -197,13 +197,17 @@ class PaymentStatussList extends Component {
       },
       {
         dataField: "deposit_type",
-        text: "Deposit Type",
+        text: "Type",
         sort: true,
         formatter: (cellContent, bankTransfer) => (
           <>
             {bankTransfer.transfer_type == "Deposit" ? (
               <span>
               <strong>{bankTransfer.deposit_type}</strong>
+              </span>
+            ) : bankTransfer.transfer_type == "Withdraw" ? (
+              <span>
+              <strong>{bankTransfer.withdraw_type}</strong>
               </span>
             ) : (
               <span>

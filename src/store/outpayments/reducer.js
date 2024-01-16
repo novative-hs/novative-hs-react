@@ -13,6 +13,8 @@ import {
   GET_OUT_PAYMENT_FAIL,
   ADD_OUT_PAYMENT_SUCCESS,
   ADD_OUT_PAYMENT_FAIL,
+  ADD_INVOICE_ADJUSTMENT_SUCCESS,
+  ADD_INVOICE_ADJUSTMENT_FAIL,
   GET_STAFF_PROFILE_SUCCESS,
   GET_STAFF_PROFILE_FAIL,
 } from "./actionTypes";
@@ -116,6 +118,17 @@ const outPayments = (state = INIT_STATE, action) => {
       };
 
     case ADD_OUT_PAYMENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ADD_INVOICE_ADJUSTMENT_SUCCESS:
+      return {
+        ...state,
+        outPayments: [...state.outPayments, action.payload.data],
+      };
+
+    case ADD_INVOICE_ADJUSTMENT_FAIL:
       return {
         ...state,
         error: action.payload,

@@ -9,6 +9,7 @@ import {
   GET_BANK_ACCOUNTS,
   GET_B2B_CLIENTS,
     ADD_NEW_OUT_PAYMENT,
+    ADD_NEW_INVOICE_ADJUSTMENT,
     GET_STAFF_PROFILE,
 
 } from "./actionTypes";
@@ -30,12 +31,15 @@ import {
   getOutPaymentFail,
   addOutPaymentFail,
   addOutPaymentSuccess,
+  addInvoiceAdjustmentFail,
+  addInvoiceAdjustmentSuccess,
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import { getOutPayment, getLabsMof ,getListDonationAppointment, getStaffProfile,  getBanks,   getBankAccounts,
 
   addNewOutPayment,
+  addNewInvoiceAdjustment,
   getB2bClients, 
  } from "../../helpers/django_api_helper";
 
@@ -127,6 +131,19 @@ function* onAddNewOutPayment(object) {
   }
 }
 
+function* onAddNewInvoiceAdjustment(object) {
+  try {
+    const response = yield call(
+      addNewInvoiceAdjustment,
+      object.payload.outPayment,
+      object.payload.id
+    );
+    yield put(addInvoiceAdjustmentSuccess(response));
+  } catch (error) {
+    yield put(addInvoiceAdjustmentFail(error));
+  }
+}
+
 function* outPaymentSaga() {
   yield takeEvery(GET_STAFF_PROFILE, fetchStaffProfile);
   yield takeEvery(GET_BANKS, fetchBanks);
@@ -139,6 +156,7 @@ function* outPaymentSaga() {
     fetchB2bAllClientsList
   );  
   yield takeEvery(ADD_NEW_OUT_PAYMENT, onAddNewOutPayment);
+  yield takeEvery(ADD_NEW_INVOICE_ADJUSTMENT, onAddNewInvoiceAdjustment);
 }
 
 export default outPaymentSaga;

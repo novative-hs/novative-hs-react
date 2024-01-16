@@ -2405,6 +2405,7 @@ console.log("api helper",advertisement )
     formData.append("recieved_by", inPayment.recieved_by);
     formData.append("handover_to", inPayment.handover_to);
     formData.append("amount", inPayment.amount);
+    formData.append("tax", inPayment.tax);
     formData.append("paid_at", inPayment.paid_at);
     formData.append("cheque_payment_date", inPayment.cheque_payment_date);
     formData.append("cheque_no", inPayment.cheque_no); 
@@ -2588,7 +2589,7 @@ export const addNewOutPayment = ( outPayment, id) => {
   formData.append("b2b_id",   outPayment.b2b_id);
   formData.append("payment_method",   outPayment.payment_method);
   formData.append("bankaccount_id",   outPayment.bankaccount_id);
-  // formData.append("bank_id",   outPayment.bank_id);
+  formData.append("tax", outPayment.tax);
   formData.append("amount",   outPayment.amount);
   formData.append("payment_at",  outPayment.payment_at);
   formData.append("cheque_no",  outPayment.cheque_no);
@@ -2607,12 +2608,30 @@ export const addNewOutPayment = ( outPayment, id) => {
   });
 };
 
+// ------------- invoice adjustment Settings Requests START -------------
+export const addNewInvoiceAdjustment = ( outPayment, id) => {
+  let formData = new FormData();
+  formData.append("test_appointment_id", outPayment.test_appointment_id);
+  formData.append("tax", outPayment.tax);
+  formData.append("total_adjustment", outPayment.total_adjustment);
+  formData.append("status", outPayment.status);
+  formData.append("comments", outPayment.comments);
+
+  console.log("django api helper", outPayment, id)
+
+
+  return axios.post(`${url.ADD_NEW_INVOICE_ADJUSTMENT}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 // ------------- Bank Transfer Payments Settings Requests START -------------
 export const addNewBankTransfer = ( bankTransfer, id) => {
   let formData = new FormData();
   formData.append("transfer_type",  bankTransfer.transfer_type);
   formData.append("mode",   bankTransfer.mode);
   formData.append("deposit_type",   bankTransfer.deposit_type);
+  formData.append("withdraw_type", bankTransfer.withdraw_type)
   formData.append("amount",   bankTransfer.amount);
   formData.append("bankaccount_id",   bankTransfer.bankaccount_id);
   formData.append("from_bankaccount_id",   bankTransfer.from_bankaccount_id);
