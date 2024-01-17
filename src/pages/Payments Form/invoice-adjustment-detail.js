@@ -67,6 +67,8 @@ class OutPaymentsForm extends Component {
         : "",
       invoice_id: "",
       total_adjustment: "",
+      price_discount: "",
+      others: "",
       tax: "",
       status: "",
       comments: "",
@@ -96,6 +98,8 @@ class OutPaymentsForm extends Component {
         invoice_id: this.state.invoice_id,
         tax: this.state.tax,
         total_adjustment: this.state.total_adjustment,
+        price_discount: this.state.price_discount,
+        others: this.state.others,
         status: "Approved",
         comments: this.state.comments,
       },
@@ -198,14 +202,14 @@ class OutPaymentsForm extends Component {
 
     const listInvoiceList = [];
     for (let i = 0; i < listInvoice.length; i++) {
-      if (listInvoice[i].office === this.props.staffProfiles.territory_office) {
+      // if (listInvoice[i].office === this.props.staffProfiles.territory_office) {
         listInvoiceList.push({
-          label: listInvoice[i].name,
+          label: listInvoice[i].id,
           value: listInvoice[i].id,
           // type: listInvoice[i].type,
           // city: listInvoice[i].city,
         });
-      }
+      // }
     }
 
 
@@ -238,7 +242,7 @@ class OutPaymentsForm extends Component {
                              outPayment.invoice_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">
-                                  Lab name
+                                  Invoice ID
                                 </Label>
                                 <Field
                                   name="invoice_id"
@@ -259,14 +263,14 @@ class OutPaymentsForm extends Component {
                                     }
                                   >
                                     {
-                                      outPayment.lab_name
+                                      outPayment.invoice_id
                                     }
                                   </option>
                                 </Field>
                               </div>
                             ) : (
                               <div className="mb-3 select2-container">
-                                <Label className="fw-bolder">Lab Name</Label>
+                                <Label className="fw-bolder">Invoice ID</Label>
                                 <Select
                                   name="invoice_id"
                                   component="Select"
@@ -294,19 +298,20 @@ class OutPaymentsForm extends Component {
                                         : "#ced4da",
                                     }),
                                   }}
-                                  options={labList}
-                                  placeholder="Select Lab..."
+                                  options={listInvoiceList}
+                                  placeholder="Select Invoice ID..."
                                 />
 
                                 <div className="invalid-feedback">
-                                  Please select your Lab
+                                  Please select Invoice ID
                                 </div>
                               </div>)
                           }
 
+                          
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
-                              Invoice Amount
+                              Tax
                               <span
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"
@@ -318,9 +323,33 @@ class OutPaymentsForm extends Component {
                               type="text"
                               className="form-control"
                               id="cardnumberInput"
+                              placeholder="Enter Tax.."
+                              name="tax"
+                              value={this.state.tax}
+                              onChange={e =>
+                                this.setState({
+                                  tax: e.target.value,
+                                })
+                              }
+                            />
+                          </FormGroup>
+                          <FormGroup className="mb-0">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
+                              Full Invoice Adjustment
+                              {/* <span
+                                style={{ color: "#f46a6a" }}
+                                className="font-size-18"
+                              >
+                                *
+                              </span> */}
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              id="cardnumberInput"
                               required={true}
                               readOnly={true}
-                              placeholder="Enter Amount"
+                              placeholder="Enter Full Invoice Adjustment Amount.."
                               name="total_adjustment"
                               value={this.state.total_adjustment}
                               onChange={e =>
@@ -329,27 +358,53 @@ class OutPaymentsForm extends Component {
                                 })
                               }
                             />
-                          </FormGroup>
-                          <FormGroup className="mb-0">
+                          </FormGroup><FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
-                              Tax
-                              <span
+                              Price Discount
+                              {/* <span
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"
                               >
-
-                              </span>
+                                *
+                              </span> */}
                             </Label>
                             <Input
                               type="text"
                               className="form-control"
                               id="cardnumberInput"
-                              placeholder="Enter Tax"
-                              name="tax"
-                              value={this.state.tax}
+                              required={true}
+                              readOnly={true}
+                              placeholder="Enter Price Discount.."
+                              name="price_discount"
+                              value={this.state.price_discount}
                               onChange={e =>
                                 this.setState({
-                                  tax: e.target.value,
+                                  price_discount: e.target.value,
+                                })
+                              }
+                            />
+                          </FormGroup><FormGroup className="mb-0">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
+                              Others
+                              {/* <span
+                                style={{ color: "#f46a6a" }}
+                                className="font-size-18"
+                              >
+                                *
+                              </span> */}
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              id="cardnumberInput"
+                              required={true}
+                              readOnly={true}
+                              placeholder="Enter Other Amount.."
+                              name="others"
+                              value={this.state.others}
+                              onChange={e =>
+                                this.setState({
+                                  others: e.target.value,
                                 })
                               }
                             />

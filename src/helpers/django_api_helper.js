@@ -2619,6 +2619,8 @@ export const addNewInvoiceAdjustment = ( outPayment, id) => {
   formData.append("invoice_id", outPayment.invoice_id);
   formData.append("tax", outPayment.tax);
   formData.append("total_adjustment", outPayment.total_adjustment);
+  formData.append("price_discount", outPayment.price_discount);
+  formData.append("others", outPayment.others);
   formData.append("status", outPayment.status);
   formData.append("comments", outPayment.comments);
 
