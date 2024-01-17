@@ -124,6 +124,11 @@ class AdvertisementsList extends Component {
           }),
         },
         {
+          dataField: "number_of_days",
+          text: "Duration In Days",
+          sort: true,
+        },
+        {
           text: "City",
           dataField: "city",
           sort: true,

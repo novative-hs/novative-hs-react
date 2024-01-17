@@ -104,7 +104,11 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLabHazir) => (
             <>
               <span>
-                {moment(discountLabHazir.start_date).format("DD MMM YYYY, h:mm A")}
+                {discountLabHazir.discount !== 0 ? (
+                  moment(discountLabHazir.start_date).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
               </span>
             </>
           ),
@@ -119,12 +123,16 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLabHazir) => (
             <>
               <span>
-                {moment(discountLabHazir.end_date).format("DD MMM YYYY, h:mm A")}
+                {discountLabHazir.discount !== 0 ? (
+                  moment(discountLabHazir.end_date).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
               </span>
             </>
           ),
           filter: textFilter({
-            placeholder: 'Enter Start Date',
+            placeholder: 'Enter End Date',
           }),
         },
         {

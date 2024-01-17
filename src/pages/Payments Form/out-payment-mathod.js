@@ -298,30 +298,13 @@ class OutPaymentsForm extends Component {
         order: "desc", // desc or asc
       },
     ];
-
-    // const labList = [];
-    // for (let i = 0; i < labsMof.length; i++) {
-    //   let flag = 0;
-    //   // for (let j = 0; j < outPayments.length; j++) {
-    //   //   if (labsMof[i].id == outPayments[j].lab_id) {
-    //   //     flag = 1;
-    //   //   }
-    //   // }
-    //   if (!flag) {
-    //     labList.push({
-    //       label: labsMof[i].name,
-    //       value: labsMof[i].id,
-    //     });
-    //   }
-    // }
     const labList = [];
     for (let i = 0; i < labsMof.length; i++) {
       if (labsMof[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
-          label: labsMof[i].name,
+         label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
+          label1: `${labsMof[i].name}`,
           value: labsMof[i].id,
-          type: labsMof[i].type,
-          city: labsMof[i].city,
         });
       }
     }
@@ -356,7 +339,7 @@ class OutPaymentsForm extends Component {
 
     )
     .map(donation => ({
-      label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
+      label: `(Appointment ID: ${donation.id}) - (Amount: ${donation.dues})`,
       value: donation.id,
       data: { dues: donation.dues }, // Include the 'dues' property in the data field
     }));
@@ -879,34 +862,6 @@ class OutPaymentsForm extends Component {
                           ) : null} */}
 
 
-{this.state.payment_for == "Lab" ? (
-
-<FormGroup className="mb-0">
-  <Label htmlFor="cardnumberInput" className="fw-bolder">
-    Amount
-    <span
-      style={{ color: "#f46a6a" }}
-      className="font-size-18"
-    >
-      *
-    </span>
-  </Label>
-  <Input
-    type="text"
-    className="form-control"
-    id="cardnumberInput"
-    required={true}
-    placeholder="Amount.."
-    name="amount"
-    value={this.state.amount}
-    onChange={e =>
-      this.setState({
-        amount: e.target.value,
-      })
-    }
-    readOnly // Set readOnly to true
-  />
-</FormGroup>) : (
   <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
     Amount
@@ -932,10 +887,9 @@ class OutPaymentsForm extends Component {
     }
   />
 </FormGroup>
-)}
 <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
-    Tax
+  Tax Deductive by LabHazir
     <span
       style={{ color: "#f46a6a" }}
       className="font-size-18"

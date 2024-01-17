@@ -41,7 +41,7 @@ import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import {
-  getListDonationAppointment,
+  getListInvoice,
   addNewInvoiceAdjustment,
   getStaffProfile
 } from "store/outpayments/actions";
@@ -65,7 +65,7 @@ class OutPaymentsForm extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      test_appointment_id: "",
+      invoice_id: "",
       total_adjustment: "",
       tax: "",
       status: "",
@@ -93,7 +93,7 @@ class OutPaymentsForm extends Component {
   handleSubmitClicks = () => {
     this.setState({
       outPayment: {
-        test_appointment_id: this.state.test_appointment_id,
+        invoice_id: this.state.invoice_id,
         tax: this.state.tax,
         total_adjustment: this.state.total_adjustment,
         status: "Approved",
@@ -122,11 +122,11 @@ class OutPaymentsForm extends Component {
     });
     console.log("state", staffProfiles)
 
-    const { listDonation, onGetListDonationAppointment } = this.props;
-    if (listDonation && !listDonation.length) {
-      onGetListDonationAppointment();
+    const { listInvoice, onGetListInvoice } = this.props;
+    if (listInvoice && !listInvoice.length) {
+      onGetListInvoice();
     }
-    this.setState({ listDonation });
+    this.setState({ listInvoice });
   }
 
   toggle() {
@@ -174,9 +174,8 @@ class OutPaymentsForm extends Component {
   render() {
     const { SearchBar } = Search;
     const { outPayments } = this.props;
-    const { listDonation } = this.props;
     const { staffProfiles } = this.props;
-
+    const { listInvoice } = this.props;
 
     // const { units } = this.props;
 
@@ -197,20 +196,17 @@ class OutPaymentsForm extends Component {
       },
     ];
 
-    const DonationAppointmentList = listDonation
-      .filter(
-        donation =>
-          // donation.payment_method === "Donation" &&
-          // donation.payment_status === "Allocate" &&
-          // donation.status === "Result Uploaded" &&
-          donation.lab_office === this.props.staffProfiles.territory_office &&
-          donation.dues !== undefined
-      )
-      .map(donation => ({
-        label: `${donation.invoice_id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
-        value: donation.id,
-        data: { dues: donation.dues }, // Include the 'dues' property in the data field
-      }));
+    const listInvoiceList = [];
+    for (let i = 0; i < listInvoice.length; i++) {
+      if (listInvoice[i].office === this.props.staffProfiles.territory_office) {
+        listInvoiceList.push({
+          label: listInvoice[i].name,
+          value: listInvoice[i].id,
+          // type: listInvoice[i].type,
+          // city: listInvoice[i].city,
+        });
+      }
+    }
 
 
     return (
@@ -238,76 +234,76 @@ class OutPaymentsForm extends Component {
                     <Card>
                       <CardBody>
                         <div>
-
-                          {outPayment.test_appointment_id ? (
-                            <div className="mb-3">
-                              <Label className="form-label">
-                                Invoice ID
-                              </Label>
-                              <Field
-                                name="test_appointment_id"
-                                as="select"
-                                defaultValue={outPayment.test_appointment_id}
-                                className="form-control"
-                                readOnly={true}
-                                multiple={true} // Set to true to allow multiple selections
-                              >
-                                {/* Render options for each selected test_appointment_id */}
-                                {outPayment.test_appointment_id.map(value => (
-                                  <option key={value} value={value}>
-                                    {value}
+                          {
+                             outPayment.invoice_id ? (
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  Lab name
+                                </Label>
+                                <Field
+                                  name="invoice_id"
+                                  as="select"
+                                  defaultValue={
+                                    outPayment.invoice_id
+                                  }
+                                  className="form-control"
+                                  readOnly={true}
+                                  multiple={false}
+                                >
+                                  <option
+                                    key={
+                                      outPayment.invoice_id
+                                    }
+                                    value={
+                                      outPayment.invoice_id
+                                    }
+                                  >
+                                    {
+                                      outPayment.lab_name
+                                    }
                                   </option>
-                                ))}
-                              </Field>
-                            </div>
-                          ) : (
-                            <div className="mb-3 select2-container">
-                              <Label className="fw-bolder">Invoice ID</Label>
-                              <Select
-                                name="test_appointment_id"
-                                component="Select"
-                                isMulti={true} // Uncomment this line
-                                onChange={selectedGroup => {
-                                  this.setState({
-                                    test_appointment_id: selectedGroup.map(option => option.value),
-                                  });
-
-                                  const selectedData = selectedGroup.map(option => option.data || {});
-                                  const totalAmount = selectedData.reduce(
-                                    (total, appointment) => total + (parseFloat(appointment.dues) || 0),
-                                    0
-                                  );
-
-                                  // Auto-set the total_adjustment field
-                                  this.setState({ total_adjustment: totalAmount || '0' });
-                                  console.log("total_adjustment arahi h yah nahi", selectedData, totalAmount);
-                                }}
-                                className={
-                                  "defautSelectParent" +
-                                  (!this.state.test_appointment_id
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                                styles={{
-                                  control: (
-                                    base,
-                                    state
-                                  ) => ({
-                                    ...base,
-                                    borderColor: !this
-                                      .state.test_appointment_id
-                                      ? "#f46a6a"
-                                      : "#ced4da",
-                                  }),
-                                }}
-                                options={DonationAppointmentList}
-                                placeholder="Select Appointment..."
-                              />
-
-                              <div className="invalid-feedback">
-                                Please select Invoice ID
+                                </Field>
                               </div>
-                            </div>)}
+                            ) : (
+                              <div className="mb-3 select2-container">
+                                <Label className="fw-bolder">Lab Name</Label>
+                                <Select
+                                  name="invoice_id"
+                                  component="Select"
+                                  onChange={selectedGroup =>
+                                    this.setState({
+                                      invoice_id:
+                                        selectedGroup.value,
+                                    })
+                                  }
+                                  className={
+                                    "defautSelectParent" +
+                                    (!this.state.invoice_id
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  styles={{
+                                    control: (
+                                      base,
+                                      state
+                                    ) => ({
+                                      ...base,
+                                      borderColor: !this
+                                        .state.invoice_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                    }),
+                                  }}
+                                  options={labList}
+                                  placeholder="Select Lab..."
+                                />
+
+                                <div className="invalid-feedback">
+                                  Please select your Lab
+                                </div>
+                              </div>)
+                          }
+
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Invoice Amount
@@ -323,6 +319,7 @@ class OutPaymentsForm extends Component {
                               className="form-control"
                               id="cardnumberInput"
                               required={true}
+                              readOnly={true}
                               placeholder="Enter Amount"
                               name="total_adjustment"
                               value={this.state.total_adjustment}
@@ -416,29 +413,30 @@ class OutPaymentsForm extends Component {
 
 OutPaymentsForm.propTypes = {
   match: PropTypes.object,
-  listDonation: PropTypes.array,
   history: PropTypes.object,
   outPayments: PropTypes.array,
+  listInvoice: PropTypes.array,
   className: PropTypes.any,
-  onGetListDonationAppointment: PropTypes.func,
   onGetOutPayment: PropTypes.func,
   onAddNewInvoiceAdjustment: PropTypes.func,
   onGetStaffProfile: PropTypes.func,
   staffProfiles: PropTypes.func,
+  onGetListInvoice: PropTypes.func,
 
 };
 
 const mapStateToProps = ({ outPayments }) => ({
   outPayments: outPayments.outPayments,
-  listDonation: outPayments.listDonation,
   staffProfiles: outPayments.staffProfiles,
+  listInvoice: outPayments.listInvoice,
+
 
 
   // units: outPayments.units,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetListDonationAppointment: () => dispatch(getListDonationAppointment()),
+  onGetListInvoice: () => dispatch(getListInvoice()),
   onGetOutPayment: id => dispatch(getOutPayment(id)),
   onAddNewInvoiceAdjustment: (outPayment, id) =>
     dispatch(addNewInvoiceAdjustment(outPayment, id)),

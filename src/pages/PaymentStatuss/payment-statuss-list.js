@@ -735,7 +735,7 @@ class PaymentStatussList extends Component {
 
                                                                                                     <div className="mb-3">
                                                                                                         <Label className="form-label">
-                                                                                                            Varified By
+                                                                                                        Deposited By
                                                                                                             <span className="text-danger font-size-12">
                                                                                                                 *
                                                                                                             </span>

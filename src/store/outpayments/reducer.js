@@ -3,6 +3,8 @@ import {
   GET_LABS_MOF_FAIL,
   GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
   GET_LIST_DONATIONAPPOINTMENT_FAIL,
+  GET_LIST_INVOICE_SUCCESS,
+  GET_LIST_INVOICE_FAIL,
   GET_BANKS_SUCCESS,
   GET_BANKS_FAIL,
   GET_BANK_ACCOUNTS_SUCCESS,
@@ -28,6 +30,7 @@ const INIT_STATE = {
   banks: [],
   labsMof: [],
   listDonation: [],
+  listInvoice: [],
   error: {},
 };
 
@@ -88,6 +91,17 @@ const outPayments = (state = INIT_STATE, action) => {
           ...state,
           error: action.payload,
         };
+    case GET_LIST_INVOICE_SUCCESS:
+      return {
+        ...state,
+        listInvoice: action.payload.data,
+      };
+
+    case GET_LIST_INVOICE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
       case GET_B2B_CLIENTS_SUCCESS:
         return {
           ...state,

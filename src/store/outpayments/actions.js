@@ -5,6 +5,9 @@ import {
   GET_LIST_DONATIONAPPOINTMENT,
   GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
   GET_LIST_DONATIONAPPOINTMENT_FAIL,
+  GET_LIST_INVOICE,
+  GET_LIST_INVOICE_SUCCESS,
+  GET_LIST_INVOICE_FAIL,
   GET_B2B_CLIENTS,
   GET_B2B_CLIENTS_SUCCESS,
   GET_B2B_CLIENTS_FAIL,
@@ -99,6 +102,7 @@ export const getLabsMofFail = error => ({
   type: GET_LABS_MOF_FAIL,
   payload: error,
 });
+
 export const getListDonationAppointment = () => ({
   type: GET_LIST_DONATIONAPPOINTMENT,
 });
@@ -112,6 +116,21 @@ export const getListDonationAppointmentFail = error => ({
   type: GET_LIST_DONATIONAPPOINTMENT_FAIL,
   payload: error,
 });
+
+export const getListInvoice = () => ({
+  type: GET_LIST_INVOICE,
+});
+
+export const getListInvoiceSuccess = listInvoice => ({
+  type: GET_LIST_INVOICE_SUCCESS,
+  payload: listInvoice,
+});
+
+export const getListInvoiceFail = error => ({
+  type: GET_LIST_INVOICE_FAIL,
+  payload: error,
+});
+
 export const getOutPayment = id => ({
   type: GET_OUT_PAYMENT,
   payload: id,

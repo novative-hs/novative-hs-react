@@ -2579,6 +2579,11 @@ get(`${url.GET_LIST_DONATIONAPPOINTMENT}`, {
   headers: getHeader(authHeader()),
 });
 
+export const getListInvoice = ()=>
+get(`${url.GET_LIST_INVOICE}`, {
+  headers: getHeader(authHeader()),
+});
+
 // ------------- inPayments Settings Requests START -------------
 export const addNewOutPayment = ( outPayment, id) => {
   let formData = new FormData();
@@ -2611,7 +2616,7 @@ export const addNewOutPayment = ( outPayment, id) => {
 // ------------- invoice adjustment Settings Requests START -------------
 export const addNewInvoiceAdjustment = ( outPayment, id) => {
   let formData = new FormData();
-  formData.append("test_appointment_id", outPayment.test_appointment_id);
+  formData.append("invoice_id", outPayment.invoice_id);
   formData.append("tax", outPayment.tax);
   formData.append("total_adjustment", outPayment.total_adjustment);
   formData.append("status", outPayment.status);

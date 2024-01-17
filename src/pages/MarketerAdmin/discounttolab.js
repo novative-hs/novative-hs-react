@@ -147,7 +147,11 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
               <span>
-                {moment(discountLabHazirToLab.start_date_by_labhazir).format("DD MMM YYYY, h:mm A")}
+                {discountLabHazirToLab.discount_by_labhazir !== 0 ? (
+                  moment(discountLabHazirToLab.start_date_by_labhazir).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
               </span>
             </>
           ),
@@ -162,7 +166,11 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLabHazirToLab) => (
             <>
               <span>
-                {moment(discountLabHazirToLab.end_date_by_labhazir).format("DD MMM YYYY, h:mm A")}
+                {discountLabHazirToLab.discount_by_labhazir !== 0 ? (
+                  moment(discountLabHazirToLab.end_date_by_labhazir).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
               </span>
             </>
           ),

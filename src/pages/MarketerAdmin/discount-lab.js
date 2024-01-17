@@ -117,30 +117,38 @@ class DiscountLabHazirList extends Component {
             ),
           },
           
-        {
-          dataField: "start_date",
-          text: "Start Date",
-          sort: true,
-          formatter: (cellContent, discountLab) => (
-            <>
-              <span>
-                {moment(discountLab.start_date).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "end_date",
-          text: "End Date",
-          sort: true,
-          formatter: (cellContent, discountLab) => (
-            <>
-              <span>
-                {moment(discountLab.end_date).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-        },
+          {
+            dataField: "start_date",
+            text: "Start Date",
+            sort: true,
+            formatter: (cellContent, discountLab) => (
+              <>
+                <span>
+                  {discountLab.discount !== 0 ? (
+                    moment(discountLab.start_date).format("DD MMM YYYY, h:mm A")
+                  ) : (
+                    "--"
+                  )}
+                </span>
+              </>
+            ),
+          },
+          {
+            dataField: "end_date",
+            text: "End Date",
+            sort: true,
+            formatter: (cellContent, discountLab) => (
+              <>
+                <span>
+                  {discountLab.discount !== 0 ? (
+                    moment(discountLab.end_date).format("DD MMM YYYY, h:mm A")
+                  ) : (
+                    "--"
+                  )}
+                </span>
+              </>
+            ),
+          },
         {
           dataField: "menu",
           isDummyField: true,

@@ -5,12 +5,13 @@ import {
   GET_OUT_PAYMENT, 
   GET_LABS_MOF,
   GET_LIST_DONATIONAPPOINTMENT,
+  GET_LIST_INVOICE,
   GET_BANKS,
   GET_BANK_ACCOUNTS,
   GET_B2B_CLIENTS,
-    ADD_NEW_OUT_PAYMENT,
-    ADD_NEW_INVOICE_ADJUSTMENT,
-    GET_STAFF_PROFILE,
+  ADD_NEW_OUT_PAYMENT,
+  ADD_NEW_INVOICE_ADJUSTMENT,
+  GET_STAFF_PROFILE,
 
 } from "./actionTypes";
 
@@ -21,6 +22,8 @@ import {
   getLabsMofFail,
   getListDonationAppointmentSuccess,
   getListDonationAppointmentFail,
+  getListInvoiceSuccess,
+  getListInvoiceFail,
   getBankAccountsSuccess,
   getBankAccountsFail,
   getBanksSuccess,
@@ -36,7 +39,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getOutPayment, getLabsMof ,getListDonationAppointment, getStaffProfile,  getBanks,   getBankAccounts,
+import { getOutPayment, getLabsMof ,getListDonationAppointment, getListInvoice, getStaffProfile,  getBanks,   getBankAccounts,
 
   addNewOutPayment,
   addNewInvoiceAdjustment,
@@ -101,6 +104,15 @@ function* fetchListDonationAppointment() {
   }
 }
 
+function* fetchListInvoice() {
+  try {
+    const response = yield call(getListInvoice);
+    yield put(getListInvoiceSuccess(response));
+  } catch (error) {
+    yield put(getListInvoiceFail(error));
+  }
+}
+
 function* fetchB2bAllClientsList(object) {
   try {
     const response = yield call(getB2bClients, object.payload);
@@ -151,6 +163,7 @@ function* outPaymentSaga() {
   yield takeEvery(GET_OUT_PAYMENT,fetchOutPayments);
   yield takeEvery(GET_LABS_MOF, fetchLabsMof);
   yield takeEvery(GET_LIST_DONATIONAPPOINTMENT, fetchListDonationAppointment);
+  yield takeEvery(GET_LIST_INVOICE, fetchListInvoice);
   yield takeEvery(
     GET_B2B_CLIENTS,
     fetchB2bAllClientsList

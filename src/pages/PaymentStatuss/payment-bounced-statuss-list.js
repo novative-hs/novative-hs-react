@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
 import {
   Card,
   CardBody,
@@ -296,15 +297,15 @@ class PaymentStatussList extends Component {
         text: "Deposited Date",
         sort: true,
         formatter: (cellContent, paymentBouncedInStatus) => {
-          const date = new Date(paymentBouncedInStatus.deposited_at);
-          const day = date.getDate();
-          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-          const month = monthNames[date.getMonth()];
-          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+          // const date = new Date(paymentBouncedInStatus.deposited_at);
+          // const day = date.getDate();
+          // const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          // const month = monthNames[date.getMonth()];
+          // const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
 
           return (
             <p className="text-muted mb-0">
-              {`${day}-${month}-${year}`}
+                {moment(paymentBouncedInStatus.deposited_at).format("DD MMM YYYY, h:mm A")}
             </p>
           );
         },
@@ -312,76 +313,84 @@ class PaymentStatussList extends Component {
         headerStyle: { backgroundColor: '#DCDCDC' },
         style: { backgroundColor: '	#F0F0F0' },
       },
-      // {
-      //   dataField: "cheque_no",
-      //   text: "Cheque/Ref#",
-      //   sort: true,
-      //   formatter: (cellContent, paymentBouncedInStatus) => (
-      //     <>
-      //       {paymentBouncedInStatus.cheque_no && (
-      //         <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-      //           {paymentBouncedInStatus.cheque_no}
-      //         </span>
-      //       )}
+      {
+        dataField: "cheque_no",
+        text: "Cheque/Ref#",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+          <>
+            {paymentBouncedInStatus.cheque_no && (
+              <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                {paymentBouncedInStatus.cheque_no}
+              </span>
+            )}
 
-      //       {paymentBouncedInStatus.cheque_no && (
-      //         <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-      //           {paymentBouncedInStatus.refered_no}
-      //         </span>
-      //       )}
-      //     </>
-      //   ), filter: textFilter(),
-      // },
-      // // {
-      //   dataField: "bank",
-      //   text: "Bank/Account#",
-      //   sort: true,
-      //   formatter: (cellContent, paymentBouncedInStatus) => (
-      //     <>
-      //       <span>
-      //         <Link
-      //           to={{
-      //             pathname:
-      //               process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.deposit_slip,
-      //           }}
-      //           target="_blank"
-      //         >
-      //           <span>
-      //             {paymentBouncedInStatus.bank_name},{" "}
-      //             {paymentBouncedInStatus.account_no}
-      //           </span>
-      //         </Link>
+            {paymentBouncedInStatus.cheque_no && (
+              <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                {paymentBouncedInStatus.refered_no}
+              </span>
+            )}
+          </>
+        ), filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "bank",
+        text: "Bank/Account#",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+          <>
+            <span>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.deposit_slip,
+                }}
+                target="_blank"
+              >
+                <span>
+                  {paymentBouncedInStatus.bank_name},{" "}
+                  {paymentBouncedInStatus.account_no}
+                </span>
+              </Link>
 
-      //       </span>
+            </span>
 
-      //     </>
-      //   ),
-      //   filter: textFilter(),
-      // },
+          </>
+        ),
+        filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
 
       // {
       //   dataField: "is_settled",
       //   text: "Is Settled",
       //   sort: true,
       // },
-      // {
-      //   dataField: "verified_by",
-      //   text: "Verified By",
-      //   sort: true,
-      // },
+      {
+        dataField: "verified_by",
+        text: "Deposited By",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+          <>
+            <strong>{paymentBouncedInStatus.verified_by}</strong>
+          </>
+        ), filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
       {
         dataField: "cleared_at",
         text: "Cleared Date",
         sort: true,
         formatter: (cellContent, paymentBouncedInStatus) => {
-          const date = new Date(paymentBouncedInStatus.cleared_at);
-          const day = date.getDate();
-          const month = date.getMonth() + 1; // Adding 1 to get the correct month
-          const year = date.getFullYear();
+          // const date = new Date(paymentBouncedInStatus.cleared_at);
+          // const day = date.getDate();
+          // const month = date.getMonth() + 1; // Adding 1 to get the correct month
+          // const year = date.getFullYear();
 
           return (
             <p className="text-muted mb-0">
-              {`${day}/${month}/${year}`}
+              { moment(paymentBouncedInStatus.cleared_at).format("DD MMM YYYY, h:mm A")}
             </p>
           );
         },
@@ -389,30 +398,37 @@ class PaymentStatussList extends Component {
         headerStyle: { backgroundColor: '#DCDCDC' },
         style: { backgroundColor: '	#F0F0F0' },
       },
-      // {
-      //   dataField: "deposit_slip",
-      //   text: "Deposite Slip",
-      //   sort: true,
-      //   formatter: (cellContent, paymentBouncedInStatus) => (
-      //     <>
-      //       <Link
-      //         to={{
-      //           pathname:
-      //             process.env.REACT_APP_BACKENDURL +
-      //             paymentBouncedInStatus.deposit_slip,
-      //         }}
-      //         target="_blank"
-      //       >
-      //         View Slip
-      //       </Link>
-      //     </>
-      //   ),
-      // },
-      // {
-      //   dataField: "payment_status",
-      //   text: "Status",
-      //   sort: true,
-      // },
+     
+      {
+        dataField: "payment_status",
+        text: "Status",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+          <>
+            <strong>{paymentBouncedInStatus.payment_status}</strong>
+          </>
+        ), filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "deposit_slip",
+        text: "Deposite Slip",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+          <>
+            <Link
+              to={{
+                pathname:
+                  process.env.REACT_APP_BACKENDURL +
+                  paymentBouncedInStatus.deposit_slip,
+              }}
+              target="_blank"
+            >
+              View Slip
+            </Link>
+          </>
+        ),headerStyle: { backgroundColor: '#DCDCDC' },
+      },
       {
         dataField: "menu",
         isDummyField: true,

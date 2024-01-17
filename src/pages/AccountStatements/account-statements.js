@@ -636,10 +636,9 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ) : (
-                                        // <p className="float-start">
-                                        //   {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        // </p>
-                                        null
+                                        <p className="float-start">
+                                          {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        </p>
                                       )}
 
                                     </td>
@@ -699,7 +698,7 @@ class AccountStatements extends Component {
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
-                                            {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
@@ -1217,7 +1216,7 @@ class AccountStatements extends Component {
                                                 {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                               </span>
                                             ) : (
-                                              <span className="text-primary">Inprocess</span>
+                                              <span className="text-primary">LabHazir</span>
                                             )}                                        </p>
                                         )}
 

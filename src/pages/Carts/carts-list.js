@@ -95,20 +95,17 @@ class CartList extends Component {
           ),
         },
         {
-          dataField: "labhaz_discount_test",
-          text: "Test Discount (Labhazir)",
+          dataField: "labhazir_discount",
+          text: "Discount By Labhazir",
           sort: true,
-          formatter: (cellContent, cart) => (
-            <>{<span>{(cart.labhaz_discount_test * 100).toFixed()}%</span>}</>
-          ),
-        },
-        {
-          dataField: "discount_by_labhazir",
-          text: "All Tests Discount (Labhazir)",
-          sort: true,
-          formatter: (cellContent, cart) => (
-            <>{<span>{(cart.discount_by_labhazir * 100).toFixed()}%</span>}</>
-          ),
+          formatter: (cellContent, cart) => {
+            const labhaz_discount_percentage = cart.labhaz_discount_test * 100;
+            const discount_by_labhazir_percentage = cart.discount_by_labhazir * 100;
+        
+            const combined_discount_percentage = labhaz_discount_percentage + discount_by_labhazir_percentage;
+        
+            return <span>{combined_discount_percentage.toFixed()}%</span>;
+          },
         },
         {
           dataField: "total_balance",

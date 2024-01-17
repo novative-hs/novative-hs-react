@@ -284,10 +284,9 @@ class InPaymentsForm extends Component {
     for (let i = 0; i < labs.length; i++) {
       if (labs[i].office === this.props.staffProfiles.territory_office) {
         labList.push({
-          label: labs[i].name,
+          label: `${labs[i].name} - ${labs[i].type} - ${labs[i].city}`,
+          label1: `${labs[i].name}`,
           value: labs[i].id,
-          type: labs[i].type,
-          city: labs[i].city,
         });
       }
     }
@@ -303,10 +302,10 @@ class InPaymentsForm extends Component {
           donation.is_settled === false &&
           donation.lab_office === this.props.staffProfiles.territory_office &&
           donation.dues !== undefined &&
-          donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
+          donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
       )
       .map(donation => ({
-        label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
+        label: `(Appointment ID: ${donation.id}) - (Amount: ${donation.dues})`,
         value: donation.id,
         data: { dues: donation.dues },
       }));
@@ -681,8 +680,6 @@ class InPaymentsForm extends Component {
 
                             
                           ) : null}
-            {this.state.payment_for == "Advertisement" || this.state.payment_for == "Lab" ? (
-
 <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
     Amount
@@ -706,38 +703,12 @@ class InPaymentsForm extends Component {
         amount: e.target.value,
       })
     }
-    readOnly // Set readOnly to true
-  />
-</FormGroup>) : (
-  <FormGroup className="mb-0">
-  <Label htmlFor="cardnumberInput" className="fw-bolder">
-    Amount
-    <span
-      style={{ color: "#f46a6a" }}
-      className="font-size-18"
-    >
-      *
-    </span>
-  </Label>
-  <Input
-    type="text"
-    className="form-control"
-    id="cardnumberInput"
-    required={true}
-    placeholder="Enter Amount"
-    name="amount"
-    value={this.state.amount}
-    onChange={e =>
-      this.setState({
-        amount: e.target.value,
-      })
-    }
   />
 </FormGroup>
-)}
+{this.state.payment_for == "Advertisement" || this.state.payment_for == "Lab" ? (
 <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
-    Tax
+    Tax Deductive by Lab
     <span
       style={{ color: "#f46a6a" }}
       className="font-size-18"
@@ -758,7 +729,7 @@ class InPaymentsForm extends Component {
       })
     }
   />
-</FormGroup>
+</FormGroup>) : null}
                           <div>
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
                               Payment Method

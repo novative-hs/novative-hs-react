@@ -270,6 +270,8 @@ export const GET_LIST_DONATIONAPPOINTMENT = `${API_ENDPOINT}/api/finance-officer
 
 export const ADD_NEW_INVOICE_ADJUSTMENT = `${API_ENDPOINT}/api/finance-officer/invoice-adjustment-detail`;
 
+// Get Invoice LIst
+export const GET_LIST_INVOICE = `${API_ENDPOINT}/api/finance-officer/all-invoices-list`;
 
 // Get DONATION Appointments
 export const GET_ALL_DONATION_APPOINTMENTS = `${API_ENDPOINT}/api/finance-officer/donation-Appointments`;
