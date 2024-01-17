@@ -7,7 +7,8 @@ import { Card, CardBody, Col, Table, Container, Row } from "reactstrap";
 import { isEmpty, map } from "lodash";
 import moment from 'moment';
 
-
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -36,19 +37,36 @@ class AccountStatements extends Component {
       account_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
+      startDate: null,
+      endDate: null,
     };
     this.toggle = this.toggle.bind(this);
   }
+  fetchData = () => {
+    if (this.state.user_id) {
+      const { onGetAccountStatements } = this.props;
+      const userId =
+        this.state.account_type === "labowner"
+          ? this.state.user_id
+          : this.props.match.params.id;
+
+      // Only make the API call if both start and end dates are selected
+      if (this.state.startDate && this.state.endDate) {
+        onGetAccountStatements(userId);
+      }
+    }
+  };
 
   componentDidMount() {
-    if (this.state.user_id && this.state.account_type === "labowner") {
-      const { onGetAccountStatements } = this.props;
-      onGetAccountStatements(this.state.user_id);
-      this.setState({ accountStatements: this.props.accountStatements });
-    } else if (this.state.user_id && this.state.account_type !== "labowner") {
-      const { onGetAccountStatements } = this.props;
-      onGetAccountStatements(this.props.match.params.id);
-      this.setState({ accountStatements: this.props.accountStatements });
+    this.fetchData();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    // Check if either startDate or endDate has changed
+    if (
+      prevState.startDate !== this.state.startDate ||
+      prevState.endDate !== this.state.endDate
+    ) {
+      this.fetchData();
     }
   }
   toggle() {
@@ -71,8 +89,17 @@ class AccountStatements extends Component {
 
   render() {
     const { SearchBar } = Search;
-
     const { accountStatements } = this.props;
+    const { startDate, endDate } = this.state;
+
+    // Filter data based on selected dates
+    const filteredStatements = accountStatements.filter((statement) => {
+      const orderedAt = moment(statement.ordered_at);
+      return (
+        (!startDate || orderedAt.isSameOrAfter(startDate)) &&
+        (!endDate || orderedAt.isSameOrBefore(endDate))
+      );
+    });
 
     const pageOptions = {
       sizePerPage: 10,
@@ -90,7 +117,7 @@ class AccountStatements extends Component {
       border: '1px solid white',
       textAlign: 'center',
       verticalAlign: 'middle',
-    };
+    };    
 
     // var total_testby_labhazir = this.props.accountStatements.total_testby_labhazir
     // // var authenticated = "{{total_testby_labhazir}}"
@@ -105,81 +132,30 @@ class AccountStatements extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Lab" breadcrumbItem="Account Statements" />
-            {isEmpty(this.props.accountStatements) && (
-              <Row>
-                <div> <span className="text-danger font-size-12">
-                  <strong>
-                    Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
-                  </strong>
-                </span>
-                  <div>
-                    <strong>
-                      Credit: Lab need to Pay LabHazir. <br></br>
-                      Debit: LabHazir need to Pay Lab.
-                    </strong>
-                  </div>
-                  <div> <span className="text-danger font-size-12">
-                    <strong>
-                      Note: If Balance is Positive Values means Lab will pay to LabHazir, if Balance is Negative Values means LabHazir will pay Lab.
-                    </strong>
-                  </span>
-                  </div>
-                  <div> <span className="text-danger font-size-12">
-                    <strong>
-                      Note: Account Statement formula is: if have Discount by Lab.. ((Discount by Lab + Counter Discount by Lab) - Margen by Lab) + Home Sampling Amount.
-                    </strong>
-                  </span>
-                  </div>
-                  <div> <span className="text-danger font-size-12">
-                    <strong>
-                      Note: Account Statement formula is: if have Discount by LabHazir.. (Discount by LabHazir - Refrell fee of LabHazir)
-                    </strong>
-                  </span>
-                  </div>
-                </div>
-                <Col lg="12">
-                  <Card>
-                    <CardBody>
-                      <div className="table-responsive">
-                        <Table>
-                          <thead className="table-light">
-                            <tr>
-                              <th style={thStyle} scope="col">Date</th>
-                              <th style={thStyle} scope="col">ID</th>
-                              <th style={thStyle} scope="col">Patient Name</th>
-                              <th style={thStyle} scope="col">Status</th>
-                              <th style={thStyle} scope="col">Total Without Discount</th>
-                              <th style={thStyle} scope="col">Home Sampling Amount</th>
-                              <th style={thStyle} scope="col">Discount By Lab</th>
-                              <th style={thStyle} scope="col">Counter Discount By Lab</th>
-                              <th style={thStyle} scope="col">Discount By LabHazir</th>
-                              <th style={thStyle} scope="col">Payable After Discount</th>
-                              <th style={thStyle} scope="col">Margin of Lab</th>
-                              <th style={thStyle} scope="col">Referrel Fee of LabHazir</th>
-                              {/* <th scope="col">Payment Received By LabHazir</th> */}
-                              {/* <th scope="col">Payment Received By Lab</th>
-                              <th scope="col">Payment Received By LabHazir</th> */}
-                              <th style={thStyle} scope="col">Credit</th>
-                              <th style={thStyle} scope="col">Debit</th>
-                              <th style={thStyle} scope="col">Balance</th>
-                              <th scope="col">Is Settled</th>
-                            </tr>
-                          </thead>
-                        </Table>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-            )}
-            {!isEmpty(this.props.accountStatements) && (
+            <Row>
+          <Col lg="3">
+            <div className="mb-3">
+              <label className="form-label">Start Date:</label>
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => this.setState({ startDate: date })}
+                className="form-control"
+              />
+            </div></Col>
+          <Col lg="3">
+            <div className="mb-3">
+              <label className="form-label">End Date:</label>
+              <DatePicker
+                selected={endDate}
+                onChange={(date) => this.setState({ endDate: date })}
+                className="form-control"
+              />
+            </div>
+
+          </Col>
+        </Row>
               <Row>
                 <div>
-                  {/* <span className="text-danger font-size-12">
-                  <strong>
-                    Note: Discount By Lab, Sum of Counter Discount and Discount offered Lab.
-                  </strong>
-                  </span> */}
                   <div>
                     <strong className="text-primary">Credit:</strong> Amount that Lab has to pay LabHazir. <br></br>
                     <strong className="text-primary">Debit: </strong>  Amount that Lab will receive from LabHazir.
@@ -206,7 +182,7 @@ class AccountStatements extends Component {
                   <Card>
                     <CardBody>
                       <div className="table-responsive">
-                        <Table>
+                      <Table>
                           <thead style={{ position: 'flex' }} className="table-dark" >
                             <tr>
                               <th style={thStyle} scope="col">Date</th>
@@ -223,14 +199,16 @@ class AccountStatements extends Component {
                               <th style={thStyle} scope="col">Referrel Fee of LabHazir</th>
                               {/* <th scope="col">Payment Received By LabHazir</th> */}
                               <th style={thStyle} scope="col">Payment Received By</th>
-                              <th style={thStyle} scope="col">Credit</th>
-                              <th style={thStyle} scope="col">Debit</th>
+                              {/* <th style={thStyle} scope="col">Credit</th>
+                              <th style={thStyle} scope="col">Debit</th> */}
                               <th style={thStyle} scope="col">Balance</th>
                               <th scope="col">Is Settled</th>
                             </tr>
                           </thead>
+                          {filteredStatements.length > 0 ? (
+
                           <tbody style={{ textAlign: "center", verticalAlign: "middle" }}>
-                            {accountStatements.map((accountStatement, i) => (
+                            {filteredStatements.map((accountStatement, i) => (
                               <>
                                 {accountStatement.transaction_type == "In" ? (
                                   <tr key={i} className="badge-soft-primary">
@@ -257,7 +235,7 @@ class AccountStatements extends Component {
                                           {accountStatement.payment_status}
                                         </b></td>
                                     ) : (
-                                      <td style={{ backgroundColor: '#EBD3EF' }}>
+                                      <td>
 
                                         <b>
                                           {accountStatement.payment_method},{" "}
@@ -457,7 +435,7 @@ class AccountStatements extends Component {
                                         )}
                                       </p>
                                     </td> */}
-                                    <td style={{ backgroundColor: '#ffc09f' }}>
+                                    {/* <td style={{ backgroundColor: '#ffc09f' }}>
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
@@ -474,8 +452,8 @@ class AccountStatements extends Component {
                                           null
                                         )}
                                       </p>
-                                    </td>
-                                    <td style={{ backgroundColor: '#ffee93' }}>
+                                    </td> */}
+                                    {/* <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
@@ -504,15 +482,8 @@ class AccountStatements extends Component {
                                               null
                                             )}                                        </p>
                                         )}
-                                        {/* {accountStatement.payment_method == "Donation" ? (
-                                        <span>
-                                          {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </span>
-                                      ) : (
-                                        null
-                                      )} */}
                                       </p>
-                                    </td>
+                                    </td> */}
                                     <td style={{ backgroundColor: '#adf7b6' }}>
                                       <p className="float-end">
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -558,7 +529,7 @@ class AccountStatements extends Component {
                                           {accountStatement.payment_status}
                                         </b></td>
                                     ) : (
-                                      <td style={{ backgroundColor: '#FAE9A3' }}>
+                                      <td>
 
                                         <b>
                                           {accountStatement.payment_method},{" "}
@@ -694,7 +665,7 @@ class AccountStatements extends Component {
                                     </td>
 
 
-                                    <td style={{ backgroundColor: '#ffc09f' }}>
+                                    {/* <td style={{ backgroundColor: '#ffc09f' }}>
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
@@ -704,8 +675,8 @@ class AccountStatements extends Component {
                                           null
                                         )}
                                       </p>
-                                    </td>
-                                    <td style={{ backgroundColor: '#ffee93' }}>
+                                    </td> */}
+                                    {/* <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
@@ -729,7 +700,7 @@ class AccountStatements extends Component {
                                           null
                                         )}
                                       </p>
-                                    </td>
+                                    </td> */}
                                     <td style={{ backgroundColor: '#adf7b6' }}>
                                       <p className="float-end">
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -777,7 +748,7 @@ class AccountStatements extends Component {
                                             {accountStatement.payment_status}
                                           </b></td>
                                       ) : (
-                                        <td style={{ backgroundColor: '#adf7b6' }}>
+                                        <td>
 
                                           <b>
                                             {accountStatement.payment_method},{" "}
@@ -979,7 +950,7 @@ class AccountStatements extends Component {
                                           
                                         </p>
                                       </td> */}
-                                      <td style={{ backgroundColor: '#ffc09f' }}>
+                                      {/* <td style={{ backgroundColor: '#ffc09f' }}>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
@@ -996,8 +967,8 @@ class AccountStatements extends Component {
                                             null
                                           )}
                                         </p>
-                                      </td>
-                                      <td style={{ backgroundColor: '#ffee93' }}>
+                                      </td> */}
+                                      {/* <td style={{ backgroundColor: '#ffee93' }}>
                                         <p>
                                           {accountStatement.payment_method == "Card" ? (
                                             <span>
@@ -1006,15 +977,8 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {/* {accountStatement.payment_method == "Donation" ? (
-                                            <span>
-                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )} */}
                                         </p>
-                                      </td>
+                                      </td> */}
                                       <td style={{ backgroundColor: '#adf7b6' }}>
                                         <p className="float-end">
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -1058,7 +1022,7 @@ class AccountStatements extends Component {
                                             {accountStatement.payment_status}
                                           </b></td>
                                       ) : (
-                                        <td style={{ backgroundColor: '#AFD9E8' }}>
+                                        <td>
 
                                           <b>
                                             {accountStatement.payment_method},{" "}
@@ -1243,7 +1207,7 @@ class AccountStatements extends Component {
                                             null
                                         </p>
                                       </td> */}
-                                      <td style={{ backgroundColor: '#ffc09f' }}>
+                                      {/* <td style={{ backgroundColor: '#ffc09f' }}>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
@@ -1252,16 +1216,9 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          {/* {accountStatement.payment_method == "Donation" ? (
-                                            <span>
-                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )} */}
                                         </p>
-                                      </td>
-                                      <td style={{ backgroundColor: '#ffee93' }}>
+                                      </td> */}
+                                      {/* <td style={{ backgroundColor: '#ffee93' }}>
                                         <p>
                                           {accountStatement.payment_method == "Card" ? (
                                             <span>
@@ -1272,7 +1229,7 @@ class AccountStatements extends Component {
                                           )}
 
                                         </p>
-                                      </td>
+                                      </td> */}
                                       <td style={{ backgroundColor: '#adf7b6' }}>
                                         <p className="float-end">
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -1296,7 +1253,7 @@ class AccountStatements extends Component {
                             )
                             )}
                             <tr className="bg-success bg-soft" >
-                              <td colSpan="4" className="border-0 text-end">
+                              <td colSpan="2" className="border-0 text-end">
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10">
@@ -1396,16 +1353,15 @@ class AccountStatements extends Component {
                               </td>
                             </tr>
                           </tbody>
-
+                          ) : (
+                            <p>Select start and end date and time</p>
+                          )}
                         </Table>
                       </div>
-
                     </CardBody>
                   </Card>
                 </Col>
               </Row>
-            )}
-
           </Container>
         </div>
       </React.Fragment>
