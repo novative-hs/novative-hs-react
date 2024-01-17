@@ -335,7 +335,7 @@ class OutPaymentsForm extends Component {
         donation.status === "Result Uploaded" &&
         donation.lab_office === this.props.staffProfiles.territory_office &&
         donation.dues !== undefined &&
-        donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
+        donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
 
     )
     .map(donation => ({
@@ -364,7 +364,7 @@ class OutPaymentsForm extends Component {
         donation.is_settled == false &&
         donation.lab_office === this.props.staffProfiles.territory_office &&
         donation.dues !== undefined &&
-        donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
+        donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
     )
     .map(donation => ({
       label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
