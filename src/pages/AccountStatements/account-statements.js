@@ -195,10 +195,10 @@ class AccountStatements extends Component {
                               <th style={thStyle} scope="col">Counter Discount By Lab</th>
                               <th style={thStyle} scope="col">Discount By LabHazir</th>
                               <th style={thStyle} scope="col">Payable After Discount</th>
+                              <th style={thStyle} scope="col">Payment Received By</th>
                               <th style={thStyle} scope="col">Margin of Lab</th>
                               <th style={thStyle} scope="col">Referrel Fee of LabHazir</th>
                               {/* <th scope="col">Payment Received By LabHazir</th> */}
-                              <th style={thStyle} scope="col">Payment Received By</th>
                               {/* <th style={thStyle} scope="col">Credit</th>
                               <th style={thStyle} scope="col">Debit</th> */}
                               <th style={thStyle} scope="col">Balance</th>
@@ -370,16 +370,22 @@ class AccountStatements extends Component {
                                     </p>
                                   </td> */}
                                     <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
-                                      )}
+                                    <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
 
                                     </td>
                                     <td>
@@ -615,7 +621,7 @@ class AccountStatements extends Component {
                                     </td>
 
                                     <td>
-                                      {accountStatement.after_counterdiscount_lab_share == 0 ? (
+                                      {/* {accountStatement.after_counterdiscount_lab_share == 0 ? (
                                         <p className="d-none">
                                           {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
@@ -624,7 +630,7 @@ class AccountStatements extends Component {
                                         <p className="float-end">
                                           {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
-                                      )}
+                                      )} */}
 
                                     </td>
                                     <td>
@@ -641,27 +647,29 @@ class AccountStatements extends Component {
 
                                     </td>
                                     <td>
-                                      {accountStatement.labhazir_share == 0 ? (
-                                        <p className="d-none">
-                                          {accountStatement.payment_method == "Cash" ? (
-                                            <span>
-                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}                                        </p>
-
-                                      ) : (
-                                        <p className="float-end">
-                                          {accountStatement.payment_method == "Cash" ? (
-                                            <span>
-                                              {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </span>
-                                          ) : (
-                                            null
-                                          )}                                        </p>
-                                      )}
-
+                                    <p>
+                                        {accountStatement.payment_method == "Card" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Cheque" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
                                     </td>
 
 
@@ -861,39 +869,6 @@ class AccountStatements extends Component {
                                         )}
 
                                       </td>
-
-                                      <td>
-                                        {accountStatement.after_counterdiscount_lab_share == 0 ? (
-                                          <p className="d-none">
-                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </p>
-
-                                        ) : (
-                                          <p className="float-end">
-                                            {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </p>
-                                        )}
-
-                                      </td>
-
-                                      {/* <td>
-                                      <p>
-                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                      </p>
-                                    </td> */}
-                                      <td>
-                                        {accountStatement.labhazir_share == 0 ? (
-                                          <p className="d-none">
-                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </p>
-
-                                        ) : (
-                                          <p className="float-end">
-                                            {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </p>
-                                        )}
-
-                                      </td>
                                       <td>
                                         {!isEmpty(accountStatement.Receivable) ? (
                                           <p className="d-none">
@@ -937,7 +912,59 @@ class AccountStatements extends Component {
                                         )}
 
                                       </td>
+                                      {accountStatement.after_counterdiscount_lab_share === 0 ? (
+  <td>
+    <p className="d-none">
+      {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+    </p>
+  </td>
+) : (
+  (accountStatement.after_counterdiscount_lab_share !== 0 && (accountStatement.payment_method === "Card" || accountStatement.payment_method === "Donation")) ? (
+    <td style={{ backgroundColor: '#ffee93' }}>
+      <p className="float-end">
+        {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </p>
+    </td>
+  ): (
+    <td>
+       <p className="float-end">
+        {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </p>
+    </td>
+   
+  )
+)}
 
+                                      {/* <td>
+                                      <p>
+                                        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      </p>
+                                    </td> */}
+                                        {accountStatement.labhazir_share === 0 ? (
+  <td>
+    <p className="d-none">
+      {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+    </p>
+  </td>
+) : (
+  (accountStatement.labhazir_share !== 0 && accountStatement.payment_method === "Cash") ? (
+    <td style={{ backgroundColor: '#ffee93' }}>
+      <p className="float-end">
+        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </p>
+    </td>
+  ): (
+    <td>
+       <p className="float-end">
+        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </p>
+    </td>
+   
+  )
+)}
+
+
+                                    
                                       {/* <td>
                                         <p className="float-end">
                                           {accountStatement.payment_method == "Card" ? (
@@ -1129,6 +1156,29 @@ class AccountStatements extends Component {
                                         )}
 
                                       </td>
+                                      <td>
+                                        {accountStatement.labhazir_share == 0 ? (
+                                          <p className="d-none">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              null
+                                            )}                                        </p>
+
+                                        ) : (
+                                          <p className="float-end">
+                                            {accountStatement.payment_method == "Cash" ? (
+                                              <span>
+                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              </span>
+                                            ) : (
+                                              <span className="text-primary">LabHazir</span>
+                                            )}                                        </p>
+                                        )}
+
+                                      </td>
 
                                       <td>
                                         {accountStatement.after_counterdiscount_lab_share == 0 ? (
@@ -1162,29 +1212,7 @@ class AccountStatements extends Component {
                                         )}
 
                                       </td>
-                                      <td>
-                                        {accountStatement.labhazir_share == 0 ? (
-                                          <p className="d-none">
-                                            {accountStatement.payment_method == "Cash" ? (
-                                              <span>
-                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                              </span>
-                                            ) : (
-                                              null
-                                            )}                                        </p>
-
-                                        ) : (
-                                          <p className="float-end">
-                                            {accountStatement.payment_method == "Cash" ? (
-                                              <span>
-                                                {accountStatement.dues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                              </span>
-                                            ) : (
-                                              <span className="text-primary">LabHazir</span>
-                                            )}                                        </p>
-                                        )}
-
-                                      </td>
+                                    
                                       {/* <td>
                                     <p>
                                       {accountStatement.payment_method == "Cash" ? (
@@ -1354,8 +1382,7 @@ class AccountStatements extends Component {
                             </tr>
                           </tbody>
                           ) : (
-                            <p>Select start and end date and time</p>
-                          )}
+null                          )}
                         </Table>
                       </div>
                     </CardBody>
