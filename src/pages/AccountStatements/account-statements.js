@@ -241,7 +241,7 @@ class AccountStatements extends Component {
                                     </td>
                                     <td >
                                       <h5 className="font-size-14 text-truncate">
-                                        <strong>{accountStatement.order_id}</strong>
+                                        MIF ID: <strong>{accountStatement.order_id}</strong>
                                       </h5>
                                     </td>
                                     <td >
@@ -345,9 +345,10 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ) : (
-                                        <p className="float-end">
-                                        <b>Tax =</b>
-                                         </p>
+                                        // <p className="float-end">
+                                        // <b>Tax =</b>
+                                        //  </p>
+                                        null
                                       )}
 
                                     </td>
@@ -363,9 +364,10 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ) : (
-                                        <p className="float-start">
-                                         {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
+                                        // <p className="float-start">
+                                        //  {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        // </p>
+                                        null
                                       )}
 
                                     </td>
@@ -477,16 +479,16 @@ class AccountStatements extends Component {
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
                                         )}
                                         {accountStatement.payment_method == "Donation" ? (
                                           <p className="d-none">
-                                            {accountStatement.Receivable == 0 ? (
+                                            {accountStatement.tax_amount == 0 ? (
                                               <span>
-                                                {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                {accountStatement.tax_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                               </span>
                                             ) : (
                                               null
@@ -494,9 +496,9 @@ class AccountStatements extends Component {
 
                                         ) : (
                                           <p className="float-end">
-                                            {accountStatement.Receivable != 0 ? (
+                                            {accountStatement.tax_amount != 0 ? (
                                               <span>
-                                                {accountStatement.Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                {accountStatement.tax_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                               </span>
                                             ) : (
                                               null
@@ -540,7 +542,7 @@ class AccountStatements extends Component {
                                     </td>
                                     <td >
                                       <h5 className="font-size-14 text-truncate">
-                                        <strong>{accountStatement.order_id}</strong>
+                                        MOF ID: <strong>{accountStatement.order_id}</strong>
                                       </h5>
                                     </td>
                                     <td >
@@ -623,9 +625,7 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ) : (
-                                        <p className="float-end">
-                                        <b>Tax =</b>
-                                         </p>
+                                        null
                                       )}
 
                                     </td>
@@ -636,9 +636,10 @@ class AccountStatements extends Component {
                                         </p>
 
                                       ) : (
-                                        <p className="float-start">
-                                          {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                        </p>
+                                        // <p className="float-start">
+                                        //   {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        // </p>
+                                        null
                                       )}
 
                                     </td>
@@ -698,7 +699,7 @@ class AccountStatements extends Component {
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.tax_amount.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
