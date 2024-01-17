@@ -90,7 +90,7 @@ class AccountStatements extends Component {
       border: '1px solid white',
       textAlign: 'center',
       verticalAlign: 'middle',
-    };    
+    };
 
     // var total_testby_labhazir = this.props.accountStatements.total_testby_labhazir
     // // var authenticated = "{{total_testby_labhazir}}"
@@ -106,12 +106,12 @@ class AccountStatements extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Lab" breadcrumbItem="Account Statements" />
             {isEmpty(this.props.accountStatements) && (
-            <Row>
+              <Row>
                 <div> <span className="text-danger font-size-12">
                   <strong>
                     Note: Discount By Lab Sum of Counter Discount and Discount offered Lab.
                   </strong>
-                  </span>
+                </span>
                   <div>
                     <strong>
                       Credit: Lab need to Pay LabHazir. <br></br>
@@ -165,29 +165,29 @@ class AccountStatements extends Component {
                               <th scope="col">Is Settled</th>
                             </tr>
                           </thead>
-                          </Table>
-                          </div>
-                          </CardBody>
-                          </Card>
-                          </Col>
-                          </Row>
+                        </Table>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
             )}
             {!isEmpty(this.props.accountStatements) && (
               <Row>
-                <div> 
+                <div>
                   {/* <span className="text-danger font-size-12">
                   <strong>
                     Note: Discount By Lab, Sum of Counter Discount and Discount offered Lab.
                   </strong>
                   </span> */}
                   <div>
-                      <strong className="text-primary">Credit:</strong> Amount that Lab has to pay LabHazir. <br></br>
-                      <strong className="text-primary">Debit: </strong>  Amount that Lab will receive from LabHazir.
+                    <strong className="text-primary">Credit:</strong> Amount that Lab has to pay LabHazir. <br></br>
+                    <strong className="text-primary">Debit: </strong>  Amount that Lab will receive from LabHazir.
                   </div>
                   <div> <span className="font-size-12">
                     <strong className="text-danger ">
                       Note:</strong> If Balance is positive value that means Lab will pay the same amount to LabHazir and if Balance is negative that means Lab will receive the same amount from Lab Hazir.
-                    
+
                   </span>
                   </div>
                   <div>
@@ -207,7 +207,7 @@ class AccountStatements extends Component {
                     <CardBody>
                       <div className="table-responsive">
                         <Table>
-                          <thead style={{ position: 'flex'}}className="table-dark" >
+                          <thead style={{ position: 'flex' }} className="table-dark" >
                             <tr>
                               <th style={thStyle} scope="col">Date</th>
                               <th style={thStyle} scope="col">ID</th>
@@ -229,7 +229,7 @@ class AccountStatements extends Component {
                               <th scope="col">Is Settled</th>
                             </tr>
                           </thead>
-                          <tbody style={{ textAlign: "center", verticalAlign: "middle"}}>
+                          <tbody style={{ textAlign: "center", verticalAlign: "middle" }}>
                             {accountStatements.map((accountStatement, i) => (
                               <>
                                 {accountStatement.transaction_type == "In" ? (
@@ -250,21 +250,21 @@ class AccountStatements extends Component {
                                       </p>
                                     </td>
                                     {accountStatement.payment_status == "Not Paid" ? (
-                                          <td style={{ backgroundColor: '#F58D77' }}>
+                                      <td style={{ backgroundColor: '#F58D77' }}>
 
-                                          <b>
-                                            {accountStatement.payment_method},{" "}
-                                            {accountStatement.payment_status}
-                                          </b></td>
-                                        ) : (
-                                          <td style={{backgroundColor: '#EBD3EF'}}>
+                                        <b>
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </b></td>
+                                    ) : (
+                                      <td style={{ backgroundColor: '#EBD3EF' }}>
 
-                                          <b>
-                                            {accountStatement.payment_method},{" "}
-                                            {accountStatement.payment_status}
-                                          </b>                                      </td>
+                                        <b>
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </b>                                      </td>
 
-                                        )}
+                                    )}
                                     {/* <td>
                                     <p>
                                       {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -371,7 +371,7 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    
+
                                     <td>
                                       {accountStatement.after_counterdiscount_lab_share == 0 ? (
                                         <p className="d-none">
@@ -518,19 +518,19 @@ class AccountStatements extends Component {
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
                                     </td>
-                                     <td>
-                                  {accountStatement.is_settled == true ? (
-                                    // <div className="text-success">
-                                    //   <i className="mdi mdi-check-circle font-size-18"></i>
-                                    // </div>
-                                    "--"
-                                  ) : (
-                                    // <div className="text-danger">
-                                    //   <i className="mdi mdi-close-circle font-size-18"></i>
-                                    // </div>
-                                    "--"
-                                  )}
-                                </td>
+                                    <td>
+                                      {accountStatement.is_settled == true ? (
+                                        // <div className="text-success">
+                                        //   <i className="mdi mdi-check-circle font-size-18"></i>
+                                        // </div>
+                                        "--"
+                                      ) : (
+                                        // <div className="text-danger">
+                                        //   <i className="mdi mdi-close-circle font-size-18"></i>
+                                        // </div>
+                                        "--"
+                                      )}
+                                    </td>
                                   </tr>
                                 ) : accountStatement.transaction_type == "Out" ? (
 
@@ -551,21 +551,21 @@ class AccountStatements extends Component {
                                       </p>
                                     </td>
                                     {accountStatement.payment_status == "Not Paid" ? (
-                                          <td style={{ backgroundColor: '#F58D77' }}>
+                                      <td style={{ backgroundColor: '#F58D77' }}>
 
-                                          <b>
-                                            {accountStatement.payment_method},{" "}
-                                            {accountStatement.payment_status}
-                                          </b></td>
-                                        ) : (
-                                          <td style={{backgroundColor: '#FAE9A3'}}>
+                                        <b>
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </b></td>
+                                    ) : (
+                                      <td style={{ backgroundColor: '#FAE9A3' }}>
 
-                                          <b>
-                                            {accountStatement.payment_method},{" "}
-                                            {accountStatement.payment_status}
-                                          </b>                                      </td>
+                                        <b>
+                                          {accountStatement.payment_method},{" "}
+                                          {accountStatement.payment_status}
+                                        </b>                                      </td>
 
-                                        )}
+                                    )}
                                     <td >
                                       {accountStatement.dues_before_discount == 0 ? (
                                         <p className="d-none">
@@ -642,7 +642,7 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                   
+
                                     <td>
                                       {accountStatement.after_counterdiscount_lab_share == 0 ? (
                                         <p className="d-none">
@@ -693,7 +693,7 @@ class AccountStatements extends Component {
 
                                     </td>
 
-                                    
+
                                     <td style={{ backgroundColor: '#ffc09f' }}>
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
@@ -735,19 +735,19 @@ class AccountStatements extends Component {
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
                                     </td>
-                                     <td>
-                                  {accountStatement.is_settled == true ? (
-                                    // <div className="text-success">
-                                    //   <i className="mdi mdi-check-circle font-size-18"></i>
-                                    // </div>
-                                    "--"
-                                  ) : (
-                                    // <div className="text-danger">
-                                    //   <i className="mdi mdi-close-circle font-size-18"></i>
-                                    // </div>
-                                    "--"
-                                  )}
-                                </td>
+                                    <td>
+                                      {accountStatement.is_settled == true ? (
+                                        // <div className="text-success">
+                                        //   <i className="mdi mdi-check-circle font-size-18"></i>
+                                        // </div>
+                                        "--"
+                                      ) : (
+                                        // <div className="text-danger">
+                                        //   <i className="mdi mdi-close-circle font-size-18"></i>
+                                        // </div>
+                                        "--"
+                                      )}
+                                    </td>
                                   </tr>
                                 ) :
                                   accountStatement.payment_status == "Paid" ? (
@@ -768,24 +768,24 @@ class AccountStatements extends Component {
                                           {accountStatement.patient_name}
                                         </p>
                                       </td>
-                                        {/* <p className="float-end"> */}
-                                        {accountStatement.payment_status == "Not Paid" ? (
-                                          <td style={{ backgroundColor: '#F58D77' }}>
+                                      {/* <p className="float-end"> */}
+                                      {accountStatement.payment_status == "Not Paid" ? (
+                                        <td style={{ backgroundColor: '#F58D77' }}>
 
                                           <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
                                           </b></td>
-                                        ) : (
-                                          <td style={{backgroundColor: '#adf7b6'}}>
+                                      ) : (
+                                        <td style={{ backgroundColor: '#adf7b6' }}>
 
                                           <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
                                           </b>                                      </td>
 
-                                        )}
-                                        {/* </p> */}
+                                      )}
+                                      {/* </p> */}
                                       {/* <td>
                                       <p>
                                         {accountStatement.dues_before_discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -890,7 +890,7 @@ class AccountStatements extends Component {
                                         )}
 
                                       </td>
-                                      
+
                                       <td>
                                         {accountStatement.after_counterdiscount_lab_share == 0 ? (
                                           <p className="d-none">
@@ -926,7 +926,7 @@ class AccountStatements extends Component {
                                       <td>
                                         {!isEmpty(accountStatement.Receivable) ? (
                                           <p className="d-none">
-                                            {accountStatement.payment_method == "Card"? (
+                                            {accountStatement.payment_method == "Card" ? (
                                               <span>
                                                 {"Labhazir"}
                                               </span>
@@ -936,7 +936,7 @@ class AccountStatements extends Component {
 
                                         ) : (
                                           <p className="float-center text-danger">
-                                            {accountStatement.payment_method == "Cash"  || accountStatement.payment_method == "Donation" ? (
+                                            {accountStatement.payment_method == "Cash" || accountStatement.payment_method == "Donation" ? (
                                               <span>
                                                 {"Lab"}
                                               </span>
@@ -946,7 +946,7 @@ class AccountStatements extends Component {
                                         )}
                                         {!isEmpty(accountStatement.payable) ? (
                                           <p className="d-none">
-                                            {accountStatement.payment_method == "Cash"  || accountStatement.payment_method == "Donation" ? (
+                                            {accountStatement.payment_method == "Cash" || accountStatement.payment_method == "Donation" ? (
                                               <span>
                                                 {"Lab"}
                                               </span>
@@ -955,7 +955,7 @@ class AccountStatements extends Component {
                                             )} </p>
                                         ) : (
                                           <p className="float-center text-success">
-                                          {accountStatement.payment_method == "Card"? (
+                                            {accountStatement.payment_method == "Card" ? (
                                               <span>
                                                 {"Labhazir"}
                                               </span>
@@ -1020,17 +1020,17 @@ class AccountStatements extends Component {
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       </td>
-                                       <td>
-                                  {accountStatement.is_settled == true ? (
-                                    <div className="text-success">
-                                      <i className="mdi mdi-check-circle font-size-18"></i>
-                                    </div>
-                                  ) : (
-                                    <div className="text-danger">
-                                      <i className="mdi mdi-close-circle font-size-18"></i>
-                                    </div>
-                                  )}
-                                </td>
+                                      <td>
+                                        {accountStatement.is_settled == true ? (
+                                          <div className="text-success">
+                                            <i className="mdi mdi-check-circle font-size-18"></i>
+                                          </div>
+                                        ) : (
+                                          <div className="text-danger">
+                                            <i className="mdi mdi-close-circle font-size-18"></i>
+                                          </div>
+                                        )}
+                                      </td>
                                     </tr>
 
                                   ) : accountStatement.payment_status == "Allocate" ? (
@@ -1051,21 +1051,21 @@ class AccountStatements extends Component {
                                         </p>
                                       </td>
                                       {accountStatement.payment_status == "Not Paid" ? (
-                                          <td style={{ backgroundColor: '#F58D77' }}>
+                                        <td style={{ backgroundColor: '#F58D77' }}>
 
                                           <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
                                           </b></td>
-                                        ) : (
-                                          <td style={{ backgroundColor: '#AFD9E8' }}>
+                                      ) : (
+                                        <td style={{ backgroundColor: '#AFD9E8' }}>
 
                                           <b>
                                             {accountStatement.payment_method},{" "}
                                             {accountStatement.payment_status}
                                           </b>                                      </td>
 
-                                        )}
+                                      )}
                                       <td>
                                         {accountStatement.dues_before_discount == 0 ? (
                                           <p className="d-none">
@@ -1165,7 +1165,7 @@ class AccountStatements extends Component {
                                         )}
 
                                       </td>
-                                      
+
                                       <td>
                                         {accountStatement.after_counterdiscount_lab_share == 0 ? (
                                           <p className="d-none">
@@ -1270,7 +1270,7 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          
+
                                         </p>
                                       </td>
                                       <td style={{ backgroundColor: '#adf7b6' }}>
@@ -1278,17 +1278,17 @@ class AccountStatements extends Component {
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       </td>
-                                       <td>
-                                  {accountStatement.is_settled == true ? (
-                                    <div className="text-success">
-                                      <i className="mdi mdi-check-circle font-size-18"></i>
-                                    </div>
-                                  ) : (
-                                    <div className="text-danger">
-                                      <i className="mdi mdi-close-circle font-size-18"></i>
-                                    </div>
-                                  )}
-                                </td>
+                                      <td>
+                                        {accountStatement.is_settled == true ? (
+                                          <div className="text-success">
+                                            <i className="mdi mdi-check-circle font-size-18"></i>
+                                          </div>
+                                        ) : (
+                                          <div className="text-danger">
+                                            <i className="mdi mdi-close-circle font-size-18"></i>
+                                          </div>
+                                        )}
+                                      </td>
                                     </tr>
                                   ) : (null)
                                 }
@@ -1341,7 +1341,7 @@ class AccountStatements extends Component {
                                   }
                                 </p>
                               </td>
-                             
+
                               <td className="border-10">
                                 <p className="float-end">
                                   {
@@ -1359,7 +1359,7 @@ class AccountStatements extends Component {
                               <td className="border-10">
                                 <p className="float-end">
                                   {
-                                    "--"                                  }
+                                    "--"}
                                 </p>
                               </td>
                               {/* <td className="border-10">
