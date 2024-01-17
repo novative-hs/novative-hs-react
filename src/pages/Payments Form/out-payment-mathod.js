@@ -367,7 +367,7 @@ class OutPaymentsForm extends Component {
         donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
     )
     .map(donation => ({
-      label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
+      label: `(Appointment ID: ${donation.id}) - (Amount: ${donation.dues})`,
       value: donation.id,
       data: { dues: donation.dues }, // Include the 'dues' property in the data field
     }));
