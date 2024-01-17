@@ -348,7 +348,6 @@ class OutPaymentsForm extends Component {
                               className="form-control"
                               id="cardnumberInput"
                               required={true}
-                              readOnly={true}
                               placeholder="Enter Full Invoice Adjustment Amount.."
                               name="total_adjustment"
                               value={this.state.total_adjustment}
@@ -373,7 +372,6 @@ class OutPaymentsForm extends Component {
                               className="form-control"
                               id="cardnumberInput"
                               required={true}
-                              readOnly={true}
                               placeholder="Enter Price Discount.."
                               name="price_discount"
                               value={this.state.price_discount}
@@ -398,7 +396,6 @@ class OutPaymentsForm extends Component {
                               className="form-control"
                               id="cardnumberInput"
                               required={true}
-                              readOnly={true}
                               placeholder="Enter Other Amount.."
                               name="others"
                               value={this.state.others}
