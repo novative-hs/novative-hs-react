@@ -261,23 +261,41 @@ class PaymentStatussList extends Component {
           text: "Cheque/Ref#",
           sort: true,
           formatter: (cellContent, paymentStatus) => (
-              <>
+            <>
+              {paymentStatus.deposit_slip && paymentStatus.cheque_no
+                ? <span><Link
+                to={{
+                  pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+              }}
+                  target="_blank"
+                >
                   {paymentStatus.cheque_no && (
-                      <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                          {paymentStatus.cheque_no}
-                      </span>
+                    <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                      {paymentStatus.cheque_no}
+                    </span>
                   )}
-
-                  {paymentStatus.cheque_no && (
+                </Link></span>
+                : paymentStatus.deposit_slip && paymentStatus.refered_no
+                  ? <span><Link
+                  to={{
+                    pathname:
+                        process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+                }}
+                    target="_blank"
+                  >
+                    {paymentStatus.refered_no && (
                       <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                          {paymentStatus.refered_no}
+                        {paymentStatus.refered_no}
                       </span>
-                  )}
-              </>
-          ),filter: textFilter(),
+                    )}
+                  </Link></span>
+                  : <span>--</span>
+              }
+            </>
+          ), filter: textFilter(),
           headerStyle: { backgroundColor: '#DCDCDC' },
-
-      },
+        },
         {
           dataField: "amount",
           text: "Amount",

@@ -42,6 +42,7 @@ export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 // PATHOLOGIST
 export const GET_ACTIVITY_LOG = `${API_ENDPOINT}/api/lab/activity-log`;
 export const GET_NOTIFICATION = `${API_ENDPOINT}/api/lab/notifications`;
+export const GET_SAMPLE_NOTIFICATION = `${API_ENDPOINT}/api/lab/sample-collector-notifications`;
 export const GET_ACTIVITY_LOG_FINANCE = `${API_ENDPOINT}/api/finance-officer/activity-log-finance`;
 export const GET_ACTIVITY_LOG_MARKETER = `${API_ENDPOINT}/api/marketer-admin/activity-log-marketer`;
 export const GET_PATHOLOGISTS = `${API_ENDPOINT}/api/lab/pathologist-list`;

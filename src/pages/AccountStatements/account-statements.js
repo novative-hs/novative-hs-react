@@ -31,6 +31,7 @@ class AccountStatements extends Component {
     this.state = {
       accountStatements: [],
       accountStatement: "",
+      prevStatement: null,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -49,26 +50,63 @@ class AccountStatements extends Component {
         this.state.account_type === "labowner"
           ? this.state.user_id
           : this.props.match.params.id;
-
+  
       // Only make the API call if both start and end dates are selected
       if (this.state.startDate && this.state.endDate) {
         onGetAccountStatements(userId);
       }
     }
   };
-
   componentDidMount() {
+    const currentMonthStart = moment().startOf('month');
+    const currentMonthEnd = moment().endOf('month');
+  
+    this.setState({
+      startDate: currentMonthStart.toDate(),
+      endDate: currentMonthEnd.toDate(),
+    });
+  
     this.fetchData();
   }
+  
   componentDidUpdate(prevProps, prevState) {
-    // Check if either startDate or endDate has changed
     if (
       prevState.startDate !== this.state.startDate ||
       prevState.endDate !== this.state.endDate
     ) {
+      // Fetch data based on date filters
       this.fetchData();
     }
+  
+    if (
+      this.props.accountStatements.length > 0 &&
+      this.props.accountStatements !== prevProps.accountStatements
+    ) {
+      // Find the index of the last statement that falls within the date range
+      const lastIndex = this.props.accountStatements.findIndex((statement) => {
+        const statementDate = new Date(statement.ordered_at);
+        return (
+          statementDate >= this.state.startDate &&
+          statementDate <= this.state.endDate
+        );
+      });
+  
+      // Check if there's a previous statement
+      const newPrevStatement =
+        lastIndex > 0
+          ? this.props.accountStatements[lastIndex - 1].statement
+          : 0;
+  
+      if (newPrevStatement !== this.state.prevStatement) {
+        this.setState({
+          prevStatement: newPrevStatement,
+        });
+      }
+    }
   }
+  
+
+  
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -107,12 +145,10 @@ class AccountStatements extends Component {
       custom: true,
     };
 
-    const defaultSorted = [
-      {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
-      },
-    ];
+    // Sort statements based on ordered_at in ascending order
+    filteredStatements.sort((a, b) => {
+      return moment(a.ordered_at) - moment(b.ordered_at);
+    });
     const thStyle = {
       border: '1px solid white',
       textAlign: 'center',
@@ -140,6 +176,8 @@ class AccountStatements extends Component {
                     selected={startDate}
                     onChange={(date) => this.setState({ startDate: date })}
                     className="form-control"
+                    dateFormat="d MMM yyyy"
+
                   />
                 </div></Col>
               <Col lg="3">
@@ -149,6 +187,8 @@ class AccountStatements extends Component {
                     selected={endDate}
                     onChange={(date) => this.setState({ endDate: date })}
                     className="form-control"
+                    dateFormat="d MMM yyyy"
+
                   />
                 </div>
 
@@ -162,7 +202,7 @@ class AccountStatements extends Component {
                 </div>
                 <div> <span className="font-size-12">
                   <strong className="text-danger ">
-                    Note:</strong> If Balance is positive value that means Lab will pay the same amount to LabHazir and if Balance is negative that means Lab will receive the same amount from Lab Hazir.
+                    Note:</strong> If Balance is positive value that means LabHazir will pay the same amount to Lab and if Balance is negative that means LabHazir will receive the same amount from Lab.
 
                 </span>
                 </div>
@@ -177,6 +217,16 @@ class AccountStatements extends Component {
                   </span>
                 </div>
 
+              </div>
+              <div className="text-end">
+                <p>
+                  Previous Balance:{" "}
+                  <span className="text-danger">
+                    {this.state.prevStatement !== null
+                      ? this.state.prevStatement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      : "N/A"}
+                  </span>
+                </p>
               </div>
               <Col lg="12">
                 <Card>
@@ -1301,7 +1351,7 @@ class AccountStatements extends Component {
                             )
                             )}
                             <tr className="bg-success bg-soft" >
-                              <td colSpan="2" className="border-0 text-end">
+                              <td colSpan="4" className="border-0 text-end">
                                 <strong>Total</strong>
                               </td>
                               <td className="border-10">
@@ -1346,6 +1396,12 @@ class AccountStatements extends Component {
                                   }
                                 </p>
                               </td>
+                              <td className="border-10">
+                                <p className="float-end">
+                                  {
+                                    "--"}
+                                </p>
+                              </td>
 
                               <td className="border-10">
                                 <p className="float-end">
@@ -1361,12 +1417,7 @@ class AccountStatements extends Component {
                                   }
                                 </p>
                               </td>
-                              <td className="border-10">
-                                <p className="float-end">
-                                  {
-                                    "--"}
-                                </p>
-                              </td>
+                              
                               {/* <td className="border-10">
                                 <p className="float-end">
                                   {
@@ -1374,7 +1425,7 @@ class AccountStatements extends Component {
                                   }
                                 </p>
                               </td> */}
-                              <td className="border-10">
+                              {/* <td className="border-10">
                                 <p className="float-end">
                                   {
                                     this.props.accountStatements.slice(-1).pop().total_payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -1387,7 +1438,7 @@ class AccountStatements extends Component {
                                     this.props.accountStatements.slice(-1).pop().total_Receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                   }
                                 </p>
-                              </td>
+                              </td> */}
                               <td className="border-10">
                                 <p className="float-end">
                                   {
@@ -1407,6 +1458,10 @@ class AccountStatements extends Component {
                     </div>
                   </CardBody>
                 </Card>
+              </Col>
+              <Col lg="3">
+                {/* Display the total count of statements here */}
+                <p>Total Statements: {filteredStatements.length}</p>
               </Col>
             </Row>
           </Container>

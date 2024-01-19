@@ -42,6 +42,7 @@ class LabsLists extends Component {
       labsList: [],
       id: "",
       LabsLists: "",
+      searchType: null,
       btnText: "Copy",
       labsList: "",
       user_id: localStorage.getItem("authUser")
@@ -57,7 +58,7 @@ class LabsLists extends Component {
             <>
               <strong>{labsList.id}</strong>
             </>
-          ),filter: textFilter(), // Add a text filter for this column
+          ), filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "name",
@@ -65,13 +66,13 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-            <span className="float-start">
-              {labsList.name}{" - "}
-              {labsList.type}</span>
-              
+              <span className="float-start">
+                {labsList.name}{" - "}
+                {labsList.type}</span>
+
 
             </>
-          ),filter: textFilter(), // Add a text filter for this column
+          ), filter: textFilter(), // Add a text filter for this column
           // formatter: (cellContent, labsList) => (
           //   <>
           //     <span>
@@ -93,7 +94,7 @@ class LabsLists extends Component {
             <>
               <span className="float-start">{labsList.landline}</span>
             </>
-          ),filter: textFilter(), // Add a text filter for this column
+          ), filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "email",
@@ -103,7 +104,7 @@ class LabsLists extends Component {
             <>
               <span className="float-start">{labsList.email}</span>
             </>
-          ),filter: textFilter(), // Add a text filter for this column
+          ), filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "city",
@@ -113,7 +114,7 @@ class LabsLists extends Component {
             <>
               <span>{labsList.city}</span>
             </>
-          ),filter: textFilter(), // Add a text filter for this column
+          ), filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "address",
@@ -123,7 +124,7 @@ class LabsLists extends Component {
             <>
               <span className="float-start">{labsList.address}</span>
             </>
-          ),filter: textFilter(), // Add a text filter for this column
+          ), filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "current_amount",
@@ -131,9 +132,9 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <p className="text-end">
-            {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </p>
-          ),filter: textFilter(), // Add a text filter for this column
+              {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </p>
+          ), filter: textFilter(), // Add a text filter for this column
         },
         {
           dataField: "account_no",
@@ -141,31 +142,29 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <Link to={`/account-statements-lab/${labsList.account_id}`}>
-                                    Account statement
-                                  </Link>
-          ),filter: textFilter(), // Add a text filter for this column
-          
+              Account statement
+            </Link>
+          ), filter: textFilter(), // Add a text filter for this column
+
         },
       ],
     };
   }
+  fetchData = () => {
+    const { onGetLabsLists } = this.props;
+    onGetLabsLists(); // Assuming onGetLabsLists fetches data without userId
+  };
 
-  // componentDidMount() {
-  //   const { labsList, onGetLabsLists } = this.props;
-  //   console.log(onGetLabsLists());
-  //   this.setState({ labsList });
-  // }
   componentDidMount() {
-    const { labsList, onGetLabsLists } = this.props;
-    onGetLabsLists(this.state.user_id);
-    console.log(onGetLabsLists());
-    this.setState({ labsList });
+    this.fetchData();
   }
-  // componentDidMount() {
-  //   const { b2bAllClients, onGetB2bAllClientsList } = this.props;
-  //   onGetB2bAllClientsList(this.state.user_id);
-  //   this.setState({ b2bAllClients });
-  // }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Check if searchType has changed
+    if (prevState.searchType !== this.state.searchType) {
+      this.fetchData();
+    }
+  }
 
   toggle() {
     this.setState(prevState => ({
@@ -201,10 +200,40 @@ class LabsLists extends Component {
     }
   };
 
+
   render() {
     const { SearchBar } = Search;
-
+    const { searchType } = this.state;
     const { labsList } = this.props;
+    // Filter data based on selected type
+    const filteredStatements = labsList.filter((lab) => {
+      if (searchType === 'payable' && lab.current_amount < 0) {
+        return true;
+      } else if (searchType === 'receivable' && lab.current_amount > 0) {
+        return true;
+      } else if (!searchType) {
+        // For other cases or when no filter is selected, include all labs
+        return true;
+      }
+      return false; // Exclude labs that don't match the conditions
+    });
+
+    const columns = [
+      ...this.state.labsListListColumns,
+      {
+        dataField: "current_amount",
+        text: "Current Amount",
+        sort: true,
+        formatter: (cellContent, lab) => (
+          <p className="text-end">
+            {lab.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        ),
+        filter: textFilter(),
+      },
+    ];
+
+
     const data = this.state.data;
     const { onGetLabsLists } = this.props;
 
@@ -237,29 +266,41 @@ class LabsLists extends Component {
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.labsListListColumns}
-                      data={labsList}
+                      columns={columns}
+                      data={filteredStatements}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.labsListListColumns}
-                          data={labsList}
+                          columns={columns}
+                          data={filteredStatements}
                           search
                         >
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    {/* <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div> */}
+                              <Col sm="3" lg="3">
+                                  <div className="ms-2 mb-4">
+                                    <div className="position-relative">
+                                        <div>
+                                          <Label for="main_lab_appointments" className="form-label">
+                                            <strong>Search Type</strong>
+                                          </Label>
+                                          <select
+                                      className="form-select"
+                                      onChange={(e) => this.setState({ searchType: e.target.value })}
+                                    >
+                                      <option value="">All Labs</option>
+                                      <option value="payable">Payable Labs</option>
+                                      <option value="receivable">Receivable Labs</option>
+                                    </select>
+                                    <p className="text-danger font-size-10">Filter and view the Payable Labs or Receivable Labs</p>
+
+                                        </div>
+                                    </div>
                                   </div>
                                 </Col>
+                                
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -276,7 +317,7 @@ class LabsLists extends Component {
                                       ref={this.node}
                                       filter={filterFactory()} // Enable filtering for the entire table
                                     />
-                                      <Modal
+                                    <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
                                     >
@@ -383,7 +424,7 @@ class LabsLists extends Component {
                                           </Form>
                                         </Formik>
                                       </ModalBody>
-                                  </Modal>
+                                    </Modal>
                                   </div>
                                 </Col>
                               </Row>
@@ -416,7 +457,7 @@ LabsLists.propTypes = {
   className: PropTypes.any,
   onGetLabsLists: PropTypes.func,
 };
-const mapStateToProps = ({ labsList}) => ({
+const mapStateToProps = ({ labsList }) => ({
   labsList: labsList.labsList,
 });
 

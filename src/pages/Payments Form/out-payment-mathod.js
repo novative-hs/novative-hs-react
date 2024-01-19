@@ -91,6 +91,9 @@ class OutPaymentsForm extends Component {
       checkedoutData: "",
       successMessage: "",
       transection_type: "Other",
+      amountExceedsLimit: false,
+      selectedOption: null,
+      selectedAmount: 0, // Initialize with 0, it will be updated later
     };
     // this.toggleTab = this.toggleTab.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -269,6 +272,23 @@ class OutPaymentsForm extends Component {
       deleteModal: !prevState.deleteModal,
     }));
   };
+  handleAmountChange = e => {
+    const enteredAmount = e.target.value;
+  
+    if (parseFloat(enteredAmount) <= this.state.selectedAmount || enteredAmount === "") {
+      // If the entered amount is within the limit or is empty, update the state
+      this.setState({
+        amount: enteredAmount,
+        amountExceedsLimit: false,
+      });
+    } else {
+      // If the entered amount exceeds the limit, display a warning
+      this.setState({
+        amountExceedsLimit: true,
+      });
+    }
+  };
+  
 
   render() {
     const { SearchBar } = Search;
@@ -300,17 +320,30 @@ class OutPaymentsForm extends Component {
     ];
     const labList = [];
     for (let i = 0; i < labsMof.length; i++) {
-      if (labsMof[i].office === this.props.staffProfiles.territory_office) {
+      if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].current_amount > 0)) {
         labList.push({
-         label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
+         label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Payable Amount: ${labsMof[i].current_amount})`,
           label1: `${labsMof[i].name}`,
           value: labsMof[i].id,
+          data: { dues: labsMof[i].current_amount }, // Include the 'dues' property in the data field
+
+        });
+      }
+    }
+    const donationlabList = [];
+    for (let i = 0; i < labsMof.length; i++) {
+      if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
+        donationlabList.push({
+          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Payable Amount: ${labsMof[i].donation_amount})`,
+          label1: `${labsMof[i].name}`,
+          value: labsMof[i].id,
+          // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
         });
       }
     }
     
     // Assuming you have a state variable to store the selected lab id (this.state.selectedLabId)
-    const selectedLab = labList.find(lab => lab.value === this.state.lab_id);
+    const selectedLab = donationlabList.find(lab => lab.value === this.state.lab_id);
 
     // const DonationAppointmentList = [];
     // for (let i = 0; i < listDonation.length; i++) {
@@ -339,7 +372,7 @@ class OutPaymentsForm extends Component {
 
     )
     .map(donation => ({
-      label: `(Appointment ID: ${donation.id}) - (Amount: ${donation.dues})`,
+      label: `(Appointment ID: ${donation.order_id}) - (Amount: ${donation.dues})`,
       value: donation.id,
       data: { dues: donation.dues }, // Include the 'dues' property in the data field
     }));
@@ -364,10 +397,10 @@ class OutPaymentsForm extends Component {
         donation.is_settled == false &&
         donation.lab_office === this.props.staffProfiles.territory_office &&
         donation.dues !== undefined &&
-        donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
+        donation.lab_name === (selectedLab ? selectedLab.label : null) // Compare with the selected lab's lab_name
     )
     .map(donation => ({
-      label: `(Appointment ID: ${donation.id}) - (Amount: ${donation.dues})`,
+      label: `${donation.id} - ${donation.lab_name} - ${donation.lab_type} - ${donation.lab_city}`,
       value: donation.id,
       data: { dues: donation.dues }, // Include the 'dues' property in the data field
     }));
@@ -476,14 +509,24 @@ class OutPaymentsForm extends Component {
             <Formik>
               <div className="checkout-tabs">
                 {this.state.successMessage && <div>{this.state.successMessage}</div>}
-                <Row>
-                  <div> <span className="text-danger font-size-12">
+                <div> <span className="text-danger font-size-12">
                     <strong>
                       Note: There will be that Labs, Donors and B2b Clients whose terriotory will match this staff.
                     </strong>
                   </span>
+                  <br></br>
+
+                  <strong>
+                  <span className="text-danger font-size-12">Note:</span> Payment to <span className="text-primary">Lab</span> and what type of transection <span className="text-primary">Other</span>. Include only those labs in the Lab Name List where the Payable Amount is greater than 0.
+                  <br></br>
+                  <span className="text-danger font-size-12">Note:</span> Payment to <span className="text-primary">Lab</span> and what type of transection <span className="text-primary">Donation</span>. Include only those labs in the Lab Name List where the Payable Amount is greater than 0.
+                  <br></br>
+                  <p><span className="text-danger">Note:</span> Appointments with the selected lab will be listed below, whose status wll be Donation Allocate and Result Uploaded.</p>
+                    </strong>
                     <br></br>
                   </div>
+                <Row>
+                  
                   <Col lg="1" sm="1">
                   </Col>
                   <Col lg="10" sm="9">
@@ -552,7 +595,87 @@ class OutPaymentsForm extends Component {
                             </FormGroup>
                           ) : null}
 
-                          {this.state.payment_for == "Lab" ? (
+                          {this.state.payment_for == "Lab" && this.state.transection_type == "Other" ? (
+                            outPayment.lab_id ? (
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  Lab name
+                                </Label>
+                                <Field
+                                  name="lab_id"
+                                  as="select"
+                                  defaultValue={
+                                    outPayment.lab_id
+                                  }
+                                  className="form-control"
+                                  readOnly={true}
+                                  multiple={false}
+                                >
+                                  <option
+                                    key={
+                                      outPayment.lab_id
+                                    }
+                                    value={
+                                      outPayment.lab_id
+                                    }
+                                  >
+                                    {
+                                      outPayment.lab_name
+                                    }
+                                  </option>
+                                </Field>
+                              </div>
+                            ) : (
+                              <div className="mb-3 select2-container">
+                                <Label className="fw-bolder">Lab Name</Label>
+                                <Select
+                                  name="lab_id"
+                                  component="Select"
+                                  onChange={selectedOption => {
+                                    const selectedValue = selectedOption ? selectedOption.value : null;
+                                    const selectedData = selectedOption ? selectedOption.data || {} : {};
+                                    const totalAmount = parseFloat(selectedData.dues) || 0;
+                                  
+                                    this.setState({
+                                      lab_id: selectedValue,
+                                      selectedOption,
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false, // Reset the flag when a new lab is selected
+                                    });
+                                  
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount.toString() });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }}
+                                  
+                                  className={
+                                    "defautSelectParent" +
+                                    (!this.state.lab_id
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  styles={{
+                                    control: (
+                                      base,
+                                      state
+                                    ) => ({
+                                      ...base,
+                                      borderColor: !this
+                                        .state.lab_id
+                                        ? "#f46a6a"
+                                        : "#ced4da",
+                                    }),
+                                  }}
+                                  options={labList}
+                                  placeholder="Select Lab..."
+                                />
+
+                                <div className="invalid-feedback">
+                                  Please select your Lab
+                                </div>
+                              </div>)
+                          ) : null}
+                           {this.state.payment_for == "Lab" && this.state.transection_type == "Donation" ? (
                             outPayment.lab_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">
@@ -612,7 +735,7 @@ class OutPaymentsForm extends Component {
                                         : "#ced4da",
                                     }),
                                   }}
-                                  options={labList}
+                                  options={donationlabList}
                                   placeholder="Select Lab..."
                                 />
 
@@ -655,12 +778,17 @@ class OutPaymentsForm extends Component {
                                     this.setState({
                                       test_appointment_id: selectedGroup.map(option => option.value),
                                     });
+                                    
                                 
                                     const selectedData = selectedGroup.map(option => option.data || {});
                                     const totalAmount = selectedData.reduce(
                                       (total, appointment) => total + (parseFloat(appointment.dues) || 0),
                                       0
                                     );
+                                    this.setState({
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false, // Reset the flag when a new lab is selected
+                                    });
                                 
                                     // Auto-set the amount field
                                     this.setState({ amount: totalAmount || '0' });
@@ -685,77 +813,6 @@ class OutPaymentsForm extends Component {
                                     }),
                                   }}
                                   options={DonationAppointmentList}
-                                  placeholder="Select Appointment..."
-                                />
-
-                                <div className="invalid-feedback">
-                                  Please select Appointment
-                                </div>
-                              </div>)
-                          ) : null}
-                           {this.state.transection_type == "Other" && this.state.payment_for == "Lab" ? (
-                            outPayment.test_appointment_id ? (
-                              <div className="mb-3">
-                                <Label className="form-label">
-                                  Test Appointments
-                                </Label>
-                                <Field
-                                  name="test_appointment_id"
-                                  as="select"
-                                  defaultValue={outPayment.test_appointment_id}
-                                  className="form-control"
-                                  readOnly={true}
-                                  multiple={true} // Set to true to allow multiple selections
-                                >
-                                  {/* Render options for each selected test_appointment_id */}
-                                  {outPayment.test_appointment_id.map(value => (
-                                    <option key={value} value={value}>
-                                      {value}
-                                    </option>
-                                  ))}
-                                </Field>
-                              </div>
-                            ) : (
-                              <div className="mb-3 select2-container">
-                                <Label className="fw-bolder">Test Appointments</Label>
-                                <Select
-                                  name="test_appointment_id"
-                                  component="Select"
-                                  isMulti={true} // Uncomment this line
-                                  onChange={selectedGroup => {
-                                    this.setState({
-                                      test_appointment_id: selectedGroup.map(option => option.value),
-                                    });
-                                
-                                    const selectedData = selectedGroup.map(option => option.data || {});
-                                    const totalAmount = selectedData.reduce(
-                                      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
-                                      0
-                                    );
-                                
-                                    // Auto-set the amount field
-                                    this.setState({ amount: totalAmount || '0' });
-                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
-                                  }}
-                                  className={
-                                    "defautSelectParent" +
-                                    (!this.state.test_appointment_id
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  styles={{
-                                    control: (
-                                      base,
-                                      state
-                                    ) => ({
-                                      ...base,
-                                      borderColor: !this
-                                        .state.test_appointment_id
-                                        ? "#f46a6a"
-                                        : "#ced4da",
-                                    }),
-                                  }}
-                                  options={CardAppointmentList}
                                   placeholder="Select Appointment..."
                                 />
 
@@ -862,13 +919,10 @@ class OutPaymentsForm extends Component {
                           ) : null} */}
 
 
-  <FormGroup className="mb-0">
+<FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
     Amount
-    <span
-      style={{ color: "#f46a6a" }}
-      className="font-size-18"
-    >
+    <span style={{ color: "#f46a6a" }} className="font-size-18">
       *
     </span>
   </Label>
@@ -880,13 +934,15 @@ class OutPaymentsForm extends Component {
     placeholder="Enter Amount"
     name="amount"
     value={this.state.amount}
-    onChange={e =>
-      this.setState({
-        amount: e.target.value,
-      })
-    }
+    onChange={e => this.handleAmountChange(e)}
   />
+  {this.state.amountExceedsLimit && (
+    <span style={{ color: "#f46a6a", fontSize: "14px" }}>
+    Warning: The entered amount cannot exceed the Lab Payable Amount.
+    </span>
+  )}
 </FormGroup>
+
 <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">
   Tax Deductive by LabHazir

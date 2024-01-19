@@ -125,7 +125,7 @@ class PendingB2BClients extends Component {
         },
         {
           dataField: "donation_amount",
-          text: "Total Donation Appointment Amount",
+          text: "Total Donation Appointment Payable",
           sort: true,
           formatter: (cellContent, pendingB2BClient) => (
             <>
@@ -298,7 +298,7 @@ class PendingB2BClients extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="Labs List" />
             <Row>
-
+            <p><span className="text-danger">Note:</span> Only those Labs will be shown here whose total Payable Amount of All Donation Allocate and Result Uploaded Appointments are greater then 0. </p>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -334,7 +334,7 @@ class PendingB2BClients extends Component {
     if (lab.donor_balance !== undefined && lab.donor_balance !== null) {
       return (
         <div key={index} className="float-end">
-          <strong>Donation Available Balance: <span className="text-danger">{lab.donor_balance}</span></strong>
+          <strong>Donation Available Balance: <span className="text-danger">{lab.donor_balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span></strong>
         </div>
       );
     }

@@ -35,6 +35,7 @@ import pathologistsSaga from "./pathologists/saga";
 import activitylogSaga from "./activtylog/saga";
 import activitylogfinanceSaga from "./activtylogfinance/saga";
 import activitylogmarketerSaga from "./activtylogmarketer/saga";
+import sampleNotificationSaga from "./samplenotification/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
 import quotesSaga from "./quotes/saga";
@@ -144,6 +145,7 @@ export default function* rootSaga() {
     fork(activitylogSaga),
     fork(activitylogfinanceSaga),
     fork(activitylogmarketerSaga),
+    fork(sampleNotificationSaga),
     fork(cartsSaga),
     fork(quotesSaga),
     fork(bankTransferSaga),

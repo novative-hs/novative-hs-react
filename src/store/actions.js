@@ -46,7 +46,7 @@ export * from "./activtylogfinance/actions";
 export * from "./activtylogmarketer/actions";
 // pathologists
 export * from "./bankaccounts/actions";
-
+export * from "./samplenotification/actions";
 // carts
 export * from "./carts/actions";
 

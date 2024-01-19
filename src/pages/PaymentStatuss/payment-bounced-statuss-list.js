@@ -280,6 +280,46 @@ class PaymentStatussList extends Component {
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
+        dataField: "cheque_no",
+        text: "Cheque/Ref#",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => (
+          <>
+            {paymentBouncedInStatus.deposit_slip && paymentBouncedInStatus.cheque_no
+              ? <span><Link
+              to={{
+                pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.cheque_image,
+            }}
+                target="_blank"
+              >
+                {paymentBouncedInStatus.cheque_no && (
+                  <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
+                    {paymentBouncedInStatus.cheque_no}
+                  </span>
+                )}
+              </Link></span>
+              : paymentBouncedInStatus.deposit_slip && paymentBouncedInStatus.refered_no
+                ? <span><Link
+                to={{
+                  pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentBouncedInStatus.cheque_image,
+              }}
+                  target="_blank"
+                >
+                  {paymentBouncedInStatus.refered_no && (
+                    <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
+                      {paymentBouncedInStatus.refered_no}
+                    </span>
+                  )}
+                </Link></span>
+                : <span>--</span>
+            }
+          </>
+        ), filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
         dataField: "amount",
         text: "Amount",
         sort: true,
@@ -291,48 +331,6 @@ class PaymentStatussList extends Component {
         ), filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
         style: { backgroundColor: '	#F0F0F0' },
-      },
-      {
-        dataField: "deposited_at",
-        text: "Deposited Date",
-        sort: true,
-        formatter: (cellContent, paymentBouncedInStatus) => {
-          // const date = new Date(paymentBouncedInStatus.deposited_at);
-          // const day = date.getDate();
-          // const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-          // const month = monthNames[date.getMonth()];
-          // const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-
-          return (
-            <p className="text-muted mb-0">
-                {moment(paymentBouncedInStatus.deposited_at).format("DD MMM YYYY, h:mm A")}
-            </p>
-          );
-        },
-        filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-        style: { backgroundColor: '	#F0F0F0' },
-      },
-      {
-        dataField: "cheque_no",
-        text: "Cheque/Ref#",
-        sort: true,
-        formatter: (cellContent, paymentBouncedInStatus) => (
-          <>
-            {paymentBouncedInStatus.cheque_no && (
-              <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                {paymentBouncedInStatus.cheque_no}
-              </span>
-            )}
-
-            {paymentBouncedInStatus.cheque_no && (
-              <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                {paymentBouncedInStatus.refered_no}
-              </span>
-            )}
-          </>
-        ), filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
         dataField: "bank",
@@ -361,12 +359,6 @@ class PaymentStatussList extends Component {
         filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
-
-      // {
-      //   dataField: "is_settled",
-      //   text: "Is Settled",
-      //   sort: true,
-      // },
       {
         dataField: "verified_by",
         text: "Deposited By",
@@ -378,9 +370,39 @@ class PaymentStatussList extends Component {
         ), filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
+
+      {
+        dataField: "deposited_at",
+        text: "Deposited Date",
+        sort: true,
+        formatter: (cellContent, paymentBouncedInStatus) => {
+          // const date = new Date(paymentBouncedInStatus.deposited_at);
+          // const day = date.getDate();
+          // const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          // const month = monthNames[date.getMonth()];
+          // const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+
+          return (
+            <p className="text-muted mb-0">
+                {moment(paymentBouncedInStatus.deposited_at).format("DD MMM YYYY, h:mm A")}
+            </p>
+          );
+        },
+        filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },
+     
+     
+      // {
+      //   dataField: "is_settled",
+      //   text: "Is Settled",
+      //   sort: true,
+      // },
+     
       {
         dataField: "cleared_at",
-        text: "Cleared Date",
+        text: "Bounced Date",
         sort: true,
         formatter: (cellContent, paymentBouncedInStatus) => {
           // const date = new Date(paymentBouncedInStatus.cleared_at);
@@ -399,36 +421,7 @@ class PaymentStatussList extends Component {
         style: { backgroundColor: '	#F0F0F0' },
       },
      
-      {
-        dataField: "payment_status",
-        text: "Status",
-        sort: true,
-        formatter: (cellContent, paymentBouncedInStatus) => (
-          <>
-            <strong>{paymentBouncedInStatus.payment_status}</strong>
-          </>
-        ), filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "deposit_slip",
-        text: "Deposite Slip",
-        sort: true,
-        formatter: (cellContent, paymentBouncedInStatus) => (
-          <>
-            <Link
-              to={{
-                pathname:
-                  process.env.REACT_APP_BACKENDURL +
-                  paymentBouncedInStatus.deposit_slip,
-              }}
-              target="_blank"
-            >
-              View Slip
-            </Link>
-          </>
-        ),headerStyle: { backgroundColor: '#DCDCDC' },
-      },
+      
       {
         dataField: "menu",
         isDummyField: true,

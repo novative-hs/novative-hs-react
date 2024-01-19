@@ -74,6 +74,9 @@ class OutPaymentsForm extends Component {
       comments: "",
       checkedoutData: "",
       successMessage: "",
+      amountExceedsLimit: false,
+      selectedOption: null,
+      selectedAmount: 0, // Initialize with 0, it will be updated later
     };
     // this.toggleTab = this.toggleTab.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -175,6 +178,23 @@ class OutPaymentsForm extends Component {
     }));
   };
 
+  handleAmountChange = e => {
+    const enteredAmount = e.target.value;
+  
+    if (parseFloat(enteredAmount) <= this.state.selectedAmount || enteredAmount === "") {
+      // If the entered amount is within the limit or is empty, update the state
+      this.setState({
+        tax: enteredAmount,
+        amountExceedsLimit: false,
+      });
+    } else {
+      // If the entered amount exceeds the limit, display a warning
+      this.setState({
+        amountExceedsLimit: true,
+      });
+    }
+  };
+
   render() {
     const { SearchBar } = Search;
     const { outPayments } = this.props;
@@ -202,14 +222,13 @@ class OutPaymentsForm extends Component {
 
     const listInvoiceList = [];
     for (let i = 0; i < listInvoice.length; i++) {
-      // if (listInvoice[i].office === this.props.staffProfiles.territory_office) {
+      if (listInvoice[i].lab_office === this.props.staffProfiles.territory_office) {
         listInvoiceList.push({
-          label: listInvoice[i].id,
+          label: `${listInvoice[i].order_id} - ${listInvoice[i].lab_name} - ${listInvoice[i].lab_type} - ${listInvoice[i].lab_city} - (Invoice Amount: ${listInvoice[i].total_dues})`,
           value: listInvoice[i].id,
-          // type: listInvoice[i].type,
-          // city: listInvoice[i].city,
+          data: { dues: listInvoice[i].total_dues}, // Include the 'dues' property in the data field
         });
-      // }
+      }
     }
 
 
@@ -274,12 +293,28 @@ class OutPaymentsForm extends Component {
                                 <Select
                                   name="invoice_id"
                                   component="Select"
-                                  onChange={selectedGroup =>
+                                  // onChange={selectedGroup =>
+                                  //   this.setState({
+                                  //     invoice_id:
+                                  //       selectedGroup.value,
+                                  //   })
+                                  // }
+                                  onChange={selectedOption => {
+                                    const selectedValue = selectedOption ? selectedOption.value : null;
+                                    const selectedData = selectedOption ? selectedOption.data || {} : {};
+                                    const totalAmount = parseFloat(selectedData.dues) || 0;
+                                  
                                     this.setState({
-                                      invoice_id:
-                                        selectedGroup.value,
-                                    })
-                                  }
+                                      invoice_id: selectedValue,
+                                      selectedOption,
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false, // Reset the flag when a new lab is selected
+                                    });
+                                  
+                                    // Auto-set the amount field
+                                    this.setState({ tax: totalAmount.toString() });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }}
                                   className={
                                     "defautSelectParent" +
                                     (!this.state.invoice_id
@@ -326,12 +361,13 @@ class OutPaymentsForm extends Component {
                               placeholder="Enter Tax.."
                               name="tax"
                               value={this.state.tax}
-                              onChange={e =>
-                                this.setState({
-                                  tax: e.target.value,
-                                })
-                              }
-                            />
+                              onChange={e => this.handleAmountChange(e)}
+                              />
+                              {this.state.amountExceedsLimit && (
+                                <span style={{ color: "#f46a6a", fontSize: "14px" }}>
+                                Warning: The entered Tax cannot exceed the Invoice Amount.
+                                </span>
+                              )}
                           </FormGroup>
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">

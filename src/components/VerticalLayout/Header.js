@@ -19,6 +19,8 @@ import { withTranslation } from "react-i18next";
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
 import NotificationDropdown from "components/CommonForBoth/TopbarDropdown/NotificationDropdown";
+import SampleNotificationDropdown from "components/CommonForBoth/TopbarDropdown/SampleNotificationDropdown";
+
 import Tooltip from "@material-ui/core/Tooltip";
 
 class Header extends Component {
@@ -106,14 +108,19 @@ class Header extends Component {
                 </button>
                 </Tooltip>
               </div>
-              {this.state.account_type && this.state.account_type == "labowner" && (
+              {this.state.account_type && this.state.account_type == "labowner" &&  (
                 <Tooltip title="Notifications">
               <NotificationDropdown />
               </Tooltip>
               )}
+              {this.state.account_type && this.state.account_type == "samplecollector" &&  (
+                <Tooltip title="Notifications">
+              <SampleNotificationDropdown />
+              </Tooltip>
+              )}
               <ProfileMenu />
-              
             </div>
+           
           </div>
         </header>
       </React.Fragment>

@@ -66,8 +66,8 @@ class DonationAppointmentsList extends Component {
         //   sort: true,
         // },
         {
-          dataField: "test_appointment_id",
-          text: "Test Appointment ID",
+          dataField: "order_id",
+          text: "Order ID",
           sort: true,
           filter: textFilter(),
         },
@@ -328,6 +328,8 @@ class DonationAppointmentsList extends Component {
               
             />
             <Row>
+            <p><span className="text-danger">Note:</span> Here is the amount of those lab Appointments whose Payment method Donation Status Allocated and Result Uploaded</p>
+
               <Col lg="12">
                 <Card>
                   <CardBody>

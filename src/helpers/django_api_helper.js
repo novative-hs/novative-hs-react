@@ -660,6 +660,16 @@ export const getActivityLog = id =>
       headers: getHeader(authHeader()),
     });
   };
+
+export const getSampleNotification = (id,previousApiCallTime) => {
+    let formData = new FormData();
+    formData.append("previousApiCallTime", previousApiCallTime);
+    formData.append("id", id);
+   console.log("data",previousApiCallTime )
+    return axios.post(`${url.GET_SAMPLE_NOTIFICATION}/${id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
 // ------------- Finanace START Activity Log-------------
 
 export const getActivityLogFinance = id =>

@@ -232,10 +232,10 @@ class PaymentStatussList extends Component {
           <>
             {paymentStatus.deposit_slip && paymentStatus.cheque_no
               ? <span><Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
-                }}
+              to={{
+                pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+            }}
                 target="_blank"
               >
                 {paymentStatus.cheque_no && (
@@ -244,12 +244,12 @@ class PaymentStatussList extends Component {
                   </span>
                 )}
               </Link></span>
-              : paymentStatus.deposit_slip && paymentStatus.refered_n0
+              : paymentStatus.deposit_slip && paymentStatus.refered_no
                 ? <span><Link
-                  to={{
-                    pathname:
-                      process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
-                  }}
+                to={{
+                  pathname:
+                      process.env.REACT_APP_BACKENDURL + paymentStatus.cheque_image,
+              }}
                   target="_blank"
                 >
                   {paymentStatus.refered_no && (

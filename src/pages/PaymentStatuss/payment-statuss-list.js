@@ -272,7 +272,7 @@ class PaymentStatussList extends Component {
                                     </span>
                                 )}
                             </Link></span>
-                            : paymentStatus.cheque_image && paymentStatus.refered_n0
+                            : paymentStatus.cheque_image && paymentStatus.refered_no
                                 ? <span><Link
                                     to={{
                                         pathname:
