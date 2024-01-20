@@ -252,7 +252,7 @@ class AccountStatements extends Component {
                             {/* <th style={thStyle} scope="col">Credit</th>
                               <th style={thStyle} scope="col">Debit</th> */}
                             <th style={thStyle} scope="col">Balance</th>
-                            <th scope="col">Is Settled</th>
+                            {/* <th scope="col">Is Settled</th> */}
                           </tr>
                         </thead>
                         {filteredStatements.length > 0 ? (
@@ -550,7 +550,7 @@ class AccountStatements extends Component {
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                       {accountStatement.is_settled == true ? (
                                         // <div className="text-success">
                                         //   <i className="mdi mdi-check-circle font-size-18"></i>
@@ -562,7 +562,7 @@ class AccountStatements extends Component {
                                         // </div>
                                         "--"
                                       )}
-                                    </td>
+                                    </td> */}
                                   </tr>
                                 ) : accountStatement.transaction_type == "Out" ? (
 
@@ -784,7 +784,7 @@ class AccountStatements extends Component {
                                         {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
                                     </td>
-                                    <td>
+                                    {/* <td>
                                       {accountStatement.is_settled == true ? (
                                         // <div className="text-success">
                                         //   <i className="mdi mdi-check-circle font-size-18"></i>
@@ -796,7 +796,7 @@ class AccountStatements extends Component {
                                         // </div>
                                         "--"
                                       )}
-                                    </td>
+                                    </td> */}
                                   </tr>
                                 ) :
                                   accountStatement.payment_status == "Paid" ? (
@@ -1081,7 +1081,7 @@ class AccountStatements extends Component {
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       </td>
-                                      <td>
+                                      {/* <td>
                                         {accountStatement.is_settled == true ? (
                                           <div className="text-success">
                                             <i className="mdi mdi-check-circle font-size-18"></i>
@@ -1091,7 +1091,7 @@ class AccountStatements extends Component {
                                             <i className="mdi mdi-close-circle font-size-18"></i>
                                           </div>
                                         )}
-                                      </td>
+                                      </td> */}
                                     </tr>
 
                                   ) : accountStatement.payment_status == "Allocate" ? (
@@ -1333,7 +1333,7 @@ class AccountStatements extends Component {
                                           {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                         </p>
                                       </td>
-                                      <td>
+                                      {/* <td>
                                         {accountStatement.is_settled == true ? (
                                           <div className="text-success">
                                             <i className="mdi mdi-check-circle font-size-18"></i>
@@ -1343,7 +1343,7 @@ class AccountStatements extends Component {
                                             <i className="mdi mdi-close-circle font-size-18"></i>
                                           </div>
                                         )}
-                                      </td>
+                                      </td> */}
                                     </tr>
                                   ) : (null)
                                 }
