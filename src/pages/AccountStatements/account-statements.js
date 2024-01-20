@@ -989,7 +989,7 @@ class AccountStatements extends Component {
                                           </p>
                                         </td>
                                       ) : (
-                                        (accountStatement.after_counterdiscount_lab_share !== 0 && (accountStatement.payment_method === "Card" || accountStatement.payment_method === "Donation")) ? (
+                                        (accountStatement.after_counterdiscount_lab_share !== 0 && accountStatement.payment_method === "Card") ? (
                                           <td style={{ backgroundColor: '#ffee93' }}>
                                             <p className="float-end">
                                               {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -1017,7 +1017,7 @@ class AccountStatements extends Component {
                                           </p>
                                         </td>
                                       ) : (
-                                        (accountStatement.labhazir_share !== 0 && accountStatement.payment_method === "Cash") ? (
+                                        (accountStatement.labhazir_share !== 0 && (accountStatement.payment_method === "Cash"  || accountStatement.payment_method === "Donation")) ? (
                                           <td style={{ backgroundColor: '#ffee93' }}>
                                             <p className="float-end">
                                               {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
