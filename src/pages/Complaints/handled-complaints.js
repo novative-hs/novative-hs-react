@@ -48,6 +48,7 @@ class handledComplaintsList extends Component {
       handledComplaint: "",
       modal: false,
       btnText: "Copy",
+      btnText1: "Copy",
       messageModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -245,9 +246,9 @@ class handledComplaintsList extends Component {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
+    this.state.btnText1 === "Copy"
+      ? this.setState({ btnText1: "Copied" })
+      : this.setState({ btnText1: "Copy" });
   };
   handleMouseExit = () => {
     this.setState({
@@ -324,7 +325,7 @@ class handledComplaintsList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Closed Complaints" breadcrumbItem="Closed Complaints" />
+            <Breadcrumbs title="CSR" breadcrumbItem="Closed Complaints" />
             <Row>
               <Col lg="12">
                 <Card>
@@ -451,11 +452,11 @@ class handledComplaintsList extends Component {
                                                             .phone
                                                         );
                                                         this.setState({
-                                                          btnText: "Copied",
+                                                          btnText1: "Copied",
                                                         });
                                                       }}
                                                     >
-                                                      {this.state.btnText}
+                                                      {this.state.btnText1}
                                                     </button>
                                                   </div>
                                                 </div>

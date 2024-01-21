@@ -224,15 +224,15 @@ class PaymentStatussList extends Component {
         sort: true,
         formatter: (cellContent, bankTransfer) => (
           <>
-            {bankTransfer.transfer_type == "Interbank Transfer" ? (
+            {/* {bankTransfer.transfer_type == "Interbank Transfer" ? ( */}
                <span>
                 <strong>{bankTransfer.mode}</strong>
                </span>
-            ) : (
+            {/* ) : (
               <span>
               {"---"}
               </span>
-            )}
+            )} */}
           </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
@@ -262,7 +262,15 @@ class PaymentStatussList extends Component {
                </span>
             ) : (
               <span>
+                <Link
+              to={{
+                pathname:
+                  process.env.REACT_APP_BACKENDURL + bankTransfer.payment_copy,
+              }}
+              target="_blank"
+            >
               <strong>{bankTransfer.cheque_no}</strong>
+            </Link>
               </span>
             )}
           </>
@@ -275,12 +283,20 @@ class PaymentStatussList extends Component {
         sort: true,
         formatter: (cellContent, bankTransfer) => (
           <>
-            <span>
+            <strong>
+            <Link
+              to={{
+                pathname:
+                  process.env.REACT_APP_BACKENDURL + bankTransfer.deposit_copy,
+              }}
+              target="_blank"
+            >
               <span>
                 {bankTransfer.bank_name},{" "}
                 {bankTransfer.account_no}
               </span>
-            </span>
+          </Link>
+          </strong>
           </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
@@ -308,33 +324,6 @@ class PaymentStatussList extends Component {
       },
       {
         dataField: "bank",
-        text: "Deposit Copy",
-        sort: true,
-        formatter: (cellContent, bankTransfer) => (
-          <>
-            {bankTransfer.transfer_type == "Withdraw" ? (
-               <span>
-                {"---"}
-               </span>
-            ) : (
-              <span>
-              <Link
-              to={{
-                pathname:
-                  process.env.REACT_APP_BACKENDURL + bankTransfer.deposit_copy,
-              }}
-              target="_blank"
-            >
-              View
-            </Link>
-              </span>
-            )}
-          </>
-        ),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "bank",
         text: "Deposit DateTime",
         sort: true,
         formatter: (cellContent, bankTransfer) => {
@@ -357,28 +346,7 @@ class PaymentStatussList extends Component {
         filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
         style: { backgroundColor: '	#F0F0F0' },
-      },        
-      {
-        dataField: "bank",
-        text: "Payment Copy",
-        sort: true,
-        formatter: (cellContent, bankTransfer) => (
-          <>
-              <span>
-              <Link
-              to={{
-                pathname:
-                  process.env.REACT_APP_BACKENDURL + bankTransfer.payment_copy,
-              }}
-              target="_blank"
-            >
-              View
-            </Link>
-              </span>
-          </>
-        ),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
+      },    
       {
         dataField: "bank",
         text: "Payment DateTime",
@@ -414,7 +382,7 @@ class PaymentStatussList extends Component {
       // },
       {
         dataField: "bank",
-        text: "Clearence DateTime",
+        text: "Clearence/Approved DateTime",
         sort: true,
         formatter: (cellContent, bankTransfer) => {
           if (bankTransfer.clearence_datetime === "null") {
@@ -427,8 +395,7 @@ class PaymentStatussList extends Component {
             // const year = date.getFullYear();
             
             return (
-              moment(bankTransfer.deposit_datetime).format("DD MMM YYYY, h:mm A")
-
+              moment(bankTransfer.clearence_datetime).format("DD MMM YYYY, h:mm A")
             );
           }
         }, filter: textFilter(),
@@ -462,6 +429,19 @@ class PaymentStatussList extends Component {
           </div>
           
       )}</>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Comments",
+        formatter: (cellContent, bankTransfer) => (
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/activity-log-finance/${bankTransfer.id}`}
+                  ></Link>
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
@@ -652,7 +632,7 @@ class PaymentStatussList extends Component {
                                                    {/* payments out pending clearence field */}
 
                                                    <Label htmlFor="cardnumberInput">
-                              Clearance DateTime
+                              Approved DateTime
                               <span
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"

@@ -59,7 +59,7 @@ class BanksList extends Component {
         : "",
       paymentStatusListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           formatter: (cellContent, bank) => (
@@ -72,7 +72,9 @@ class BanksList extends Component {
           sort: true,
           formatter: (cellContent, bank) => (
             <>
-                {bank.name}
+<span className="text-start">
+{bank.name}
+</span>
             </>
           ),filter: textFilter(),
         },
@@ -95,6 +97,36 @@ class BanksList extends Component {
                 {bank.email}
             </>
           ),filter: textFilter(),
+        },
+        {
+          dataField: "city",
+          text: "Bank City",
+          sort: true,
+          formatter: (cellContent, bank) => (
+            // <Link to={`/bank-account-statements/${bank.id}`}>
+            <> {bank.city}</>
+            // </Link>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "address",
+          text: "Bank Address",
+          sort: true,
+          formatter: (cellContent, bank) => (
+            // <Link to={`/bank-account-statements/${bank.id}`}>
+            <> {bank.address}</>
+            // </Link>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "branch_no",
+          text: "Branch No",
+          sort: true,
+          formatter: (cellContent, bank) => (
+            // <Link to={`/bank-account-statements/${bank.id}`}>
+            <> {bank.branch_no}</>
+            // </Link>
+          ), filter: textFilter(),
         },
         {
           dataField: "registered_by",

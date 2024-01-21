@@ -8,6 +8,8 @@ import { isEmpty, map } from "lodash";
 import Select from "react-select";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
 
 
 import paginationFactory, {
@@ -36,6 +38,11 @@ class AccountStatements extends Component {
     this.state = {
       bankStatements: [],
       bankStatement: "",
+      startDate: null,
+      endDate: null,
+      bankaccount_id: null,
+      prevStatement: null,
+      filteredBankStatements: [],
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -44,9 +51,9 @@ class AccountStatements extends Component {
   }
 
   componentDidMount() {
-    const { bankaccounts, onGetBankaccounts } = this.props;
+    const { onGetBankaccounts } = this.props;
     onGetBankaccounts(this.state.user_id);
-    this.setState({ bankaccounts });
+
     // Call the asynchronous functions initially
     this.getData();
 
@@ -60,12 +67,27 @@ class AccountStatements extends Component {
   }
 
   getData = async () => {
-    const { onGetBankStatements } = this.props;
-    // const { user_id } = this.state;
+    const { onGetBankStatements, match } = this.props;
 
     // Fetch bank statements
-    await onGetBankStatements(this.props.match.params.id);
-    this.setState({ bankStatements: this.props.bankStatements });
+    await onGetBankStatements(match.params.id);
+    const { bankStatements } = this.props;
+    const { startDate, endDate, bankaccount_id } = this.state;
+
+    // Apply date range and bank account filters
+    const filteredStatements = bankStatements.filter((statement) => {
+      const statementDate = moment(statement.clearence_datetime);
+      const isDateInRange = (
+        (!startDate || statementDate.isSameOrAfter(startDate)) &&
+        (!endDate || statementDate.isSameOrBefore(endDate))
+      );
+
+      const isBankAccountMatch = (!bankaccount_id || statement.bankaccount_id === bankaccount_id);
+
+      return isDateInRange && isBankAccountMatch;
+    });
+
+    this.setState({ filteredBankStatements: filteredStatements });
   };
 
   toggle() {
@@ -112,6 +134,8 @@ class AccountStatements extends Component {
         order: "desc",
       },
     ];
+    const { filteredBankStatements, startDate, endDate, bankaccount_id } = this.state;
+
 
     // Define the structure of your table headers
     const tableHeaders = [
@@ -137,7 +161,7 @@ class AccountStatements extends Component {
         footer: '', // Empty footer for this column
         formatter: (cellContent, bankStatement) => (
           <>
-            <strong className="float-start">
+            <p style={{ textAlign: 'start' }}>
               {/* {bankStatement.account_name}{", "}
               {bankStatement.account_no}{", "} */}
               {bankStatement.mif_id && bankStatement.lab_name
@@ -185,7 +209,7 @@ class AccountStatements extends Component {
                     Payment Mode: <span style={{ color: 'blue' }}>{bankStatement.payment_method}</span>, 
                     Status: <span style={{ color: 'blue' }}>{bankStatement.Status}</span>
                   </span>
-              }</strong>
+              }</p>
           </>
         ), filter: textFilter(), // Add a text filter for this column // Add a text filter for this column
       },
@@ -203,11 +227,11 @@ class AccountStatements extends Component {
       {
         dataField: 'credit',
         text: 'Credit',
-        footer: `Total Credit: ${totalCredit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        footer: `Total Credit: ${(totalCredit || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
         footerClasses: 'text-end', // Set the color of the footer to red
         formatter: (cellContent, bankStatement) => (
           <div className="text-end">
-            <strong>{(bankStatement.credit || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+            <strong>{(bankStatement.credit || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
           </div>
         ),
         filter: textFilter(),
@@ -215,11 +239,11 @@ class AccountStatements extends Component {
       {
         dataField: 'Debit',
         text: 'Debit',
-        footer: `Total Debit: ${totalDebit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        footer: `Total Debit: ${(totalDebit.Debit || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
         footerClasses: 'text-end', // Set the color of the footer to red
         formatter: (cellContent, bankStatement) => (
           <div className="text-end">
-            <strong>{(bankStatement.Debit || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+            <strong>{(bankStatement.Debit || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
           </div>
         ),
         filter: textFilter(),
@@ -275,11 +299,8 @@ class AccountStatements extends Component {
                   <CardBody>
                     <Row className="mb-2">
                       <Col sm="4">
-                        <Row className="mb-2">
-                          <Col sm="8">
-
                             {bankStatement.bankaccount_id ? (
-                              <div className="mb-3">
+                              <div className="mb-2">
                                 <Label className="col-form-label">Bank Account Name and Number</Label>
 
                                 <Field
@@ -314,15 +335,37 @@ class AccountStatements extends Component {
                                   placeholder="Select Bank Account..."
                                 />
                               </div>
-                            )}</Col></Row>
+                            )}
                       </Col>
+                      <Col sm="2">
+                <div className="mt-3">
+                  <label className="form-label">Start Date:</label>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => this.setState({ startDate: date })}
+                    className="form-control"
+                    dateFormat="d MMM yyyy"
+                  />
+                </div>
+              </Col>
+              <Col sm="2">
+                <div className="mt-3">
+                  <label className="form-label">End Date:</label>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => this.setState({ endDate: date })}
+                    className="form-control"
+                    dateFormat="d MMM yyyy"
+                  />
+                </div>
+              </Col>
                     </Row>
 
                     <div className="table-responsive">
                       {/* Add filter and footer to BootstrapTable */}
                       <ToolkitProvider
                         keyField="id"
-                        data={bankStatements}
+                        data={filteredBankStatements}
                         columns={tableHeaders}
                         search
                       >

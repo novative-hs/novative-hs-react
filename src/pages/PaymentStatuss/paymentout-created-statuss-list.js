@@ -426,6 +426,19 @@ class PathologistsList extends Component {
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Comments",
+        formatter: (cellContent, paymentCreatedStatus) => (
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/activity-log-finance/${paymentCreatedStatus.id}`}
+                  ></Link>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
     ];
     const { SearchBar } = Search;
 
@@ -1279,9 +1292,9 @@ class PathologistsList extends Component {
 
 PathologistsList.propTypes = {
   match: PropTypes.object,
-  paymentCreatedStatuss: PropTypes.array,
   className: PropTypes.any,
   onGetCreatedOutStatuss: PropTypes.func,
+  paymentCreatedStatuss: PropTypes.array,
   onDeletePaymentout: PropTypes.func,
   onUpdatePaymentOutCreatedStatuss: PropTypes.func,
   history: PropTypes.any,

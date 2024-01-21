@@ -64,7 +64,15 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <span className="float-start">{labsList.name}</span>
+              <span style={{
+                width: '180px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>{labsList.name}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
           // formatter: (cellContent, labsList) => (
@@ -126,7 +134,7 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <span  className="float-end">
-            {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            {(labsList.current_amount || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </span>
           ),filter: textFilter(), // Add a text filter for this column
         },

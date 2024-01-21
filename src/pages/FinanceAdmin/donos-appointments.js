@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
 import {
   Card,
   CardBody,
@@ -45,11 +47,22 @@ class LabsLists extends Component {
       LabsLists: "",
       btnText: "Copy",
       labsList: "",
+      startDate: null,
+      endDate: null,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       labsListListColumns: [
-
+        {
+          dataField: "booked_at",
+          text: "Date",
+          sort: true,
+          formatter: (cellContent, labsList) => (
+            <>
+              {moment(labsList.booked_at).format("DD MMM YYYY")}
+            </>
+          ),filter: textFilter(),
+        },
         {
           dataField: "order_id",
           text: "Order ID",
@@ -83,7 +96,15 @@ class LabsLists extends Component {
           text: "Lab Name",
           sort: true,
           formatter: (cellContent, labsList) => (
-            <><span className="float-start">
+            <><span style={{
+              width: '180px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
               <Link
                     to="#"
                     onClick={e => this.openPatientModal(e, labsList)}
@@ -141,7 +162,6 @@ class LabsLists extends Component {
             options: {
               '': 'All',
               'Paid': 'Paid',
-              'Not Paid': 'Not Paid',
               'Allocate': 'Allocate',
             },
             defaultValue: 'All',
@@ -255,8 +275,8 @@ class LabsLists extends Component {
           text: "Donor Name",
           sort: true,
           formatter: (cellContent, labsList) => (
-            <>
-              <strong>{labsList.donor_name}</strong>
+            <><span className="float-start">
+              {labsList.donor_name}</span>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
@@ -270,16 +290,54 @@ class LabsLists extends Component {
   //   this.setState({ labsList });
   // }
   componentDidMount() {
-    const { labsList, onGetDonorsA } = this.props;
-    onGetDonorsA(this.state.user_id);
-    console.log(onGetDonorsA());
-    this.setState({ labsList });
+    const currentMonthStart = moment().startOf("month");
+    const currentMonthEnd = moment().endOf("month");
+
+    this.setState({
+      startDate: currentMonthStart.toDate(),
+      endDate: currentMonthEnd.toDate(),
+    });
+
+    this.fetchData();
   }
-  // componentDidMount() {
-  //   const { b2bAllClients, onGetB2bAllClientsList } = this.props;
-  //   onGetB2bAllClientsList(this.state.user_id);
-  //   this.setState({ b2bAllClients });
-  // }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.startDate !== this.state.startDate ||
+      prevState.endDate !== this.state.endDate
+    ) {
+      // Fetch data based on date filters
+      this.fetchData();
+    }
+
+    if (
+      this.props.labsList.length > 0 &&
+      this.props.labsList !== prevProps.labsList
+    ) {
+      // Find the index of the last statement that falls within the date range
+      const lastIndex = this.props.labsList.findIndex((statement) => {
+        const statementDate = new Date(statement.booked_at);
+        return (
+          statementDate >= this.state.startDate &&
+          statementDate <= this.state.endDate
+        );
+      });
+
+      // Do something with lastIndex if needed
+    }
+  }
+
+  fetchData = () => {
+    if (this.state.user_id) {
+      const { onGetDonorsA } = this.props;
+      const userId = this.state.user_id; // If it's always user_id, no need for conditional check
+
+      // Only make the API call if both start and end dates are selected
+      if (this.state.startDate && this.state.endDate) {
+        onGetDonorsA(userId);
+      }
+    }
+  };
 
   toggle() {
     this.setState(prevState => ({
@@ -333,13 +391,24 @@ class LabsLists extends Component {
 
   render() {
     const { SearchBar } = Search;
-
+    const { startDate, endDate } = this.state;
     const { labsList } = this.props;
     const data = this.state.data;
     const { onGetDonorsA } = this.props;
+    const filteredStatements = labsList.filter((statement) => {
+      const orderedAt = moment(statement.booked_at);
+      return (
+        (!startDate || orderedAt.isSameOrAfter(startDate)) &&
+        (!endDate || orderedAt.isSameOrBefore(endDate))
+      );
+    });
+     // Sort statements based on booked_at in ascending order
+     filteredStatements.sort((a, b) => {
+      return moment(a.booked_at) - moment(b.booked_at);
+    });
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 1000,
       totalSize: labsList.length, // replace later with size(labsList),
       custom: true,
     };
@@ -361,9 +430,37 @@ class LabsLists extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="Appointments for Donation" />
             <Row>
+              <p>Note: Click Appointment Status or Payment Status to View Data as per slected statuss.</p>
               <Col lg="12">
+
                 <Card>
                   <CardBody>
+                  <Row>
+              <Col lg="3">
+                <div className="mb-3">
+                  <label className="form-label">Start Date:</label>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => this.setState({ startDate: date })}
+                    className="form-control"
+                    dateFormat="d MMM yyyy"
+
+                  />
+                </div></Col>
+              <Col lg="3">
+                <div className="mb-3">
+                  <label className="form-label">End Date:</label>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => this.setState({ endDate: date })}
+                    className="form-control"
+                    dateFormat="d MMM yyyy"
+
+                  />
+                </div>
+
+              </Col>
+            </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -374,7 +471,7 @@ class LabsLists extends Component {
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.labsListListColumns}
-                          data={labsList}
+                          data={filteredStatements}
                           search
                         >
                           {toolkitprops => (
@@ -642,13 +739,13 @@ class LabsLists extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              {/* <Row className="align-items-md-center mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
                                   />
                                 </Col>
-                              </Row>
+                              </Row> */}
                             </React.Fragment>
                           )}
                         </ToolkitProvider>

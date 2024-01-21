@@ -322,7 +322,7 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < labsMof.length; i++) {
       if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].current_amount > 0)) {
         labList.push({
-         label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Payable Amount: ${labsMof[i].current_amount})`,
+         label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Total Payable Amount: ${labsMof[i].current_amount})`,
           label1: `${labsMof[i].name}`,
           value: labsMof[i].id,
           data: { dues: labsMof[i].current_amount }, // Include the 'dues' property in the data field
@@ -334,7 +334,7 @@ class OutPaymentsForm extends Component {
     for (let i = 0; i < labsMof.length; i++) {
       if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
         donationlabList.push({
-          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Payable Amount: ${labsMof[i].donation_amount})`,
+          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Total Payable Amount: ${labsMof[i].donation_amount})`,
           label1: `${labsMof[i].name}`,
           value: labsMof[i].id,
           // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
@@ -517,11 +517,10 @@ class OutPaymentsForm extends Component {
                   <br></br>
 
                   <strong>
-                  <span className="text-danger font-size-12">Note:</span> Payment to <span className="text-primary">Lab</span> and what type of transection <span className="text-primary">Other</span>. Include only those labs in the Lab Name List where the Payable Amount is greater than 0.
+                  <span className="text-danger font-size-12">1:</span> If Payment to <span className="text-primary">Lab</span> and Transection type is <span className="text-primary">Other</span>, the List of Lab only show Lab Name having Payable amount as per Lab Account statement.
                   <br></br>
-                  <span className="text-danger font-size-12">Note:</span> Payment to <span className="text-primary">Lab</span> and what type of transection <span className="text-primary">Donation</span>. Include only those labs in the Lab Name List where the Payable Amount is greater than 0.
+                  <span className="text-danger font-size-12">2:</span> If Payment to <span className="text-primary">Lab</span> and Transection type is <span className="text-primary">Donation</span>, the List of Lab only show Lab Name having Apppoitments with status Donation Allocate and Result Uploaded.
                   <br></br>
-                  <p><span className="text-danger">Note:</span> Appointments with the selected lab will be listed below, whose status wll be Donation Allocate and Result Uploaded.</p>
                     </strong>
                     <br></br>
                   </div>

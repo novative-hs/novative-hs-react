@@ -1,57 +1,86 @@
-import React, { Component, useState } from "react";
-import Select from "react-select";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { any } from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import {
-  Alert,
   Card,
   CardBody,
+  CardImg,
   Col,
-  Table,
   Container,
-  Input,
-  Label,
-  Modal,
   Row,
+  Modal,
   Button,
+  ModalHeader,
   ModalBody,
+  Label,
+  Input,
 } from "reactstrap";
 
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
-import { isEmpty, map } from "lodash";
+
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
+
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+
+import images from "assets/images";
+import moment from 'moment';
 //Import Breadcrumb
-import "assets/scss/table.scss";
 import Breadcrumbs from "components/Common/Breadcrumb";
+import DeleteModal from "components/Common/DeleteModal";
+
 import { getActivityLogFinance } from "store/activtylogfinance/actions";
 
-class ActivityLogFinance extends Component {
+import { isEmpty, size } from "lodash";
+import "assets/scss/table.scss";
+
+class MsgsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
       activitylogfinance: [],
       activitylogfinance: "",
+      modal: false,
+      deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
     };
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
     const { activitylogfinance, onGetActivityLogFinance } = this.props;
-    console.log(onGetActivityLogFinance(this.state.user_id));
+    onGetActivityLogFinance(this.props.match.params.id);
     this.setState({ activitylogfinance });
+    console.log("helllloooo",this.state.activitylogfinance)
   }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal,
+    }));
+  }
+
+
+  // eslint-disable-next-line no-unused-vars
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { activitylogfinance } = this.props;
+    if (
+      !isEmpty(activitylogfinance) &&
+      size(prevProps.activitylogfinance) !== size(activitylogfinance)
+    ) {
+      this.setState({ activitylogfinance: {}, isEdit: false });
+    }
+  }
+
   onPaginationPageChange = page => {
     if (
       this.node &&
@@ -68,8 +97,12 @@ class ActivityLogFinance extends Component {
     const { SearchBar } = Search;
 
     const { activitylogfinance } = this.props;
-    const { onGetActivityLogFinance } = this.props;
 
+    const { isEdit, deleteModal } = this.state;
+
+    const {
+      onGetActivityLogFinance,
+    } = this.props;
     const pageOptions = {
       sizePerPage: 10,
       totalSize: activitylogfinance.length, // replace later with size(activitylogfinance),
@@ -87,23 +120,27 @@ class ActivityLogFinance extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Activity Log | Lab Hazir - Dashboard</title>
+            <title>Comments List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
-            <Card>
-              <CardBody>
-                {/* Render Breadcrumbs */}
-                <Breadcrumbs title="Finance" breadcrumbItem="Activity Log" />
-
+            {/* Render Breadcrumbs */}
+            <Breadcrumbs
+              title="Comments"
+              breadcrumbItem="Comments List"
+            />
+            <Row>
+              <Col lg="12">
+                <Card>
+                  <CardBody>
+                  
                 {!isEmpty(this.props.activitylogfinance) &&
-                  this.props.activitylogfinance.map(
-                    (activitylogfinance, key) => (
-                      <Col key={"_col_" + key}>
-                        <div className="mt-3">
-                          {activitylogfinance.actions === "Added" && activitylogfinance.type !== "Bank Transfer Detail" && (
+                  this.props.activitylogfinance.map((activitylogfinance, key) => (
+                    <Col xl="3" md="3" sm="6" key={"_col_" + key}>
+                      <Card className="mb-2" style={{ backgroundColor: "#f2f2f2" }}>
+                        <CardBody className="p-3">
+                        {activitylogfinance.actions === "Added" && activitylogfinance.type !== "Bank Transfer Detail" && (
                             <div>
-                              <i className="fas fa-plus-square font-size-18"></i>{" "}
-                              {`${activitylogfinance.user_name} Created a `}
+                              <b>{`${activitylogfinance.name}`}</b> Created a {" "}
                               <b>{activitylogfinance.type}</b> form for{" "}
                               <b>
                                 {activitylogfinance.payment_for}{" "}
@@ -115,13 +152,10 @@ class ActivityLogFinance extends Component {
                                     activitylogfinance.b2b_name}
                               </b>{" "}
                               on{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleDateString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
+                              {" "}
                               at{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleTimeString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
                               with id{" "}
                               <b>
                                 {activitylogfinance.payment_in_id ||
@@ -133,16 +167,11 @@ class ActivityLogFinance extends Component {
                           )}
                            {activitylogfinance.actions === "Added" && activitylogfinance.type === "Bank Transfer Detail" && (
                             <div>
-                              <i className="fas fa-plus-square font-size-18"></i>{" "}
-                              {`${activitylogfinance.user_name} Created a `}
+                              <b>{`${activitylogfinance.name}`}</b> Created a {" "}
                               <b>{activitylogfinance.type}</b> form on{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleDateString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
                               at{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleTimeString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
                               with id{" "}
                               <b>
                                 {activitylogfinance.btd_id}
@@ -153,12 +182,11 @@ class ActivityLogFinance extends Component {
 
                           {activitylogfinance.actions === "Updated" && activitylogfinance.type !== "Bank Transfer Detail" && (
                             <div>
-                              <i className="fas fa-exchange-alt font-size-18"></i>{" "}
-                              {`${activitylogfinance.user_name} Changed Status of `}
-                              <b>{activitylogfinance.type}</b> with id{" "}
-                              {activitylogfinance.payment_in_id ||
+                              <b>{`${activitylogfinance.name}`}</b> Changed Status of{" "}
+                              <b>{activitylogfinance.type}</b> with ID{" "}
+                              <b>{activitylogfinance.payment_in_id ||
                                 activitylogfinance.payment_out_id ||
-                                activitylogfinance.btd_id}{" "}
+                                activitylogfinance.btd_id}</b>{" "}
                               for <b>{activitylogfinance.payment_for}</b>{" "}
                               <b>
                                 {" "}
@@ -172,68 +200,58 @@ class ActivityLogFinance extends Component {
                               </b>{" "}
                               from <b>{activitylogfinance.old_value}</b> to{" "}
                               <b>{activitylogfinance.new_value}</b> on{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleDateString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
                               at{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleTimeString("en-US")}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
+
                               .
                             </div>
                           )}
                           {activitylogfinance.actions === "Updated" && activitylogfinance.type === "Bank Transfer Detail" && (
                             <div>
-                              <i className="fas fa-exchange-alt font-size-18"></i>{" "}
-                              {`${activitylogfinance.user_name} Changed Status of `}
-                              <b>{activitylogfinance.type}</b> with id{" "}
-                              {activitylogfinance.btd_id}{" "}
+                              <b>{`${activitylogfinance.name}`}</b> Changed Status of{" "}
+                              <b>{activitylogfinance.type}</b> with ID{" "}
+                              <b>{activitylogfinance.btd_id}</b>{" "}
                               from <b>{activitylogfinance.old_value}</b> to{" "}
                               <b>{activitylogfinance.new_value}</b> on{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleDateString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
                               at{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleTimeString("en-US")}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
                               .
                             </div>
                           )}
 
                           {activitylogfinance.actions == "Synchronize" && (
                             <div>
-                              <i className="fas fa-sync-alt font-size-18"></i>{" "}
                               {activitylogfinance.lab_name} Synchronizes its
                               main lab tests on{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleDateString("en-US")}{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
                               at{" "}
-                              {new Date(
-                                activitylogfinance.created_at
-                              ).toLocaleTimeString("en-US")}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
                               .
                             </div>
                           )}
-                        </div>
-                      </Col>
-                    )
-                  )}
-
-                {isEmpty(this.props.activitylogfinance) && (
+                      
+                        
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  ))}
+                  {isEmpty(this.props.activitylogfinance) && (
                   <Row>
                     <Col lg="12">
                       <div className=" mb-5">
                         <h5 className="text-uppercase">
-                          No activity log exists.....
+                          No Comments exists.....
                         </h5>
                       </div>
                     </Col>
                   </Row>
                 )}
-              </CardBody>
-            </Card>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
           </Container>
         </div>
       </React.Fragment>
@@ -241,15 +259,13 @@ class ActivityLogFinance extends Component {
   }
 }
 
-ActivityLogFinance.propTypes = {
+MsgsList.propTypes = {
   match: PropTypes.object,
   activitylogfinance: PropTypes.array,
   className: PropTypes.any,
   onGetActivityLogFinance: PropTypes.func,
-  history: any,
-  success: PropTypes.any,
-  error: PropTypes.any,
 };
+
 const mapStateToProps = ({ activitylogfinance }) => ({
   activitylogfinance: activitylogfinance.activitylogfinance,
 });
@@ -261,4 +277,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ActivityLogFinance));
+)(withRouter(MsgsList));

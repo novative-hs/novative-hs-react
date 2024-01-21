@@ -65,7 +65,7 @@ class LabAdvertisementRequestsList extends Component {
         : "",
       labAdvertisementRequestListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           hidden: false,
@@ -79,7 +79,15 @@ class LabAdvertisementRequestsList extends Component {
           sort: true,
           formatter: (cellContent, labAdvertisementRequest) => (
             <>
-              <span className="float-start">
+              <span style={{
+              width: '180px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
                 <Tooltip title="Lab Info">
                   <Link
                     to="#"
@@ -177,10 +185,16 @@ class LabAdvertisementRequestsList extends Component {
           ),filter: textFilter(),
         },
         {
-          dataField: "title",
-          text: "Title",
+          dataField: "amount",
+          text: "Price",
           sort: true,
-          filter: textFilter(),
+          formatter: (cellContent, labAdvertisementRequest) => (
+            <>
+              {(
+                <span className="float-end">{labAdvertisementRequest.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
         },
         {
           dataField: "request_status",
@@ -189,20 +203,38 @@ class LabAdvertisementRequestsList extends Component {
           filter: textFilter(),
         },
         {
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,
+          formatter: (cellContent, labAdvertisement) => (
+            <>
+              {labAdvertisement.payment_status == "Cleared" ? (
+                <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+                {labAdvertisement.payment_method},{" "}
+                {labAdvertisement.payment_status}
+              </span>
+              ) : (
+                <span>--</span>
+
+              )}
+            </>
+          ),filter: textFilter(),
+        },
+        {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
           formatter: (cellContent, labAdvertisementRequest) => (
             <div>
-              {this.state.account_type === "marketer-admin" && (
+              {/* {this.state.account_type === "marketer-admin" && ( */}
                <Tooltip title="Add Comment">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/adv-madmin-chat-box/${labAdvertisementRequest.id}`}
+                  to={`/adv-fadmin-chat-box/${labAdvertisementRequest.id}`}
                 ></Link>
               </Tooltip>
-              )}
+              {/* )} */}
             </div>
           ),
         },

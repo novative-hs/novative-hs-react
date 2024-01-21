@@ -213,22 +213,40 @@ class AccountStatements extends Component {
                                     </td>
                                     
                                     <td>
-                                        <span className="float-start">
-                                          {<span> MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span> , {" "} Payment Method: <span style={{ color: 'blue' }}> {donoraccountStatement.PaidMethod} <span style={{ color: 'green' }}>{donoraccountStatement.Status}</span></span>, {" "}
-                                          {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
-                                          <span>
-                                          Payment Date: <span style={{ color: 'blue' }}>{moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}
-                                          </span></span>
+  {donoraccountStatement.cancel_appintment_status === "Cancel" ? (
+    <span className="float-start">
+      <span>
+        INVOICE ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span>,
+        Payment Method: <span style={{ color: 'blue' }}>{donoraccountStatement.PaidMethod}</span>,
+        <span style={{ color: 'green' }}>{donoraccountStatement.Status}</span>,
+        <span className="text-danger">
+          {donoraccountStatement.cancel_appintment_status} , Auto MIF
+        </span>
+      </span>
+    </span>
+  ) : (
+    <span className="float-start">
+      <span>
+        MIF ID: <span style={{ color: 'blue' }}>{donoraccountStatement.paymentin}</span>,
+        Payment Method: <span style={{ color: 'blue' }}>{donoraccountStatement.PaidMethod}
+          {donoraccountStatement.PaidMethod === "Donation" ? (
+            <span style={{ color: 'green' }}>{donoraccountStatement.Status}</span>
+          ) : <span></span>}
+        </span>
+        {donoraccountStatement.PaidMethod === "Cheque" || donoraccountStatement.PaidMethod === "Card" || donoraccountStatement.PaidMethod === "Cash" ? (
+          <span>
+            Payment Date: <span style={{ color: 'blue' }}>{moment(donoraccountStatement.PaidAt).format("DD MMM YYYY")}</span>
+          </span>
+        ) : (
+          <span className="text-danger">
+            {donoraccountStatement.cancel_appintment_status}
+          </span>
+        )}
+      </span>
+    </span>
+  )}
+</td>
 
-                                          ):(
-                                        <span className="text-danger">
-                                          {donoraccountStatement.cancel_appintment_status}
-                                        </span>
-                                      )}</span>}
-                                          {/* {donoraccountStatement.Status} */}
-                                        </span>
-                                      {/* </p> */}
-                                    </td>
                                      <td style={{ backgroundColor: '#ffc09f' }}>
                                       {donoraccountStatement.Debit == 0 ? (
                                         <p className="d-none">

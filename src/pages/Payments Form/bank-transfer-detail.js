@@ -268,12 +268,13 @@ class BankTransfersForm extends Component {
       //   }
       // }
       if (!flag) {
-        bankaccountList.push(
-          {
-            label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
-            value: `${bankAccounts[i].id}`,
-          }
-        );
+        if (bankAccounts[i].account_type != "DONATION") {
+          bankaccountList.push(
+            {
+              label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
+              value: `${bankAccounts[i].id}`,
+            }
+          );}
       }
     }
 

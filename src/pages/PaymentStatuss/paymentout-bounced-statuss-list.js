@@ -460,6 +460,19 @@ class paymentCreatedList extends Component {
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Comments",
+        formatter: (cellContent, paymentBouncedStatus) => (
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/activity-log-finance/${paymentBouncedStatus.id}`}
+                  ></Link>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
     ];
     const { SearchBar } = Search;
     const { labs } = this.props;

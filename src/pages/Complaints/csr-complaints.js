@@ -54,6 +54,7 @@ class csrComplaints extends Component {
       csrComplaint: "",
       modal: false,
       btnText: "Copy",
+      btnText1: "Copy",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -241,9 +242,9 @@ class csrComplaints extends Component {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
+    this.state.btnText1 === "Copy"
+      ? this.setState({ btnText1: "Copied" })
+      : this.setState({ btnText1: "Copy" });
   };
   openLabModal = (e, arg) => {
     this.setState({
@@ -350,7 +351,7 @@ class csrComplaints extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="All Appointments" />
             <Row>
-              <p className="text-danger">Note: This page will show all Appointments in all territories that are not status complete.</p>
+              <p className="text-danger">Note: This page will show all Appointments in all territories that are not in status complete.</p>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -519,11 +520,11 @@ class csrComplaints extends Component {
                                                             .patient_phone
                                                         );
                                                         this.setState({
-                                                          btnText: "Copied",
+                                                          btnText1: "Copied",
                                                         });
                                                       }}
                                                     >
-                                                      {this.state.btnText}
+                                                      {this.state.btnText1}
                                                     </button>
                                                   </div>
                                                 </div>
@@ -620,7 +621,7 @@ class csrComplaints extends Component {
                                                   />
                                                   {(this.state.appointment_option =="Cancel") &&
                                                   (csrComplaint.status === "Confirmed" && csrComplaint.payment_method === "Cash" && csrComplaint.payment_status === "Paid") ? (
-                                                    <p><span className="text-danger bold">Alart: The appointment is confirmed, and the cash has been received by the lab. Before canceling the appointment, please make sure to confirm the refund payment with the patient.</span></p>
+                                                    <p><span className="text-danger bold">Alert: The appointment is confirmed, and the cash has been received by the lab. Before canceling the appointment, please make sure to confirm the refund payment with the patient.</span></p>
                                                   ) : null}
                                                   {
 

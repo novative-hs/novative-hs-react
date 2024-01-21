@@ -312,9 +312,9 @@ class InPaymentsForm extends Component {
     
     const advertisementList = [];
     for (let i = 0; i < advertisements.length; i++) {
-      if (advertisements[i].lab_office === this.props.staffProfiles.territory_office) {
+      if (advertisements[i].lab_office === this.props.staffProfiles.territory_office && advertisements[i].payment_status != "Cleared") {
         advertisementList.push({
-          label: `${advertisements[i].title} - (Lab: ${advertisements[i].lab_name}) - (Price: ${advertisements[i].amount})`,
+          label: `${advertisements[i].id} - (Lab: ${advertisements[i].lab_name}) - (Price: ${advertisements[i].amount})`,
           value: `${advertisements[i].id}`,
           data: {dues: `${advertisements[i].amount}`}  
         });

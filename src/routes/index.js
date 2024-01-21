@@ -484,7 +484,7 @@ const financeOfficerAuthProtectedRoutes = [
     component: PaymentStatussList,
   },
   {
-    path: "/activity-log-finance",
+    path: "/activity-log-finance/:id",
     component: activityLogFinance,
   },
   {
@@ -532,6 +532,10 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/approved-in-payments", component: ApprovedInPayments },
   { path: "/unapproved-in-payments", component: UnapprovedInPayments },
   { path: "/activity-log-finance-admin", component: activityLogFinanceAdmin },
+  {
+    path: "/activity-log-financeadmin/:id",
+    component: activityLogFinance,
+  },
 
   {path: "/create-bank", component: CreateBanks},
   {path: "/bank-account", component: BankAccounts},
@@ -543,6 +547,7 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/b2bclients-details", component: b2bList},
   {path: "/bank-account-statements/:id", component: BankAccountStatements},
   { path: "/accepted-lab-advertisements", component: LabAdvertisementRequestsAcceptedMA},
+  { path: "/adv-fadmin-chat-box/:id", component: advmadminChatBox },
 
 
 

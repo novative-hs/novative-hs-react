@@ -67,8 +67,11 @@ class LabsLists extends Component {
           formatter: (cellContent, labsList) => (
             <>
               <span className="float-start">
-                {labsList.name}{" - "}
-                {labsList.type}</span>
+              <Link to={`/account-statements-lab/${labsList.account_id}`}>
+              {labsList.name}{" - "}
+                {labsList.type}
+                             </Link>
+               </span>
 
 
             </>
@@ -126,27 +129,27 @@ class LabsLists extends Component {
             </>
           ), filter: textFilter(), // Add a text filter for this column
         },
-        {
-          dataField: "current_amount",
-          text: "Current Amount",
-          sort: true,
-          formatter: (cellContent, labsList) => (
-            <p className="text-end">
-              {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            </p>
-          ), filter: textFilter(), // Add a text filter for this column
-        },
-        {
-          dataField: "account_no",
-          text: "Account Statement",
-          sort: true,
-          formatter: (cellContent, labsList) => (
-            <Link to={`/account-statements-lab/${labsList.account_id}`}>
-              Account statement
-            </Link>
-          ), filter: textFilter(), // Add a text filter for this column
+        // {
+        //   dataField: "current_amount",
+        //   text: "Current Amount",
+        //   sort: true,
+        //   formatter: (cellContent, labsList) => (
+        //     <p className="text-end">
+        //       {labsList.current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        //     </p>
+        //   ), filter: textFilter(), // Add a text filter for this column
+        // },
+        // {
+        //   dataField: "account_no",
+        //   text: "Account Statement",
+        //   sort: true,
+        //   formatter: (cellContent, labsList) => (
+        //     <Link to={`/account-statements-lab/${labsList.account_id}`}>
+        //       Account statement
+        //     </Link>
+        //   ), filter: textFilter(), // Add a text filter for this column
 
-        },
+        // },
       ],
     };
   }
@@ -231,6 +234,17 @@ class LabsLists extends Component {
         ),
         filter: textFilter(),
       },
+      // {
+      //     dataField: "account_no",
+      //     text: "Account Statement",
+      //     sort: true,
+      //     formatter: (cellContent, labsList) => (
+      //       <Link to={`/account-statements-lab/${labsList.account_id}`}>
+      //         Account statement
+      //       </Link>
+      //     ), filter: textFilter(), // Add a text filter for this column
+
+      //   },
     ];
 
 

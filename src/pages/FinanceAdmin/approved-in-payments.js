@@ -284,6 +284,19 @@ class PaymentStatussList extends Component {
       headerStyle: { backgroundColor: '#DCDCDC' },
       style: { backgroundColor: '	#F0F0F0' },
       },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Comments",
+        formatter: (cellContent, paymentStatus) => (
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/activity-log-financeadmin/${paymentStatus.id}`}
+                  ></Link>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
     //   {
     //   dataField: "deposit_slip",
     //   text: "Deposit Slip",

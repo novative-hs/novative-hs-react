@@ -351,7 +351,7 @@ class OutPaymentsForm extends Component {
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"
                               >
-                                *
+                                
                               </span>
                             </Label>
                             <Input

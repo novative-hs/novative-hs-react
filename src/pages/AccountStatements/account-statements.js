@@ -31,13 +31,13 @@ class AccountStatements extends Component {
     this.state = {
       accountStatements: [],
       accountStatement: "",
-      prevStatement: null,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       account_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
+      prevStatement: null,
       startDate: null,
       endDate: null,
     };
@@ -442,17 +442,20 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-                                    <td>
+                                    <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method === "Cash" ? (
                                           <span>
                                             {accountStatement.tax_amount != 0 ? (
                                               <p className="float-end">
                                                 {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}tax
+                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
                                               </p>
                                             ) : (
                                               <p className="float-end">
                                                 {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
+
                                               </p>
                                             )}
                                           </span>
@@ -688,17 +691,21 @@ class AccountStatements extends Component {
                                       )} */}
 
                                     </td>
-                                    <td>
+                                    <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method === "Card" ? (
                                           <span>
                                             {accountStatement.tax_amount !== 0 ? (
                                               <p className="float-end">
                                                 {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tax
+                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+
                                               </p>
                                             ) : (
                                               <p className="float-end">
                                                 {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+
                                               </p>
                                             )}
                                           </span>
@@ -713,10 +720,13 @@ class AccountStatements extends Component {
                                                 {accountStatement.tax_amount !== 0 ? (
                                                   <p className="float-end">
                                                     {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tax
+                                                    <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
                                                   </p>
                                                 ) : (
                                                   <p className="float-end">
                                                     {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                    <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+
                                                   </p>
                                                 )}
                                               </span>
@@ -993,6 +1003,7 @@ class AccountStatements extends Component {
                                           <td style={{ backgroundColor: '#ffee93' }}>
                                             <p className="float-end">
                                               {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
                                             </p>
                                           </td>
                                         ) : (
@@ -1019,10 +1030,14 @@ class AccountStatements extends Component {
                                       ) : (
                                         (accountStatement.labhazir_share !== 0 && (accountStatement.payment_method === "Cash"  || accountStatement.payment_method === "Donation")) ? (
                                           <td style={{ backgroundColor: '#ffee93' }}>
-                                            <p className="float-end">
-                                              {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                            </p>
-                                          </td>
+    <p className="float-end">
+        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
+    </p>
+</td>
+
+                                      
+
                                         ) : (
                                           <td>
                                             <p className="float-end">

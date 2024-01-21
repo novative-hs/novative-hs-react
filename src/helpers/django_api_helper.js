@@ -1704,7 +1704,9 @@ export const getDonorAccountStatements = id =>
     formData.append("email", createBank.email);
     formData.append("registered_at", createBank.registered_at);
     formData.append("registered_by", createBank.registered_by);
-
+    formData.append("city", createBank.city);
+    formData.append("address", createBank.address);
+    formData.append("branch_no", createBank.branch_no);
   
     return axios.post(`${url.ADD_NEW_CREATE_BANK}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -1756,9 +1758,6 @@ export const getDonorAccountStatements = id =>
     formData.append("account_type", bankAccount.account_type);
     formData.append("categorey", bankAccount.categorey);
     formData.append("currency", bankAccount.currency);
-    formData.append("city", bankAccount.city);
-    formData.append("address", bankAccount.address);
-    formData.append("branch_no", bankAccount.branch_no);
     formData.append("opening_balance", bankAccount.opening_balance);
     formData.append("creating_at", bankAccount.creating_at);
     formData.append("status", bankAccount.status);  

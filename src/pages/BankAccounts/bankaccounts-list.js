@@ -60,7 +60,7 @@ class BanksList extends Component {
         : "",
       paymentStatusListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           formatter: (cellContent, bankaccount) => (
@@ -86,7 +86,14 @@ class BanksList extends Component {
           // <Link to={`/bank-account-statements/${bankaccount.id}`}>
           <> {bankaccount.account_type}</>
           // </Link>
-        ), filter: textFilter(),
+        ), filter: selectFilter({
+          options: {
+            '': 'All',
+            'LABHAZIR': 'Labhazir',
+            'DONATION': 'Donation',
+          },
+          defaultValue: 'All',
+        }),
       },
         {
           dataField: "categorey",
@@ -94,9 +101,27 @@ class BanksList extends Component {
           sort: true,
           formatter: (cellContent, bankaccount) => (
             // <Link to={`/bank-account-statements/${bankaccount.id}`}>
-            <> {bankaccount.categorey}</>
+            <> 
+              {bankaccount.categorey == "PERSONAL" ? (
+              "personal"
+
+              ) : bankaccount.categorey == "SAVING" ? (
+                "Saving"
+
+              ) : bankaccount.categorey == "CURRENT" ? (
+                "Current"
+              ) : null}
+            </>
             // </Link>
-          ), filter: textFilter(),
+          ), filter: selectFilter({
+            options: {
+              '': 'All',
+              'PERSONAL': 'Personal',
+              'SAVING': 'Saving',
+              'CURRENT': 'Current',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "currency",
@@ -106,27 +131,15 @@ class BanksList extends Component {
             // <Link to={`/bank-account-statements/${bankaccount.id}`}>
             <> {bankaccount.currency}</>
             // </Link>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "city",
-          text: "City",
-          sort: true,
-          formatter: (cellContent, bankaccount) => (
-            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
-            <> {bankaccount.city}</>
-            // </Link>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "address",
-          text: "Address",
-          sort: true,
-          formatter: (cellContent, bankaccount) => (
-            // <Link to={`/bank-account-statements/${bankaccount.id}`}>
-            <> {bankaccount.address}</>
-            // </Link>
-          ), filter: textFilter(),
+          ), filter: selectFilter({
+            options: {
+              '': 'All',
+              'RUPEESS': 'Rs',
+              'DOLLAR': 'Dollar',
+              'EURO': 'Euro',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "opening_balance",
@@ -157,6 +170,36 @@ class BanksList extends Component {
         filter: textFilter(),
         },
         {
+          dataField: "bank_city",
+          text: "Bank City",
+          sort: true,
+          formatter: (cellContent, bank) => (
+            // <Link to={`/bank-account-statements/${bank.id}`}>
+            <> {bank.bank_city}</>
+            // </Link>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "bank_address",
+          text: "Bank Address",
+          sort: true,
+          formatter: (cellContent, bank) => (
+            // <Link to={`/bank-account-statements/${bank.id}`}>
+            <> {bank.bank_address}</>
+            // </Link>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "branch_no",
+          text: "Bank Branch No",
+          sort: true,
+          formatter: (cellContent, bank) => (
+            // <Link to={`/bank-account-statements/${bank.id}`}>
+            <> {bank.branch_no}</>
+            // </Link>
+          ), filter: textFilter(),
+        },
+        {
           dataField: "status",
           text: "Status",
           sort: true,
@@ -164,7 +207,14 @@ class BanksList extends Component {
             // <Link to={`/bank-account-statements/${bankaccount.id}`}>
             <> {bankaccount.status}</>
             // </Link>
-          ), filter: textFilter(),
+          ), filter: selectFilter({
+            options: {
+              '': 'All',
+              'ACTIVE': 'Active',
+              'IN_ACTIVE': 'In Active',
+            },
+            defaultValue: 'All',
+          }),
         },
         {
           dataField: "menu",
@@ -805,6 +855,7 @@ class BanksList extends Component {
                                                     <Input
                                                       name="account_no"
                                                       type="text"
+                                                      readOnly={true}
                                                       // className="form-control"
                                                       className={
                                                         "form-control" +

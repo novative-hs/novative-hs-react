@@ -41,6 +41,8 @@ import {
     getPaymentStatuss,
     updatePaymentInBouncedStatus,
     getBankAccounts,
+    deletePaymentout,
+
 } from "store/payment-statuss/actions";
 
 import { isEmpty, size } from "lodash";
@@ -66,6 +68,8 @@ class PaymentStatussList extends Component {
         this.toggle = this.toggle.bind(this);
         this.handlePaymentStatusClicks =
             this.handlePaymentStatusClicks.bind(this);
+        this.onClickDelete = this.onClickDelete.bind(this);
+
     }
     // The code for converting "image source" (url) to "Base64"
     toDataURL = url =>
@@ -148,9 +152,25 @@ class PaymentStatussList extends Component {
 
     toggleDeleteModal = () => {
         this.setState(prevState => ({
-            deleteModal: !prevState.deleteModal,
+          deleteModal: !prevState.deleteModal,
         }));
-    };
+      };
+    
+      onClickDelete = paymentStatuss => {
+        this.setState({ paymentStatuss: paymentStatuss });
+        this.setState({ deleteModal: true });
+      };
+      handleDeletePathologist = () => {
+        const { onDeletePaymentout, onGetPaymentStatuss } = this.props;
+        const { paymentStatuss } = this.state;
+        if (paymentStatuss.id !== undefined) {
+          onDeletePaymentout(paymentStatuss);
+          setTimeout(() => {
+            onGetPaymentStatuss(this.state.user_id);
+          }, 1000);
+          this.setState({ deleteModal: false });
+        }
+      };
 
     handlePaymentStatusClick = (e, arg) => {
         this.setState({
@@ -371,10 +391,31 @@ class PaymentStatussList extends Component {
                         >
                             Update
                         </button>
+                        <button
+              type="submit"
+              className="btn btn-danger save-user"
+              onClick={() => this.onClickDelete(paymentStatus)}
+
+            >
+              Delete
+            </button>
                     </div>
                 ),
                 headerStyle: { backgroundColor: '#DCDCDC' },
             },
+            {
+                dataField: "menu",
+                isDummyField: true,
+                editable: false,
+                text: "Comments",
+                formatter: (cellContent, paymentStatus) => (
+                        <Link
+                          className="fas fa-comment font-size-18"
+                          to={`/activity-log-finance/${paymentStatus.id}`}
+                          ></Link>
+                ),
+                headerStyle: { backgroundColor: '#DCDCDC' },
+              },
         ];
         const { SearchBar } = Search;
         const isDonation = this.state.paymentStatus.payment_for === "Donor";
@@ -439,6 +480,11 @@ class PaymentStatussList extends Component {
 
         return (
             <React.Fragment>
+                <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeletePathologist}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
                 <div className="page-content">
                     <MetaTags>
                         <title>MIF List | Lab Hazir</title>
@@ -833,13 +879,15 @@ PaymentStatussList.propTypes = {
     onUpdatePaymentInBouncedStatus: PropTypes.func,
     onGetbankAccounts: PropTypes.func,
     history: PropTypes.any,
-
-
+    paymentStatuss: PropTypes.array,
+    onDeletePaymentout: PropTypes.func,
 };
 
 const mapStateToProps = ({ paymentStatuss }) => ({
     paymentStatuss: paymentStatuss.paymentStatuss,
     bankAccounts: paymentStatuss.bankAccounts,
+    paymentStatuss: paymentStatuss.paymentStatuss,
+
 
 });
 
@@ -849,6 +897,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     onGetPaymentStatuss: id => dispatch(getPaymentStatuss(id)),
     onUpdatePaymentInBouncedStatus: paymentStatus =>
         dispatch(updatePaymentInBouncedStatus(paymentStatus)),
+    onDeletePaymentout: paymentCreatedStatus => dispatch(deletePaymentout(paymentCreatedStatus)),
+
 });
 
 export default connect(

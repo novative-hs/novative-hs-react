@@ -354,6 +354,19 @@ class PaymentStatussList extends Component {
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Comments",
+        formatter: (cellContent, paymentOutStatus) => (
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/activity-log-finance/${paymentOutStatus.id}`}
+                  ></Link>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
     ];
     const { SearchBar } = Search;
 

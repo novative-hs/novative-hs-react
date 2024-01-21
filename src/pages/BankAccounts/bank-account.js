@@ -56,9 +56,6 @@ class DonorPayment extends Component {
       categorey: "",
       account_type:"",
       currency: "",
-      city: "",
-      address: "",
-      branch_no: "",
       opening_balance: "",
       creating_at: "",
       status: "",
@@ -83,9 +80,6 @@ class DonorPayment extends Component {
         categorey: this.state.categorey,
         account_type: this.state.account_type,
         currency: this.state.currency,
-        city: this.state.city,
-        address: this.state.address,
-        branch_no: this.state.branch_no,
         opening_balance: this.state.opening_balance,
         creating_at: this.state.creating_at,
         status: this.state.status,
@@ -115,9 +109,6 @@ class DonorPayment extends Component {
       categorey: "",
       account_type:"",
       currency: "",
-      city: "",
-      address: "",
-      branch_no: "",
       opening_balance: "",
       creating_at: "",
       status: "",
@@ -441,95 +432,13 @@ class DonorPayment extends Component {
                                 --- Please select the C
                                 ---
                               </option> */}
-                              <option value="RUPEESS">Rupeess</option>
-                              <option value="DOLLAR">Rollar</option>
+                              <option value="RUPEESS">Rs</option>
+                              <option value="DOLLAR">Dollar</option>
                               <option value="EURO">Euro</option>
                             </select>
                             </Col>
                           </FormGroup>
-                          <FormGroup className="mb-4" row>
-                                <Label
-                                  htmlFor="patient-name"
-                                  md="2"
-                                  className="col-form-label"
-                                >
-                                  City
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                  <Select
-                                    name="city"
-                                    component="Select"
-                                    onChange={selectedGroup =>
-                                      this.setState({
-                                        city: selectedGroup.value,
-                                      })
-                                    }
-                                    className="defautSelectParent"
-                                   options={CITIES}
-                                    placeholder="Select City..."
-                                  />
-                                </Col>
-                              </FormGroup>
-                              <FormGroup className="mb-4" row>
-                                <Label
-                                  htmlFor="address"
-                                  md="2"
-                                  className="col-form-label"
-                                >
-                                  Address
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                  <Input
-                                    type="text"
-                                    className="form-control"
-                                    name="address"
-                                    placeholder="Enter your complete address"
-                                    onChange={e =>
-                                      this.setState({
-                                        address: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Col>
-                              </FormGroup>
-                              <FormGroup className="mb-4" row>
-                                <Label md="2" className="col-form-label">
-                                Branch Code
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md={10}>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    name="branch_no"
-                                    min="0"
-                                    max="150"
-                                    placeholder="Enter your Bank Branch Code"
-                                    onChange={e =>
-                                      this.setState({
-                                        branch_no: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Col>
-                              </FormGroup>
+                          
                               <FormGroup className="mb-4" row>
                                 <Label md="2" className="col-form-label">
                                 Opening Balance
@@ -556,75 +465,7 @@ class DonorPayment extends Component {
                                   />
                                 </Col>
                               </FormGroup>
-                              <FormGroup className="mb-4" row>
-                                      <Label  htmlFor="name"
-                              md="2"
-                              className="col-form-label">
-                                        Paid at
-                                        <span
-                                          style={{ color: "#f46a6a" }}
-                                          className="font-size-18"
-                                        >
-                                          *
-                                        </span>
-                                      </Label>
-                                      <Col md="10">
-                                      <input
-                                        name="creating_at"
-                                        type="datetime-local"
-                                        min={new Date(
-                                          new Date().toString().split("GMT")[0] +
-                                          " UTC"
-                                        )
-                                          .toISOString()
-                                          .slice(0, -8)}
-                                        className="form-control"
-                                        onChange={e =>
-                                          this.setState({
-                                            creating_at:
-                                              e.target.value,
-                                          })
-                                        }
-                                      />
-                                      </Col>
-                                    </FormGroup>
-                                    <FormGroup className="mb-4" row>
-                            <Label
-                              htmlFor="name"
-                              md="2"
-                              className="col-form-label"
-                            >
-                              Status
-                              <span
-                                style={{ color: "#f46a6a" }}
-                                className="font-size-18"
-                              >
-                                *
-                              </span>
-                            </Label>
-                            <Col md="10">
-                            <select
-                              name="status"
-                              component="select"
-                              onChange={e =>
-                                this.setState({
-                                  status: e.target.value,
-                                })
-                              }
-                              defaultValue={this.state.status}
-                              className="form-select"
-                            >
-                              {/* <option
-                                value=""
-                              >
-                                --- Please select the C
-                                ---
-                              </option> */}
-                              <option value="ACTIVE">Active</option>
-                              <option value="IN_ACTIVE">In_Active</option>
-                            </select>
-                            </Col>
-                          </FormGroup>
+                                   
 
                         </div>
                         {/* </TabPane>

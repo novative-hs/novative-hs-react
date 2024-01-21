@@ -68,7 +68,7 @@ class PendingB2BClients extends Component {
           formatter: (cellContent, pendingB2BClient) => (
             <>
               <span style={{
-                width: '300px', // Set your desired width here
+                width: '170px', // Set your desired width here
                 fontSize: '14px',
               
                 textOverflow: 'ellipsis',
@@ -129,7 +129,15 @@ class PendingB2BClients extends Component {
           sort: true,
           formatter: (cellContent, pendingB2BClient) => (
             <>
-              <div className="text-end">
+              <div style={{
+                width: '300px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'right', // Align text to the left
+                display: 'block',
+              }}>
                   <strong>{pendingB2BClient.donation_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
             </>
             ),filter: textFilter(),
@@ -298,7 +306,7 @@ class PendingB2BClients extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="Labs List" />
             <Row>
-            <p><span className="text-danger">Note:</span> Only those Labs will be shown here whose total Payable Amount of All Donation Allocate and Result Uploaded Appointments are greater then 0. </p>
+            <p><span className="text-danger">Note:</span> Only those Labs will be shown here whose total Payable Amount of All Donation Allocate and Result Uploaded Appointments.</p>
               <Col lg="12">
                 <Card>
                   <CardBody>

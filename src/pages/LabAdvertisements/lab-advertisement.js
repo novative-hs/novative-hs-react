@@ -176,7 +176,7 @@ class AdvertisementsList extends Component {
           sort: true,
           formatter: (cellContent, labAdvertisement) => (
             <>
-              {labAdvertisement.payment_status == "Paid" ? (
+              {labAdvertisement.payment_status == "Cleared" ? (
                 <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
                 {labAdvertisement.payment_method},{" "}
                 {labAdvertisement.payment_status}

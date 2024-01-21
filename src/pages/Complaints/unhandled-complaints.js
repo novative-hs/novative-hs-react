@@ -49,7 +49,7 @@ class UnhandledComplaints extends Component {
       messageModal: false,
       handleModal: false,
       id: "",
-      btnText: "Copy",
+      btnText1: "Copy",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -159,15 +159,15 @@ class UnhandledComplaints extends Component {
             const isUrgent = row.is_it_urgent;
     
             // Conditionally render red or green round box
-            return isUrgent ? (
-              <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                Urgent
-              </span>
-            ) : (
-              <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-                Normal
-              </span>
-            );
+             return isUrgent ? (
+    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger" style={{ animation: 'blinking 1s infinite' }}>
+      Urgent
+    </span>
+  ) : (
+    <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
+      Normal
+    </span>
+  );
           },
         },
         // {
@@ -316,9 +316,9 @@ class UnhandledComplaints extends Component {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
-    this.state.btnText === "Copy"
-      ? this.setState({ btnText: "Copied" })
-      : this.setState({ btnText: "Copy" });
+    this.state.btnText1 === "Copy"
+      ? this.setState({ btnText1: "Copied" })
+      : this.setState({ btnText1: "Copy" });
   };
 
   // handleAPICall = () => {
@@ -384,7 +384,7 @@ class UnhandledComplaints extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>open Complaints| Lab Hazir</title>
+            <title>Open Complaints| Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -618,11 +618,11 @@ class UnhandledComplaints extends Component {
                                                             .phone
                                                         );
                                                         this.setState({
-                                                          btnText: "Copied",
+                                                          btnText1: "Copied",
                                                         });
                                                       }}
                                                     >
-                                                      {this.state.btnText}
+                                                      {this.state.btnText1}
                                                     </button>
                                                   </div>
                                                 </div>
