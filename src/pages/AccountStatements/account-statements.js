@@ -50,7 +50,7 @@ class AccountStatements extends Component {
         this.state.account_type === "labowner"
           ? this.state.user_id
           : this.props.match.params.id;
-  
+
       // Only make the API call if both start and end dates are selected
       if (this.state.startDate && this.state.endDate) {
         onGetAccountStatements(userId);
@@ -60,15 +60,15 @@ class AccountStatements extends Component {
   componentDidMount() {
     const currentMonthStart = moment().startOf('month');
     const currentMonthEnd = moment().endOf('month');
-  
+
     this.setState({
       startDate: currentMonthStart.toDate(),
       endDate: currentMonthEnd.toDate(),
     });
-  
+
     this.fetchData();
   }
-  
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.startDate !== this.state.startDate ||
@@ -77,7 +77,7 @@ class AccountStatements extends Component {
       // Fetch data based on date filters
       this.fetchData();
     }
-  
+
     if (
       this.props.accountStatements.length > 0 &&
       this.props.accountStatements !== prevProps.accountStatements
@@ -90,13 +90,13 @@ class AccountStatements extends Component {
           statementDate <= this.state.endDate
         );
       });
-  
+
       // Check if there's a previous statement
       const newPrevStatement =
         lastIndex > 0
           ? this.props.accountStatements[lastIndex - 1].statement
           : 0;
-  
+
       if (newPrevStatement !== this.state.prevStatement) {
         this.setState({
           prevStatement: newPrevStatement,
@@ -104,9 +104,9 @@ class AccountStatements extends Component {
       }
     }
   }
-  
 
-  
+
+
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -196,13 +196,13 @@ class AccountStatements extends Component {
             </Row>
             <Row>
               <div>
-                <div>
+                {/* <div>
                   <strong className="text-primary">Credit:</strong> Amount that Lab has to pay LabHazir. <br></br>
                   <strong className="text-primary">Debit: </strong>  Amount that Lab will receive from LabHazir.
-                </div>
+                </div> */}
                 <div> <span className="font-size-12">
                   <strong className="text-danger ">
-                    Note:</strong> If Balance is positive value that means LabHazir will pay the same amount to Lab and if Balance is negative that means LabHazir will receive the same amount from Lab.
+                    Note:</strong> If Balance is positive value that means Lab will pay the same amount to LabHazir and if Balance is negative that means Lab will receive the same amount from LabHazir.
 
                 </span>
                 </div>
@@ -248,9 +248,9 @@ class AccountStatements extends Component {
                             <th style={thStyle} scope="col">Payment Received By</th>
                             <th style={thStyle} scope="col">Margin of Lab</th>
                             <th style={thStyle} scope="col">Referrel Fee of LabHazir</th>
-                            {/* <th scope="col">Payment Received By LabHazir</th> */}
-                            {/* <th style={thStyle} scope="col">Credit</th>
-                              <th style={thStyle} scope="col">Debit</th> */}
+                            {/* <th scope="col">Payment Received By LabHazir</th>
+                            <th style={thStyle} scope="col">Credit</th>
+                            <th style={thStyle} scope="col">Debit</th> */}
                             <th style={thStyle} scope="col">Balance</th>
                             {/* <th scope="col">Is Settled</th> */}
                           </tr>
@@ -448,12 +448,12 @@ class AccountStatements extends Component {
                                           <span>
                                             {accountStatement.tax_amount != 0 ? (
                                               <p className="float-end">
-                                                {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}tax
+                                                {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}tax
                                                 <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
                                               </p>
                                             ) : (
                                               <p className="float-end">
-                                                {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                                 <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
 
                                               </p>
@@ -498,26 +498,9 @@ class AccountStatements extends Component {
                                           null
                                         )}
                                       </p>
-                                    </td> */}
-                                    {/* <td style={{ backgroundColor: '#ffc09f' }}>
-                                      <p>
-                                        {accountStatement.payment_method == "Cash" ? (
-                                          <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                        {accountStatement.payment_method == "Donation" ? (
-                                          <span>
-                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                          </span>
-                                        ) : (
-                                          null
-                                        )}
-                                      </p>
-                                    </td> */}
-                                    {/* <td style={{ backgroundColor: '#ffee93' }}>
+                                    </td>
+
+                                    <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
@@ -545,6 +528,24 @@ class AccountStatements extends Component {
                                             ) : (
                                               null
                                             )}                                        </p>
+                                        )}
+                                      </p>
+                                    </td>
+                                    <td style={{ backgroundColor: '#ffc09f' }}>
+                                      <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                        {accountStatement.payment_method == "Donation" ? (
+                                          <span>
+                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
                                         )}
                                       </p>
                                     </td> */}
@@ -697,14 +698,14 @@ class AccountStatements extends Component {
                                           <span>
                                             {accountStatement.tax_amount !== 0 ? (
                                               <p className="float-end">
-                                                {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tax
-                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+                                                {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tax
+                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
 
                                               </p>
                                             ) : (
                                               <p className="float-end">
-                                                {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+                                                {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
 
                                               </p>
                                             )}
@@ -712,20 +713,20 @@ class AccountStatements extends Component {
                                         ) : (
                                           accountStatement.payment_method === "Donation" ? (
                                             <span>
-                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
                                             accountStatement.payment_method === "Cheque" ? (
                                               <span>
                                                 {accountStatement.tax_amount !== 0 ? (
                                                   <p className="float-end">
-                                                    {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tax
-                                                    <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+                                                    {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} - {accountStatement.tax_amount.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} tax
+                                                    <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
                                                   </p>
                                                 ) : (
                                                   <p className="float-end">
-                                                    {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                                    <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+                                                    {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                                    <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
 
                                                   </p>
                                                 )}
@@ -753,7 +754,7 @@ class AccountStatements extends Component {
 
 
 
-                                    {/* <td style={{ backgroundColor: '#ffc09f' }}>
+                                    {/* <td>
                                       <p>
                                         {accountStatement.payment_method == "Cash" ? (
                                           <span>
@@ -763,26 +764,37 @@ class AccountStatements extends Component {
                                           null
                                         )}
                                       </p>
-                                    </td> */}
-                                    {/* <td style={{ backgroundColor: '#ffee93' }}>
+                                    </td>
+                                    <td style={{ backgroundColor: '#ffc09f' }}>
+                                      <p>
+                                        {accountStatement.payment_method == "Cash" ? (
+                                          <span>
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          </span>
+                                        ) : (
+                                          null
+                                        )}
+                                      </p>
+                                    </td>
+                                    <td style={{ backgroundColor: '#ffee93' }}>
                                       <p>
                                         {accountStatement.payment_method == "Card" ? (
                                           <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
                                         )}
                                         {accountStatement.payment_method == "Donation" ? (
                                           <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
                                         )}
                                         {accountStatement.payment_method == "Cheque" ? (
                                           <span>
-                                            {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                            {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                           </span>
                                         ) : (
                                           null
@@ -1003,7 +1015,7 @@ class AccountStatements extends Component {
                                           <td style={{ backgroundColor: '#ffee93' }}>
                                             <p className="float-end">
                                               {accountStatement.after_counterdiscount_lab_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                                              <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+                                              <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
                                             </p>
                                           </td>
                                         ) : (
@@ -1028,15 +1040,15 @@ class AccountStatements extends Component {
                                           </p>
                                         </td>
                                       ) : (
-                                        (accountStatement.labhazir_share !== 0 && (accountStatement.payment_method === "Cash"  || accountStatement.payment_method === "Donation")) ? (
+                                        (accountStatement.labhazir_share !== 0 && (accountStatement.payment_method === "Cash" || accountStatement.payment_method === "Donation")) ? (
                                           <td style={{ backgroundColor: '#ffee93' }}>
-    <p className="float-end">
-        {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-        <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>-</span>
-    </p>
-</td>
+                                            <p className="float-end">
+                                              {accountStatement.labhazir_share.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              <span style={{ verticalAlign: 'super', fontSize: 'small', fontWeight: 'bold', color: 'red', position: 'relative', top: '-0.3em' }}>+</span>
+                                            </p>
+                                          </td>
 
-                                      
+
 
                                         ) : (
                                           <td>
@@ -1059,14 +1071,14 @@ class AccountStatements extends Component {
                                           ) : (
                                             null
                                           )}
-                                          
+
                                         </p>
-                                      </td> */}
-                                      {/* <td style={{ backgroundColor: '#ffc09f' }}>
+                                      </td>
+                                      <td style={{ backgroundColor: '#ffc09f' }}>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
-                                              {accountStatement.Receivable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                              {accountStatement.payable.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
                                             null
@@ -1079,8 +1091,8 @@ class AccountStatements extends Component {
                                             null
                                           )}
                                         </p>
-                                      </td> */}
-                                      {/* <td style={{ backgroundColor: '#ffee93' }}>
+                                      </td>
+                                      <td style={{ backgroundColor: '#ffee93' }}>
                                         <p>
                                           {accountStatement.payment_method == "Card" ? (
                                             <span>
@@ -1317,10 +1329,10 @@ class AccountStatements extends Component {
                                               {accountStatement.dues.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                             </span>
                                           ) : (
-                                            null
+                                            null)}
                                         </p>
-                                      </td> */}
-                                      {/* <td style={{ backgroundColor: '#ffc09f' }}>
+                                      </td>
+                                      <td style={{ backgroundColor: '#ffc09f' }}>
                                         <p>
                                           {accountStatement.payment_method == "Cash" ? (
                                             <span>
@@ -1330,8 +1342,8 @@ class AccountStatements extends Component {
                                             null
                                           )}
                                         </p>
-                                      </td> */}
-                                      {/* <td style={{ backgroundColor: '#ffee93' }}>
+                                      </td>
+                                      <td style={{ backgroundColor: '#ffee93' }}>
                                         <p>
                                           {accountStatement.payment_method == "Card" ? (
                                             <span>
@@ -1345,7 +1357,13 @@ class AccountStatements extends Component {
                                       </td> */}
                                       <td style={{ backgroundColor: '#adf7b6' }}>
                                         <p className="float-end">
-                                          {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {accountStatement.statement.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                            //  ? (
+                                            //   "--"
+                                            // ) : (
+                                            //   "--"
+                                            // )
+                                          }
                                         </p>
                                       </td>
                                       {/* <td>
@@ -1432,7 +1450,7 @@ class AccountStatements extends Component {
                                   }
                                 </p>
                               </td>
-                              
+
                               {/* <td className="border-10">
                                 <p className="float-end">
                                   {

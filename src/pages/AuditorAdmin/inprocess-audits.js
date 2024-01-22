@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import moment from 'moment';
 import {
   Card,
   CardBody,
@@ -107,7 +108,7 @@ class InProcessAudits extends Component {
           formatter: (cellContent, audit) => (
             <>
               <span>
-                {new Date(audit.generated_at).toLocaleString("en-US")}
+              {moment(audit.generated_at).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),filter: textFilter(),
