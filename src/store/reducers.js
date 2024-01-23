@@ -45,6 +45,10 @@ import offeredTests from "./offered-tests/reducer";
 import pathologists from "./pathologists/reducer";
 import activitylog from "./activtylog/reducer";
 import sampleNotification from "./samplenotification/reducer";
+import marketerNotification from "./marketernotification/reducer";
+import csrAdminNotification from "./csradminnotification/reducer";
+import regAdminNotification from "./regadminnotification/reducer";
+import csrOfficerNotification from "./csrofficernotification/reducer";
 import activitylogfinance from "./activtylogfinance/reducer";
 import activitylogmarketer from "./activtylogmarketer/reducer";
 
@@ -214,10 +218,12 @@ const rootReducer = combineReducers({
   B2bProfile,
   b2baccountStatements,
   bankaccountStatements,
+  regAdminNotification,
   StaffProfile,
   labsListPendingFee,
   SampleCollectorProfile,
   sampleCollectorDatas,
+  csrOfficerNotification,
   LabSettings,
   Payments,
   sharedPercentagePendingFeeTests,
@@ -239,6 +245,8 @@ const rootReducer = combineReducers({
   offeredTests,
   pathologists,
   sampleNotification,
+  marketerNotification,
+  csrAdminNotification,
   activitylog,
   activitylogfinance,
   activitylogmarketer,

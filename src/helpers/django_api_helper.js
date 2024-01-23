@@ -670,6 +670,47 @@ export const getSampleNotification = (id,previousApiCallTime) => {
       headers: getHeader(authHeader()),
     });
   };
+
+
+export const getMarketerNotification = (id,previousApiCallTime) => {
+  let formData = new FormData();
+  formData.append("previousApiCallTime", previousApiCallTime);
+  formData.append("id", id);
+ console.log("data",previousApiCallTime )
+  return axios.post(`${url.GET_MARKETER_NOTIFICATION}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const getCsrAdminNotification = (id,previousApiCallTime) => {
+  let formData = new FormData();
+  formData.append("previousApiCallTime", previousApiCallTime);
+  formData.append("id", id);
+ console.log("data",previousApiCallTime )
+  return axios.post(`${url.GET_CSR_ADMIN_NOTIFICATION}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const getRegAdminNotification = (id,previousApiCallTime) => {
+  let formData = new FormData();
+  formData.append("previousApiCallTime", previousApiCallTime);
+  formData.append("id", id);
+ console.log("data",previousApiCallTime )
+  return axios.post(`${url.GET_REG_ADMIN_NOTIFICATION}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const getCsrOfficerNotification = (id,previousApiCallTime) => {
+  let formData = new FormData();
+  formData.append("previousApiCallTime", previousApiCallTime);
+  formData.append("id", id);
+ console.log("data",previousApiCallTime )
+  return axios.post(`${url.GET_CSR_OFFICER_NOTIFICATION}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 // ------------- Finanace START Activity Log-------------
 
 export const getActivityLogFinance = id =>
@@ -1704,9 +1745,7 @@ export const getDonorAccountStatements = id =>
     formData.append("email", createBank.email);
     formData.append("registered_at", createBank.registered_at);
     formData.append("registered_by", createBank.registered_by);
-    formData.append("city", createBank.city);
-    formData.append("address", createBank.address);
-    formData.append("branch_no", createBank.branch_no);
+
   
     return axios.post(`${url.ADD_NEW_CREATE_BANK}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -1761,6 +1800,9 @@ export const getDonorAccountStatements = id =>
     formData.append("opening_balance", bankAccount.opening_balance);
     formData.append("creating_at", bankAccount.creating_at);
     formData.append("status", bankAccount.status);  
+    formData.append("city", bankAccount.city);
+    formData.append("address", bankAccount.address);
+    formData.append("branch_no", bankAccount.branch_no);
   
     return axios.post(`${url.ADD_NEW_BANK_ACCOUNT}/${id}`, formData, {
       headers: getHeader(authHeader()),

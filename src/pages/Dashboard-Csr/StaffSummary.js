@@ -32,19 +32,16 @@ class StaffSummary extends Component {
 
   componentDidMount() {
     this.props.getStaffProfile(this.state.user_id);
+  }
 
-    setTimeout(() => {
+  componentDidUpdate(prevProps) {
+    if (this.props.success !== prevProps.success) {
       this.setState({
-        name: this.props.success.name,
-        email: this.props.success.email,
-        // address: this.props.success.address,
-        // logo: process.env.REACT_APP_BACKENDURL + this.props.success.logo,
-        // completedAppointments: this.props.success.completed_appointments,
-        // inProcessAppointments: this.props.success.inprocess_appointments,
-        // monthlyRevenue: this.props.success.monthly_revenue,
-        // annualRevenue: this.props.success.annual_revenue,
+        name: this.props.success?.name || "",
+        email: this.props.success?.email || "",
+        // other properties
       });
-    }, 1500);
+    }
   }
 
   render() {

@@ -36,6 +36,10 @@ import activitylogSaga from "./activtylog/saga";
 import activitylogfinanceSaga from "./activtylogfinance/saga";
 import activitylogmarketerSaga from "./activtylogmarketer/saga";
 import sampleNotificationSaga from "./samplenotification/saga";
+import marketerNotificationSaga from "./marketernotification/saga";
+import csrAdminNotificationSaga from "./csradminnotification/saga";
+import regAdminNotificationSaga from "./regadminnotification/saga";
+import csrOfficerNotificationSaga from "./csrofficernotification/saga";
 import bankaccountsSaga from "./bankaccounts/saga";
 import cartsSaga from "./carts/saga";
 import quotesSaga from "./quotes/saga";
@@ -146,6 +150,8 @@ export default function* rootSaga() {
     fork(activitylogfinanceSaga),
     fork(activitylogmarketerSaga),
     fork(sampleNotificationSaga),
+    fork(marketerNotificationSaga),
+    fork(csrAdminNotificationSaga),
     fork(cartsSaga),
     fork(quotesSaga),
     fork(bankTransferSaga),
@@ -165,6 +171,7 @@ export default function* rootSaga() {
     // fork(TerritoriesSaga),
     fork(TerritoriesListSaga),
     fork(onlyMedicalTestListSaga),
+    fork(csrOfficerNotificationSaga),
     fork(csrTerritoryListSaga),
     fork(auditorTerritoryListSaga),
     fork(discountLabSaga),
@@ -176,6 +183,7 @@ export default function* rootSaga() {
     fork(notesSaga),
     fork(PatientsSaga),
     fork(donorPaymentSaga),
+    fork(regAdminNotificationSaga),
     fork(DonorSettingsSaga),
     fork(paymentStatussSaga),
     fork(B2bAccountStatementsSaga),

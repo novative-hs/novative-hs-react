@@ -20,7 +20,10 @@ import { withTranslation } from "react-i18next";
 import { toggleRightSidebar } from "../../store/actions";
 import NotificationDropdown from "components/CommonForBoth/TopbarDropdown/NotificationDropdown";
 import SampleNotificationDropdown from "components/CommonForBoth/TopbarDropdown/SampleNotificationDropdown";
-
+import MarketerNotificationDropdown from "components/CommonForBoth/TopbarDropdown/MarketerNotificationDropdown";
+import CsrAdminNotificationDropdown from "components/CommonForBoth/TopbarDropdown/CsrAdminNotificationDropdown";
+import CsrOfficerNotificationDropdown from "components/CommonForBoth/TopbarDropdown/CsrOfficerNotificationDropdown";
+import RegAdminNotificationDropdown from "components/CommonForBoth/TopbarDropdown/RegAdminNotificationDropdown";
 import Tooltip from "@material-ui/core/Tooltip";
 
 class Header extends Component {
@@ -116,6 +119,26 @@ class Header extends Component {
               {this.state.account_type && this.state.account_type == "samplecollector" &&  (
                 <Tooltip title="Notifications">
               <SampleNotificationDropdown />
+              </Tooltip>
+              )}
+               {this.state.account_type && this.state.account_type == "marketer-admin" &&  (
+                <Tooltip title="Notifications">
+              <MarketerNotificationDropdown />
+              </Tooltip>
+              )}
+               {this.state.account_type && this.state.account_type == "csr-admin" &&  (
+                <Tooltip title="Notifications">
+              <CsrAdminNotificationDropdown />
+              </Tooltip>
+              )}
+              {this.state.account_type && this.state.account_type == "CSR" &&  (
+                <Tooltip title="Notifications">
+              <CsrOfficerNotificationDropdown />
+              </Tooltip>
+              )}
+               {this.state.account_type && this.state.account_type == "registration-admin" &&  (
+                <Tooltip title="Notifications">
+              <RegAdminNotificationDropdown />
               </Tooltip>
               )}
               <ProfileMenu />

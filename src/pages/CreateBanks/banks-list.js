@@ -98,36 +98,36 @@ class BanksList extends Component {
             </>
           ),filter: textFilter(),
         },
-        {
-          dataField: "city",
-          text: "Bank City",
-          sort: true,
-          formatter: (cellContent, bank) => (
-            // <Link to={`/bank-account-statements/${bank.id}`}>
-            <> {bank.city}</>
-            // </Link>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "address",
-          text: "Bank Address",
-          sort: true,
-          formatter: (cellContent, bank) => (
-            // <Link to={`/bank-account-statements/${bank.id}`}>
-            <> {bank.address}</>
-            // </Link>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "branch_no",
-          text: "Branch No",
-          sort: true,
-          formatter: (cellContent, bank) => (
-            // <Link to={`/bank-account-statements/${bank.id}`}>
-            <> {bank.branch_no}</>
-            // </Link>
-          ), filter: textFilter(),
-        },
+        // {
+        //   dataField: "city",
+        //   text: "Bank City",
+        //   sort: true,
+        //   formatter: (cellContent, bank) => (
+        //     // <Link to={`/bank-account-statements/${bank.id}`}>
+        //     <> {bank.city}</>
+        //     // </Link>
+        //   ), filter: textFilter(),
+        // },
+        // {
+        //   dataField: "address",
+        //   text: "Bank Address",
+        //   sort: true,
+        //   formatter: (cellContent, bank) => (
+        //     // <Link to={`/bank-account-statements/${bank.id}`}>
+        //     <> {bank.address}</>
+        //     // </Link>
+        //   ), filter: textFilter(),
+        // },
+        // {
+        //   dataField: "branch_no",
+        //   text: "Branch No",
+        //   sort: true,
+        //   formatter: (cellContent, bank) => (
+        //     // <Link to={`/bank-account-statements/${bank.id}`}>
+        //     <> {bank.branch_no}</>
+        //     // </Link>
+        //   ), filter: textFilter(),
+        // },
         {
           dataField: "registered_by",
           text: "Registered By",

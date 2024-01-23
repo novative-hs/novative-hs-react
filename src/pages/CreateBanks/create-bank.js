@@ -49,9 +49,6 @@ class DonorPayment extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       name: "",
-      city: "",
-      address: "",
-      branch_no: "",
       phone: "",
       email: "",
       registered_at: "",
@@ -77,9 +74,6 @@ class DonorPayment extends Component {
         email: this.state.email,
         registered_at: this.state.registered_at,
         registered_by: this.state.registered_by,
-        city: this.state.city,
-        address: this.state.address,
-        branch_no: this.state.branch_no,
       },
     });
 
@@ -106,9 +100,6 @@ class DonorPayment extends Component {
             email: "",
             registered_at: "",
             registered_by: "",
-            city: "",
-            address: "",
-            branch_no: "",
           });
         }, 5000);
         setTimeout(() => {
@@ -270,89 +261,7 @@ class DonorPayment extends Component {
                               />
                             </Col>
                           </FormGroup>
-                          <FormGroup className="mb-4" row>
-                                <Label
-                                  htmlFor="patient-name"
-                                  md="2"
-                                  className="col-form-label"
-                                >
-                                  Bank City
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                  <Select
-                                    name="city"
-                                    component="Select"
-                                    onChange={selectedGroup =>
-                                      this.setState({
-                                        city: selectedGroup.value,
-                                      })
-                                    }
-                                    className="defautSelectParent"
-                                   options={CITIES}
-                                    placeholder="Select City..."
-                                  />
-                                </Col>
-                              </FormGroup>
-                              <FormGroup className="mb-4" row>
-                                <Label
-                                  htmlFor="address"
-                                  md="2"
-                                  className="col-form-label"
-                                >
-                                  Bank Address
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md="10">
-                                  <Input
-                                    type="text"
-                                    className="form-control"
-                                    name="address"
-                                    placeholder="Enter your complete address"
-                                    onChange={e =>
-                                      this.setState({
-                                        address: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Col>
-                              </FormGroup>
-                              <FormGroup className="mb-4" row>
-                                <Label md="2" className="col-form-label">
-                                Branch Code
-                                  <span
-                                    style={{ color: "#f46a6a" }}
-                                    className="font-size-18"
-                                  >
-                                    *
-                                  </span>
-                                </Label>
-                                <Col md={10}>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    name="branch_no"
-                                    min="0"
-                                    max="150"
-                                    placeholder="Enter your Bank Branch Code"
-                                    onChange={e =>
-                                      this.setState({
-                                        branch_no: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </Col>
-                              </FormGroup>
+                         
                           <FormGroup className="mb-4" row>
                             <Label
                               htmlFor="registered_by"
