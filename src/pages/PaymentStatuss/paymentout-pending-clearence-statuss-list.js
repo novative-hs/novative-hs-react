@@ -288,7 +288,7 @@ class PaymentStatussList extends Component {
         formatter: (cellContent, paymentOutStatus) => (
           <>
           <div className="text-end">
-            <strong>{paymentOutStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+            <strong>{Math.abs(paymentOutStatus.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
           </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },

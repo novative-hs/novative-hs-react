@@ -151,12 +151,12 @@ class MsgsList extends Component {
                                     activitylogfinance.donor_name ||
                                     activitylogfinance.b2b_name}
                               </b>{" "}
-                              on{" "}
-                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
-                              {" "}
+                              {/* on{" "}
+                              {moment(activitylogfinance.payment_at).format("DD MMM YYYY, h:mm A")}
+                              {" "} */}
                               at{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
-                              with id{" "}
+                              with ID{" "}
                               <b>
                                 {activitylogfinance.payment_in_id ||
                                   activitylogfinance.payment_out_id ||
@@ -168,11 +168,12 @@ class MsgsList extends Component {
                            {activitylogfinance.actions === "Added" && activitylogfinance.type === "Bank Transfer Detail" && (
                             <div>
                               <b>{`${activitylogfinance.name}`}</b> Created a {" "}
-                              <b>{activitylogfinance.type}</b> form on{" "}
-                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
+                              <b>{activitylogfinance.type}</b> 
+                              {/* form on{" "}
+                              {moment(activitylogfinance.payment_at).format("DD MMM YYYY, h:mm A")}{" "} */}
                               at{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
-                              with id{" "}
+                              with ID{" "}
                               <b>
                                 {activitylogfinance.btd_id}
                               </b>
@@ -199,8 +200,9 @@ class MsgsList extends Component {
                                     activitylogfinance.b2b_name}
                               </b>{" "}
                               from <b>{activitylogfinance.old_value}</b> to{" "}
-                              <b>{activitylogfinance.new_value}</b> on{" "}
-                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
+                              <b>{activitylogfinance.new_value}</b> 
+                              {/* on{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "} */}
                               at{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
 
@@ -213,8 +215,9 @@ class MsgsList extends Component {
                               <b>{activitylogfinance.type}</b> with ID{" "}
                               <b>{activitylogfinance.btd_id}</b>{" "}
                               from <b>{activitylogfinance.old_value}</b> to{" "}
-                              <b>{activitylogfinance.new_value}</b> on{" "}
-                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "}
+                              <b>{activitylogfinance.new_value}</b>
+                               {/* on{" "}
+                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "} */}
                               at{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
                               .

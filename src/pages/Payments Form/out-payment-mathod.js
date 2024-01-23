@@ -319,17 +319,19 @@ class OutPaymentsForm extends Component {
       },
     ];
     const labList = [];
+
     for (let i = 0; i < labsMof.length; i++) {
-      if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].current_amount < 0)) {
+      if (labsMof[i].office === this.props.staffProfiles.territory_office && labsMof[i].current_amount < 0) {
+        const formattedAmount = Math.abs(labsMof[i].current_amount); // Use Math.abs to get the absolute (positive) value
         labList.push({
-         label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Total Payable Amount: ${labsMof[i].current_amount})`,
+          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Total Payable Amount: ${formattedAmount})`,
           label1: `${labsMof[i].name}`,
           value: labsMof[i].id,
           data: { dues: labsMof[i].current_amount }, // Include the 'dues' property in the data field
-
         });
       }
     }
+    
     const donationlabList = [];
     for (let i = 0; i < labsMof.length; i++) {
       if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
@@ -932,15 +934,16 @@ class OutPaymentsForm extends Component {
     required={true}
     placeholder="Enter Amount"
     name="amount"
-    value={this.state.amount}
+    value={Math.abs(this.state.amount)} // Use Math.abs to get the absolute (positive) value
     onChange={e => this.handleAmountChange(e)}
   />
   {this.state.amountExceedsLimit && (
     <span style={{ color: "#f46a6a", fontSize: "14px" }}>
-    Warning: The entered amount cannot exceed the Lab Payable Amount.
+      Warning: The entered amount cannot exceed the Lab Payable Amount.
     </span>
   )}
 </FormGroup>
+
 
 <FormGroup className="mb-0">
   <Label htmlFor="cardnumberInput" className="fw-bolder">

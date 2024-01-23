@@ -337,7 +337,7 @@ class PathologistsList extends Component {
         formatter: (cellContent, paymentCreatedStatus) => (
           <>
             <div className="text-end">
-                <strong>{paymentCreatedStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+                <strong>{Math.abs(paymentCreatedStatus).amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
           </>
           ),filter: textFilter(),
           headerStyle: { backgroundColor: '#DCDCDC' },

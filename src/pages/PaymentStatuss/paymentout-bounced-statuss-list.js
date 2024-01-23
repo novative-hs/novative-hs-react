@@ -357,7 +357,7 @@ class paymentCreatedList extends Component {
         sort: true,
         formatter: (cellContent, paymentBouncedStatus) => (
           <>
-            <strong>{paymentBouncedStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+            <strong>{Math.abs(paymentBouncedStatus.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
           </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
