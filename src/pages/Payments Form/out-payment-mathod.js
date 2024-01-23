@@ -320,7 +320,7 @@ class OutPaymentsForm extends Component {
     ];
     const labList = [];
     for (let i = 0; i < labsMof.length; i++) {
-      if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].current_amount > 0)) {
+      if ((labsMof[i].office === this.props.staffProfiles.territory_office) && (labsMof[i].current_amount < 0)) {
         labList.push({
          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city} - (Total Payable Amount: ${labsMof[i].current_amount})`,
           label1: `${labsMof[i].name}`,
