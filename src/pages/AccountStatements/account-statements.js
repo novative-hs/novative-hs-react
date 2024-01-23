@@ -146,9 +146,9 @@ class AccountStatements extends Component {
     };
 
     // Sort statements based on ordered_at in ascending order
-    filteredStatements.sort((a, b) => {
-      return moment(a.ordered_at) - moment(b.ordered_at);
-    });
+    // filteredStatements.sort((a, b) => {
+    //   return moment(a.ordered_at) - moment(b.ordered_at);
+    // });
     const thStyle = {
       border: '1px solid white',
       textAlign: 'center',
