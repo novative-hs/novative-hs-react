@@ -210,9 +210,9 @@ class LabsLists extends Component {
     const { labsList } = this.props;
     // Filter data based on selected type
     const filteredStatements = labsList.filter((lab) => {
-      if (searchType === 'payable' && lab.current_amount < 0) {
+      if (searchType === 'payable' && lab.current_amount > 0) {
         return true;
-      } else if (searchType === 'receivable' && lab.current_amount > 0) {
+      } else if (searchType === 'receivable' && lab.current_amount < 0) {
         return true;
       } else if (!searchType) {
         // For other cases or when no filter is selected, include all labs
