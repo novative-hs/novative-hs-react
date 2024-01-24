@@ -531,7 +531,7 @@ class PaymentStatussList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Quality Certificate"
+                                          ? "UpdateQuality Certificate"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>

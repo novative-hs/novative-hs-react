@@ -54,6 +54,7 @@ class PaymentStatussList extends Component {
       bankTransfers: [],
       bankTransfer: "",
       modal: false,
+      selectedLab: null,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -97,7 +98,22 @@ class PaymentStatussList extends Component {
     onGetBankTransfer(this.state.user_id);
     this.setState({ bankTransfers });
   }
-
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { bankTransfers } = this.props;
+  
+    if (bankTransfers.length > 0 && bankTransfers !== prevProps.bankTransfers) {
+      const { selectedLab } = this.state;
+  
+      const filteredStatements = bankTransfers.filter((statement) => {
+        const labFilter = !selectedLab || statement.transfer_type === selectedLab;
+        return labFilter;
+      });
+  
+      this.setState({ bankTransfers: filteredStatements, isEdit: false });
+    }
+  }
+  
+  // eslint-disable-next-line no-unused-vars
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -113,16 +129,7 @@ class PaymentStatussList extends Component {
     this.toggle();
   };
 
-  // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { bankTransfers } = this.props;
-    if (
-      !isEmpty(bankTransfers) &&
-      size(prevProps.bankTransfers) !== size(bankTransfers)
-    ) {
-      this.setState({ bankTransfers: {}, isEdit: false });
-    }
-  }
+
 
   onPaginationPageChange = page => {
     if (
@@ -283,6 +290,8 @@ class PaymentStatussList extends Component {
         sort: true,
         formatter: (cellContent, bankTransfer) => (
           <>
+            {bankTransfer.transfer_type != "Withdraw" ? (
+
             <strong>
             <Link
               to={{
@@ -297,6 +306,11 @@ class PaymentStatussList extends Component {
               </span>
           </Link>
           </strong>
+            ) : (
+              <span>
+              {"---"}
+            </span>
+            )}
           </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
@@ -312,6 +326,20 @@ class PaymentStatussList extends Component {
                 {bankTransfer.from_bank_name},{" "}
                 {bankTransfer.from_account_no}
                </span>
+            ) : bankTransfer.transfer_type == "Withdraw" ? (
+              <Link
+              to={{
+                pathname:
+                  process.env.REACT_APP_BACKENDURL + bankTransfer.deposit_copy,
+              }}
+              target="_blank"
+            >
+              <strong>
+                {bankTransfer.from_bank_name},{" "}
+                {bankTransfer.from_account_no}
+              </strong>
+          </Link>
+             
             ) : (
               <span>
                 {"---"}
@@ -451,6 +479,20 @@ class PaymentStatussList extends Component {
     const { bankTransfers } = this.props;
 
     const { isEdit, deleteModal } = this.state;
+    const uniqueLabNames = [...new Set(this.props.bankTransfers.map(bankTransfers => bankTransfers.transfer_type))];
+
+    // Generate labOptions for the <select> dropdown
+    const labOptions = uniqueLabNames.map((labName, index) => (
+      <option key={index} value={labName}>
+        {labName}
+      </option>
+    ));
+
+    const filteredStatements = bankTransfers.filter((statement) => {
+      const labFilter = !this.state.selectedLab || statement.transfer_type === this.state.selectedLab;
+      return labFilter;
+    });
+    
 
     const {
       onUpdateBankTransfer,
@@ -491,6 +533,20 @@ class PaymentStatussList extends Component {
               <Col lg="12">
                 <Card>
                   <CardBody>
+                    <Row>
+                    <Col lg="3">
+  <div className="mb-3">
+    <label className="form-label">Select Lab</label>
+    <select
+      value={this.state.selectedLab}
+      onChange={(e) => this.setState({ selectedLab: e.target.value })}
+      className="form-control"
+    >
+      <option value="">All Transfer Types</option>
+      {labOptions}
+    </select>
+  </div>
+</Col>        </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -501,12 +557,12 @@ class PaymentStatussList extends Component {
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.bankTransferListColumns}
-                          data={bankTransfers}
+                          data={filteredStatements}
                           search
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
+                              {/* <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
@@ -517,7 +573,7 @@ class PaymentStatussList extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                              </Row>
+                              </Row> */}
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -545,7 +601,7 @@ class PaymentStatussList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit MOF"
+                                          ? "UpdateMOF"
                                           : "Add Quality Certificate"}
                                       </ModalHeader>
                                       <ModalBody>

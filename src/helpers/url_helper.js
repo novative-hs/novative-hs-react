@@ -411,7 +411,7 @@ export const GET_LABS_RATING = `${API_ENDPOINT}/api/registration-admin/labs-rati
 
 
 export const GET_CLEARED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/cleared-in-payments`;
-export const GET_APPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/approved-in-payments`;
+export const GET_APPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/cleared-out-payments`;
 export const GET_UNAPPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/unapproved-in-payments`;
 export const UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT = `${API_ENDPOINT}/api/finance-admin/approve-unapprove-in-payment`;
 

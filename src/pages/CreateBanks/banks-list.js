@@ -72,7 +72,7 @@ class BanksList extends Component {
           sort: true,
           formatter: (cellContent, bank) => (
             <>
-<span className="text-start">
+<span className="float-start">
 {bank.name}
 </span>
             </>

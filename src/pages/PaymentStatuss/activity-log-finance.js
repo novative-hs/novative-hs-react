@@ -203,6 +203,7 @@ class MsgsList extends Component {
                               <b>{activitylogfinance.new_value}</b> 
                               {/* on{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "} */}
+                              {" "}
                               at{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
 
@@ -216,8 +217,8 @@ class MsgsList extends Component {
                               <b>{activitylogfinance.btd_id}</b>{" "}
                               from <b>{activitylogfinance.old_value}</b> to{" "}
                               <b>{activitylogfinance.new_value}</b>
-                               {/* on{" "}
-                              {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "} */}
+                              {" "}
+                              {/* {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}{" "} */}
                               at{" "}
                               {moment(activitylogfinance.created_at).format("DD MMM YYYY, h:mm A")}
                               .

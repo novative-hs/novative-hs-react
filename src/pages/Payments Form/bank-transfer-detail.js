@@ -533,7 +533,7 @@ class BankTransfersForm extends Component {
                             />
                           </FormGroup>
 
-                          {this.state.transfer_type == "Interbank Transfer" ? (
+                          {this.state.transfer_type == "Interbank Transfer"  || this.state.transfer_type == "Withdraw" ? (
                                bankTransfer.from_bankaccount_id &&
                                 bankTransfer.from_bankaccount_id ? (
                                 <div className="mb-3">
@@ -689,7 +689,7 @@ class BankTransfersForm extends Component {
                               )
                           ) : null}
                           
-                          {this.state.transfer_type == "Deposit" || this.state.transfer_type == "Withdraw" ? (
+                          {this.state.transfer_type == "Deposit" ? (
                                bankTransfer.bankaccount_id &&
                                 bankTransfer.bankaccount_id ? (
                                 <div className="mb-3">

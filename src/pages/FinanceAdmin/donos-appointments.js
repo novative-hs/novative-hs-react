@@ -46,6 +46,8 @@ class LabsLists extends Component {
       id: "",
       LabsLists: "",
       btnText: "Copy",
+      selectedLab: null,
+      labsData: [], // Default value is an empty array
       labsList: "",
       startDate: null,
       endDate: null,
@@ -299,6 +301,7 @@ class LabsLists extends Component {
     });
 
     this.fetchData();
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -314,12 +317,13 @@ class LabsLists extends Component {
       this.props.labsList.length > 0 &&
       this.props.labsList !== prevProps.labsList
     ) {
-      // Find the index of the last statement that falls within the date range
       const lastIndex = this.props.labsList.findIndex((statement) => {
         const statementDate = new Date(statement.booked_at);
+        const labFilter = !this.state.selectedLab || statement.lab_name === this.state.selectedLab;
         return (
           statementDate >= this.state.startDate &&
-          statementDate <= this.state.endDate
+          statementDate <= this.state.endDate &&
+          labFilter
         );
       });
 
@@ -391,17 +395,28 @@ class LabsLists extends Component {
 
   render() {
     const { SearchBar } = Search;
-    const { startDate, endDate } = this.state;
+    const { startDate, endDate, labsData } = this.state;
     const { labsList } = this.props;
-    const data = this.state.data;
-    const { onGetDonorsA } = this.props;
+  
+    const uniqueLabNames = [...new Set(this.props.labsList.map(labsList => labsList.lab_name))];
+
+    // Generate labOptions for the <select> dropdown
+    const labOptions = uniqueLabNames.map((labName, index) => (
+      <option key={index} value={labName}>
+        {labName}
+      </option>
+    ));
+  
     const filteredStatements = labsList.filter((statement) => {
       const orderedAt = moment(statement.booked_at);
+      const labFilter = !this.state.selectedLab || statement.lab_name === this.state.selectedLab;
       return (
+        labFilter &&
         (!startDate || orderedAt.isSameOrAfter(startDate)) &&
         (!endDate || orderedAt.isSameOrBefore(endDate))
       );
     });
+    
      // Sort statements based on booked_at in ascending order
      filteredStatements.sort((a, b) => {
       return moment(a.booked_at) - moment(b.booked_at);
@@ -460,6 +475,20 @@ class LabsLists extends Component {
                 </div>
 
               </Col>
+             <Col lg="3">
+  <div className="mb-3">
+    <label className="form-label">Select Lab</label>
+    <select
+      value={this.state.selectedLab}
+      onChange={(e) => this.setState({ selectedLab: e.target.value })}
+      className="form-control"
+    >
+      <option value="">All Labs</option>
+      {labOptions}
+    </select>
+  </div>
+</Col>
+
             </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}

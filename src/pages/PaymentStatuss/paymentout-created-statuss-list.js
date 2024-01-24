@@ -337,9 +337,14 @@ class PathologistsList extends Component {
         formatter: (cellContent, paymentCreatedStatus) => (
           <>
             <div className="text-end">
-                <strong>{Math.abs(paymentCreatedStatus).amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>
+              {paymentCreatedStatus && typeof paymentCreatedStatus.amount !== 'undefined' ? (
+                <strong>{Math.abs(paymentCreatedStatus.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+              ) : (
+                <span>N/A</span> // or any default value you want to display when amount is undefined
+              )}
+            </div>
           </>
-          ),filter: textFilter(),
+        ),filter: textFilter(),
           headerStyle: { backgroundColor: '#DCDCDC' },
           style: { backgroundColor: '	#F0F0F0' },
       },
@@ -552,7 +557,7 @@ class PathologistsList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit MOF"
+                                          ? "UpdateMOF"
                                           : "Add Pathologist"}
                                       </ModalHeader>
                                       <ModalBody>

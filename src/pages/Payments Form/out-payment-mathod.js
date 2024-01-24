@@ -273,21 +273,32 @@ class OutPaymentsForm extends Component {
     }));
   };
   handleAmountChange = e => {
-    const enteredAmount = e.target.value;
+    const enteredAmount = parseFloat(e.target.value);
   
-    if (parseFloat(enteredAmount) <= this.state.selectedAmount || enteredAmount === "") {
-      // If the entered amount is within the limit or is empty, update the state
-      this.setState({
-        amount: enteredAmount,
-        amountExceedsLimit: false,
-      });
+    if (!isNaN(enteredAmount)) {
+      const absoluteSelectedAmount = Math.abs(this.state.selectedAmount);
+  
+      if (enteredAmount <= absoluteSelectedAmount && enteredAmount >= -absoluteSelectedAmount) {
+        // If the entered amount is within the limit, update the state with the absolute value
+        this.setState({
+          amount: Math.abs(enteredAmount),
+          amountExceedsLimit: false,
+        });
+      } else {
+        // If the entered amount exceeds the limit, display a warning
+        this.setState({
+          amountExceedsLimit: true,
+        });
+      }
     } else {
-      // If the entered amount exceeds the limit, display a warning
+      // If the entered amount is not a valid number, reset the state
       this.setState({
-        amountExceedsLimit: true,
+        amount: '',
+        amountExceedsLimit: false,
       });
     }
   };
+  
   
 
   render() {
@@ -934,7 +945,7 @@ class OutPaymentsForm extends Component {
     required={true}
     placeholder="Enter Amount"
     name="amount"
-    value={Math.abs(this.state.amount)} // Use Math.abs to get the absolute (positive) value
+    value={Math.abs(this.state.amount)} // Display the absolute (positive) value
     onChange={e => this.handleAmountChange(e)}
   />
   {this.state.amountExceedsLimit && (

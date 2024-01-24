@@ -62,31 +62,66 @@ class AccountStatements extends Component {
   }
 
   componentWillUnmount() {
-    // Clear the interval when the component is unmounted to prevent memory leaks
     clearInterval(this.interval);
+  }  
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.startDate !== this.state.startDate ||
+      prevState.endDate !== this.state.endDate
+    ) {
+      // Fetch data based on date filters
+      this.getData();
+    }
+
+    if (
+      this.props.bankStatements.length > 0 &&
+      this.props.bankStatements !== prevProps.bankStatements
+    ) {
+      // Find the index of the last statement that falls within the date range
+      const lastIndex = this.props.bankStatements.findIndex((statement) => {
+        const statementDate = new Date(statement.clearence_datetime);
+        return (
+          statementDate >= this.state.startDate &&
+          statementDate <= this.state.endDate
+        );
+      });
+
+      // Check if there's a previous statement
+      const newPrevStatement =
+        lastIndex > 0
+          ? this.props.bankStatements[lastIndex - 1].account_balance
+          : 0;
+
+      if (newPrevStatement !== this.state.prevStatement) {
+        this.setState({
+          prevStatement: newPrevStatement,
+        });
+      }
+    }
   }
 
   getData = async () => {
     const { onGetBankStatements, match } = this.props;
-
+  
     // Fetch bank statements
     await onGetBankStatements(match.params.id);
     const { bankStatements } = this.props;
     const { startDate, endDate, bankaccount_id } = this.state;
-
+  
     // Apply date range and bank account filters
     const filteredStatements = bankStatements.filter((statement) => {
       const statementDate = moment(statement.clearence_datetime);
-      const isDateInRange = (
+      const isDateInRange =
         (!startDate || statementDate.isSameOrAfter(startDate)) &&
-        (!endDate || statementDate.isSameOrBefore(endDate))
-      );
-
+        (!endDate || statementDate.isSameOrBefore(endDate));
+  
       const isBankAccountMatch = (!bankaccount_id || statement.bankaccount_id === bankaccount_id);
-
+  
       return isDateInRange && isBankAccountMatch;
     });
 
+    // Update the filteredBankStatements state
     this.setState({ filteredBankStatements: filteredStatements });
   };
 
@@ -98,33 +133,21 @@ class AccountStatements extends Component {
 
   render() {
     // Calculate the total balance for the footer
-    const { bankStatements } = this.props; // Use the prop directly
+    const { bankStatements } = this.props;
+    const { prevStatement } = this.state;
 
     const totalCredit = bankStatements.reduce((acc, statement) => acc + (statement.credit || 0), 0);
     const totalDebit = bankStatements.reduce((acc, statement) => acc + (statement.Debit || 0), 0);
-    // const totalBalance = bankStatements.length > 0
-    // ? bankStatements[bankStatements.length - 1].account_balance
-    // : 0;
-    console.log("Bank Statements:", bankStatements);
     const totalBalance = bankStatements.length > 0
       ? bankStatements[bankStatements.length - 1].account_balance
       : 0;
-    console.log("Total Balance:", totalBalance);
 
-  
     const { SearchBar } = Search;
     const bankStatement = this.state.bankStatement;
-    // const footer = {
-    //   totalDebit: bankStatements[0].total_Debit, // Replace with the actual data from your backend
-    // };console.log("totaldebit is ", this.props.bankStatements.total_Debit)
-
-    const {
-      onGetBankaccounts,
-    } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: bankStatements.length, // Use the actual data length
+      totalSize: bankStatements.length,
       custom: true,
     };
 
@@ -134,6 +157,7 @@ class AccountStatements extends Component {
         order: "desc",
       },
     ];
+
     const { filteredBankStatements, startDate, endDate, bankaccount_id } = this.state;
 
 
@@ -239,7 +263,7 @@ class AccountStatements extends Component {
       {
         dataField: 'Debit',
         text: 'Debit',
-        footer: `Total Debit: ${(totalDebit.Debit || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+        footer: `Total Debit: ${(totalDebit || "--").toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
         footerClasses: 'text-end', // Set the color of the footer to red
         formatter: (cellContent, bankStatement) => (
           <div className="text-end">
@@ -360,7 +384,16 @@ class AccountStatements extends Component {
                 </div>
               </Col>
                     </Row>
-
+                    <div className="text-end">
+                      <p>
+                        Previous Balance:{" "}
+                        <span className="text-danger">
+  {prevStatement !== null && prevStatement !== undefined
+    ? prevStatement.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    : "N/A"}
+</span>
+                      </p>
+                    </div>
                     <div className="table-responsive">
                       {/* Add filter and footer to BootstrapTable */}
                       <ToolkitProvider

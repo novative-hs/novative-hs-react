@@ -39,6 +39,10 @@ import DeleteModal from "components/Common/DeleteModal";
 import {
   getApprovedInPayments,
 } from "store/finance-admin/actions";
+import {
+  deletePaymentout,
+
+} from "store/payment-statuss/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -58,6 +62,7 @@ class PaymentStatussList extends Component {
 
     };
     this.toggle = this.toggle.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -65,6 +70,27 @@ class PaymentStatussList extends Component {
     onGetApprovedInPayments(this.state.user_id);
     this.setState({ approvedInPayments });
   }
+  toggleDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  };
+
+  onClickDelete = approvedInPayments => {
+    this.setState({ approvedInPayments: approvedInPayments });
+    this.setState({ deleteModal: true });
+  };
+  handleDeletePathologist = () => {
+    const { onDeletePaymentout, onGetApprovedInPayments } = this.props;
+    const { approvedInPayments } = this.state;
+    if (approvedInPayments.id !== undefined) {
+      onDeletePaymentout(approvedInPayments);
+      setTimeout(() => {
+        onGetApprovedInPayments(this.state.user_id);
+      }, 1000);
+      this.setState({ deleteModal: false });
+    }
+  };
 
   toggle() {
     this.setState(prevState => ({
@@ -106,14 +132,11 @@ class PaymentStatussList extends Component {
     const selectedValue = event.target.value;
 
     // Perform navigation based on the selected value
-    if (selectedValue === 'Approved') {
+    if (selectedValue === 'Payment Out Cleared') {
         this.props.history.push('/approved-in-payments');
     }
-    if (selectedValue === 'Cleared') {
+    if (selectedValue === 'Payment In Cleared') {
     this.props.history.push('/cleared-in-payments');
-    }
-    if (selectedValue === 'Unapproved') {
-    this.props.history.push('/unapproved-in-payments');
     }
 }
   render() {
@@ -130,7 +153,7 @@ class PaymentStatussList extends Component {
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
-        text: "MIF ID",
+        text: "MOF ID",
         dataField: "id",
         sort: true,
         hidden: false,
@@ -150,15 +173,29 @@ class PaymentStatussList extends Component {
           </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
+       
+      },
+      {
+        dataField: "payment_method",
+        text: "Payment Method",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>
+            <strong>{paymentStatus.payment_method}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
         dataField: "payment_for",
-        text: "Payment From",
+        text: "Payment To",
         sort: true,
         formatter: (cellContent, paymentStatus) => (
-          <>{paymentStatus.payment_for}</>
-      ),filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
+          <>
+            <strong>{paymentStatus.payment_for}</strong>
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
         dataField: "lab_name",
@@ -179,47 +216,46 @@ class PaymentStatussList extends Component {
       headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
-        dataField: "payment_method",
-        text: "Payment Method",
-        sort: true,
-        formatter: (cellContent, paymentStatus) => (
-          <>{paymentStatus.payment_method}</>
-      ),filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "cheque_no",
-        text: "Cheque/Ref#",
-        sort: true,
-        formatter: (cellContent, paymentStatus) => (
-            <>
-                {paymentStatus.cheque_no && (
-                    <span className="badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-                        {paymentStatus.cheque_no}
-                    </span>
-                )}
-
-                {paymentStatus.cheque_no && (
-                    <span className="badge rounded-pill badge-soft-primary font-size-12 badge-soft-info">
-                        {paymentStatus.refered_no}
-                    </span>
-                )}
-            </>
-        ),filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-    },
-    
-      {
         dataField: "amount",
         text: "Amount",
         sort: true,
         formatter: (cellContent, paymentStatus) => (
-          <>              <div className="text-end">
-          {paymentStatus.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div></>
-      ),filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
-      style: { backgroundColor: '	#F0F0F0' },
+          <>
+        <div className="text-end">
+                <strong>{Math.abs(paymentStatus.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong></div>            </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
       },
+      {
+        dataField: "cheque_no",
+        text: "Cheque/Online Ref#",
+        sort: true,
+        formatter: (cellContent, paymentStatus) => (
+          <>
+            <span>
+              <Link
+                to={{
+                  pathname:
+                    process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_copy,
+                }}
+                target="_blank"
+              >
+                              <strong>{paymentStatus.cheque_no}</strong>
+
+              </Link>
+
+            </span>
+
+          </>
+        ),filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+      },
+      // {
+      //   dataField: "deposited_at",
+      //   text: "Deposited Date",
+      //   sort: true,
+      // },
       
       {
         dataField: "bank",
@@ -228,47 +264,32 @@ class PaymentStatussList extends Component {
         formatter: (cellContent, paymentStatus) => (
           <>
             <span>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + paymentStatus.deposit_slip,
-                }}
-                target="_blank"
-              >
-                <span>
-                  {paymentStatus.bank_name},{" "}
-                  {paymentStatus.account_no}
-                </span>
-              </Link>
-
+              <span>
+                {paymentStatus.bank_name},{" "}
+                {paymentStatus.account_no}
+              </span>
             </span>
-
           </>
-        ),
-        filter: textFilter(),
+        ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
-      
+     
       // {
       //   dataField: "is_settled",
       //   text: "Is Settled",
       //   sort: true,
       // },
-      {
-        dataField: "verified_by",
-        text: "Deposited By",
-        sort: true,
-        formatter: (cellContent, paymentStatus) => (
-          <>{paymentStatus.verified_by}</>
-      ),filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
-      },
+      // {
+      //   dataField: "verified_by",
+      //   text: "Verified By",
+      //   sort: true,
+      // },
       {
         dataField: "cleared_at",
         text: "Cleared Date",
         sort: true,
-        formatter: (cellContent, paymentStatus) => {
-          const date = new Date(paymentStatus.cleared_at);
+        formatter: (cellContent, approvedInPayment) => {
+          const date = new Date(approvedInPayment.cleared_at);
           const day = date.getDate();
           const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
           const month = monthNames[date.getMonth()];
@@ -284,63 +305,62 @@ class PaymentStatussList extends Component {
       headerStyle: { backgroundColor: '#DCDCDC' },
       style: { backgroundColor: '	#F0F0F0' },
       },
+      // {
+      //   dataField: "deposit_slip",
+      //   text: "Slip",
+      //   sort: true,
+      //   formatter: (cellContent, approvedInPayment) => (
+      //     <>
+      //       <Link
+      //         to={{
+      //           pathname:
+      //             process.env.REACT_APP_BACKENDURL +
+      //             approvedInPayment.deposit_slip,
+      //         }}
+      //         target="_blank"
+      //       >
+      //         View Slip
+      //       </Link>
+      //     </>
+      //   ),
+      // },
+      // {
+      //   dataField: "status",
+      //   text: "Status",
+      //   sort: true,
+      // },
+      {
+        dataField: "menu",
+        isDummyField: true,
+        editable: false,
+        text: "Action",
+        formatter: (cellContent, approvedInPayment) => (
+            <div className="d-flex gap-3">
+                <button
+      type="submit"
+      className="btn btn-danger save-user"
+      onClick={() => this.onClickDelete(approvedInPayment)}
+
+    >
+      Delete
+    </button>
+            </div>
+        ),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+    },
       {
         dataField: "menu",
         isDummyField: true,
         editable: false,
         text: "Comments",
-        formatter: (cellContent, paymentStatus) => (
+        formatter: (cellContent, approvedInPayment) => (
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/activity-log-financeadmin/${paymentStatus.id}`}
+                  to={`/activity-log-finance/${approvedInPayment.id}`}
                   ></Link>
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
-    //   {
-    //   dataField: "deposit_slip",
-    //   text: "Deposit Slip",
-    //   sort: true,
-    //   formatter: (cellContent, approvedInPayment) => (
-    //     <>
-    //       <Link
-    //         to={{
-    //           pathname:
-    //             process.env.REACT_APP_BACKENDURL +
-    //             approvedInPayment.deposit_slip,
-    //         }}
-    //         target="_blank"
-    //       >
-    //         View Slip
-    //       </Link>
-    //     </>
-    //   ),
-    // },
-      // {
-      //   dataField: "payment_status",
-      //   text: "Status",
-      //   sort: true,
-      // },
-      // {
-      //   dataField: "menu",
-      //   isDummyField: true,
-      //   editable: false,
-      //   text: "Action",
-      //   formatter: (cellContent, paymentStatus) => (
-      //     <div className="d-flex gap-3">
-      //       <Link className="text-success" to="#">
-      //         <i
-      //           className="mdi mdi-pencil font-size-18"
-      //           id="edittooltip"
-      //           onClick={e =>
-      //             this.handlePaymentStatusClick(e, paymentStatus)
-      //           }
-      //         ></i>
-      //       </Link>
-            
-      //     </div>
-      //   ),
-      // },
     ];
     const { approvedInPayments } = this.props;
 
@@ -366,6 +386,11 @@ class PaymentStatussList extends Component {
 
     return (
       <React.Fragment>
+         <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeletePathologist}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
         <div className="page-content">
           <MetaTags>
             <title>Payments In with Approvel Status | Lab Hazir</title>
@@ -409,9 +434,8 @@ class PaymentStatussList extends Component {
                                         onChange={this.handleSelectChange}
                                         
                                       >
-                                        <option value="Approved">Approved</option>
-                                        <option value="Cleared">Cleared</option>
-                                        <option value="Unapproved">Unapproved</option>
+                                        <option value="Payment Out Cleared">Payment Out Cleared</option>
+                                        <option value="Payment In Cleared">Payment In Cleared</option>
                                       </select>
                                     </div></div>
                                 </Col>
@@ -465,6 +489,7 @@ PaymentStatussList.propTypes = {
   className: PropTypes.any,
   onGetApprovedInPayments: PropTypes.func,
   history: PropTypes.any,
+  onDeletePaymentout: PropTypes.func,
 
 };
 
@@ -474,6 +499,7 @@ const mapStateToProps = ({ financeAdmin }) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetApprovedInPayments: id => dispatch(getApprovedInPayments(id)),
+  onDeletePaymentout: paymentCreatedStatus => dispatch(deletePaymentout(paymentCreatedStatus)),
 
 });
 

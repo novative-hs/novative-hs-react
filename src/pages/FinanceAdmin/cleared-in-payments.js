@@ -29,10 +29,16 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 //Import Breadcrumb
 import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
+import DeleteModal from "components/Common/DeleteModal";
 import {
   getClearedInPayments,
   updateApproveUnapproveInPayment,
+
 } from "store/finance-admin/actions";
+import {
+  deletePaymentout,
+
+} from "store/payment-statuss/actions";
 
 import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import "assets/scss/table.scss";
@@ -48,6 +54,7 @@ class PendingB2BClients extends Component {
       unapprovedModal: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       clearedInPayment: "",
+      deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -56,7 +63,7 @@ class PendingB2BClients extends Component {
     this.handlePaymentStatusClick =
     this.handlePaymentStatusClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    // this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -100,16 +107,36 @@ class PendingB2BClients extends Component {
     const selectedValue = event.target.value;
 
     // Perform navigation based on the selected value
-    if (selectedValue === 'Approved') {
+    if (selectedValue === 'Payment Out Cleared') {
         this.props.history.push('/approved-in-payments');
     }
-    if (selectedValue === 'Cleared') {
+    if (selectedValue === 'Payment In Cleared') {
     this.props.history.push('/cleared-in-payments');
     }
-    if (selectedValue === 'Unapproved') {
-    this.props.history.push('/unapproved-in-payments');
-    }
 }
+    /* Insert,Update Delete data */
+
+    toggleDeleteModal = () => {
+      this.setState(prevState => ({
+        deleteModal: !prevState.deleteModal,
+      }));
+    };
+  
+    onClickDelete = clearedInPayments => {
+      this.setState({ clearedInPayments: clearedInPayments });
+      this.setState({ deleteModal: true });
+    };
+    handleDeletePathologist = () => {
+      const { onDeletePaymentout, onGetClearedInPayments } = this.props;
+      const { clearedInPayments } = this.state;
+      if (clearedInPayments.id !== undefined) {
+        onDeletePaymentout(clearedInPayments);
+        setTimeout(() => {
+          onGetClearedInPayments(this.state.user_id);
+        }, 1000);
+        this.setState({ deleteModal: false });
+      }
+    };
 
   render() {
     const columns= [
@@ -329,23 +356,19 @@ class PendingB2BClients extends Component {
         editable: false,
         text: "Action",
         formatter: (cellContent, clearedInPayment) => (
-          <div>
-            <Tooltip title="Update">
-            <Link className="text-success" to="#">
-              <i
-                className="mdi mdi-pencil font-size-18"
-                id="edittooltip"
-                onClick={e =>
-                  this.handlePaymentStatusClick(e, clearedInPayment)
-                }
-              ></i>
-            </Link>
-            </Tooltip>
-            
-          </div>
+            <div className="d-flex gap-3">
+                <button
+      type="submit"
+      className="btn btn-danger save-user"
+      onClick={() => this.onClickDelete(clearedInPayment)}
+
+    >
+      Delete
+    </button>
+            </div>
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
-      },
+    },
       {
         dataField: "menu",
         isDummyField: true,
@@ -388,6 +411,11 @@ class PendingB2BClients extends Component {
 
     return (
       <React.Fragment>
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeletePathologist}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
         <div className="page-content">
           <MetaTags>
             <title>Cleared In Payments | Lab Hazir</title>
@@ -429,9 +457,8 @@ class PendingB2BClients extends Component {
                                         onChange={this.handleSelectChange}
                                         
                                       >
-                                        <option value="Cleared">Cleared</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Unapproved">Unapproved</option>
+                                        <option value="Payment In Cleared">Payment In Cleared</option>
+                                        <option value="Payment Out Cleared">Payment Out Cleared</option>
                                       </select>
                                     </div></div>
                                 </Col>
@@ -636,6 +663,8 @@ PendingB2BClients.propTypes = {
   onGetClearedInPayments: PropTypes.func,
   onUpdateApproveUnapproveInPayment: PropTypes.func,
   history: PropTypes.any,
+  onDeletePaymentout: PropTypes.func,
+
 
 };
 const mapStateToProps = ({ financeAdmin }) => ({
@@ -646,6 +675,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onUpdateApproveUnapproveInPayment: data =>
     dispatch(updateApproveUnapproveInPayment(data)),
   onGetClearedInPayments: id => dispatch(getClearedInPayments(id)),
+  onDeletePaymentout: paymentCreatedStatus => dispatch(deletePaymentout(paymentCreatedStatus)),
+
 });
 
 export default connect(

@@ -129,7 +129,18 @@ class BanksList extends Component {
           sort: true,
           formatter: (cellContent, bankaccount) => (
             // <Link to={`/bank-account-statements/${bankaccount.id}`}>
-            <> {bankaccount.currency}</>
+            <> 
+            {/* {bankaccount.currency} */}
+            {bankaccount.currency == "RUPEESS" ? (
+              "Rs"
+
+              ) : bankaccount.currency == "DOLLAR" ? (
+                "Dollar"
+
+              ) : bankaccount.currency == "EURO" ? (
+                "Euro"
+              ) : null}
+            </>
             // </Link>
           ), filter: selectFilter({
             options: {
@@ -170,22 +181,22 @@ class BanksList extends Component {
         filter: textFilter(),
         },
         {
-          dataField: "bank_city",
+          dataField: "city",
           text: "Bank City",
           sort: true,
           formatter: (cellContent, bank) => (
             // <Link to={`/bank-account-statements/${bank.id}`}>
-            <> {bank.bank_city}</>
+            <> {bank.city}</>
             // </Link>
           ), filter: textFilter(),
         },
         {
-          dataField: "bank_address",
+          dataField: "address",
           text: "Bank Address",
           sort: true,
           formatter: (cellContent, bank) => (
             // <Link to={`/bank-account-statements/${bank.id}`}>
-            <> {bank.bank_address}</>
+            <> {bank.address}</>
             // </Link>
           ), filter: textFilter(),
         },
