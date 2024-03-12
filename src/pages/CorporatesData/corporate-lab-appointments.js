@@ -111,6 +111,8 @@ class AccountStatements extends Component {
                             <tr>
                               <th scope="col">Lab Name</th>
                               <th scope="col">Order ID</th>
+                              <th scope="col">Employee ID</th>
+                              <th scope="col">Employee Name</th>
                               <th scope="col">Payment Status/ Method</th>
                               <th scope="col">Invoice Value</th>
                               <th scope="col">Corporate Pay to Lab</th>
@@ -157,6 +159,8 @@ class AccountStatements extends Component {
                             <tr>
                               <th scope="col">Lab Name</th>
                               <th scope="col">Order ID</th>
+                              <th scope="col">Employee ID</th>
+                              <th scope="col">Employee Name</th>
                               <th scope="col">Payment Status/ Method</th>
                               <th scope="col">Invoice Value</th>
                               <th scope="col">Corporate Pay to Lab</th>
@@ -184,6 +188,16 @@ class AccountStatements extends Component {
                                   <td>
                                     <h5 className="font-size-14 text-truncate">
                                       <strong>{b2baccountStatement.order_id}</strong>
+                                    </h5>
+                                  </td>
+                                  <td>
+                                    <h5 className="font-size-14 text-truncate">
+                                      <span>{b2baccountStatement.employee_id}</span>
+                                    </h5>
+                                  </td>
+                                  <td>
+                                    <h5 className="font-size-14 text-truncate">
+                                      <span>{b2baccountStatement.employee_name}</span>
                                     </h5>
                                   </td>
                                   <td>
@@ -295,7 +309,7 @@ class AccountStatements extends Component {
                               <td className="border-10"></td>
                             </tr> */}
                             <tr className="bg-success bg-soft">
-        <td colSpan="3" className="border-0 text-end">
+        <td colSpan="5" className="border-0 text-end">
           <strong>Total</strong>
         </td>
         <td className="border-10">

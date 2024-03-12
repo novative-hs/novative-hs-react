@@ -122,6 +122,18 @@ class OfferedTestsList extends Component {
           ), filter: textFilter(),
         },
         {
+          dataField: "lab_city",
+          text: "City",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span className="font-size-14 text-truncate float-start">
+                {offeredTest.lab_city}
+              </span>
+            </>
+          ), filter: textFilter(),
+        },
+        {
           dataField: "lab_address",
           text: "Address",
           sort: true,

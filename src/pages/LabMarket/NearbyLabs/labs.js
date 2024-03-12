@@ -79,6 +79,7 @@ function formatTime(timeString) {
   return formattedTime;
 }
 
+
 class NearbyLabs extends Component {
   constructor(props) {
     super(props);
@@ -135,6 +136,17 @@ class NearbyLabs extends Component {
   }
 
   componentDidMount() {
+    // Load nearbyLabs data from local storage when the component mounts
+    const nearbyLabsData = localStorage.getItem('nearbyLabs');
+    if (nearbyLabsData) {
+      this.setState({ nearbyLabs: JSON.parse(nearbyLabsData) });
+    }
+
+    // Add event listener to save nearbyLabs data to local storage before the window unloads
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('nearbyLabs', JSON.stringify(this.state.nearbyLabs));
+    });
+
     const { onGetPatientProfile } = this.props;
 
     // Assuming onGetPatientProfile is synchronous
@@ -296,7 +308,7 @@ class NearbyLabs extends Component {
               }, 500);
             }
           }
-          if ((this.state.user_id) && this.props.patientProfile.corporate_id !== "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate === true) {
+          if ((this.state.user_id) && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.is_assosiatewith_anycorporate) {
             const nearbyLabsLocationDetails = {
               latitude,
               longitude,
@@ -318,7 +330,7 @@ class NearbyLabs extends Component {
               }, 500);
             }
           }
-          if ((this.state.user_id) && this.props.patientProfile.corporate_id === "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate === false) {
+          if ((this.state.user_id) && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) {
             const nearbyLabsLocationDetails = {
               latitude,
               longitude,
@@ -444,6 +456,13 @@ class NearbyLabs extends Component {
     setTimeout(() => {
       this.setState({ loading: false });
     }, 7000); // Set loading state to false after 7 seconds
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener before the component unmounts
+    window.removeEventListener('beforeunload', () => {
+      localStorage.setItem('nearbyLabs', JSON.stringify(this.state.nearbyLabs));
+    });
   }
   
   handleLocationUpdate(latitude, longitude) {
