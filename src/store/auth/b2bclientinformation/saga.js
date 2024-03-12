@@ -1,7 +1,7 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 
 //Account Redux states
-import { ADD_B2BCLIENT_INFORMATION, GET_TERRITORIES_LIST} from "./actionTypes";
+import { ADD_B2BCLIENT_INFORMATION, GET_TERRITORIES_LIST,} from "./actionTypes";
 import {
   getTerritoriesListSuccess,
   getTerritoriesListFail,
@@ -21,6 +21,7 @@ function* fetchTerritoriesList(object) {
     yield put(getTerritoriesListFail(error));
   }
 }
+
 // Is user register successfull then direct plot user in redux.
 function* addB2bClientInformation({ payload: { b2bClient, id } }) {
   try {

@@ -8,10 +8,13 @@ import Select from "react-select";
 
 import CarouselPage from "../AuthenticationInner/CarouselPage";
 import { Redirect, Link } from "react-router-dom";
+import axios from 'axios';
+
 
 // action
 import {
   getTerritoriesList,
+  getCorporatesList,
   addPatientInformation,
   addPatientInformationFailed,
 } from "../../store/actions";
@@ -25,6 +28,11 @@ class PatientInformation extends Component {
     this.state = {
       name: "",
       phone: "",
+      is_assosiatewith_anycorporate: "No",
+      corporate_id: null, // Updated to initialize as null
+      employee_id_card: "",
+      employee_code: [], // Add this line
+      employee_id_cardError: "",
       email: "",
       city_id: "",
       guest_id: "",
@@ -34,7 +42,9 @@ class PatientInformation extends Component {
       user_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
+      employeeData: [], // New state property for employee data
     };
+    console.log("empluyee data in state", this.state.employee_code)
   }
 
   componentDidMount() {
@@ -44,9 +54,79 @@ class PatientInformation extends Component {
     console.log("user type", this.state.user_type)
     this.props.addPatientInformationFailed("");
     this.props.getTerritoriesList();
+    this.props.getCorporatesList();
     console.log("user id", this.state.user_id)
+    // Fetch and set employee codes here
+    this.fetchEmployeeCodes();
   }
+  // fetchEmployeeCodes = async () => {
+  //   try {
+  //     const response = await axios.get(`http://127.0.0.1:8000/api/corporate/employees-list`);
+  //     const employeeData = response.data.data;
+  
+  //     if (employeeData && employeeData.length > 0) {
+  //       const employeeCodes = employeeData.map((item) => item.employee_code);
+  //       console.log("Employee Code Match:", employeeCodes, employeeData);
+  
+  //       // Update the state with the fetched employee_codes and employeeData
+  //       this.setState({
+  //         employee_id_card: "", // Reset employee_id_card when corporate changes
+  //         employee_code: employeeCodes,
+  //         employeeData: employeeData, // Add this line to set employeeData
+  //         corporate_id: employeeData.corporate_id,
+  //       });
+  //     } else {
+  //       console.error("No employee data found for the given corporate ID");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching employee_code:", error);
+  //   }
+  // };  
+  fetchEmployeeCodes = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/corporate/employees-list`
+      );
+      const employeeData = response.data.data;
 
+      if (employeeData && employeeData.length > 0) {
+        const employeeCodes = employeeData.map((item) => item.employee_code);
+        console.log("Employee Code Match:", employeeCodes, employeeData);
+
+        // Update the state with the fetched employee_codes and employeeData
+        this.setState({
+          employee_id_card: "",
+          employee_code: employeeCodes,
+          employeeData: employeeData,
+        });
+      } else {
+        console.error("No employee data found for the given corporate ID");
+      }
+    } catch (error) {
+      console.error("Error fetching employee_code:", error);
+    }
+  };
+
+  validateEmployeeCode = enteredEmployeeIdCard => {
+    const { employeeData } = this.state;
+
+    const matchedEmployee = employeeData.find(
+      item => item.employee_code === enteredEmployeeIdCard
+    );
+
+    if (!matchedEmployee) {
+      this.setState({
+        employee_id_cardError:
+          "This ID Card Number does not exist with any Corporation. Please enter your correct ID Card Number.",
+        corporate_id: null, // Reset corporate_id when there is no match
+      });
+    } else {
+      this.setState({
+        employee_id_cardError: "",
+        corporate_id: matchedEmployee.corporate_id,
+      });
+    }
+  };
   render() {
 
     // list of city from territories
@@ -55,6 +135,14 @@ class PatientInformation extends Component {
       cityList.push({
         label: this.props.territoriesList[i].city,
         value: this.props.territoriesList[i].id,
+      });
+    }
+
+    const corporatesList = [];
+    for (let i = 0; i < this.props.corporatesList.length; i++) {
+      corporatesList.push({
+        label: this.props.corporatesList[i].name,
+        value: this.props.corporatesList[i].id,
       });
     }
     // Redirect to register page if getting access directly from url
@@ -112,11 +200,25 @@ class PatientInformation extends Component {
                             initialValues={{
                               name: (this.state && this.state.name) || "",
                               phone: (this.state && this.state.phone) || "",
+                              is_assosiatewith_anycorporate: (this.state && this.state.is_assosiatewith_anycorporate) || "No",
+                              corporate_id: (this.state && this.state.corporate_id) || "",
+                              employee_id_card: (this.state && this.state.employee_id_card) || "",
                               email: (this.state && this.state.email) || "",
                               city_id: (this.state && this.state.city_id) || "",
 
                             }}
                             validationSchema={Yup.object().shape({
+                              employee_id_card: Yup.string().when("is_assosiatewith_anycorporate", {
+                                is: "Yes",
+                                then: Yup.string()
+                                  .trim()
+                                  .required("Please enter your ID Card Number")
+                                  .test(
+                                    "is-valid-employee-id",
+                                    "This ID Card Number does not exist in the selected Corporation. Please enter your correct ID Card Number.",
+                                    (value) => this.state.employee_code.includes(value)
+                                  ),
+                              }),
                               name: Yup.string()
                                 .trim()
                                 .required("Please enter your name")
@@ -276,6 +378,7 @@ class PatientInformation extends Component {
                                   <Select
                                     name="city_id"
                                     component="Select"
+                                    placeholder="Please Select your City...."
                                     onChange={selectedGroup =>
                                       this.setState({
                                         city_id: selectedGroup.value,
@@ -315,6 +418,88 @@ class PatientInformation extends Component {
                                   />
                                 </div>
 
+                                 {/* corporates field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="is_assosiatewith_anycorporate"
+                                    className="form-label"
+                                  >
+                                    Are you associated with any corporation?
+                                  </Label>
+                                  <Field
+                                    name="is_assosiatewith_anycorporate"
+                                    component="select"
+                                    onChange={e =>
+                                      this.setState({
+                                        is_assosiatewith_anycorporate:
+                                          e.target.value,
+                                      })
+                                    }
+                                    value={
+                                      this.state.is_assosiatewith_anycorporate
+                                    }
+
+                                    className="form-select"
+                                  >
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                  </Field>
+                                </div>
+                                {this.state.is_assosiatewith_anycorporate == "Yes" ? (
+                                   <div>   
+                                                            
+<div className="mb-3">
+  <Label for="employee_id_card" className="form-label">
+    ID Card.
+  </Label>
+  <Field
+    id="employee_id_card"
+    name="employee_id_card"
+    type="text"
+    placeholder="Please enter your ID Card Number..."
+    onChange={e => {
+      this.setState({ employee_id_card: e.target.value });
+      this.validateEmployeeCode(e.target.value);
+    }}
+    value={this.state.employee_id_card}
+    className={
+      "form-control" +
+      (this.state.employee_id_cardError ? " is-invalid" : "")
+    }
+  />
+  <ErrorMessage
+    name="employee_id_card"
+    component="div"
+    className="invalid-feedback"
+  />
+  {this.state.employee_id_cardError && (
+    <div className="text-danger">{this.state.employee_id_cardError}</div>
+  )}
+</div>
+<div className="mb-3">
+          <Label for="corporate_id" className="form-label" hidden={true}>
+            Corporate ID
+          </Label>
+          <Field
+            id="corporate_id"
+            name="corporate_id"
+            hidden={true}
+            type="text"
+            onChange={e => this.setState({ corporate_id: e.target.value })}
+            value={this.state.corporate_id || ""}
+            className={
+              "form-control" +
+              (errors.corporate_id && touched.corporate_id ? " is-invalid" : "")
+            }
+          />
+          <ErrorMessage
+            name="corporate_id"
+            component="div"
+            className="invalid-feedback"
+          />
+        </div>
+                                   </div>
+                                ) : null}                                
 
                                 <div className="mt-3 d-grid">
                                   <button
@@ -351,19 +536,31 @@ PatientInformation.propTypes = {
   addPatientError: PropTypes.any,
   patient: PropTypes.any,
   getTerritoriesList: PropTypes.func,
+  getCorporatesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  corporatesList: PropTypes.array,
+  employeeData: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+      employee_code: PropTypes.string,
+      corporate_id: PropTypes.number,
+    })
+  ),
 };
 
 
 const mapStateToProps = state => {
   const { territoriesList } = state.PatientInformation;
+  const { corporatesList } = state.PatientInformation;
   const { patient, addPatientError, loading } = state.PatientInformation;
-  return { patient, addPatientError, loading, territoriesList };
+  return { patient, addPatientError, loading, territoriesList, corporatesList };
 
 };
 
 export default connect(mapStateToProps, {
   getTerritoriesList,
+  getCorporatesList,
   addPatientInformation,
   addPatientInformationFailed,
 })(PatientInformation);

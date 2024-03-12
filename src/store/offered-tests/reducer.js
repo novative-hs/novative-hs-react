@@ -9,6 +9,14 @@ import {
   GET_CORPORATE_TESTS_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
+  GET_COFFEREDTEST_REFERRELFEE_SUCCESS,
+  GET_COFFEREDTEST_REFERRELFEE_FAIL,
+  GET_COFFEREDPROFILE_REFERRELFEE_SUCCESS,
+  GET_COFFEREDPROFILE_REFERRELFEE_FAIL,
+  GET_COFFEREDPACKAGE_REFERRELFEE_SUCCESS,
+  GET_COFFEREDPACKAGE_REFERRELFEE_FAIL,
+  GET_COFFEREDRADIOLOGY_REFERRELFEE_SUCCESS,
+  GET_COFFEREDRADIOLOGY_REFERRELFEE_FAIL,
   GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS,
   GET_OFFEREDPROFILE_REFERRELFEE_FAIL,
   GET_OFFEREDPACKAGE_REFERRELFEE_SUCCESS,
@@ -20,6 +28,8 @@ import {
   ADD_OFFERED_TEST_SUCCESS,
   ADD_OFFERED_TEST_FAIL,
   ADD_CORPORATE_TEST_SUCCESS,
+  ADD_CORPORATE_FAIL,
+  ADD_CORPORATE_SUCCESS,
   ADD_CORPORATE_TEST_FAIL,
   ADD_OFFERED_MAINTEST_SUCCESS,
   ADD_OFFERED_MAINTEST_FAIL,
@@ -29,6 +39,8 @@ import {
   UPDATE_CORPORATE_TEST_FAIL,
   UPDATE_CORPORATE_STATUS_SUCCESS,
   UPDATE_CORPORATE_STATUS_FAIL,
+  UPDATE_ACORPORATE_STATUS_SUCCESS,
+  UPDATE_ACORPORATE_STATUS_FAIL,
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
 } from "./actionTypes";
@@ -112,6 +124,50 @@ const tests = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    case GET_COFFEREDTEST_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
+
+    case GET_COFFEREDTEST_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_COFFEREDPROFILE_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
+
+    case GET_COFFEREDPROFILE_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_COFFEREDPACKAGE_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
+
+    case GET_COFFEREDPACKAGE_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_COFFEREDRADIOLOGY_REFERRELFEE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: action.payload.data,
+      };
+
+    case GET_COFFEREDRADIOLOGY_REFERRELFEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS:
       return {
         ...state,
@@ -163,6 +219,17 @@ const tests = (state = INIT_STATE, action) => {
       };
 
     case ADD_CORPORATE_TEST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ADD_CORPORATE_SUCCESS:
+      return {
+        ...state,
+        offeredTests: [...state.offeredTests, action.payload],
+      };
+
+    case ADD_CORPORATE_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -220,6 +287,22 @@ const tests = (state = INIT_STATE, action) => {
       };
 
     case UPDATE_CORPORATE_STATUS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case UPDATE_ACORPORATE_STATUS_SUCCESS:
+      return {
+        ...state,
+        offeredTests: state.offeredTests.map(offeredTest =>
+          offeredTest.id.toString() === action.payload.id.toString()
+            ? { offeredTest, ...action.payload }
+            : offeredTest
+        ),
+      };
+
+    case UPDATE_ACORPORATE_STATUS_FAIL:
       return {
         ...state,
         error: action.payload,

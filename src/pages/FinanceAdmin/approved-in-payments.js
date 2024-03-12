@@ -397,10 +397,7 @@ class PaymentStatussList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs
-              title="Payments In"
-              breadcrumbItem="Approvel Status List"
-            />
+            <Breadcrumbs title="Payments" breadcrumbItem="MIF and MOF with status is equal to Cleared." />
             <Row>
               <Col lg="12">
                 <Card>
@@ -425,7 +422,7 @@ class PaymentStatussList extends Component {
                                 <div className="ms-2 mb-4">
                                                                 <div>
                                       <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Money In Form Statuss</strong>
+                                      <strong>Select MIF/ MOF</strong>
                                       </Label>
                                       <select
                                         className="form-control select2"
@@ -434,8 +431,8 @@ class PaymentStatussList extends Component {
                                         onChange={this.handleSelectChange}
                                         
                                       >
-                                        <option value="Payment Out Cleared">Payment Out Cleared</option>
-                                        <option value="Payment In Cleared">Payment In Cleared</option>
+                                        <option value="Payment Out Cleared">MOF Cleared</option>
+                                        <option value="Payment In Cleared">MIF Cleared</option>
                                       </select>
                                     </div></div>
                                 </Col>

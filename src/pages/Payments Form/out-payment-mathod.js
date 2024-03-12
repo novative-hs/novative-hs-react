@@ -534,6 +534,8 @@ class OutPaymentsForm extends Component {
                   <br></br>
                   <span className="text-danger font-size-12">2:</span> If Payment to <span className="text-primary">Lab</span> and Transection type is <span className="text-primary">Donation</span>, the List of Lab only show Lab Name having Apppoitments with status Donation Allocate and Result Uploaded.
                   <br></br>
+                  <span className="text-danger font-size-12">3:</span> Only the <span className="text-primary">Bank Accounts List</span> having <span className="text-primary">Balance</span>, greater then to or Equal to <span className="text-primary">Payable</span> Amount.
+                  <br></br>
                     </strong>
                     <br></br>
                   </div>

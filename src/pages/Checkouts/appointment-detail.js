@@ -174,8 +174,8 @@ class InvoiceDetail extends Component {
                               <th className="text-start">Test Name</th>
                               <th className="text-start">Test Type</th>
                               <th className="text-end">Price</th>
-                              <th className="text-end">Discount By Lab</th>
-                              <th className="text-end">Discount By LabHazir</th>
+                              <th className="text-end">Discount By Lab (Rs)</th>
+                              <th className="text-end">Discount By LabHazir (Rs)</th>
                               {/* <th className="text-end">Discount</th> */}
                               <th className="text-end">
                                 Sub Total
@@ -192,11 +192,11 @@ class InvoiceDetail extends Component {
                                   <td className="text-start">{item.test_name}</td>
                                   <td className="text-start">{item.test_categories}</td>
                                   <td className="text-end">{item.price.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
-                                  <td className="text-end">{item.discount.toFixed(0)}{"%"}</td>
-                                  <td className="text-end">{(item.discount_by_labhazir + item.discount_by_labhazird_by_test).toFixed(0)}{"%"}</td>
+                                  <td className="text-end">{item.discount.toFixed(0)}</td>
+                                  <td className="text-end">{(item.discount_by_labhazir + item.discount_by_labhazird_by_test).toFixed(0)}</td>
                                   {/* <td className="text-end">{item.discount_by_labhazird_by_test}</td> */}
                                   <td className="text-end">
-                                    {item.total_test_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    {item.total_appointment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                       //  -
                                       //   this.props.invoiceDetail[0]
                                       //     .home_sampling_charges

@@ -3,7 +3,11 @@ import { call, put, takeEvery } from "redux-saga/effects";
 // Crypto Redux States
 import {
   GET_LABCORPORATE,
+  GET_ALABCORPORATE,
+  GET_ACORPORATE,
+  GET_RFEECORPORATE,
   GET_EMPLOYEECORPORATE,
+  GET_LABSCORPORATE,
   ADD_NEW_CEMPLOYEE_DATA,
   UPDATE_CEMPLOYEE,
 } from "./actionTypes";
@@ -11,8 +15,16 @@ import {
 import {
   getLabCorporateSuccess,
   getLabCorporateFail,
+  getALabCorporateSuccess,
+  getALabCorporateFail,
+  getACorporateSuccess,
+  getACorporateFail,
+  getRFeeCorporateSuccess,
+  getRFeeCorporateFail,
   getEmployeeCorporateSuccess,
   getEmployeeCorporateFail,
+  getLabsCorporateSuccess,
+  getLabsCorporateFail,
   addCemployeeDataFail,
   addCemployeeDataSuccess,
   updateCemployeeSuccess,
@@ -22,7 +34,11 @@ import {
 //Include Both Helper File with needed methods
 import {
   getLabCorporate,
+  getALabCorporate,
+  getACorporate,
+  getRFeeCorporate,
   getEmployeeCorporate,
+  getLabsCorporate,
   addNewCemployeeData,
   updateCemployee,
 } from "../../helpers/django_api_helper";
@@ -35,12 +51,45 @@ function* fetchLabCorporate(object) {
     yield put(getLabCorporateFail(error));
   }
 }
+function* fetchALabCorporate(object) {
+  try {
+    const response = yield call(getALabCorporate, object.payload);
+    yield put(getALabCorporateSuccess(response));
+  } catch (error) {
+    yield put(getALabCorporateFail(error));
+  }
+}
+function* fetchACorporate(object) {
+  try {
+    const response = yield call(getACorporate, object.payload);
+    yield put(getACorporateSuccess(response));
+  } catch (error) {
+    yield put(getACorporateFail(error));
+  }
+}
+function* fetchRFeeCorporate(object) {
+  try {
+    const response = yield call(getRFeeCorporate, object.payload);
+    yield put(getRFeeCorporateSuccess(response));
+  } catch (error) {
+    yield put(getRFeeCorporateFail(error));
+  }
+}
 function* fetchEmployeeCorporate(object) {
   try {
     const response = yield call(getEmployeeCorporate, object.payload);
     yield put(getEmployeeCorporateSuccess(response));
   } catch (error) {
     yield put(getEmployeeCorporateFail(error));
+  }
+}
+
+function* fetchLabsCorporate(object) {
+  try {
+    const response = yield call(getLabsCorporate, object.payload);
+    yield put(getLabsCorporateSuccess(response));
+  } catch (error) {
+    yield put(getLabsCorporateFail(error));
   }
 }
 
@@ -67,7 +116,11 @@ function* onUpdateCemployee({ payload: cemployee }) {
 
 function* cemployeeDataSaga() {
   yield takeEvery(GET_LABCORPORATE, fetchLabCorporate);
+  yield takeEvery(GET_ALABCORPORATE, fetchALabCorporate);
+  yield takeEvery(GET_ACORPORATE, fetchACorporate);
+  yield takeEvery(GET_RFEECORPORATE, fetchRFeeCorporate);
   yield takeEvery(GET_EMPLOYEECORPORATE, fetchEmployeeCorporate);
+  yield takeEvery(GET_LABSCORPORATE, fetchLabsCorporate);
   yield takeEvery(ADD_NEW_CEMPLOYEE_DATA, onAddNewCemployeeData);
   yield takeEvery(UPDATE_CEMPLOYEE, onUpdateCemployee);
 

@@ -41,7 +41,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 import {
   // getUnits,
-  getEmployeeCorporate,
+  getLabsCorporate,
   updateCemployee,
 } from "store/corporatedata/actions";
 
@@ -70,52 +70,88 @@ class OfferedTestsList extends Component {
           text: "Id",
           dataField: "id",
           sort: true,
-          formatter: (cellContent, offeredTest) => (
-          <>{offeredTest.id}</>), filter: textFilter(),
+          hidden: true,
+          formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
         },
         {
-          dataField: "name",
-          text: "Employee Name",
+          dataField: "lab_name",
+          text: "Lab Name",
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              <span>
-                {offeredTest.name}
+              <span className="float-start">
+                {offeredTest.lab_name}
               </span>
             </>
           ), filter: textFilter(),
         },
         {
-          dataField: "employee_code",
-          text: "Employee ID",
+          dataField: "lab_type",
+          text: "Lab Type",
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
               <span>
-                {offeredTest.employee_code}
+                {offeredTest.lab_type}
               </span>
             </>
           ), filter: textFilter(),
         },
         {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
+          dataField: "lab_phone",
+          text: "Phone",
+          sort: true,
           formatter: (cellContent, offeredTest) => (
-            <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e => this.handleOfferedTestClick(e, offeredTest)}
-                  ></i>
-                </Link>
-              </Tooltip>
-            </div>
-          ),
+            <>
+              <span>
+                {offeredTest.lab_phone}
+              </span>
+            </>
+          ), filter: textFilter(),
         },
+        {
+          dataField: "lab_email",
+          text: "Email",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span className="float-start">
+                {offeredTest.lab_email}
+              </span>
+            </>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "lab_address",
+          text: "Address",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span className="font-size-14 text-truncate float-start">
+                {offeredTest.lab_address}
+              </span>
+            </>
+          ), filter: textFilter(),
+        },
+        // {
+        //   dataField: "menu",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Action",
+        //   formatter: (cellContent, offeredTest) => (
+        //     <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
+        //       <Tooltip title="Update">
+        //         <Link className="text-success" to="#">
+        //           <i
+        //             className="mdi mdi-pencil font-size-18"
+        //             id="edittooltip"
+        //             onClick={e => this.handleOfferedTestClick(e, offeredTest)}
+        //           ></i>
+        //         </Link>
+        //       </Tooltip>
+        //     </div>
+        //   ),
+        // },
       ],
     };
     this.handleOfferedTestClick = this.handleOfferedTestClick.bind(this);
@@ -126,8 +162,8 @@ class OfferedTestsList extends Component {
 
   componentDidMount() {
 
-    const { cemployeeDatas, onGetEmployeeCorporate, } = this.props;
-    onGetEmployeeCorporate(this.state.user_id);
+    const { cemployeeDatas, onGetLabsCorporate, } = this.props;
+    onGetLabsCorporate(this.state.user_id);
     this.setState({ cemployeeDatas });
     console.log("state", cemployeeDatas)
 
@@ -234,7 +270,7 @@ class OfferedTestsList extends Component {
   //   // Optionally, you can handle the asynchronous behavior here
   //   // For example, use a promise or callback function
   //   setTimeout(() => {
-  //     this.props.onGetEmployeeCorporate(
+  //     this.props.onGetLabsCorporate(
   //       this.state.user_id
   //     );
   //   }, 1000);
@@ -250,7 +286,7 @@ class OfferedTestsList extends Component {
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onUpdateCemployee, onGetEmployeeCorporate, } =
+    const { onUpdateCemployee, onGetLabsCorporate, } =
       this.props;
     const offeredTest = this.state.offeredTest;
 
@@ -271,18 +307,18 @@ class OfferedTestsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Employees List | Lab Hazir</title>
+            <title>Labs List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Employees Tests" breadcrumbItem="Employees List" />
+            <Breadcrumbs title="Corporate Offered Tests" breadcrumbItem="Labs List" />
             <Row>
-              {/* <div> <span className="text-danger font-size-12">
+              <div> <span className="text-danger font-size-12">
                                     <strong> 
-                                    Note: If referral fee of any offered test is not entered by Labhazir, all such tests will not be online.
+                                    Note: Here, the labs will be shown that will accept the price of this corporate for all required tests.
                                     </strong>
                                   </span>
-                                  </div> */}
+                                  </div>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -436,7 +472,7 @@ class OfferedTestsList extends Component {
                                               updateCemployee
                                             );
                                             setTimeout(() => {
-                                              onGetEmployeeCorporate(
+                                              onGetLabsCorporate(
                                                 this.state.user_id
                                               );
                                             }, 1000);
@@ -571,7 +607,7 @@ OfferedTestsList.propTypes = {
   // units: PropTypes.array,
   cemployeeDatas: PropTypes.array,
   className: PropTypes.any,
-  onGetEmployeeCorporate: PropTypes.func,
+  onGetLabsCorporate: PropTypes.func,
   onUpdateCemployee: PropTypes.func,
 };
 
@@ -580,7 +616,7 @@ const mapStateToProps = ({ cemployeeData }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetEmployeeCorporate: id => dispatch(getEmployeeCorporate(id)),
+  onGetLabsCorporate: id => dispatch(getLabsCorporate(id)),
   onUpdateCemployee: offeredTest => dispatch(updateCemployee(offeredTest)),
 });
 

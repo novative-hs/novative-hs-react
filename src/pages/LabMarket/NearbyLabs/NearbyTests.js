@@ -2484,7 +2484,7 @@ class NearbyTests extends Component {
                               <span>Test Description</span>
                             </Link>
                             {/* </div> */}
-                            {(nearbyTest.discount >= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) >= 0.01) && (
+                            {(nearbyTest.lab_discount >= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) >= 0.01) && (
                               <div className="my-0">
                                 <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
@@ -2492,12 +2492,12 @@ class NearbyTests extends Component {
                                 </span>
                                 <span className="text-muted me-2">
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((nearbyTest.price - (nearbyTest.discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  Rs {((nearbyTest.price - (nearbyTest.lab_discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </span>
                               </div>
                             )}
 
-                            {(nearbyTest.discount >= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) <= 0.01) && (
+                            {(nearbyTest.lab_discount >= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) <= 0.01) && (
                               <div className="my-0">
                                 <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
@@ -2505,11 +2505,11 @@ class NearbyTests extends Component {
                                 </span>
                                 <span className="text-muted me-2">
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((nearbyTest.price - (nearbyTest.discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  Rs {((nearbyTest.price - (nearbyTest.lab_discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </span>
                               </div>
                             )}
-                            {(nearbyTest.discount <= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) >= 0.01) && (
+                            {(nearbyTest.lab_discount <= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) >= 0.01) && (
                               <div className="my-0">
                                 <span className="text-muted me-2" style={{ textDecoration: "line-through", textDecorationColor: "red" }}>
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
@@ -2517,12 +2517,12 @@ class NearbyTests extends Component {
                                 </span>
                                 <span className="text-muted me-2">
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
-                                  Rs {((nearbyTest.price - (nearbyTest.discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  Rs {((nearbyTest.price - (nearbyTest.lab_discount + nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) * nearbyTest.price).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </span>
                               </div>
                             )}
 
-                            {(nearbyTest.discount <= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) <= 0.01) && (
+                            {(nearbyTest.lab_discount <= 0.01) && ((nearbyTest.all_discount_by_labhazir + nearbyTest.discount_by_labhazir) <= 0.01) && (
                               <div className="my-0">
                                 <span className="text-muted me-2">
                                   {/* <i className="fas fa-money-bill"></i>{" "} */}
@@ -2532,11 +2532,11 @@ class NearbyTests extends Component {
                             )}
 
 
-                            {nearbyTest.discount >= 0.01 && (
+                            {nearbyTest.lab_discount >= 0.01 && (
                               <div className="my-0">
                                 <span className="text-danger" >
                                   <i className="fas fa-money-bill"></i>{" "}
-                                  Discount Lab: {(nearbyTest.discount * 100).toFixed()} %
+                                  Discount Lab: {(nearbyTest.lab_discount * 100).toFixed()} %
                                 </span>
 
                               </div>

@@ -71,6 +71,9 @@ export const postPatientInformation = (id, patient) => {
   formData.append("email", patient.email);
   formData.append("city_id", patient.city_id);
   formData.append("url", patient.url);
+  formData.append("is_assosiatewith_anycorporate", patient.is_assosiatewith_anycorporate);
+  formData.append("corporate_id", patient.corporate_id);
+  formData.append("employee_id_card", patient.employee_id_card);
   console.log(url, patient.city_id)
   return axios
     .post(`${url.POST_PATIENT_INFORMATION}/${id}`, formData, {
@@ -384,14 +387,61 @@ export const getLabCorporate = id =>
     headers: getHeader(authHeader()),
   });
 
+  // List of Corporate 
+
+export const getACorporate = () =>
+  get(url.GET_ACORPORATE, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getRFeeCorporate = () =>
+  get(url.GET_RFeeCORPORATE, {
+    headers: getHeader(authHeader()),
+  });
+
+export const updateACorporateStatus = offeredTest => {
+  let formData = new FormData();
+  formData.append("plateform_charges", offeredTest.plateform_charges);
+  // formData.append("is_active", offeredTest.is_active);
+
+  return axios.put(`${url.UPDATE_ACORPORATE_STATUS}/${offeredTest.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+  };
+
+// List of Accepted Corporate 
+export const getALabCorporate = id =>
+  get(`${url.GET_ALABCORPORATE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 // List of Corporate Employee
 export const getEmployeeCorporate = id =>
   get(`${url.GET_EMPLOYEECORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
+export const getLabsCorporate = id =>
+  get(`${url.GET_LABSCORPORATE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 export const getOfferedTestsReferrel = id =>
   get(`${url.GET_OFFEREDTEST_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getCOfferedTestsReferrel = id =>
+  get(`${url.GET_COFFEREDTEST_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getCOfferedProfilesReferrel = id =>
+  get(`${url.GET_COFFEREDPROFILE_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getCOfferedPackagesReferrel = id =>
+  get(`${url.GET_COFFEREDPACKAGE_REFERRELFEE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getCOfferedRadiologysReferrel = id =>
+  get(`${url.GET_COFFEREDRADIOLOGY_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 export const getOfferedProfilesReferrel = id =>
@@ -433,6 +483,15 @@ export const addNewCorporateTest = (offeredTest, id) => {
   formData.append("price", offeredTest.price);
   console.log("api helper",offeredTest, id)
   return axios.post(`${url.ADD_NEW_CORPORATE_TEST}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const addNewCorporate = (offeredTest, id) => {
+  let formData = new FormData();
+  formData.append("corporate_id", offeredTest.corporate_id);
+  formData.append("status", offeredTest.status);
+  console.log("api helper",offeredTest, id)
+  return axios.post(`${url.ADD_NEW_CORPORATE}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
@@ -481,6 +540,7 @@ export const updateCorporateTest = offeredTest => {
 export const updateCorporateStatus = offeredTest => {
   let formData = new FormData();
   formData.append("status", offeredTest.status);
+  formData.append("shared_percentage", offeredTest.shared_percentage);
   // formData.append("is_active", offeredTest.is_active);
 
   return axios.put(`${url.UPDATE_CORPORATE_STATUS}/${offeredTest.id}`, formData, {
@@ -1060,6 +1120,7 @@ export const getNearbyLabs = locationDetails => {
   formData.append("city", locationDetails.city);
   formData.append("guest_id", locationDetails.guest_id);
   formData.append("locationAccessAllowed", locationDetails.locationAccessAllowed);
+  formData.append("corporatepatient", locationDetails.corporatepatient);
   console.log("In near by lsbd: ", locationDetails)
 
 
@@ -1213,6 +1274,11 @@ export const getNearbyRadiology = data => {
 };
 // ------------- Corporate Profile Requests START -------------
 export const getCorporateProfile = id =>
+  get(`${url.GET_CORPORATE_PROFILE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getCorporateProfileforpayment = id =>
   get(`${url.GET_CORPORATE_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1608,6 +1674,10 @@ export const getBankStatements = id =>
 // ------------- ACCOUNT STATEMENTS -------------
 export const getB2bAccountStatements = id =>
   get(`${url.GET_B2B_ACCOUNT_STATEMENTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const getCLabAccountStatements = id =>
+  get(`${url.GET_CLAB_ACCOUNT_STATEMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // ------------- Donor Settings Requests START -------------
@@ -2625,6 +2695,11 @@ get(`${url.GET_LABS_MOF}`, {
   headers: getHeader(authHeader()),
 });
 
+export const getLabsc = id =>
+  get(`${url.GET_LABS_C}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 export const getListDonationAppointment = ()=>
 get(`${url.GET_LIST_DONATIONAPPOINTMENT}`, {
   headers: getHeader(authHeader()),
@@ -2662,6 +2737,59 @@ export const addNewOutPayment = ( outPayment, id) => {
   return axios.post(`${url.ADD_NEW_OUT_PAYMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
+};
+
+export const addNewCorporatePayment = ( outPayment, id) => {
+  let formData = new FormData();
+  formData.append("payment_for",  outPayment.payment_for);
+  formData.append("lab_id",   outPayment.lab_id);
+  formData.append("test_appointment_id",   outPayment.test_appointment_id);
+  formData.append("payment_method",   outPayment.payment_method);
+  formData.append("tax", outPayment.tax);
+  formData.append("amount",   outPayment.amount);
+  formData.append("payment_at",  outPayment.payment_at);
+  formData.append("cheque_no",  outPayment.cheque_no);
+  formData.append("cheque_image",   outPayment.cheque_image);
+  formData.append("payment_status",   outPayment.payment_status);
+  // formData.append("is_cleared",  outPayment.is_cleared);
+  // formData.append("cleared_at",   outPayment.cleared_at);
+  formData.append("comments",  outPayment.comments);
+
+  console.log("django api helper", outPayment, id)
+
+
+  return axios.post(`${url.ADD_NEW_CORPORATE_PAYMENT}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+// update corporate out payment
+export const updatePaymentOutCCreatedStatuss = paymentOutCreatedStatuss => {
+  let formData = new FormData();
+  // formData.append("payment_for",  paymentOutCreatedStatuss.payment_for);
+  // formData.append("lab_id",   paymentOutCreatedStatuss.lab_id);
+  // formData.append("b2b_id",   paymentOutCreatedStatuss.b2b_id);
+  // formData.append("test_appointment_id",   paymentOutCreatedStatuss.test_appointment_id);
+  // formData.append("tax", paymentOutCreatedStatuss.tax);
+  formData.append("amount",   paymentOutCreatedStatuss.amount);
+  formData.append("cheque_no",  paymentOutCreatedStatuss.cheque_no);
+  formData.append("payment_at",  paymentOutCreatedStatuss.payment_at);
+  formData.append("cheque_image",   paymentOutCreatedStatuss.cheque_image);
+  formData.append("payment_method",   paymentOutCreatedStatuss.payment_method);
+  // formData.append("bankaccount_id",   paymentOutCreatedStatuss.bankaccount_id);
+  // formData.append("bank_id",   paymentOutCreatedStatuss.bank_id);
+  // formData.append("refered_no",   paymentOutCreatedStatuss.refered_no);
+  // formData.append("cleared_at",   paymentOutCreatedStatuss.cleared_at);
+  formData.append("payment_status",  paymentOutCreatedStatuss.payment_status);
+  formData.append("comments",  paymentOutCreatedStatuss.comments);
+
+  return axios.put(
+    `${url.UPDATE_PAYMENTOUTCCREATED_STATUS}/${paymentOutCreatedStatuss.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 // ------------- invoice adjustment Settings Requests START -------------
@@ -2739,6 +2867,12 @@ export const getBouncedStatuss = id =>
 
 export const getBouncedInStatuss = id =>
   get(`${url.GET_BOUNCEDIN_STATUSS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+// corporate out payment 
+export const getCCreatedOutStatuss = id =>
+  get(`${url.GET_CCREATEDOUT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
@@ -2883,6 +3017,12 @@ export const getAdvInvoice = id =>
   get(`${url.GET_TERRITORIES_LIST}`, {
     headers: getHeader(authHeader()),
   });
+
+//------------ Get Territories List-------------
+export const getCorporatesList = ()=>
+get(`${url.GET_CORPORATES_LIST}`, {
+  headers: getHeader(authHeader()),
+});
 
 //------------ Get Names List-------------
   export const getLabNamesList = ()=>

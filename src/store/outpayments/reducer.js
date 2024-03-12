@@ -1,6 +1,8 @@
 import {
   GET_LABS_MOF_SUCCESS,
   GET_LABS_MOF_FAIL,
+  GET_LABS_C_SUCCESS,
+  GET_LABS_C_FAIL,
   GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
   GET_LIST_DONATIONAPPOINTMENT_FAIL,
   GET_LIST_INVOICE_SUCCESS,
@@ -15,13 +17,18 @@ import {
   GET_OUT_PAYMENT_FAIL,
   ADD_OUT_PAYMENT_SUCCESS,
   ADD_OUT_PAYMENT_FAIL,
+  ADD_CORPORATE_PAYMENT_SUCCESS,
+  ADD_CORPORATE_PAYMENT_FAIL,
   ADD_INVOICE_ADJUSTMENT_SUCCESS,
   ADD_INVOICE_ADJUSTMENT_FAIL,
   GET_STAFF_PROFILE_SUCCESS,
   GET_STAFF_PROFILE_FAIL,
+  GET_CORPORATE_PROFILE_SUCCESS,
+  GET_CORPORATE_PROFILE_FAIL
 } from "./actionTypes";
 
 const INIT_STATE = {
+  corporateProfiles: [],
   staffProfiles: [],
   outPayments: [],
   b2bClients: [],
@@ -36,6 +43,17 @@ const INIT_STATE = {
 
 const outPayments = (state = INIT_STATE, action) => {
   switch (action.type) {
+    case GET_CORPORATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        corporateProfiles: action.payload.data,
+      };
+
+    case GET_CORPORATE_PROFILE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_STAFF_PROFILE_SUCCESS:
       return {
         ...state,
@@ -80,17 +98,28 @@ const outPayments = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-      case GET_LIST_DONATIONAPPOINTMENT_SUCCESS:
-        return {
-          ...state,
-          listDonation: action.payload.data,
-        };
-  
-      case GET_LIST_DONATIONAPPOINTMENT_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+    case GET_LIST_DONATIONAPPOINTMENT_SUCCESS:
+      return {
+        ...state,
+        listDonation: action.payload.data,
+      };
+
+    case GET_LIST_DONATIONAPPOINTMENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_LABS_C_SUCCESS:
+      return {
+        ...state,
+        labsMof: action.payload.data,
+      };
+
+    case GET_LABS_C_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_LIST_INVOICE_SUCCESS:
       return {
         ...state,
@@ -132,6 +161,17 @@ const outPayments = (state = INIT_STATE, action) => {
       };
 
     case ADD_OUT_PAYMENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ADD_CORPORATE_PAYMENT_SUCCESS:
+      return {
+        ...state,
+        outPayments: [...state.outPayments, action.payload.data],
+      };
+
+    case ADD_CORPORATE_PAYMENT_FAIL:
       return {
         ...state,
         error: action.payload,

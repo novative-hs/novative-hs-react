@@ -270,6 +270,8 @@ class NearbyLabs extends Component {
         console.log(window.location.href);
         if (latitude && longitude) {
           onGetNearbyLabs(nearbyLabsLocationDetails);
+          this.setState({ nearbyLabs: [] });
+
           setTimeout(() => {
             this.setState({ nearbyLabs: this.props.nearbyLabs });
           }, 500);
@@ -290,6 +292,8 @@ class NearbyLabs extends Component {
         };
         if (latitude && longitude) {
           onGetNearbyLabs(nearbyLabsLocationDetails);
+          this.setState({ nearbyLabs: [] });
+
           setTimeout(() => {
             this.setState({ nearbyLabs: this.props.nearbyLabs });
           }, 500);
@@ -319,6 +323,8 @@ class NearbyLabs extends Component {
         console.log(window.location.href);
         if (latitude && longitude) {
           onGetNearbyLabs(nearbyLabsLocationDetails);
+          this.setState({ nearbyLabs: [] });
+
           setTimeout(() => {
             this.setState({ nearbyLabs: this.props.nearbyLabs });
           }, 500);
@@ -338,6 +344,8 @@ class NearbyLabs extends Component {
         };
         if (latitude && longitude) {
           onGetNearbyLabs(nearbyLabsLocationDetails);
+          this.setState({ nearbyLabs: [] });
+
           setTimeout(() => {
             this.setState({ nearbyLabs: this.props.nearbyLabs });
           }, 500);
@@ -385,6 +393,8 @@ class NearbyLabs extends Component {
             this.setState({ guest_id });
             // Call onGetNearbyLabs before prompting for geolocation
             onGetNearbyLabs(nearbyLabsLocationDetails);
+            this.setState({ nearbyLabs: [] });
+
             setTimeout(() => {
               this.setState({ nearbyLabs: this.props.nearbyLabs });
             }, 500);
@@ -426,6 +436,8 @@ class NearbyLabs extends Component {
             console.log(window.location.href);
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
+              this.setState({ nearbyLabs: [] });
+
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
@@ -447,6 +459,8 @@ class NearbyLabs extends Component {
             };
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
+              this.setState({ nearbyLabs: [] });
+
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
@@ -473,6 +487,8 @@ class NearbyLabs extends Component {
             console.log(window.location.href);
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
+              this.setState({ nearbyLabs: [] });
+
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
@@ -492,6 +508,8 @@ class NearbyLabs extends Component {
             };
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
+              this.setState({ nearbyLabs: [] });
+
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
@@ -551,6 +569,8 @@ class NearbyLabs extends Component {
             console.log(window.location.href);
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
+              this.setState({ nearbyLabs: [] });
+
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
@@ -572,6 +592,8 @@ class NearbyLabs extends Component {
             };
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
+              this.setState({ nearbyLabs: [] });
+
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
@@ -598,6 +620,8 @@ class NearbyLabs extends Component {
             console.log("differ:", this.state.guest_id)
             console.log(window.location.href);
             onGetNearbyLabs(nearbyLabsLocationDetails);
+            this.setState({ nearbyLabs: [] });
+
             setTimeout(() => {
               this.setState({ nearbyLabs: this.props.nearbyLabs });
             }, 500);
@@ -615,6 +639,8 @@ class NearbyLabs extends Component {
               name: this.state.name,
             };
             onGetNearbyLabs(nearbyLabsLocationDetails);
+            this.setState({ nearbyLabs: [] });
+
             setTimeout(() => {
               this.setState({ nearbyLabs: this.props.nearbyLabs });
             }, 500);
@@ -1089,6 +1115,7 @@ class NearbyLabs extends Component {
     onGetNearbyLabs(locationDetails);
     onGetAdvLive(locationDetails);
     onGetRegionWiseAdvertisement(locationDetails);
+    this.setState({ nearbyLabs: [] });
 
     setTimeout(() => {
       this.setState({ nearbyLabs: this.props.nearbyLabs });
@@ -1132,6 +1159,7 @@ class NearbyLabs extends Component {
     onGetNearbyLabs(locationDetails);
     // onGetAdvLive(locationDetails);
     // onGetRegionWiseAdvertisement(locationDetails);
+    this.setState({ nearbyLabs: [] });
 
     setTimeout(() => {
       this.setState({ nearbyLabs: this.props.nearbyLabs });
@@ -1177,6 +1205,7 @@ class NearbyLabs extends Component {
     onGetNearbyLabs(locationDetails);
     // onGetAdvLive(locationDetails);
     // onGetRegionWiseAdvertisement(locationDetails);
+    this.setState({ nearbyLabs: [] });
 
     setTimeout(() => {
       this.setState({ nearbyLabs: this.props.nearbyLabs });

@@ -7,6 +7,8 @@ import {
   GET_DEPOSIT_STATUSS_FAIL,
   GET_CREATEDOUT_STATUSS_SUCCESS,
   GET_CREATEDOUT_STATUSS_FAIL,
+  GET_CCREATEDOUT_STATUSS_SUCCESS,
+  GET_CCREATEDOUT_STATUSS_FAIL,
   GET_CLEAR_STATUSS_SUCCESS,
   GET_CLEAR_STATUSS_FAIL,
   GET_PAYMENTOUT_CLEAR_STATUSS_SUCCESS,
@@ -23,6 +25,8 @@ import {
   UPDATE_PAYMENTOUT_STATUS_FAIL,
   UPDATE_PAYMENTOUTCREATED_STATUS_SUCCESS,
   UPDATE_PAYMENTOUTCREATED_STATUS_FAIL,
+  UPDATE_PAYMENTOUTCCREATED_STATUS_SUCCESS,
+  UPDATE_PAYMENTOUTCCREATED_STATUS_FAIL,
   UPDATE_PAYMENTINBOUNCED_STATUS_SUCCESS,
   UPDATE_PAYMENTINBOUNCED_STATUS_FAIL,
   // ADD_OUT_PAYMENT_SUCCESS,
@@ -150,6 +154,17 @@ const paymentStatuss = (state = INIT_STATE, action) => {
           ...state,
           error: action.payload,
         };
+    case GET_CCREATEDOUT_STATUSS_SUCCESS:
+        return {
+          ...state,
+          paymentCreatedStatuss: action.payload.data,
+        };
+    
+    case GET_CCREATEDOUT_STATUSS_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
     case GET_PAYMENTOUT_CLEAR_STATUSS_SUCCESS:
         return {
           ...state,
@@ -258,6 +273,22 @@ const paymentStatuss = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+
+    case UPDATE_PAYMENTOUTCCREATED_STATUS_SUCCESS:
+      return {
+        ...state,
+        paymentOutCreatedStatus: state.paymentOutCreatedStatus.map(paymentOutCreatedStatus =>
+          paymentOutCreatedStatus.id.toString() === action.payload.id.toString()
+            ? { paymentOutCreatedStatus, ...action.payload }
+            : paymentOutCreatedStatus
+        ),
+      };
+
+    case UPDATE_PAYMENTOUTCCREATED_STATUS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };  
   
     case UPDATE_PAYMENTINBOUNCED_STATUS_SUCCESS:
       return {

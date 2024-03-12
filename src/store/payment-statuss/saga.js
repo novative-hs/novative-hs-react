@@ -6,6 +6,7 @@ import {
   GET_PAYMENTOUT_STATUSS,
   GET_DEPOSIT_STATUSS,
   GET_CREATEDOUT_STATUSS,
+  GET_CCREATEDOUT_STATUSS,
   GET_CLEAR_STATUSS,
   GET_PAYMENTOUT_CLEAR_STATUSS,
   GET_BOUNCED_STATUSS,
@@ -18,6 +19,7 @@ import {
   UPDATE_PAYMENTOUT_STATUS,
   UPDATE_PAYMENTIN_STATUS,
   UPDATE_PAYMENTOUTCREATED_STATUS,
+  UPDATE_PAYMENTOUTCCREATED_STATUS,
   UPDATE_PAYMENTINBOUNCED_STATUS,
   // ADD_NEW_OUT_PAYMENT,
   DELETE_PAYMENTOUT,
@@ -41,6 +43,8 @@ import {
   getDepositStatussFail,
   getCreatedOutStatussSuccess,
   getCreatedOutStatussFail,
+  getCCreatedOutStatussSuccess,
+  getCCreatedOutStatussFail,
   getClearStatussSuccess,
   getClearStatussFail,
   getPaymentOutClearStatussSuccess,
@@ -56,6 +60,8 @@ import {
   updatePaymentInStatusFail,
   updatePaymentOutCreatedStatusFail,
   updatePaymentOutCreatedStatusSuccess,
+  updatePaymentOutCCreatedStatusFail,
+  updatePaymentOutCCreatedStatusSuccess,
   updatePaymentInBouncedStatusSuccess,
   updatePaymentInBouncedStatusFail,
   // addOutPaymentFail,
@@ -71,6 +77,7 @@ import {
   getPaymentOutStatuss,
   getDepositStatuss,
   getCreatedOutStatuss,
+  getCCreatedOutStatuss,
   getClearStatuss,
   getPaymentOutClearStatuss,
   getBouncedStatuss,
@@ -79,6 +86,7 @@ import {
   updatePaymentOutStatus,
   updatePaymentInStatus,
   updatePaymentOutCreatedStatuss,
+  updatePaymentOutCCreatedStatuss,
   updatePaymentInBouncedStatus,
   // addNewOutPayment,
   getLabs,   getBanks,   getBankAccounts, deletePaymentout, getDonors,
@@ -149,6 +157,14 @@ function* fetchCreatedOutStatuss(object) {
     yield put(getCreatedOutStatussFail(error));
   }
 }
+function* fetchCCreatedOutStatuss(object) {
+  try {
+    const response = yield call(getCCreatedOutStatuss, object.payload);
+    yield put(getCCreatedOutStatussSuccess(response));
+  } catch (error) {
+    yield put(getCCreatedOutStatussFail(error));
+  }
+}
 function* fetchPaymentOutClearStatuss(object) {
   try {
     const response = yield call(getPaymentOutClearStatuss, object.payload);
@@ -215,6 +231,14 @@ function* onUpdatePaymentOutCreatedStatuss({ payload: paymentOutCreatedStatuss }
     yield put(updatePaymentOutCreatedStatusFail(error));
   }
 }
+function* onUpdatePaymentOutCCreatedStatuss({ payload: paymentOutCreatedStatuss }) {
+  try {
+    const response = yield call(updatePaymentOutCCreatedStatuss, paymentOutCreatedStatuss);
+    yield put(updatePaymentOutCCreatedStatusSuccess(response));
+  } catch (error) {
+    yield put(updatePaymentOutCCreatedStatusFail(error));
+  }
+}
 // function* onUpdatePaymentInBouncedStatuss({ payload: paymentBouncedInStatus }) {
 //   try {
 //     const response = yield call(updatePaymentInBouncedStatuss, paymentBouncedInStatus);
@@ -257,6 +281,7 @@ function* onDeletePaymentout({ payload: paymentout }) {
 function* paymentStatussSaga() {
   yield takeEvery(GET_DEPOSIT_STATUSS, fetchDepositStatuss);
   yield takeEvery(GET_CREATEDOUT_STATUSS, fetchCreatedOutStatuss);
+  yield takeEvery(GET_CCREATEDOUT_STATUSS, fetchCCreatedOutStatuss);
   yield takeEvery(GET_PAYMENTOUT_CLEAR_STATUSS, fetchPaymentOutClearStatuss);
   yield takeEvery(GET_CLEAR_STATUSS, fetchClearStatuss);
   yield takeEvery(GET_BOUNCED_STATUSS, fetchBouncedStatuss);
@@ -267,6 +292,7 @@ function* paymentStatussSaga() {
   yield takeEvery(UPDATE_PAYMENTOUT_STATUS, onUpdatePaymentOutStatus);
   yield takeEvery(UPDATE_PAYMENTIN_STATUS, onUpdatePaymentInStatus);
   yield takeEvery(UPDATE_PAYMENTOUTCREATED_STATUS, onUpdatePaymentOutCreatedStatuss);
+  yield takeEvery(UPDATE_PAYMENTOUTCCREATED_STATUS, onUpdatePaymentOutCCreatedStatuss);
   yield takeEvery(UPDATE_PAYMENTINBOUNCED_STATUS, onUpdatePaymentInBouncedStatus);
   // yield takeEvery(ADD_NEW_OUT_PAYMENT, onAddNewOutPayment);
   yield takeEvery(GET_BANKS, fetchBanks);

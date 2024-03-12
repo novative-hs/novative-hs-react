@@ -373,17 +373,13 @@ class SidebarContent extends Component {
 
                 <li className="menu-title">{this.props.t("Finance Admin")}</li>
                 {/* payments Approval Routes */}
-                <li>
+                {/* <li>
                   <Link to="/#" className="has-arrow">
                     <i className="mdi mdi-office-building" />
                     <span>{this.props.t("In Payments")}</span>
                   </Link>
                   <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link to={"/cleared-in-payments"}>
-                        {this.props.t("Cleared")}
-                      </Link>
-                    </li>
+                   
                     {/* <li>
                       <Link to={"/approved-in-payments"}>
                         {this.props.t("Approved")}
@@ -394,8 +390,14 @@ class SidebarContent extends Component {
                         {this.props.t("Unapproved")}
                       </Link>
                     </li> */}
-                  </ul>
-                </li>
+                  {/* </ul>
+                </li>  */}
+                 <li>
+                    <Link to={"/cleared-in-payments"}>
+                    <i className="mdi mdi-office-building" />
+                      {this.props.t("MIF/ MOF")}
+                    </Link>
+                  </li>
                 <li>
                   <Link to="/create-bank">
                     <i className="bx bx-home-circle" />
@@ -610,7 +612,7 @@ class SidebarContent extends Component {
                       <li>
                         <Link to={"/pending-b2b-clients"}>
                           {this.props.t("Pending")}
-                        </Link>
+                        </Link>h bu
                       </li>
                       <li>
                         <Link to={"/approved-b2b-clients"}>
@@ -655,6 +657,28 @@ class SidebarContent extends Component {
                       {this.props.t("Labs Rating")}
                     </Link>
                   </li>
+
+                  {/* B2b Clients Approval Routes */}
+                  <li>
+                    <Link to="/#" className="has-arrow">
+                      <i className="mdi mdi-office-building" />
+                      <span>{this.props.t("Corporates")}</span>
+                    </Link>
+                    <ul className="sub-menu" aria-expanded="false">
+                      <li>
+                        <Link to={"/list-corporate"}>
+                          {this.props.t("Corporates PlateForm Charges")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to={"/reffrell-corporate"}>
+                          {this.props.t("Corporates Reffrel Fee")}
+                        </Link>
+                      </li>
+                     
+                    </ul>
+                  </li>
+                  
                 </ul>
               </div>
             </SimpleBar>
@@ -978,12 +1002,37 @@ class SidebarContent extends Component {
 
                 
                  {/* Corporate List Links */}
+                 {/* Test Appointment Links */}
                  <li>
+                  <Link to="/#" className="has-arrow">
+                    <i className="mdi mdi-office-building" />
+                    <span>{this.props.t("Corporates")}</span>
+                  </Link>
+                  <ul className="sub-menu" aria-expanded="false">
+                    <li>
+                      <Link to={"/corporates-List"}>
+                        {this.props.t("Corporates List")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/accepted-corporates-List"}>
+                        {this.props.t("Accepted Corporates List")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/clab-account-statements"}>
+                        {this.props.t("Lab Corporates Statements")}
+                      </Link>
+                    </li>
+                   
+                  </ul>
+                </li>
+                 {/* <li>
                   <Link to={"/corporates-List"}>
                     <i className="fas fa-hand-holding-medical" />
                     <span>{this.props.t("Corporates List")}</span>
                   </Link>
-                </li>
+                </li> */}
 
                 {/* Offered Test Links */}
                 <li>
@@ -1069,6 +1118,20 @@ class SidebarContent extends Component {
                 <li className="menu-title">{this.props.t("Corporate")}</li>
 
                 <li>
+                  <Link to="/corporate-lab-appointments">
+                    <i className="bx bx-test-tube font-size-18" />
+                    <span>{this.props.t("Appointments")}</span>
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/corporate-labs-list">
+                    <i className="mdi mdi-database-plus font-size-18" />
+                    <span>{this.props.t("Labs List")}</span>
+                  </Link>
+                </li>
+
+                <li>
                   <Link to="/employee-data">
                     <i className="mdi mdi-database-plus font-size-18" />
                     <span>{this.props.t("Add Employee Data")}</span>
@@ -1090,6 +1153,18 @@ class SidebarContent extends Component {
                   <Link to="/corporate-offered-tests">
                     <i className="fas fa-hand-holding-medical font-size-18" />
                     <span>{this.props.t("Offered Tests")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/corporate-payment-form">
+                    <i className="mdi mdi-clipboard-list font-size-18" />
+                    <span>{this.props.t("Payment Form")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/corporate-payment-form-status">
+                    <i className="mdi mdi-clipboard-list font-size-18" />
+                    <span>{this.props.t("Payment Status")}</span>
                   </Link>
                 </li>
 

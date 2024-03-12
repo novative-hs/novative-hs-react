@@ -7,13 +7,10 @@ import axios from "axios";
 import { useParams } from 'react-router-dom'
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
-
 // import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import {
   FormGroup,
   Card,
-  Input,
   CardBody,
   Col,
   Container,
@@ -41,10 +38,12 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 import {
   // getUnits,
-  getEmployeeCorporate,
-  updateCemployee,
+  getACorporate,
 } from "store/corporatedata/actions";
-
+import {
+  // getUnits,
+  updateACorporateStatus,
+} from "store/offered-tests/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -67,35 +66,73 @@ class OfferedTestsList extends Component {
         : "",
       offeredTestListColumns: [
         {
-          text: "Id",
+          text: "id",
           dataField: "id",
           sort: true,
-          formatter: (cellContent, offeredTest) => (
-          <>{offeredTest.id}</>), filter: textFilter(),
+          hidden: true,
+          formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
         },
         {
           dataField: "name",
-          text: "Employee Name",
+          text: "Corporate Name",
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              <span>
+              <span className="float-start">
                 {offeredTest.name}
               </span>
             </>
-          ), filter: textFilter(),
+          ),
         },
         {
-          dataField: "employee_code",
-          text: "Employee ID",
+          dataField: "offered_tests",
+          text: "Test List",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              {/* <span>
+              {offeredTest.offered_tests}
+              </span> */}
+              <Link to={`/corporate-offered-tests/${offeredTest.account_id}`}>{offeredTest.offered_tests}</Link>
+
+            </>
+          ),
+        },
+        {
+          dataField: "payment_terms",
+          text: "Payment Terms",
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
               <span>
-                {offeredTest.employee_code}
+                {offeredTest.payment_terms}
               </span>
             </>
-          ), filter: textFilter(),
+          ),
+        },
+        {
+          dataField: "status",
+          text: "Status",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span>
+                {offeredTest.status}
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "plateform_charges",
+          text: "PlateForm Charges",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span>
+                {offeredTest.plateform_charges}
+              </span>
+            </>
+          ),
         },
         {
           dataField: "menu",
@@ -104,7 +141,7 @@ class OfferedTestsList extends Component {
           text: "Action",
           formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-              <Tooltip title="Update">
+              {/* <Tooltip title="Update"> */}
                 <Link className="text-success" to="#">
                   <i
                     className="mdi mdi-pencil font-size-18"
@@ -112,7 +149,7 @@ class OfferedTestsList extends Component {
                     onClick={e => this.handleOfferedTestClick(e, offeredTest)}
                   ></i>
                 </Link>
-              </Tooltip>
+              {/* </Tooltip> */}
             </div>
           ),
         },
@@ -125,13 +162,13 @@ class OfferedTestsList extends Component {
   }
 
   componentDidMount() {
-
-    const { cemployeeDatas, onGetEmployeeCorporate, } = this.props;
-    onGetEmployeeCorporate(this.state.user_id);
+    const { cemployeeDatas, onGetACorporate } = this.props;
+    console.log(onGetACorporate(this.state.user_id));
     this.setState({ cemployeeDatas });
-    console.log("state", cemployeeDatas)
-
   }
+  
+  
+  
 
   toggle() {
     this.setState(prevState => ({
@@ -209,39 +246,37 @@ class OfferedTestsList extends Component {
     this.setState({
       offeredTest: {
         id: arg.id,
-        name: arg.name,
-        employee_code: arg.employee_code,
+        plateform_charges: arg.plateform_charges,
       },
       isEdit: true,
     });
 
     this.toggle();
   };
-  // handleSaveButtonClick = () => {
-  //   // Your other logic...
+  handleSaveButtonClick = () => {
+    // Your other logic...
   
-  //   const { offeredTest } = this.state;
+    const { offeredTest } = this.state;
   
-  //   const updateCemployee = {
-  //     id: offeredTest.id,
-  //     name: this.state.name,
-  //     employee_code: this.state.employee_code,
-  //   };
+    const updateACorporateStatus = {
+      id: offeredTest.id,
+      plateform_charges: this.state.plateform_charges,
+    };
   
-  //   // Dispatch the action
-  //   this.props.onUpdateCemployee(updateCemployee);
+    // Dispatch the action
+    this.props.onUpdateACorporateStatus(updateACorporateStatus);
   
-  //   // Optionally, you can handle the asynchronous behavior here
-  //   // For example, use a promise or callback function
-  //   setTimeout(() => {
-  //     this.props.onGetEmployeeCorporate(
-  //       this.state.user_id
-  //     );
-  //   }, 1000);
+    // Optionally, you can handle the asynchronous behavior here
+    // For example, use a promise or callback function
+    setTimeout(() => {
+      this.props.onGetACorporate(
+        this.state.user_id
+      );
+    }, 1000);
   
-  //   // Close the modal or perform other actions as needed
-  //   this.toggle();
-  // };
+    // Close the modal or perform other actions as needed
+    this.toggle();
+  };
 
   render() {
     const { SearchBar } = Search;
@@ -250,7 +285,7 @@ class OfferedTestsList extends Component {
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onUpdateCemployee, onGetEmployeeCorporate, } =
+    const { onUpdateACorporateStatus, onGetACorporate, } =
       this.props;
     const offeredTest = this.state.offeredTest;
 
@@ -271,11 +306,11 @@ class OfferedTestsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Employees List | Lab Hazir</title>
+            <title>Corporate Offered Tests List | Lab Hazir</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Employees Tests" breadcrumbItem="Employees List" />
+            <Breadcrumbs title="Corporate PlateForm Charges" breadcrumbItem="Corporate List" />
             <Row>
               {/* <div> <span className="text-danger font-size-12">
                                     <strong> 
@@ -301,20 +336,6 @@ class OfferedTestsList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              {/* <Row className="mb-2">
-                                <Col sm="8" lg="8">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>
-
-                              </Row> */}
-
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -328,8 +349,6 @@ class OfferedTestsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
-                                      filter={ filterFactory() }
-
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}
@@ -382,61 +401,42 @@ class OfferedTestsList extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Employee Data"
-                                          : "Add Employee Data"}
+                                          ? "Update PlateForm Charges"
+                                          : "Add Offered Test"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            name:
+                                            plateform_charges:
                                               (this.state.offeredTest &&
                                                 this.state.offeredTest
-                                                  .name) ||
-                                              "",
-                                            employee_code:
-                                              (this.state.offeredTest &&
-                                                this.state.offeredTest
-                                                  .employee_code) ||
+                                                  .plateform_charges) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            employee_code: Yup.number(
-                                              "Please enter number only"
-                                            )
-                                              .required(
-                                                "Please enter your employee_code"
-                                              )
-                                              .positive()
-                                              .integer()
-                                              .min(
-                                                0,
-                                                "Please enter a number greater than or equal to 0"
-                                              )
-                                              .max(
-                                                50000,
-                                                "Please enter a number less than or equal to 50000"
-                                              ),
+                                            plateform_charges: Yup.number().required(
+                                              "Please enter Shared Percentage from 0 to 0.9"
+                                            ),
 
                                           })}
                                           onSubmit={(values, { setSubmitting }) => {
                                             console.log("Form submitted with values:", values);
                                             setSubmitting(false);
 
-                                            const updateCemployee =
+                                            const updateACorporateStatus =
                                             {
                                               id: offeredTest.id,
-                                              name: values.name,
-                                              employee_code:
-                                                values.employee_code,
+                                              plateform_charges:
+                                                values.plateform_charges,
                                             };
 
                                             // update PaymentStatus
-                                            onUpdateCemployee(
-                                              updateCemployee
+                                            onUpdateACorporateStatus(
+                                              updateACorporateStatus
                                             );
                                             setTimeout(() => {
-                                              onGetEmployeeCorporate(
+                                              onGetACorporate(
                                                 this.state.user_id
                                               );
                                             }, 1000);
@@ -444,103 +444,59 @@ class OfferedTestsList extends Component {
                                           }}
                                         >
                                           {({ errors, status, touched, isValid }) => (
-                                             <Form>
-                                             <Row>
-                                               <Col className="col-12">
-                                                 <Field
-                                                   type="hidden"
-                                                   className="form-control"
-                                                   name="hiddenEditFlag"
-                                                   value={isEdit}
-                                                 />
-
-                                                <div className="mb-3">
-                                                   <Label
-                                                     className="col-form-label"
-                                                   >
-                                                     Employee Name
-                                                     <span
-                                                       style={{ color: "#f46a6a" }}
-                                                       className="font-size-18"
-                                                     >
-                                                       *
-                                                     </span>
-                                                   </Label>
-                                                     <Input
-                                                      type="text"
-                                                      value={this.state.offeredTest.name}
-                                                      onChange={e => {this.setState({
-                                                               offeredTest: {
-                                                                 id: offeredTest.id,
-                                                                 employee_code:
-                                                                   offeredTest.employee_code,
-                                                                 name:
-                                                                   e.target.value,
-                                                               },
-                                                             });
-                                                           }}
-                                                           className={
-                                                             "form-control" +
-                                                             (errors.name &&
-                                                             touched.name
-                                                               ? " is-invalid"
-                                                               : "")
-                                                           } 
-                                                     />
-                                                 </div>
-
-                                                 <div className="mb-3">
-                                                   <Label
-                                                     className="col-form-label"
-                                                   >
-                                                     Employee Code
-                                                     <span
-                                                       style={{ color: "#f46a6a" }}
-                                                       className="font-size-18"
-                                                     >
-                                                       *
-                                                     </span>
-                                                   </Label>
-                                                    <Input
-                                                      id="employee_code"
-                                                      name="employee_code"
-                                                      type="text"
-                                                      value={this.state.offeredTest.employee_code}  
-                                                      onChange={e => {
-                                                             this.setState({
-                                                               offeredTest: {
-                                                                 id: offeredTest.id,
-                                                                 name:
-                                                                   offeredTest.name,
-                                                                 employee_code:
-                                                                   e.target.value,
-                                                               },
-                                                             });
-                                                           }}
+                                            <Form>
+                                              <Row>
+                                                <FormGroup className="mb-4" row>
+                                                  <Label
+                                                    htmlFor="name"
+                                                    // md="2"
+                                                    // className="col-form-label"
+                                                  >
+                                                    PlateForm Charges
+                                                    <span
+                                                      style={{ color: "#f46a6a" }}
+                                                      className="font-size-18"
+                                                    >
+                                                      *
+                                                    </span>
+                                                  </Label>
+                                                    <Field
+                                                      name="plateform_charges"
+                                                      type="number"
+                                                      step="0.01"
+                                                      min="0.00"
+                                                      max="1.00"
+                                                      value={this.state.plateform_charges}
+                                                      onChange={e => this.setState({ plateform_charges: e.target.value })}
                                                       className={
                                                         "form-control" +
-                                                        (errors.employee_code &&
-                                                        touched.employee_code
+                                                        (errors.plateform_charges &&
+                                                        touched.plateform_charges
                                                           ? " is-invalid"
                                                           : "")
-                                                      } 
+                                                      }
                                                     />
-                                                 </div>
-                                               </Col>
-                                             </Row>
-                                             <Row>
-                                               <Col>
-                                                 <div className="text-end">
-                                                   <button
-                                                     type="submit"
-                                                     className="btn btn-success save-user"
-                                                   >
-                                                     Save
-                                                   </button>
-                                                 </div>
-                                               </Col>
-                                             </Row>
-                                           </Form>
+                                                    <ErrorMessage
+                                                      name="plateform_charges"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />                                                   
+                                                </FormGroup>
+                                              </Row>
+
+                                              <Row>
+                                                <Col>
+                                                  <div className="text-end">
+                                                  <button
+  type="button"
+  className="btn btn-success save-user"
+  onClick={() => this.handleSaveButtonClick()}
+>
+  Save
+</button>                                            </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
                                           )}
                                         </Formik>
                                       </ModalBody>
@@ -571,8 +527,8 @@ OfferedTestsList.propTypes = {
   // units: PropTypes.array,
   cemployeeDatas: PropTypes.array,
   className: PropTypes.any,
-  onGetEmployeeCorporate: PropTypes.func,
-  onUpdateCemployee: PropTypes.func,
+  onGetACorporate: PropTypes.func,
+  onUpdateACorporateStatus: PropTypes.func,
 };
 
 const mapStateToProps = ({ cemployeeData }) => ({
@@ -580,8 +536,8 @@ const mapStateToProps = ({ cemployeeData }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetEmployeeCorporate: id => dispatch(getEmployeeCorporate(id)),
-  onUpdateCemployee: offeredTest => dispatch(updateCemployee(offeredTest)),
+  onGetACorporate: id => dispatch(getACorporate(id)),
+  onUpdateACorporateStatus: offeredTest => dispatch(updateACorporateStatus(offeredTest)),
 });
 
 export default connect(

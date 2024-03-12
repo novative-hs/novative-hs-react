@@ -25,6 +25,7 @@ import { Link } from "react-router-dom";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import { getLabProfile } from "store/auth/labprofile/actions";
+import { getPatientProfile } from "store/labmarket/actions";
 
 class NearbyLabDetail extends Component {
   constructor(props) {
@@ -54,6 +55,8 @@ class NearbyLabDetail extends Component {
       pathologists: "",
       quality_certificates: "",
       sample_collectors: "",
+      patientProfile: [],
+
     };
   }
   componentDidMount() {
@@ -61,12 +64,21 @@ class NearbyLabDetail extends Component {
     console.log("hehe gid", this.props.match.params.guest_id);
     console.log("hehe uid", this.props.match.params.uuid);
     console.log("hehe fid", this.props.match.params.filnalurl);
+    const { patientProfile, getPatientProfile } = this.props;
+    getPatientProfile(this.state.user_id);
+    this.setState({
+      patientProfile
+    });
+    console.log("state", patientProfile);
   }
 
   render() {
     const isSmallScreen = window.innerWidth < 490;
+    const { getPatientProfile } = this.props;
+    const { patientProfile } = this.props;
     return (
       <React.Fragment>
+      {this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
         <div className="topnav">
           <div className="container-fluid left-space">
             <nav
@@ -82,7 +94,7 @@ class NearbyLabDetail extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                    <li className="nav-item">
                       <Link
                         to={
                           this.props.match.params.guest_id
@@ -158,7 +170,7 @@ class NearbyLabDetail extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    
+
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -186,7 +198,7 @@ class NearbyLabDetail extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                    <li className="nav-item">
                       <Link
                         to={
                           this.props.match.params.uuid
@@ -267,7 +279,7 @@ class NearbyLabDetail extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                   
+
                     {/* <li className="nav-item dropdown">
                      <Link
                        to="/#"
@@ -349,7 +361,7 @@ class NearbyLabDetail extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                    <li className="nav-item">
                       <Link
                         to={
                           this.props.match.params.guest_id
@@ -430,9 +442,9 @@ class NearbyLabDetail extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    
 
-  
+
+
                     {/* <li className="nav-item dropdown">
                     <Link
                       to="/#"
@@ -514,7 +526,7 @@ class NearbyLabDetail extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                    <li className="nav-item">
                       <Link
                         to={
                           this.props.match.params.guest_id
@@ -591,7 +603,7 @@ class NearbyLabDetail extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    
+
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -614,7 +626,9 @@ class NearbyLabDetail extends Component {
               ) : null}
             </nav>
           </div>
-        </div>
+        </div>) : (
+          null
+        )}
         <div className="page-content">
           <MetaTags>
             <title>Nearby Lab Detail | Lab Hazir - Dashboard</title>
@@ -638,7 +652,7 @@ class NearbyLabDetail extends Component {
                                 {!this.state.user_id ? (
                                   <Row style={{ textAlign: "center" }}>
                                     <div className="mb-1">
-                                      {this.props.success.offered_tests === true && (
+                                      {(this.props.success.offered_tests === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
@@ -652,12 +666,30 @@ class NearbyLabDetail extends Component {
                                           // Add any other button styling or attributes as needed
                                           className="btn btn-primary btn-md"
                                           style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
-
                                         >
                                           <i className="mdi mdi-arrow-right btn-block" />
                                           Offered Tests
                                         </button>
-                                      )}
+                                      ) : this.props.success.offered_tests === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : null}
+
                                       {this.props.success.offered_tests === false && (
                                         <button
                                           onClick={() => {
@@ -905,7 +937,7 @@ class NearbyLabDetail extends Component {
                                   this.state.user_type !== "b2bclient" ? (
                                   <Row style={{ textAlign: "center" }}>
                                     <div className="mb-1">
-                                      {this.props.success.offered_tests === true && (
+                                      {/* {this.props.success.offered_tests === true && (
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
@@ -924,7 +956,44 @@ class NearbyLabDetail extends Component {
                                           <i className="mdi mdi-arrow-right btn-block" />
                                           Offered Tests
                                         </button>
-                                      )}
+                                      )} */}
+                                      {(this.props.success.offered_tests === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : this.props.success.offered_tests === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : null}
                                       {this.props.success.offered_tests === false && (
                                         <button
                                           onClick={() => {
@@ -940,27 +1009,47 @@ class NearbyLabDetail extends Component {
                                         </button>
                                       )}
                                     </div>
+
+
+                                    
                                     <div className="mb-1">
-                                      {this.props.success.offered_profiles ===
-                                        true && (
-                                          <button
-                                            onClick={() => {
-                                              // Add the logic you want to execute when the button is clicked
-                                              // You can use the history object to navigate to a different route if needed
-                                              this.props.history.push(
-                                                this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab`
-                                              );
-                                            }}
-                                            // Add any other button styling or attributes as needed
-                                            className="btn btn-primary btn-md"
-                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
-                                          >
-                                            <i className="mdi mdi-arrow-right btn-block" />
-                                            Offered Profiles{" "}
-                                          </button>
-                                        )}
+                                       {(this.props.success.offered_profiles === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                        <button
+                                        onClick={() => {
+                                          // Add the logic you want to execute when the button is clicked
+                                          // You can use the history object to navigate to a different route if needed
+                                          this.props.history.push(
+                                            this.props.match.params.uuid
+                                              ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab/${this.props.match.params.uuid}`
+                                              : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab`
+                                          );
+                                        }}
+                                        // Add any other button styling or attributes as needed
+                                        className="btn btn-primary btn-md"
+                                        style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                      >
+                                        <i className="mdi mdi-arrow-right btn-block" />
+                                        Offered Profiles{" "}
+                                      </button>
+                                      ) : this.props.success.offered_profiles === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-profile-by-lab-corporate/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-profile-by-lab-corporate`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Profiles{" "}
+                                        </button>
+                                      ) : null}
                                       {this.props.success.offered_profiles ===
                                         false && (
                                           <button
@@ -980,26 +1069,43 @@ class NearbyLabDetail extends Component {
                                         )}
                                     </div>
                                     <div className="mb-1">
-                                      {this.props.success.offered_packages ===
-                                        true && (
-                                          <button
-                                            onClick={() => {
-                                              // Add the logic you want to execute when the button is clicked
-                                              // You can use the history object to navigate to a different route if needed
-                                              this.props.history.push(
-                                                this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/offered-package-by-lab`
-                                              );
-                                            }}
-                                            // Add any other button styling or attributes as needed
-                                            className="btn btn-primary btn-md"
-                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
-                                          >
-                                            <i className="mdi mdi-arrow-right btn-block" />
-                                            Offered Packages
-                                          </button>
-                                        )}
+                                        {(this.props.success.offered_packages === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                        <button
+                                        onClick={() => {
+                                          // Add the logic you want to execute when the button is clicked
+                                          // You can use the history object to navigate to a different route if needed
+                                          this.props.history.push(
+                                            this.props.match.params.uuid
+                                              ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab/${this.props.match.params.uuid}`
+                                              : `/${this.props.match.params.lab_account_id}/offered-package-by-lab`
+                                          );
+                                        }}
+                                        // Add any other button styling or attributes as needed
+                                        className="btn btn-primary btn-md"
+                                        style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                      >
+                                        <i className="mdi mdi-arrow-right btn-block" />
+                                        Offered Packages
+                                      </button>
+                                      ) : this.props.success.offered_packages === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-package-by-lab-corporate/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-package-by-lab-corporate`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Packages{" "}
+                                        </button>
+                                      ) : null}
                                       {this.props.success.offered_packages ===
                                         false && (
                                           <button
@@ -1017,26 +1123,43 @@ class NearbyLabDetail extends Component {
                                         )}
                                     </div>
                                     <div className="mb-1">
-                                      {this.props.success
-                                        .offered_radiologies === true && (
-                                          <button
-                                            onClick={() => {
-                                              // Add the logic you want to execute when the button is clicked
-                                              // You can use the history object to navigate to a different route if needed
-                                              this.props.history.push(
-                                                this.props.match.params.uuid
-                                                  ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.uuid}`
-                                                  : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab`
-                                              );
-                                            }}
-                                            // Add any other button styling or attributes as needed
-                                            className="btn btn-primary btn-md"
-                                            style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
-                                          >
-                                            <i className="mdi mdi-arrow-right btn-block" />
-                                            Offered Radiology{" "}
-                                          </button>
-                                        )}
+                                      {(this.props.success.offered_radiologies === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                        <button
+                                        onClick={() => {
+                                          // Add the logic you want to execute when the button is clicked
+                                          // You can use the history object to navigate to a different route if needed
+                                          this.props.history.push(
+                                            this.props.match.params.uuid
+                                              ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab/${this.props.match.params.uuid}`
+                                              : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab`
+                                          );
+                                        }}
+                                        // Add any other button styling or attributes as needed
+                                        className="btn btn-primary btn-md"
+                                        style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                      >
+                                        <i className="mdi mdi-arrow-right btn-block" />
+                                        Offered Radiology{" "}
+                                      </button>
+                                      ) : this.props.success.offered_radiologies === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab-corporate/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-radiology-by-lab-corporate`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Radiology{" "}
+                                        </button>
+                                      ) : null}
                                       {this.props.success.offered_radiologies === false && (
                                         <div className="mb-1">
                                           <button
@@ -1172,7 +1295,7 @@ class NearbyLabDetail extends Component {
                                   this.state.user_type !== "b2bclient" ? (
                                   <Row style={{ textAlign: "center" }}>
                                     <div className="mb-1">
-                                      {this.props.success.offered_tests === true && (
+                                      {/* {this.props.success.offered_tests === true && (
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
@@ -1191,7 +1314,44 @@ class NearbyLabDetail extends Component {
                                           <i className="mdi mdi-arrow-right btn-block" />
                                           Offered Tests
                                         </button>
-                                      )}
+                                      )} */}
+                                      {(this.props.success.offered_tests === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : this.props.success.offered_tests === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : null}
                                       {this.props.success.offered_tests === false && (
                                         <button
                                           onClick={() => {
@@ -1439,7 +1599,7 @@ class NearbyLabDetail extends Component {
                                   this.state.user_type === "b2bclient" ? (
                                   <Row style={{ textAlign: "center" }}>
                                     <div className="mb-1">
-                                      {this.props.success.offered_tests === true && (
+                                      {/* {this.props.success.offered_tests === true && (
                                         <button
                                           onClick={() => {
                                             // Add the logic you want to execute when the button is clicked
@@ -1458,7 +1618,44 @@ class NearbyLabDetail extends Component {
                                           <i className="mdi mdi-arrow-right btn-block" />
                                           Offered Tests
                                         </button>
-                                      )}
+                                      )} */}
+                                      {(this.props.success.offered_tests === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : this.props.success.offered_tests === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                        <button
+                                          onClick={() => {
+                                            // Add the logic you want to execute when the button is clicked
+                                            // You can use the history object to navigate to a different route if needed
+                                            this.props.history.push(
+                                              this.props.match.params.uuid
+                                                ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                                : `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}`
+                                            );
+                                          }}
+                                          // Add any other button styling or attributes as needed
+                                          className="btn btn-primary btn-md"
+                                          style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                        >
+                                          <i className="mdi mdi-arrow-right btn-block" />
+                                          Offered Tests
+                                        </button>
+                                      ) : null}
                                       {this.props.success.offered_tests === false && (
                                         <button
                                           onClick={() => {
@@ -2032,7 +2229,7 @@ class NearbyLabDetail extends Component {
                             </Col>
                             <Col lx="3">
                               <div className="mb-1">
-                                {this.props.success.offered_tests === true && (
+                                {/* {this.props.success.offered_tests === true && (
                                   <button
                                     onClick={() => {
                                       // Add the logic you want to execute when the button is clicked
@@ -2049,9 +2246,46 @@ class NearbyLabDetail extends Component {
 
                                   >
                                     {/* <i className="mdi mdi-arrow-right btn-block" /> */}
-                                    <span className="font-size-11">Offered Tests</span>
+                                {/* <span className="font-size-11">Offered Tests</span>
                                   </button>
-                                )}
+                                )} */}
+                                {(this.props.success.offered_tests === true && !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) ? (
+                                  <button
+                                    onClick={() => {
+                                      // Add the logic you want to execute when the button is clicked
+                                      // You can use the history object to navigate to a different route if needed
+                                      this.props.history.push(
+                                        this.props.match.params.uuid
+                                          ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                          : `/${this.props.match.params.lab_account_id}/offered-test-by-lab/${this.props.match.params.guest_id}`
+                                      );
+                                    }}
+                                    // Add any other button styling or attributes as needed
+                                    className="btn btn-primary btn-md"
+                                    style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />
+                                    Offered Tests
+                                  </button>
+                                ) : this.props.success.offered_tests === true && this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                                  <button
+                                    onClick={() => {
+                                      // Add the logic you want to execute when the button is clicked
+                                      // You can use the history object to navigate to a different route if needed
+                                      this.props.history.push(
+                                        this.props.match.params.uuid
+                                          ? `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                                          : `/${this.props.match.params.lab_account_id}/offered-test-by-lab-corporate/${this.props.match.params.guest_id}`
+                                      );
+                                    }}
+                                    // Add any other button styling or attributes as needed
+                                    className="btn btn-primary btn-md"
+                                    style={{ width: "80%", textAlign: "left" }} // Set inline style to ensure the same width
+                                  >
+                                    <i className="mdi mdi-arrow-right btn-block" />
+                                    Offered Tests
+                                  </button>
+                                ) : null}
                                 {this.props.success.offered_tests === false && (
                                   <button
                                     onClick={() => {
@@ -2367,15 +2601,18 @@ NearbyLabDetail.propTypes = {
   menuOpen: PropTypes.any,
   t: PropTypes.any,
   history: PropTypes.any,
+  patientProfile: PropTypes.array,
+  getPatientProfile: PropTypes.func,
 };
 
 const mapStateToProps = state => {
+  const patientProfile = state.LabMarket.patientProfile; // Corrected assignment
   const { error, success } = state.LabProfile;
-  return { error, success };
+  return { error, success, patientProfile };
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getLabProfile })(
+  connect(mapStateToProps, { getLabProfile, getPatientProfile, })(
     withTranslation()(NearbyLabDetail)
   )
 );

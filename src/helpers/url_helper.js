@@ -39,6 +39,12 @@ export const ADD_NEW_OFFERED_MAINTEST = `${API_ENDPOINT}/api/lab/offered-test-ma
 export const UPDATE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 export const DELETE_OFFERED_TEST = `${API_ENDPOINT}/api/lab/offered-test`;
 
+// Corporates
+export const GET_COFFEREDTEST_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-test-share-list`;
+export const GET_COFFEREDPROFILE_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-profile-share-list`;
+export const GET_COFFEREDPACKAGE_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-packages-share-list`;
+export const GET_COFFEREDRADIOLOGY_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-radiology-share-list`;
+
 // PATHOLOGIST
 export const GET_ACTIVITY_LOG = `${API_ENDPOINT}/api/lab/activity-log`;
 export const GET_NOTIFICATION = `${API_ENDPOINT}/api/lab/notifications`;
@@ -141,6 +147,9 @@ export const GET_FEEDBACKS = `${API_ENDPOINT}/api/lab/feedback-list`;
 // TERRITORIES LIST
 export const GET_TERRITORIES_LIST = `${API_ENDPOINT}/api/territories/district-city-list`;
 
+// CORPORATES LIST
+export const GET_CORPORATES_LIST = `${API_ENDPOINT}/api/corporate/corporates-list`;
+
 // TERRITORIES LIST
 export const GET_LAB_NAMES_LIST = `${API_ENDPOINT}/api/lab/lab-names`;
 
@@ -175,6 +184,7 @@ export const GET_ACCEPTED_LAB_ADVERTISEMENTS = `${API_ENDPOINT}/api/marketer-adm
 export const GET_PAYMENT_IN_STATUS_CREATED_LIST = `${API_ENDPOINT}/api/finance-officer/get-payment-in-created`;
 export const GET_PAYMENT_IN_STATUS_DEPOSITED_LIST = `${API_ENDPOINT}/api/finance-officer/get-payment-in-deposited`;
 export const GET_LABS_MOF = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
+export const GET_LABS_C = `${API_ENDPOINT}/api/finance-officer/lab-c-list`;
 
 // PATIENT TEST APPOINTMENT
 export const GET_PATIENT_TEST_APPOINTMENTS_LIST = `${API_ENDPOINT}/api/patient/test-appointment-list`;
@@ -252,12 +262,18 @@ export const ADD_NEW_BANK_ACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-acco
 export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const GET_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-list`;
 export const GET_LABCORPORATE = `${API_ENDPOINT}/api/lab/corporatelist`;
+export const GET_ALABCORPORATE = `${API_ENDPOINT}/api/lab/accepted-corporates-list`;
+export const GET_ACORPORATE = `${API_ENDPOINT}/api/corporate/all-corporates-list`;
+export const GET_RFeeCORPORATE = `${API_ENDPOINT}/api/lab/corporate-feffrellfee`;
+export const UPDATE_ACORPORATE_STATUS = `${API_ENDPOINT}/api/corporate/update-corporate-list`;
 export const GET_EMPLOYEECORPORATE = `${API_ENDPOINT}/api/corporate/employee-list`;
+export const GET_LABSCORPORATE = `${API_ENDPOINT}/api/corporate/corporate-lab-list`;
 export const UPDATE_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const ADD_NEW_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
 export const GET_CORPORATE_TESTS = `${API_ENDPOINT}/api/corporate/corporate-test-list`;
 export const UPDATE_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
-export const UPDATE_CORPORATE_STATUS = `${API_ENDPOINT}/api/lab/corporatelist`;
+export const UPDATE_CORPORATE_STATUS = `${API_ENDPOINT}/api/lab/accepted-corporates-list`;
+export const ADD_NEW_CORPORATE = `${API_ENDPOINT}/api/lab/corporatelist`;
 
 
 // About All Finance
@@ -269,6 +285,7 @@ export const ADD_NEW_IN_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-i
 export const GET_IN_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-in`;
 
 export const ADD_NEW_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
+export const ADD_NEW_CORPORATE_PAYMENT = `${API_ENDPOINT}/api/corporate/corporate-payment-out`;
 export const GET_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const DELETE_PAYMENTOUT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const GET_LIST_DONATIONAPPOINTMENT = `${API_ENDPOINT}/api/finance-officer/alldonation-Appointments`;
@@ -306,7 +323,9 @@ export const UPDATE_PAYMENTOUTCREATED_STATUS = `${API_ENDPOINT}/api/finance-offi
 export const GET_BOUNCED_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-out-bounced`;
 
 
-
+// Corporate out payment lists
+export const GET_CCREATEDOUT_STATUSS  = `${API_ENDPOINT}/api/corporate/corporate-payment-out`;
+export const UPDATE_PAYMENTOUTCCREATED_STATUS = `${API_ENDPOINT}/api/corporate/corporate-payment-out`;
 
 // LAB SETTINGS
 export const GET_LAB_SETTINGS = `${API_ENDPOINT}/api/lab/lab-settings`;
@@ -376,6 +395,7 @@ export const GET_DONOR_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatemen
 
 // DONOR STATEMENYTS
 export const GET_B2B_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/b2b-account-statements`;
+export const GET_CLAB_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/corporate-lab-account-statements`;
 
 // STAFF PROFILES
 export const GET_STAFF_PROFILE = `${API_ENDPOINT}/api/staff/staff-profile`;

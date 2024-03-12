@@ -14,6 +14,18 @@ import {
   GET_OFFEREDTEST_REFERRELFEE,
   GET_OFFEREDTEST_REFERRELFEE_FAIL,
   GET_OFFEREDTEST_REFERRELFEE_SUCCESS,
+  GET_COFFEREDTEST_REFERRELFEE,
+  GET_COFFEREDTEST_REFERRELFEE_FAIL,
+  GET_COFFEREDTEST_REFERRELFEE_SUCCESS,
+  GET_COFFEREDPROFILE_REFERRELFEE,
+  GET_COFFEREDPROFILE_REFERRELFEE_FAIL,
+  GET_COFFEREDPROFILE_REFERRELFEE_SUCCESS,
+  GET_COFFEREDPACKAGE_REFERRELFEE,
+  GET_COFFEREDPACKAGE_REFERRELFEE_FAIL,
+  GET_COFFEREDPACKAGE_REFERRELFEE_SUCCESS,
+  GET_COFFEREDRADIOLOGY_REFERRELFEE,
+  GET_COFFEREDRADIOLOGY_REFERRELFEE_FAIL,
+  GET_COFFEREDRADIOLOGY_REFERRELFEE_SUCCESS,
   GET_OFFEREDPROFILE_REFERRELFEE,
   GET_OFFEREDPROFILE_REFERRELFEE_FAIL,
   GET_OFFEREDPROFILE_REFERRELFEE_SUCCESS,
@@ -32,6 +44,9 @@ import {
   ADD_NEW_CORPORATE_TEST,
   ADD_CORPORATE_TEST_SUCCESS,
   ADD_CORPORATE_TEST_FAIL,
+  ADD_NEW_CORPORATE,
+  ADD_CORPORATE_SUCCESS,
+  ADD_CORPORATE_FAIL,
   ADD_NEW_OFFERED_MAINTEST,
   ADD_OFFERED_MAINTEST_SUCCESS,
   ADD_OFFERED_MAINTEST_FAIL,
@@ -44,6 +59,9 @@ import {
   UPDATE_CORPORATE_STATUS,
   UPDATE_CORPORATE_STATUS_SUCCESS,
   UPDATE_CORPORATE_STATUS_FAIL,
+  UPDATE_ACORPORATE_STATUS,
+  UPDATE_ACORPORATE_STATUS_SUCCESS,
+  UPDATE_ACORPORATE_STATUS_FAIL,
   DELETE_OFFERED_TEST,
   DELETE_OFFERED_TEST_SUCCESS,
   DELETE_OFFERED_TEST_FAIL,
@@ -140,6 +158,65 @@ export const getOfferedTestsReferrelFail = error => ({
   type: GET_OFFEREDTEST_REFERRELFEE_FAIL,
   payload: error,
 });
+
+export const getCOfferedTestsReferrel = id => ({
+  type: GET_COFFEREDTEST_REFERRELFEE,
+  payload: id,
+});
+
+export const getCOfferedTestsReferrelSuccess = offeredTests => ({
+  type: GET_COFFEREDTEST_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getCOfferedTestsReferrelFail = error => ({
+  type: GET_COFFEREDTEST_REFERRELFEE_FAIL,
+  payload: error,
+});
+
+export const getCOfferedProfilesReferrel = id => ({
+  type: GET_COFFEREDPROFILE_REFERRELFEE,
+  payload: id,
+});
+
+export const getCOfferedProfilesReferrelSuccess = offeredTests => ({
+  type: GET_COFFEREDPROFILE_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getCOfferedProfilesReferrelFail = error => ({
+  type: GET_COFFEREDPROFILE_REFERRELFEE_FAIL,
+  payload: error,
+});
+export const getCOfferedPackagesReferrel = id => ({
+  type: GET_COFFEREDPACKAGE_REFERRELFEE,
+  payload: id,
+});
+
+export const getCOfferedPackagesReferrelSuccess = offeredTests => ({
+  type: GET_COFFEREDPACKAGE_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getCOfferedPackagesReferrelFail = error => ({
+  type: GET_COFFEREDPACKAGE_REFERRELFEE_FAIL,
+  payload: error,
+});
+export const getCOfferedRadiologysReferrel = id => ({
+  type: GET_COFFEREDRADIOLOGY_REFERRELFEE,
+  payload: id,
+});
+
+export const getCOfferedRadiologysReferrelSuccess = offeredTests => ({
+  type: GET_COFFEREDRADIOLOGY_REFERRELFEE_SUCCESS,
+  payload: offeredTests,
+});
+
+export const getCOfferedRadiologysReferrelFail = error => ({
+  type: GET_COFFEREDRADIOLOGY_REFERRELFEE_FAIL,
+  payload: error,
+});
+
 export const getOfferedProfilesReferrel = id => ({
   type: GET_OFFEREDPROFILE_REFERRELFEE,
   payload: id,
@@ -195,6 +272,21 @@ export const addCorporateTestSuccess = offeredTest => ({
 
 export const addCorporateTestFail = error => ({
   type: ADD_CORPORATE_TEST_FAIL,
+  payload: error,
+});
+
+export const addNewCorporate = (offeredTest, id) => ({
+  type: ADD_NEW_CORPORATE,
+  payload: { offeredTest, id },
+});
+
+export const addCorporateSuccess = offeredTest => ({
+  type: ADD_CORPORATE_SUCCESS,
+  payload: offeredTest,
+});
+
+export const addCorporateFail = error => ({
+  type: ADD_CORPORATE_FAIL,
   payload: error,
 });
 
@@ -269,6 +361,21 @@ export const updateCorporateStatusSuccess = offeredTest => ({
 
 export const updateCorporateStatusFail = error => ({
   type: UPDATE_CORPORATE_STATUS_FAIL,
+  payload: error,
+});
+
+export const updateACorporateStatus = offeredTest => ({
+  type: UPDATE_ACORPORATE_STATUS,
+  payload: offeredTest,
+});
+
+export const updateACorporateStatusSuccess = offeredTest => ({
+  type: UPDATE_ACORPORATE_STATUS_SUCCESS,
+  payload: offeredTest,
+});
+
+export const updateACorporateStatusFail = error => ({
+  type: UPDATE_ACORPORATE_STATUS_FAIL,
   payload: error,
 });
 

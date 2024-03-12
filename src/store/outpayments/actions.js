@@ -2,6 +2,9 @@ import {
   GET_LABS_MOF,
   GET_LABS_MOF_SUCCESS,
   GET_LABS_MOF_FAIL,
+  GET_LABS_C,
+  GET_LABS_C_SUCCESS,
+  GET_LABS_C_FAIL,
   GET_LIST_DONATIONAPPOINTMENT,
   GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
   GET_LIST_DONATIONAPPOINTMENT_FAIL,
@@ -23,13 +26,35 @@ import {
   ADD_NEW_OUT_PAYMENT,
   ADD_OUT_PAYMENT_SUCCESS,
   ADD_OUT_PAYMENT_FAIL,
+  ADD_NEW_CORPORATE_PAYMENT,
+  ADD_CORPORATE_PAYMENT_SUCCESS,
+  ADD_CORPORATE_PAYMENT_FAIL,
   ADD_NEW_INVOICE_ADJUSTMENT,
   ADD_INVOICE_ADJUSTMENT_SUCCESS,
   ADD_INVOICE_ADJUSTMENT_FAIL,
   GET_STAFF_PROFILE,
   GET_STAFF_PROFILE_FAIL,
   GET_STAFF_PROFILE_SUCCESS,
+  GET_CORPORATE_PROFILE,
+  GET_CORPORATE_PROFILE_FAIL,
+  GET_CORPORATE_PROFILE_SUCCESS,
 } from "./actionTypes";
+
+// ----------- Corporate profile APIs actions -----------------
+export const getCorporateProfileforpayment = id => ({
+  type: GET_CORPORATE_PROFILE,
+  payload: id,
+});
+
+export const getCorporateProfileforpaymentSuccess = corporateProfiles => ({
+  type: GET_CORPORATE_PROFILE_SUCCESS,
+  payload: corporateProfiles,
+});
+
+export const getCorporateProfileforpaymentFail = error => ({
+  type: GET_CORPORATE_PROFILE_FAIL,
+  payload: error,
+});
 
 export const getStaffProfile = id => ({
   type: GET_STAFF_PROFILE,
@@ -103,6 +128,21 @@ export const getLabsMofFail = error => ({
   payload: error,
 });
 
+export const getLabsc = id => ({
+  type: GET_LABS_C,
+  payload: id,
+});
+
+export const getLabscSuccess = labsMof => ({
+  type: GET_LABS_C_SUCCESS,
+  payload: labsMof,
+});
+
+export const getLabscFail = error => ({
+  type: GET_LABS_C_FAIL,
+  payload: error,
+});
+
 export const getListDonationAppointment = () => ({
   type: GET_LIST_DONATIONAPPOINTMENT,
 });
@@ -172,6 +212,23 @@ export const addOutPaymentSuccess = outPayment => ({
 
 export const addOutPaymentFail = error => ({
   type: ADD_OUT_PAYMENT_FAIL,
+  payload: error,
+});
+export const addNewCorporatePayment = (outPayment, id) => ({
+  type: ADD_NEW_CORPORATE_PAYMENT,
+  payload: { outPayment, id },
+});
+
+export const addCorporatePaymentSuccess = outPayment => (
+  console.log("actions add corporate payment status",outPayment),
+{
+  
+  type: ADD_CORPORATE_PAYMENT_SUCCESS,
+  payload: outPayment,
+});
+
+export const addCorporatePaymentFail = error => ({
+  type: ADD_CORPORATE_PAYMENT_FAIL,
   payload: error,
 });
 export const addNewInvoiceAdjustment = (outPayment, id) => ({

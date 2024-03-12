@@ -251,53 +251,6 @@ class TestsList extends Component {
     });
     this.toggle();
   };
-  // handleOfferedTestClicks = (e, arg) => {
-  //   this.setState(
-  //     console.log("fuction call",{
-  //     offeredTest: "",
-  //     isEdit: false,
-  //     initialValues: {
-  //       ...this.state.initialValues,
-  //       test_id: arg // set the test_id value to arg
-  //     }
-  //   }));
-  //   this.toggle();
-  // };
-  // handleOfferedTestClicks = (e, arg) => {
-  //   this.setState(
-  //     console.log("id in function",{
-  //     test_id: arg,
-  //     offeredTest: "",
-  //     isEdit: false
-  //   }));
-  //   this.toggle();
-  // };
-  // handleOfferedTestClick = arg => {
-  //   const offeredTest = arg;
-  //   const testsList =arg;
-
-  //   this.setState({
-  //     test_id: offeredTest.test_id,
-  //     offeredTest: {
-  //       id: offeredTest.id,
-  //       test_name: offeredTest.name,
-  //       // unit_name: offeredTest.unit_name,
-  //       test_id: offeredTest.test_id,
-  //       // unit_id: offeredTest.unit_id,
-  //       duration_required: offeredTest.duration_required,
-  //       duration_type: offeredTest.duration_type,
-  //       sample_type: offeredTest.sample_type,
-  //       price: offeredTest.price,
-  //       is_eqa_participation: offeredTest.is_eqa_participation,
-  //       is_home_sampling_available: offeredTest.is_home_sampling_available,
-  //       is_test_performed: offeredTest.is_test_performed,
-  //       is_active:'Yes',
-  //     },
-  //     isEdit: true,
-  //   });
-
-  //   this.toggle();
-  // };
 
   render() {
     const { SearchBar } = Search;
@@ -469,7 +422,7 @@ class TestsList extends Component {
                                               const updateOfferedTest = {
                                                 id: offeredTest.id,
                                                 test_id: selectedTest, // use selectedTest as the test_id value
-                                                test_name: selectedTest,
+                                                test_name: selectedname,
                                                 price: values.price,
                                               };
                                             } else {

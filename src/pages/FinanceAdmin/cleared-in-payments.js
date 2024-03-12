@@ -423,7 +423,7 @@ class PendingB2BClients extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="In Payments" breadcrumbItem="Cleared" />
+            <Breadcrumbs title="Payments" breadcrumbItem="MIF and MOF with status is equal to Cleared." />
             <Row>
               <Col lg="12">
                 <Card>
@@ -448,7 +448,7 @@ class PendingB2BClients extends Component {
                                 <div className="ms-2 mb-4">
                                                                 <div>
                                       <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Money In Form Statuss</strong>
+                                      <strong>Select MIF/ MOF</strong>
                                       </Label>
                                       <select
                                         className="form-control select2"
@@ -457,8 +457,8 @@ class PendingB2BClients extends Component {
                                         onChange={this.handleSelectChange}
                                         
                                       >
-                                        <option value="Payment In Cleared">Payment In Cleared</option>
-                                        <option value="Payment Out Cleared">Payment Out Cleared</option>
+                                        <option value="Payment In Cleared">MIF Cleared</option>
+                                        <option value="Payment Out Cleared">MOF Cleared</option>
                                       </select>
                                     </div></div>
                                 </Col>

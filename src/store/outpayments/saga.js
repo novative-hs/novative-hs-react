@@ -4,22 +4,29 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import {
   GET_OUT_PAYMENT, 
   GET_LABS_MOF,
+  GET_LABS_C,
   GET_LIST_DONATIONAPPOINTMENT,
   GET_LIST_INVOICE,
   GET_BANKS,
   GET_BANK_ACCOUNTS,
   GET_B2B_CLIENTS,
   ADD_NEW_OUT_PAYMENT,
+  ADD_NEW_CORPORATE_PAYMENT,
   ADD_NEW_INVOICE_ADJUSTMENT,
   GET_STAFF_PROFILE,
+  GET_CORPORATE_PROFILE
 
 } from "./actionTypes";
 
 import {
   getStaffProfileSuccess,
   getStaffProfileFail,
+  getCorporateProfileforpaymentSuccess,
+  getCorporateProfileforpaymentFail,
   getLabsMofSuccess,
   getLabsMofFail,
+  getLabscSuccess,
+  getLabscFail,
   getListDonationAppointmentSuccess,
   getListDonationAppointmentFail,
   getListInvoiceSuccess,
@@ -34,13 +41,15 @@ import {
   getOutPaymentFail,
   addOutPaymentFail,
   addOutPaymentSuccess,
+  addCorporatePaymentFail,
+  addCorporatePaymentSuccess,
   addInvoiceAdjustmentFail,
   addInvoiceAdjustmentSuccess,
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getOutPayment, getLabsMof ,getListDonationAppointment, getListInvoice, getStaffProfile,  getBanks,   getBankAccounts,
-
+import { getOutPayment, getLabsMof, getCorporateProfileforpayment, getLabsc ,getListDonationAppointment, getListInvoice, getStaffProfile,  getBanks,   getBankAccounts,
+  addNewCorporatePayment,
   addNewOutPayment,
   addNewInvoiceAdjustment,
   getB2bClients, 
@@ -62,6 +71,15 @@ function* fetchStaffProfile(object) {
     yield put(getStaffProfileSuccess(response));
   } catch (error) {
     yield put(getStaffProfileFail(error));
+  }
+}
+function* fetchCorporateProfileforpayment(object) {
+  console.log("Saga: ", object);
+  try {
+    const response = yield call(getCorporateProfileforpayment, object.payload);
+    yield put(getCorporateProfileforpaymentSuccess(response));
+  } catch (error) {
+    yield put(getCorporateProfileforpaymentFail(error));
   }
 }
 
@@ -93,6 +111,14 @@ function* fetchLabsMof() {
     yield put(getLabsMofSuccess(response));
   } catch (error) {
     yield put(getLabsMofFail(error));
+  }
+}
+function* fetchLabsc(object) {
+  try {
+    const response = yield call(getLabsc, object.payload);
+    yield put(getLabscSuccess(response));
+  } catch (error) {
+    yield put(getLabscFail(error));
   }
 }
 function* fetchListDonationAppointment() {
@@ -142,6 +168,20 @@ function* onAddNewOutPayment(object) {
     yield put(addOutPaymentFail(error));
   }
 }
+function* onAddNewCorporatePayment(object) {
+  console.log("add corporate payment Saga: ", object);
+
+  try {
+    const response = yield call(
+      addNewCorporatePayment,
+      object.payload.outPayment,
+      object.payload.id
+    );
+    yield put(addCorporatePaymentSuccess(response));
+  } catch (error) {
+    yield put(addCorporatePaymentFail(error));
+  }
+}
 
 function* onAddNewInvoiceAdjustment(object) {
   try {
@@ -157,11 +197,13 @@ function* onAddNewInvoiceAdjustment(object) {
 }
 
 function* outPaymentSaga() {
+  yield takeEvery(GET_CORPORATE_PROFILE, fetchCorporateProfileforpayment);
   yield takeEvery(GET_STAFF_PROFILE, fetchStaffProfile);
   yield takeEvery(GET_BANKS, fetchBanks);
   yield takeEvery(GET_BANK_ACCOUNTS, fetchBankAccounts);
   yield takeEvery(GET_OUT_PAYMENT,fetchOutPayments);
   yield takeEvery(GET_LABS_MOF, fetchLabsMof);
+  yield takeEvery(GET_LABS_C, fetchLabsc);
   yield takeEvery(GET_LIST_DONATIONAPPOINTMENT, fetchListDonationAppointment);
   yield takeEvery(GET_LIST_INVOICE, fetchListInvoice);
   yield takeEvery(
@@ -169,6 +211,7 @@ function* outPaymentSaga() {
     fetchB2bAllClientsList
   );  
   yield takeEvery(ADD_NEW_OUT_PAYMENT, onAddNewOutPayment);
+  yield takeEvery(ADD_NEW_CORPORATE_PAYMENT, onAddNewCorporatePayment);
   yield takeEvery(ADD_NEW_INVOICE_ADJUSTMENT, onAddNewInvoiceAdjustment);
 }
 

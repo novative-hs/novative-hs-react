@@ -1,25 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component, useState } from "react";
 import Select from "react-select";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import axios from "axios";
-import { useParams } from 'react-router-dom'
 import { withRouter, Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
-// import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import * as Yup from "yup";
+
 import {
-  FormGroup,
   Card,
   CardBody,
   Col,
   Container,
   Row,
-  Modal,
-  Button,
-  ModalHeader,
-  ModalBody,
   Label,
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -29,42 +26,36 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
-
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
 
 //Import Breadcrumb
+import "assets/scss/table.scss";
 import Breadcrumbs from "components/Common/Breadcrumb";
-import DeleteModal from "components/Common/DeleteModal";
 import {
   // getUnits,
   getLabCorporate,
-} from "store/corporatedata/actions";
-import {
+} from "store/corporatedata/actions";import {
   // getUnits,
-  updateCorporateStatus,
+  addNewCorporate,
 } from "store/offered-tests/actions";
 
-import { isEmpty, size } from "lodash";
-import "assets/scss/table.scss";
-
-class OfferedTestsList extends Component {
+class TestsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
       cemployeeDatas: [],
-      tests: [],
-      labProfiles: [],
-      // units: [],
+      offeredTests: [],
       offeredTest: "",
-      type: "",
-      modal: false,
-      deleteModal: false,
+      corporate_id: "",
+      assignedTo: "",
+      TestsList: "",
+      btnText: "Copy",
+      cemployeeDatas: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      offeredTestListColumns: [
+      testsListListColumns: [
         {
           text: "id",
           dataField: "id",
@@ -78,7 +69,7 @@ class OfferedTestsList extends Component {
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              <span>
+              <span className="float-start">
                 {offeredTest.name}
               </span>
             </>
@@ -128,59 +119,44 @@ class OfferedTestsList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, offeredTest) => (
-            <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e => this.handleOfferedTestClick(e, offeredTest)}
-                  ></i>
-                </Link>
-              </Tooltip>
-            </div>
+            // <div className="d-flex gap-6">
+              <div className="float-middle">
+                <Button
+                  color="primary"
+                  className="w-55  btn-block btn btn-primary"
+                  // onClick={() => this.handleOfferedTestClicks(offeredTest.id)}
+                  onClick={e => this.handleOfferedTestClicks(e, offeredTest.id, offeredTest.name)}
+
+                // disabled={offeredTest.length == 0}
+                >
+                  <i className="mdi mdi-sticker-check-outline me-1" />
+                  Accept
+                </Button>
+              </div>
+            // </div>
           ),
         },
       ],
     };
-    this.handleOfferedTestClick = this.handleOfferedTestClick.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.toggleMessageModal.bind(this);
     this.handleOfferedTestClicks = this.handleOfferedTestClicks.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
+    // this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
   }
 
   componentDidMount() {
-
-    const { cemployeeDatas, onGetLabCorporate, } = this.props;
-    onGetLabCorporate(this.state.user_id);
+    const { cemployeeDatas, onGetLabCorporate } = this.props;
+    console.log(onGetLabCorporate(this.state.user_id));
     this.setState({ cemployeeDatas });
-    console.log("state", cemployeeDatas)
-
   }
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-    }));
-  }
-
-  // Select
-  handleSelectGroup = selectedGroup => {
-    this.setState({ offeredTest: selectedGroup.value });
-  };
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
       test_details: arg.test_details,
+      description_in_english: arg.description_in_english,
+      description_in_urdu: arg.description_in_urdu,
     });
   };
-  // handleMouseExit = () => {
-  //   this.setState({
-  //     PatientModal: false,
-  //     isHovered: false,
-
-  //   });
-  // };
   togglePatientModal = () => {
     this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
@@ -189,21 +165,46 @@ class OfferedTestsList extends Component {
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
   };
-  handleOfferedTestClicks = () => {
-    this.setState({ offeredTest: "", isEdit: false, });
+  openOtherModal = (e, arg) => {
+    this.setState({
+      OtherModal: true,
+      test_details: arg.test_details,
+      description_in_english: arg.description_in_english,
+      description_in_urdu: arg.description_in_urdu,
+    });
+  };
+  toggleOtherModal = () => {
+    this.setState(prevState => ({
+      OtherModal: !prevState.OtherModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal,
+    }));
+  }
+
+  handleApprovedEvent = (e, arg) => {
+    this.setState({
+      id: arg,
+    });
+
     this.toggle();
   };
 
-  // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { cemployeeDatas } = this.props;
-    if (
-      !isEmpty(cemployeeDatas) &&
-      size(prevProps.cemployeeDatas) !== size(cemployeeDatas)
-    ) {
-      this.setState({ cemployeeDatas: {}, isEdit: false });
-    }
-  }
+  toggleMessageModal = () => {
+    this.setState(prevState => ({
+      messageModal: !prevState.messageModal,
+    }));
+  };
+
+  openMessageModal = (e, arg) => {
+    this.setState({ messageModal: true, message: arg.message });
+  };
 
   onPaginationPageChange = page => {
     if (
@@ -217,42 +218,39 @@ class OfferedTestsList extends Component {
     }
   };
 
-  /* Insert,Update Delete data */
-
-  toggleDeleteModal = () => {
-    this.setState(prevState => ({
-      deleteModal: !prevState.deleteModal,
-    }));
-  };
-
-  onClickDelete = cemployeeDatas => {
-    this.setState({ cemployeeDatas: cemployeeDatas });
-    this.setState({ deleteModal: true });
-  };
-
-  handleOfferedTestClick = (e, arg) => {
+  handleApprovedEvent = (e, arg) => {
     this.setState({
-      offeredTest: {
-        id: arg.id,
-        status: arg.status,
-      },
-      isEdit: true,
+      id: arg,
     });
 
     this.toggle();
   };
+  handleOfferedTestClicks = (e, arg1, arg2) => {
+    this.setState({
+      offeredTest: "",
+      isEdit: false,
+      initialValues: {
+        ...this.state.initialValues,
+        corporate_id: arg1, // set the corporate_id value to arg
+        name: arg2,
+      },
+      selectedTest: arg1, // store arg in component state
+      selectedname: arg2, 
+
+    });
+    this.toggle();
+  };
   handleSaveButtonClick = () => {
     // Your other logic...
+    const { selectedTest } = this.state; // Use selectedTest from the component state
   
-    const { offeredTest } = this.state;
-  
-    const updateCorporateStatus = {
-      id: offeredTest.id,
+    const newOfferedTest = {
+      corporate_id: selectedTest, // Use selectedTest as the corporate_id value
       status: this.state.status,
     };
   
     // Dispatch the action
-    this.props.onUpdateCorporateStatus(updateCorporateStatus);
+    this.props.onAddNewCorporate(newOfferedTest,this.state.user_id);
   
     // Optionally, you can handle the asynchronous behavior here
     // For example, use a promise or callback function
@@ -265,20 +263,17 @@ class OfferedTestsList extends Component {
     // Close the modal or perform other actions as needed
     this.toggle();
   };
-
   render() {
     const { SearchBar } = Search;
-
-    const { cemployeeDatas } = this.props;
-
     const { isEdit, deleteModal } = this.state;
-
-    const { onUpdateCorporateStatus, onGetLabCorporate, } =
-      this.props;
+    const { offeredTests } = this.props;
     const offeredTest = this.state.offeredTest;
+    const { cemployeeDatas } = this.props;
+    const data = this.state.data;
+    const { onAddNewCorporate, onGetLabCorporate } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10000,
+      sizePerPage: cemployeeDatas.length,
       totalSize: cemployeeDatas.length, // replace later with size(cemployeeDatas),
       custom: true,
     };
@@ -294,39 +289,41 @@ class OfferedTestsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Corporate Offered Tests List | Lab Hazir</title>
+            <title>Corporate Medical Tests | Lab Hazir</title>
           </MetaTags>
+
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Corporate Offered Tests" breadcrumbItem="Tests List" />
+            <Breadcrumbs title="Tests" breadcrumbItem="Corporations List" />
             <Row>
-              {/* <div> <span className="text-danger font-size-12">
-                                    <strong> 
-                                    Note: If referral fee of any offered test is not entered by Labhazir, all such tests will not be online.
-                                    </strong>
-                                  </span>
-                                  </div> */}
               <Col lg="12">
                 <Card>
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.offeredTestListColumns}
+                      columns={this.state.testsListListColumns}
                       data={cemployeeDatas}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.offeredTestListColumns}
+                          columns={this.state.testsListListColumns}
                           data={cemployeeDatas}
                           search
                         >
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="8" lg="8">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                              <div> 
+                                  <span className="text-danger font-size-12">
+                  <strong>
+                    Note: Here only the list of Corporations that match your Territorie will be shown.
+                  </strong>
+                  </span>
+                  </div>
+                                <Col sm="4">
+                                  <div className="search-box ms-2 mb-2 mt-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
@@ -334,10 +331,9 @@ class OfferedTestsList extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
+                                  
                                 </Col>
-
                               </Row>
-
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -345,55 +341,13 @@ class OfferedTestsList extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-condensed table-hover"}
+                                      classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
                                     />
-                                    <Modal
-                                      isOpen={this.state.PatientModal}
-                                      className={this.props.className}
-                                    // onPointerLeave={this.handleMouseExit}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.togglePatientModal}
-                                        tag="h4"
-                                      >
-                                        <span></span>
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik>
-                                          <Form>
-                                            <Row>
-                                              <Col className="col-12">
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Included Tests
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <textarea
-                                                      name="test_details"
-                                                      id="test_details"
-                                                      rows="10"
-                                                      cols="10"
-                                                      value={this.state.test_details}
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                              </Col>
-                                            </Row>
-                                          </Form>
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
-
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
@@ -411,9 +365,8 @@ class OfferedTestsList extends Component {
                                           enableReinitialize={true}
                                           initialValues={{
                                             status:
-                                              (this.state.offeredTest &&
-                                                this.state.offeredTest
-                                                  .status) ||
+                                              (offeredTest &&
+                                                offeredTest.status) ||
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -433,35 +386,56 @@ class OfferedTestsList extends Component {
                                                 50000,
                                                 "Please enter a number less than or equal to 50000"
                                               ),
-
                                           })}
-                                          onSubmit={(values, { setSubmitting }) => {
-                                            console.log("Form submitted with values:", values);
-                                            setSubmitting(false);
-
-                                            const updateCorporateStatus =
+                                          // in onSubmit function
+                                          onSubmit={values => {
                                             {
-                                              id: offeredTest.id,
-                                              status:
-                                                values.status,
-                                            };
-
-                                            // update PaymentStatus
-                                            onUpdateCorporateStatus(
-                                              updateCorporateStatus
-                                            );
-                                            setTimeout(() => {
-                                              onGetLabCorporate(
-                                                this.state.user_id
-                                              );
-                                            }, 1000);
+                                              const newOfferedTest = {
+                                                corporate_id: offeredTest.id,
+                                                status: values.status,
+                                              };
+                                              onAddNewCorporate(newOfferedTest, this.state.user_id);
+                                              setTimeout(() => {
+                                                onGetLabCorporate(this.state.user_id);
+                                              }, 1000);
+                                            }
+                                            this.setState({
+                                              selectedOfferedTest: null,
+                                            });
                                             this.toggle();
                                           }}
                                         >
-                                          {({ errors, status, touched, isValid }) => (
+                                          {({ errors, status, touched }) => (
                                             <Form>
                                               <Row>
-                                                <FormGroup className="mb-4" row>
+                                              <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Corporate id
+                                                      <span className="text-danger font-size-12">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="corporate_id"
+                                                      type="text"
+                                                      readOnly={true}
+                                                      value= {this.state.selectedname}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.corporate_id &&
+                                                        touched.corporate_id
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="corporate_id"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                <Col className="col-12">
+                                                  <div className="mb-3">
                                                   <Label
                                                     htmlFor="name"
                                                     md="2"
@@ -484,11 +458,14 @@ class OfferedTestsList extends Component {
                                                       className="form-select"
                                                     >
                                                       {/* options */}
+                                                      <option value=" ">Choose a Option</option>
                                                       <option value="Pending">Pending</option>
                                                       <option value="Accept">Accept</option>
                                                     </select>
                                                   </Col>
-                                                </FormGroup>
+                                                  </div>
+
+                                                </Col>
                                               </Row>
 
                                               <Row>
@@ -500,7 +477,8 @@ class OfferedTestsList extends Component {
   onClick={() => this.handleSaveButtonClick()}
 >
   Save
-</button>                                            </div>
+</button>     
+                                                  </div>
                                                 </Col>
                                               </Row>
                                             </Form>
@@ -527,27 +505,26 @@ class OfferedTestsList extends Component {
   }
 }
 
-OfferedTestsList.propTypes = {
+TestsList.propTypes = {
   match: PropTypes.object,
-  tests: PropTypes.array,
-  labProfiles: PropTypes.array,
-  // units: PropTypes.array,
   cemployeeDatas: PropTypes.array,
   className: PropTypes.any,
   onGetLabCorporate: PropTypes.func,
-  onUpdateCorporateStatus: PropTypes.func,
+  onAddNewCorporate: PropTypes.func,
+  offeredTests: PropTypes.array,
+  onAssignAudit: PropTypes.func,
 };
-
 const mapStateToProps = ({ cemployeeData }) => ({
   cemployeeDatas: cemployeeData.cemployeeDatas,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetLabCorporate: id => dispatch(getLabCorporate(id)),
-  onUpdateCorporateStatus: offeredTest => dispatch(updateCorporateStatus(offeredTest)),
+  onAddNewCorporate: (offeredTest, id) =>
+    dispatch(addNewCorporate(offeredTest, id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(OfferedTestsList));
+)(withRouter(TestsList));

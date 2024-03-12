@@ -3,15 +3,19 @@ import PropTypes from "prop-types";
 import { Row, Col, Collapse } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
 import classname from "classnames";
+import { connect } from "react-redux";
 
 //i18n
 import { withTranslation } from "react-i18next";
 import "./horizontal-navbar.scss";
+import { getPatientProfile } from "store/labmarket/actions";
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      patientProfile: [],
+
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -37,6 +41,12 @@ class Navbar extends Component {
     if (matchingMenuItem) {
       this.activateParentDropdown(matchingMenuItem);
     }
+    const { patientProfile, getPatientProfile } = this.props;
+    getPatientProfile(this.state.user_id);
+    this.setState({
+      patientProfile
+    });
+    console.log("state in navbar", patientProfile);
   }
 
   activateParentDropdown = item => {
@@ -67,6 +77,8 @@ class Navbar extends Component {
   };
 
   render() {
+    const { patientProfile } = this.props;
+
     return (
       <React.Fragment>
         <div className="topnav">
@@ -76,17 +88,17 @@ class Navbar extends Component {
               id="navigation"
             >
               {this.state.user_id &&
-              this.state.user_type === "CSR" &&
-              this.state.user_type !== "b2bclient" ? (
+                this.state.user_type === "CSR" &&
+                this.state.user_type !== "b2bclient" ? (
                 <Collapse
                   isOpen={this.props.menuOpen}
                   className="navbar-collapse"
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                    <li className="nav-item">
                       <Link
-                         to={"/tests-offered-labhazir"
+                        to={"/tests-offered-labhazir"
                         }
                         className="dropdown-item"
                       >
@@ -135,7 +147,7 @@ class Navbar extends Component {
                     </li>
                     <li className="nav-item">
                       <Link
-                         to={"/nearby-packages"
+                        to={"/nearby-packages"
                         }
                         className="dropdown-item"
                       >
@@ -145,7 +157,7 @@ class Navbar extends Component {
                     </li>
                     <li className="nav-item">
                       <Link
-                         to={"/nearby-radiology"
+                        to={"/nearby-radiology"
                         }
                         className="dropdown-item"
                       >
@@ -153,7 +165,7 @@ class Navbar extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    
+
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -177,35 +189,35 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                                : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
-                        <li className="nav-item">
-                          <Link
-                            to={
-                              this.props.match.params.uuid
-                                ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
-                                : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                            }
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Book a Test</span>
-                          </Link>
-                        </li>
-                      ) : null}
+                    {this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                              : `/tests-offered-labhazir/${this.props.match.params.filnalurl}/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
+                    ) : !this.props.match.params.filnalurl && this.props.match.params.guest_id ? (
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.uuid
+                              ? `/tests-offered-labhazir/${this.props.match.params.guest_id}/${this.props.match.params.uuid}`
+                              : `/tests-offered-labhazir/${this.props.match.params.guest_id}`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Book a Test</span>
+                        </Link>
+                      </li>
+                    ) : null}
                     {this.props.match.params.filnalurl &&
-                    this.props.match.params.guest_id ? (
+                      this.props.match.params.guest_id ? (
                       <li className="nav-item">
                         <Link
                           to={
@@ -234,7 +246,7 @@ class Navbar extends Component {
                       </li>
                     ) : null}
                     {this.props.match.params.filnalurl &&
-                    this.props.match.params.guest_id ? (
+                      this.props.match.params.guest_id ? (
                       <li className="nav-item">
                         <Link
                           to={
@@ -263,7 +275,7 @@ class Navbar extends Component {
                       </li>
                     ) : null}
                     {this.props.match.params.filnalurl &&
-                    this.props.match.params.guest_id ? (
+                      this.props.match.params.guest_id ? (
                       <li className="nav-item">
                         <Link
                           to={
@@ -293,7 +305,7 @@ class Navbar extends Component {
                     ) : null}
 
                     {this.props.match.params.filnalurl &&
-                    this.props.match.params.guest_id ? (
+                      this.props.match.params.guest_id ? (
                       <li className="nav-item">
                         <Link
                           to={
@@ -323,7 +335,7 @@ class Navbar extends Component {
                     ) : null}
 
                     {this.props.match.params.filnalurl &&
-                    this.props.match.params.guest_id ? (
+                      this.props.match.params.guest_id ? (
                       <li className="nav-item">
                         <Link
                           to={
@@ -351,7 +363,7 @@ class Navbar extends Component {
                         </Link>
                       </li>
                     ) : null}
-                   
+
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -376,147 +388,116 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/tests-offered-labhazir/${this.props.match.params.guest_id}`
-                            : this.props.match.params.uuid
-                            ? `/tests-offered-labhazir/${this.props.match.params.uuid}`
-                            : `/tests-offered-labhazir`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Book a Test</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/labs/${this.props.match.params.guest_id}`
-                            : this.props.match.params.uuid
-                            ? `/labs/${this.props.match.params.uuid}`
-                            : `/labs`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Labs</span>
-                        {/* {this.props.t("Labs")} */}
-                      </Link>
-                    </li>
-
-                    <li className="nav-item">
-                      {/* <Link to="/nearby-test" className="dropdown-item">
+                    {!this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card ? (
+                      <>
+                        <li className="nav-item">
+                          <Link
+                            to={this.props.match.params.guest_id ? `/tests-offered-labhazir/${this.props.match.params.guest_id}` :
+                              this.props.match.params.uuid ? `/tests-offered-labhazir/${this.props.match.params.uuid}` : `/tests-offered-labhazir`}
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Book a Test</span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={this.props.match.params.guest_id ? `/labs/${this.props.match.params.guest_id}` :
+                              this.props.match.params.uuid ? `/labs/${this.props.match.params.uuid}` : `/labs`}
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Labs</span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          {/* <Link to="/nearby-test" className="dropdown-item">
                       {this.props.t("Search by Tests")}
                     </Link> */}
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-test/${this.props.match.params.guest_id}`
-                            : this.props.match.params.uuid
-                            ? `/nearby-test/${this.props.match.params.uuid}`
-                            : `/nearby-test`
-                        }
-                        className="dropdown-item"
-                      >
-                        {/* {this.props.t("Tests")} */}
-                        <span className="pt-4 font-size-12">Tests</span>
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-profiles/${this.props.match.params.guest_id}`
-                            : this.props.match.params.uuid
-                            ? `/nearby-profiles/${this.props.match.params.uuid}`
-                            : `/nearby-profiles`
-                        }
-                        className="dropdown-item"
-                      >
-                        {/* {this.props.t("Profiles")} */}
-                        <span className="pt-4 font-size-12">Profiles</span>
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-packages/${this.props.match.params.guest_id}`
-                            : this.props.match.params.uuid
-                            ? `/nearby-packages/${this.props.match.params.uuid}`
-                            : `/nearby-packages`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Packages</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link
-                        to={
-                          this.props.match.params.guest_id
-                            ? `/nearby-radiology/${this.props.match.params.guest_id}`
-                            : this.props.match.params.uuid
-                            ? `/nearby-radiology/${this.props.match.params.uuid}`
-                            : `/nearby-radiology`
-                        }
-                        className="dropdown-item"
-                      >
-                        <span className="pt-4 font-size-12">Radiology</span>
-                        {/* {this.props.t("Packages")} */}
-                      </Link>
-                    </li>
-                    
-                    {this.state.user_id && this.state.user_type == "patient" && (
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-test/${this.props.match.params.guest_id}`
+                                : this.props.match.params.uuid
+                                  ? `/nearby-test/${this.props.match.params.uuid}`
+                                  : `/nearby-test`
+                            }
+                            className="dropdown-item"
+                          >
+                            {/* {this.props.t("Tests")} */}
+                            <span className="pt-4 font-size-12">Tests</span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-profiles/${this.props.match.params.guest_id}`
+                                : this.props.match.params.uuid
+                                  ? `/nearby-profiles/${this.props.match.params.uuid}`
+                                  : `/nearby-profiles`
+                            }
+                            className="dropdown-item"
+                          >
+                            {/* {this.props.t("Profiles")} */}
+                            <span className="pt-4 font-size-12">Profiles</span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-packages/${this.props.match.params.guest_id}`
+                                : this.props.match.params.uuid
+                                  ? `/nearby-packages/${this.props.match.params.uuid}`
+                                  : `/nearby-packages`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Packages</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link
+                            to={
+                              this.props.match.params.guest_id
+                                ? `/nearby-radiology/${this.props.match.params.guest_id}`
+                                : this.props.match.params.uuid
+                                  ? `/nearby-radiology/${this.props.match.params.uuid}`
+                                  : `/nearby-radiology`
+                            }
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Radiology</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                      </>
+                    ) : (this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card) ? (
                       <li className="nav-item">
                         <Link
-                          to={
-                            this.props.match.params.guest_id
-                              ? `/test-appointments/${this.props.match.params.guest_id}`
-                              : this.props.match.params.uuid
-                              ? `/test-appointments/${this.props.match.params.uuid}`
-                              : `/test-appointments`
-                          }
+                          to={this.props.match.params.guest_id ? `/labs/${this.props.match.params.guest_id}` :
+                            this.props.match.params.uuid ? `/labs/${this.props.match.params.uuid}` : `/labs`}
                           className="dropdown-item"
                         >
-                          {/* {this.props.t("My Appointments")} */}
-                          <span className="pt-4 font-size-12">
-                            My Appointments
-                          </span>
+                          <span className="pt-4 font-size-12">Labs</span>
                         </Link>
                       </li>
-                      /* <li className="nav-item dropdown">
-                           <Link
-                            to="/#"
-                            onClick={e => {
-                              e.preventDefault();
-                              this.setState({ appState: !this.state.appState });
-                            }}
-                            className="nav-link dropdown-toggle arrow-none"
-                          >
-                            <i className="bx bx-test-tube me-2" />
-                            {this.props.t("Appointments")}{" "}
-                            <div className="arrow-down" />
-                          </Link>
-                          <div
-                            className={classname("dropdown-menu", {
-                              show: this.state.appState,
-                            })}
-                          >
-                            <Link
-                              to={"/test-appointments"}
-                              className="dropdown-item"
-                            >
-                              {this.props.t("Test Appointments")}
-                            </Link>
-                          </div>
-                          </li> */
+                    ) : null}
+
+                    {this.state.user_id && this.state.user_type === "patient" && (
+                      <li className="nav-item">
+                        <Link
+                          to={this.props.match.params.guest_id ? `/test-appointments/${this.props.match.params.guest_id}` :
+                            this.props.match.params.uuid ? `/test-appointments/${this.props.match.params.uuid}` : `/test-appointments`}
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">My Appointments</span>
+                        </Link>
+                      </li>
                     )}
                   </ul>
+
+
                 </Collapse>
               ) : this.state.user_id &&
                 this.state.user_type !== "CSR" &&
@@ -527,7 +508,7 @@ class Navbar extends Component {
                   id="topnav-menu-content"
                 >
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                    <li className="nav-item">
                       <Link
                         to={
                           this.props.match.params.guest_id
@@ -605,7 +586,7 @@ class Navbar extends Component {
                         {/* {this.props.t("Packages")} */}
                       </Link>
                     </li>
-                    
+
                     {this.state.user_id && this.state.user_type == "patient" && (
                       <li className="nav-item">
                         <Link
@@ -635,6 +616,33 @@ Navbar.propTypes = {
   match: PropTypes.object,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  patientProfile: PropTypes.array,
+  getPatientProfile: PropTypes.func,
 };
 
-export default withRouter(withTranslation()(Navbar));
+// Header.propTypes = {
+//   match: PropTypes.object,
+//   openLeftMenuCallBack: PropTypes.func,
+//   t: PropTypes.any,
+//   toggleRightSidebar: PropTypes.func,
+//   carts: PropTypes.array,
+//   getCarts: PropTypes.func,
+//   patientProfile: PropTypes.array,
+//   getPatientProfile: PropTypes.func,
+// };
+
+const mapStateToProps = state => {
+  const { layoutType } = state.Layout;
+  const { carts } = state.carts;
+  const patientProfile = state.LabMarket.patientProfile; // Corrected assignment
+  return { layoutType, carts, patientProfile }; // Added patientProfile to the returned object
+};
+
+
+// export default connect(mapStatetoProps, { toggleRightSidebar })(
+//   withTranslation()(Header)
+// );
+
+export default withRouter(
+  connect(mapStateToProps, { getPatientProfile })(withTranslation()(Navbar))
+);

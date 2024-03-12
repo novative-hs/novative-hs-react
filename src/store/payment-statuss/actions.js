@@ -11,6 +11,9 @@ import {
   GET_CREATEDOUT_STATUSS,
   GET_CREATEDOUT_STATUSS_FAIL,
   GET_CREATEDOUT_STATUSS_SUCCESS,
+  GET_CCREATEDOUT_STATUSS,
+  GET_CCREATEDOUT_STATUSS_FAIL,
+  GET_CCREATEDOUT_STATUSS_SUCCESS,
   // GET_CLEAROUT_STATUSS,
   // GET_CLEAROUT_STATUSS_FAIL,
   // GET_CLEAROUT_STATUSS_SUCCESS,
@@ -38,6 +41,9 @@ import {
   UPDATE_PAYMENTOUTCREATED_STATUS,
   UPDATE_PAYMENTOUTCREATED_STATUS_SUCCESS,
   UPDATE_PAYMENTOUTCREATED_STATUS_FAIL,
+  UPDATE_PAYMENTOUTCCREATED_STATUS,
+  UPDATE_PAYMENTOUTCCREATED_STATUS_SUCCESS,
+  UPDATE_PAYMENTOUTCCREATED_STATUS_FAIL,
   UPDATE_PAYMENTINBOUNCED_STATUS,
   UPDATE_PAYMENTINBOUNCED_STATUS_SUCCESS,
   UPDATE_PAYMENTINBOUNCED_STATUS_FAIL,
@@ -163,6 +169,22 @@ export const getBouncedInStatussFail = error => ({
   payload: error,
 });
 
+// corporate payment out
+
+export const getCCreatedOutStatussSuccess = paymentCreatedStatuss => ({
+  type: GET_CCREATEDOUT_STATUSS_SUCCESS,
+  payload: paymentCreatedStatuss,
+});
+
+export const getCCreatedOutStatussFail = error => ({
+  type: GET_CCREATEDOUT_STATUSS_FAIL,
+  payload: error,
+});
+export const getCCreatedOutStatuss = id => ({
+  type: GET_CCREATEDOUT_STATUSS,
+  payload: id,
+});
+
 export const getCreatedOutStatussSuccess = paymentCreatedStatuss => ({
   type: GET_CREATEDOUT_STATUSS_SUCCESS,
   payload: paymentCreatedStatuss,
@@ -284,6 +306,20 @@ export const updatePaymentOutCreatedStatusSuccess = paymentOutCreatedStatuss => 
 
 export const updatePaymentOutCreatedStatusFail = error => ({
   type: UPDATE_PAYMENTOUTCREATED_STATUS_FAIL,
+  payload: error,
+});
+export const updatePaymentOutCCreatedStatuss = paymentOutCreatedStatuss => ({
+  type: UPDATE_PAYMENTOUTCCREATED_STATUS,
+  payload: paymentOutCreatedStatuss,
+});
+
+export const updatePaymentOutCCreatedStatusSuccess = paymentOutCreatedStatuss => ({
+  type: UPDATE_PAYMENTOUTCCREATED_STATUS_SUCCESS,
+  payload: paymentOutCreatedStatuss,
+});
+
+export const updatePaymentOutCCreatedStatusFail = error => ({
+  type: UPDATE_PAYMENTOUTCCREATED_STATUS_FAIL,
   payload: error,
 });
 export const updatePaymentInBouncedStatus = paymentInBouncedStatus => ({

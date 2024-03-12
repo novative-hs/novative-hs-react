@@ -2,6 +2,9 @@ import {
   GET_TERRITORIES_LIST,
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
+  GET_CORPORATES_LIST,
+  GET_CORPORATES_LIST_SUCCESS,
+  GET_CORPORATES_LIST_FAIL,
   ADD_PATIENT_INFORMATION,
   ADD_PATIENT_INFORMATION_SUCCESSFUL,
   ADD_PATIENT_INFORMATION_FAILED,
@@ -22,6 +25,24 @@ export const getTerritoriesListSuccess =
 
 export const getTerritoriesListFail = error => ({
   type: GET_TERRITORIES_LIST_FAIL,
+  payload: error,
+});
+
+// Corporates
+export const getCorporatesList = () => ({
+  type: GET_CORPORATES_LIST,
+  payload: {},
+});
+
+
+export const getCorporatesListSuccess =
+  territories => ({
+    type: GET_CORPORATES_LIST_SUCCESS,
+    payload: territories,
+  });
+
+export const getCorporatesListFail = error => ({
+  type: GET_CORPORATES_LIST_FAIL,
   payload: error,
 });
 

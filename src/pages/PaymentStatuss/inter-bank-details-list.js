@@ -286,7 +286,7 @@ class PaymentStatussList extends Component {
       },
       {
         dataField: "bank",
-        text: "Bank/Account#",
+        text: "Bank/Account# (To)",
         sort: true,
         formatter: (cellContent, bankTransfer) => (
           <>

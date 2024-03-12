@@ -5,14 +5,68 @@ import {
   GET_LABCORPORATE,
   GET_LABCORPORATE_SUCCESS,
   GET_LABCORPORATE_FAIL,
+  GET_ALABCORPORATE,
+  GET_ALABCORPORATE_SUCCESS,
+  GET_ALABCORPORATE_FAIL,
+  GET_ACORPORATE,
+  GET_ACORPORATE_SUCCESS,
+  GET_ACORPORATE_FAIL,
+  GET_RFEECORPORATE,
+  GET_RFEECORPORATE_SUCCESS,
+  GET_RFEECORPORATE_FAIL,
   GET_EMPLOYEECORPORATE,
   GET_EMPLOYEECORPORATE_SUCCESS,
   GET_EMPLOYEECORPORATE_FAIL,
+  GET_LABSCORPORATE,
+  GET_LABSCORPORATE_SUCCESS,
+  GET_LABSCORPORATE_FAIL,
   UPDATE_CEMPLOYEE,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
 } from "./actionTypes";
 
+export const getALabCorporate = id => ({
+  type: GET_ALABCORPORATE,
+  payload: id,
+});
+
+export const getALabCorporateSuccess = cemployeeData => ({
+  type: GET_ALABCORPORATE_SUCCESS,
+  payload: cemployeeData,
+});
+
+export const getALabCorporateFail = error => ({
+  type: GET_ALABCORPORATE_FAIL,
+  payload: error,
+});
+export const getACorporate = () => ({
+  type: GET_ACORPORATE,
+  // payload: id,
+});
+
+export const getACorporateSuccess = cemployeeData => ({
+  type: GET_ACORPORATE_SUCCESS,
+  payload: cemployeeData,
+});
+
+export const getACorporateFail = error => ({
+  type: GET_ACORPORATE_FAIL,
+  payload: error,
+});
+export const getRFeeCorporate = () => ({
+  type: GET_RFEECORPORATE,
+  // payload: id,
+});
+
+export const getRFeeCorporateSuccess = cemployeeData => ({
+  type: GET_RFEECORPORATE_SUCCESS,
+  payload: cemployeeData,
+});
+
+export const getRFeeCorporateFail = error => ({
+  type: GET_RFEECORPORATE_FAIL,
+  payload: error,
+});
 export const getLabCorporate = id => ({
   type: GET_LABCORPORATE,
   payload: id,
@@ -39,6 +93,21 @@ export const getEmployeeCorporateSuccess = cemployeeData => ({
 
 export const getEmployeeCorporateFail = error => ({
   type: GET_EMPLOYEECORPORATE_FAIL,
+  payload: error,
+});
+
+export const getLabsCorporate = id => ({
+  type: GET_LABSCORPORATE,
+  payload: id,
+});
+
+export const getLabsCorporateSuccess = cemployeeData => ({
+  type: GET_LABSCORPORATE_SUCCESS,
+  payload: cemployeeData,
+});
+
+export const getLabsCorporateFail = error => ({
+  type: GET_LABSCORPORATE_FAIL,
   payload: error,
 });
 

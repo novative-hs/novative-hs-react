@@ -25,6 +25,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 
 import { isEmpty, size } from "lodash";
+import { getPatientProfile } from "store/labmarket/actions";
 
 import "assets/scss/table.scss";
 import carts from "pages/CartsList/carts";
@@ -35,6 +36,7 @@ class CartList extends Component {
     this.node = React.createRef();
     this.state = {
       carts: [],
+      patientProfile: [],
       isMenuOpened: false,
       cart: "",
       abc: "",
@@ -193,6 +195,14 @@ class CartList extends Component {
       console.log("carts:", this.props.match.params.uuid);
       console.log("userr", this.state.user_id);
     }
+    const { onGetPatientProfile } = this.props;
+
+    // Assuming onGetPatientProfile is synchronous
+    console.log("this is patient profile",onGetPatientProfile(this.state.user_id));
+
+    // Now you can safely access patientProfile from props
+    const { patientProfile } = this.props;
+    console.log("state", patientProfile);
   }
 
   toggle() {
@@ -385,6 +395,8 @@ class CartList extends Component {
     const isLargeScreen = window.innerWidth > 992;
     const isSmallScreen = window.innerWidth < 540;
     const { isDropdownOpen } = this.state;
+    // const { getPatientProfile } = this.props;
+    const { patientProfile } = this.props;
 
     const { SearchBar } = Search;
 
@@ -782,7 +794,9 @@ class CartList extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                    <li className="nav-item">
+                    {!this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card ? (
+<>
+                      <li className="nav-item">
                         <Link
                           to={
                             this.props.match.params.guest_id
@@ -808,7 +822,6 @@ class CartList extends Component {
                           {/* {this.props.t("Labs")} */}
                         </Link>
                       </li>
-
                       <li className="nav-item">
                         {/* <Link to="/nearby-test" className="dropdown-item">
                       {this.props.t("Search by Tests")}
@@ -863,35 +876,22 @@ class CartList extends Component {
                           <span className="pt-4 font-size-12">Radiology</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
+                      </li></>
+                      ) : (this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card) ? (
+                      <li className="nav-item">
+                        <Link
+                          to={
+                            this.props.match.params.guest_id
+                              ? `/labs/${this.props.match.params.guest_id}`
+                              : `/labs`
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Labs</span>
+                          {/* {this.props.t("Labs")} */}
+                        </Link>
                       </li>
-                      
-                      {/* <li className="nav-item dropdown">
-                    <Link
-                      to="/#"
-                      onClick={e => {
-                        e.preventDefault();
-                        this.setState({ appState: !this.state.appState });
-                      }}
-                      className="nav-link dropdown-toggle arrow-none"
-                    >
-                      <i className="bx bx-store me-2" />
-                      {this.props.t("Lab Marketplace")}{" "}
-                      <div className="arrow-down" />
-                    </Link>
-                    <div
-                      className={classname("dropdown-menu", {
-                        show: this.state.appState,
-                      })}
-                    >
-                      <Link to="/nearby-labs" className="dropdown-item">
-                        {this.props.t("Nearby Labs")}
-                      </Link>
-                      <Link to="/nearby-test" className="dropdown-item">
-                        {this.props.t("Nearby Tests")}
-                      </Link>
-                    </div>
-                  </li> */}
-
+                      ) : null}
                       {this.state.user_id && this.state.user_type == "patient" && (
                         <li className="nav-item">
                           <Link
@@ -908,32 +908,6 @@ class CartList extends Component {
                             </span>
                           </Link>
                         </li>
-                        /* <li className="nav-item dropdown">
-                           <Link
-                            to="/#"
-                            onClick={e => {
-                              e.preventDefault();
-                              this.setState({ appState: !this.state.appState });
-                            }}
-                            className="nav-link dropdown-toggle arrow-none"
-                          >
-                            <i className="bx bx-test-tube me-2" />
-                            {this.props.t("Appointments")}{" "}
-                            <div className="arrow-down" />
-                          </Link>
-                          <div
-                            className={classname("dropdown-menu", {
-                              show: this.state.appState,
-                            })}
-                          >
-                            <Link
-                              to={"/test-appointments"}
-                              className="dropdown-item"
-                            >
-                              {this.props.t("Test Appointments")}
-                            </Link>
-                          </div>
-                          </li> */
                       )}
                     </ul>
                   </Collapse>
@@ -1465,16 +1439,23 @@ CartList.propTypes = {
   onEmptyCart: PropTypes.func,
   menuOpen: PropTypes.any,
   t: PropTypes.any,
+  onGetPatientProfile: PropTypes.func,
+  patientProfile: PropTypes.array,
+  
 };
 
-const mapStateToProps = ({ carts }) => ({
+const mapStateToProps = ({ carts, LabMarket }) => ({
   carts: carts.carts,
+  patientProfile: LabMarket.patientProfile,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetCarts: id => dispatch(getCarts(id)),
   onDeleteCart: cartItem => dispatch(deleteCart(cartItem)),
   onEmptyCart: id => dispatch(emptyCart(id)),
+  onGetPatientProfile: id => dispatch(getPatientProfile(id)),
+
 });
 
 export default connect(

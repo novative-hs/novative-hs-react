@@ -529,7 +529,7 @@ class Checkout extends Component {
         onGetCheckoutItems(this.props.match.params.guest_id);
       }, 1000);
     }
-    this.setState({ checkoutItems: this.props.checkoutItems });
+    this.setState({ checkoutItems: this.props.checkoutItems});
 
     const { territoriesList, onGetTerritoriesList } = this.props;
     if (territoriesList && !territoriesList.length) {
@@ -1884,7 +1884,8 @@ class Checkout extends Component {
                                 Fill the card payment only if your payment
                                 method is card
                               </p>
-                              <div>
+                              {this.props.patientProfile.corporate_id = "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
+                                <div>
                                 <div className="form-check form-check-inline font-size-16">
                                   <Input
                                     type="radio"
@@ -2144,6 +2145,30 @@ class Checkout extends Component {
                                   </div>
                                 ) : null}
                               </div>
+                              ) : (
+<div className="form-check form-check-inline font-size-16">
+                                  <Input
+                                    type="radio"
+                                    value="Cash"
+                                    // defaultChecked
+                                    name="payment_method"
+                                    id="customRadioInline1"
+                                    className="form-check-input"
+                                    onChange={this.handlePaymentMethodChange}
+
+                                  />
+                                  <Label
+                                    className="form-check-label font-size-13"
+                                    htmlFor="customRadioInline1"
+                                  >
+                                    {/* <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "} */}
+                                    <i className="fas fa-money-bill-alt me-1 font-size-18 align-top" style={{ color: 'green' }} />
+
+                                    Cash on Spot
+                                  </Label>
+                                </div>
+                              )}
+                              
                             </div>
                             {/* <Row className="mt-4">
                               <Col sm="6"></Col>
@@ -2483,7 +2508,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetCheckoutItems: (
     id,
     is_home_sampling_availed,
-    is_state_sampling_availed
+    is_state_sampling_availed,
   ) =>
     dispatch(
       getCheckoutItems(id, is_home_sampling_availed, is_state_sampling_availed)

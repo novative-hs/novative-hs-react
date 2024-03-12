@@ -1,8 +1,16 @@
 import {
   GET_LABCORPORATE_SUCCESS,
   GET_LABCORPORATE_FAIL,
+  GET_ALABCORPORATE_SUCCESS,
+  GET_ALABCORPORATE_FAIL,
+  GET_ACORPORATE_SUCCESS,
+  GET_ACORPORATE_FAIL,
+  GET_RFEECORPORATE_SUCCESS,
+  GET_RFEECORPORATE_FAIL,
   GET_EMPLOYEECORPORATE_SUCCESS,
   GET_EMPLOYEECORPORATE_FAIL,
+  GET_LABSCORPORATE_SUCCESS,
+  GET_LABSCORPORATE_FAIL,
   ADD_CEMPLOYEE_DATA_SUCCESS,
   ADD_CEMPLOYEE_DATA_FAIL,
   UPDATE_CEMPLOYEE_SUCCESS,
@@ -29,6 +37,39 @@ const cemployeeDatas = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    case GET_ALABCORPORATE_SUCCESS:
+      return {
+        ...state,
+        cemployeeDatas: action.payload.data,
+      };
+
+    case GET_ALABCORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_ACORPORATE_SUCCESS:
+      return {
+        ...state,
+        cemployeeDatas: action.payload.data,
+      };
+
+    case GET_ACORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_RFEECORPORATE_SUCCESS:
+      return {
+        ...state,
+        cemployeeDatas: action.payload.data,
+      };
+
+    case GET_RFEECORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_EMPLOYEECORPORATE_SUCCESS:
       return {
         ...state,
@@ -36,6 +77,17 @@ const cemployeeDatas = (state = INIT_STATE, action) => {
       };
 
     case GET_EMPLOYEECORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_LABSCORPORATE_SUCCESS:
+      return {
+        ...state,
+        cemployeeDatas: action.payload.data,
+      };
+
+    case GET_LABSCORPORATE_FAIL:
       return {
         ...state,
         error: action.payload,

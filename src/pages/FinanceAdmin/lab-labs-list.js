@@ -307,6 +307,8 @@ class PendingB2BClients extends Component {
             <Breadcrumbs title="List" breadcrumbItem="Labs List" />
             <Row>
             <p><span className="text-danger">Note:</span> Only those Labs will be shown here whose total Payable Amount of All Donation Allocate and Result Uploaded Appointments.</p>
+            <p><span className="text-danger">Note:</span> Click on Lab Name to See List of Appointments.</p>
+
               <Col lg="12">
                 <Card>
                   <CardBody>

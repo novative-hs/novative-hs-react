@@ -1,6 +1,8 @@
 import {
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
+  GET_CORPORATES_LIST_SUCCESS,
+  GET_CORPORATES_LIST_FAIL,
   ADD_PATIENT_INFORMATION,
   ADD_PATIENT_INFORMATION_SUCCESSFUL,
   ADD_PATIENT_INFORMATION_FAILED,
@@ -9,6 +11,7 @@ import {
 const initialState = {
   addPatientError: null,
   territoriesList: [],
+  corporatesList: [],
   message: null,
   loading: false,
 }
@@ -27,6 +30,19 @@ const patientInformation = (state = initialState, action) => {
         ...state,
         error: action.payload,
       };
+    // CORPORATES
+    case GET_CORPORATES_LIST_SUCCESS:
+      return {
+        ...state,
+        corporatesList: action.payload.data,
+      };
+
+    case GET_CORPORATES_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+      
     case ADD_PATIENT_INFORMATION:
       state = {
         ...state,

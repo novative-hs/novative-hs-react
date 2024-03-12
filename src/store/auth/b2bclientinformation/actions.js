@@ -25,6 +25,7 @@ export const getTerritoriesListFail = error => ({
   payload: error,
 });
 
+
 export const addB2bClientInformation = (b2bClient, id) => {
   return {
     type: ADD_B2BCLIENT_INFORMATION,

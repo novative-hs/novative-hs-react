@@ -57,9 +57,11 @@ import DashboardMarketerAdmin from "pages/Dashboard-MarketerAdmin";
 import EmployeeData from "../pages/CorporatesData/add-employee";
 import EmployeeList from "../pages/CorporatesData/employees-list";
 import CorporateTestsList from "../pages/OfferedTests/corporate-medical-tests";
-import CorporateOfferedTestsList from "../pages/OfferedTests/corporate-offeredtests-list"
-
-
+import CorporateOfferedTestsList from "../pages/OfferedTests/corporate-offeredtests-list";
+import CorporateLabAppointmentsList from "../pages/CorporatesData/corporate-lab-appointments";
+import CorporateLabsList from "../pages/CorporatesData/corporate-labs-list";
+import CorporatePaymentForm from "../pages/CorporatesData/corporate-out-payment";
+import PaymentFormStatus from "../pages/CorporatesData/corporate-paymentout-created-statuss-list"
 
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
@@ -79,6 +81,7 @@ import AppointmentDetail from "pages/Checkouts/appointment-detail";
 import PatientAppointmentDetail from "pages/Checkouts/appointment-detail";
 import CsrInvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabAdvertisements from "../pages/LabAdvertisements/lab-advertisement";
+import CorporateLabAccountStatements from "../pages/AccountStatements/corporate-lab-account-statements"
 import CorporateOfferedTestsListForLab from "../pages/LabMarket/NearbyLabs/corporate-offeredtests-list"
 
 
@@ -113,6 +116,10 @@ import LabPathologists from "../pages/LabMarket/NearbyLabs/NearbyLabDetails/path
 import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
 import TestAppointmentsCSRList from "../pages/Dashboard-Csr/test-appointments-list";
 import TestsOfferedbyLab from "pages/LabMarket/NearbyLabs/TestsOfferedbyLab";
+import TestsOfferedbyLabCorporate from "pages/LabMarket/NearbyLabs/TestsOfferedbyLabCorporation"
+import ProfilesOfferedbyLabCorporate from "pages/LabMarket/NearbyLabs/ProfilesOfferedbyLabCorporation"
+import RadiologysOfferedbyLabCorporate from "pages/LabMarket/NearbyLabs/RadiologyOfferedbyLabCorporation"
+import PackagesOfferedbyLabCorporate from "pages/LabMarket/NearbyLabs/PackagesOfferedbyLabCorporation"
 import CartsList from "../pages/Carts/carts-list";
 import QuoteList from "../pages/Carts/quotes-list";
 // import checkout from "pages/Checkouts/checkout-list";
@@ -193,8 +200,8 @@ import UnapprovedDonors from "pages/RegistrationAdmin/unapproved-donors";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import labsRating from "../pages/RegistrationAdmin/labs-rating";
-
-
+import listCorporate from "../pages/RegistrationAdmin/all-corporate-list"
+import rFeeCorporate from "../pages/RegistrationAdmin/reffrell-corporate-list"
 
 
 // finance admin
@@ -276,7 +283,7 @@ import BanksList from "pages/CreateBanks/banks-list";
 import BankAccountsList from "pages/BankAccounts/bankaccounts-list";
 import Payments from "pages/Authentication/Payments"
 import CorporatesList from "pages/LabMarket/NearbyLabs/corporate-list"
-
+import AcceptedCorporatesList from "pages/LabMarket/NearbyLabs/accepted-corporate-list"
 import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
 import { invoiceList } from "common/data";
@@ -428,6 +435,8 @@ const labAuthProtectedRoutes = [
   },
   { path: "/account-statements", component: AccountStatements },
   { path: "/lab-advertisement", component: LabAdvertisements },
+  { path: "/clab-account-statements", component: CorporateLabAccountStatements },
+
   // { path: "/lab-advertisement", component: LabAdvertisements },
   {
     path: "/adv-invoice-detail/:id",
@@ -440,6 +449,10 @@ const labAuthProtectedRoutes = [
   {
     path: "/corporates-List",
     component: CorporatesList,
+  },
+  {
+    path: "/accepted-corporates-List",
+    component: AcceptedCorporatesList,
   },
   { path: "/lab-adv-chat-box/:id", component: advLabChatBox },
 ];
@@ -643,6 +656,14 @@ const registrationAdminAuthProtectedRoutes = [
     path: "/labs-rating",
     component: labsRating,
   },
+  {
+    path: "/list-corporate",
+    component: listCorporate,
+  },
+  {
+    path: "/reffrell-corporate",
+    component: rFeeCorporate,
+  },
 ];
 
 const marketerAdminAuthProtectedRoutes = [
@@ -821,6 +842,22 @@ const patientPublicRoutes = [
     component: TestsOfferedbyLab,
   },
   {
+    path: "/:lab_account_id/offered-test-by-lab-corporate/:guest_id?/:uuid?",
+    component: TestsOfferedbyLabCorporate,
+  },
+  {
+    path: "/:lab_account_id/offered-profile-by-lab-corporate/:guest_id?/:uuid?",
+    component: ProfilesOfferedbyLabCorporate,
+  },
+  {
+    path: "/:lab_account_id/offered-package-by-lab-corporate/:guest_id?/:uuid?",
+    component: PackagesOfferedbyLabCorporate,
+  },
+  {
+    path: "/:lab_account_id/offered-radiology-by-lab-corporate/:guest_id?/:uuid?",
+    component: RadiologysOfferedbyLabCorporate,
+  },
+  {
     path: "/:lab_account_id/offered-profile-by-lab/:guest_id?/:uuid?",
     component: ProfilesOfferedbyLab,
   },
@@ -876,6 +913,22 @@ const corporateAuthProtectedRoutes = [
     path: "/corporate-offered-tests",
     component: CorporateOfferedTestsList,
   },
+  {
+    path: "/corporate-lab-appointments",
+    component: CorporateLabAppointmentsList,
+  },
+  {
+    path: "/corporate-labs-list",
+    component: CorporateLabsList,
+  },
+  {
+    path: "/corporate-payment-form",
+    component: CorporatePaymentForm,
+  },
+  {
+    path: "/corporate-payment-form-status",
+    component: PaymentFormStatus,
+  }
 ];
 
 const authProtectedRoutes = [

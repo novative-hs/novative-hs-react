@@ -185,7 +185,7 @@ class DonorPayment extends Component {
                               md="2"
                               className="col-form-label"
                             >
-                              Employee Code
+                              Employee ID Card No
                               <span
                                 style={{ color: "#f46a6a" }}
                                 className="font-size-18"
@@ -198,7 +198,7 @@ class DonorPayment extends Component {
                                 id="employee_code"
                                 name="employee_code"
                                 type="text"
-                                placeholder="Please Enter Employee Code."
+                                placeholder="Please Enter Employee ID."
                                 onChange={e =>
                                   this.setState({
                                     employee_code: e.target.value,
@@ -228,6 +228,9 @@ class DonorPayment extends Component {
                       </Col>
                     </Row>
                   </Col>
+                </Row>
+                <Row>
+                  
                 </Row>
               </div>
             </Formik>

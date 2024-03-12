@@ -8,17 +8,22 @@ import {
   GET_CORPORATE_TESTS,
   GET_LAB_PROFILE,
   GET_OFFEREDTEST_REFERRELFEE,
+  GET_COFFEREDTEST_REFERRELFEE,
+  GET_COFFEREDPROFILE_REFERRELFEE,
+  GET_COFFEREDPACKAGE_REFERRELFEE,
+  GET_COFFEREDRADIOLOGY_REFERRELFEE,
   GET_OFFEREDPROFILE_REFERRELFEE,
   GET_OFFEREDPACKAGE_REFERRELFEE,
   GET_OFFEREDRADIOLOGY_REFERRELFEE,
   ADD_NEW_OFFERED_TEST,
   ADD_NEW_CORPORATE_TEST,
+  ADD_NEW_CORPORATE,
   ADD_NEW_OFFERED_MAINTEST,
   DELETE_OFFERED_TEST,
   UPDATE_OFFERED_TEST,
   UPDATE_CORPORATE_TEST,
   UPDATE_CORPORATE_STATUS,
-
+  UPDATE_ACORPORATE_STATUS,
 
 } from "./actionTypes";
 
@@ -33,8 +38,22 @@ import {
   getOfferedTestsFail,
   getCorporateTestsSuccess,
   getCorporateTestsFail,
+  getCorporateProfilesSuccess,
+  getCorporateProfilesFail,
+  getCorporatePackagesSuccess,
+  getCorporatePackagesFail,
+  getCorporateRadiogysSuccess,
+  getCorporateRadiogysFail,
   getOfferedTestsReferrelSuccess,
   getOfferedTestsReferrelFail,
+  getCOfferedProfilesReferrelSuccess,
+  getCOfferedProfilesReferrelFail,
+  getCOfferedPackagesReferrelSuccess,
+  getCOfferedPackagesReferrelFail,
+  getCOfferedRadiologysReferrelSuccess,
+  getCOfferedRadiologysReferrelFail,
+  getCOfferedTestsReferrelSuccess,
+  getCOfferedTestsReferrelFail,
   getOfferedProfilesReferrelSuccess,
   getOfferedProfilesReferrelFail,
   getOfferedPackagesReferrelSuccess,
@@ -45,6 +64,8 @@ import {
   addOfferedTestSuccess,
   addCorporateTestFail,
   addCorporateTestSuccess,
+  addCorporateFail,
+  addCorporateSuccess,
   addOfferedMainTestFail,
   addOfferedMainTestSuccess,
   updateOfferedTestSuccess,
@@ -53,6 +74,8 @@ import {
   updateCorporateTestFail,
   updateCorporateStatusSuccess,
   updateCorporateStatusFail,
+  updateACorporateStatusSuccess,
+  updateACorporateStatusFail,
   deleteOfferedTestSuccess,
   deleteOfferedTestFail,
 } from "./actions";
@@ -64,16 +87,22 @@ import {
   getOfferedTests,
   getCorporateTests,
   getOfferedTestsReferrel,
+  getCOfferedTestsReferrel,
+  getCOfferedProfilesReferrel,
+  getCOfferedPackagesReferrel,
+  getCOfferedRadiologysReferrel,
   getOfferedProfilesReferrel,
   getOfferedPackagesReferrel,
   getOfferedRadiologysReferrel,
   getLabProfile,
   addNewOfferedTest,
   addNewCorporateTest,
+  addNewCorporate,
   addNewOfferedMainTest,
   updateOfferedTest,
   updateCorporateTest,
   updateCorporateStatus,
+  updateACorporateStatus,
   deleteOfferedTest,
 } from "../../helpers/django_api_helper";
 
@@ -129,6 +158,38 @@ function* fetchOfferedTestsReferrel(object) {
     yield put(getOfferedTestsReferrelFail(error));
   }
 }
+function* fetchCOfferedTestsReferrel(object) {
+  try {
+    const response = yield call(getCOfferedTestsReferrel, object.payload);
+    yield put(getCOfferedTestsReferrelSuccess(response));
+  } catch (error) {
+    yield put(getCOfferedTestsReferrelFail(error));
+  }
+}
+function* fetchCOfferedProfilesReferrel(object) {
+  try {
+    const response = yield call(getCOfferedProfilesReferrel, object.payload);
+    yield put(getCOfferedProfilesReferrelSuccess(response));
+  } catch (error) {
+    yield put(getCOfferedProfilesReferrelFail(error));
+  }
+}
+function* fetchCOfferedPackagesReferrel(object) {
+  try {
+    const response = yield call(getCOfferedPackagesReferrel, object.payload);
+    yield put(getCOfferedPackagesReferrelSuccess(response));
+  } catch (error) {
+    yield put(getCOfferedPackagesReferrelFail(error));
+  }
+}
+function* fetchCOfferedRadiologysReferrel(object) {
+  try {
+    const response = yield call(getCOfferedRadiologysReferrel, object.payload);
+    yield put(getCOfferedRadiologysReferrelSuccess(response));
+  } catch (error) {
+    yield put(getCOfferedRadiologysReferrelFail(error));
+  }
+}
 function* fetchOfferedProfilesReferrel(object) {
   try {
     const response = yield call(getOfferedProfilesReferrel, object.payload);
@@ -178,6 +239,18 @@ function* onAddNewCorporateTest(object) {
     yield put(addCorporateTestFail(error));
   }
 }
+function* onAddNewCorporate(object) {
+  try {
+    const response = yield call(
+      addNewCorporate,
+      object.payload.offeredTest,
+      object.payload.id
+    );
+    yield put(addCorporateSuccess(response));
+  } catch (error) {
+    yield put(addCorporateFail(error));
+  }
+}
 function* onAddNewOfferedMainTest(object) {
   try {
     const response = yield call(
@@ -215,6 +288,14 @@ function* onUpdateCorporateStatus({ payload: offeredTest }) {
     yield put(updateCorporateStatusFail(error));
   }
 }
+function* onUpdateACorporateStatus({ payload: offeredTest }) {
+  try {
+    const response = yield call(updateACorporateStatus, offeredTest);
+    yield put(updateACorporateStatusSuccess(response));
+  } catch (error) {
+    yield put(updateACorporateStatusFail(error));
+  }
+}
 
 function* onDeleteOfferedTest({ payload: offeredTest }) {
   try {
@@ -232,15 +313,21 @@ function* offeredTestsSaga() {
   yield takeEvery(GET_CORPORATE_TESTS, fetchCorporateTests);
   yield takeEvery(GET_LAB_PROFILE, fetchLabProfile);
   yield takeEvery(GET_OFFEREDTEST_REFERRELFEE, fetchOfferedTestsReferrel);
+  yield takeEvery(GET_COFFEREDTEST_REFERRELFEE, fetchCOfferedTestsReferrel);
+  yield takeEvery(GET_COFFEREDPROFILE_REFERRELFEE, fetchCOfferedProfilesReferrel);
+  yield takeEvery(GET_COFFEREDPACKAGE_REFERRELFEE, fetchCOfferedPackagesReferrel);
+  yield takeEvery(GET_COFFEREDRADIOLOGY_REFERRELFEE, fetchCOfferedRadiologysReferrel);
   yield takeEvery(GET_OFFEREDPROFILE_REFERRELFEE, fetchOfferedProfilesReferrel);
   yield takeEvery(GET_OFFEREDPACKAGE_REFERRELFEE, fetchOfferedPackagesReferrel);
   yield takeEvery(GET_OFFEREDRADIOLOGY_REFERRELFEE, fetchOfferedRadiologysReferrel);
   yield takeEvery(ADD_NEW_OFFERED_TEST, onAddNewOfferedTest);
   yield takeEvery(ADD_NEW_CORPORATE_TEST, onAddNewCorporateTest);
+  yield takeEvery(ADD_NEW_CORPORATE, onAddNewCorporate);
   yield takeEvery(ADD_NEW_OFFERED_MAINTEST, onAddNewOfferedMainTest);
   yield takeEvery(UPDATE_OFFERED_TEST, onUpdateOfferedTest);
   yield takeEvery(UPDATE_CORPORATE_TEST, onUpdateCorporateTest);
   yield takeEvery(UPDATE_CORPORATE_STATUS, onUpdateCorporateStatus);
+  yield takeEvery(UPDATE_ACORPORATE_STATUS, onUpdateACorporateStatus);
   yield takeEvery(DELETE_OFFERED_TEST, onDeleteOfferedTest);
 }
 
