@@ -85,7 +85,7 @@ class PatientInformation extends Component {
   fetchEmployeeCodes = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/corporate/employees-list`
+        `https://labhazirapi.com/api/corporate/employees-list`
       );
       const employeeData = response.data.data;
 
