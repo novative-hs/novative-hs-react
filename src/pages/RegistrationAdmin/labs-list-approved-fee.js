@@ -16,18 +16,10 @@ import {
   Table,
 } from "reactstrap";
 
-import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
-} from "react-bootstrap-table2-paginator";
 import { isEmpty, map } from "lodash";
 
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import BootstrapTable from "react-bootstrap-table-next";
-import { Formik, Field, Form, ErrorMessage } from "formik";
 
 //Import Breadcrumb
-import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getLabsListApprovedFee,
@@ -51,6 +43,8 @@ class LabsLists extends Component {
         city: '',
         type: '',
       },
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   }
 
@@ -96,10 +90,17 @@ class LabsLists extends Component {
     }));
   };
 
+  handlePageChange = (pageNumber) => {
+    this.setState({
+      currentPage: pageNumber,
+    });
+  };
 
   render() {
-    const { filters } = this.state;
+    const { filters, currentPage, itemsPerPage  } = this.state;
     const { labsListApprovedFee } = this.props;
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const filteredLabsList = labsListApprovedFee.filter((lab) => {
       return lab.lab_list.some((lab_list) => {
         return (
@@ -121,17 +122,33 @@ class LabsLists extends Component {
       { dataField: 'email', text: 'Email' },
       { dataField: 'address', text: 'Address' },
     ];
+    const currentItems = filteredLabsList.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredLabsList.length / itemsPerPage);
+
+    // Calculate the range of page numbers to display
+    const pageRange = 3; // Adjust this value based on your requirement
+    let startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+    let endPage = Math.min(totalPages, startPage + pageRange - 1);
+  
+    // Adjust startPage and endPage to always show pageRange page numbers
+    if (endPage - startPage + 1 < pageRange) {
+      startPage = Math.max(1, endPage - pageRange + 1);
+    }
+  
+    // Render the page numbers
+    const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
 
     const headerCells = columns.map((column) => (
       <th key={column.dataField} scope="col">
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <span>{column.text}</span>
           <input
+            className="form-control"
             type="text"
             placeholder={`Filter by ${column.text}`}
             value={filters[column.dataField]}
             onChange={(e) => this.handleFilterChange(column.dataField, e.target.value)}
-            style={{ width: '170px', padding: '6px' }}  // Adjust the width and padding as needed
+            // style={{ width: '140px', padding: '6px' }}  // Adjust the width and padding as needed
           />
         </div>
       </th>
@@ -154,11 +171,13 @@ class LabsLists extends Component {
                 <Col lg="12">
                   <Card>
                     <CardBody>
+                      
                       <div className="py-2 mt-3">
                         <h3 className="font-size-15 font-weight-bold">
                           Lab Shared Percentage Approved
                         </h3>
                       </div>
+                      <div className="table-responsive">
                       <Table className="align-middle mb-0 table-nowrap">
                         <thead className="table-light">
                         <tr>{headerCells}</tr>
@@ -166,14 +185,14 @@ class LabsLists extends Component {
                           </thead>
                          
                           <tbody>
-                            {filteredLabsList.map((lab, key) => (
+                            {currentItems.map((lab, key) => (
                               <React.Fragment key={key}>
                                 {lab.lab_list.map((lab_list, key) => (
                                   <tr key={key}>
                                     <td className="text-start">{lab_list.city}</td>
-                                    <td className="text-start" style={{ whiteSpace: 'pre-wrap', width: '300px' }}>
+                                    <td className="text-start" style={{ whiteSpace: 'pre-wrap', width: '200px' }}>
                                       <b>
-                                        <Link to={`/shared-percentage-pending-Fee/${lab_list.id}`}>{lab_list.name}</Link>
+                                        <Link to={`/shared-percentage-approved-Fee/${lab_list.id}`}>{lab_list.name}</Link>
                                       </b>
                                     </td>
                                     <td className="text-start">{lab_list.type}</td>
@@ -190,7 +209,36 @@ class LabsLists extends Component {
                       
               
                         </Table>
-                    
+                    </div>
+                    <br/>
+                    {/* Pagination */}
+                    <Row className="align-items-md-center mt-30">
+        <Col className="pagination pagination-rounded justify-content-end mb-2">
+          {startPage > 1 && (
+            <li className="page-item">
+              <button className="page-link" onClick={() => this.handlePageChange(startPage - 1)}>
+                {'<'}
+              </button>
+            </li>
+          )}
+
+          {pageNumbers.map((pageNumber) => (
+            <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => this.handlePageChange(pageNumber)}>
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+
+          {endPage < totalPages && (
+            <li className="page-item">
+              <button className="page-link" onClick={() => this.handlePageChange(endPage + 1)}>
+                {'>'}
+              </button>
+            </li>
+          )}
+        </Col>
+      </Row>
                     </CardBody>
                   </Card>
                 </Col>

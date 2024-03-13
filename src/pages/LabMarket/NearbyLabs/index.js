@@ -227,7 +227,24 @@ class NearbyLabs extends Component {
       this.setState({ currentLatitude: latitude });
       this.setState({ currentLongitude: longitude });
 
-      // region Wise Advertisement
+       // Lab Advertisement
+       const regionWiseAdvLocationDetails = {
+        latitude,
+        longitude,
+        search_type: this.state.search_type,
+        address: this.state.address,
+        city: this.state.city,
+
+      };
+      if (latitude && longitude) {
+        onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
+        setTimeout(() => {
+          this.setState({
+            regionWiseAdvertisement: this.props.regionWiseAdvertisement,
+          });
+        }, 500);
+      }
+      // Labhazir Advertisement
       const advLiveLocationDetails = {
         latitude,
         longitude,
@@ -236,7 +253,6 @@ class NearbyLabs extends Component {
         city: this.state.city,
 
       };
-
       if (latitude && longitude) {
         onGetAdvLive(advLiveLocationDetails);
         setTimeout(() => {
@@ -277,7 +293,6 @@ class NearbyLabs extends Component {
           }, 500);
         }
       }
-
       // near by labs
       if (this.state.user_id || this.state.user_type === "b2bclient") {
         const nearbyLabsLocationDetails = {
@@ -314,13 +329,13 @@ class NearbyLabs extends Component {
           guest_id,
         };
         console.log(
-          "guestid in nearby lab:",
+          "guestid in nearby lab check yeh chalta h yah nahi:",
           guest_id,
           nearbyLabsLocationDetails.guest_id
         );
         this.setState({ guest_id });
         console.log("differ:", this.state.guest_id);
-        console.log(window.location.href);
+        console.log("href url",window.location.href);
         if (latitude && longitude) {
           onGetNearbyLabs(nearbyLabsLocationDetails);
           this.setState({ nearbyLabs: [] });
@@ -352,23 +367,7 @@ class NearbyLabs extends Component {
         }
       }
 
-      // region Wise Advertisement
-      const regionWiseAdvLocationDetails = {
-        latitude,
-        longitude,
-        search_type: this.state.search_type,
-        address: this.state.address,
-        city: this.state.city,
-
-      };
-      if (latitude && longitude) {
-        onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
-        setTimeout(() => {
-          this.setState({
-            regionWiseAdvertisement: this.props.regionWiseAdvertisement,
-          });
-        }, 500);
-      }
+     
     }
     else {
       if (navigator.geolocation) {
@@ -413,7 +412,39 @@ class NearbyLabs extends Component {
           this.setState({ locationAccessAllowed: true });
           this.setState({ search_type: "Current Location" });
           this.setState({ LabType: "Main" });
+          // Labhazir Advertisement 
+          const advLiveLocationDetails = {
+            latitude,
+            longitude,
+            search_type: this.state.search_type,
+            address: this.state.address,
+            city: this.state.city,
 
+          };
+
+          if (latitude && longitude) {
+            onGetAdvLive(advLiveLocationDetails);
+            setTimeout(() => {
+              this.setState({ advLives: this.props.advLives });
+            }, 500);
+          }
+
+          // Lab Advertisement 
+          const regionWiseAdvLocationDetails = {
+            latitude,
+            longitude,
+            search_type: this.state.search_type,
+            address: this.state.address,
+            city: this.state.city,
+
+          };
+          if (latitude && longitude) {
+            onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
+            setTimeout(() => {
+              this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement },
+                console.log("lab advertisement have or not", this.props.regionWiseAdvertisement, this.state.regionWiseAdvertisement));
+            }, 500);
+          }
 
           // near by labs
           if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
@@ -515,38 +546,7 @@ class NearbyLabs extends Component {
               }, 500);
             }
           }
-
-          const advLiveLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-
-          };
-
-          if (latitude && longitude) {
-            onGetAdvLive(advLiveLocationDetails);
-            setTimeout(() => {
-              this.setState({ advLives: this.props.advLives });
-            }, 500);
-          }
-
-          // region Wise Advertisement 
-          const regionWiseAdvLocationDetails = {
-            latitude,
-            longitude,
-            search_type: this.state.search_type,
-            address: this.state.address,
-            city: this.state.city,
-
-          };
-          if (latitude && longitude) {
-            onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
-            setTimeout(() => {
-              this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement });
-            }, 500);
-          }
+          
         }, () => {
           this.setState({ latitude: null, longitude: null });
           if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {

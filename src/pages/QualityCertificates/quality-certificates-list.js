@@ -111,23 +111,23 @@ class QualityCertificatesList extends Component {
           formatter: (cellContent, qualityCertificate) => (
             <div>
               <Tooltip title="Update">
-              <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={e =>
-                    this.handleQualityCertificateClick(e, qualityCertificate)
-                  }
-                ></i>
-              </Link></Tooltip>
+                <Link className="text-success" to="#">
+                  <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={e =>
+                      this.handleQualityCertificateClick(e, qualityCertificate)
+                    }
+                  ></i>
+                </Link></Tooltip>
               <Tooltip title="Delete">
-              <Link className="text-danger" to="#">
-                <i
-                  className="mdi mdi-delete font-size-18"
-                  id="deletetooltip"
-                  onClick={() => this.onClickDelete(qualityCertificate)}
-                ></i>
-              </Link></Tooltip>
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(qualityCertificate)}
+                  ></i>
+                </Link></Tooltip>
             </div>
           ),
         },
@@ -175,10 +175,10 @@ class QualityCertificatesList extends Component {
 
     const { labProfiles, onGetLabProfile } = this.props;
     onGetLabProfile(this.state.user_id);
-    this.setState({ 
+    this.setState({
       labProfiles
     });
-    console.log("state",labProfiles)
+    console.log("state", labProfiles)
   }
 
   toggle() {
@@ -290,7 +290,7 @@ class QualityCertificatesList extends Component {
 
     const { qualityCertificates } = this.props;
 
-    const {labProfiles} = this.props;
+    const { labProfiles } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
@@ -300,7 +300,7 @@ class QualityCertificatesList extends Component {
       onGetQualityCertificates,
       onGetLabProfile,
       onAddNewCollectionPointQuality
-      
+
     } = this.props;
     const qualityCertificate = this.state.qualityCertificate;
 
@@ -520,22 +520,22 @@ class QualityCertificatesList extends Component {
                                                   });
 
                                                   const updateQualityCertificate =
-                                                    {
-                                                      id: qualityCertificate.id,
-                                                      certificate_type:
-                                                        values.certificate_type,
-                                                      name: values.name,
-                                                      type: values.type,
-                                                      certificate:
-                                                        this.state
-                                                          .certificateImg,
-                                                      expiry_date:
-                                                        values.expiry_date,
-                                                      start_date:
-                                                        values.start_date,
-                                                      end_date:
-                                                        values.end_date,
-                                                    };
+                                                  {
+                                                    id: qualityCertificate.id,
+                                                    certificate_type:
+                                                      values.certificate_type,
+                                                    name: values.name,
+                                                    type: values.type,
+                                                    certificate:
+                                                      this.state
+                                                        .certificateImg,
+                                                    expiry_date:
+                                                      values.expiry_date,
+                                                    start_date:
+                                                      values.start_date,
+                                                    end_date:
+                                                      values.end_date,
+                                                  };
 
                                                   // update QualityCertificate
                                                   onUpdateQualityCertificate(
@@ -549,21 +549,21 @@ class QualityCertificatesList extends Component {
                                                 });
                                               } else {
                                                 const updateQualityCertificate =
-                                                  {
-                                                    id: qualityCertificate.id,
-                                                    certificate_type:
-                                                      values.certificate_type,
-                                                    name: values.name,
-                                                    type: values.type,
-                                                    certificate:
-                                                      this.state.certificateImg,
-                                                    expiry_date:
-                                                      values.expiry_date,
-                                                    start_date:
-                                                      values.start_date,
-                                                    end_date:
-                                                      values.end_date,
-                                                  };
+                                                {
+                                                  id: qualityCertificate.id,
+                                                  certificate_type:
+                                                    values.certificate_type,
+                                                  name: values.name,
+                                                  type: values.type,
+                                                  certificate:
+                                                    this.state.certificateImg,
+                                                  expiry_date:
+                                                    values.expiry_date,
+                                                  start_date:
+                                                    values.start_date,
+                                                  end_date:
+                                                    values.end_date,
+                                                };
 
                                                 // update QualityCertificate
                                                 onUpdateQualityCertificate(
@@ -593,9 +593,9 @@ class QualityCertificatesList extends Component {
                                                   this.state.certificateImg,
                                                 expiry_date: values.expiry_date,
                                                 start_date:
-                                                        values.start_date,
+                                                  values.start_date,
                                                 end_date:
-                                                        values.end_date,
+                                                  values.end_date,
                                               };
 
                                               // save new QualityCertificate
@@ -637,7 +637,7 @@ class QualityCertificatesList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.certificate_type &&
-                                                        touched.certificate_type
+                                                          touched.certificate_type
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -657,7 +657,7 @@ class QualityCertificatesList extends Component {
                                                               qualityCertificate.start_date,
                                                             end_date:
                                                               qualityCertificate.end_date,
-                                                            
+
                                                           },
                                                         });
                                                       }}
@@ -694,7 +694,7 @@ class QualityCertificatesList extends Component {
                                                         Chamber of Commerce
                                                       </option>
                                                       <option value="License">
-                                                      License
+                                                        License
                                                       </option>
                                                     </Field>
                                                     <ErrorMessage
@@ -708,91 +708,91 @@ class QualityCertificatesList extends Component {
                                                     .certificate_type ===
                                                     "EQA Certificate" && (
                                                       <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        EQA Type
-                                                        <span className="text-danger font-size-12">
-                                                          *
-                                                        </span>
-                                                      </Label>
-                                                      <Field
-                                                        name="sub_certificate_type"
-                                                        as="select"
-                                                        // className="form-control"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.sub_certificate_type &&
-                                                          touched.sub_certificate_type
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        onChange={e => {
-                                                          this.setState({
-                                                            qualityCertificate: {
-                                                              id: qualityCertificate.id,
-                                                              sub_certificate_type:
-                                                                e.target.value,
-                                                              certificate_type: qualityCertificate.certificate_type,
-                                                              name: qualityCertificate.name,
-                                                              type: qualityCertificate.type,
-                                                              certificate:
-                                                                qualityCertificate.certificate,
-                                                              expiry_date:
-                                                                qualityCertificate.expiry_date,
-                                                              start_date:
-                                                                qualityCertificate.start_date,
-                                                              end_date:
-                                                                qualityCertificate.end_date,
-                                                              
-                                                            },
-                                                          });
-                                                        }}
-                                                        multiple={false}
-                                                        value={
-                                                          this.state
-                                                            .qualityCertificate
-                                                            .sub_certificate_type
-                                                        }
-                                                      >
-                                                        <option value="">
-                                                          --- Please select
-                                                          EQA type ---
-                                                        </option>
-                                                        <option value="Clinical Chemistry">
-                                                          Clinical Chemistry
-                                                        </option>
-                                                        <option value="Hematology">
-                                                          Hematology
-                                                        </option>
-                                                        <option value="Immunoassay">
-                                                          Immunoassay
-                                                        </option>
-                                                        <option value="Serology">
-                                                          Serology
-                                                        </option>
-                                                        <option value="Histopathology">
-                                                          Histopathology
-                                                        </option>
-                                                        <option value="Microbiology">
-                                                          Microbiology
-                                                        </option>
-                                                        <option value="Cardiac Enzymes">
-                                                          Cardiac Enzymes
-                                                        </option>
-                                                        <option value="Coagulation">
-                                                        Coagulation
-                                                        </option>
-                                                        <option value="Molecular">
-                                                        Molecular
-                                                        </option>
-                                                      </Field>
-                                                      <ErrorMessage
-                                                        name="sub_certificate_type"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  )}
-                                               
+                                                        <Label className="form-label">
+                                                          EQA Type
+                                                          <span className="text-danger font-size-12">
+                                                            *
+                                                          </span>
+                                                        </Label>
+                                                        <Field
+                                                          name="sub_certificate_type"
+                                                          as="select"
+                                                          // className="form-control"
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.sub_certificate_type &&
+                                                              touched.sub_certificate_type
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                          onChange={e => {
+                                                            this.setState({
+                                                              qualityCertificate: {
+                                                                id: qualityCertificate.id,
+                                                                sub_certificate_type:
+                                                                  e.target.value,
+                                                                certificate_type: qualityCertificate.certificate_type,
+                                                                name: qualityCertificate.name,
+                                                                type: qualityCertificate.type,
+                                                                certificate:
+                                                                  qualityCertificate.certificate,
+                                                                expiry_date:
+                                                                  qualityCertificate.expiry_date,
+                                                                start_date:
+                                                                  qualityCertificate.start_date,
+                                                                end_date:
+                                                                  qualityCertificate.end_date,
+
+                                                              },
+                                                            });
+                                                          }}
+                                                          multiple={false}
+                                                          value={
+                                                            this.state
+                                                              .qualityCertificate
+                                                              .sub_certificate_type
+                                                          }
+                                                        >
+                                                          <option value="">
+                                                            --- Please select
+                                                            EQA type ---
+                                                          </option>
+                                                          <option value="Clinical Chemistry">
+                                                            Clinical Chemistry
+                                                          </option>
+                                                          <option value="Hematology">
+                                                            Hematology
+                                                          </option>
+                                                          <option value="Immunoassay">
+                                                            Immunoassay
+                                                          </option>
+                                                          <option value="Serology">
+                                                            Serology
+                                                          </option>
+                                                          <option value="Histopathology">
+                                                            Histopathology
+                                                          </option>
+                                                          <option value="Microbiology">
+                                                            Microbiology
+                                                          </option>
+                                                          <option value="Cardiac Enzymes">
+                                                            Cardiac Enzymes
+                                                          </option>
+                                                          <option value="Coagulation">
+                                                            Coagulation
+                                                          </option>
+                                                          <option value="Molecular">
+                                                            Molecular
+                                                          </option>
+                                                        </Field>
+                                                        <ErrorMessage
+                                                          name="sub_certificate_type"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </div>
+                                                    )}
+
                                                   {/* Certificate Title field
                                                   {this.state.qualityCertificate
                                                     .certificate_type ===
@@ -865,7 +865,7 @@ class QualityCertificatesList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.type &&
-                                                        touched.type
+                                                          touched.type
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -937,7 +937,7 @@ class QualityCertificatesList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.certificate &&
-                                                        touched.certificate
+                                                          touched.certificate
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -951,93 +951,29 @@ class QualityCertificatesList extends Component {
                                                   </div>
 
                                                   {/* Certificate Expiry date field */}
-                                                  {this.state.qualityCertificate.certificate_type != "EQA Certificate" &&(
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Expiry Date
-                                                      <span className="text-danger font-size-12">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="expiry_date"
-                                                      type="date"
-                                                      min={new Date(
-                                                        new Date()
-                                                          .toString()
-                                                          .split("GMT")[0] +
-                                                          " UTC"
-                                                      )
-                                                        .toISOString()
-                                                        .slice(0, -14)}
-                                                      value={
-                                                        this.state
-                                                          .qualityCertificate
-                                                          .expiry_date
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          qualityCertificate: {
-                                                            id: qualityCertificate.id,
-                                                            certificate_type:
-                                                              qualityCertificate.certificate_type,
-                                                            name: qualityCertificate.name,
-                                                            type: qualityCertificate.type,
-                                                            certificate:
-                                                              qualityCertificate.certificate,
-                                                            expiry_date:
-                                                              e.target.value,
-                                                            start_date:
-                                                              qualityCertificate.start_date,
-                                                            end_date:
-                                                              qualityCertificate.end_date,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.expiry_date &&
-                                                        touched.expiry_date
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="expiry_date"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  )}
-                                                     {this.state.qualityCertificate
-                                                    .certificate_type ===
-                                                    "EQA Certificate" && (
-                                                      <div className="mb-3">
+                                                  {this.state.qualityCertificate.certificate_type != "EQA Certificate" && (
+                                                    <div className="mb-3">
                                                       <Label className="form-label">
-                                                        Program Cycle
+                                                        Expiry Date
                                                         <span className="text-danger font-size-12">
                                                           *
                                                         </span>
                                                       </Label>
-                                                      <br></br>
-                                                      <Label className="form-label">
-                                                        Start Date
-                                                      </Label>
                                                       <Field
-                                                        name="start_date"
+                                                        name="expiry_date"
                                                         type="date"
                                                         min={new Date(
                                                           new Date()
                                                             .toString()
                                                             .split("GMT")[0] +
-                                                            " UTC"
+                                                          " UTC"
                                                         )
                                                           .toISOString()
                                                           .slice(0, -14)}
                                                         value={
                                                           this.state
                                                             .qualityCertificate
-                                                            .start_date
+                                                            .expiry_date
                                                         }
                                                         onChange={e => {
                                                           this.setState({
@@ -1049,84 +985,146 @@ class QualityCertificatesList extends Component {
                                                               type: qualityCertificate.type,
                                                               certificate:
                                                                 qualityCertificate.certificate,
-                                                              start_date:
+                                                              expiry_date:
                                                                 e.target.value,
-                                                              end_date:qualityCertificate.end_date,
+                                                              start_date:
+                                                                qualityCertificate.start_date,
+                                                              end_date:
+                                                                qualityCertificate.end_date,
                                                             },
                                                           });
                                                         }}
                                                         className={
                                                           "form-control" +
-                                                          (errors.start_date &&
-                                                          touched.start_date
+                                                          (errors.expiry_date &&
+                                                            touched.expiry_date
                                                             ? " is-invalid"
                                                             : "")
                                                         }
                                                       />
                                                       <ErrorMessage
-                                                        name="start_date"
+                                                        name="expiry_date"
                                                         component="div"
                                                         className="invalid-feedback"
                                                       />
                                                     </div>
-                                                    
                                                   )}
                                                   {this.state.qualityCertificate
                                                     .certificate_type ===
                                                     "EQA Certificate" && (
                                                       <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        Start Date
-                                                      </Label>
-                                                      <Field
-                                                        name="end_date"
-                                                        type="date"
-                                                        min={new Date(
-                                                          new Date()
-                                                            .toString()
-                                                            .split("GMT")[0] +
+                                                        <Label className="form-label">
+                                                          Program Cycle
+                                                          <span className="text-danger font-size-12">
+                                                            *
+                                                          </span>
+                                                        </Label>
+                                                        <br></br>
+                                                        <Label className="form-label">
+                                                          Start Date
+                                                        </Label>
+                                                        <Field
+                                                          name="start_date"
+                                                          type="datetime-local"
+                                                          max={new Date(
+                                                            new Date().toString().split("GMT")[0] +
                                                             " UTC"
-                                                        )
-                                                          .toISOString()
-                                                          .slice(0, -14)}
-                                                        value={
-                                                          this.state
-                                                            .qualityCertificate
-                                                            .end_date
-                                                        }
-                                                        onChange={e => {
-                                                          this.setState({
-                                                            qualityCertificate: {
-                                                              id: qualityCertificate.id,
-                                                              certificate_type:
-                                                                qualityCertificate.certificate_type,
-                                                              name: qualityCertificate.name,
-                                                              type: qualityCertificate.type,
-                                                              certificate:
-                                                                qualityCertificate.certificate,
-                                                              end_date:
-                                                                e.target.value,
-                                                              start_date:
-                                                                qualityCertificate.start_date,
-                                                            },
-                                                          });
-                                                        }}
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.end_date &&
-                                                          touched.end_date
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                      />
-                                                      <ErrorMessage
-                                                        name="end_date"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                    
-                                                  )}
+                                                          )
+                                                            .toISOString()
+                                                            .slice(0, -8)}
+                                                          value={
+                                                            this.state
+                                                              .qualityCertificate
+                                                              .start_date
+                                                          }
+                                                          onChange={e => {
+                                                            this.setState({
+                                                              qualityCertificate: {
+                                                                id: qualityCertificate.id,
+                                                                certificate_type:
+                                                                  qualityCertificate.certificate_type,
+                                                                name: qualityCertificate.name,
+                                                                type: qualityCertificate.type,
+                                                                certificate:
+                                                                  qualityCertificate.certificate,
+                                                                start_date:
+                                                                  e.target.value,
+                                                                end_date: qualityCertificate.end_date,
+                                                              },
+                                                            });
+                                                          }}
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.start_date &&
+                                                              touched.start_date
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                        />
+                                                        <ErrorMessage
+                                                          name="start_date"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </div>
+
+                                                    )}
+                                                  {this.state.qualityCertificate
+                                                    .certificate_type ===
+                                                    "EQA Certificate" && (
+                                                      <div className="mb-3">
+                                                        <Label className="form-label">
+                                                          End Date
+                                                        </Label>
+                                                        <Field
+                                                          name="end_date"
+                                                          type="date"
+                                                          min={new Date(
+                                                            new Date()
+                                                              .toString()
+                                                              .split("GMT")[0] +
+                                                            " UTC"
+                                                          )
+                                                            .toISOString()
+                                                            .slice(0, -14)}
+                                                          value={
+                                                            this.state
+                                                              .qualityCertificate
+                                                              .end_date
+                                                          }
+                                                          onChange={e => {
+                                                            this.setState({
+                                                              qualityCertificate: {
+                                                                id: qualityCertificate.id,
+                                                                certificate_type:
+                                                                  qualityCertificate.certificate_type,
+                                                                name: qualityCertificate.name,
+                                                                type: qualityCertificate.type,
+                                                                certificate:
+                                                                  qualityCertificate.certificate,
+                                                                end_date:
+                                                                  e.target.value,
+                                                                start_date:
+                                                                  qualityCertificate.start_date,
+                                                              },
+                                                            });
+                                                          }}
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.end_date &&
+                                                              touched.end_date
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                        />
+                                                        <ErrorMessage
+                                                          name="end_date"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </div>
+
+                                                    )}
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -1164,38 +1162,38 @@ class QualityCertificatesList extends Component {
                   </CardBody>
                 </Card>
                 <Row>
-                <Col sm="2" lg="2">
-                </Col>
-                {
-                isEmpty(this.props.qualityCertificates)&&
-                this.props.labProfiles.type == "Collection Point" &&
-                // console.log("desh desh",this.props.offeredTests)
-                 (
-                  <Col sm="2" lg="10">
-                  <Card className="col-md-9">
-                    <CardBody >
-                    <div>
-
-                    <input
-                      name="main_lab_quality"
-                      type="checkbox"
-                      required= {true}
-                    // checked={false}
-                      checked={this.state.isChecked}
-                      onChange={this.handleAPICall
-                    }
-                    />
-                      
-                        <b> Do you want to add your main lab Quality Certificates as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the Quality Certificates by your main lab with all the details will be added</b>
-                    
-                    </div>
-                    </CardBody>
-                  </Card>
-
+                  <Col sm="2" lg="2">
                   </Col>
-                )}
-               
-              </Row>
+                  {
+                    isEmpty(this.props.qualityCertificates) &&
+                    this.props.labProfiles.type == "Collection Point" &&
+                    // console.log("desh desh",this.props.offeredTests)
+                    (
+                      <Col sm="2" lg="10">
+                        <Card className="col-md-9">
+                          <CardBody >
+                            <div>
+
+                              <input
+                                name="main_lab_quality"
+                                type="checkbox"
+                                required={true}
+                                // checked={false}
+                                checked={this.state.isChecked}
+                                onChange={this.handleAPICall
+                                }
+                              />
+
+                              <b> Do you want to add your main lab Quality Certificates as yours ? <br></br><strong className="text-primary">Note: </strong>if you mark this, the Quality Certificates by your main lab with all the details will be added</b>
+
+                            </div>
+                          </CardBody>
+                        </Card>
+
+                      </Col>
+                    )}
+
+                </Row>
               </Col>
             </Row>
           </Container>
@@ -1236,7 +1234,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(deleteQualityCertificate(qualityCertificate)),
   onGetLabProfile: id => dispatch(getLabProfile(id)),
   onAddNewCollectionPointQuality: (qualityCertificate, id) =>
-  dispatch(addNewCollectionPointQuality(qualityCertificate, id)),
+    dispatch(addNewCollectionPointQuality(qualityCertificate, id)),
 
 });
 

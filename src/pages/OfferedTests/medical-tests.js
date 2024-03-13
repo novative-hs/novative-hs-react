@@ -612,17 +612,38 @@ class TestsList extends Component {
                                                             *
                                                           </span>
                                                         </Label>
-                                                        <Field
-                                                          name="duration_required"
-                                                          type="number"
-                                                          className={
-                                                            "form-control" +
-                                                            (errors.duration_required &&
-                                                              touched.duration_required
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
-                                                        />
+                                                         <Field
+                                                      name="duration_required"
+                                                      type="number"
+                                                      step="1"
+                                                      min="0"
+                                                      value={
+                                                        this.state
+                                                          .offeredTest
+                                                          .duration_required
+                                                      }
+                                                      onChange={e => {
+                                                        this.setState({
+                                                          offeredTest: {
+                                                            id: this.state
+                                                              .offeredTest
+                                                              .id,
+                                                              duration_required:
+                                                              e.target.value,
+                                                            lab_id:
+                                                              this.props.match
+                                                                .params.id,
+                                                          },
+                                                        });
+                                                      }}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.duration_required &&
+                                                        touched.shared_percentage
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
                                                         <ErrorMessage
                                                           name="duration_required"
                                                           component="div"

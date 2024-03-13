@@ -70,15 +70,15 @@ class DiscountLabHazirList extends Component {
           dataField: "test_name",
           text: "Test Name",
           sort: true,
-        //   headerStyle: () => {
-        //     return { 
-        //     style: {width: "30%",
-        //       textAlign: "left"
-        //   },
-        // }
+          //   headerStyle: () => {
+          //     return { 
+          //     style: {width: "30%",
+          //       textAlign: "left"
+          //   },
+          // }
 
           // } 
-          
+
         },
         {
           dataField: "price",
@@ -99,72 +99,72 @@ class DiscountLabHazirList extends Component {
           formatter: (cellContent, discountLab) => (
             <>
               {(
-                <span>{(discountLab.discount*100).toFixed()}%</span>
+                <span>{(discountLab.discount * 100).toFixed()}%</span>
               )}
             </>
           ),
         },
         {
-            dataField: "discounted_price",
-            text: "Price After Discount",
-            sort: true,
-            formatter: (cellContent, discountLab) => (
-              <>
-                {(
-                  <span>{(discountLab.price-((discountLab.price*(discountLab.discount*100))/100)).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+          dataField: "discounted_price",
+          text: "Price After Discount",
+          sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              {(
+                <span>{(discountLab.price - ((discountLab.price * (discountLab.discount * 100)) / 100)).toFixed().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+              )}
+            </>
+          ),
+        },
+
+        {
+          dataField: "start_date",
+          text: "Start Date",
+          sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              <span>
+                {discountLab.discount !== 0 ? (
+                  moment(discountLab.start_date).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
                 )}
-              </>
-            ),
-          },
-          
-          {
-            dataField: "start_date",
-            text: "Start Date",
-            sort: true,
-            formatter: (cellContent, discountLab) => (
-              <>
-                <span>
-                  {discountLab.discount !== 0 ? (
-                    moment(discountLab.start_date).format("DD MMM YYYY, h:mm A")
-                  ) : (
-                    "--"
-                  )}
-                </span>
-              </>
-            ),
-          },
-          {
-            dataField: "end_date",
-            text: "End Date",
-            sort: true,
-            formatter: (cellContent, discountLab) => (
-              <>
-                <span>
-                  {discountLab.discount !== 0 ? (
-                    moment(discountLab.end_date).format("DD MMM YYYY, h:mm A")
-                  ) : (
-                    "--"
-                  )}
-                </span>
-              </>
-            ),
-          },
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "end_date",
+          text: "End Date",
+          sort: true,
+          formatter: (cellContent, discountLab) => (
+            <>
+              <span>
+                {discountLab.discount !== 0 ? (
+                  moment(discountLab.end_date).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
+              </span>
+            </>
+          ),
+        },
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
           formatter: (cellContent, discountLab) => (
-        
+
             <div className="d-flex gap-3">
               <Tooltip title="Update">
-              <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={() => this.handleEditBtnClick(discountLab)}
-                ></i>
-              </Link>
+                <Link className="text-success" to="#">
+                  <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={() => this.handleEditBtnClick(discountLab)}
+                  ></i>
+                </Link>
               </Tooltip>
 
             </div>
@@ -387,6 +387,13 @@ class DiscountLabHazirList extends Component {
                                       responsive
                                       ref={this.node}
                                     />
+                                    <Row className="align-items-md-center mt-30">
+                                      <Col className="pagination pagination-rounded justify-content-end mb-2">
+                                        <PaginationListStandalone
+                                          {...paginationProps}
+                                        />
+                                      </Col>
+                                    </Row>
 
                                     <Modal
                                       isOpen={this.state.modal}
@@ -508,7 +515,7 @@ class DiscountLabHazirList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.discount &&
-                                                        touched.discount
+                                                          touched.discount
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -522,33 +529,33 @@ class DiscountLabHazirList extends Component {
 
                                                   {this.state.discountLab
                                                     .discount > 0 && (
-                                                    <div>
-                                                      <div className="mb-3">
-                                                        <Label className="form-label">
-                                                          Start Date
-                                                        </Label>
-                                                        <Field
-                                                          name="start_date"
-                                                          type="datetime-local"                                                          min={new Date(
-                                                            new Date().toString().split("GMT")[0] +
-                                                            " UTC"
-                                                          )
-                                                            .toISOString()
-                                                            .slice(0, -8)}
-                                                          value={
-                                                            this.state
-                                                              .discountLab
-                                                              .start_date
-                                                          }
-                                                          onChange={e => {
-                                                            this.setState({
-                                                              discountLab:
+                                                      <div>
+                                                        <div className="mb-3">
+                                                          <Label className="form-label">
+                                                            Start Date
+                                                          </Label>
+                                                          <Field
+                                                            name="start_date"
+                                                            type="datetime-local" min={new Date(
+                                                              new Date().toString().split("GMT")[0] +
+                                                              " UTC"
+                                                            )
+                                                              .toISOString()
+                                                              .slice(0, -8)}
+                                                            value={
+                                                              this.state
+                                                                .discountLab
+                                                                .start_date
+                                                            }
+                                                            onChange={e => {
+                                                              this.setState({
+                                                                discountLab:
                                                                 {
                                                                   id: this.state
                                                                     .discountLab
                                                                     .id,
                                                                   lab_id:
-                                                                  this.state.user_id,
+                                                                    this.state.user_id,
                                                                   discount:
                                                                     discountLab.discount,
                                                                   start_date:
@@ -557,49 +564,49 @@ class DiscountLabHazirList extends Component {
                                                                   end_date:
                                                                     discountLab.end_date,
                                                                 },
-                                                            });
-                                                          }}
-                                                          className={
-                                                            "form-control" +
-                                                            (errors.start_date &&
-                                                            touched.start_date
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
-                                                        />
-                                                        <ErrorMessage
-                                                          name="start_date"
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                      <div className="mb-3">
-                                                        <Label className="form-label">
-                                                          End Date
-                                                        </Label>
-                                                        <Field
-                                                          name="end_date"
-                                                          type="datetime-local"
-                                                          min={new Date(
-                                                            new Date().toString().split("GMT")[0] +
-                                                            " UTC"
-                                                          )
-                                                        .toISOString()
-                                                        .slice(0, -8)}
-                                                          value={
-                                                            this.state
-                                                              .discountLab
-                                                              .end_date
-                                                          }
-                                                          onChange={e => {
-                                                            this.setState({
-                                                              discountLab:
+                                                              });
+                                                            }}
+                                                            className={
+                                                              "form-control" +
+                                                              (errors.start_date &&
+                                                                touched.start_date
+                                                                ? " is-invalid"
+                                                                : "")
+                                                            }
+                                                          />
+                                                          <ErrorMessage
+                                                            name="start_date"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                        <div className="mb-3">
+                                                          <Label className="form-label">
+                                                            End Date
+                                                          </Label>
+                                                          <Field
+                                                            name="end_date"
+                                                            type="datetime-local"
+                                                            min={new Date(
+                                                              new Date().toString().split("GMT")[0] +
+                                                              " UTC"
+                                                            )
+                                                              .toISOString()
+                                                              .slice(0, -8)}
+                                                            value={
+                                                              this.state
+                                                                .discountLab
+                                                                .end_date
+                                                            }
+                                                            onChange={e => {
+                                                              this.setState({
+                                                                discountLab:
                                                                 {
                                                                   id: this.state
                                                                     .discountLab
                                                                     .id,
                                                                   lab_id:
-                                                                  this.state.user_id,
+                                                                    this.state.user_id,
                                                                   discount:
                                                                     discountLab.discount,
                                                                   start_date:
@@ -608,24 +615,24 @@ class DiscountLabHazirList extends Component {
                                                                     e.target
                                                                       .value,
                                                                 },
-                                                            });
-                                                          }}
-                                                          className={
-                                                            "form-control" +
-                                                            (errors.end_date &&
-                                                            touched.end_date
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
-                                                        />
-                                                        <ErrorMessage
-                                                          name="end_date"
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
+                                                              });
+                                                            }}
+                                                            className={
+                                                              "form-control" +
+                                                              (errors.end_date &&
+                                                                touched.end_date
+                                                                ? " is-invalid"
+                                                                : "")
+                                                            }
+                                                          />
+                                                          <ErrorMessage
+                                                            name="end_date"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
                                                       </div>
-                                                    </div>
-                                                  )}
+                                                    )}
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -634,9 +641,9 @@ class DiscountLabHazirList extends Component {
                                                     <button
                                                       type="submit"
                                                       className="btn btn-success save-user"
-                                                      // onClick={
-                                                      //   this.handleAPICall
-                                                      // }
+                                                    // onClick={
+                                                    //   this.handleAPICall
+                                                    // }
                                                     >
                                                       Save
                                                     </button>
