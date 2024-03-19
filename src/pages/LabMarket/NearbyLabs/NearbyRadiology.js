@@ -2783,20 +2783,26 @@ shouldHighlightTestsLink() {
                      </Link>
                       )}
                             </div>
-                            <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyRadiology.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyRadiology && nearbyRadiology.rating && (
-    <p> {nearbyRadiology.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                            <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyRadiology.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyRadiology && nearbyRadiology.rating && (
+        <p>{nearbyRadiology.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
 
                             {/* <div className="my-0">
                               <span className="text-muted me-2">

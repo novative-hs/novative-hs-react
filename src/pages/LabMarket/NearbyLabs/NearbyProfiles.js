@@ -2756,24 +2756,31 @@ shouldHighlightTestsLink() {
 
                        </span>
                      </Link>
-                      )}
-                              
-                            </div>
-                            <div className="my-0 mt-2">
-                              <div>
-                              <StarRatings
-                                rating={nearbyProfile.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
-                            {nearbyProfile && nearbyProfile.rating && (
-    <p> {nearbyProfile.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}</div>
+                      )}</div>
+
+<Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyProfile.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyProfile && nearbyProfile.rating && (
+        <p>{nearbyProfile.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
+
+
+
                             {/* <Button
   type="button"
   color={this.state.itemsInCart.includes(nearbyProfile) ? 'secondary' : 'primary'}

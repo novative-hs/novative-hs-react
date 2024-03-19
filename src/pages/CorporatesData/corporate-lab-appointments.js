@@ -245,12 +245,12 @@ class AccountStatements extends Component {
                                   <td>
                                     {b2baccountStatement.plateform_fees == 0 ? (
                                       <p className="d-none">
-                                        {b2baccountStatement.plateform_fees.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {b2baccountStatement.plateform_fees.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
 
                                     ) : (
                                       <p className="float-end">
-                                        {b2baccountStatement.plateform_fees.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                        {b2baccountStatement.plateform_fees.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                       </p>
                                     )}
 

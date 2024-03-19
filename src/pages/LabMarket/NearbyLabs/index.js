@@ -2686,20 +2686,27 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
-                            <div className="my-0 mt-2">
-                              <StarRatings
-                                rating={nearbyLab.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
-                            {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                             <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
+                            
                             <Link
                               to={
                                 this.props.match.params.uuid
@@ -2849,20 +2856,27 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
-                            <div className="my-0 mt-2">
-                              <StarRatings
-                                rating={nearbyLab.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
-                            {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                             <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
+                            
                             <Link
                               to={
                                 this.props.match.params.uuid
@@ -3008,20 +3022,26 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
-                            <div className="my-0 mt-2">
-                              <StarRatings
-                                rating={nearbyLab.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
-                            {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                             <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                             <Link
                               to={
                                 this.props.match.params.uuid
@@ -3167,21 +3187,26 @@ class NearbyLabs extends Component {
                                 </span>
                               </div>
                             )}
-                            <div className="my-0 mt-2">
-                              <StarRatings
-                                rating={nearbyLab.rating}
-                                starRatedColor="#F1B44C"
-                                starEmptyColor="#2D363F"
-                                numberOfStars={5}
-                                name="rating"
-                                starDimension="14px"
-                                starSpacing="3px"
-                              />
-                            </div>
-                            {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
-                            <Link
+                             <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>                   <Link
                               to={
                                 this.props.match.params.uuid
                                   ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
@@ -3716,20 +3741,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -3881,21 +3912,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
-                              <Link
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>                      <Link
                                 to={
                                   this.props.match.params.uuid
                                     ? `/nearby-lab-detail/${nearbyLab.account_id}/${this.state.guest_id}/${this.props.match.params.uuid}`
@@ -4041,20 +4077,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -4201,20 +4243,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -4915,20 +4963,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                          <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -5079,20 +5133,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                           <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -5248,10 +5308,10 @@ class NearbyLabs extends Component {
                               starDimension="14px"
                               starSpacing="3px"
                             />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
+                            {nearbyLab && nearbyLab.rating && (
     <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
 )}
+                          </div>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -5398,20 +5458,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                           <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -5866,20 +5932,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                           <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -6031,20 +6103,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                           <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -6190,20 +6268,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                           <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -6349,20 +6433,26 @@ class NearbyLabs extends Component {
                               </span>
                             </div>
                           )}
-                          <div className="my-0 mt-2">
-                            <StarRatings
-                              rating={nearbyLab.rating}
-                              starRatedColor="#F1B44C"
-                              starEmptyColor="#2D363F"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="14px"
-                              starSpacing="3px"
-                            />
-                          </div>
-                          {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                          <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                           <Link
                             to={
                               this.props.match.params.uuid
@@ -6898,20 +6988,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -7053,20 +7149,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -7213,20 +7315,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -7372,20 +7480,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                              <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -8083,20 +8197,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -8257,20 +8377,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -8416,20 +8542,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                              <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid
@@ -8585,20 +8717,26 @@ class NearbyLabs extends Component {
                                   </span>
                                 </div>
                               )}
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyLab.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-                              </div>
-                              {nearbyLab && nearbyLab.rating && (
-    <p> {nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-)}
+                               <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyLab.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyLab && nearbyLab.rating && (
+        <p>{nearbyLab.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                               <Link
                                 to={
                                   this.props.match.params.uuid

@@ -1817,10 +1817,11 @@ class MedicalTestList extends Component {
                                                 starDimension="14px"
                                                 starSpacing="3px"
                                               />
-                                            </div>
-                                            {referrelFeeLab && referrelFeeLab.rating && (
+                                              {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                            </div>
+                                            
                                           </div>
                                         </React.Fragment>
                                       ) : null}
@@ -1855,10 +1856,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
 
@@ -1889,10 +1891,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
 
@@ -1923,10 +1926,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
                                 </td>
@@ -2156,10 +2160,11 @@ class MedicalTestList extends Component {
                                                 starDimension="14px"
                                                 starSpacing="3px"
                                               />
-                                            </div>
-                                            {referrelFeeLab && referrelFeeLab.rating && (
+                                              {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                            </div>
+                                            
                                           </div>
                                         </React.Fragment>
                                       ) : null}
@@ -2194,10 +2199,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
 
@@ -2228,10 +2234,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
 
@@ -2262,10 +2269,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
                                 </td>
@@ -2493,10 +2501,11 @@ class MedicalTestList extends Component {
                                                 starDimension="14px"
                                                 starSpacing="3px"
                                               />
-                                            </div>
-                                            {referrelFeeLab && referrelFeeLab.rating && (
+                                              {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                            </div>
+                                            
                                           </div>
                                         </React.Fragment>
                                       ) : null}
@@ -2531,10 +2540,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
 
@@ -2565,10 +2575,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
 
@@ -2599,10 +2610,11 @@ class MedicalTestList extends Component {
                                           starDimension="14px"
                                           starSpacing="3px"
                                         />
-                                      </div>
-                                      {referrelFeeLab && referrelFeeLab.rating && (
+                                        {referrelFeeLab && referrelFeeLab.rating && (
     <p> {referrelFeeLab.rating}</p>
 )}
+                                      </div>
+                                      
                                     </div>
                                   )}
                                 </td>

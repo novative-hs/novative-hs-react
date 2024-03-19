@@ -2651,21 +2651,26 @@ class NearbyTests extends Component {
                             <div className="my-0">
                               {" "}
 
-                              <div className="my-0 mt-2">
-                                <StarRatings
-                                  rating={nearbyTest.rating}
-                                  starRatedColor="#F1B44C"
-                                  starEmptyColor="#2D363F"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="14px"
-                                  starSpacing="3px"
-                                />
-
-                              </div>
-                              {nearbyTest && nearbyTest.rating && (
-    <p> {nearbyTest.rating}</p>
-)}
+                              <Row style={{ display: "flex", justifyContent: "center", marginLeft: "40px" }}>
+  <Col className="d-flex justify-content-end" style={{ paddingRight: "0" }}>
+    <StarRatings
+      rating={nearbyTest.rating}
+      starRatedColor="#F1B44C"
+      starEmptyColor="#2D363F"
+      numberOfStars={5}
+      name="rating"
+      starDimension="12px"
+      starSpacing="3px"
+    />
+  </Col>
+  <Col className="d-flex justify-content-start" style={{ paddingLeft: "0" }}>
+    <span style={{ fontSize: "14px", marginLeft: "7px"}}>
+      {nearbyTest && nearbyTest.rating && (
+        <p>{nearbyTest.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      )}
+    </span>
+  </Col>
+</Row>
                             </div>
                             <div className="my-0 text-truncate">
                               {" "}
